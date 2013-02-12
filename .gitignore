@@ -1,0 +1,9 @@
+# vim swap files
+*.swp
+
+# compiled python modules
+*.pyc
+
+# eclipse project files
+*.project
+*.pydevproject
