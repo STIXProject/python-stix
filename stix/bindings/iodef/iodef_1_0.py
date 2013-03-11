@@ -5586,7 +5586,7 @@ def parseLiteral(inFileName):
     # Enable Python to collect the space used by the DOM.
     doc = None
     sys.stdout.write('#from iodef_1_0 import *\n\n')
-    sys.stdout.write('import iodef_1_0 as model_\n\n')
+    sys.stdout.write('import stix.bindings.iodef.iodef_1_0 as iodef_binding as model_\n\n')
     sys.stdout.write('rootObj = model_.rootTag(\n')
     rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
     sys.stdout.write(')\n')

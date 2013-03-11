@@ -9,10 +9,10 @@ import sys
 import getopt
 import re as re_
 
-import stix_common_0_2
+import stix.bindings.stix_common_0_2 as stix_common_binding
 
 
-abs_impl = {'TLPHandlingGuidanceType' : {   'module':'stix_common_0_2',
+abs_impl = {'TLPHandlingGuidanceType' : {   'module':'stix_common_binding',
                                             'python_name':'TLPHandlingGuidanceType',
                                             'namespace_prefix':'stixCommon',
                                             'namespace':'http://stix.mitre.org/Common',
@@ -548,7 +548,7 @@ class MarkingType1(GeneratedsSuper):
             self.Marking_Structure.append(obj_)
             
         elif nodeName_ == 'InformationSource':
-            obj_ = stix_common_0_2.InformationSourceType.factory()
+            obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.set_InformationSource(obj_)
 # end class MarkingType1
@@ -756,10 +756,10 @@ class MarkingStructureType(GeneratedsSuper):
 #===============================================================================
 # class TLPHandlingGuidanceType(MarkingStructureType):
 #   """The TLPHandlingGuidanceType is an extension of the abstract
-#   data_marking_0_5.MarkingStructureType that enables the specification of Traffic
+#   data_marking_binding.MarkingStructureType that enables the specification of Traffic
 #   Light Protocol guidance markings.
 #   
-#   This is copied from stix_common_0_2 because the globals() lookup fails when
+#   This is copied from stix_common_binding because the globals() lookup fails when
 #   resolving the implementation of abstract data types
 #   """
 #   subclass = None
@@ -899,7 +899,7 @@ def parseLiteral(inFileName):
     # Enable Python to collect the space used by the DOM.
     doc = None
     sys.stdout.write('#from data_marking_0_5 import *\n\n')
-    sys.stdout.write('import data_marking_0_5 as model_\n\n')
+    sys.stdout.write('import stix.bindings.data_marking_0_5 as data_marking_binding as model_\n\n')
     sys.stdout.write('rootObj = model_.rootTag(\n')
     rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
     sys.stdout.write(')\n')

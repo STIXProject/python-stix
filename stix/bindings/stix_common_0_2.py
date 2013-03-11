@@ -9,9 +9,9 @@ import sys
 import getopt
 import re as re_
 
-#import data_marking_0_5
-import cybox_common_types_1_0
-import xpil
+#import stix.bindings.data_marking_0_5 as data_marking_binding
+import cybox.bindings.cybox_common_types_1_0 as cybox_common_binding
+import stix.bindings.oasis.xpil as xpil_binding
 
 etree_ = None
 Verbose_import_ = False
@@ -462,13 +462,13 @@ class InformationSourceType(GeneratedsSuper):
             outfile.write('),\n')
         if self.Time is not None:
             showIndent(outfile, level)
-            outfile.write('Time=model_.cybox_common_types_1_0.TimeType(\n')
+            outfile.write('Time=model_.cybox_common_bindingTimeType(\n')
             self.Time.exportLiteral(outfile, level, name_='Time')
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.Tools is not None:
             showIndent(outfile, level)
-            outfile.write('Tools=model_.cybox_common_types_1_0.ToolsInformationType(\n')
+            outfile.write('Tools=model_.cybox_common_bindingToolsInformationType(\n')
             self.Tools.exportLiteral(outfile, level, name_='Tools')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -495,11 +495,11 @@ class InformationSourceType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Contributors(obj_)
         elif nodeName_ == 'Time':
-            obj_ = cybox_common_types_1_0.TimeType.factory()
+            obj_ = cybox_common_bindingTimeType.factory()
             obj_.build(child_)
             self.set_Time(obj_)
         elif nodeName_ == 'Tools':
-            obj_ = cybox_common_types_1_0.ToolsInformationType.factory()
+            obj_ = cybox_common_bindingToolsInformationType.factory()
             obj_.build(child_)
             self.set_Tools(obj_)
         elif nodeName_ == 'References':
@@ -625,7 +625,7 @@ class ConfidenceType(GeneratedsSuper):
     def exportLiteralChildren(self, outfile, level, name_):
         if self.Description is not None:
             showIndent(outfile, level)
-            outfile.write('Description=model_.cybox_common_types_1_0.StructuredTextType(\n')
+            outfile.write('Description=model_.cybox_common_bindingStructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -663,7 +663,7 @@ class ConfidenceType(GeneratedsSuper):
             self.timestamp = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Description':
-            obj_ = cybox_common_types_1_0.StructuredTextType.factory()
+            obj_ = cybox_common_bindingStructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'ConfidenceAssertionChain':
@@ -826,7 +826,7 @@ class ActivityType(GeneratedsSuper):
             outfile.write('DateTime=%s,\n' % quote_python(self.DateTime).encode(ExternalEncoding))
         if self.Description is not None:
             showIndent(outfile, level)
-            outfile.write('Description=model_.cybox_common_types_1_0.StructuredTextType(\n')
+            outfile.write('Description=model_.cybox_common_bindingStructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -843,7 +843,7 @@ class ActivityType(GeneratedsSuper):
             DateTime_ = self.gds_validate_string(DateTime_, node, 'DateTime')
             self.DateTime = DateTime_
         elif nodeName_ == 'Description':
-            obj_ = cybox_common_types_1_0.StructuredTextType.factory()
+            obj_ = cybox_common_bindingStructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
 # end class ActivityType
@@ -1117,7 +1117,7 @@ class STIX_CIQ_IdentityType(GeneratedsSuper):
     subclass = None
     superclass = None
     def __init__(self, PartyType=None, FreeTextLines=None, PartyName=None, Addresses=None, Accounts=None, ContactNumbers=None, Documents=None, ElectronicAddressIdentifiers=None, Events=None, Identifiers=None, Memberships=None, Relationships=None, Revenues=None, Stocks=None, Vehicles=None, OrganisationInfo=None, PersonInfo=None, BirthInfo=None, CountriesOfResidence=None, Favourites=None, Habits=None, Hobbies=None, Languages=None, Nationalities=None, Occupations=None, PhysicalInfo=None, Preferences=None, Qualifications=None, Visas=None):
-        self.PartyType = _cast(None, xpil.PartyType)
+        self.PartyType = _cast(None, xpil_binding.PartyType)
         self.FreeTextLines = FreeTextLines
         self.PartyName = PartyName
         self.Addresses = Addresses
@@ -1516,115 +1516,115 @@ class STIX_CIQ_IdentityType(GeneratedsSuper):
             self.PartyType = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'FreeTextLines':
-            obj_ = xpil.FreeTextLines.factory()
+            obj_ = xpil_binding.FreeTextLines.factory()
             obj_.build(child_)
             self.set_FreeTextLines(obj_)
         elif nodeName_ == 'PartyName':
-            obj_ = xpil.PartyNameType.factory()
+            obj_ = xpil_binding.PartyNameType.factory()
             obj_.build(child_)
             self.set_PartyName(obj_)
         elif nodeName_ == 'Addresses':
-            obj_ = xpil.Addresses.factory()
+            obj_ = xpil_binding.Addresses.factory()
             obj_.build(child_)
             self.set_Addresses(obj_)
         elif nodeName_ == 'Accounts':
-            obj_ = xpil.Accounts.factory()
+            obj_ = xpil_binding.Accounts.factory()
             obj_.build(child_)
             self.set_Accounts(obj_)
         elif nodeName_ == 'ContactNumbers':
-            obj_ = xpil.ContactNumbers.factory()
+            obj_ = xpil_binding.ContactNumbers.factory()
             obj_.build(child_)
             self.set_ContactNumbers(obj_)
         elif nodeName_ == 'Documents':
-            obj_ = xpil.Documents.factory()
+            obj_ = xpil_binding.Documents.factory()
             obj_.build(child_)
             self.set_Documents(obj_)
         elif nodeName_ == 'ElectronicAddressIdentifiers':
-            obj_ = xpil.ElectronicAddressIdentifiers.factory()
+            obj_ = xpil_binding.ElectronicAddressIdentifiers.factory()
             obj_.build(child_)
             self.set_ElectronicAddressIdentifiers(obj_)
         elif nodeName_ == 'Events':
-            obj_ = xpil.Events.factory()
+            obj_ = xpil_binding.Events.factory()
             obj_.build(child_)
             self.set_Events(obj_)
         elif nodeName_ == 'Identifiers':
-            obj_ = xpil.Identifiers.factory()
+            obj_ = xpil_binding.Identifiers.factory()
             obj_.build(child_)
             self.set_Identifiers(obj_)
         elif nodeName_ == 'Memberships':
-            obj_ = xpil.Memberships.factory()
+            obj_ = xpil_binding.Memberships.factory()
             obj_.build(child_)
             self.set_Memberships(obj_)
         elif nodeName_ == 'Relationships':
-            obj_ = xpil.Relationships.factory()
+            obj_ = xpil_binding.Relationships.factory()
             obj_.build(child_)
             self.set_Relationships(obj_)
         elif nodeName_ == 'Revenues':
-            obj_ = xpil.Revenues.factory()
+            obj_ = xpil_binding.Revenues.factory()
             obj_.build(child_)
             self.set_Revenues(obj_)
         elif nodeName_ == 'Stocks':
-            obj_ = xpil.Stocks.factory()
+            obj_ = xpil_binding.Stocks.factory()
             obj_.build(child_)
             self.set_Stocks(obj_)
         elif nodeName_ == 'Vehicles':
-            obj_ = xpil.Vehicles.factory()
+            obj_ = xpil_binding.Vehicles.factory()
             obj_.build(child_)
             self.set_Vehicles(obj_)
         elif nodeName_ == 'OrganisationInfo':
-            obj_ = xpil.OrganisationInfo.factory()
+            obj_ = xpil_binding.OrganisationInfo.factory()
             obj_.build(child_)
             self.set_OrganisationInfo(obj_)
         elif nodeName_ == 'PersonInfo':
-            obj_ = xpil.PersonInfo.factory()
+            obj_ = xpil_binding.PersonInfo.factory()
             obj_.build(child_)
             self.set_PersonInfo(obj_)
         elif nodeName_ == 'BirthInfo':
-            obj_ = xpil.BirthInfo.factory()
+            obj_ = xpil_binding.BirthInfo.factory()
             obj_.build(child_)
             self.set_BirthInfo(obj_)
         elif nodeName_ == 'CountriesOfResidence':
-            obj_ = xpil.CountriesOfResidence.factory()
+            obj_ = xpil_binding.CountriesOfResidence.factory()
             obj_.build(child_)
             self.set_CountriesOfResidence(obj_)
         elif nodeName_ == 'Favourites':
-            obj_ = xpil.Favourites.factory()
+            obj_ = xpil_binding.Favourites.factory()
             obj_.build(child_)
             self.set_Favourites(obj_)
         elif nodeName_ == 'Habits':
-            obj_ = xpil.Habits.factory()
+            obj_ = xpil_binding.Habits.factory()
             obj_.build(child_)
             self.set_Habits(obj_)
         elif nodeName_ == 'Hobbies':
-            obj_ = xpil.Hobbies.factory()
+            obj_ = xpil_binding.Hobbies.factory()
             obj_.build(child_)
             self.set_Hobbies(obj_)
         elif nodeName_ == 'Languages':
-            obj_ = xpil.Languages.factory()
+            obj_ = xpil_binding.Languages.factory()
             obj_.build(child_)
             self.set_Languages(obj_)
         elif nodeName_ == 'Nationalities':
-            obj_ = xpil.Nationalities.factory()
+            obj_ = xpil_binding.Nationalities.factory()
             obj_.build(child_)
             self.set_Nationalities(obj_)
         elif nodeName_ == 'Occupations':
-            obj_ = xpil.Occupations.factory()
+            obj_ = xpil_binding.Occupations.factory()
             obj_.build(child_)
             self.set_Occupations(obj_)
         elif nodeName_ == 'PhysicalInfo':
-            obj_ = xpil.PhysicalInfo.factory()
+            obj_ = xpil_binding.PhysicalInfo.factory()
             obj_.build(child_)
             self.set_PhysicalInfo(obj_)
         elif nodeName_ == 'Preferences':
-            obj_ = xpil.Preferences.factory()
+            obj_ = xpil_binding.Preferences.factory()
             obj_.build(child_)
             self.set_Preferences(obj_)
         elif nodeName_ == 'Qualifications':
-            obj_ = xpil.Qualifications.factory()
+            obj_ = xpil_binding.Qualifications.factory()
             obj_.build(child_)
             self.set_Qualifications(obj_)
         elif nodeName_ == 'Visas':
-            obj_ = xpil.Visas.factory()
+            obj_ = xpil_binding.Visas.factory()
             obj_.build(child_)
             self.set_Visas(obj_)
 # end class STIX_CIQ_Identity_Type
@@ -1872,7 +1872,7 @@ class MarkingStructureType(GeneratedsSuper):
 
 class TLPHandlingGuidanceType(MarkingStructureType):
     """The TLPHandlingGuidanceType is an extension of the abstract
-    data_marking_0_5.MarkingStructureType that enables the specification of Traffic
+    data_marking_binding.MarkingStructureType that enables the specification of Traffic
     Light Protocol guidance markings."""
     subclass = None
     superclass = MarkingStructureType
@@ -2426,7 +2426,7 @@ def parseLiteral(inFileName):
     # Enable Python to collect the space used by the DOM.
     doc = None
     sys.stdout.write('#from stix_common_0_2 import *\n\n')
-    sys.stdout.write('import stix_common_0_2 as model_\n\n')
+    sys.stdout.write('import stix.bindings.stix_common_0_2 as stix_common_binding as model_\n\n')
     sys.stdout.write('rootObj = model_.rootTag(\n')
     rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
     sys.stdout.write(')\n')

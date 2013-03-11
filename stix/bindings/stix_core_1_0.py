@@ -9,21 +9,20 @@ import sys
 import getopt
 import re as re_
 
-import data_marking_0_5
-import cybox_core_1_0
-import cybox_common_types_1_0
-import system_object_1_3
-import user_account_object_1_2
-import stix_common_0_2
-import stix_indicator_1_1
-import ap_schema_2_5
-import iodef_1_0
-import stix_campaign_0_5_1
-import stix_ttp_0_6
-import stix_threat_actor_0_5_1
-import stix_exploit_target_0_3_1
-import stix_coa_0_3_1
-import stix_incident_0_3_1
+import stix.bindings.data_marking_0_5 as data_marking_binding
+import cybox.bindings.cybox_core_1_0 as cybox_core_binding
+import cybox.bindings.cybox_common_types_1_0 as cybox_common_binding
+import cybox.bindings.system_object_1_3 as system_object_binding
+import stix.bindings.stix_common_0_2 as stix_common_binding
+import stix.bindings.stix_indicator_1_1 as stix_indicator_binding
+import stix.bindings.capec.ap_schema_2_5 as ap_schema_binding
+import stix.bindings.iodef.iodef_1_0 as iodef_binding
+import stix.bindings.stix_campaign_0_5_1 as stix_campaign_binding
+import stix.bindings.stix_ttp_0_6 as stix_ttp_binding
+import stix.bindings.stix_threat_actor_0_5_1 as stix_threat_actor_binding
+import stix.bindings.exploit_target_0_3_1 as stix_exploit_target_binding
+import stix.bindings.stix_coa_0_3_1 as stix_coa_binding
+import stix.bindings.stix_incident_0_3_1 as stix_incident_binding
 
 etree_ = None
 Verbose_import_ = False
@@ -525,7 +524,7 @@ class STIXType(GeneratedsSuper):
             outfile.write('),\n')
         if self.Observables is not None:
             showIndent(outfile, level)
-            outfile.write('Observables=model_.cybox_core_1_0.ObservablesType(\n')
+            outfile.write('Observables=model_.cybox_core_binding.ObservablesType(\n')
             self.Observables.exportLiteral(outfile, level, name_='Observables')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -595,7 +594,7 @@ class STIXType(GeneratedsSuper):
             obj_.build(child_)
             self.set_STIXHeader(obj_)
         elif nodeName_ == 'Observables':
-            obj_ = cybox_core_1_0.ObservablesType.factory()
+            obj_ = cybox_core_binding.ObservablesType.factory()
             obj_.build(child_)
             self.set_Observables(obj_)
         elif nodeName_ == 'Indicators':
@@ -736,15 +735,15 @@ class STIXHeaderType(GeneratedsSuper):
             PackageIntent_ = self.gds_validate_string(PackageIntent_, node, 'PackageIntent')
             self.PackageIntent = PackageIntent_
         elif nodeName_ == 'Description':
-            obj_ = cybox_common_types_1_0.StructuredTextType.factory()
+            obj_ = cybox_common_bindingStructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Handling':
-            obj_ = data_marking_0_5.MarkingType.factory()
+            obj_ = data_marking_binding.MarkingType.factory()
             obj_.build(child_)
             self.set_Handling(obj_)
         elif nodeName_ == 'InformationSource':
-            obj_ = stix_common_0_2.InformationSourceType.factory()
+            obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.set_InformationSource(obj_)
 # end class STIXHeaderType
@@ -828,7 +827,7 @@ class IndicatorsType(GeneratedsSuper):
     def buildAttributes(self, node, attrs, already_processed):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        obj_ = stix_indicator_1_1.IndicatorType.factory()
+        obj_ = stix_indicator_binding.IndicatorType.factory()
         obj_.build(child_)
         self.Indicator.append(obj_)
 # end class IndicatorsType
@@ -925,11 +924,11 @@ class TTPsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'TTP':
-            obj_ = stix_ttp_0_6.TTPType.factory()
+            obj_ = stix_ttp_binding.TTPType.factory()
             obj_.build(child_)
             self.TTP.append(obj_)
         elif nodeName_ == 'KillChains':
-            obj_ = stix_ttp_0_6.KillChainsType.factory()
+            obj_ = stix_ttp_binding.KillChainsType.factory()
             obj_.build(child_)
             self.set_KillChains(obj_)
 # end class TTPsType
@@ -1015,7 +1014,7 @@ class ExploitTargetsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'ExploitTarget':
-            obj_ = stix_exploit_target_0_3_1.ExploitTargetType.factory()
+            obj_ = stix_exploit_target_binding.ExploitTargetType.factory()
             obj_.build(child_)
             self.ExploitTarget.append(obj_)
 # end class ExploitTargetsType
@@ -1100,7 +1099,7 @@ class IncidentsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Incident':
-            obj_ = stix_incident_0_3_1.IncidentType.factory()
+            obj_ = stix_incident_binding.IncidentType.factory()
             obj_.build(child_)
             self.Incident.append(obj_)
 # end class IncidentsType
@@ -1185,7 +1184,7 @@ class CoursesOfActionType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'CourseOfAction':
-            obj_ = stix_coa_0_3_1.COAType.factory()
+            obj_ = stix_coa_binding.COAType.factory()
             obj_.build(child_)
             self.CourseOfAction.append(obj_)
 # end class CoursesOfActionType
@@ -1270,7 +1269,7 @@ class CampaignsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Campaign':
-            obj_ = stix_campaign_0_5_1.CampaignType.factory()
+            obj_ = stix_campaign_binding.CampaignType.factory()
             obj_.build(child_)
             self.Campaign.append(obj_)
 # end class CampaignsType
@@ -1355,7 +1354,7 @@ class ThreatActorsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'ThreatActor':
-            obj_ = stix_threat_actor_0_5_1.ThreatActorType.factory()
+            obj_ = stix_threat_actor_binding.ThreatActorType.factory()
             obj_.build(child_)
             self.ThreatActor.append(obj_)
 # end class ThreatActorsType

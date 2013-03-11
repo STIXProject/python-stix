@@ -1,20 +1,17 @@
 import stix
-import stix.common.identity as identity_api
+import stix.common
 from stix.utils import IDGenerator as stix_id_generator
-import cybox.core.observable as observable_api
-from cybox.common import Time
 import stix.bindings.stix_indicator_1_1 as stix_indicator_binding
-import cybox.bindings.cybox_core_1_0 as cybox_core_binding
-import cybox.bindings.cybox_common_types_1_0 as cybox_common_binding
-from stix.common.information_source import InformationSource
-from stix.common.identity_type import Identity
+from cybox.core import Observable,ObservableComposition
+from cybox.common import Time
+
 
 class Indicator(stix.Entity):
     TYPE_SOURCE_ORG = 0
     TYPE_SOURCE_PERSON = 1
     TYPES_SOURCE = (SOURCE_ORG, SOURCE_PERSON)
     
-    def __init__(self, id=None, producer=InformationSource(), observables=[]):
+    def __init__(self, id=None, producer=stix.common.InformationSource(), observables=[]):
         self._id = id if id is not None else stix_id_generator().create_id()
         self.producer = producer
         self.observables = []
@@ -28,7 +25,7 @@ class Indicator(stix.Entity):
     
     @producer.setter
     def producer(self, value):
-        if value and not isinstance(value, InformationSource):
+        if value and not isinstance(value, stix.common.InformationSource):
             raise ValueError('value must be instance of InformationSource')
         
         self._producer = value
@@ -53,14 +50,14 @@ class Indicator(stix.Entity):
             raise ValueError('type not known')
         
         if type == TYPE_SOURCE_ORG:
-            org_name_element = identity_api.OrganisationNameElement(org_name)
-            org_name = identity_api.OrganisationName()
+            org_name_element = stix.common.OrganisationNameElement(org_name)
+            org_name = stix.common.OrganisationName()
             org_name.add_organisation_name_element(org_name_element)
             self.producer.identity.party_name.add_organisation_name(org_name)
         
         if type == TYPE_SOURCE_PERSON:
-            person_name_element = identity_api.PersonNameElement(person_name)
-            person_name = identity_api.PersonName()
+            person_name_element = stix.common.PersonNameElement(person_name)
+            person_name = stix.common.PersonName()
             person_name.add_name_element(person_name_element)
             self.producer.identity.party_name.add_person_name(person_name)
     
@@ -141,13 +138,13 @@ class Indicator(stix.Entity):
         self.observables.append(observable)
     
     def _merge_observables(self, observables, operator='AND'):
-        observable_composition = observable_api.ObservableComposition()
+        observable_composition = ObservableComposition()
         observable_composition.operator = operator
         
         for observable_ in observables:
             observable_composition.add(observable_)
         
-        root_observable = observable_api.Observable()
+        root_observable = Observable()
         root_observable.observable_composition = observable_composition
         
         return root_observable
@@ -156,7 +153,7 @@ class Indicator(stix.Entity):
         ''' The object paramter is wrapped in an observable and attached to the indicator. The object must be a 
             cybox.core.DefinedObject instance'''
         
-        observable = cybox_api.Observable(stateful_measure=object)
+        observable = Observable(stateful_measure=object)
         self.add_observable(observable)
     
     def to_obj(self, return_obj=stix_indicator_binding.IndicatorType()):
@@ -176,11 +173,11 @@ class Indicator(stix.Entity):
     @staticmethod
     def from_obj(obj, return_obj=Indicator()):        
         if obj.get_Producer():
-            return_obj.producer = InformationSource.from_obj(indicator_obj.get_Producer())
+            return_obj.producer = stix.common.InformationSource.from_obj(indicator_obj.get_Producer())
         
         if obj.get_Observables() and indicator_obj.get_Observables().get_Observable():
             observable_obj = indicator_obj.get_Observables().get_Observable()
-            observable = observable_api.from_obj(observable_obj)
+            observable = Observable.from_obj(observable_obj)
             return_obj.observables.append(observable)
         
         return return_obj
@@ -205,10 +202,10 @@ class Indicator(stix.Entity):
         producer_dict = dict_repr.get('producer', None)
         
         if observable_dict:
-            return_obj.add_observable(cybox_api.Observable.from_dict(observable_dict))
+            return_obj.add_observable(Observable.from_dict(observable_dict))
             
         if producer_dict:
-            return_obj.producer = InformationSource.from_dict(producer_dict)
+            return_obj.producer = stix.common.InformationSource.from_dict(producer_dict)
         
         return return_obj
     

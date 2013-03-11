@@ -9,13 +9,13 @@ import sys
 import getopt
 import re as re_
 
-import cybox_core_1_0
-import cybox_common_types_1_0
-import iodef_1_0
-import stix_common_0_2
-import stix_ttp_0_6
-import stix_coa_0_3_1
-import data_marking_0_5
+import cybox.bindings.cybox_core_1_0 as cybox_core_binding
+import cybox.bindings.cybox_common_types_1_0 as cybox_common_binding
+import stix.bindings.iodef.iodef_1_0 as iodef_binding
+import stix.bindings.stix_common_0_2 as stix_common_binding
+import stix.bindings.stix_ttp_0_6 as stix_ttp_binding
+import stix.bindings.stix_coa_0_3_1 as stix_coa_binding
+import stix.bindings.data_marking_0_5 as data_marking_binding
 
 
 
@@ -621,7 +621,7 @@ class IndicatorType(GeneratedsSuper):
         outfile.write('],\n')
         if self.Description is not None:
             showIndent(outfile, level)
-            outfile.write('Description=model_.cybox_common_types_1_0.StructuredTextType(\n')
+            outfile.write('Description=model_.cybox_common_bindingStructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -687,13 +687,13 @@ class IndicatorType(GeneratedsSuper):
             outfile.write('),\n')
         if self.Handling is not None:
             showIndent(outfile, level)
-            outfile.write('Handling=model_.data_marking_0_5.MarkingType(\n')
+            outfile.write('Handling=model_.data_marking_binding.MarkingType(\n')
             self.Handling.exportLiteral(outfile, level, name_='Handling')
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.Confidence is not None:
             showIndent(outfile, level)
-            outfile.write('Confidence=model_.stix_common_0_2.ConfidenceType(\n')
+            outfile.write('Confidence=model_.stix_common_binding.ConfidenceType(\n')
             self.Confidence.exportLiteral(outfile, level, name_='Confidence')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -717,7 +717,7 @@ class IndicatorType(GeneratedsSuper):
         outfile.write('],\n')
         if self.Producer is not None:
             showIndent(outfile, level)
-            outfile.write('Producer=model_.stix_common_0_2.InformationSourceType(\n')
+            outfile.write('Producer=model_.stix_common_binding.InformationSourceType(\n')
             self.Producer.exportLiteral(outfile, level, name_='Producer')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -760,7 +760,7 @@ class IndicatorType(GeneratedsSuper):
             AlternativeID_Alias_ = self.gds_validate_string(AlternativeID_Alias_, node, 'AlternativeID_Alias')
             self.AlternativeID_Alias.append(AlternativeID_Alias_)
         elif nodeName_ == 'Description':
-            obj_ = cybox_common_types_1_0.StructuredTextType.factory()
+            obj_ = cybox_common_bindingStructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'ValidTimePosition':
@@ -796,11 +796,11 @@ class IndicatorType(GeneratedsSuper):
             obj_.build(child_)
             self.set_SuggestedCOAs(obj_)
         elif nodeName_ == 'Handling':
-            obj_ = data_marking_0_5.MarkingType.factory()
+            obj_ = data_marking_binding.MarkingType.factory()
             obj_.build(child_)
             self.set_Handling(obj_)
         elif nodeName_ == 'Confidence':
-            obj_ = stix_common_0_2.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_Confidence(obj_)
         elif nodeName_ == 'Sightings':
@@ -812,7 +812,7 @@ class IndicatorType(GeneratedsSuper):
             obj_.build(child_)
             self.RelatedIndicators.append(obj_)
         elif nodeName_ == 'Producer':
-            obj_ = stix_common_0_2.InformationSourceType.factory()
+            obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.set_Producer(obj_)
         elif nodeName_ == 'ExtendedInformation':
@@ -1222,7 +1222,7 @@ class TestMechanismType(GeneratedsSuper):
             outfile.write('),\n')
         if self.Producer is not None:
             showIndent(outfile, level)
-            outfile.write('Producer=model_.stix_common_0_2.InformationSourceType(\n')
+            outfile.write('Producer=model_.stix_common_binding.InformationSourceType(\n')
             self.Producer.exportLiteral(outfile, level, name_='Producer')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -1262,7 +1262,7 @@ class TestMechanismType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Efficacy(obj_)
         elif nodeName_ == 'Producer':
-            obj_ = stix_common_0_2.InformationSourceType.factory()
+            obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.set_Producer(obj_)
 # end class TestMechanismType
@@ -1865,7 +1865,7 @@ class RelatedIndicatorType(IndicatorType):
         super(RelatedIndicatorType, self).exportLiteralChildren(outfile, level, name_)
         if self.RelatedIndicatorConfidence is not None:
             showIndent(outfile, level)
-            outfile.write('RelatedIndicatorConfidence=model_.stix_common_0_2.ConfidenceType(\n')
+            outfile.write('RelatedIndicatorConfidence=model_.stix_common_binding.ConfidenceType(\n')
             self.RelatedIndicatorConfidence.exportLiteral(outfile, level, name_='RelatedIndicatorConfidence')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -1895,17 +1895,17 @@ class RelatedIndicatorType(IndicatorType):
         super(RelatedIndicatorType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'RelatedIndicatorConfidence':
-            obj_ = stix_common_0_2.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_RelatedIndicatorConfidence(obj_)
         super(RelatedIndicatorType, self).buildChildren(child_, node, nodeName_, True)
 # end class RelatedIndicatorType
 
-class IndicatedTTPType(stix_ttp_0_6.TTPType):
+class IndicatedTTPType(stix_ttp_binding.TTPType):
     """The IndicatedTTPType specifies a single TTP asserted to be indicated
     by this cyber threat Indicator."""
     subclass = None
-    superclass = stix_ttp_0_6.TTPType
+    superclass = stix_ttp_binding.TTPType
     def __init__(self, idref=None, id=None, version=None, Behavior_AttackPatterns=None, Behavior_Malware=None, Behavior_Exploits=None, Resource_Tools=None, Resource_Infrastructure=None, VictimTargeting=None, ExploitTargets=None, Intent=None, RelatedTTPs=None, KillChainPhases=None, InformationSource=None, KillChains=None, IndicatedTTPConfidence=None):
         super(IndicatedTTPType, self).__init__(idref, id, version, Behavior_AttackPatterns, Behavior_Malware, Behavior_Exploits, Resource_Tools, Resource_Infrastructure, VictimTargeting, ExploitTargets, Intent, RelatedTTPs, KillChainPhases, InformationSource, KillChains, )
         self.IndicatedTTPConfidence = IndicatedTTPConfidence
@@ -1962,7 +1962,7 @@ class IndicatedTTPType(stix_ttp_0_6.TTPType):
         super(IndicatedTTPType, self).exportLiteralChildren(outfile, level, name_)
         if self.IndicatedTTPConfidence is not None:
             showIndent(outfile, level)
-            outfile.write('IndicatedTTPConfidence=model_.stix_common_0_2.ConfidenceType(\n')
+            outfile.write('IndicatedTTPConfidence=model_.stix_common_binding.ConfidenceType(\n')
             self.IndicatedTTPConfidence.exportLiteral(outfile, level, name_='IndicatedTTPConfidence')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -1975,7 +1975,7 @@ class IndicatedTTPType(stix_ttp_0_6.TTPType):
         super(IndicatedTTPType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'IndicatedTTPConfidence':
-            obj_ = stix_common_0_2.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_IndicatedTTPConfidence(obj_)
         super(IndicatedTTPType, self).buildChildren(child_, node, nodeName_, True)
@@ -2063,7 +2063,7 @@ class ObservablesType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Observable':
-            obj_ = cybox_core_1_0.ObservableType.factory()
+            obj_ = cybox_core_binding.ObservableType.factory()
             obj_.build(child_)
             self.Observable = obj_
 # end class ObservablesType
@@ -2156,11 +2156,11 @@ class KillChainPhasesType(GeneratedsSuper):
 
 
 
-class kill_chain_phaseType(stix_common_0_2.KillChainPhaseType):
+class kill_chain_phaseType(stix_common_binding.KillChainPhaseType):
     """This field specifies the ID for the relevant defined kill chain.This
     field specifies the descriptive name of the relevant kill chain."""
     subclass = None
-    superclass = stix_common_0_2.KillChainPhaseType
+    superclass = stix_common_binding.KillChainPhaseType
     def __init__(self, phaseID=None, ordinality=None, name=None, killChainName=None, killChainID=None):
         super(kill_chain_phaseType, self).__init__(phaseID, ordinality, name, )
         self.killChainName = _cast(None, killChainName)
@@ -2438,11 +2438,11 @@ class LikelyImpactType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'ImpactDescription':
-            obj_ = cybox_common_types_1_0.StructuredTextType.factory()
+            obj_ = cybox_common_bindingStructuredTextType.factory()
             obj_.build(child_)
             self.set_ImpactDescription(obj_)
         elif nodeName_ == 'Confidence':
-            obj_ = stix_common_0_2.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_Confidence(obj_)
 # end class LikelyImpactType
@@ -2527,7 +2527,7 @@ class SuggestedCOAsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'SuggestedCOA':
-            obj_ = stix_coa_0_3_1.COAType.factory()
+            obj_ = stix_coa_binding.COAType.factory()
             obj_.build(child_)
             self.SuggestedCOA.append(obj_)
 # end class SuggestedCOAsType
@@ -2781,11 +2781,11 @@ class EfficacyType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Description':
-            obj_ = cybox_common_types_1_0.StructuredTextType.factory()
+            obj_ = cybox_common_bindingStructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Confidence':
-            obj_ = stix_common_0_2.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_Confidence(obj_)
 # end class EfficacyType

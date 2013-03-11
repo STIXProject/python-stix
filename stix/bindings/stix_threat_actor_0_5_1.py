@@ -9,20 +9,19 @@ import sys
 import getopt
 import re as re_
 
-import cybox_core_1_0
-import cybox_common_types_1_0
-import system_object_1_3
-import user_account_object_1_2
-import stix_common_0_2
-import stix_campaign_0_5_1
-import stix_ttp_0_6
-import stix_campaign_0_5_1
-import stix_ttp_0_6
-import stix_incident_0_3_1
-import stix_indicator_1_1
-import stix_exploit_target_0_3_1
-import ap_schema_2_5
-import data_marking_0_5
+import cybox.bindings.cybox_core_1_0 as cybox_core_binding
+import cybox.bindings.cybox_common_types_1_0 as cybox_common_binding
+import cybox.bindings.system_object_1_3 as system_object_binding
+import stix.bindings.stix_common_0_2 as stix_common_binding
+import stix.bindings.stix_campaign_0_5_1 as stix_campaign_binding
+import stix.bindings.stix_ttp_0_6 as stix_ttp_binding
+import stix.bindings.stix_campaign_0_5_1 as stix_campaign_binding
+import stix.bindings.stix_ttp_0_6 as stix_ttp_binding
+import stix.bindings.stix_incident_0_3_1 as stix_incident_binding
+import stix.bindings.stix_indicator_1_1 as stix_indicator_binding
+import stix.bindings.exploit_target_0_3_1 as stix_exploit_target_binding
+import stix.bindings.capec.ap_schema_2_5 as ap_schema_binding
+import stix.bindings.data_marking_0_5 as data_marking_binding
 
 etree_ = None
 Verbose_import_ = False
@@ -516,7 +515,7 @@ class ThreatActorType(GeneratedsSuper):
     def exportLiteralChildren(self, outfile, level, name_):
         if self.Identity is not None:
             showIndent(outfile, level)
-            outfile.write('Identity=model_.stix_common_0_2.IdentityType(\n')
+            outfile.write('Identity=model_.stix_common_binding.IdentityType(\n')
             self.Identity.exportLiteral(outfile, level, name_='Identity')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -525,8 +524,8 @@ class ThreatActorType(GeneratedsSuper):
         level += 1
         for Intent_ in self.Intent:
             showIndent(outfile, level)
-            outfile.write('model_.stix_common_0_2.IntentType(\n')
-            Intent_.exportLiteral(outfile, level, name_='stix_common_0_2.IntentType')
+            outfile.write('model_.stix_common_binding.IntentType(\n')
+            Intent_.exportLiteral(outfile, level, name_='stix_common_binding.IntentType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -552,19 +551,19 @@ class ThreatActorType(GeneratedsSuper):
             outfile.write('),\n')
         if self.Handling is not None:
             showIndent(outfile, level)
-            outfile.write('Handling=model_.data_marking_0_5.MarkingType(\n')
+            outfile.write('Handling=model_.data_marking_binding.MarkingType(\n')
             self.Handling.exportLiteral(outfile, level, name_='Handling')
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.Confidence is not None:
             showIndent(outfile, level)
-            outfile.write('Confidence=model_.stix_common_0_2.ConfidenceType(\n')
+            outfile.write('Confidence=model_.stix_common_binding.ConfidenceType(\n')
             self.Confidence.exportLiteral(outfile, level, name_='Confidence')
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.InformationSource is not None:
             showIndent(outfile, level)
-            outfile.write('InformationSource=model_.stix_common_0_2.InformationSourceType(\n')
+            outfile.write('InformationSource=model_.stix_common_binding.InformationSourceType(\n')
             self.InformationSource.exportLiteral(outfile, level, name_='InformationSource')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -588,11 +587,11 @@ class ThreatActorType(GeneratedsSuper):
             self.version = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Identity':
-            obj_ = stix_common_0_2.IdentityType.factory()
+            obj_ = stix_common_binding.IdentityType.factory()
             obj_.build(child_)
             self.set_Identity(obj_)
         elif nodeName_ == 'Intent':
-            obj_ = stix_common_0_2.IntentType.factory()
+            obj_ = stix_common_binding.IntentType.factory()
             obj_.build(child_)
             self.Intent.append(obj_)
         elif nodeName_ == 'ObservedTTPs':
@@ -608,15 +607,15 @@ class ThreatActorType(GeneratedsSuper):
             obj_.build(child_)
             self.set_AssociatedActors(obj_)
         elif nodeName_ == 'Handling':
-            obj_ = data_marking_0_5.MarkingType.factory()
+            obj_ = data_marking_binding.MarkingType.factory()
             obj_.build(child_)
             self.set_Handling(obj_)
         elif nodeName_ == 'Confidence':
-            obj_ = stix_common_0_2.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_Confidence(obj_)
         elif nodeName_ == 'InformationSource':
-            obj_ = stix_common_0_2.InformationSourceType.factory()
+            obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.set_InformationSource(obj_)
 # end class ThreatActorType
@@ -808,7 +807,7 @@ class TTPType(GeneratedsSuper):
             outfile.write('),\n')
         if self.VictimTargeting is not None:
             showIndent(outfile, level)
-            outfile.write('VictimTargeting=model_.stix_common_0_2.IdentityType(\n')
+            outfile.write('VictimTargeting=model_.stix_common_binding.IdentityType(\n')
             self.VictimTargeting.exportLiteral(outfile, level, name_='VictimTargeting')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -820,7 +819,7 @@ class TTPType(GeneratedsSuper):
             outfile.write('),\n')
         if self.Intent is not None:
             showIndent(outfile, level)
-            outfile.write('Intent=model_.stix_common_0_2.IntentType(\n')
+            outfile.write('Intent=model_.stix_common_binding.IntentType(\n')
             self.Intent.exportLiteral(outfile, level, name_='Intent')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -838,7 +837,7 @@ class TTPType(GeneratedsSuper):
             outfile.write('),\n')
         if self.InformationSource is not None:
             showIndent(outfile, level)
-            outfile.write('InformationSource=model_.stix_common_0_2.InformationSourceType(\n')
+            outfile.write('InformationSource=model_.stix_common_binding.InformationSourceType(\n')
             self.InformationSource.exportLiteral(outfile, level, name_='InformationSource')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -868,51 +867,51 @@ class TTPType(GeneratedsSuper):
             self.version = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Behavior-AttackPatterns':
-            obj_ = stix_ttp_0_6.Behavior_AttackPatternsType.factory()
+            obj_ = stix_ttp_binding.Behavior_AttackPatternsType.factory()
             obj_.build(child_)
             self.set_Behavior_AttackPatterns(obj_)
         elif nodeName_ == 'Behavior-Malware':
-            obj_ = stix_ttp_0_6.Behavior_MalwareType.factory()
+            obj_ = stix_ttp_binding.Behavior_MalwareType.factory()
             obj_.build(child_)
             self.set_Behavior_Malware(obj_)
         elif nodeName_ == 'Behavior-Exploits':
-            obj_ = stix_ttp_0_6.Behavior_ExploitsType.factory()
+            obj_ = stix_ttp_binding.Behavior_ExploitsType.factory()
             obj_.build(child_)
             self.set_Behavior_Exploits(obj_)
         elif nodeName_ == 'Resource-Tools':
-            obj_ = stix_ttp_0_6.Resource_ToolsType.factory()
+            obj_ = stix_ttp_binding.Resource_ToolsType.factory()
             obj_.build(child_)
             self.set_Resource_Tools(obj_)
         elif nodeName_ == 'Resource-Infrastructure':
-            obj_ = stix_ttp_0_6.Resource_InfrastructureType.factory()
+            obj_ = stix_ttp_binding.Resource_InfrastructureType.factory()
             obj_.build(child_)
             self.set_Resource_Infrastructure(obj_)
         elif nodeName_ == 'VictimTargeting':
-            obj_ = stix_common_0_2.IdentityType.factory()
+            obj_ = stix_common_binding.IdentityType.factory()
             obj_.build(child_)
             self.set_VictimTargeting(obj_)
         elif nodeName_ == 'ExploitTargets':
-            obj_ = stix_ttp_0_6.ExploitTargetsType.factory()
+            obj_ = stix_ttp_binding.ExploitTargetsType.factory()
             obj_.build(child_)
             self.set_ExploitTargets(obj_)
         elif nodeName_ == 'Intent':
-            obj_ = stix_common_0_2.IntentType.factory()
+            obj_ = stix_common_binding.IntentType.factory()
             obj_.build(child_)
             self.set_Intent(obj_)
         elif nodeName_ == 'RelatedTTPs':
-            obj_ = stix_ttp_0_6.RelatedTTPsType.factory()
+            obj_ = stix_ttp_binding.RelatedTTPsType.factory()
             obj_.build(child_)
             self.set_RelatedTTPs(obj_)
         elif nodeName_ == 'KillChainPhases':
-            obj_ = stix_ttp_0_6.KillChainPhasesType.factory()
+            obj_ = stix_ttp_binding.KillChainPhasesType.factory()
             obj_.build(child_)
             self.set_KillChainPhases(obj_)
         elif nodeName_ == 'InformationSource':
-            obj_ = stix_common_0_2.InformationSourceType.factory()
+            obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.set_InformationSource(obj_)
         elif nodeName_ == 'KillChains':
-            obj_ = stix_ttp_0_6.KillChainsType.factory()
+            obj_ = stix_ttp_binding.KillChainsType.factory()
             obj_.build(child_)
             self.set_KillChains(obj_)
 # end class TTPType
@@ -1078,7 +1077,7 @@ class CampaignType(GeneratedsSuper):
             outfile.write('),\n')
         if self.Intent is not None:
             showIndent(outfile, level)
-            outfile.write('Intent=model_.stix_common_0_2.IntentType(\n')
+            outfile.write('Intent=model_.stix_common_binding.IntentType(\n')
             self.Intent.exportLiteral(outfile, level, name_='Intent')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -1120,7 +1119,7 @@ class CampaignType(GeneratedsSuper):
             outfile.write('),\n')
         if self.Confidence is not None:
             showIndent(outfile, level)
-            outfile.write('Confidence=model_.stix_common_0_2.ConfidenceType(\n')
+            outfile.write('Confidence=model_.stix_common_binding.ConfidenceType(\n')
             self.Confidence.exportLiteral(outfile, level, name_='Confidence')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -1129,8 +1128,8 @@ class CampaignType(GeneratedsSuper):
         level += 1
         for Activity_ in self.Activity:
             showIndent(outfile, level)
-            outfile.write('model_.stix_common_0_2.ActivityType(\n')
-            Activity_.exportLiteral(outfile, level, name_='stix_common_0_2.ActivityType')
+            outfile.write('model_.stix_common_binding.ActivityType(\n')
+            Activity_.exportLiteral(outfile, level, name_='stix_common_binding.ActivityType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -1138,7 +1137,7 @@ class CampaignType(GeneratedsSuper):
         outfile.write('],\n')
         if self.InformationSource is not None:
             showIndent(outfile, level)
-            outfile.write('InformationSource=model_.stix_common_0_2.InformationSourceType(\n')
+            outfile.write('InformationSource=model_.stix_common_binding.InformationSourceType(\n')
             self.InformationSource.exportLiteral(outfile, level, name_='InformationSource')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -1162,35 +1161,35 @@ class CampaignType(GeneratedsSuper):
             self.version = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Names':
-            obj_ = stix_campaign_0_5_1.NamesType.factory()
+            obj_ = stix_campaign_binding.NamesType.factory()
             obj_.build(child_)
             self.set_Names(obj_)
         elif nodeName_ == 'Intent':
-            obj_ = stix_common_0_2.IntentType.factory()
+            obj_ = stix_common_binding.IntentType.factory()
             obj_.build(child_)
             self.set_Intent(obj_)
         elif nodeName_ == 'RelatedTTPs':
-            obj_ = stix_campaign_0_5_1.RelatedTTPsType.factory()
+            obj_ = stix_campaign_binding.RelatedTTPsType.factory()
             obj_.build(child_)
             self.set_RelatedTTPs(obj_)
         elif nodeName_ == 'RelatedIncidents':
-            obj_ = stix_campaign_0_5_1.RelatedIncidentsType.factory()
+            obj_ = stix_campaign_binding.RelatedIncidentsType.factory()
             obj_.build(child_)
             self.set_RelatedIncidents(obj_)
         elif nodeName_ == 'RelatedIndicators':
-            obj_ = stix_campaign_0_5_1.RelatedIndicatorsType.factory()
+            obj_ = stix_campaign_binding.RelatedIndicatorsType.factory()
             obj_.build(child_)
             self.set_RelatedIndicators(obj_)
         elif nodeName_ == 'Attribution':
-            obj_ = stix_campaign_0_5_1.AttributionType.factory()
+            obj_ = stix_campaign_binding.AttributionType.factory()
             obj_.build(child_)
             self.Attribution.append(obj_)
         elif nodeName_ == 'AssociatedCampaigns':
-            obj_ = stix_campaign_0_5_1.AssociatedCampaignsType.factory()
+            obj_ = stix_campaign_binding.AssociatedCampaignsType.factory()
             obj_.build(child_)
             self.set_AssociatedCampaigns(obj_)
         elif nodeName_ == 'Confidence':
-            obj_ = stix_common_0_2.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_Confidence(obj_)
         elif nodeName_ == 'Activity':
@@ -1211,7 +1210,7 @@ class CampaignType(GeneratedsSuper):
                     'Class not implemented for <Activity> element')
             self.Activity.append(obj_)
         elif nodeName_ == 'InformationSource':
-            obj_ = stix_common_0_2.InformationSourceType.factory()
+            obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.set_InformationSource(obj_)
 # end class CampaignType
@@ -1291,7 +1290,7 @@ class AssociatedActorType(ThreatActorType):
         super(AssociatedActorType, self).exportLiteralChildren(outfile, level, name_)
         if self.AssociatedActorConfidence is not None:
             showIndent(outfile, level)
-            outfile.write('AssociatedActorConfidence=model_.stix_common_0_2.ConfidenceType(\n')
+            outfile.write('AssociatedActorConfidence=model_.stix_common_binding.ConfidenceType(\n')
             self.AssociatedActorConfidence.exportLiteral(outfile, level, name_='AssociatedActorConfidence')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -1308,7 +1307,7 @@ class AssociatedActorType(ThreatActorType):
         super(AssociatedActorType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'AssociatedActorConfidence':
-            obj_ = stix_common_0_2.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_AssociatedActorConfidence(obj_)
         super(AssociatedActorType, self).buildChildren(child_, node, nodeName_, True)
@@ -1378,7 +1377,7 @@ class ObservedTTPType(TTPType):
         super(ObservedTTPType, self).exportLiteralChildren(outfile, level, name_)
         if self.ObservedTTPConfidence is not None:
             showIndent(outfile, level)
-            outfile.write('ObservedTTPConfidence=model_.stix_common_0_2.ConfidenceType(\n')
+            outfile.write('ObservedTTPConfidence=model_.stix_common_binding.ConfidenceType(\n')
             self.ObservedTTPConfidence.exportLiteral(outfile, level, name_='ObservedTTPConfidence')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -1391,7 +1390,7 @@ class ObservedTTPType(TTPType):
         super(ObservedTTPType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'ObservedTTPConfidence':
-            obj_ = stix_common_0_2.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_ObservedTTPConfidence(obj_)
         super(ObservedTTPType, self).buildChildren(child_, node, nodeName_, True)
@@ -1456,7 +1455,7 @@ class HistoricalCampaignType(CampaignType):
         super(HistoricalCampaignType, self).exportLiteralChildren(outfile, level, name_)
         if self.HistoricalCampaignConfidence is not None:
             showIndent(outfile, level)
-            outfile.write('HistoricalCampaignConfidence=model_.stix_common_0_2.ConfidenceType(\n')
+            outfile.write('HistoricalCampaignConfidence=model_.stix_common_binding.ConfidenceType(\n')
             self.HistoricalCampaignConfidence.exportLiteral(outfile, level, name_='HistoricalCampaignConfidence')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -1469,7 +1468,7 @@ class HistoricalCampaignType(CampaignType):
         super(HistoricalCampaignType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'HistoricalCampaignConfidence':
-            obj_ = stix_common_0_2.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_HistoricalCampaignConfidence(obj_)
         super(HistoricalCampaignType, self).buildChildren(child_, node, nodeName_, True)
@@ -1879,7 +1878,7 @@ class AttributedThreatActorType(ThreatActorType):
         super(AttributedThreatActorType, self).exportLiteralChildren(outfile, level, name_)
         if self.AttributedThreatActorConfidence is not None:
             showIndent(outfile, level)
-            outfile.write('AttributedThreatActorConfidence=model_.stix_common_0_2.ConfidenceType(\n')
+            outfile.write('AttributedThreatActorConfidence=model_.stix_common_binding.ConfidenceType(\n')
             self.AttributedThreatActorConfidence.exportLiteral(outfile, level, name_='AttributedThreatActorConfidence')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -1892,7 +1891,7 @@ class AttributedThreatActorType(ThreatActorType):
         super(AttributedThreatActorType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'AttributedThreatActorConfidence':
-            obj_ = stix_common_0_2.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_AttributedThreatActorConfidence(obj_)
         super(AttributedThreatActorType, self).buildChildren(child_, node, nodeName_, True)

@@ -9,15 +9,14 @@ import sys
 import getopt
 import re as re_
 
-import cybox_core_1_0
-import cybox_common_types_1_0
-import system_object_1_3
-import user_account_object_1_2
-import ap_schema_2_5
-import maec_package_1_0
-import stix_exploit_target_0_3_1
-import stix_common_0_2
-import data_marking_0_5
+import cybox.bindings.cybox_core_1_0 as cybox_core_binding
+import cybox.bindings.cybox_common_types_1_0 as cybox_common_binding
+import cybox.bindings.system_object_1_3 as system_object_binding
+import stix.bindings.capec.ap_schema_2_5 as ap_schema_binding
+import maec.bindings.maec_package_1_0 as maec_package_binding
+import stix.bindings.exploit_target_0_3_1 as stix_exploit_target_binding
+import stix.bindings.stix_common_0_2 as stix_common_binding
+import stix.bindings.data_marking_0_5 as data_marking_binding
 
 etree_ = None
 Verbose_import_ = False
@@ -560,7 +559,7 @@ class TTPType(GeneratedsSuper):
             outfile.write('),\n')
         if self.VictimTargeting is not None:
             showIndent(outfile, level)
-            outfile.write('VictimTargeting=model_.stix_common_0_2.IdentityType(\n')
+            outfile.write('VictimTargeting=model_.stix_common_binding.IdentityType(\n')
             self.VictimTargeting.exportLiteral(outfile, level, name_='VictimTargeting')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -572,7 +571,7 @@ class TTPType(GeneratedsSuper):
             outfile.write('),\n')
         if self.Intent is not None:
             showIndent(outfile, level)
-            outfile.write('Intent=model_.stix_common_0_2.IntentType(\n')
+            outfile.write('Intent=model_.stix_common_binding.IntentType(\n')
             self.Intent.exportLiteral(outfile, level, name_='Intent')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -590,7 +589,7 @@ class TTPType(GeneratedsSuper):
             outfile.write('),\n')
         if self.InformationSource is not None:
             showIndent(outfile, level)
-            outfile.write('InformationSource=model_.stix_common_0_2.InformationSourceType(\n')
+            outfile.write('InformationSource=model_.stix_common_binding.InformationSourceType(\n')
             self.InformationSource.exportLiteral(outfile, level, name_='InformationSource')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -640,7 +639,7 @@ class TTPType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Resource_Infrastructure(obj_)
         elif nodeName_ == 'VictimTargeting':
-            obj_ = stix_common_0_2.IdentityType.factory()
+            obj_ = stix_common_binding.IdentityType.factory()
             obj_.build(child_)
             self.set_VictimTargeting(obj_)
         elif nodeName_ == 'ExploitTargets':
@@ -648,7 +647,7 @@ class TTPType(GeneratedsSuper):
             obj_.build(child_)
             self.set_ExploitTargets(obj_)
         elif nodeName_ == 'Intent':
-            obj_ = stix_common_0_2.IntentType.factory()
+            obj_ = stix_common_binding.IntentType.factory()
             obj_.build(child_)
             self.set_Intent(obj_)
         elif nodeName_ == 'RelatedTTPs':
@@ -660,7 +659,7 @@ class TTPType(GeneratedsSuper):
             obj_.build(child_)
             self.set_KillChainPhases(obj_)
         elif nodeName_ == 'InformationSource':
-            obj_ = stix_common_0_2.InformationSourceType.factory()
+            obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.set_InformationSource(obj_)
         elif nodeName_ == 'KillChains':
@@ -730,7 +729,7 @@ class RelatedTTPType(TTPType):
         super(RelatedTTPType, self).exportLiteralChildren(outfile, level, name_)
         if self.RelatedTTPConfidence is not None:
             showIndent(outfile, level)
-            outfile.write('RelatedTTPConfidence=model_.stix_common_0_2.ConfidenceType(\n')
+            outfile.write('RelatedTTPConfidence=model_.stix_common_binding.ConfidenceType(\n')
             self.RelatedTTPConfidence.exportLiteral(outfile, level, name_='RelatedTTPConfidence')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -743,7 +742,7 @@ class RelatedTTPType(TTPType):
         super(RelatedTTPType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'RelatedTTPConfidence':
-            obj_ = stix_common_0_2.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_RelatedTTPConfidence(obj_)
         super(RelatedTTPType, self).buildChildren(child_, node, nodeName_, True)
@@ -915,11 +914,11 @@ class AttackPatternType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'StructuredDescription':
-            obj_ = ap_schema_2_5.Attack_PatternType.factory()
+            obj_ = ap_schema_binding.Attack_PatternType.factory()
             obj_.build(child_)
             self.set_StructuredDescription(obj_)
         elif nodeName_ == 'ProseDescription':
-            obj_ = cybox_common_types_1_0.StructuredTextType.factory()
+            obj_ = cybox_common_bindingStructuredTextType.factory()
             obj_.build(child_)
             self.set_ProseDescription(obj_)
 # end class AttackPatternType
@@ -1143,11 +1142,11 @@ class MalwareInstanceType(GeneratedsSuper):
             obj_.build(child_)
             self.MalwareName.append(obj_)
         elif nodeName_ == 'StructuredDescription':
-            obj_ = maec_package_1_0.PackageType.factory()
+            obj_ = maec_package_binding.PackageType.factory()
             obj_.build(child_)
             self.set_StructuredDescription(obj_)
         elif nodeName_ == 'ProseDescription':
-            obj_ = cybox_common_types_1_0.StructuredTextType.factory()
+            obj_ = cybox_common_bindingStructuredTextType.factory()
             obj_.build(child_)
             self.set_ProseDescription(obj_)
 # end class MalwareInstanceType
@@ -1387,7 +1386,7 @@ class Behavior_ExploitsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Exploit':
-            obj_ = cybox_common_types_1_0.StructuredTextType.factory()
+            obj_ = cybox_common_bindingStructuredTextType.factory()
             obj_.build(child_)
             self.Exploit.append(obj_)
 # end class Behavior_ExploitsType
@@ -1472,7 +1471,7 @@ class Resource_ToolsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Tool':
-            obj_ = cybox_common_types_1_0.ToolInformationType.factory()
+            obj_ = cybox_common_bindingToolInformationType.factory()
             obj_.build(child_)
             self.Tool.append(obj_)
 # end class Resource_ToolsType
@@ -1558,11 +1557,11 @@ class Resource_InfrastructureType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Description':
-            obj_ = cybox_common_types_1_0.StructuredTextType.factory()
+            obj_ = cybox_common_bindingStructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'ObservableCharacterization':
-            class_obj_ = self.get_class_obj_(child_, cybox_core_1_0.ObservablesType)
+            class_obj_ = self.get_class_obj_(child_, cybox_core_binding.ObservablesType)
             obj_ = class_obj_.factory()
             obj_.build(child_)
             self.set_ObservableCharacterization(obj_)
@@ -1648,7 +1647,7 @@ class ExploitTargetsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'ExploitTarget':
-            obj_ = stix_exploit_target_0_3_1.ExploitTargetType.factory()
+            obj_ = stix_exploit_target_binding.ExploitTargetType.factory()
             obj_.build(child_)
             self.ExploitTarget.append(obj_)
 # end class ExploitTargetsType
@@ -1824,11 +1823,11 @@ class KillChainPhasesType(GeneratedsSuper):
 # end class KillChainPhasesType
 
 
-class KillChainPhaseType(stix_common_0_2.KillChainPhaseType):
+class KillChainPhaseType(stix_common_binding.KillChainPhaseType):
     """This field specifies the ID for the relevant defined kill chain.This
     field specifies the descriptive name of the relevant kill chain."""
     subclass = None
-    superclass = stix_common_0_2.KillChainPhaseType
+    superclass = stix_common_binding.KillChainPhaseType
     def __init__(self, phaseID=None, ordinality=None, name=None, killChainName=None, killChainID=None):
         super(KillChainPhaseType, self).__init__(phaseID, ordinality, name, )
         self.killChainName = _cast(None, killChainName)
@@ -1984,7 +1983,7 @@ class KillChainsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'KillChain':
-            obj_ = stix_common_0_2.KillChainType.factory()
+            obj_ = stix_common_binding.KillChainType.factory()
             obj_.build(child_)
             self.set_KillChain(obj_)
 # end class KillChainsType

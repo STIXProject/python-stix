@@ -8,7 +8,7 @@
 import sys
 import getopt
 import re as re_
-import cybox_core_1_0
+import cybox.bindings.cybox_core_1_0 as cybox_core_binding
 
 etree_ = None
 Verbose_import_ = False
@@ -3780,7 +3780,7 @@ class Attack_Step_Technique(GeneratedsSuper):
             obj_.build(child_)
             self.set_Relevant_Attack_Surface_Elements(obj_)
         elif nodeName_ == 'Observables':
-            obj_ = cybox_core_1_0.ObservablesType.factory()
+            obj_ = cybox_core_binding.ObservablesType.factory()
             obj_.build(child_)
             self.set_Observables(obj_)
         elif nodeName_ == 'Environments':
@@ -9129,7 +9129,7 @@ class Outcome(GeneratedsSuper):
             obj_.build(child_)
             self.set_Relevant_Attack_Surface_Elements(obj_)
         elif nodeName_ == 'Observables':
-            obj_ = cybox_core_1_0.ObservablesType.factory()
+            obj_ = cybox_core_binding.ObservablesType.factory()
             obj_.build(child_)
             self.set_Observables(obj_)
 # end class Outcome
@@ -9448,11 +9448,11 @@ class Observable_Evidence(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'IfPresent_Observables':
-            obj_ = cybox_core_1_0.ObservablesType.factory()
+            obj_ = cybox_core_binding.ObservablesType.factory()
             obj_.build(child_)
             self.set_IfPresent_Observables(obj_)
         elif nodeName_ == 'IfNotPresent_Observables':
-            obj_ = cybox_core_1_0.ObservablesType.factory()
+            obj_ = cybox_core_binding.ObservablesType.factory()
             obj_.build(child_)
             self.set_IfNotPresent_Observables(obj_)
 # end class Observable_Evidence
@@ -13733,7 +13733,7 @@ class Probing_Technique(GeneratedsSuper):
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Observables':
-            obj_ = cybox_core_1_0.ObservablesType.factory()
+            obj_ = cybox_core_binding.ObservablesType.factory()
             obj_.build(child_)
             self.set_Observables(obj_)
 # end class Probing_Technique
@@ -13912,7 +13912,7 @@ class Indicator_Warning_of_Attack(GeneratedsSuper):
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Observables':
-            obj_ = cybox_core_1_0.ObservablesType.factory()
+            obj_ = cybox_core_binding.ObservablesType.factory()
             obj_.build(child_)
             self.set_Observables(obj_)
 # end class Indicator_Warning_of_Attack
@@ -14097,7 +14097,7 @@ class Payload_Activation_Impact(GeneratedsSuper):
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Observables':
-            obj_ = cybox_core_1_0.ObservablesType.factory()
+            obj_ = cybox_core_binding.ObservablesType.factory()
             obj_.build(child_)
             self.set_Observables(obj_)
 # end class Payload_Activation_Impact
@@ -16392,7 +16392,7 @@ def parseLiteral(inFileName):
     # Enable Python to collect the space used by the DOM.
     doc = None
     sys.stdout.write('#from ap_schema_2_5 import *\n\n')
-    sys.stdout.write('import ap_schema_2_5 as model_\n\n')
+    sys.stdout.write('import stix.bindings.capec.ap_schema_2_5 as ap_schema_binding as model_\n\n')
     sys.stdout.write('rootObj = model_.rootTag(\n')
     rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
     sys.stdout.write(')\n')

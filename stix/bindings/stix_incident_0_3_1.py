@@ -9,18 +9,17 @@ import sys
 import getopt
 import re as re_
 
-import cybox_core_1_0
-import cybox_common_types_1_0
-import system_object_1_3
-import user_account_object_1_2
-import iodef_1_0
-import xal
-import stix_indicator_1_1
-import stix_common_0_2
-import stix_ttp_0_6
-import stix_threat_actor_0_5_1
-import stix_coa_0_3_1
-import data_marking_0_5
+import cybox.bindings.cybox_core_1_0 as cybox_core_binding
+import cybox.bindings.cybox_common_types_1_0 as cybox_common_binding
+import cybox.bindings.system_object_1_3 as system_object_binding
+import stix.bindings.iodef.iodef_1_0 as iodef_binding
+import stix.bindings.oasis.xal as xal_binding
+import stix.bindings.stix_indicator_1_1 as stix_indicator_binding
+import stix.bindings.stix_common_0_2 as stix_common_binding
+import stix.bindings.stix_ttp_0_6 as stix_ttp_binding
+import stix.bindings.stix_threat_actor_0_5_1 as stix_threat_actor_binding
+import stix.bindings.stix_coa_0_3_1 as stix_coa_binding
+import stix.bindings.data_marking_0_5 as data_marking_binding
 
 etree_ = None
 Verbose_import_ = False
@@ -629,13 +628,13 @@ class IncidentType(GeneratedsSuper):
             outfile.write('),\n')
         if self.Description is not None:
             showIndent(outfile, level)
-            outfile.write('Description=model_.cybox_common_types_1_0.StructuredTextType(\n')
+            outfile.write('Description=model_.cybox_common_bindingStructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.Reporter is not None:
             showIndent(outfile, level)
-            outfile.write('Reporter=model_.stix_common_0_2.InformationSourceType(\n')
+            outfile.write('Reporter=model_.stix_common_binding.InformationSourceType(\n')
             self.Reporter.exportLiteral(outfile, level, name_='Reporter')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -644,8 +643,8 @@ class IncidentType(GeneratedsSuper):
         level += 1
         for Responder_ in self.Responder:
             showIndent(outfile, level)
-            outfile.write('model_.stix_common_0_2.InformationSourceType(\n')
-            Responder_.exportLiteral(outfile, level, name_='stix_common_0_2.InformationSourceType')
+            outfile.write('model_.stix_common_binding.InformationSourceType(\n')
+            Responder_.exportLiteral(outfile, level, name_='stix_common_binding.InformationSourceType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -656,8 +655,8 @@ class IncidentType(GeneratedsSuper):
         level += 1
         for Coordinator_ in self.Coordinator:
             showIndent(outfile, level)
-            outfile.write('model_.stix_common_0_2.InformationSourceType(\n')
-            Coordinator_.exportLiteral(outfile, level, name_='stix_common_0_2.InformationSourceType')
+            outfile.write('model_.stix_common_binding.InformationSourceType(\n')
+            Coordinator_.exportLiteral(outfile, level, name_='stix_common_binding.InformationSourceType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -668,8 +667,8 @@ class IncidentType(GeneratedsSuper):
         level += 1
         for Victim_ in self.Victim:
             showIndent(outfile, level)
-            outfile.write('model_.stix_common_0_2.IdentityType(\n')
-            Victim_.exportLiteral(outfile, level, name_='stix_common_0_2.IdentityType')
+            outfile.write('model_.stix_common_binding.IdentityType(\n')
+            Victim_.exportLiteral(outfile, level, name_='stix_common_binding.IdentityType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -707,7 +706,7 @@ class IncidentType(GeneratedsSuper):
             outfile.write('),\n')
         if self.Intent is not None:
             showIndent(outfile, level)
-            outfile.write('Intent=model_.stix_common_0_2.IntentType(\n')
+            outfile.write('Intent=model_.stix_common_binding.IntentType(\n')
             self.Intent.exportLiteral(outfile, level, name_='Intent')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -743,7 +742,7 @@ class IncidentType(GeneratedsSuper):
             outfile.write('),\n')
         if self.Confidence is not None:
             showIndent(outfile, level)
-            outfile.write('Confidence=model_.stix_common_0_2.ConfidenceType(\n')
+            outfile.write('Confidence=model_.stix_common_binding.ConfidenceType(\n')
             self.Confidence.exportLiteral(outfile, level, name_='Confidence')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -752,8 +751,8 @@ class IncidentType(GeneratedsSuper):
         level += 1
         for Contact_ in self.Contact:
             showIndent(outfile, level)
-            outfile.write('model_.stix_common_0_2.InformationSourceType(\n')
-            Contact_.exportLiteral(outfile, level, name_='stix_common_0_2.InformationSourceType')
+            outfile.write('model_.stix_common_binding.InformationSourceType(\n')
+            Contact_.exportLiteral(outfile, level, name_='stix_common_binding.InformationSourceType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -797,23 +796,23 @@ class IncidentType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Time(obj_)
         elif nodeName_ == 'Description':
-            obj_ = cybox_common_types_1_0.StructuredTextType.factory()
+            obj_ = cybox_common_bindingStructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Reporter':
-            obj_ = stix_common_0_2.InformationSourceType.factory()
+            obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.set_Reporter(obj_)
         elif nodeName_ == 'Responder':
-            obj_ = stix_common_0_2.InformationSourceType.factory()
+            obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.Responder.append(obj_)
         elif nodeName_ == 'Coordinator':
-            obj_ = stix_common_0_2.InformationSourceType.factory()
+            obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.Coordinator.append(obj_)
         elif nodeName_ == 'Victim':
-            obj_ = stix_common_0_2.IdentityType.factory()
+            obj_ = stix_common_binding.IdentityType.factory()
             obj_.build(child_)
             self.Victim.append(obj_)
         elif nodeName_ == 'AffectedAssets':
@@ -837,7 +836,7 @@ class IncidentType(GeneratedsSuper):
             obj_.build(child_)
             self.set_RelatedThreatActors(obj_)
         elif nodeName_ == 'Intent':
-            obj_ = stix_common_0_2.IntentType.factory()
+            obj_ = stix_common_binding.IntentType.factory()
             obj_.build(child_)
             self.set_Intent(obj_)
         elif nodeName_ == 'DiscoveryMethod':
@@ -857,11 +856,11 @@ class IncidentType(GeneratedsSuper):
             obj_.build(child_)
             self.set_COATaken(obj_)
         elif nodeName_ == 'Confidence':
-            obj_ = stix_common_0_2.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_Confidence(obj_)
         elif nodeName_ == 'Contact':
-            obj_ = stix_common_0_2.InformationSourceType.factory()
+            obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.Contact.append(obj_)
         elif nodeName_ == 'History':
@@ -1041,7 +1040,7 @@ class PropertyAffectedType(GeneratedsSuper):
     def exportLiteralChildren(self, outfile, level, name_):
         if self.DescriptionOfEffect is not None:
             showIndent(outfile, level)
-            outfile.write('DescriptionOfEffect=model_.cybox_common_types_1_0.StructuredTextType(\n')
+            outfile.write('DescriptionOfEffect=model_.cybox_common_bindingStructuredTextType(\n')
             self.DescriptionOfEffect.exportLiteral(outfile, level, name_='DescriptionOfEffect')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -1073,7 +1072,7 @@ class PropertyAffectedType(GeneratedsSuper):
             self.securityPropertyRef = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'DescriptionOfEffect':
-            obj_ = cybox_common_types_1_0.StructuredTextType.factory()
+            obj_ = cybox_common_bindingStructuredTextType.factory()
             obj_.build(child_)
             self.set_DescriptionOfEffect(obj_)
         elif nodeName_ == 'TypeOfAvailabilityLoss':
@@ -1533,13 +1532,13 @@ class AffectedAssetType(GeneratedsSuper):
             outfile.write('),\n')
         if self.AssetDescription is not None:
             showIndent(outfile, level)
-            outfile.write('AssetDescription=model_.cybox_common_types_1_0.StructuredTextType(\n')
+            outfile.write('AssetDescription=model_.cybox_common_bindingStructuredTextType(\n')
             self.AssetDescription.exportLiteral(outfile, level, name_='AssetDescription')
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.BusinessFunctionOrRole is not None:
             showIndent(outfile, level)
-            outfile.write('BusinessFunctionOrRole=model_.cybox_common_types_1_0.StructuredTextType(\n')
+            outfile.write('BusinessFunctionOrRole=model_.cybox_common_bindingStructuredTextType(\n')
             self.BusinessFunctionOrRole.exportLiteral(outfile, level, name_='BusinessFunctionOrRole')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -1563,7 +1562,7 @@ class AffectedAssetType(GeneratedsSuper):
             outfile.write('),\n')
         if self.AssetLocation is not None:
             showIndent(outfile, level)
-            outfile.write('AssetLocation=model_.xal.AddressType(\n')
+            outfile.write('AssetLocation=model_.xal_binding.AddressType(\n')
             self.AssetLocation.exportLiteral(outfile, level, name_='AssetLocation')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -1575,7 +1574,7 @@ class AffectedAssetType(GeneratedsSuper):
             outfile.write('),\n')
         if self.AssetStructuredDescription is not None:
             showIndent(outfile, level)
-            outfile.write('AssetStructuredDescription=model_.cybox_core_1_0.ObservablesType(\n')
+            outfile.write('AssetStructuredDescription=model_.cybox_core_binding.ObservablesType(\n')
             self.AssetStructuredDescription.exportLiteral(outfile, level, name_='AssetStructuredDescription')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -1592,11 +1591,11 @@ class AffectedAssetType(GeneratedsSuper):
             obj_.build(child_)
             self.set_AssetType(obj_)
         elif nodeName_ == 'AssetDescription':
-            obj_ = cybox_common_types_1_0.StructuredTextType.factory()
+            obj_ = cybox_common_bindingStructuredTextType.factory()
             obj_.build(child_)
             self.set_AssetDescription(obj_)
         elif nodeName_ == 'BusinessFunctionOrRole':
-            obj_ = cybox_common_types_1_0.StructuredTextType.factory()
+            obj_ = cybox_common_bindingStructuredTextType.factory()
             obj_.build(child_)
             self.set_BusinessFunctionOrRole(obj_)
         elif nodeName_ == 'OwnershipClass':
@@ -1612,7 +1611,7 @@ class AffectedAssetType(GeneratedsSuper):
             obj_.build(child_)
             self.set_LocationClass(obj_)
         elif nodeName_ == 'AssetLocation':
-            obj_ = xal.AddressType.factory()
+            obj_ = xal_binding.AddressType.factory()
             obj_.build(child_)
             self.set_AssetLocation(obj_)
         elif nodeName_ == 'NatureOfSecurityEffect':
@@ -1620,7 +1619,7 @@ class AffectedAssetType(GeneratedsSuper):
             obj_.build(child_)
             self.set_NatureOfSecurityEffect(obj_)
         elif nodeName_ == 'AssetStructuredDescription':
-            obj_ = cybox_core_1_0.ObservablesType.factory()
+            obj_ = cybox_core_binding.ObservablesType.factory()
             obj_.build(child_)
             self.set_AssetStructuredDescription(obj_)
 # end class AffectedAssetType
@@ -1715,7 +1714,7 @@ class RelatedIncidentType(GeneratedsSuper):
             outfile.write('),\n')
         if self.RelatedIncidentConfidence is not None:
             showIndent(outfile, level)
-            outfile.write('RelatedIncidentConfidence=model_.stix_common_0_2.ConfidenceType(\n')
+            outfile.write('RelatedIncidentConfidence=model_.stix_common_binding.ConfidenceType(\n')
             self.RelatedIncidentConfidence.exportLiteral(outfile, level, name_='RelatedIncidentConfidence')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -1739,7 +1738,7 @@ class RelatedIncidentType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Incident(obj_)
         elif nodeName_ == 'RelatedIncidentConfidence':
-            obj_ = stix_common_0_2.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_RelatedIncidentConfidence(obj_)
 # end class RelatedIncidentType
@@ -2062,7 +2061,7 @@ class COATakenType(GeneratedsSuper):
             outfile.write('),\n')
         if self.CourseOfAction is not None:
             showIndent(outfile, level)
-            outfile.write('CourseOfAction=model_.stix_coa_0_3_1.COAType(\n')
+            outfile.write('CourseOfAction=model_.stix_coa_binding.COAType(\n')
             self.CourseOfAction.exportLiteral(outfile, level, name_='CourseOfAction')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -2083,7 +2082,7 @@ class COATakenType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Contributors(obj_)
         elif nodeName_ == 'CourseOfAction':
-            obj_ = stix_coa_0_3_1.COAType.factory()
+            obj_ = stix_coa_binding.COAType.factory()
             obj_.build(child_)
             self.set_CourseOfAction(obj_)
 # end class COATakenType
@@ -2180,7 +2179,7 @@ class JournalEntryType(GeneratedsSuper):
         pass
 # end class JournalEntryType
 
-class RelatedIndicatorType(stix_indicator_1_1.IndicatorType):
+class RelatedIndicatorType(stix_indicator_binding.IndicatorType):
     """Specifies a locally-defined type of relationship (predicate) being
     defined between the subject and the object of the relationship.
     Specifies an externally-defined type of relationship (predicate)
@@ -2201,7 +2200,7 @@ class RelatedIndicatorType(stix_indicator_1_1.IndicatorType):
     @type).A placeholder so that content creators can add attributes
     as desired."""
     subclass = None
-    superclass = stix_indicator_1_1.IndicatorType
+    superclass = stix_indicator_binding.IndicatorType
     def __init__(self, id=None, idref=None, version=None, RelatedIndicatorConfidence=None):
         super(RelatedIndicatorType, self).__init__()
         self.id = _cast(None, id)
@@ -2292,7 +2291,7 @@ class RelatedIndicatorType(stix_indicator_1_1.IndicatorType):
         super(RelatedIndicatorType, self).exportLiteralChildren(outfile, level, name_)
         if self.RelatedIndicatorConfidence is not None:
             showIndent(outfile, level)
-            outfile.write('RelatedIndicatorConfidence=model_.stix_common_0_2.ConfidenceType(\n')
+            outfile.write('RelatedIndicatorConfidence=model_.stix_common_binding.ConfidenceType(\n')
             self.RelatedIndicatorConfidence.exportLiteral(outfile, level, name_='RelatedIndicatorConfidence')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -2319,17 +2318,17 @@ class RelatedIndicatorType(stix_indicator_1_1.IndicatorType):
         
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'RelatedIndicatorConfidence':
-            obj_ = stix_common_0_2.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_RelatedIndicatorConfidence(obj_)
         super(RelatedIndicatorType, self).buildChildren(child_, node, nodeName_, True)
 # end class RelatedIndicatorType
 
-class LeveragedTTPType(stix_ttp_0_6.TTPType):
+class LeveragedTTPType(stix_ttp_binding.TTPType):
     """The LeveragedTTPType specifies a single TTP asserted to be related
     to this cyber threat Incident."""
     subclass = None
-    superclass = stix_ttp_0_6.TTPType
+    superclass = stix_ttp_binding.TTPType
     def __init__(self, idref=None, id=None, version=None, Behavior_AttackPatterns=None, Behavior_Malware=None, Behavior_Exploits=None, Resource_Tools=None, Resource_Infrastructure=None, VictimTargeting=None, ExploitTargets=None, Intent=None, RelatedTTPs=None, KillChainPhases=None, InformationSource=None, KillChains=None, LeveragedTTPConfidence=None):
         super(LeveragedTTPType, self).__init__(idref, id, version, Behavior_AttackPatterns, Behavior_Malware, Behavior_Exploits, Resource_Tools, Resource_Infrastructure, VictimTargeting, ExploitTargets, Intent, RelatedTTPs, KillChainPhases, InformationSource, KillChains, )
         self.LeveragedTTPConfidence = LeveragedTTPConfidence
@@ -2386,7 +2385,7 @@ class LeveragedTTPType(stix_ttp_0_6.TTPType):
         super(LeveragedTTPType, self).exportLiteralChildren(outfile, level, name_)
         if self.LeveragedTTPConfidence is not None:
             showIndent(outfile, level)
-            outfile.write('LeveragedTTPConfidence=model_.stix_common_0_2.ConfidenceType(\n')
+            outfile.write('LeveragedTTPConfidence=model_.stix_common_binding.ConfidenceType(\n')
             self.LeveragedTTPConfidence.exportLiteral(outfile, level, name_='LeveragedTTPConfidence')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -2399,7 +2398,7 @@ class LeveragedTTPType(stix_ttp_0_6.TTPType):
         super(LeveragedTTPType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'LeveragedTTPConfidence':
-            obj_ = stix_common_0_2.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_LeveragedTTPConfidence(obj_)
         super(LeveragedTTPType, self).buildChildren(child_, node, nodeName_, True)
@@ -2927,7 +2926,7 @@ class RelatedThreatActorsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'RelatedThreatActor':
-            class_obj_ = self.get_class_obj_(child_, stix_threat_actor_0_5_1.ThreatActorType)
+            class_obj_ = self.get_class_obj_(child_, stix_threat_actor_binding.ThreatActorType)
             obj_ = class_obj_.factory()
             obj_.build(child_)
             self.RelatedThreatActor.append(obj_)
@@ -3126,11 +3125,11 @@ class COARequestedType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Time(obj_)
         elif nodeName_ == 'AssignedContact':
-            obj_ = cybox_common_types_1_0.ContributorType.factory()
+            obj_ = cybox_common_bindingContributorType.factory()
             obj_.build(child_)
             self.set_AssignedContact(obj_)
         elif nodeName_ == 'CourseOfAction':
-            obj_ = stix_coa_0_3_1.COAType.factory()
+            obj_ = stix_coa_binding.COAType.factory()
             obj_.build(child_)
             self.set_CourseOfAction(obj_)
 # end class COARequestedType
@@ -3465,7 +3464,7 @@ class ContributorsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Contributor':
-            obj_ = cybox_common_types_1_0.ContributorType.factory().factory()
+            obj_ = cybox_common_bindingContributorType.factory().factory()
             obj_.build(child_)
             self.set_Contributor(obj_)
 # end class ContributorsType
