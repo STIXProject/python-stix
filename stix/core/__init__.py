@@ -1,0 +1,1 @@
+from stix.core.stix import STIX

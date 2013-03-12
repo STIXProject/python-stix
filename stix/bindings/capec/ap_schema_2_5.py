@@ -16392,7 +16392,7 @@ def parseLiteral(inFileName):
     # Enable Python to collect the space used by the DOM.
     doc = None
     sys.stdout.write('#from ap_schema_2_5 import *\n\n')
-    sys.stdout.write('import stix.bindings.capec.ap_schema_2_5 as ap_schema_binding as model_\n\n')
+    sys.stdout.write('import stix.bindings.capec.ap_schema_2_5 as ap_binding as model_\n\n')
     sys.stdout.write('rootObj = model_.rootTag(\n')
     rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
     sys.stdout.write(')\n')

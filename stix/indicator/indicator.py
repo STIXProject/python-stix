@@ -36,7 +36,8 @@ class Indicator(stix.Entity):
     
     @observables.setter
     def observables(self, value):
-        raise ValueError('do not set observables directly; call add_observable()')
+        if value:
+            raise ValueError('do not set observables directly; call add_observable()')
     
     def add_source(self, type, name):
         '''

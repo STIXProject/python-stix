@@ -12,7 +12,7 @@ import re as re_
 import stix.bindings.stix_common_0_2 as stix_common_binding
 
 
-abs_impl = {'TLPHandlingGuidanceType' : {   'module':'stix_common_binding',
+abs_impl = {'TLPHandlingGuidanceType' : {   'module':'stix_common_0_2',
                                             'python_name':'TLPHandlingGuidanceType',
                                             'namespace_prefix':'stixCommon',
                                             'namespace':'http://stix.mitre.org/Common',
@@ -759,7 +759,7 @@ class MarkingStructureType(GeneratedsSuper):
 #   data_marking_binding.MarkingStructureType that enables the specification of Traffic
 #   Light Protocol guidance markings.
 #   
-#   This is copied from stix_common_binding because the globals() lookup fails when
+#   This is copied from stix_common_0_2 because the globals() lookup fails when
 #   resolving the implementation of abstract data types
 #   """
 #   subclass = None

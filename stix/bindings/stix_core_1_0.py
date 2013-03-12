@@ -12,15 +12,14 @@ import re as re_
 import stix.bindings.data_marking_0_5 as data_marking_binding
 import cybox.bindings.cybox_core_1_0 as cybox_core_binding
 import cybox.bindings.cybox_common_types_1_0 as cybox_common_binding
-import cybox.bindings.system_object_1_3 as system_object_binding
 import stix.bindings.stix_common_0_2 as stix_common_binding
 import stix.bindings.stix_indicator_1_1 as stix_indicator_binding
-import stix.bindings.capec.ap_schema_2_5 as ap_schema_binding
+import stix.bindings.capec.ap_schema_2_5 as ap_binding
 import stix.bindings.iodef.iodef_1_0 as iodef_binding
 import stix.bindings.stix_campaign_0_5_1 as stix_campaign_binding
 import stix.bindings.stix_ttp_0_6 as stix_ttp_binding
 import stix.bindings.stix_threat_actor_0_5_1 as stix_threat_actor_binding
-import stix.bindings.exploit_target_0_3_1 as stix_exploit_target_binding
+import stix.bindings.stix_exploit_target_0_3_1 as stix_exploit_target_binding
 import stix.bindings.stix_coa_0_3_1 as stix_coa_binding
 import stix.bindings.stix_incident_0_3_1 as stix_incident_binding
 
@@ -735,7 +734,7 @@ class STIXHeaderType(GeneratedsSuper):
             PackageIntent_ = self.gds_validate_string(PackageIntent_, node, 'PackageIntent')
             self.PackageIntent = PackageIntent_
         elif nodeName_ == 'Description':
-            obj_ = cybox_common_bindingStructuredTextType.factory()
+            obj_ = cybox_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Handling':
@@ -1422,7 +1421,7 @@ def parseLiteral(inFileName):
     # Enable Python to collect the space used by the DOM.
     doc = None
     sys.stdout.write('#from stix_core_1_0 import *\n\n')
-    sys.stdout.write('import stix_core_1_0 as model_\n\n')
+    sys.stdout.write('import stix.bindings.stix_core_1_0 as stix_core_binding as model_\n\n')
     sys.stdout.write('rootObj = model_.rootTag(\n')
     rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
     sys.stdout.write(')\n')

@@ -14,7 +14,7 @@ import cybox.bindings.cybox_common_types_1_0 as cybox_common_binding
 import stix.bindings.stix_indicator_1_1 as stix_indicator_binding
 import stix.bindings.stix_common_0_2 as stix_common_binding
 import stix.bindings.stix_ttp_0_6 as stix_ttp_binding
-import stix.bindings.stix_threat_actor_0_5_1 as stix_threat_actor_binding
+#import stix.bindings.stix_threat_actor_0_5_1 as stix_threat_actor_binding
 import stix.bindings.stix_incident_0_3_1 as stix_incident_binding
 import stix.bindings.data_marking_0_5 as data_marking_binding
 

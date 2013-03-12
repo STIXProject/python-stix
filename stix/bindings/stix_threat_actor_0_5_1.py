@@ -11,16 +11,13 @@ import re as re_
 
 import cybox.bindings.cybox_core_1_0 as cybox_core_binding
 import cybox.bindings.cybox_common_types_1_0 as cybox_common_binding
-import cybox.bindings.system_object_1_3 as system_object_binding
 import stix.bindings.stix_common_0_2 as stix_common_binding
 import stix.bindings.stix_campaign_0_5_1 as stix_campaign_binding
 import stix.bindings.stix_ttp_0_6 as stix_ttp_binding
-import stix.bindings.stix_campaign_0_5_1 as stix_campaign_binding
-import stix.bindings.stix_ttp_0_6 as stix_ttp_binding
-import stix.bindings.stix_incident_0_3_1 as stix_incident_binding
-import stix.bindings.stix_indicator_1_1 as stix_indicator_binding
-import stix.bindings.exploit_target_0_3_1 as stix_exploit_target_binding
-import stix.bindings.capec.ap_schema_2_5 as ap_schema_binding
+#import stix.bindings.stix_incident_0_3_1 as stix_incident_binding
+#import stix.bindings.stix_indicator_1_1 as stix_indicator_binding
+#import stix.bindings.stix_exploit_target_0_3_1 as stix_exploit_target_binding
+#import stix.bindings.capec.ap_schema_2_5 as ap_binding
 import stix.bindings.data_marking_0_5 as data_marking_binding
 
 etree_ = None

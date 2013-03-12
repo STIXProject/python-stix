@@ -621,7 +621,7 @@ class IndicatorType(GeneratedsSuper):
         outfile.write('],\n')
         if self.Description is not None:
             showIndent(outfile, level)
-            outfile.write('Description=model_.cybox_common_bindingStructuredTextType(\n')
+            outfile.write('Description=model_.cybox_common_binding.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -760,7 +760,7 @@ class IndicatorType(GeneratedsSuper):
             AlternativeID_Alias_ = self.gds_validate_string(AlternativeID_Alias_, node, 'AlternativeID_Alias')
             self.AlternativeID_Alias.append(AlternativeID_Alias_)
         elif nodeName_ == 'Description':
-            obj_ = cybox_common_bindingStructuredTextType.factory()
+            obj_ = cybox_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'ValidTimePosition':
@@ -1986,7 +1986,10 @@ class ObservablesType(GeneratedsSuper):
     subclass = None
     superclass = None
     def __init__(self, Observable=None):
-        self.Observable = Observable
+        if Observable is None:
+            self.Observable = []
+        else:
+            self.Observable = Observable
             
     def factory(*args_, **kwargs_):
         if ObservablesType.subclass:
@@ -1996,6 +1999,7 @@ class ObservablesType(GeneratedsSuper):
     factory = staticmethod(factory)
     def get_Observable(self): return self.Observable
     def set_Observable(self, Observable): self.Observable = Observable
+    def add_Observable(self, value): self.Observable.append(value)
 
     def export(self, outfile, level, namespace_='indicator:', name_='ObservablesType', namespacedef_='', pretty_print=True):
         if pretty_print:
@@ -2021,8 +2025,8 @@ class ObservablesType(GeneratedsSuper):
         else:
             eol_ = ''
         
-        if self.Observable:
-            self.Observable.export(outfile, level, "indicator:" , name_='Observable', pretty_print=pretty_print)
+        for Observable_ in self.Observable:
+            Observable_.export(outfile, level, "indicator:" , name_='Observable', pretty_print=pretty_print)
 
     def hasContent_(self):
         if (
@@ -2043,10 +2047,10 @@ class ObservablesType(GeneratedsSuper):
         outfile.write('Observable=[\n')
         level += 1
         
-        if self.Observable:
+        for Observable_ in self.Observable:
             showIndent(outfile, level)
             outfile.write('model_.ObservableType(\n')
-            self.Observable.exportLiteral(outfile, level, name_='Observable')
+            Observable_.exportLiteral(outfile, level, name_='Observable')
             showIndent(outfile, level)
             outfile.write('),\n')
         
@@ -2065,7 +2069,7 @@ class ObservablesType(GeneratedsSuper):
         if nodeName_ == 'Observable':
             obj_ = cybox_core_binding.ObservableType.factory()
             obj_.build(child_)
-            self.Observable = obj_
+            self.Observable.append(obj_)
 # end class ObservablesType
 
 
@@ -2438,7 +2442,7 @@ class LikelyImpactType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'ImpactDescription':
-            obj_ = cybox_common_bindingStructuredTextType.factory()
+            obj_ = cybox_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_ImpactDescription(obj_)
         elif nodeName_ == 'Confidence':
@@ -2781,7 +2785,7 @@ class EfficacyType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Description':
-            obj_ = cybox_common_bindingStructuredTextType.factory()
+            obj_ = cybox_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Confidence':

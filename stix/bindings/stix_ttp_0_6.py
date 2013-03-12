@@ -11,10 +11,9 @@ import re as re_
 
 import cybox.bindings.cybox_core_1_0 as cybox_core_binding
 import cybox.bindings.cybox_common_types_1_0 as cybox_common_binding
-import cybox.bindings.system_object_1_3 as system_object_binding
-import stix.bindings.capec.ap_schema_2_5 as ap_schema_binding
+import stix.bindings.capec.ap_schema_2_5 as ap_binding
 import maec.bindings.maec_package_1_0 as maec_package_binding
-import stix.bindings.exploit_target_0_3_1 as stix_exploit_target_binding
+import stix.bindings.stix_exploit_target_0_3_1 as stix_exploit_target_binding
 import stix.bindings.stix_common_0_2 as stix_common_binding
 import stix.bindings.data_marking_0_5 as data_marking_binding
 
@@ -914,11 +913,11 @@ class AttackPatternType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'StructuredDescription':
-            obj_ = ap_schema_binding.Attack_PatternType.factory()
+            obj_ = ap_binding.Attack_PatternType.factory()
             obj_.build(child_)
             self.set_StructuredDescription(obj_)
         elif nodeName_ == 'ProseDescription':
-            obj_ = cybox_common_bindingStructuredTextType.factory()
+            obj_ = cybox_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_ProseDescription(obj_)
 # end class AttackPatternType
@@ -1146,7 +1145,7 @@ class MalwareInstanceType(GeneratedsSuper):
             obj_.build(child_)
             self.set_StructuredDescription(obj_)
         elif nodeName_ == 'ProseDescription':
-            obj_ = cybox_common_bindingStructuredTextType.factory()
+            obj_ = cybox_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_ProseDescription(obj_)
 # end class MalwareInstanceType
@@ -1386,7 +1385,7 @@ class Behavior_ExploitsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Exploit':
-            obj_ = cybox_common_bindingStructuredTextType.factory()
+            obj_ = cybox_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.Exploit.append(obj_)
 # end class Behavior_ExploitsType
@@ -1471,7 +1470,7 @@ class Resource_ToolsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Tool':
-            obj_ = cybox_common_bindingToolInformationType.factory()
+            obj_ = cybox_common_binding.ToolInformationType.factory()
             obj_.build(child_)
             self.Tool.append(obj_)
 # end class Resource_ToolsType
@@ -1557,7 +1556,7 @@ class Resource_InfrastructureType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Description':
-            obj_ = cybox_common_bindingStructuredTextType.factory()
+            obj_ = cybox_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'ObservableCharacterization':

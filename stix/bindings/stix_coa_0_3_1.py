@@ -10,7 +10,6 @@ import getopt
 import re as re_
 
 import cybox.bindings.cybox_core_1_0 as cybox_core_binding
-#import stix_indicator_1_0
 import stix.bindings.stix_common_0_2 as stix_common_binding
 import cybox.bindings.cybox_common_types_1_0 as cybox_common_binding
 
@@ -451,7 +450,7 @@ class ImpactType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Description':
-            obj_ = cybox_common_bindingStructuredTextType.factory()
+            obj_ = cybox_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'ImpactConfidence':
@@ -541,7 +540,7 @@ class CostType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Description':
-            obj_ = cybox_common_bindingStructuredTextType.factory()
+            obj_ = cybox_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'CostConfidence':
@@ -631,7 +630,7 @@ class EfficacyType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Description':
-            obj_ = cybox_common_bindingStructuredTextType.factory()
+            obj_ = cybox_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'EfficacyConfidence':
@@ -783,7 +782,7 @@ class COAType(GeneratedsSuper):
             outfile.write('Type=%s,\n' % quote_python(self.Type).encode(ExternalEncoding))
         if self.Description is not None:
             showIndent(outfile, level)
-            outfile.write('Description=model_.cybox_common_bindingStructuredTextType(\n')
+            outfile.write('Description=model_.cybox_common_binding.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -845,7 +844,7 @@ class COAType(GeneratedsSuper):
             Type_ = self.gds_validate_string(Type_, node, 'Type')
             self.Type = Type_
         elif nodeName_ == 'Description':
-            obj_ = cybox_common_bindingStructuredTextType.factory()
+            obj_ = cybox_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Objective':
@@ -1087,7 +1086,7 @@ class ObjectiveType(GeneratedsSuper):
     def exportLiteralChildren(self, outfile, level, name_):
         if self.Description is not None:
             showIndent(outfile, level)
-            outfile.write('Description=model_.cybox_common_bindingStructuredTextType(\n')
+            outfile.write('Description=model_.cybox_common_binding.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -1109,7 +1108,7 @@ class ObjectiveType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Description':
-            obj_ = cybox_common_bindingStructuredTextType.factory()
+            obj_ = cybox_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Target':

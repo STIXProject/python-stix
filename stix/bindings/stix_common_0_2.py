@@ -462,13 +462,13 @@ class InformationSourceType(GeneratedsSuper):
             outfile.write('),\n')
         if self.Time is not None:
             showIndent(outfile, level)
-            outfile.write('Time=model_.cybox_common_bindingTimeType(\n')
+            outfile.write('Time=model_.cybox_common_binding.TimeType(\n')
             self.Time.exportLiteral(outfile, level, name_='Time')
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.Tools is not None:
             showIndent(outfile, level)
-            outfile.write('Tools=model_.cybox_common_bindingToolsInformationType(\n')
+            outfile.write('Tools=model_.cybox_common_binding.ToolsInformationType(\n')
             self.Tools.exportLiteral(outfile, level, name_='Tools')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -495,11 +495,11 @@ class InformationSourceType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Contributors(obj_)
         elif nodeName_ == 'Time':
-            obj_ = cybox_common_bindingTimeType.factory()
+            obj_ = cybox_common_binding.TimeType.factory()
             obj_.build(child_)
             self.set_Time(obj_)
         elif nodeName_ == 'Tools':
-            obj_ = cybox_common_bindingToolsInformationType.factory()
+            obj_ = cybox_common_binding.ToolsInformationType.factory()
             obj_.build(child_)
             self.set_Tools(obj_)
         elif nodeName_ == 'References':
@@ -625,7 +625,7 @@ class ConfidenceType(GeneratedsSuper):
     def exportLiteralChildren(self, outfile, level, name_):
         if self.Description is not None:
             showIndent(outfile, level)
-            outfile.write('Description=model_.cybox_common_bindingStructuredTextType(\n')
+            outfile.write('Description=model_.cybox_common_binding.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -663,7 +663,7 @@ class ConfidenceType(GeneratedsSuper):
             self.timestamp = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Description':
-            obj_ = cybox_common_bindingStructuredTextType.factory()
+            obj_ = cybox_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'ConfidenceAssertionChain':
@@ -826,7 +826,7 @@ class ActivityType(GeneratedsSuper):
             outfile.write('DateTime=%s,\n' % quote_python(self.DateTime).encode(ExternalEncoding))
         if self.Description is not None:
             showIndent(outfile, level)
-            outfile.write('Description=model_.cybox_common_bindingStructuredTextType(\n')
+            outfile.write('Description=model_.cybox_common_binding.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             showIndent(outfile, level)
             outfile.write('),\n')
@@ -843,7 +843,7 @@ class ActivityType(GeneratedsSuper):
             DateTime_ = self.gds_validate_string(DateTime_, node, 'DateTime')
             self.DateTime = DateTime_
         elif nodeName_ == 'Description':
-            obj_ = cybox_common_bindingStructuredTextType.factory()
+            obj_ = cybox_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
 # end class ActivityType

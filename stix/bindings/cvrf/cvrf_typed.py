@@ -10820,7 +10820,7 @@ def parseLiteral(inFileName):
     # Enable Python to collect the space used by the DOM.
     doc = None
     sys.stdout.write('#from cvrf_typed import *\n\n')
-    sys.stdout.write('import cvrf_typed as model_\n\n')
+    sys.stdout.write('import stix.bindings.cvrf.cvrf_typed as cvrf_typed_binding as model_\n\n')
     sys.stdout.write('rootObj = model_.rootTag(\n')
     rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
     sys.stdout.write(')\n')

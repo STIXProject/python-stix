@@ -5736,7 +5736,7 @@ def parseLiteral(inFileName):
     # Enable Python to collect the space used by the DOM.
     doc = None
     sys.stdout.write('#from xal import *\n\n')
-    sys.stdout.write('import xal as model_\n\n')
+    sys.stdout.write('import stix.bindings.oasis.xal as xal_binding as model_\n\n')
     sys.stdout.write('rootObj = model_.rootTag(\n')
     rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
     sys.stdout.write(')\n')
