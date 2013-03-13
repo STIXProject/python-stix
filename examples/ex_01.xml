@@ -24,7 +24,7 @@
             <stixCommon:Identity>
                 <ciq:PartyName>
                     <n:PersonName>
-                        <n:NameElemen>John Smith</n:NameElement>
+                        <n:NameElement>John Smith</n:NameElement>
                     </n:PersonName>
                 </ciq:PartyName>
             </stixCommon:Identity>
