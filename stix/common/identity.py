@@ -1,24 +1,41 @@
 import stix
-from stix.utils import IDGenerator as stix_id_generator
+import stix.utils
 import stix.bindings.stix_indicator_1_1 as stix_indicator_binding
 import stix.bindings.stix_common_0_2 as stix_common_binding
 import stix.bindings.oasis.xpil as oasis_xpil_binding
 
 
 class Identity(stix.Entity):
-    def __init__(self, id=None, idref=None, roles=[], related_identities=[]):
-        self.id_ = id if id is not None else stix_id_generator().create_id()
+    def __init__(self, id=None, idref=None, roles=None, related_identities=None):
+        self.id_ = id if id else stix.utils.create_id()
         self.idref_ = idref
-        self.roles = []
-        self.related_identities = []
+        self.roles = roles
+        self.related_identities = related_identities
+
+    @property
+    def roles(self):
+        return self._roles
+    
+    @roles.setter
+    def roles(self, valuelist):
+        self._roles = []
         
-        if roles:
-            for role in roles:
-                self.add_role(role)
-                
-        if related_identities:    
-            for identity in related_identities:
-                self.add_related_identity(identity)
+        if valuelist:
+            for value in valuelist:
+                self.add_role(value)
+    
+    @property
+    def related_identities(self):
+        return self._related_identities
+    
+    @related_identities.setter
+    def related_identities(self, valuelist):
+        self._related_identities = []
+        
+        if valuelist:
+            for value in valuelist:
+                self.add_related_identity(value)
+    
     
     def add_role(self, value):
         if not value:
@@ -38,9 +55,12 @@ class Identity(stix.Entity):
         
         self.roles.append(value)
     
-    def to_obj(self, return_obj=stix_common_binding.IdentityType()):
-        return_obj.set_id(self.id_)
-        return_obj.set_idref(self.idref_)
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = stix_common_binding.IdentityType()
+        
+        #return_obj.set_id(self.id_)
+        #return_obj.set_idref(self.idref_)
         
         if self.roles:
             for role in self.roles:
@@ -55,9 +75,15 @@ class Identity(stix.Entity):
                 
         return return_obj
     
-    @staticmethod
-    def from_obj(obj, return_obj=Identity()):
-        roles = obj.get_Roles()
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
+        if not obj:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+        
+        roles = obj.get_Role()
         related_identities = obj.get_RelatedIdentities()
         
         if roles:
@@ -70,7 +96,10 @@ class Identity(stix.Entity):
             
         return return_obj 
 
-    def to_dict(self, return_dict={}):
+    def to_dict(self, return_dict=None):
+        if not return_dict:
+            return_dict = {}
+        
         if self.roles:
             for role in self.roles:
                 return_dict.setdefault('roles', []).append(role)
@@ -81,8 +110,14 @@ class Identity(stix.Entity):
         
         return return_dict
 
-    @staticmethod
-    def from_dict(dict_repr, return_obj=Identity()):
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not dict_repr:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+        
         roles = dict_repr.get('roles', [])
         related_identities = dict_repr.get('related_identities', [])
         
@@ -95,47 +130,8 @@ class Identity(stix.Entity):
         return return_obj
 
 
-class RelatedIdentity(STIXCIQIdentity):
-    def __init__(self, relationship=None):
-        super(RelatedIdentity, self).__init__()
-        self.relationship = relationship
-        
-    @property
-    def relationship(self):
-        return self._relationship
-    
-    @relationship.setter
-    def relationship(self, value):
-        if value and not isinstasnce(value, basestring):
-            raise ValueError('value must be instance of basestring')
-        
-        self._relationship = value
-    
-    def to_obj(self, return_obj=stix_common_binding.RelatedIdentityType()):
-        super.to_obj(return_obj)
-        return_obj.set_relationshipType(self.relationship)
-        return return_obj
-    
-    @staticmethod
-    def from_obj(self, obj, return_obj=RelatedIdentity()):
-        super.from_obj(obj, return_obj)
-        self.relationship = obj.get_relationshipType()
-        return return_obj
-    
-    def to_dict(self, return_dict={}):
-        super.to_dict(return_dict)
-        return_dict['relationship'] = self.relationship
-        return return_dict
-    
-    @staticmethod
-    def from_dict(self, dict_repr, return_obj=RelatedIdentity()):
-        super.from_dict(dict_repr, return_obj)
-        self.relationship = dict_repr.get('relationship', None)
-        return return_obj
-    
-
 class STIXCIQIdentity(Identity):
-    def __init__(self, party_name=PartyName()):
+    def __init__(self, party_name=None):
         super(STIXCIQIdentity, self).__init__()
         
         '''
@@ -145,7 +141,7 @@ class STIXCIQIdentity(Identity):
         # self.party_type = None
         # self.free_text_lines = None
         #=======================================================================
-        self.party_name = party_name
+        self.party_name = party_name if party_name else PartyName()
         #=======================================================================
         # self.addresses = None
         # self.accounts = None
@@ -188,8 +184,11 @@ class STIXCIQIdentity(Identity):
         self._party_name = value
         
     
-    def to_obj(self, return_obj=stix_common_binding.STIX_CIQ_IdentityType()):        
-        super.to_obj(return_obj)
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = stix_common_binding.STIX_CIQ_IdentityType()
+        
+        super(STIXCIQIdentity, self).to_obj(return_obj)
         
         if self.party_name:
             return_obj.set_PartyName(self.party_name.to_obj())
@@ -197,9 +196,15 @@ class STIXCIQIdentity(Identity):
         return return_obj
 
     
-    @staticmethod
-    def from_obj(obj, return_obj=STIXCIQIdentity()):
-        super.from_obj(obj, return_obj)
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
+        if not obj:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+        
+        super(STIXCIQIdentity, cls).from_obj(obj, return_obj)
         
         if obj.get_PartyName():
             party_name_obj = obj.get_PartyName()
@@ -207,25 +212,99 @@ class STIXCIQIdentity(Identity):
     
         return return_obj
         
-    def to_obj(self, return_obj=stix_common_binding.STIX_CIQ_IdentityType()):
-        super.to_obj(return_obj)
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = stix_common_binding.STIX_CIQ_IdentityType()
+        
+        super(STIXCIQIdentity, self).to_obj(return_obj)
         if self.party_name:
             return_obj.set_PartyName(self.party_name.to_obj())
         
         return return_obj
     
     
-    @staticmethod
-    def from_dict(dict_repr, return_obj=STIXCIQIdentity()):
-        super.from_dict(dict_repr, return_obj)
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not dict_repr:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+        
+        super(STIXCIQIdentity, cls).from_dict(dict_repr, return_obj)
         party_name_dict = dict_repr.get('party_name', None)
         return_obj.party_name = PartyName.from_dict(party_name_dict) if party_name_dict else None
+        
+        return return_obj
             
             
-    def to_dict(self, return_dict={}):
-        super.to_dict(return_dict)
+    def to_dict(self, return_dict=None):
+        if not return_dict:
+            return_dict = {}
+        
+        super(STIXCIQIdentity, self).to_dict(return_dict)
         if self.party_name:
             return_dict['party_name'] = self.party_name.to_dict()
+        
+        return return_dict
+
+
+class RelatedIdentity(STIXCIQIdentity):
+    def __init__(self, relationship=None):
+        super(RelatedIdentity, self).__init__()
+        self.relationship = relationship
+        
+    @property
+    def relationship(self):
+        return self._relationship
+    
+    @relationship.setter
+    def relationship(self, value):
+        if value and not isinstasnce(value, basestring):
+            raise ValueError('value must be instance of basestring')
+        
+        self._relationship = value
+    
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = stix_common_binding.RelatedIdentityType()
+            
+        super(RelatedIdentity, self).to_obj(return_obj)
+        return_obj.set_relationshipType(self.relationship)
+        return return_obj
+    
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
+        if not obj:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+            
+        super(RelatedIdentity, cls).from_obj(obj, return_obj)
+        return_obj.relationship = obj.get_relationshipType()
+        return return_obj
+    
+    def to_dict(self, return_dict=None):
+        if not return_dict:
+            return_dict = {}
+        
+        super(RelatedIdentity, self).to_dict(return_dict)
+        return_dict['relationship'] = self.relationship
+        return return_dict
+    
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not dict_repr:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+            
+        super(RelatedIdentity, cls).from_dict(dict_repr, return_obj)
+        return_obj.relationship = dict_repr.get('relationship', None)
+        return return_obj
+    
 
 
 class PartyName(stix.Entity):
@@ -245,7 +324,6 @@ class PartyName(stix.Entity):
         else:
             raise ValueError('value must be a string or NameLine instance')
         
-    
     def add_person_name(self, value):
         if not isinstance(value, PersonName):
             raise ValueError('value must be instance of PersonName')
@@ -259,20 +337,29 @@ class PartyName(stix.Entity):
         
         self.person_names.append(value)
 
-    def to_obj(self, return_obj=oasis_xpil_binding.PartyNameType()):    
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = oasis_xpil_binding.PartyNameType()
+            
         for name_line in self.name_lines:
             return_obj.add_NameLine(name_line.to_obj())
         
         for person_name in self.person_names:
-            return_obj.add_PersonName(person_name_obj.to_obj())
+            return_obj.add_PersonName(person_name.to_obj())
         
         for organisation_name in self.organisation_names:
-            return_obj.add_OrganisationName(organisation_name_obj.to_obj())
+            return_obj.add_OrganisationName(organisation_name.to_obj())
 
         return return_obj
 
-    @staticmethod
-    def from_obj(obj, return_obj=PartyName()):
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
+        if not obj:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+        
         if obj.get_NameLine():
             for name_line_obj in obj.get_NameLine():
                 name_line = NameLine.from_obj(name_line_obj)
@@ -290,7 +377,10 @@ class PartyName(stix.Entity):
                 
         return return_obj
 
-    def to_dict(self, return_dict={}):
+    def to_dict(self, return_dict=None):
+        if not return_dict:
+            return_dict = {}
+        
         if self.name_lines:
             for name_line in self.name_lines:
                 return_dict.setdefault('name_lines', []).append(name_line.to_dict())
@@ -305,8 +395,14 @@ class PartyName(stix.Entity):
                 
         return return_dict
 
-    @staticmethod
-    def from_dict(dict_repr, return_obj=PartyName()):
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not dict_repr:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+        
         nl_dicts = dict_repr.get('name_lines', [])
         on_dicts = dict_repr.get('organisation_names', [])
         pn_dicts = dict_repr.get('person_names', [])
@@ -327,7 +423,7 @@ class PartyName(stix.Entity):
 
 
 class NameLine(stix.Entity):
-    def __init__(self, value, type=None):
+    def __init__(self, value=None, type=None):
         self.value = value
         self.type = type
     
@@ -342,20 +438,35 @@ class NameLine(stix.Entity):
         
         self._value = value
         
-    def to_obj(self, return_obj=oasis_xpil_binding.NameLine()):
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = oasis_xpil_binding.NameLine()
+        
         if self.type:
             return_obj.set_Type(self.type)
         
         return_obj.set_valueOf_(self.value)
+        
+        return return_obj
     
-    @staticmethod
-    def from_obj (obj, return_obj=NameLine('_please_dont_throw_exception_')):
+    @classmethod
+    def from_obj (cls, obj, return_obj=None):
+        if not obj:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+        
         return_obj.value = obj.get_valueOf_()
-        return_obj.type = obj.get_Type()          
+        return_obj.type = obj.get_Type()        
+          
         return return_obj
     
     
-    def to_dict(self, return_dict={}):
+    def to_dict(self, return_dict=None):
+        if not return_dict:
+            return_dict = {}
+            
         return_dict['value'] = self.value
         
         if self.type:
@@ -363,19 +474,27 @@ class NameLine(stix.Entity):
         
         return return_dict
     
-    @staticmethod
-    def from_dict(dict_repr, return_obj=NameLine('_please_dont_throw_exception_')):
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not dict_repr:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+            
         return_obj.value = dict_repr.get('value', None)
         return_obj.type = dict_repr.get('type', None)
+        
         return return_obj
     
 
 class PersonName(stix.Entity):
-    def __init__(self, name_elements=[]):
+    def __init__(self, name_elements=None):
         self.name_elements = []
         
-        for name_element in name_elements:
-            self.add_name_element(name_element)
+        if name_elements:
+            for name_element in name_elements:
+                self.add_name_element(name_element)
 
 
     def add_name_element(self, value):
@@ -385,13 +504,24 @@ class PersonName(stix.Entity):
         self.name_elements.append(value)
 
         
-    def to_obj(self, return_obj=oasis_xpil_binding.PersonNameType()):
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = oasis_xpil_binding.PersonNameType()
+        
         for name_element in self.name_elements:
             return_obj.add_NameElement(name_element.to_obj())
+            
+        return return_obj
     
     
-    @staticmethod
-    def from_obj(obj, return_obj=PersonName()):
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
+        if not obj:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+        
         if obj.get_NameElement():
             for name_element_obj in obj.get_NameElement():
                 person_name_element = PersonNameElement.from_obj(name_element_obj)
@@ -399,15 +529,24 @@ class PersonName(stix.Entity):
         
         return return_obj
 
-    def to_dict(self, return_dict={}):
+    def to_dict(self, return_dict=None):
+        if not return_dict:
+            return_dict = {}
+        
         if self.name_elements:
             for ne in self.name_elements:
                 return_dict.setdefault('name_elements', []).append(ne.to_dict())
     
         return return_dict
     
-    @staticmethod
-    def from_dict(dict_repr, return_obj=PersonName()):
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not dict_repr:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+        
         ne_dicts = dict_repr.get('name_elements', [])
         
         for ne_dict in ne_dicts:
@@ -417,9 +556,17 @@ class PersonName(stix.Entity):
 
 
 class OrganisationName(stix.Entity):
-    def __init__(self, name_elements=[], sub_division_names=[]):
-        self.name_elements = name_elements
-        self.subdivision_names = sub_division_names
+    def __init__(self, name_elements=None, sub_division_names=None):
+        self.name_elements = []
+        self.subdivision_names = []
+        
+        if name_elements:
+            for name_element in name_elements:
+                self.add_organisation_name_element(name_element)
+                
+        if sub_division_names:
+            for name in sub_division_names:
+                self.add_subdivision_name(name)
         
     
     def add_organisation_name_element(self, value):
@@ -436,7 +583,10 @@ class OrganisationName(stix.Entity):
         self.subdivision_names.append(value)
 
 
-    def to_obj(self, return_obj=oasis_xpil_binding.OrganisationNameType()):
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = oasis_xpil_binding.OrganisationNameType()
+        
         for name_element in self.name_elements:
             return_obj.add_NameElement(name_element.to_obj())
         
@@ -445,8 +595,14 @@ class OrganisationName(stix.Entity):
             
         return return_obj
     
-    @staticmethod
-    def from_obj(obj, return_obj=OrganisationName()):
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
+        if not obj:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+        
         if obj.get_NameElement():
             for name_element_obj in obj.get_NameElement():
                 name_element = OrganisationNameElement.from_obj(name_element_obj)
@@ -459,7 +615,10 @@ class OrganisationName(stix.Entity):
             
         return return_obj
 
-    def to_dict(self, return_dict={}):
+    def to_dict(self, return_dict=None):
+        if not return_dict:
+            return_dict = {}
+        
         if self.name_elements:
             for ne in self.name_elements:
                 return_dict.setdefault('name_elements', []).append(ne.to_dict())
@@ -470,8 +629,14 @@ class OrganisationName(stix.Entity):
         
         return return_dict
 
-    @staticmethod
-    def from_dict(dict_repr, return_obj=OrganisationName()):
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not dict_repr:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+            
         ne_dicts = dict_repr.get('name_elements', [])
         sn_dicts = dict_repr.get('subdivision_names', [])
         
@@ -485,7 +650,6 @@ class OrganisationName(stix.Entity):
     
 
 class NameElement(stix.Entity):
-    # should I use ABC here?
     '''Do not instantiate directly: use PersonNameElement or OrganisationNameElement'''
     def __init__(self, value=None):
         self.value = value
@@ -501,16 +665,16 @@ class NameElement(stix.Entity):
     
         self._value = value
 
-    @staticmethod
-    def from_obj(obj, return_obj):
+    @classmethod
+    def from_obj(cls, obj, return_obj):
         return_obj.value = obj.get_valueOf_()
         return return_obj
     
     def to_obj(self, return_obj):
         return_obj.set_valueOf_(self.value)
     
-    @staticmethod
-    def from_dict(dict_repr, return_obj):
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj):
         self.value = dict_repr.get('value', None)
 
     def to_dict(self, return_dict):
@@ -533,7 +697,7 @@ class PersonNameElement(NameElement):
              TYPE_DEGREE)
     
     
-    def __init__(self, value, element_type=None):
+    def __init__(self, value=None, element_type=None):
         super(PersonNameElement, self).__init__(value)
         self.element_type = element_type
         
@@ -550,15 +714,24 @@ class PersonNameElement(NameElement):
         
         self._element_type = value    
     
-    def to_obj(self, return_obj=oasis_xpil_binding.NameElementType()):
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = oasis_xpil_binding.NameElementType()
+            
         if self.element_type:
             return_obj.set_ElementType(self.element_type)
             
         return_obj.set_valueOf_(self.value)
         return return_obj    
     
-    @staticmethod
-    def from_obj(obj, return_obj=PersonNameElement('_please_dont_throw_exception_')):
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
+        if not obj:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+        
         if obj.get_ElementType():
             return_obj.element_type = obj.get_ElementType()
             
@@ -567,7 +740,10 @@ class PersonNameElement(NameElement):
             
         return return_obj
     
-    def to_dict(self, return_dict={}):
+    def to_dict(self, return_dict=None):
+        if not return_dict:
+            return_dict = {}
+        
         return_dict['value'] = self.value
         
         if self.element_type:
@@ -575,10 +751,17 @@ class PersonNameElement(NameElement):
             
         return return_dict
     
-    @staticmethod
-    def from_dict(self, dict_repr, return_obj=PersonNameElement('_please_dont_throw_exception_')):
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not dict_repr:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+            
         return_obj.value = dict_repr.get('value', None)
         return_obj.element_type = dict_repr.get('element_type', None)
+        
         return return_obj
     
     
@@ -589,7 +772,7 @@ class OrganisationNameElement(NameElement):
     
     TYPES = (TYPE_NAME_ONLY, TYPE_TYPE_ONLY, TYPE_FULL_NAME)
     
-    def __init__(self, value, element_type=None):
+    def __init__(self, value=None, element_type=None):
         super(SubDivisionNameElement, self).__init__(value)
         self.element_type = element_type
         
@@ -605,15 +788,24 @@ class OrganisationNameElement(NameElement):
         
         self._element_type = value
     
-    def to_obj(self, return_obj=oasis_xpil_binding.NameElementType()):
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = oasis_xpil_binding.NameElementType()
+            
         if self.element_type:
             return_obj.set_ElementType(self.element_type)
             
         return_obj.set_valueOf_(self.value)
         return return_obj
         
-    @staticmethod
-    def from_obj(obj, return_obj=OrganisationNameElement('_please_dont_throw_exception_')):      
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
+        if not obj:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+              
         if obj.get_ElementType():
             return_obj.element_type = obj.get_ElementType()
             
@@ -621,15 +813,24 @@ class OrganisationNameElement(NameElement):
             
         return return_obj
         
-    def to_dict(self, return_dict={}):
+    def to_dict(self, return_dict=None):
+        if not return_dict:
+            return_dict = {}
+        
         if self.element_type:
             return_dict['element_type'] = self.element_type
             
         if self.value:
             return_dict['value'] = self.value
             
-    @staticmethod
-    def from_dict(dict_repr, return_obj=OrganisationNameElement('_please_dont_throw_exception_')):
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not dict_repr:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+        
         return_obj.value = dict_repr.get('value', None)
         return_obj.element_type = dict_repr.get('element_type', None)
         return return_obj
@@ -645,7 +846,7 @@ class SubDivisionName(stix.Entity):
     
     TYPES = (TYPE_DEPARTMENT, TYPE_DIVISION, TYPE_BRANCH, TYPE_BUSINESS_UNIT, TYPE_SCHOOL, TYPE_SECTION)
     
-    def __init__(self, value, type=None):
+    def __init__(self, value=None, type=None):
         self.value = value
         self.type = type
     
@@ -660,7 +861,10 @@ class SubDivisionName(stix.Entity):
         
         self._type = value
     
-    def to_obj(self, return_obj=oasis_xpil_binding.SubDivisionNameType()):
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = oasis_xpil_binding.SubDivisionNameType()
+            
         if self.type:
             return_obj.set_Type(self.type)
             
@@ -668,8 +872,14 @@ class SubDivisionName(stix.Entity):
         return return_obj
         
         
-    @staticmethod
-    def from_obj(obj, return_obj=SubDivisionName('_please_dont_throw_exception_')):        
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
+        if not obj:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+                    
         return_obj.value = obj.get_valueOf_()
         
         if obj.get_Type():
@@ -677,7 +887,10 @@ class SubDivisionName(stix.Entity):
             
         return return_obj
     
-    def to_dict(self, return_dict={}):
+    def to_dict(self, return_dict=None):
+        if not return_dict:
+            return_dict = {}
+        
         return_dict['value'] = self.value
         
         if self.type:
@@ -685,8 +898,14 @@ class SubDivisionName(stix.Entity):
             
         return return_dict
     
-    @staticmethod
-    def from_dict(dict_repr, return_obj=SubDivisionName('_please_dont_throw_exception_')):
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not obj:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+            
         return_obj.value = dict_repr.get('value', None)
         return_obj.type = dict_repr.get('type', None)
         return return_obj

@@ -1986,10 +1986,7 @@ class ObservablesType(GeneratedsSuper):
     subclass = None
     superclass = None
     def __init__(self, Observable=None):
-        if Observable is None:
-            self.Observable = []
-        else:
-            self.Observable = Observable
+        self.Observable = Observable
             
     def factory(*args_, **kwargs_):
         if ObservablesType.subclass:
@@ -1999,7 +1996,6 @@ class ObservablesType(GeneratedsSuper):
     factory = staticmethod(factory)
     def get_Observable(self): return self.Observable
     def set_Observable(self, Observable): self.Observable = Observable
-    def add_Observable(self, value): self.Observable.append(value)
 
     def export(self, outfile, level, namespace_='indicator:', name_='ObservablesType', namespacedef_='', pretty_print=True):
         if pretty_print:
@@ -2025,8 +2021,8 @@ class ObservablesType(GeneratedsSuper):
         else:
             eol_ = ''
         
-        for Observable_ in self.Observable:
-            Observable_.export(outfile, level, "indicator:" , name_='Observable', pretty_print=pretty_print)
+        
+        self.Observable.export(outfile, level, "indicator:" , name_='Observable', pretty_print=pretty_print)
 
     def hasContent_(self):
         if (
@@ -2069,7 +2065,8 @@ class ObservablesType(GeneratedsSuper):
         if nodeName_ == 'Observable':
             obj_ = cybox_core_binding.ObservableType.factory()
             obj_.build(child_)
-            self.Observable.append(obj_)
+            self.Observable = obj_
+            
 # end class ObservablesType
 
 

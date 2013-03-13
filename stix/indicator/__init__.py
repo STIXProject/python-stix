@@ -1,1 +1,1 @@
-from stix.indicator.indicator import Indicator
+from indicator import Indicator

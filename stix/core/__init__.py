@@ -1,1 +1,2 @@
-from stix.core.stix import STIX
+from stix_package import STIXPackage
+from stix_header import STIXHeader

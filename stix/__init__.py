@@ -1,5 +1,4 @@
 import json
-from abc import ABCMeta, abstractmethod
 from StringIO import StringIO
 
 class Entity(object):

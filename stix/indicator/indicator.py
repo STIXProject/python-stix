@@ -1,23 +1,22 @@
 import stix
+import stix.utils
 import stix.common
-from stix.utils import IDGenerator as stix_id_generator
 import stix.bindings.stix_indicator_1_1 as stix_indicator_binding
-from cybox.core import Observable,ObservableComposition
+from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
 
 
 class Indicator(stix.Entity):
     TYPE_SOURCE_ORG = 0
     TYPE_SOURCE_PERSON = 1
-    TYPES_SOURCE = (SOURCE_ORG, SOURCE_PERSON)
+    TYPES_SOURCE = (TYPE_SOURCE_ORG, TYPE_SOURCE_PERSON)
     
-    def __init__(self, id=None, producer=stix.common.InformationSource(), observables=[]):
-        self._id = id if id is not None else stix_id_generator().create_id()
-        self.producer = producer
-        self.observables = []
-        
-        for observable in observables:
-            self.add_observable(observable)
+    def __init__(self, id=None, producer=None, observables=None):
+        self._id = id if id else stix.utils.create_id()
+        self.producer = producer if producer else stix.common.InformationSource()
+        self.observables = observables
+        self.name = None
+        self.description = None
             
     @property
     def producer(self):
@@ -35,9 +34,12 @@ class Indicator(stix.Entity):
         return self._observables
     
     @observables.setter
-    def observables(self, value):
-        if value:
-            raise ValueError('do not set observables directly; call add_observable()')
+    def observables(self, valuelist):
+        self._observables = [] # initialize the variable
+        
+        if valuelist:
+            for value in valuelist:
+                self.add_observable(observable)
     
     def add_source(self, type, name):
         '''
@@ -47,7 +49,7 @@ class Indicator(stix.Entity):
         type -- the type of source (Indicator.TYPE_SOURCE_ORG, Indicator.TYPE_SOURCE_PERSON)
         name -- the name of the source
         '''
-        if type not in TYPES_SOURCE:
+        if type not in self.TYPES_SOURCE:
             raise ValueError('type not known')
         
         if type == TYPE_SOURCE_ORG:
@@ -160,36 +162,48 @@ class Indicator(stix.Entity):
     def to_obj(self, return_obj=stix_indicator_binding.IndicatorType()):
         '''most of this does not work because of the state of the cybox api development'''
         if self.observables:
+            observables_obj = stix_indicator_binding.ObservablesType()
+            
             if len(self.observables) > 1:
                 root_observable = self._merge_observables(self.observables)
-                return_obj.set_Observable(root_observable.to_obj())
             else:
                 root_observable = self.observables[0]
-                return_obj.set_Observable(root_observable.to_obj())
+            
+            observables_obj.set_Observable(root_observable.to_obj())
+            return_obj.set_Observables(observables_obj)
 
         return_obj.set_Producer(self.producer.to_obj())
     
         return return_obj
     
-    @staticmethod
-    def from_obj(obj, return_obj=Indicator()):        
-        if obj.get_Producer():
-            return_obj.producer = stix.common.InformationSource.from_obj(indicator_obj.get_Producer())
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):        
+        if not obj:
+            return None
         
-        if obj.get_Observables() and indicator_obj.get_Observables().get_Observable():
-            observable_obj = indicator_obj.get_Observables().get_Observable()
+        if not return_obj:
+            return_obj = cls()
+        
+        if obj.get_Producer():
+            return_obj.producer = stix.common.InformationSource.from_obj(obj.get_Producer())
+        
+        if obj.get_Observables() and obj.get_Observables().get_Observable():
+            observable_obj = obj.get_Observables().get_Observable()
             observable = Observable.from_obj(observable_obj)
             return_obj.observables.append(observable)
         
         return return_obj
     
-    def to_dict(self, return_dict={}):
+    def to_dict(self, return_dict=None):
+        if not return_dict:
+            return_dict = {}
+        
         if self.observables:
-            if len(observables) == 1:
-                return_dict['observables'] = self.observables[0].to_dict()
+            if len(self.observables) == 1:
+                return_dict['observable'] = self.observables[0].to_dict()
             else:
                 composite_observable = self._merge_observables(self.observables)
-                return_dict['observables'] = composite_observable.to_dict()
+                return_dict['observable'] = composite_observable.to_dict()
         
         if self.producer:
             return_dict['producer'] = self.producer.to_dict()
@@ -197,9 +211,15 @@ class Indicator(stix.Entity):
         return return_dict
         
     
-    @staticmethod
-    def from_dict(dict_repr, return_obj=Indicator()):
-        observable_dict = dict_repr.get('observables', None)
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not dict_repr:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+        
+        observable_dict = dict_repr.get('observable', )
         producer_dict = dict_repr.get('producer', None)
         
         if observable_dict:

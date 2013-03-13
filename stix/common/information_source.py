@@ -11,10 +11,10 @@ import stix.bindings.stix_common_0_2 as stix_common_binding
 
 
 class InformationSource(stix.Entity):
-    def __init__(self, identity=STIXCIQIdentity(), time=Time()):
-        self.identity = identity
+    def __init__(self, identity=None, time=None):
+        self.identity = identity if identity else STIXCIQIdentity()
         #self.contributors = []
-        self.time = time
+        self.time = time if time else Time()
         #self.tools = []
         #self.references = []
     
@@ -24,7 +24,7 @@ class InformationSource(stix.Entity):
     
     @identity.setter
     def identity(self, value):
-        if not isinstance(value, Identity):
+        if value and not isinstance(value, Identity):
             raise ValueError('value must be instance of Identity')
     
         self._identity = value
@@ -35,7 +35,7 @@ class InformationSource(stix.Entity):
     
     @time.setter
     def time(self, value):
-        if not isinstance(value, Time):
+        if value and not isinstance(value, Time):
             raise ValueError('value must be instance of Time')
         
         self._time = value
@@ -72,8 +72,14 @@ class InformationSource(stix.Entity):
     
         return return_obj
         
-    @staticmethod
-    def from_obj(obj, return_obj=InformationSource()):
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
+        if not obj:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+        
         if obj.get_Identity():
             return_obj.identity = STIXCIQIdentity.from_obj(obj.get_Identity())
         
@@ -83,8 +89,14 @@ class InformationSource(stix.Entity):
         return return_obj
         
         
-    @staticmethod
-    def from_dict(dict_repr, return_obj=InformationSource()):
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not dict_repr:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+        
         identity_dict = dict_repr.get('identity', None)
         time_dict = dict_repr.get('time', None)
         
@@ -97,13 +109,17 @@ class InformationSource(stix.Entity):
         return return_obj
     
     
-    def to_dict(self, return_dict={}):
+    def to_dict(self, return_dict=None):
+        if not return_dict:
+            return_dict = {}
+        
         if self.identity:
             return_dict['identity'] = self.identity.to_dict()
             
         if self.time:
             return_dict['time']  = self.time.to_dict()
-            
+        
+        return return_dict
     
     
     

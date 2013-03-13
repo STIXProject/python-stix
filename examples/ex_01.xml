@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<stix:STIX_Package 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:stix="http://stix.mitre.org"
+    xmlns:stixCommon="http://stix.mitre.org/Common"
+    xmlns:indicator="http://stix.mitre.org/Indicator"
+    xmlns:aciq="urn:oasis:names:tc:ciq:xal:3"
+    xmlns:ciq="urn:oasis:names:tc:ciq:xpil:3"
+    xmlns:n="urn:oasis:names:tc:ciq:xnl:3"
+    xmlns:cybox="http://cybox.mitre.org/cybox_v1"
+    xmlns:cyboxCommon="http://cybox.mitre.org/Common_v1"
+    xmlns:AddressObj="http://cybox.mitre.org/objects#AddressObject"
+    xmlns:SystemObj="http://cybox.mitre.org/objects#SystemObject"
+    xmlns:UserAccountObj="http://cybox.mitre.org/objects#UserAccountObject"
+    xmlns:FileObj="http://cybox.mitre.org/objects#FileObject"          
+    xmlns:EmailMessageObj="http://cybox.mitre.org/objects#EmailMessageObject"
+    xmlns:URIObj="http://cybox.mitre.org/objects#URIObject"
+    xsi:schemaLocation="http://stix.mitre.org file:/C:/Users/bworrell/Desktop/stix_v1.0(Draft2)_all_files/STIX_v1.0_(Draft2).xsd http://cybox.mitre.org/Common_v1 http://cybox.mitre.org/XMLSchema/cybox_common_types_v1.0(draft).xsd        http://cybox.mitre.org/objects#AddressObject http://cybox.mitre.org/XMLSchema/objects/Address/Address_Object_1.1.xsd        http://cybox.mitre.org/objects#FileObject http://cybox.mitre.org/XMLSchema/objects/File/File_Object_1.2.xsd        http://cybox.mitre.org/objects#URIObject http://cybox.mitre.org/XMLSchema/objects/URI/URI_Object_1.1.xsd        http://cybox.mitre.org/objects#EmailMessageObject http://cybox.mitre.org/XMLSchema/objects/Email_Message/Email_Message_Object_1.1.xsd        http://cybox.mitre.org/cybox_v1 http://cybox.mitre.org/XMLSchema/cybox_core_v1.0(draft).xsd">
+    <stix:STIXHeader>
+        <stix:Description>
+            <cyboxCommon:Text>STIX Pilot Test</cyboxCommon:Text>
+        </stix:Description>
+        <stix:InformationSource>
+            <stixCommon:Identity>
+                <ciq:PartyName>
+                    <n:PersonName>
+                        <n:NameElemen>John Smith</n:NameElement>
+                    </n:PersonName>
+                </ciq:PartyName>
+            </stixCommon:Identity>
+            <stixCommon:Time>
+                <cyboxCommon:Produced_Time>2013-03-12T20:00:00</cyboxCommon:Produced_Time>
+            </stixCommon:Time>
+        </stix:InformationSource>
+    </stix:STIXHeader>
+    <stix:Indicators>
+        <stix:Indicator>
+            <indicator:Description>
+                <cyboxCommon:Text>STIX Pilot Indicator</cyboxCommon:Text>
+            </indicator:Description>
+            <indicator:Observables>
+                <indicator:Observable id="cybox:observable-4484d420-e7b8-11e1-bab7-005056c00008">
+                       <cybox:Observable_Composition operator="AND">
+                           <cybox:Observable id="cybox:observable-4484d423-e7b8-11e1-89cb-005056c00008">
+                               <cybox:Stateful_Measure>
+                                   <cybox:Object id="cybox:object-448437de-e7b8-11e1-b5ed-005056c00008">
+                                       <cybox:Defined_Object xsi:type="FileObj:FileObjectType">
+                                           <FileObj:File_Name datatype="String">AnalysisReport.pdf</FileObj:File_Name>
+                                           <FileObj:File_Extension datatype="String">pdf</FileObj:File_Extension>
+                                           <FileObj:Size_In_Bytes datatype="UnsignedLong">130195</FileObj:Size_In_Bytes>
+                                           <FileObj:Hashes>
+                                               <cyboxCommon:Hash>
+                                                   <cyboxCommon:Type datatype="String">md5</cyboxCommon:Type>
+                                                   <cyboxCommon:Simple_Hash_Value datatype="hexBinary">6b170bc4bfbd0a6e4fee1cb78ac8ea44</cyboxCommon:Simple_Hash_Value>
+                                               </cyboxCommon:Hash>
+                                           </FileObj:Hashes>
+                                       </cybox:Defined_Object>
+                                       <cybox:Related_Objects>
+                                           <cybox:Related_Object idref="cybox:object-4484d41f-e7b8-11e1-bea8-005056c00008" type="Email Message" relationship="Contained_Within">
+                                           </cybox:Related_Object>
+                                       </cybox:Related_Objects>
+                                   </cybox:Object>
+                               </cybox:Stateful_Measure>
+                           </cybox:Observable>
+                           <cybox:Observable id="cybox:observable-4484d422-e7b8-11e1-aaf3-005056c00008">
+                               <cybox:Stateful_Measure>
+                                   <cybox:Object id="cybox:guid-4484d41e-e7b8-11e1-ad5c-005056c00008">
+                                       <cybox:Defined_Object xsi:type="URIObj:URIObjectType" type="URL">
+                                           <URIObj:Value datatype="AnyURI">http://www.consultingservize.net/archives/Analysis.pdf</URIObj:Value>
+                                       </cybox:Defined_Object>
+                                       <cybox:Related_Objects>
+                                           <cybox:Related_Object idref="cybox:object-4484d41f-e7b8-11e1-bea8-005056c00008" type="Email Message" relationship="Contained_Within">
+                                           </cybox:Related_Object>
+                                       </cybox:Related_Objects>
+                                   </cybox:Object>
+                               </cybox:Stateful_Measure>
+                           </cybox:Observable>
+                           <cybox:Observable id="cybox:observable-4484d421-e7b8-11e1-b0f7-005056c00008">
+                               <cybox:Stateful_Measure>
+                                   <cybox:Object id="cybox:object-4484d41f-e7b8-11e1-bea8-005056c00008">
+                                       <cybox:Defined_Object xsi:type="EmailMessageObj:EmailMessageObjectType">
+                                           <EmailMessageObj:Attachments>
+                                               <EmailMessageObj:File xsi:type="FileObj:FileObjectType" object_reference="cybox:object-448437de-e7b8-11e1-b5ed-005056c00008"/>
+                                           </EmailMessageObj:Attachments>
+                                           <EmailMessageObj:Header>
+                                               <EmailMessageObj:To>
+                                                   <EmailMessageObj:Recipient category="e-mail">
+                                                       <AddressObj:Address_Value datatype="String">rsmith@megacorp.com</AddressObj:Address_Value>
+                                                   </EmailMessageObj:Recipient>
+                                               </EmailMessageObj:To>
+                                               <EmailMessageObj:From category="e-mail">
+                                                   <AddressObj:Address_Value datatype="String">jdoe@yahoo.com</AddressObj:Address_Value>
+                                               </EmailMessageObj:From>
+                                               <EmailMessageObj:Subject datatype="String">Complete Analysis</EmailMessageObj:Subject>
+                                               <EmailMessageObj:Date datatype="DateTime">2012-07-16T15:48:34-04:00</EmailMessageObj:Date>
+                                               <EmailMessageObj:Message_ID datatype="String">CAF=+=fBGC1ivgFkbi7jvxRBxH_h_OQnERPNiJQjTWO6HDjNbqg@foo.yahoo.com</EmailMessageObj:Message_ID>
+                                           </EmailMessageObj:Header>
+                                           <EmailMessageObj:Optional_Header>
+                                               <EmailMessageObj:Content-Type datatype="String">multipart/mixed; boundary=bcaec543109c7d1c6c04c6b17f90</EmailMessageObj:Content-Type>
+                                               <EmailMessageObj:MIME-Version datatype="String">1.0</EmailMessageObj:MIME-Version>
+                                               <EmailMessageObj:X-Originating-IP category="ipv4-addr">
+                                                   <AddressObj:Address_Value datatype="String">98.139.183.24</AddressObj:Address_Value>
+                                               </EmailMessageObj:X-Originating-IP>
+                                           </EmailMessageObj:Optional_Header>
+                                           <EmailMessageObj:Raw_Body datatype="String"><![CDATA[ Attached is the summary for the analysis that you requested. This is
+CONFIDENTIAL so do not share with anyone outside the group. The full
+summary can be found here:
+http://www.consultingservize.net/archives/Analysis.pdf.
+
+Regards,
+Jonathan Doe
+Senior Analyst
+Consulting Services, LLC
+
+<span style=3D"color:rgb(34,34,34);font-family:arial,sans-serif;font-size:1=
+3px;background-color:rgb(255,255,255)">Attached is the summary for the anal=
+ysis that you requested. This is CONFIDENTIAL so do not share with anyone o=
+utside the group. The full summary can be found here:</span><div style=3D"c=
+olor:rgb(34,34,34);font-family:arial,sans-serif;font-size:13px;background-c=
+olor:rgb(255,255,255)">
+<a href=3D"http://www.consultingservize.net/archives/Analysis.pdf" target=
+=3D"_blank" style=3D"color:rgb(17,85,204)">http://www.consultingservize.net=
+/archives/Analysis.pdf</a>.</div><div style=3D"color:rgb(34,34,34);font-fam=
+ily:arial,sans-serif;font-size:13px;background-color:rgb(255,255,255)">
+<br></div><div style=3D"color:rgb(34,34,34);font-family:arial,sans-serif;fo=
+nt-size:13px;background-color:rgb(255,255,255)">Regards,</div><div style=3D=
+"color:rgb(34,34,34);font-family:arial,sans-serif;font-size:13px;background=
+-color:rgb(255,255,255)">
+Jonathan Doe</div><div style=3D"color:rgb(34,34,34);font-family:arial,sans-=
+serif;font-size:13px;background-color:rgb(255,255,255)">Senior Analyst</div=
+><div style=3D"color:rgb(34,34,34);font-family:arial,sans-serif;font-size:1=
+3px;background-color:rgb(255,255,255)">
+Consulting Services, LLC</div> ]]></EmailMessageObj:Raw_Body>
+                                           <EmailMessageObj:Raw_Header datatype="String"><![CDATA[ Delivered-To: rsmith@megacorp.com
+Received: by 10.64.32.72 with SMTP id g8csp132763iei;
+        Mon, 16 Jul 2012 12:48:37 -0700 (PDT)
+Return-Path: jdoe@yahoo.com
+Received-SPF: pass (yahoo.com: domain of jdoe@yahoo.com designates 10.20.30.40 as permitted sender) client-ip=10.20.30.40
+Authentication-Results: foo.yahoo.com; spf=pass (yahoo.com: domain of jdoe@yahoo.com designates 10.20.30.40 as permitted sender) smtp.mail=jdoe@yahoo.com; dkim=pass header.i=jdoe@yahoo.com
+Received: from foo.yahoo.com ([10.20.30.40])
+        by 10.20.30.40 with SMTP id e6mr6123235ign.55.1342468114267 (num_hops = 1);
+        Mon, 16 Jul 2012 12:48:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:date:message-id:subject:from:to:content-type;
+        bh=g2IesnU8zTDC2irbEoXq/4TH1Aw5Y34Qxp6vxswEx1Q=;
+        b=r6oSuim04uCWRpytcxT0hcs/i8aDVfGhv95+6S+zymEK8GVr0vbKe5EX97tAfyIUb3
+         yOx2i75Uhtg3uZLJry0nTd8oVBd1Zoq6q/Zyw9PqWXol06HCTJWgM6pKYq1CGnD950ih
+         9KoZRBa3qmLMvhs8QBp2+0fWDNLxq9uTSzCcPqHK/O/DT1q7uT0cOHkSxjCCL/XkAcGU
+         8csOx3ManU7ebNNoxgNcyPm1TxCzsulG3TVsM0pXvxKOT9+uIrDGJ0nk7Qm+x3pvKSbv
+         0HvAYO6P5z52RlOPHK4mR3Q+SBL7H/01A/QHlTgqNL5cFNkumWg/PqgmCWUFe5VAITDW
+         WmGQ==
+MIME-Version: 1.0
+Received: by 10.20.30.40 with SMTP id e6mr6123235ign.55.1342468114261; Mon,
+ 16 Jul 2012 12:48:34 -0700 (PDT)
+Received: by 10.43.79.137 with HTTP; Mon, 16 Jul 2012 12:48:34 -0700 (PDT)
+Date: Mon, 16 Jul 2012 15:48:34 -0400
+Message-ID: <CAF=+=fBGC1ivgFkbi7jvxRBxH_h_OQnERPNiJQjTWO6HDjNbqg@foo.yahoo.com>
+Subject: Complete Analysis
+From: Jon Doe <jdoe@yahoo.com>
+To: Robert Smith <rsmith@megacorp.com>
+Content-Type: multipart/mixed; boundary=bcaec543109c7d1c6c04c6b17f90
+X-Originating-IP: 98.139.183.24
+ ]]></EmailMessageObj:Raw_Header>
+                                       </cybox:Defined_Object>
+                                   </cybox:Object>
+                               </cybox:Stateful_Measure>
+                           </cybox:Observable>
+                       </cybox:Observable_Composition>
+               </indicator:Observable>
+            </indicator:Observables>
+            <indicator:Producer>
+                <stixCommon:Identity>
+                    <ciq:PartyName>
+                        <n:PersonName>
+                            <n:NameElement>John Smith</n:NameElement>
+                        </n:PersonName>
+                    </ciq:PartyName>
+                </stixCommon:Identity>
+                <stixCommon:Time>
+                    <cyboxCommon:Produced_Time>2013-03-12T20:00:00</cyboxCommon:Produced_Time>
+                </stixCommon:Time>
+            </indicator:Producer>
+        </stix:Indicator>
+    </stix:Indicators>
+</stix:STIX_Package>
