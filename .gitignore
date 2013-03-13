@@ -2,9 +2,15 @@
 *.swp
 
 # compiled python modules
-*.pyc
+*.py[co]
 
 # eclipse project files
 *.project
 *.pydevproject
 *.settings
+
+# python setuptools
+build/
+dist/
+*.egg-info
+
