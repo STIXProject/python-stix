@@ -57,7 +57,18 @@ class STIXHeader(stix.Entity):
         
         return return_obj
     
-    def to_obj(self, return_obj=stix_core_binding.STIXHeaderType()):
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = stix_core_binding.STIXHeaderType()
+        
+        return_obj.set_PackageIntent(self.package_intent)
+        
+        if self.description:
+            return_obj.set_Description(self.description.to_obj())
+            
+        if self.information_source:
+            return_obj.set_InformationSource(self.information_source.to_obj())
+        
         return return_obj
     
     @classmethod
@@ -78,7 +89,10 @@ class STIXHeader(stix.Entity):
         
         return return_obj
     
-    def to_dict(self, return_dict={}):
+    def to_dict(self, return_dict=None):
+        if not return_dict:
+            return_dict = {}
+        
         if self.package_intent:
             return_dict['package_intent'] = self.package_intent
         
