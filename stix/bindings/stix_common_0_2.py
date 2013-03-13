@@ -1117,7 +1117,7 @@ class STIX_CIQ_IdentityType(GeneratedsSuper):
     subclass = None
     superclass = None
     def __init__(self, PartyType=None, FreeTextLines=None, PartyName=None, Addresses=None, Accounts=None, ContactNumbers=None, Documents=None, ElectronicAddressIdentifiers=None, Events=None, Identifiers=None, Memberships=None, Relationships=None, Revenues=None, Stocks=None, Vehicles=None, OrganisationInfo=None, PersonInfo=None, BirthInfo=None, CountriesOfResidence=None, Favourites=None, Habits=None, Hobbies=None, Languages=None, Nationalities=None, Occupations=None, PhysicalInfo=None, Preferences=None, Qualifications=None, Visas=None):
-        self.PartyType = _cast(None, xpil_binding.PartyType)
+        self.PartyType = _cast(None, xpil_binding.PartyType) if PartyType else None
         self.FreeTextLines = FreeTextLines
         self.PartyName = PartyName
         self.Addresses = Addresses
