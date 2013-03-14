@@ -15,7 +15,7 @@ def main():
     
     stix_package_two = STIXPackage.from_dict(stix_dict) # create python-stix object from dictionary
     xml = stix_package_two.to_xml() # generate xml from python-stix object
-    print xml
+    print(xml)
     
 if __name__ == '__main__':
     main()
