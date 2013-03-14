@@ -52,13 +52,13 @@ class Indicator(stix.Entity):
         if type not in self.TYPES_SOURCE:
             raise ValueError('type not known')
         
-        if type == TYPE_SOURCE_ORG:
+        if type == self.TYPE_SOURCE_ORG:
             org_name_element = stix.common.OrganisationNameElement(org_name)
             org_name = stix.common.OrganisationName()
             org_name.add_organisation_name_element(org_name_element)
             self.producer.identity.party_name.add_organisation_name(org_name)
         
-        if type == TYPE_SOURCE_PERSON:
+        if type == self.TYPE_SOURCE_PERSON:
             person_name_element = stix.common.PersonNameElement(person_name)
             person_name = stix.common.PersonName()
             person_name.add_name_element(person_name_element)
