@@ -73,7 +73,9 @@ class STIXPackage(stix.Entity):
         if not return_dict:
             return_dict = {}
         
-        return_dict['id'] = self.id_
+        if self.id_:
+            return_dict['id'] = self.id_
+            
         return_dict['version'] = self.version
         
         if self.idref_:
