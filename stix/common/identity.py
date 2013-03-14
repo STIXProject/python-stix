@@ -1,6 +1,5 @@
 import stix
 import stix.utils
-import stix.bindings.stix_indicator_1_1 as stix_indicator_binding
 import stix.bindings.stix_common_0_2 as stix_common_binding
 import stix.bindings.oasis.xpil as oasis_xpil_binding
 
@@ -68,7 +67,7 @@ class Identity(stix.Entity):
                 
         if self.related_identities:
             related_identities_obj = stix_common_binding.RelatedIdentitiesType()
-            for identity in related_identities:
+            for identity in self.related_identities:
                 related_identities_obj.add_RelatedIdentity(identity.to_obj())
             
             return_obj.set_RelatedIdentities(related_identities_obj)
@@ -182,19 +181,6 @@ class STIXCIQIdentity(Identity):
             raise ValueError("value must be instance of PartyName")
         
         self._party_name = value
-        
-    
-    def to_obj(self, return_obj=None):
-        if not return_obj:
-            return_obj = stix_common_binding.STIX_CIQ_IdentityType()
-        
-        super(STIXCIQIdentity, self).to_obj(return_obj)
-        
-        if self.party_name:
-            return_obj.set_PartyName(self.party_name.to_obj())
-        
-        return return_obj
-
     
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -221,7 +207,6 @@ class STIXCIQIdentity(Identity):
             return_obj.set_PartyName(self.party_name.to_obj())
         
         return return_obj
-    
     
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
@@ -260,7 +245,7 @@ class RelatedIdentity(STIXCIQIdentity):
     
     @relationship.setter
     def relationship(self, value):
-        if value and not isinstasnce(value, basestring):
+        if value and not isinstance(value, basestring):
             raise ValueError('value must be instance of basestring')
         
         self._relationship = value
@@ -675,7 +660,7 @@ class NameElement(stix.Entity):
     
     @classmethod
     def from_dict(cls, dict_repr, return_obj):
-        self.value = dict_repr.get('value', None)
+        return_obj.value = dict_repr.get('value', None)
 
     def to_dict(self, return_dict):
         return_dict['value'] = self.value
@@ -709,8 +694,8 @@ class PersonNameElement(NameElement):
     
     @element_type.setter
     def element_type(self, value):
-        if value and value not in TYPES:
-            raise ValueError('value must be one of %s: ' % ' '.join(TYPES) )
+        if value and value not in self.TYPES:
+            raise ValueError('value must be one of %s: ' % ' '.join(self.TYPES) )
         
         self._element_type = value    
     
@@ -773,7 +758,7 @@ class OrganisationNameElement(NameElement):
     TYPES = (TYPE_NAME_ONLY, TYPE_TYPE_ONLY, TYPE_FULL_NAME)
     
     def __init__(self, value=None, element_type=None):
-        super(SubDivisionNameElement, self).__init__(value)
+        super(OrganisationNameElement, self).__init__(value)
         self.element_type = element_type
         
     @property
@@ -783,8 +768,8 @@ class OrganisationNameElement(NameElement):
     
     @element_type.setter
     def element_type(self, value):
-        if value and value not in TYPES:
-            raise ValueError('value must be one of: %s ' % ' '.join(TYPES) )
+        if value and value not in self.TYPES:
+            raise ValueError('value must be one of: %s ' % ' '.join(self.TYPES) )
         
         self._element_type = value
     
@@ -856,8 +841,8 @@ class SubDivisionName(stix.Entity):
     
     @type.setter
     def type(self, value):
-        if value and value not in TYPES:
-            raise ValueError('value must be one of: %s' % ' '.join(TYPES))
+        if value and value not in self.TYPES:
+            raise ValueError('value must be one of: %s' % ' '.join(self.TYPES))
         
         self._type = value
     
@@ -900,7 +885,7 @@ class SubDivisionName(stix.Entity):
     
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
-        if not obj:
+        if not dict_repr:
             return None
         
         if not return_obj:
