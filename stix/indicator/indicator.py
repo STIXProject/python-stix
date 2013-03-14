@@ -5,14 +5,13 @@ import stix.bindings.stix_indicator_1_1 as stix_indicator_binding
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
 
-
 class Indicator(stix.Entity):
     TYPE_SOURCE_ORG = 0
     TYPE_SOURCE_PERSON = 1
     TYPES_SOURCE = (TYPE_SOURCE_ORG, TYPE_SOURCE_PERSON)
     
     def __init__(self, id_=None, producer=None, observables=None):
-        self.id_ = id_ if id_ else stix.utils.create_id()
+        self.id_ = id_ if id_ is not None else stix.utils.create_id()
         self.producer = producer if producer else stix.common.InformationSource()
         self.observables = observables
         self.name = None
@@ -162,7 +161,10 @@ class Indicator(stix.Entity):
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = stix_indicator_binding.IndicatorType()
-                
+        
+        if self.id_:
+            return_obj.set_id(self.id_)
+        
         '''most of this does not work because of the state of the cybox api development'''
         if self.observables:
             observables_obj = stix_indicator_binding.ObservablesType()
@@ -187,6 +189,8 @@ class Indicator(stix.Entity):
         if not return_obj:
             return_obj = cls()
         
+        return_obj.id_ = obj.get_id()
+        
         if obj.get_Producer():
             return_obj.producer = stix.common.InformationSource.from_obj(obj.get_Producer())
         
@@ -201,7 +205,8 @@ class Indicator(stix.Entity):
         if not return_dict:
             return_dict = {}
         
-        return_dict['id'] = self.id_
+        if self.id_:
+            return_dict['id'] = self.id_
         
         if self.observables:
             if len(self.observables) == 1:
@@ -224,8 +229,7 @@ class Indicator(stix.Entity):
         if not return_obj:
             return_obj = cls()
         
-        if 'id' in dict_repr:
-            return_obj.id_ = dict_repr['id']
+        return_obj.id_ = dict_repr.get('id', None)
         
         observable_dict = dict_repr.get('observable', )
         producer_dict = dict_repr.get('producer', None)
