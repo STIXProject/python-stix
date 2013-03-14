@@ -11,8 +11,8 @@ class Indicator(stix.Entity):
     TYPE_SOURCE_PERSON = 1
     TYPES_SOURCE = (TYPE_SOURCE_ORG, TYPE_SOURCE_PERSON)
     
-    def __init__(self, id=None, producer=None, observables=None):
-        self._id = id if id else stix.utils.create_id()
+    def __init__(self, id_=None, producer=None, observables=None):
+        self.id_ = id_ if id_ else stix.utils.create_id()
         self.producer = producer if producer else stix.common.InformationSource()
         self.observables = observables
         self.name = None
@@ -39,27 +39,27 @@ class Indicator(stix.Entity):
         
         if valuelist:
             for value in valuelist:
-                self.add_observable(observable)
+                self.add_observable(value)
     
-    def add_source(self, type, name):
+    def add_source(self, type_, name):
         '''
         Adds a source to this indicator. 
         
         Keyword arguments:
-        type -- the type of source (Indicator.TYPE_SOURCE_ORG, Indicator.TYPE_SOURCE_PERSON)
+        type_ -- the type_ of source (Indicator.TYPE_SOURCE_ORG, Indicator.TYPE_SOURCE_PERSON)
         name -- the name of the source
         '''
-        if type not in self.TYPES_SOURCE:
-            raise ValueError('type not known')
+        if type_ not in self.TYPES_SOURCE:
+            raise ValueError('type_ not known')
         
-        if type == self.TYPE_SOURCE_ORG:
-            org_name_element = stix.common.OrganisationNameElement(org_name)
+        if type_ == self.TYPE_SOURCE_ORG:
+            org_name_element = stix.common.OrganisationNameElement(value=name)
             org_name = stix.common.OrganisationName()
             org_name.add_organisation_name_element(org_name_element)
             self.producer.identity.party_name.add_organisation_name(org_name)
         
-        if type == self.TYPE_SOURCE_PERSON:
-            person_name_element = stix.common.PersonNameElement(person_name)
+        if type_ == self.TYPE_SOURCE_PERSON:
+            person_name_element = stix.common.PersonNameElement(value=name)
             person_name = stix.common.PersonName()
             person_name.add_name_element(person_name_element)
             self.producer.identity.party_name.add_person_name(person_name)
@@ -94,7 +94,7 @@ class Indicator(stix.Entity):
         
         # get the namelines
         try:
-            part_name = self.producer.identity.party_name
+            party_name = self.producer.identity.party_name
             list_names.extend(party_name.name_lines)
         except:
             pass
@@ -152,14 +152,17 @@ class Indicator(stix.Entity):
         
         return root_observable
     
-    def add_object(self, object):
+    def add_object(self, object_):
         ''' The object paramter is wrapped in an observable and attached to the indicator. The object must be a 
             cybox.core.DefinedObject instance'''
         
-        observable = Observable(stateful_measure=object)
+        observable = Observable(stateful_measure=object_)
         self.add_observable(observable)
     
-    def to_obj(self, return_obj=stix_indicator_binding.IndicatorType()):
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = stix_indicator_binding.IndicatorType()
+                
         '''most of this does not work because of the state of the cybox api development'''
         if self.observables:
             observables_obj = stix_indicator_binding.ObservablesType()
@@ -198,6 +201,8 @@ class Indicator(stix.Entity):
         if not return_dict:
             return_dict = {}
         
+        return_dict['id'] = self.id_
+        
         if self.observables:
             if len(self.observables) == 1:
                 return_dict['observable'] = self.observables[0].to_dict()
@@ -218,6 +223,9 @@ class Indicator(stix.Entity):
         
         if not return_obj:
             return_obj = cls()
+        
+        if 'id' in dict_repr:
+            return_obj.id_ = dict_repr['id']
         
         observable_dict = dict_repr.get('observable', )
         producer_dict = dict_repr.get('producer', None)
