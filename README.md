@@ -1,7 +1,8 @@
 # python-stix
 
 A python library for parsing, manipulating, and generating STIX content. The `python-stix` library
-utilized the 1.0 Draft 2 bindings, is under heavy development and should be considered PRE-ALPHA. 
+utilizes the STIX v1.0 Draft 2 bindings, is under heavy development and should be considered **PRE-ALPHA**.
+There are no tagged releases at this time.
 
 For more information about STIX, see http://stix.mitre.org.
 
