@@ -11,7 +11,7 @@ setup(
     install_requires=['lxml>=2.3', 'python-dateutil', 'cybox>=1.0b1', 'maec>=3.0a1'],
     classifiers=[
         "Programming Language :: Python",
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
