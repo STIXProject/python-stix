@@ -315,12 +315,11 @@ class PartyName(stix.Entity):
         
         self.person_names.append(value) 
     
-    
     def add_organisation_name(self, value):
         if not isinstance(value, OrganisationName):
             raise ValueError('value must be instance of OrganisationName')
         
-        self.person_names.append(value)
+        self.organisation_names.append(value)
 
     def to_obj(self, return_obj=None):
         if not return_obj:
@@ -807,6 +806,8 @@ class OrganisationNameElement(NameElement):
             
         if self.value:
             return_dict['value'] = self.value
+        
+        return return_dict
             
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
@@ -818,6 +819,7 @@ class OrganisationNameElement(NameElement):
         
         return_obj.value = dict_repr.get('value', None)
         return_obj.element_type = dict_repr.get('element_type', None)
+        
         return return_obj
         
 

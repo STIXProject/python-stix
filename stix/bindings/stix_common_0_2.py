@@ -1778,7 +1778,7 @@ class MarkingStructureType(GeneratedsSuper):
     def __init__(self, markingModelRef=None, markingModelName=None, extensiontype_=None):
         self.markingModelRef = _cast(None, markingModelRef)
         self.markingModelName = _cast(None, markingModelName)
-        self.extension_type_ = None
+        self.extensiontype_ = None
         pass
     def factory(*args_, **kwargs_):
         if MarkingStructureType.subclass:

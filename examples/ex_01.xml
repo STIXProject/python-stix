@@ -12,10 +12,10 @@
     xmlns:AddressObj="http://cybox.mitre.org/objects#AddressObject"
     xmlns:SystemObj="http://cybox.mitre.org/objects#SystemObject"
     xmlns:UserAccountObj="http://cybox.mitre.org/objects#UserAccountObject"
-    xmlns:FileObj="http://cybox.mitre.org/objects#FileObject"          
+    xmlns:FileObj="http://cybox.mitre.org/objects#FileObject"
     xmlns:EmailMessageObj="http://cybox.mitre.org/objects#EmailMessageObject"
     xmlns:URIObj="http://cybox.mitre.org/objects#URIObject"
-    xsi:schemaLocation="http://stix.mitre.org STIX_v1.0_(Draft2).xsd http://cybox.mitre.org/Common_v1 http://cybox.mitre.org/XMLSchema/cybox_common_types_v1.0(draft).xsd        http://cybox.mitre.org/objects#AddressObject http://cybox.mitre.org/XMLSchema/objects/Address/Address_Object_1.1.xsd        http://cybox.mitre.org/objects#FileObject http://cybox.mitre.org/XMLSchema/objects/File/File_Object_1.2.xsd        http://cybox.mitre.org/objects#URIObject http://cybox.mitre.org/XMLSchema/objects/URI/URI_Object_1.1.xsd        http://cybox.mitre.org/objects#EmailMessageObject http://cybox.mitre.org/XMLSchema/objects/Email_Message/Email_Message_Object_1.1.xsd        http://cybox.mitre.org/cybox_v1 http://cybox.mitre.org/XMLSchema/cybox_core_v1.0(draft).xsd">
+    xsi:schemaLocation="http://stix.mitre.org STIX_v1.0_(Draft2).xsd    http://cybox.mitre.org/Common_v1 http://cybox.mitre.org/XMLSchema/cybox_common_types_v1.0(draft).xsd        http://cybox.mitre.org/objects#AddressObject http://cybox.mitre.org/XMLSchema/objects/Address/Address_Object_1.1.xsd        http://cybox.mitre.org/objects#FileObject http://cybox.mitre.org/XMLSchema/objects/File/File_Object_1.2.xsd        http://cybox.mitre.org/objects#URIObject http://cybox.mitre.org/XMLSchema/objects/URI/URI_Object_1.1.xsd        http://cybox.mitre.org/objects#EmailMessageObject http://cybox.mitre.org/XMLSchema/objects/Email_Message/Email_Message_Object_1.1.xsd        http://cybox.mitre.org/cybox_v1 http://cybox.mitre.org/XMLSchema/cybox_core_v1.0(draft).xsd">
     <stix:STIXHeader>
         <stix:Description>
             <cyboxCommon:Text>STIX Test</cyboxCommon:Text>
@@ -34,7 +34,7 @@
         </stix:InformationSource>
     </stix:STIXHeader>
     <stix:Indicators>
-        <stix:Indicator>
+        <stix:Indicator stix:guid-448437de-e7b8-11e1-b5ed-005056c00001>
             <indicator:Description>
                 <cyboxCommon:Text>STIX Pilot Indicator</cyboxCommon:Text>
             </indicator:Description>

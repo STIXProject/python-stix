@@ -1,4 +1,10 @@
+'''
+File: ex_01.py
 
+Description: Round-trip example. This script takes a STIX instance document from XML to
+a binding object, then to a api object and then to a dictionary. That dictionary is then
+converted back into an api object, which is then used to generate an XML document.
+'''
 import io
 from pprint import pprint
 
