@@ -25,6 +25,7 @@ class STIXHeader(stix.Entity):
         if isinstance(value, basestring):
             st = StructuredText()
             st.add_text(value)
+            self._description = st
         elif isinstance(value, StructuredText):
             self._description = value
         elif not value:

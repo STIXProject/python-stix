@@ -34,7 +34,7 @@
         </stix:InformationSource>
     </stix:STIXHeader>
     <stix:Indicators>
-        <stix:Indicator>
+        <stix:Indicator stix:guid-448437de-e7b8-11e1-b5ed-005056c00001>
             <indicator:Description>
                 <cyboxCommon:Text>STIX Pilot Indicator</cyboxCommon:Text>
             </indicator:Description>
