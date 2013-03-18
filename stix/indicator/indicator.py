@@ -65,40 +65,15 @@ class Indicator(stix.Entity):
     
     def get_sources(self):
         '''
-        Returns a dictionary of source information.
-        dict = {
-                'people' : list of person names (stix.common.identity.PersonName)
-                'orgs' : list of organisation names (stix.common.identity.OrganisationName)
-                'unknown' : list of names where the type is unknown (stix.common.identity.NameLine)
-                }
-        '''
-        
-        list_people = []
-        list_orgs = []
-        list_names = []
-        
-        # get the source people
+        Returns a dictionary of source information, effectively returning
+        self.producer.identity.party_name.to_dict()
+       '''
         try:
-            party_name = self.producer.identity.party_name
-            list_people.extend(party_name.person_names)
-        except: 
-            pass
-       
-        # get the source_organizations
-        try:
-            party_name = self.producer.identity.party_name
-            list_orgs.extend(party_name.organisation_names)
+            return_dict = self.producer.identity.party_name.to_dict()
         except:
-            pass
+            return_dict = {}
         
-        # get the namelines
-        try:
-            party_name = self.producer.identity.party_name
-            list_names.extend(party_name.name_lines)
-        except:
-            pass
-        
-        return {'people' : list_people, 'orgs' : list_orgs, 'unknown' : list_names}
+        return return_dict
             
     def set_produced_time(self, produced_time):
         '''The produced date variable must be in ISO 8601 format'''
