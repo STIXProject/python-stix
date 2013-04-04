@@ -74,7 +74,7 @@ class STIXHeader(stix.Entity):
     
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
-        if not dict:
+        if not dict_repr:
             return None
         
         if not return_obj:
