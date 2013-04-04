@@ -130,7 +130,7 @@ class Indicator(stix.Entity):
         ''' The object paramter is wrapped in an observable and attached to the indicator. The object must be a 
             cybox.core.DefinedObject instance'''
         
-        observable = Observable(stateful_measure=object_)
+        observable = Observable(object_)
         self.add_observable(observable)
     
     def to_obj(self, return_obj=None):
