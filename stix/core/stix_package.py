@@ -4,6 +4,7 @@ from stix_header import STIXHeader
 from stix.indicator import Indicator
 import stix.bindings.stix_core_1_0 as stix_core_binding
 from lxml import etree
+from StringIO import StringIO
 
 class STIXPackage(stix.Entity):
     '''
@@ -147,8 +148,128 @@ class STIXPackage(stix.Entity):
         
         return (stix_package, stix_package_obj)
             
-            
-        
+    
+    def to_xml(self):
+        '''Overrides the stix.to_xml() method. Namespace definitions are hardcoded--this is only temporary'''
+        s = StringIO()
+        self.to_obj().export(s, 0, name_="STIX_Package",
+                             namespacedef_='xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"\
+                                            xmlns:WinRegistryKeyObj="http://cybox.mitre.org/objects#WinRegistryKeyObject"\
+                                            xmlns:WinMutexObj="http://cybox.mitre.org/objects#WinMutexObject"\
+                                            xmlns:campaign="http://stix.mitre.org/Campaign"\
+                                            xmlns:PortObj="http://cybox.mitre.org/objects#PortObject"\
+                                            xmlns:CodeObj="http://cybox.mitre.org/objects#CodeObject"\
+                                            xmlns:UnixPipeObj="http://cybox.mitre.org/objects#UnixPipeObject"\
+                                            xmlns:ProcessObj="http://cybox.mitre.org/objects#ProcessObject"\
+                                            xmlns:xlink="http://www.w3.org/1999/xlink"\
+                                            xmlns:COA="http://stix.mitre.org/COA"\
+                                            xmlns:WinProcessObj="http://cybox.mitre.org/objects#WinProcessObject"\
+                                            xmlns:WinEventLogObj="http://cybox.mitre.org/objects#WinEventLogObject"\
+                                            xmlns:UserSessionObj="http://cybox.mitre.org/objects#UserSessionObject"\
+                                            xmlns:xs="http://www.w3.org/2001/XMLSchema"\
+                                            xmlns:LibraryObj="http://cybox.mitre.org/objects#LibraryObject"\
+                                            xmlns:sch="http://purl.oclc.org/dsdl/schematron"\
+                                            xmlns:WinSystemObj="http://cybox.mitre.org/XMLSchema/objects#WinSystemObject"\
+                                            xmlns:indicator="http://stix.mitre.org/Indicator"\
+                                            xmlns:DNSCacheObj="http://cybox.mitre.org/objects#DNSCacheObject"\
+                                            xmlns:maecBundle="http://maec.mitre.org/XMLSchema/maec-bundle-3"\
+                                            xmlns:AccountObj="http://cybox.mitre.org/objects#AccountObject"\
+                                            xmlns:ProductObj="http://cybox.mitre.org/objects#ProductObject"\
+                                            xmlns:stixCommon="http://stix.mitre.org/Common"\
+                                            xmlns:WinUserAccountObj="http://cybox.mitre.org/objects#WinUserAccountObject"\
+                                            xmlns:X509CertificateObj="http://cybox.mitre.org/objects#X509CertificateObject"\
+                                            xmlns:GUIDialogboxObj="http://cybox.mitre.org/objects#GUIDialogboxObject"\
+                                            xmlns:capec="http://capec.mitre.org/capec_v1"\
+                                            xmlns:Incident="http://stix.mitre.org/Incident"\
+                                            xmlns:WinServiceObj="http://cybox.mitre.org/objects#WinServiceObject"\
+                                            xmlns:xal="urn:oasis:names:tc:ciq:xal:3"\
+                                            xmlns:maecPackage="http://maec.mitre.org/XMLSchema/maec-package-1"\
+                                            xmlns:UnixVolumeObj="http://cybox.mitre.org/objects#UnixVolumeObject"\
+                                            xmlns:WinFileObj="http://cybox.mitre.org/objects#WinFileObject"\
+                                            xmlns:ExpTgt="http://stix.mitre.org/ExploitTarget"\
+                                            xmlns:a="urn:oasis:names:tc:ciq:xal:3"\
+                                            xmlns:xsd="http://www.w3.org/2001/XMLSchema"\
+                                            xmlns:WinEventObj="http://cybox.mitre.org/objects#WinEventObject"\
+                                            xmlns:WinKernelHookObj="http://cybox.mitre.org/objects#WinKernelHookObject"\
+                                            xmlns:UnixFileObj="http://cybox.mitre.org/objects#UnixFileObject"\
+                                            xmlns:VolumeObj="http://cybox.mitre.org/objects#VolumeObject"\
+                                            xmlns:cvrf-common="http://www.icasi.org/CVRF/schema/common/1.1"\
+                                            xmlns:dc="http://purl.org/dc/elements/1.1/"\
+                                            xmlns:APIObj="http://cybox.mitre.org/objects#APIObject"\
+                                            xmlns:x509CertificateObj="http://cybox.mitre.org/objects#X509CertificateObject"\
+                                            xmlns:EmailMessageObj="http://cybox.mitre.org/objects#EmailMessageObject"\
+                                            xmlns:DeviceObj="http://cybox.mitre.org/objects#DeviceObject"\
+                                            xmlns:WinSystemRestoreObj="http://cybox.mitre.org/objects#WinSystemRestoreObject"\
+                                            xmlns:ns1="http://cybox.mitre.org/objects#FileObject"\
+                                            xmlns:SystemObj="http://cybox.mitre.org/objects#SystemObject"\
+                                            xmlns:common="http://cybox.mitre.org/Common_v1"\
+                                            xmlns:NetworkConnectionObj="http://cybox.mitre.org/objects#NetworkConnectionObject"\
+                                            xmlns:WinComputerAccountObj="http://cybox.mitre.org/objects#WinComputerAccountObject"\
+                                            xmlns:WinThreadObj="http://cybox.mitre.org/objects#WinThreadObject"\
+                                            xmlns:WinExecutableFileObj="http://cybox.mitre.org/objects#WinExecutableFileObject"\
+                                            xmlns:WinMemoryPageRegionObj="http://cybox.mitre.org/objects#WinMemoryPageRegionObject"\
+                                            xmlns:WinKernelObj="http://cybox.mitre.org/objects#WinKernelObject"\
+                                            xmlns:iodef="urn:ietf:params:xml:ns:iodef-1.0"\
+                                            xmlns:WinNetworkRouteEntryObj="http://cybox.mitre.org/objects#WinNetworkRouteEntryObject"\
+                                            xmlns:WinPrefetchObj="http://cybox.mitre.org/objects#WinPrefetchObject"\
+                                            xmlns:n="urn:oasis:names:tc:ciq:xnl:3"\
+                                            xmlns:cvrf="http://www.icasi.org/CVRF/schema/cvrf/1.1"\
+                                            xmlns:SemaphoreObj="http://cybox.mitre.org/objects#SemaphoreObject"\
+                                            xmlns:ciq="urn:oasis:names:tc:ciq:xpil:3"\
+                                            xmlns:SocketObj="http://cybox.mitre.org/objects#SocketObject"\
+                                            xmlns:HTTPSessionObj="http://cybox.mitre.org/objects#HTTPSessionObject"\
+                                            xmlns:GUIObj="http://cybox.mitre.org/objects#GUIObject"\
+                                            xmlns:metadata="http://xml/metadataSharing.xsd"\
+                                            xmlns:WinCriticalSectionObj="http://cybox.mitre.org/objects#WinCriticalSectionObject"\
+                                            xmlns:DNSRecordObj="http://cybox.mitre.org/objects#DNSRecordObject"\
+                                            xmlns:UserAccountObj="http://cybox.mitre.org/objects#UserAccountObject"\
+                                            xmlns:WinNetworkShareObj="http://cybox.mitre.org/objects#WinNetworkShareObject"\
+                                            xmlns:cyboxCommon="http://cybox.mitre.org/Common_v1"\
+                                            xmlns:None="urn:oasis:names:tc:ciq:xpil:3"\
+                                            xmlns:aciq="urn:oasis:names:tc:ciq:xal:3"\
+                                            xmlns:WinWaitableTimerObj="http://cybox.mitre.org/objects#WinWaitableTimerObject"\
+                                            xmlns:vuln="http://www.icasi.org/CVRF/schema/vuln/1.1"\
+                                            xmlns:ct="urn:oasis:names:tc:ciq:ct:3"\
+                                            xmlns:DNSQueryObj="http://cybox.mitre.org/objects#DNSQueryObject"\
+                                            xmlns:FileObj="http://cybox.mitre.org/objects#FileObject"\
+                                            xmlns:WinVolumeObj="http://cybox.mitre.org/objects#WinVolumeObject"\
+                                            xmlns:PipeObj="http://cybox.mitre.org/objects#PipeObject"\
+                                            xmlns:AddressObj="http://cybox.mitre.org/objects#AddressObject"\
+                                            xmlns:ArtifactObj="http://cybox.mitre.org/objects#ArtifactObject"\
+                                            xmlns:marking="http://data-marking.mitre.org"\
+                                            xmlns:DiskObj="http://cybox.mitre.org/objects#DiskObject"\
+                                            xmlns:HandleObj="http://cybox.mitre.org/objects#HandleObject"\
+                                            xmlns:TTP="http://stix.mitre.org/TTP"\
+                                            xmlns:UnixProcessObj="http://cybox.mitre.org/objects#UnixProcessObject"\
+                                            xmlns:NetworkRouteObj="http://cybox.mitre.org/objects#NetworkRouteObject"\
+                                            xmlns:GUIWindowObj="http://cybox.mitre.org/objects#GUIWindowObject"\
+                                            xmlns:NetworkRouteEntryObj="http://cybox.mitre.org/objects#NetworkRouteEntryObject"\
+                                            xmlns:stix="http://stix.mitre.org"\
+                                            xmlns:prod="http://www.icasi.org/CVRF/schema/prod/1.1"\
+                                            xmlns:TA="http://stix.mitre.org/ThreatActor"\
+                                            xmlns:URIObj="http://cybox.mitre.org/objects#URIObject"\
+                                            xmlns:WinMailslotObj="http://cybox.mitre.org/objects#WinMailslotObject"\
+                                            xmlns:PacketObj="http://cybox.mitre.org/objects#PacketObject"\
+                                            xmlns:UnixNetworkRouteEntryObj="http://cybox.mitre.org/objects#UnixNetworkRouteEntryObject"\
+                                            xmlns:WinDriverObj="http://cybox.mitre.org/objects#WinDriverObject"\
+                                            xmlns:NetworkSubnetObj="http://cybox.mitre.org/objects#NetworkSubnetObject"\
+                                            xmlns:DiskPartitionObj="http://cybox.mitre.org/objects#DiskPartitionObject"\
+                                            xmlns:WhoisObj="http://cybox.mitre.org/objects#WhoisObject"\
+                                            xmlns:incident="http://stix.mitre.org/Incident"\
+                                            xmlns:Common="http://cybox.mitre.org/Common_v1"\
+                                            xmlns:UnixUserAccountObj="http://cybox.mitre.org/objects#UnixUserAccountObject"\
+                                            xmlns:NetFlowObj="http://cybox.mitre.org/objects#NetworkFlowObject"\
+                                            xmlns:MutexObj="http://cybox.mitre.org/objects#MutexObject"\
+                                            xmlns:MemoryObj="http://cybox.mitre.org/objects#MemoryObject"\
+                                            xmlns:WinHandleObj="http://cybox.mitre.org/objects#WinHandleObject"\
+                                            xmlns:WinTaskObj="http://cybox.mitre.org/objects#WinTaskObject"\
+                                            xmlns:LinuxPackageObj="http://cybox.mitre.org/objects#LinuxPackageObject"\
+                                            xmlns:maecContainer="http://maec.mitre.org/XMLSchema/maec-container-1"\
+                                            xmlns:cybox="http://cybox.mitre.org/cybox_v1"\
+                                            xmlns:WinSemaphoreObj="http://cybox.mitre.org/objects#WinSemaphoreObject"\
+                                            xmlns:WinPipeObj="http://cybox.mitre.org/objects#WinPipeObject"\
+                                            xmlns:xnl="urn:oasis:names:tc:ciq:xnl:3"')
+        return s.getvalue()
         
         
     
