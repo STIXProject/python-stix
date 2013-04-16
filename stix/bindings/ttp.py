@@ -9,10 +9,11 @@ import sys
 import getopt
 import re as re_
 
-import cybox_core
-import cybox_common
-import stix_common
-import data_marking
+import cybox.bindings.cybox_core
+import cybox.bindings.cybox_common
+import stix.bindings.stix_common
+import stix.bindings.data_marking
+
 import base64
 from datetime import datetime, tzinfo, timedelta
 

@@ -9,9 +9,10 @@ import sys
 import getopt
 import re as re_
 
-import cybox_core
-import stix_common
-import data_marking
+import cybox.bindings.cybox_core
+import stix.bindings.stix_common
+import stix.bindings.data_marking
+
 import base64
 from datetime import datetime, tzinfo, timedelta
 
@@ -21,43 +22,13 @@ Verbose_import_ = False
     XMLParser_import_elementtree
     ) = range(3)
 XMLParser_import_library = None
-try:
-    # lxml
-    from lxml import etree as etree_
-    XMLParser_import_library = XMLParser_import_lxml
-    if Verbose_import_:
-        print("running with lxml.etree")
-except ImportError:
-    try:
-        # cElementTree from Python 2.5+
-        import xml.etree.cElementTree as etree_
-        XMLParser_import_library = XMLParser_import_elementtree
-        if Verbose_import_:
-            print("running with cElementTree on Python 2.5+")
-    except ImportError:
-        try:
-            # ElementTree from Python 2.5+
-            import xml.etree.ElementTree as etree_
-            XMLParser_import_library = XMLParser_import_elementtree
-            if Verbose_import_:
-                print("running with ElementTree on Python 2.5+")
-        except ImportError:
-            try:
-                # normal cElementTree install
-                import cElementTree as etree_
-                XMLParser_import_library = XMLParser_import_elementtree
-                if Verbose_import_:
-                    print("running with cElementTree")
-            except ImportError:
-                try:
-                    # normal ElementTree install
-                    import elementtree.ElementTree as etree_
-                    XMLParser_import_library = XMLParser_import_elementtree
-                    if Verbose_import_:
-                        print("running with ElementTree")
-                except ImportError:
-                    raise ImportError(
-                        "Failed to import ElementTree from any known place")
+
+# lxml
+from lxml import etree as etree_
+XMLParser_import_library = XMLParser_import_lxml
+if Verbose_import_:
+    print("running with lxml.etree")
+
 
 def parsexml_(*args, **kwargs):
     if (XMLParser_import_library == XMLParser_import_lxml and
