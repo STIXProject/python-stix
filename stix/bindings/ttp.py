@@ -9,10 +9,10 @@ import sys
 import getopt
 import re as re_
 
-import cybox.bindings.cybox_core
-import cybox.bindings.cybox_common
-import stix.bindings.stix_common
-import stix.bindings.data_marking
+import cybox.bindings.cybox_core as cybox_core_binding
+import cybox.bindings.cybox_common as cybox_common_binding
+import stix.bindings.stix_common as stix_common_binding
+import stix.bindings.data_marking as data_marking_binding
 
 import base64
 from datetime import datetime, tzinfo, timedelta
@@ -23,43 +23,11 @@ Verbose_import_ = False
     XMLParser_import_elementtree
     ) = range(3)
 XMLParser_import_library = None
-try:
-    # lxml
-    from lxml import etree as etree_
-    XMLParser_import_library = XMLParser_import_lxml
-    if Verbose_import_:
-        print("running with lxml.etree")
-except ImportError:
-    try:
-        # cElementTree from Python 2.5+
-        import xml.etree.cElementTree as etree_
-        XMLParser_import_library = XMLParser_import_elementtree
-        if Verbose_import_:
-            print("running with cElementTree on Python 2.5+")
-    except ImportError:
-        try:
-            # ElementTree from Python 2.5+
-            import xml.etree.ElementTree as etree_
-            XMLParser_import_library = XMLParser_import_elementtree
-            if Verbose_import_:
-                print("running with ElementTree on Python 2.5+")
-        except ImportError:
-            try:
-                # normal cElementTree install
-                import cElementTree as etree_
-                XMLParser_import_library = XMLParser_import_elementtree
-                if Verbose_import_:
-                    print("running with cElementTree")
-            except ImportError:
-                try:
-                    # normal ElementTree install
-                    import elementtree.ElementTree as etree_
-                    XMLParser_import_library = XMLParser_import_elementtree
-                    if Verbose_import_:
-                        print("running with ElementTree")
-                except ImportError:
-                    raise ImportError(
-                        "Failed to import ElementTree from any known place")
+# lxml
+from lxml import etree as etree_
+XMLParser_import_library = XMLParser_import_lxml
+if Verbose_import_:
+    print("running with lxml.etree")
 
 def parsexml_(*args, **kwargs):
     if (XMLParser_import_library == XMLParser_import_lxml and
@@ -594,7 +562,7 @@ class AttackPatternType(GeneratedsSuper):
             outfile.write('capec_id = "%s",\n' % (self.capec_id,))
     def exportLiteralChildren(self, outfile, level, name_):
         if self.Description is not None:
-            outfile.write('Description=model_.cybox_common.StructuredTextType(\n')
+            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             outfile.write('),\n')
     def build(self, node):
@@ -610,7 +578,7 @@ class AttackPatternType(GeneratedsSuper):
             self.capec_id = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Description':
-            obj_ = cybox_common.StructuredTextType.factory()
+            obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
 # end class AttackPatternType
@@ -706,8 +674,8 @@ class MalwareInstanceType(GeneratedsSuper):
         outfile.write('Type=[\n')
         level += 1
         for Type_ in self.Type:
-            outfile.write('model_.cybox_common.ControlledVocabularyStringType(\n')
-            Type_.exportLiteral(outfile, level, name_='cybox_common.ControlledVocabularyStringType')
+            outfile.write('model_.stix_common_binding.ControlledVocabularyStringType(\n')
+            Type_.exportLiteral(outfile, level, name_='stix_common_binding.ControlledVocabularyStringType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -717,15 +685,15 @@ class MalwareInstanceType(GeneratedsSuper):
         outfile.write('Name=[\n')
         level += 1
         for Name_ in self.Name:
-            outfile.write('model_.cybox_common.ControlledVocabularyStringType(\n')
-            Name_.exportLiteral(outfile, level, name_='cybox_common.ControlledVocabularyStringType')
+            outfile.write('model_.stix_common_binding.ControlledVocabularyStringType(\n')
+            Name_.exportLiteral(outfile, level, name_='stix_common_binding.ControlledVocabularyStringType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
         showIndent(outfile, level)
         outfile.write('],\n')
         if self.Description is not None:
-            outfile.write('Description=model_.cybox_common.StructuredTextType(\n')
+            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             outfile.write('),\n')
     def build(self, node):
@@ -738,15 +706,15 @@ class MalwareInstanceType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Type':
-            obj_ = cybox_common.ControlledVocabularyStringType.factory()
+            obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)
             self.Type.append(obj_)
         elif nodeName_ == 'Name':
-            obj_ = cybox_common.ControlledVocabularyStringType.factory()
+            obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)
             self.Name.append(obj_)
         elif nodeName_ == 'Description':
-            obj_ = cybox_common.StructuredTextType.factory()
+            obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
 # end class MalwareInstanceType
@@ -812,7 +780,7 @@ class ExploitType(GeneratedsSuper):
         pass
     def exportLiteralChildren(self, outfile, level, name_):
         if self.Description is not None:
-            outfile.write('Description=model_.cybox_common.StructuredTextType(\n')
+            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             outfile.write('),\n')
     def build(self, node):
@@ -825,7 +793,7 @@ class ExploitType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Description':
-            obj_ = cybox_common.StructuredTextType.factory()
+            obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
 # end class ExploitType
@@ -905,19 +873,19 @@ class InfrastructureType(GeneratedsSuper):
         outfile.write('Type=[\n')
         level += 1
         for Type_ in self.Type:
-            outfile.write('model_.cybox_common.ControlledVocabularyStringType(\n')
-            Type_.exportLiteral(outfile, level, name_='cybox_common.ControlledVocabularyStringType')
+            outfile.write('model_.stix_common_binding.ControlledVocabularyStringType(\n')
+            Type_.exportLiteral(outfile, level, name_='stix_common_binding.ControlledVocabularyStringType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
         showIndent(outfile, level)
         outfile.write('],\n')
         if self.Description is not None:
-            outfile.write('Description=model_.cybox_common.StructuredTextType(\n')
+            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             outfile.write('),\n')
         if self.Observable_Characterization is not None:
-            outfile.write('Observable_Characterization=model_.cybox_core.ObservablesType(\n')
+            outfile.write('Observable_Characterization=model_.cybox_core_binding.ObservablesType(\n')
             self.Observable_Characterization.exportLiteral(outfile, level, name_='Observable_Characterization')
             outfile.write('),\n')
     def build(self, node):
@@ -930,15 +898,15 @@ class InfrastructureType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Type':
-            obj_ = cybox_common.ControlledVocabularyStringType.factory()
+            obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)
             self.Type.append(obj_)
         elif nodeName_ == 'Description':
-            obj_ = cybox_common.StructuredTextType.factory()
+            obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Observable_Characterization':
-            obj_ = cybox_core.ObservablesType.factory()
+            obj_ = cybox_core_binding.ObservablesType.factory()
             obj_.build(child_)
             self.set_Observable_Characterization(obj_)
 # end class InfrastructureType
@@ -1006,8 +974,8 @@ class ToolsType(GeneratedsSuper):
         outfile.write('Tool=[\n')
         level += 1
         for Tool_ in self.Tool:
-            outfile.write('model_.cybox_common.ToolInformationType(\n')
-            Tool_.exportLiteral(outfile, level, name_='cybox_common.ToolInformationType')
+            outfile.write('model_.cybox_common_binding.ToolInformationType(\n')
+            Tool_.exportLiteral(outfile, level, name_='cybox_common_binding.ToolInformationType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -1023,7 +991,7 @@ class ToolsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Tool':
-            obj_ = cybox_common.ToolInformationType.factory()
+            obj_ = cybox_common_binding.ToolInformationType.factory()
             obj_.build(child_)
             self.Tool.append(obj_)
 # end class ToolsType
@@ -1548,15 +1516,15 @@ class VictimTargetingType(GeneratedsSuper):
         pass
     def exportLiteralChildren(self, outfile, level, name_):
         if self.Identity is not None:
-            outfile.write('Identity=model_.stix_common.IdentityType(\n')
+            outfile.write('Identity=model_.stix_common_binding.IdentityType(\n')
             self.Identity.exportLiteral(outfile, level, name_='Identity')
             outfile.write('),\n')
         showIndent(outfile, level)
         outfile.write('Targeted_Systems=[\n')
         level += 1
         for Targeted_Systems_ in self.Targeted_Systems:
-            outfile.write('model_.cybox_common.ControlledVocabularyStringType(\n')
-            Targeted_Systems_.exportLiteral(outfile, level, name_='cybox_common.ControlledVocabularyStringType')
+            outfile.write('model_.stix_common_binding.ControlledVocabularyStringType(\n')
+            Targeted_Systems_.exportLiteral(outfile, level, name_='stix_common_binding.ControlledVocabularyStringType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -1566,8 +1534,8 @@ class VictimTargetingType(GeneratedsSuper):
         outfile.write('Targeted_Information=[\n')
         level += 1
         for Targeted_Information_ in self.Targeted_Information:
-            outfile.write('model_.cybox_common.ControlledVocabularyStringType(\n')
-            Targeted_Information_.exportLiteral(outfile, level, name_='cybox_common.ControlledVocabularyStringType')
+            outfile.write('model_.stix_common_binding.ControlledVocabularyStringType(\n')
+            Targeted_Information_.exportLiteral(outfile, level, name_='stix_common_binding.ControlledVocabularyStringType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -1583,22 +1551,22 @@ class VictimTargetingType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Identity':
-            obj_ = stix_common.IdentityType.factory()
+            obj_ = stix_common_binding.IdentityType.factory()
             obj_.build(child_)
             self.set_Identity(obj_)
         elif nodeName_ == 'Targeted_Systems':
-            obj_ = cybox_common.ControlledVocabularyStringType.factory()
+            obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)
             self.Targeted_Systems.append(obj_)
         elif nodeName_ == 'Targeted_Information':
-            obj_ = cybox_common.ControlledVocabularyStringType.factory()
+            obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)
             self.Targeted_Information.append(obj_)
 # end class VictimTargetingType
 
-class RelatedTTPsType(stix_common.GenericRelationshipListType):
+class RelatedTTPsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
-    superclass = stix_common.GenericRelationshipListType
+    superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_TTP=None):
         super(RelatedTTPsType, self).__init__(scope, )
         if Related_TTP is None:
@@ -1663,8 +1631,8 @@ class RelatedTTPsType(stix_common.GenericRelationshipListType):
         outfile.write('Related_TTP=[\n')
         level += 1
         for Related_TTP_ in self.Related_TTP:
-            outfile.write('model_.stix_common.RelatedTTPType(\n')
-            Related_TTP_.exportLiteral(outfile, level, name_='stix_common.RelatedTTPType')
+            outfile.write('model_.stix_common_binding.RelatedTTPType(\n')
+            Related_TTP_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedTTPType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -1680,17 +1648,17 @@ class RelatedTTPsType(stix_common.GenericRelationshipListType):
         super(RelatedTTPsType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Related_TTP':
-            obj_ = stix_common.RelatedTTPType.factory()
+            obj_ = stix_common_binding.RelatedTTPType.factory()
             obj_.build(child_)
             self.Related_TTP.append(obj_)
         super(RelatedTTPsType, self).buildChildren(child_, node, nodeName_, True)
 # end class RelatedTTPsType
 
-class TTPType(stix_common.TTPBaseType):
+class TTPType(stix_common_binding.TTPBaseType):
     """TTPType characterizes an individual adversary TTP.Specifies the
     relevant STIX-TTP schema version for this content."""
     subclass = None
-    superclass = stix_common.TTPBaseType
+    superclass = stix_common_binding.TTPBaseType
     def __init__(self, idref=None, id=None, version='1.0', Title=None, Description=None, Intended_Effect=None, Behavior=None, Resources=None, Victim_Targeting=None, Exploit_Targets=None, Related_TTPs=None, Kill_Chain_Phases=None, Information_Source=None, Kill_Chains=None, Handling=None):
         super(TTPType, self).__init__(idref, id, )
         self.version = _cast(None, version)
@@ -1832,15 +1800,15 @@ class TTPType(stix_common.TTPBaseType):
             showIndent(outfile, level)
             outfile.write('Title=%s,\n' % quote_python(self.Title).encode(ExternalEncoding))
         if self.Description is not None:
-            outfile.write('Description=model_.cybox_common.StructuredTextType(\n')
+            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             outfile.write('),\n')
         showIndent(outfile, level)
         outfile.write('Intended_Effect=[\n')
         level += 1
         for Intended_Effect_ in self.Intended_Effect:
-            outfile.write('model_.stix_common.StatementType(\n')
-            Intended_Effect_.exportLiteral(outfile, level, name_='stix_common.StatementType')
+            outfile.write('model_.stix_common_binding.StatementType(\n')
+            Intended_Effect_.exportLiteral(outfile, level, name_='stix_common_binding.StatementType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -1859,7 +1827,7 @@ class TTPType(stix_common.TTPBaseType):
             self.Victim_Targeting.exportLiteral(outfile, level, name_='Victim_Targeting')
             outfile.write('),\n')
         if self.Exploit_Targets is not None:
-            outfile.write('Exploit_Targets=model_.stix_common.ExploitTargetsType(\n')
+            outfile.write('Exploit_Targets=model_.stix_common_binding.ExploitTargetsType(\n')
             self.Exploit_Targets.exportLiteral(outfile, level, name_='Exploit_Targets')
             outfile.write('),\n')
         if self.Related_TTPs is not None:
@@ -1867,19 +1835,19 @@ class TTPType(stix_common.TTPBaseType):
             self.Related_TTPs.exportLiteral(outfile, level, name_='Related_TTPs')
             outfile.write('),\n')
         if self.Kill_Chain_Phases is not None:
-            outfile.write('Kill_Chain_Phases=model_.stix_common.KillChainPhasesReferenceType(\n')
+            outfile.write('Kill_Chain_Phases=model_.stix_common_binding.KillChainPhasesReferenceType(\n')
             self.Kill_Chain_Phases.exportLiteral(outfile, level, name_='Kill_Chain_Phases')
             outfile.write('),\n')
         if self.Information_Source is not None:
-            outfile.write('Information_Source=model_.stix_common.InformationSourceType(\n')
+            outfile.write('Information_Source=model_.stix_common_binding.InformationSourceType(\n')
             self.Information_Source.exportLiteral(outfile, level, name_='Information_Source')
             outfile.write('),\n')
         if self.Kill_Chains is not None:
-            outfile.write('Kill_Chains=model_.stix_common.KillChainsType(\n')
+            outfile.write('Kill_Chains=model_.stix_common_binding.KillChainsType(\n')
             self.Kill_Chains.exportLiteral(outfile, level, name_='Kill_Chains')
             outfile.write('),\n')
         if self.Handling is not None:
-            outfile.write('Handling=model_.data_marking.MarkingType(\n')
+            outfile.write('Handling=model_.data_marking_binding.MarkingType(\n')
             self.Handling.exportLiteral(outfile, level, name_='Handling')
             outfile.write('),\n')
     def build(self, node):
@@ -1900,11 +1868,11 @@ class TTPType(stix_common.TTPBaseType):
             Title_ = self.gds_validate_string(Title_, node, 'Title')
             self.Title = Title_
         elif nodeName_ == 'Description':
-            obj_ = cybox_common.StructuredTextType.factory()
+            obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Intended_Effect':
-            obj_ = stix_common.StatementType.factory()
+            obj_ = stix_common_binding.StatementType.factory()
             obj_.build(child_)
             self.Intended_Effect.append(obj_)
         elif nodeName_ == 'Behavior':
@@ -1920,7 +1888,7 @@ class TTPType(stix_common.TTPBaseType):
             obj_.build(child_)
             self.set_Victim_Targeting(obj_)
         elif nodeName_ == 'Exploit_Targets':
-            obj_ = stix_common.ExploitTargetsType.factory()
+            obj_ = stix_common_binding.ExploitTargetsType.factory()
             obj_.build(child_)
             self.set_Exploit_Targets(obj_)
         elif nodeName_ == 'Related_TTPs':
@@ -1928,186 +1896,186 @@ class TTPType(stix_common.TTPBaseType):
             obj_.build(child_)
             self.set_Related_TTPs(obj_)
         elif nodeName_ == 'Kill_Chain_Phases':
-            obj_ = stix_common.KillChainPhasesReferenceType.factory()
+            obj_ = stix_common_binding.KillChainPhasesReferenceType.factory()
             obj_.build(child_)
             self.set_Kill_Chain_Phases(obj_)
         elif nodeName_ == 'Information_Source':
-            obj_ = stix_common.InformationSourceType.factory()
+            obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.set_Information_Source(obj_)
         elif nodeName_ == 'Kill_Chains':
-            obj_ = stix_common.KillChainsType.factory()
+            obj_ = stix_common_binding.KillChainsType.factory()
             obj_.build(child_)
             self.set_Kill_Chains(obj_)
         elif nodeName_ == 'Handling':
-            obj_ = data_marking.MarkingType.factory()
+            obj_ = data_marking_binding.MarkingType.factory()
             obj_.build(child_)
             self.set_Handling(obj_)
         super(TTPType, self).buildChildren(child_, node, nodeName_, True)
 # end class TTPType
 
 GDSClassesMapping = {
-    'Information_Source': stix_common.InformationSourceType,
-    'Relationships': cybox_core.RelationshipsType,
-    'Indicator': stix_common.IndicatorBaseType,
-    'Errors': cybox_common.ErrorsType,
-    'Defined_Effect': cybox_core.DefinedEffectType,
-    'Action_Argument': cybox_core.ActionArgumentType,
-    'Exploit_Target': stix_common.ExploitTargetBaseType,
-    'Action': cybox_core.ActionType,
-    'Certificate_Issuer': cybox_common.StringObjectPropertyType,
-    'Metadata': cybox_common.MetadataType,
-    'Hash': cybox_common.HashType,
-    'Object': cybox_core.ObjectType,
-    'Incident': stix_common.IncidentBaseType,
-    'Information_Source_Type': cybox_common.ControlledVocabularyStringType,
-    'Confidence_Assertion_Chain': stix_common.ConfidenceAssertionChainType,
-    'Segment_Hash': cybox_common.HashValueType,
-    'Internal_Strings': cybox_common.InternalStringsType,
-    'Observable': cybox_core.ObservableType,
-    'SubDatum': cybox_common.MetadataType,
-    'Tool_Hashes': cybox_common.HashListType,
-    'Digital_Signature': cybox_common.DigitalSignatureInfoType,
-    'Confidence_Assertion': stix_common.ConfidenceType,
-    'Code_Snippets': cybox_common.CodeSnippetsType,
-    'Address': cybox_common.HexBinaryObjectPropertyType,
-    'Value': cybox_common.ControlledVocabularyStringType,
-    'English_Translation': cybox_common.StringObjectPropertyType,
-    'Length': cybox_common.IntegerObjectPropertyType,
-    'Evasion_Techniques': cybox_core.ObfuscationTechniquesType,
-    'Campaign': stix_common.CampaignBaseType,
-    'Reference': cybox_common.ReferenceType,
-    'Encoding': cybox_common.ControlledVocabularyStringType,
-    'Internationalization_Settings': cybox_common.InternationalizationSettingsType,
-    'Image_Offset': cybox_common.IntegerObjectPropertyType,
-    'Kill_Chain_Phases': stix_common.KillChainPhasesReferenceType,
-    'Associated_Objects': cybox_core.AssociatedObjectsType,
-    'Signature_Description': cybox_common.StringObjectPropertyType,
-    'File_System_Offset': cybox_common.IntegerObjectPropertyType,
-    'Imports': cybox_common.ImportsType,
-    'Targeted_Information': cybox_common.ControlledVocabularyStringType,
-    'Event': cybox_core.EventType,
-    'Segments': cybox_common.HashSegmentsType,
-    'Functions': cybox_common.FunctionsType,
-    'String_Value': cybox_common.StringObjectPropertyType,
-    'Build_Utility_Platform_Specification': cybox_common.PlatformSpecificationType,
-    'Domain_Specific_Object_Properties': cybox_core.DomainSpecificObjectPropertiesType,
-    'Intended_Effect': stix_common.StatementType,
-    'System': cybox_common.ObjectPropertiesType,
-    'Platform': cybox_common.PlatformSpecificationType,
-    'State': cybox_common.ControlledVocabularyStringType,
-    'Usage_Context_Assumptions': cybox_common.UsageContextAssumptionsType,
-    'Marking_Structure': data_marking.MarkingStructureType,
-    'Action_Arguments': cybox_core.ActionArgumentsType,
-    'Type': cybox_common.ControlledVocabularyStringType,
-    'Compilers': cybox_common.CompilersType,
-    'Tool_Type': cybox_common.ControlledVocabularyStringType,
-    'String': cybox_common.ExtractedStringType,
-    'Relationship': cybox_common.ControlledVocabularyStringType,
-    'Tool': cybox_common.ToolInformationType,
-    'TTP': stix_common.TTPBaseType,
-    'Build_Information': cybox_common.BuildInformationType,
-    'Obfuscation_Technique': cybox_core.ObfuscationTechniqueType,
-    'Exploit_Targets': stix_common.ExploitTargetsType,
-    'Observable_Composition': cybox_core.ObservableCompositionType,
-    'Targeted_Systems': cybox_common.ControlledVocabularyStringType,
-    'Error_Instances': cybox_common.ErrorInstancesType,
-    'Action_Pool': cybox_core.ActionPoolType,
-    'Data_Segment': cybox_common.StringObjectPropertyType,
-    'Certificate_Subject': cybox_common.StringObjectPropertyType,
-    'Property': cybox_common.PropertyType,
-    'Strings': cybox_common.ExtractedStringsType,
-    'Course_Of_Action': stix_common.CourseOfActionBaseType,
-    'Contributors': stix_common.ContributorsType,
-    'Reference_Description': cybox_common.StructuredTextType,
-    'User_Account_Info': cybox_common.ObjectPropertiesType,
-    'Configuration_Settings': cybox_common.ConfigurationSettingsType,
-    'Compiler_Platform_Specification': cybox_common.PlatformSpecificationType,
-    'Observable_Source': cybox_common.MeasureSourceType,
-    'Byte_String_Value': cybox_common.HexBinaryObjectPropertyType,
-    'Association_Type': cybox_common.ControlledVocabularyStringType,
-    'Confidence': stix_common.ConfidenceType,
-    'Observable_Package_Source': cybox_common.MeasureSourceType,
-    'Instance': cybox_common.ObjectPropertiesType,
-    'Associated_Object': cybox_core.AssociatedObjectType,
-    'Related_Objects': cybox_core.RelatedObjectsType,
-    'Related_Identities': stix_common.RelatedIdentitiesType,
-    'Import': cybox_common.StringObjectPropertyType,
-    'Observable_Characterization': cybox_core.ObservablesType,
-    'Identifier': cybox_common.PlatformIdentifierType,
-    'Tool_Specific_Data': cybox_common.ToolSpecificDataType,
-    'Execution_Environment': cybox_common.ExecutionEnvironmentType,
-    'Search_Distance': cybox_common.IntegerObjectPropertyType,
-    'Compiler_Informal_Description': cybox_common.CompilerInformalDescriptionType,
-    'Dependencies': cybox_common.DependenciesType,
-    'Segment_Count': cybox_common.IntegerObjectPropertyType,
-    'Kill_Chains': stix_common.KillChainsType,
-    'Offset': cybox_common.IntegerObjectPropertyType,
-    'Date': cybox_common.DateRangeType,
-    'Hashes': cybox_common.HashListType,
-    'Data': cybox_common.DataSegmentType,
-    'Property_Pool': cybox_core.PropertyPoolType,
-    'Identity': stix_common.IdentityType,
-    'Action_Reference': cybox_core.ActionReferenceType,
-    'Language': cybox_common.StringObjectPropertyType,
-    'Usage_Context_Assumption': cybox_common.StructuredTextType,
-    'Block_Hash': cybox_common.FuzzyHashBlockType,
-    'Dependency': cybox_common.DependencyType,
-    'Build_Utility': cybox_common.BuildUtilityType,
-    'Time': cybox_common.TimeType,
-    'Pools': cybox_core.PoolsType,
-    'Threat_Actor': stix_common.ThreatActorBaseType,
-    'Event_Pool': cybox_core.EventPoolType,
-    'Trigger_Point': cybox_common.HexBinaryObjectPropertyType,
-    'Environment_Variable': cybox_common.EnvironmentVariableType,
-    'Byte_Run': cybox_common.ByteRunType,
-    'Kill_Chain': stix_common.KillChainType,
-    'Old_Object': cybox_core.ObjectType,
-    'Tool_Configuration': cybox_common.ToolConfigurationType,
-    'Object_Pool': cybox_core.ObjectPoolType,
-    'Library': cybox_common.LibraryType,
-    'Properties': cybox_core.PropertiesType,
-    'Frequency': cybox_core.FrequencyType,
-    'References': stix_common.ReferencesType,
-    'Keywords': cybox_core.KeywordsType,
-    'Pattern_Fidelity': cybox_core.PatternFidelityType,
-    'Block_Hash_Value': cybox_common.HashValueType,
-    'Fuzzy_Hash_Structure': cybox_common.FuzzyHashStructureType,
-    'Configuration_Setting': cybox_common.ConfigurationSettingType,
-    'Libraries': cybox_common.LibrariesType,
-    'Function': cybox_common.StringObjectPropertyType,
-    'Description': cybox_common.StructuredTextType,
-    'Code_Snippet': cybox_common.ObjectPropertiesType,
-    'Build_Configuration': cybox_common.BuildConfigurationType,
-    'Discovery_Method': cybox_common.MeasureSourceType,
-    'Dependency_Description': cybox_common.StructuredTextType,
-    'Action_Pertinent_Object_Properties': cybox_core.ActionPertinentObjectPropertiesType,
-    'Related_TTP': stix_common.RelatedTTPType,
-    'Observation_Method': cybox_common.MeasureSourceType,
-    'Error': cybox_common.ErrorType,
-    'Related_Object': cybox_core.RelatedObjectType,
-    'Search_Within': cybox_common.IntegerObjectPropertyType,
-    'Segment': cybox_common.HashSegmentType,
-    'Compiler': cybox_common.CompilerType,
-    'Handling': data_marking.MarkingType,
-    'Name': cybox_common.StringObjectPropertyType,
-    'Kill_Chain_Phase': stix_common.KillChainPhaseReferenceType,
-    'Related_Identity': stix_common.RelatedIdentityType,
-    'Values': cybox_core.ValuesType,
-    'Marking': data_marking.MarkingSpecificationType,
-    'Observables': cybox_core.ObservablesType,
-    'Block_Size': cybox_common.IntegerObjectPropertyType,
-    'Simple_Hash_Value': cybox_common.SimpleHashValueType,
-    'New_Object': cybox_core.ObjectType,
-    'Source': cybox_common.ControlledVocabularyStringType,
-    'Tools': cybox_common.ToolsInformationType,
-    'Fuzzy_Hash_Value': cybox_common.FuzzyHashValueType,
-    'Actions': cybox_core.ActionsType,
-    'Data_Size': cybox_common.DataSizeType,
-    'Contributor': stix_common.IdentityType,
-    'Action_Aliases': cybox_core.ActionAliasesType,
-    'Argument_Name': cybox_common.ControlledVocabularyStringType,
-    'Custom_Properties': cybox_common.CustomPropertiesType,
+    'Information_Source': stix_common_binding.InformationSourceType,
+    'Relationships': cybox_core_binding.RelationshipsType,
+    'Indicator': stix_common_binding.IndicatorBaseType,
+    'Errors': cybox_common_binding.ErrorsType,
+    'Defined_Effect': cybox_core_binding.DefinedEffectType,
+    'Action_Argument': cybox_core_binding.ActionArgumentType,
+    'Exploit_Target': stix_common_binding.ExploitTargetBaseType,
+    'Action': cybox_core_binding.ActionType,
+    'Certificate_Issuer': cybox_common_binding.StringObjectPropertyType,
+    'Metadata': cybox_common_binding.MetadataType,
+    'Hash': cybox_common_binding.HashType,
+    'Object': cybox_core_binding.ObjectType,
+    'Incident': stix_common_binding.IncidentBaseType,
+    'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
+    'Segment_Hash': cybox_common_binding.HashValueType,
+    'Internal_Strings': cybox_common_binding.InternalStringsType,
+    'Observable': cybox_core_binding.ObservableType,
+    'SubDatum': cybox_common_binding.MetadataType,
+    'Tool_Hashes': cybox_common_binding.HashListType,
+    'Digital_Signature': cybox_common_binding.DigitalSignatureInfoType,
+    'Confidence_Assertion': stix_common_binding.ConfidenceType,
+    'Code_Snippets': cybox_common_binding.CodeSnippetsType,
+    'Address': cybox_common_binding.HexBinaryObjectPropertyType,
+    'Value': stix_common_binding.ControlledVocabularyStringType,
+    'English_Translation': cybox_common_binding.StringObjectPropertyType,
+    'Length': cybox_common_binding.IntegerObjectPropertyType,
+    'Evasion_Techniques': cybox_core_binding.ObfuscationTechniquesType,
+    'Campaign': stix_common_binding.CampaignBaseType,
+    'Reference': cybox_common_binding.ReferenceType,
+    'Encoding': stix_common_binding.ControlledVocabularyStringType,
+    'Internationalization_Settings': cybox_common_binding.InternationalizationSettingsType,
+    'Image_Offset': cybox_common_binding.IntegerObjectPropertyType,
+    'Kill_Chain_Phases': stix_common_binding.KillChainPhasesReferenceType,
+    'Associated_Objects': cybox_core_binding.AssociatedObjectsType,
+    'Signature_Description': cybox_common_binding.StringObjectPropertyType,
+    'File_System_Offset': cybox_common_binding.IntegerObjectPropertyType,
+    'Imports': cybox_common_binding.ImportsType,
+    'Targeted_Information': stix_common_binding.ControlledVocabularyStringType,
+    'Event': cybox_core_binding.EventType,
+    'Segments': cybox_common_binding.HashSegmentsType,
+    'Functions': cybox_common_binding.FunctionsType,
+    'String_Value': cybox_common_binding.StringObjectPropertyType,
+    'Build_Utility_Platform_Specification': cybox_common_binding.PlatformSpecificationType,
+    'Domain_Specific_Object_Properties': cybox_core_binding.DomainSpecificObjectPropertiesType,
+    'Intended_Effect': stix_common_binding.StatementType,
+    'System': cybox_common_binding.ObjectPropertiesType,
+    'Platform': cybox_common_binding.PlatformSpecificationType,
+    'State': stix_common_binding.ControlledVocabularyStringType,
+    'Usage_Context_Assumptions': cybox_common_binding.UsageContextAssumptionsType,
+    'Marking_Structure': data_marking_binding.MarkingStructureType,
+    'Action_Arguments': cybox_core_binding.ActionArgumentsType,
+    'Type': stix_common_binding.ControlledVocabularyStringType,
+    'Compilers': cybox_common_binding.CompilersType,
+    'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
+    'String': cybox_common_binding.ExtractedStringType,
+    'Relationship': stix_common_binding.ControlledVocabularyStringType,
+    'Tool': cybox_common_binding.ToolInformationType,
+    'TTP': stix_common_binding.TTPBaseType,
+    'Build_Information': cybox_common_binding.BuildInformationType,
+    'Obfuscation_Technique': cybox_core_binding.ObfuscationTechniqueType,
+    'Exploit_Targets': stix_common_binding.ExploitTargetsType,
+    'Observable_Composition': cybox_core_binding.ObservableCompositionType,
+    'Targeted_Systems': stix_common_binding.ControlledVocabularyStringType,
+    'Error_Instances': cybox_common_binding.ErrorInstancesType,
+    'Action_Pool': cybox_core_binding.ActionPoolType,
+    'Data_Segment': cybox_common_binding.StringObjectPropertyType,
+    'Certificate_Subject': cybox_common_binding.StringObjectPropertyType,
+    'Property': cybox_common_binding.PropertyType,
+    'Strings': cybox_common_binding.ExtractedStringsType,
+    'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
+    'Contributors': stix_common_binding.ContributorsType,
+    'Reference_Description': stix_common_binding.StructuredTextType,
+    'User_Account_Info': cybox_common_binding.ObjectPropertiesType,
+    'Configuration_Settings': cybox_common_binding.ConfigurationSettingsType,
+    'Compiler_Platform_Specification': cybox_common_binding.PlatformSpecificationType,
+    'Observable_Source': cybox_common_binding.MeasureSourceType,
+    'Byte_String_Value': cybox_common_binding.HexBinaryObjectPropertyType,
+    'Association_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Confidence': stix_common_binding.ConfidenceType,
+    'Observable_Package_Source': cybox_common_binding.MeasureSourceType,
+    'Instance': cybox_common_binding.ObjectPropertiesType,
+    'Associated_Object': cybox_core_binding.AssociatedObjectType,
+    'Related_Objects': cybox_core_binding.RelatedObjectsType,
+    'Related_Identities': stix_common_binding.RelatedIdentitiesType,
+    'Import': cybox_common_binding.StringObjectPropertyType,
+    'Observable_Characterization': cybox_core_binding.ObservablesType,
+    'Identifier': cybox_common_binding.PlatformIdentifierType,
+    'Tool_Specific_Data': cybox_common_binding.ToolSpecificDataType,
+    'Execution_Environment': cybox_common_binding.ExecutionEnvironmentType,
+    'Search_Distance': cybox_common_binding.IntegerObjectPropertyType,
+    'Compiler_Informal_Description': cybox_common_binding.CompilerInformalDescriptionType,
+    'Dependencies': cybox_common_binding.DependenciesType,
+    'Segment_Count': cybox_common_binding.IntegerObjectPropertyType,
+    'Kill_Chains': stix_common_binding.KillChainsType,
+    'Offset': cybox_common_binding.IntegerObjectPropertyType,
+    'Date': cybox_common_binding.DateRangeType,
+    'Hashes': cybox_common_binding.HashListType,
+    'Data': cybox_common_binding.DataSegmentType,
+    'Property_Pool': cybox_core_binding.PropertyPoolType,
+    'Identity': stix_common_binding.IdentityType,
+    'Action_Reference': cybox_core_binding.ActionReferenceType,
+    'Language': cybox_common_binding.StringObjectPropertyType,
+    'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
+    'Block_Hash': cybox_common_binding.FuzzyHashBlockType,
+    'Dependency': cybox_common_binding.DependencyType,
+    'Build_Utility': cybox_common_binding.BuildUtilityType,
+    'Time': cybox_common_binding.TimeType,
+    'Pools': cybox_core_binding.PoolsType,
+    'Threat_Actor': stix_common_binding.ThreatActorBaseType,
+    'Event_Pool': cybox_core_binding.EventPoolType,
+    'Trigger_Point': cybox_common_binding.HexBinaryObjectPropertyType,
+    'Environment_Variable': cybox_common_binding.EnvironmentVariableType,
+    'Byte_Run': cybox_common_binding.ByteRunType,
+    'Kill_Chain': stix_common_binding.KillChainType,
+    'Old_Object': cybox_core_binding.ObjectType,
+    'Tool_Configuration': cybox_common_binding.ToolConfigurationType,
+    'Object_Pool': cybox_core_binding.ObjectPoolType,
+    'Library': cybox_common_binding.LibraryType,
+    'Properties': cybox_core_binding.PropertiesType,
+    'Frequency': cybox_core_binding.FrequencyType,
+    'References': stix_common_binding.ReferencesType,
+    'Keywords': cybox_core_binding.KeywordsType,
+    'Pattern_Fidelity': cybox_core_binding.PatternFidelityType,
+    'Block_Hash_Value': cybox_common_binding.HashValueType,
+    'Fuzzy_Hash_Structure': cybox_common_binding.FuzzyHashStructureType,
+    'Configuration_Setting': cybox_common_binding.ConfigurationSettingType,
+    'Libraries': cybox_common_binding.LibrariesType,
+    'Function': cybox_common_binding.StringObjectPropertyType,
+    'Description': stix_common_binding.StructuredTextType,
+    'Code_Snippet': cybox_common_binding.ObjectPropertiesType,
+    'Build_Configuration': cybox_common_binding.BuildConfigurationType,
+    'Discovery_Method': cybox_common_binding.MeasureSourceType,
+    'Dependency_Description': stix_common_binding.StructuredTextType,
+    'Action_Pertinent_Object_Properties': cybox_core_binding.ActionPertinentObjectPropertiesType,
+    'Related_TTP': stix_common_binding.RelatedTTPType,
+    'Observation_Method': cybox_common_binding.MeasureSourceType,
+    'Error': cybox_common_binding.ErrorType,
+    'Related_Object': cybox_core_binding.RelatedObjectType,
+    'Search_Within': cybox_common_binding.IntegerObjectPropertyType,
+    'Segment': cybox_common_binding.HashSegmentType,
+    'Compiler': cybox_common_binding.CompilerType,
+    'Handling': data_marking_binding.MarkingType,
+    'Name': cybox_common_binding.StringObjectPropertyType,
+    'Kill_Chain_Phase': stix_common_binding.KillChainPhaseReferenceType,
+    'Related_Identity': stix_common_binding.RelatedIdentityType,
+    'Values': cybox_core_binding.ValuesType,
+    'Marking': data_marking_binding.MarkingSpecificationType,
+    'Observables': cybox_core_binding.ObservablesType,
+    'Block_Size': cybox_common_binding.IntegerObjectPropertyType,
+    'Simple_Hash_Value': cybox_common_binding.SimpleHashValueType,
+    'New_Object': cybox_core_binding.ObjectType,
+    'Source': stix_common_binding.ControlledVocabularyStringType,
+    'Tools': cybox_common_binding.ToolsInformationType,
+    'Fuzzy_Hash_Value': cybox_common_binding.FuzzyHashValueType,
+    'Actions': cybox_core_binding.ActionsType,
+    'Data_Size': cybox_common_binding.DataSizeType,
+    'Contributor': stix_common_binding.IdentityType,
+    'Action_Aliases': cybox_core_binding.ActionAliasesType,
+    'Argument_Name': stix_common_binding.ControlledVocabularyStringType,
+    'Custom_Properties': cybox_common_binding.CustomPropertiesType,
 }
 
 USAGE_TEXT = """

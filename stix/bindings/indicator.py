@@ -9,9 +9,9 @@ import sys
 import getopt
 import re as re_
 
-import cybox.bindings.cybox_core
-import stix.bindings.stix_common
-import stix.bindings.data_marking
+import cybox.bindings.cybox_core as cybox_core_binding
+import stix.bindings.stix_common as stix_common_binding
+import stix.bindings.data_marking as data_marking_binding
 
 import base64
 from datetime import datetime, tzinfo, timedelta
@@ -801,11 +801,11 @@ class TestMechanismType(GeneratedsSuper):
             outfile.write('id = %s,\n' % (self.id,))
     def exportLiteralChildren(self, outfile, level, name_):
         if self.Efficacy is not None:
-            outfile.write('Efficacy=model_.stix_common.StatementType(\n')
+            outfile.write('Efficacy=model_.stix_common_binding.StatementType(\n')
             self.Efficacy.exportLiteral(outfile, level, name_='Efficacy')
             outfile.write('),\n')
         if self.Producer is not None:
-            outfile.write('Producer=model_.stix_common.InformationSourceType(\n')
+            outfile.write('Producer=model_.stix_common_binding.InformationSourceType(\n')
             self.Producer.exportLiteral(outfile, level, name_='Producer')
             outfile.write('),\n')
     def build(self, node):
@@ -825,11 +825,11 @@ class TestMechanismType(GeneratedsSuper):
             self.id = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Efficacy':
-            obj_ = stix_common.StatementType.factory()
+            obj_ = stix_common_binding.StatementType.factory()
             obj_.build(child_)
             self.set_Efficacy(obj_)
         elif nodeName_ == 'Producer':
-            obj_ = stix_common.InformationSourceType.factory()
+            obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.set_Producer(obj_)
 # end class TestMechanismType
@@ -1012,14 +1012,14 @@ class SightingType(GeneratedsSuper):
             outfile.write('timestamp = "%s",\n' % (self.timestamp,))
     def exportLiteralChildren(self, outfile, level, name_):
         if self.Source is not None:
-            outfile.write('Source=model_.stix_common.StructuredTextType(\n')
+            outfile.write('Source=model_.stix_common_binding.StructuredTextType(\n')
             self.Source.exportLiteral(outfile, level, name_='Source')
             outfile.write('),\n')
         if self.Reference is not None:
             showIndent(outfile, level)
             outfile.write('Reference=%s,\n' % quote_python(self.Reference).encode(ExternalEncoding))
         if self.Confidence is not None:
-            outfile.write('Confidence=model_.stix_common.ConfidenceType(\n')
+            outfile.write('Confidence=model_.stix_common_binding.ConfidenceType(\n')
             self.Confidence.exportLiteral(outfile, level, name_='Confidence')
             outfile.write('),\n')
     def build(self, node):
@@ -1038,7 +1038,7 @@ class SightingType(GeneratedsSuper):
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Source':
-            obj_ = stix_common.StructuredTextType.factory()
+            obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Source(obj_)
         elif nodeName_ == 'Reference':
@@ -1046,7 +1046,7 @@ class SightingType(GeneratedsSuper):
             Reference_ = self.gds_validate_string(Reference_, node, 'Reference')
             self.Reference = Reference_
         elif nodeName_ == 'Confidence':
-            obj_ = stix_common.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_Confidence(obj_)
 # end class SightingType
@@ -1150,9 +1150,9 @@ class TestMechanismsType(GeneratedsSuper):
             self.Test_Mechanism.append(obj_)
 # end class TestMechanismsType
 
-class SuggestedCOAsType(stix_common.GenericRelationshipListType):
+class SuggestedCOAsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
-    superclass = stix_common.GenericRelationshipListType
+    superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Suggested_COA=None):
         super(SuggestedCOAsType, self).__init__(scope, )
         if Suggested_COA is None:
@@ -1217,8 +1217,8 @@ class SuggestedCOAsType(stix_common.GenericRelationshipListType):
         outfile.write('Suggested_COA=[\n')
         level += 1
         for Suggested_COA_ in self.Suggested_COA:
-            outfile.write('model_.stix_common.RelatedCourseOfActionType(\n')
-            Suggested_COA_.exportLiteral(outfile, level, name_='stix_common.RelatedCourseOfActionType')
+            outfile.write('model_.stix_common_binding.RelatedCourseOfActionType(\n')
+            Suggested_COA_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedCourseOfActionType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -1234,15 +1234,15 @@ class SuggestedCOAsType(stix_common.GenericRelationshipListType):
         super(SuggestedCOAsType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Suggested_COA':
-            obj_ = stix_common.RelatedCourseOfActionType.factory()
+            obj_ = stix_common_binding.RelatedCourseOfActionType.factory()
             obj_.build(child_)
             self.Suggested_COA.append(obj_)
         super(SuggestedCOAsType, self).buildChildren(child_, node, nodeName_, True)
 # end class SuggestedCOAsType
 
-class RelatedIndicatorsType(stix_common.GenericRelationshipListType):
+class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
-    superclass = stix_common.GenericRelationshipListType
+    superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_Indicator=None):
         super(RelatedIndicatorsType, self).__init__(scope, )
         if Related_Indicator is None:
@@ -1307,8 +1307,8 @@ class RelatedIndicatorsType(stix_common.GenericRelationshipListType):
         outfile.write('Related_Indicator=[\n')
         level += 1
         for Related_Indicator_ in self.Related_Indicator:
-            outfile.write('model_.stix_common.RelatedIndicatorType(\n')
-            Related_Indicator_.exportLiteral(outfile, level, name_='stix_common.RelatedIndicatorType')
+            outfile.write('model_.stix_common_binding.RelatedIndicatorType(\n')
+            Related_Indicator_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedIndicatorType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -1324,13 +1324,13 @@ class RelatedIndicatorsType(stix_common.GenericRelationshipListType):
         super(RelatedIndicatorsType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Related_Indicator':
-            obj_ = stix_common.RelatedIndicatorType.factory()
+            obj_ = stix_common_binding.RelatedIndicatorType.factory()
             obj_.build(child_)
             self.Related_Indicator.append(obj_)
         super(RelatedIndicatorsType, self).buildChildren(child_, node, nodeName_, True)
 # end class RelatedIndicatorsType
 
-class IndicatorType(stix_common.IndicatorBaseType):
+class IndicatorType(stix_common_binding.IndicatorBaseType):
     """The IndicatorType characterizes a cyber threat indicator made up of
     a pattern identifying certain observable conditions as well as
     contextual information about the patterns meaning, how and when
@@ -1341,7 +1341,7 @@ class IndicatorType(stix_common.IndicatorBaseType):
     negate field applies when using an Indicator as a pattern and
     specifies the absence of the pattern."""
     subclass = None
-    superclass = stix_common.IndicatorBaseType
+    superclass = stix_common_binding.IndicatorBaseType
     def __init__(self, idref=None, id=None, negate=False, version='2.0', Title=None, Type=None, Alternative_ID=None, Description=None, Valid_Time_Position=None, Observable=None, Composite_Indicator_Expression=None, Indicated_TTP=None, Kill_Chain_Phases=None, Test_Mechanisms=None, Likely_Impact=None, Suggested_COAs=None, Handling=None, Confidence=None, Sightings=None, Related_Indicators=None, Producer=None):
         super(IndicatorType, self).__init__(idref, id, )
         self.negate = _cast(bool, negate)
@@ -1534,7 +1534,7 @@ class IndicatorType(stix_common.IndicatorBaseType):
             showIndent(outfile, level)
             outfile.write('Title=%s,\n' % quote_python(self.Title).encode(ExternalEncoding))
         if self.Type is not None:
-            outfile.write('Type=model_.stix_common.ControlledVocabularyStringType(\n')
+            outfile.write('Type=model_.stix_common_binding.ControlledVocabularyStringType(\n')
             self.Type.exportLiteral(outfile, level, name_='Type')
             outfile.write('),\n')
         showIndent(outfile, level)
@@ -1547,7 +1547,7 @@ class IndicatorType(stix_common.IndicatorBaseType):
         showIndent(outfile, level)
         outfile.write('],\n')
         if self.Description is not None:
-            outfile.write('Description=model_.stix_common.StructuredTextType(\n')
+            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             outfile.write('),\n')
         showIndent(outfile, level)
@@ -1562,7 +1562,7 @@ class IndicatorType(stix_common.IndicatorBaseType):
         showIndent(outfile, level)
         outfile.write('],\n')
         if self.Observable is not None:
-            outfile.write('Observable=model_.cybox_core.ObservableType(\n')
+            outfile.write('Observable=model_.cybox_core_binding.ObservableType(\n')
             self.Observable.exportLiteral(outfile, level, name_='Observable')
             outfile.write('),\n')
         if self.Composite_Indicator_Expression is not None:
@@ -1573,15 +1573,15 @@ class IndicatorType(stix_common.IndicatorBaseType):
         outfile.write('Indicated_TTP=[\n')
         level += 1
         for Indicated_TTP_ in self.Indicated_TTP:
-            outfile.write('model_.stix_common.RelatedTTPType(\n')
-            Indicated_TTP_.exportLiteral(outfile, level, name_='stix_common.RelatedTTPType')
+            outfile.write('model_.stix_common_binding.RelatedTTPType(\n')
+            Indicated_TTP_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedTTPType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
         showIndent(outfile, level)
         outfile.write('],\n')
         if self.Kill_Chain_Phases is not None:
-            outfile.write('Kill_Chain_Phases=model_.stix_common.KillChainPhasesReferenceType(\n')
+            outfile.write('Kill_Chain_Phases=model_.stix_common_binding.KillChainPhasesReferenceType(\n')
             self.Kill_Chain_Phases.exportLiteral(outfile, level, name_='Kill_Chain_Phases')
             outfile.write('),\n')
         if self.Test_Mechanisms is not None:
@@ -1589,7 +1589,7 @@ class IndicatorType(stix_common.IndicatorBaseType):
             self.Test_Mechanisms.exportLiteral(outfile, level, name_='Test_Mechanisms')
             outfile.write('),\n')
         if self.Likely_Impact is not None:
-            outfile.write('Likely_Impact=model_.stix_common.StatementType(\n')
+            outfile.write('Likely_Impact=model_.stix_common_binding.StatementType(\n')
             self.Likely_Impact.exportLiteral(outfile, level, name_='Likely_Impact')
             outfile.write('),\n')
         if self.Suggested_COAs is not None:
@@ -1597,11 +1597,11 @@ class IndicatorType(stix_common.IndicatorBaseType):
             self.Suggested_COAs.exportLiteral(outfile, level, name_='Suggested_COAs')
             outfile.write('),\n')
         if self.Handling is not None:
-            outfile.write('Handling=model_.data_marking.MarkingType(\n')
+            outfile.write('Handling=model_.data_marking_binding.MarkingType(\n')
             self.Handling.exportLiteral(outfile, level, name_='Handling')
             outfile.write('),\n')
         if self.Confidence is not None:
-            outfile.write('Confidence=model_.stix_common.ConfidenceType(\n')
+            outfile.write('Confidence=model_.stix_common_binding.ConfidenceType(\n')
             self.Confidence.exportLiteral(outfile, level, name_='Confidence')
             outfile.write('),\n')
         if self.Sightings is not None:
@@ -1613,7 +1613,7 @@ class IndicatorType(stix_common.IndicatorBaseType):
             self.Related_Indicators.exportLiteral(outfile, level, name_='Related_Indicators')
             outfile.write('),\n')
         if self.Producer is not None:
-            outfile.write('Producer=model_.stix_common.InformationSourceType(\n')
+            outfile.write('Producer=model_.stix_common_binding.InformationSourceType(\n')
             self.Producer.exportLiteral(outfile, level, name_='Producer')
             outfile.write('),\n')
     def build(self, node):
@@ -1643,7 +1643,7 @@ class IndicatorType(stix_common.IndicatorBaseType):
             Title_ = self.gds_validate_string(Title_, node, 'Title')
             self.Title = Title_
         elif nodeName_ == 'Type':
-            obj_ = stix_common.ControlledVocabularyStringType.factory()
+            obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)
             self.set_Type(obj_)
         elif nodeName_ == 'Alternative_ID':
@@ -1651,7 +1651,7 @@ class IndicatorType(stix_common.IndicatorBaseType):
             Alternative_ID_ = self.gds_validate_string(Alternative_ID_, node, 'Alternative_ID')
             self.Alternative_ID.append(Alternative_ID_)
         elif nodeName_ == 'Description':
-            obj_ = stix_common.StructuredTextType.factory()
+            obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Valid_Time_Position':
@@ -1659,7 +1659,7 @@ class IndicatorType(stix_common.IndicatorBaseType):
             obj_.build(child_)
             self.Valid_Time_Position.append(obj_)
         elif nodeName_ == 'Observable':
-            obj_ = cybox_core.ObservableType.factory()
+            obj_ = cybox_core_binding.ObservableType.factory()
             obj_.build(child_)
             self.set_Observable(obj_)
         elif nodeName_ == 'Composite_Indicator_Expression':
@@ -1667,11 +1667,11 @@ class IndicatorType(stix_common.IndicatorBaseType):
             obj_.build(child_)
             self.set_Composite_Indicator_Expression(obj_)
         elif nodeName_ == 'Indicated_TTP':
-            obj_ = stix_common.RelatedTTPType.factory()
+            obj_ = stix_common_binding.RelatedTTPType.factory()
             obj_.build(child_)
             self.Indicated_TTP.append(obj_)
         elif nodeName_ == 'Kill_Chain_Phases':
-            obj_ = stix_common.KillChainPhasesReferenceType.factory()
+            obj_ = stix_common_binding.KillChainPhasesReferenceType.factory()
             obj_.build(child_)
             self.set_Kill_Chain_Phases(obj_)
         elif nodeName_ == 'Test_Mechanisms':
@@ -1679,7 +1679,7 @@ class IndicatorType(stix_common.IndicatorBaseType):
             obj_.build(child_)
             self.set_Test_Mechanisms(obj_)
         elif nodeName_ == 'Likely_Impact':
-            obj_ = stix_common.StatementType.factory()
+            obj_ = stix_common_binding.StatementType.factory()
             obj_.build(child_)
             self.set_Likely_Impact(obj_)
         elif nodeName_ == 'Suggested_COAs':
@@ -1687,11 +1687,11 @@ class IndicatorType(stix_common.IndicatorBaseType):
             obj_.build(child_)
             self.set_Suggested_COAs(obj_)
         elif nodeName_ == 'Handling':
-            obj_ = data_marking.MarkingType.factory()
+            obj_ = data_marking_binding.MarkingType.factory()
             obj_.build(child_)
             self.set_Handling(obj_)
         elif nodeName_ == 'Confidence':
-            obj_ = stix_common.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_Confidence(obj_)
         elif nodeName_ == 'Sightings':
@@ -1703,89 +1703,89 @@ class IndicatorType(stix_common.IndicatorBaseType):
             obj_.build(child_)
             self.set_Related_Indicators(obj_)
         elif nodeName_ == 'Producer':
-            obj_ = stix_common.InformationSourceType.factory()
+            obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.set_Producer(obj_)
         super(IndicatorType, self).buildChildren(child_, node, nodeName_, True)
 # end class IndicatorType
 
 GDSClassesMapping = {
-    'Relationships': cybox_core.RelationshipsType,
-    'Indicator': stix_common.IndicatorBaseType,
-    'Defined_Effect': cybox_core.DefinedEffectType,
-    'Action_Argument': cybox_core.ActionArgumentType,
-    'Exploit_Target': stix_common.ExploitTargetBaseType,
-    'Action': cybox_core.ActionType,
-    'Suggested_COA': stix_common.RelatedCourseOfActionType,
-    'Object': cybox_core.ObjectType,
-    'Incident': stix_common.IncidentBaseType,
-    'Information_Source_Type': stix_common.ControlledVocabularyStringType,
-    'Confidence_Assertion_Chain': stix_common.ConfidenceAssertionChainType,
-    'Observable': cybox_core.ObservableType,
-    'Observable_Composition': cybox_core.ObservableCompositionType,
-    'Confidence_Assertion': stix_common.ConfidenceType,
-    'Value': stix_common.ControlledVocabularyStringType,
-    'Information_Source': stix_common.InformationSourceType,
-    'Evasion_Techniques': cybox_core.ObfuscationTechniquesType,
-    'Producer': stix_common.InformationSourceType,
-    'Encoding': stix_common.ControlledVocabularyStringType,
-    'Kill_Chain_Phases': stix_common.KillChainPhasesReferenceType,
-    'Associated_Objects': cybox_core.AssociatedObjectsType,
-    'Event': cybox_core.EventType,
-    'Domain_Specific_Object_Properties': cybox_core.DomainSpecificObjectPropertiesType,
-    'Source': stix_common.ControlledVocabularyStringType,
-    'State': stix_common.ControlledVocabularyStringType,
-    'Marking_Structure': data_marking.MarkingStructureType,
-    'Action_Arguments': cybox_core.ActionArgumentsType,
-    'Type': stix_common.ControlledVocabularyStringType,
-    'Tool_Type': stix_common.ControlledVocabularyStringType,
-    'Relationship': stix_common.ControlledVocabularyStringType,
-    'TTP': stix_common.TTPBaseType,
-    'Obfuscation_Technique': cybox_core.ObfuscationTechniqueType,
-    'Indicated_TTP': stix_common.RelatedTTPType,
-    'Action_Pool': cybox_core.ActionPoolType,
-    'Course_Of_Action': stix_common.CourseOfActionBaseType,
-    'Contributors': stix_common.ContributorsType,
-    'Campaign': stix_common.CampaignBaseType,
-    'Reference_Description': stix_common.StructuredTextType,
-    'Association_Type': stix_common.ControlledVocabularyStringType,
-    'Confidence': stix_common.ConfidenceType,
-    'Associated_Object': cybox_core.AssociatedObjectType,
-    'Related_Objects': cybox_core.RelatedObjectsType,
-    'Related_Identities': stix_common.RelatedIdentitiesType,
-    'Likely_Impact': stix_common.StatementType,
-    'Property_Pool': cybox_core.PropertyPoolType,
-    'Identity': stix_common.IdentityType,
-    'Action_Reference': cybox_core.ActionReferenceType,
-    'Usage_Context_Assumption': stix_common.StructuredTextType,
-    'Pools': cybox_core.PoolsType,
-    'Threat_Actor': stix_common.ThreatActorBaseType,
-    'Event_Pool': cybox_core.EventPoolType,
-    'Kill_Chain': stix_common.KillChainType,
-    'Old_Object': cybox_core.ObjectType,
-    'Object_Pool': cybox_core.ObjectPoolType,
-    'Properties': cybox_core.PropertiesType,
-    'Frequency': cybox_core.FrequencyType,
-    'References': stix_common.ReferencesType,
-    'Keywords': cybox_core.KeywordsType,
-    'Pattern_Fidelity': cybox_core.PatternFidelityType,
-    'Description': stix_common.StructuredTextType,
-    'Efficacy': stix_common.StatementType,
-    'Action_Pertinent_Object_Properties': cybox_core.ActionPertinentObjectPropertiesType,
-    'Related_Indicator': stix_common.RelatedIndicatorType,
-    'Related_Object': cybox_core.RelatedObjectType,
-    'Handling': data_marking.MarkingType,
-    'Kill_Chain_Phase': stix_common.KillChainPhaseReferenceType,
-    'Related_Identity': stix_common.RelatedIdentityType,
-    'Values': cybox_core.ValuesType,
-    'Marking': data_marking.MarkingSpecificationType,
-    'Observables': cybox_core.ObservablesType,
-    'New_Object': cybox_core.ObjectType,
-    'Argument_Name': stix_common.ControlledVocabularyStringType,
-    'Actions': cybox_core.ActionsType,
-    'Dependency_Description': stix_common.StructuredTextType,
-    'Contributor': stix_common.IdentityType,
-    'Action_Aliases': cybox_core.ActionAliasesType,
+    'Relationships': cybox_core_binding.RelationshipsType,
+    'Indicator': stix_common_binding.IndicatorBaseType,
+    'Defined_Effect': cybox_core_binding.DefinedEffectType,
+    'Action_Argument': cybox_core_binding.ActionArgumentType,
+    'Exploit_Target': stix_common_binding.ExploitTargetBaseType,
+    'Action': cybox_core_binding.ActionType,
+    'Suggested_COA': stix_common_binding.RelatedCourseOfActionType,
+    'Object': cybox_core_binding.ObjectType,
+    'Incident': stix_common_binding.IncidentBaseType,
+    'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
+    'Observable': cybox_core_binding.ObservableType,
+    'Observable_Composition': cybox_core_binding.ObservableCompositionType,
+    'Confidence_Assertion': stix_common_binding.ConfidenceType,
+    'Value': stix_common_binding.ControlledVocabularyStringType,
+    'Information_Source': stix_common_binding.InformationSourceType,
+    'Evasion_Techniques': cybox_core_binding.ObfuscationTechniquesType,
+    'Producer': stix_common_binding.InformationSourceType,
+    'Encoding': stix_common_binding.ControlledVocabularyStringType,
+    'Kill_Chain_Phases': stix_common_binding.KillChainPhasesReferenceType,
+    'Associated_Objects': cybox_core_binding.AssociatedObjectsType,
+    'Event': cybox_core_binding.EventType,
+    'Domain_Specific_Object_Properties': cybox_core_binding.DomainSpecificObjectPropertiesType,
+    'Source': stix_common_binding.ControlledVocabularyStringType,
+    'State': stix_common_binding.ControlledVocabularyStringType,
+    'Marking_Structure': data_marking_binding.MarkingStructureType,
+    'Action_Arguments': cybox_core_binding.ActionArgumentsType,
+    'Type': stix_common_binding.ControlledVocabularyStringType,
+    'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Relationship': stix_common_binding.ControlledVocabularyStringType,
+    'TTP': stix_common_binding.TTPBaseType,
+    'Obfuscation_Technique': cybox_core_binding.ObfuscationTechniqueType,
+    'Indicated_TTP': stix_common_binding.RelatedTTPType,
+    'Action_Pool': cybox_core_binding.ActionPoolType,
+    'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
+    'Contributors': stix_common_binding.ContributorsType,
+    'Campaign': stix_common_binding.CampaignBaseType,
+    'Reference_Description': stix_common_binding.StructuredTextType,
+    'Association_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Confidence': stix_common_binding.ConfidenceType,
+    'Associated_Object': cybox_core_binding.AssociatedObjectType,
+    'Related_Objects': cybox_core_binding.RelatedObjectsType,
+    'Related_Identities': stix_common_binding.RelatedIdentitiesType,
+    'Likely_Impact': stix_common_binding.StatementType,
+    'Property_Pool': cybox_core_binding.PropertyPoolType,
+    'Identity': stix_common_binding.IdentityType,
+    'Action_Reference': cybox_core_binding.ActionReferenceType,
+    'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
+    'Pools': cybox_core_binding.PoolsType,
+    'Threat_Actor': stix_common_binding.ThreatActorBaseType,
+    'Event_Pool': cybox_core_binding.EventPoolType,
+    'Kill_Chain': stix_common_binding.KillChainType,
+    'Old_Object': cybox_core_binding.ObjectType,
+    'Object_Pool': cybox_core_binding.ObjectPoolType,
+    'Properties': cybox_core_binding.PropertiesType,
+    'Frequency': cybox_core_binding.FrequencyType,
+    'References': stix_common_binding.ReferencesType,
+    'Keywords': cybox_core_binding.KeywordsType,
+    'Pattern_Fidelity': cybox_core_binding.PatternFidelityType,
+    'Description': stix_common_binding.StructuredTextType,
+    'Efficacy': stix_common_binding.StatementType,
+    'Action_Pertinent_Object_Properties': cybox_core_binding.ActionPertinentObjectPropertiesType,
+    'Related_Indicator': stix_common_binding.RelatedIndicatorType,
+    'Related_Object': cybox_core_binding.RelatedObjectType,
+    'Handling': data_marking_binding.MarkingType,
+    'Kill_Chain_Phase': stix_common_binding.KillChainPhaseReferenceType,
+    'Related_Identity': stix_common_binding.RelatedIdentityType,
+    'Values': cybox_core_binding.ValuesType,
+    'Marking': data_marking_binding.MarkingSpecificationType,
+    'Observables': cybox_core_binding.ObservablesType,
+    'New_Object': cybox_core_binding.ObjectType,
+    'Argument_Name': stix_common_binding.ControlledVocabularyStringType,
+    'Actions': cybox_core_binding.ActionsType,
+    'Dependency_Description': stix_common_binding.StructuredTextType,
+    'Contributor': stix_common_binding.IdentityType,
+    'Action_Aliases': cybox_core_binding.ActionAliasesType,
 }
 
 USAGE_TEXT = """

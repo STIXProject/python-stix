@@ -514,13 +514,13 @@ def _cast(typ, value):
 # Data representation classes.
 #
 
-class CIQAddress3_0InstanceType(stix_common.AddressAbstractType):
+class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
     """The CIQAddress3.0InstanceType provides an extension to the
-    stix_common.AddressAbstractType which imports and leverages version 3.0 of
+    stix_common_binding.AddressAbstractType which imports and leverages version 3.0 of
     the OASIS CIQ-PIL schema for structured characterization of
     Addresses."""
     subclass = None
-    superclass = stix_common.AddressAbstractType
+    superclass = stix_common_binding.AddressAbstractType
     def __init__(self, Location=None):
         super(CIQAddress3_0InstanceType, self).__init__()
         self.Location = Location
@@ -597,40 +597,40 @@ class CIQAddress3_0InstanceType(stix_common.AddressAbstractType):
 # end class CIQAddress3_0InstanceType
 
 GDSClassesMapping = {
-    'Information_Source': stix_common.InformationSourceType,
-    'Indicator': stix_common.IndicatorBaseType,
-    'Exploit_Target': stix_common.ExploitTargetBaseType,
-    'Incident': stix_common.IncidentBaseType,
-    'Information_Source_Type': stix_common.ControlledVocabularyStringType,
-    'Confidence_Assertion_Chain': stix_common.ConfidenceAssertionChainType,
-    'Confidence_Assertion': stix_common.ConfidenceType,
-    'Campaign': stix_common.CampaignBaseType,
-    'Encoding': stix_common.ControlledVocabularyStringType,
-    'Source': stix_common.ControlledVocabularyStringType,
-    'State': stix_common.ControlledVocabularyStringType,
+    'Information_Source': stix_common_binding.InformationSourceType,
+    'Indicator': stix_common_binding.IndicatorBaseType,
+    'Exploit_Target': stix_common_binding.ExploitTargetBaseType,
+    'Incident': stix_common_binding.IncidentBaseType,
+    'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
+    'Confidence_Assertion': stix_common_binding.ConfidenceType,
+    'Campaign': stix_common_binding.CampaignBaseType,
+    'Encoding': stix_common_binding.ControlledVocabularyStringType,
+    'Source': stix_common_binding.ControlledVocabularyStringType,
+    'State': stix_common_binding.ControlledVocabularyStringType,
     'Location': xal.AddressType,
-    'Type': stix_common.ControlledVocabularyStringType,
-    'Tool_Type': stix_common.ControlledVocabularyStringType,
-    'Relationship': stix_common.ControlledVocabularyStringType,
-    'TTP': stix_common.TTPBaseType,
-    'Course_Of_Action': stix_common.CourseOfActionBaseType,
-    'Reference_Description': stix_common.StructuredTextType,
-    'Association_Type': stix_common.ControlledVocabularyStringType,
-    'Related_Identities': stix_common.RelatedIdentitiesType,
+    'Type': stix_common_binding.ControlledVocabularyStringType,
+    'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Relationship': stix_common_binding.ControlledVocabularyStringType,
+    'TTP': stix_common_binding.TTPBaseType,
+    'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
+    'Reference_Description': stix_common_binding.StructuredTextType,
+    'Association_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Related_Identities': stix_common_binding.RelatedIdentitiesType,
     'Identifier': xal.IdentifierType,
-    'Identity': stix_common.IdentityType,
-    'Usage_Context_Assumption': stix_common.StructuredTextType,
-    'Threat_Actor': stix_common.ThreatActorBaseType,
+    'Identity': stix_common_binding.IdentityType,
+    'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
+    'Threat_Actor': stix_common_binding.ThreatActorBaseType,
     'Number': xal.IdentifierType,
-    'Confidence': stix_common.ConfidenceType,
-    'Kill_Chain': stix_common.KillChainType,
-    'Description': stix_common.StructuredTextType,
+    'Confidence': stix_common_binding.ConfidenceType,
+    'Kill_Chain': stix_common_binding.KillChainType,
+    'Description': stix_common_binding.StructuredTextType,
     'Address': xal.AddressType,
-    'Name': stix_common.ControlledVocabularyStringType,
-    'Kill_Chain_Phase': stix_common.KillChainPhaseReferenceType,
-    'Related_Identity': stix_common.RelatedIdentityType,
-    'Argument_Name': stix_common.ControlledVocabularyStringType,
-    'Dependency_Description': stix_common.StructuredTextType,
+    'Name': stix_common_binding.ControlledVocabularyStringType,
+    'Kill_Chain_Phase': stix_common_binding.KillChainPhaseReferenceType,
+    'Related_Identity': stix_common_binding.RelatedIdentityType,
+    'Argument_Name': stix_common_binding.ControlledVocabularyStringType,
+    'Dependency_Description': stix_common_binding.StructuredTextType,
 }
 
 USAGE_TEXT = """

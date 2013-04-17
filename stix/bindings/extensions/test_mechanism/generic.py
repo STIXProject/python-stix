@@ -599,15 +599,15 @@ class GenericTestMechanismType(indicator.TestMechanismType):
     def exportLiteralChildren(self, outfile, level, name_):
         super(GenericTestMechanismType, self).exportLiteralChildren(outfile, level, name_)
         if self.Description is not None:
-            outfile.write('Description=model_.stix_common.StructuredTextType(\n')
+            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             outfile.write('),\n')
         if self.Type is not None:
-            outfile.write('Type=model_.stix_common.ControlledVocabularyStringType(\n')
+            outfile.write('Type=model_.stix_common_binding.ControlledVocabularyStringType(\n')
             self.Type.exportLiteral(outfile, level, name_='Type')
             outfile.write('),\n')
         if self.Specification is not None:
-            outfile.write('Specification=model_.stix_common.EncodedCDATAType(\n')
+            outfile.write('Specification=model_.stix_common_binding.EncodedCDATAType(\n')
             self.Specification.exportLiteral(outfile, level, name_='Specification')
             outfile.write('),\n')
     def build(self, node):
@@ -624,70 +624,70 @@ class GenericTestMechanismType(indicator.TestMechanismType):
         super(GenericTestMechanismType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Description':
-            obj_ = stix_common.StructuredTextType.factory()
+            obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Type':
-            obj_ = stix_common.ControlledVocabularyStringType.factory()
+            obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)
             self.set_Type(obj_)
         elif nodeName_ == 'Specification':
-            obj_ = stix_common.EncodedCDATAType.factory()
+            obj_ = stix_common_binding.EncodedCDATAType.factory()
             obj_.build(child_)
             self.set_Specification(obj_)
         super(GenericTestMechanismType, self).buildChildren(child_, node, nodeName_, True)
 # end class GenericTestMechanismType
 
 GDSClassesMapping = {
-    'Indicator': stix_common.IndicatorBaseType,
-    'Exploit_Target': stix_common.ExploitTargetBaseType,
-    'Suggested_COA': stix_common.RelatedCourseOfActionType,
-    'Incident': stix_common.IncidentBaseType,
-    'Information_Source_Type': stix_common.ControlledVocabularyStringType,
-    'Confidence_Assertion_Chain': stix_common.ConfidenceAssertionChainType,
-    'Confidence_Assertion': stix_common.ConfidenceType,
+    'Indicator': stix_common_binding.IndicatorBaseType,
+    'Exploit_Target': stix_common_binding.ExploitTargetBaseType,
+    'Suggested_COA': stix_common_binding.RelatedCourseOfActionType,
+    'Incident': stix_common_binding.IncidentBaseType,
+    'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
+    'Confidence_Assertion': stix_common_binding.ConfidenceType,
     'Suggested_COAs': indicator.SuggestedCOAsType,
-    'Value': stix_common.ControlledVocabularyStringType,
-    'Information_Source': stix_common.InformationSourceType,
-    'Producer': stix_common.InformationSourceType,
-    'Encoding': stix_common.ControlledVocabularyStringType,
-    'Kill_Chain_Phases': stix_common.KillChainPhasesReferenceType,
-    'Specification': stix_common.EncodedCDATAType,
-    'Source': stix_common.ControlledVocabularyStringType,
-    'State': stix_common.ControlledVocabularyStringType,
-    'Type': stix_common.ControlledVocabularyStringType,
-    'Tool_Type': stix_common.ControlledVocabularyStringType,
-    'Relationship': stix_common.ControlledVocabularyStringType,
-    'TTP': stix_common.TTPBaseType,
-    'Indicated_TTP': stix_common.RelatedTTPType,
+    'Value': stix_common_binding.ControlledVocabularyStringType,
+    'Information_Source': stix_common_binding.InformationSourceType,
+    'Producer': stix_common_binding.InformationSourceType,
+    'Encoding': stix_common_binding.ControlledVocabularyStringType,
+    'Kill_Chain_Phases': stix_common_binding.KillChainPhasesReferenceType,
+    'Specification': stix_common_binding.EncodedCDATAType,
+    'Source': stix_common_binding.ControlledVocabularyStringType,
+    'State': stix_common_binding.ControlledVocabularyStringType,
+    'Type': stix_common_binding.ControlledVocabularyStringType,
+    'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Relationship': stix_common_binding.ControlledVocabularyStringType,
+    'TTP': stix_common_binding.TTPBaseType,
+    'Indicated_TTP': stix_common_binding.RelatedTTPType,
     'Related_Indicators': indicator.RelatedIndicatorsType,
-    'Course_Of_Action': stix_common.CourseOfActionBaseType,
+    'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
     'Valid_Time_Position': indicator.ValidTimeType,
-    'Contributors': stix_common.ContributorsType,
-    'Campaign': stix_common.CampaignBaseType,
-    'Reference_Description': stix_common.StructuredTextType,
-    'Association_Type': stix_common.ControlledVocabularyStringType,
-    'Confidence': stix_common.ConfidenceType,
+    'Contributors': stix_common_binding.ContributorsType,
+    'Campaign': stix_common_binding.CampaignBaseType,
+    'Reference_Description': stix_common_binding.StructuredTextType,
+    'Association_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Confidence': stix_common_binding.ConfidenceType,
     'Test_Mechanisms': indicator.TestMechanismsType,
-    'Related_Identities': stix_common.RelatedIdentitiesType,
+    'Related_Identities': stix_common_binding.RelatedIdentitiesType,
     'Sightings': indicator.SightingsType,
-    'Likely_Impact': stix_common.StatementType,
-    'Identity': stix_common.IdentityType,
+    'Likely_Impact': stix_common_binding.StatementType,
+    'Identity': stix_common_binding.IdentityType,
     'Test_Mechanism': indicator.TestMechanismType,
-    'Usage_Context_Assumption': stix_common.StructuredTextType,
+    'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
     'Sighting': indicator.SightingType,
-    'Threat_Actor': stix_common.ThreatActorBaseType,
-    'Kill_Chain': stix_common.KillChainType,
-    'References': stix_common.ReferencesType,
+    'Threat_Actor': stix_common_binding.ThreatActorBaseType,
+    'Kill_Chain': stix_common_binding.KillChainType,
+    'References': stix_common_binding.ReferencesType,
     'Composite_Indicator_Expression': indicator.CompositeIndicatorExpressionType,
-    'Description': stix_common.StructuredTextType,
-    'Efficacy': stix_common.StatementType,
-    'Related_Indicator': stix_common.RelatedIndicatorType,
-    'Kill_Chain_Phase': stix_common.KillChainPhaseReferenceType,
-    'Related_Identity': stix_common.RelatedIdentityType,
-    'Argument_Name': stix_common.ControlledVocabularyStringType,
-    'Dependency_Description': stix_common.StructuredTextType,
-    'Contributor': stix_common.IdentityType,
+    'Description': stix_common_binding.StructuredTextType,
+    'Efficacy': stix_common_binding.StatementType,
+    'Related_Indicator': stix_common_binding.RelatedIndicatorType,
+    'Kill_Chain_Phase': stix_common_binding.KillChainPhaseReferenceType,
+    'Related_Identity': stix_common_binding.RelatedIdentityType,
+    'Argument_Name': stix_common_binding.ControlledVocabularyStringType,
+    'Dependency_Description': stix_common_binding.StructuredTextType,
+    'Contributor': stix_common_binding.IdentityType,
 }
 
 USAGE_TEXT = """

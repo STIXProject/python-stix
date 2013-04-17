@@ -9,8 +9,8 @@ import sys
 import getopt
 import re as re_
 
-import cybox_common
-import cybox_core
+import cybox.bindings.cybox_common as cybox_common_binding
+import cybox.bindings.cybox_core as cybox_core_binding
 import base64
 from datetime import datetime, tzinfo, timedelta
 
@@ -20,43 +20,12 @@ Verbose_import_ = False
     XMLParser_import_elementtree
     ) = range(3)
 XMLParser_import_library = None
-try:
-    # lxml
-    from lxml import etree as etree_
-    XMLParser_import_library = XMLParser_import_lxml
-    if Verbose_import_:
-        print("running with lxml.etree")
-except ImportError:
-    try:
-        # cElementTree from Python 2.5+
-        import xml.etree.cElementTree as etree_
-        XMLParser_import_library = XMLParser_import_elementtree
-        if Verbose_import_:
-            print("running with cElementTree on Python 2.5+")
-    except ImportError:
-        try:
-            # ElementTree from Python 2.5+
-            import xml.etree.ElementTree as etree_
-            XMLParser_import_library = XMLParser_import_elementtree
-            if Verbose_import_:
-                print("running with ElementTree on Python 2.5+")
-        except ImportError:
-            try:
-                # normal cElementTree install
-                import cElementTree as etree_
-                XMLParser_import_library = XMLParser_import_elementtree
-                if Verbose_import_:
-                    print("running with cElementTree")
-            except ImportError:
-                try:
-                    # normal ElementTree install
-                    import elementtree.ElementTree as etree_
-                    XMLParser_import_library = XMLParser_import_elementtree
-                    if Verbose_import_:
-                        print("running with ElementTree")
-                except ImportError:
-                    raise ImportError(
-                        "Failed to import ElementTree from any known place")
+
+# lxml
+from lxml import etree as etree_
+XMLParser_import_library = XMLParser_import_lxml
+if Verbose_import_:
+    print("running with lxml.etree")
 
 def parsexml_(*args, **kwargs):
     if (XMLParser_import_library == XMLParser_import_lxml and
@@ -602,11 +571,11 @@ class InformationSourceType(GeneratedsSuper):
             self.Contributors.exportLiteral(outfile, level, name_='Contributors')
             outfile.write('),\n')
         if self.Time is not None:
-            outfile.write('Time=model_.cybox_common.TimeType(\n')
+            outfile.write('Time=model_.cybox_common_binding.TimeType(\n')
             self.Time.exportLiteral(outfile, level, name_='Time')
             outfile.write('),\n')
         if self.Tools is not None:
-            outfile.write('Tools=model_.cybox_common.ToolsInformationType(\n')
+            outfile.write('Tools=model_.cybox_common_binding.ToolsInformationType(\n')
             self.Tools.exportLiteral(outfile, level, name_='Tools')
             outfile.write('),\n')
         if self.References is not None:
@@ -631,11 +600,11 @@ class InformationSourceType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Contributors(obj_)
         elif nodeName_ == 'Time':
-            obj_ = cybox_common.TimeType.factory()
+            obj_ = cybox_common_binding.TimeType.factory()
             obj_.build(child_)
             self.set_Time(obj_)
         elif nodeName_ == 'Tools':
-            obj_ = cybox_common.ToolsInformationType.factory()
+            obj_ = cybox_common_binding.ToolsInformationType.factory()
             obj_.build(child_)
             self.set_Tools(obj_)
         elif nodeName_ == 'References':
@@ -727,15 +696,15 @@ class ConfidenceType(GeneratedsSuper):
             outfile.write('timestamp = "%s",\n' % (self.timestamp,))
     def exportLiteralChildren(self, outfile, level, name_):
         if self.Value is not None:
-            outfile.write('Value=model_.cybox_common.ControlledVocabularyStringType(\n')
+            outfile.write('Value=model_.ControlledVocabularyStringType(\n')
             self.Value.exportLiteral(outfile, level, name_='Value')
             outfile.write('),\n')
         if self.Description is not None:
-            outfile.write('Description=model_.cybox_common.StructuredTextType(\n')
+            outfile.write('Description=model_.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             outfile.write('),\n')
         if self.Source is not None:
-            outfile.write('Source=model_.cybox_common.ControlledVocabularyStringType(\n')
+            outfile.write('Source=model_.ControlledVocabularyStringType(\n')
             self.Source.exportLiteral(outfile, level, name_='Source')
             outfile.write('),\n')
         if self.Confidence_Assertion_Chain is not None:
@@ -758,15 +727,15 @@ class ConfidenceType(GeneratedsSuper):
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Value':
-            obj_ = cybox_common.ControlledVocabularyStringType.factory()
+            obj_ = ControlledVocabularyStringType.factory()
             obj_.build(child_)
             self.set_Value(obj_)
         elif nodeName_ == 'Description':
-            obj_ = cybox_common.StructuredTextType.factory()
+            obj_ = StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Source':
-            obj_ = cybox_common.ControlledVocabularyStringType.factory()
+            obj_ = ControlledVocabularyStringType.factory()
             obj_.build(child_)
             self.set_Source(obj_)
         elif nodeName_ == 'Confidence_Assertion_Chain':
@@ -840,7 +809,7 @@ class ActivityType(GeneratedsSuper):
             showIndent(outfile, level)
             outfile.write('Date_Time=%s,\n' % quote_python(self.Date_Time).encode(ExternalEncoding))
         if self.Description is not None:
-            outfile.write('Description=model_.cybox_common.StructuredTextType(\n')
+            outfile.write('Description=model_.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             outfile.write('),\n')
     def build(self, node):
@@ -857,7 +826,7 @@ class ActivityType(GeneratedsSuper):
             Date_Time_ = self.gds_validate_string(Date_Time_, node, 'Date_Time')
             self.Date_Time = Date_Time_
         elif nodeName_ == 'Description':
-            obj_ = cybox_common.StructuredTextType.factory()
+            obj_ = StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
 # end class ActivityType
@@ -1691,7 +1660,7 @@ class GenericRelationshipType(GeneratedsSuper):
             self.Information_Source.exportLiteral(outfile, level, name_='Information_Source')
             outfile.write('),\n')
         if self.Relationship is not None:
-            outfile.write('Relationship=model_.cybox_common.ControlledVocabularyStringType(\n')
+            outfile.write('Relationship=model_.ControlledVocabularyStringType(\n')
             self.Relationship.exportLiteral(outfile, level, name_='Relationship')
             outfile.write('),\n')
     def build(self, node):
@@ -1715,7 +1684,7 @@ class GenericRelationshipType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Information_Source(obj_)
         elif nodeName_ == 'Relationship':
-            obj_ = cybox_common.ControlledVocabularyStringType.factory()
+            obj_ = ControlledVocabularyStringType.factory()
             obj_.build(child_)
             self.set_Relationship(obj_)
 # end class GenericRelationshipType
@@ -2175,7 +2144,7 @@ class RelatedObservableType(GenericRelationshipType):
     def exportLiteralChildren(self, outfile, level, name_):
         super(RelatedObservableType, self).exportLiteralChildren(outfile, level, name_)
         if self.Observable is not None:
-            outfile.write('Observable=model_.cybox_core.ObservableType(\n')
+            outfile.write('Observable=model_.cybox_core_binding.ObservableType(\n')
             self.Observable.exportLiteral(outfile, level, name_='Observable')
             outfile.write('),\n')
     def build(self, node):
@@ -2188,7 +2157,7 @@ class RelatedObservableType(GenericRelationshipType):
         super(RelatedObservableType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Observable':
-            obj_ = cybox_core.ObservableType.factory()
+            obj_ = cybox_core_binding.ObservableType.factory()
             obj_.build(child_)
             self.set_Observable(obj_)
         super(RelatedObservableType, self).buildChildren(child_, node, nodeName_, True)
@@ -3191,7 +3160,10 @@ class ExploitTargetsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Exploit_Target':
-            obj_ = ExploitTargetBaseType.factory()
+            # TODO - figure out what type to return/store
+            import stix.bindings.exploit_target as exploit_target_binding
+            #obj_ = ExploitTargetBaseType.factory()
+            obj_ = exploit_target_binding.ExploitTargetType.factory()
             obj_.build(child_)
             self.Exploit_Target.append(obj_)
 # end class ExploitTargetsType
@@ -3687,15 +3659,15 @@ class StatementType(GeneratedsSuper):
             outfile.write('timestamp = "%s",\n' % (self.timestamp,))
     def exportLiteralChildren(self, outfile, level, name_):
         if self.Value is not None:
-            outfile.write('Value=model_.cybox_common.ControlledVocabularyStringType(\n')
+            outfile.write('Value=model_.ControlledVocabularyStringType(\n')
             self.Value.exportLiteral(outfile, level, name_='Value')
             outfile.write('),\n')
         if self.Description is not None:
-            outfile.write('Description=model_.cybox_common.StructuredTextType(\n')
+            outfile.write('Description=model_.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             outfile.write('),\n')
         if self.Source is not None:
-            outfile.write('Source=model_.cybox_common.ControlledVocabularyStringType(\n')
+            outfile.write('Source=model_.ControlledVocabularyStringType(\n')
             self.Source.exportLiteral(outfile, level, name_='Source')
             outfile.write('),\n')
         if self.Confidence is not None:
@@ -3718,15 +3690,15 @@ class StatementType(GeneratedsSuper):
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Value':
-            obj_ = cybox_common.ControlledVocabularyStringType.factory()
+            obj_ = ControlledVocabularyStringType.factory()
             obj_.build(child_)
             self.set_Value(obj_)
         elif nodeName_ == 'Description':
-            obj_ = cybox_common.StructuredTextType.factory()
+            obj_ = StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Source':
-            obj_ = cybox_common.ControlledVocabularyStringType.factory()
+            obj_ = ControlledVocabularyStringType.factory()
             obj_.build(child_)
             self.set_Source(obj_)
         elif nodeName_ == 'Confidence':
@@ -3735,28 +3707,27 @@ class StatementType(GeneratedsSuper):
             self.set_Confidence(obj_)
 # end class StatementType
 
-class cybox_common.StructuredTextType(GeneratedsSuper):
-    """The cybox_common.StructuredTextType is a type representing a generalized
+class StructuredTextType(GeneratedsSuper):
+    """The StructuredTextType is a type representing a generalized
     structure for capturing structured or unstructured textual
     information such as descriptions of things. It mirrors a similar
-    type in CybOX 2.0Used to indicate a particular structuring
-    format (e.g., HTML5) used within an instance of
-    cybox_common.StructuredTextType. Note that if the markup tags used by this
-    format would be interpreted as XML information (such as the
-    bracket-based tags of HTML) the text area should be enclosed in
-    a CDATA section to prevent the markup from interferring with XML
-    validation of the CybOX document. If this attribute is absent,
-    the implication is that no markup is being used."""
+    type in CybOX 2.0 used to indicate a particular structuring
+    format (e.g., HTML5) used within an instance of StructuredTextType. 
+    Note that if the markup tags used by this format would be interpreted 
+    as XML information (such as the bracket-based tags of HTML) the text 
+    area should be enclosed in a CDATA section to prevent the markup from 
+    interferring with XMLvalidation of the CybOX document. If this 
+    attribute is absent, the implication is that no markup is being used."""
     subclass = None
     superclass = None
     def __init__(self, structuring_format=None, valueOf_=None):
         self.structuring_format = _cast(None, structuring_format)
         self.valueOf_ = valueOf_
     def factory(*args_, **kwargs_):
-        if cybox_common.StructuredTextType.subclass:
-            return cybox_common.StructuredTextType.subclass(*args_, **kwargs_)
+        if StructuredTextType.subclass:
+            return StructuredTextType.subclass(*args_, **kwargs_)
         else:
-            return cybox_common.StructuredTextType(*args_, **kwargs_)
+            return StructuredTextType(*args_, **kwargs_)
     factory = staticmethod(factory)
     def get_structuring_format(self): return self.structuring_format
     def set_structuring_format(self, structuring_format): self.structuring_format = structuring_format
@@ -3769,7 +3740,7 @@ class cybox_common.StructuredTextType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='stixCommon:', name_='cybox_common.StructuredTextType', namespacedef_='', pretty_print=True):
+    def export(self, outfile, level, namespace_='stixCommon:', name_='StructuredTextType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -3777,7 +3748,7 @@ class cybox_common.StructuredTextType(GeneratedsSuper):
         showIndent(outfile, level, pretty_print)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='cybox_common.StructuredTextType')
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='StructuredTextType')
         if self.hasContent_():
             outfile.write('>')
             outfile.write(str(self.valueOf_).encode(ExternalEncoding))
@@ -3785,13 +3756,13 @@ class cybox_common.StructuredTextType(GeneratedsSuper):
             outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='cybox_common.StructuredTextType'):
+    def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='StructuredTextType'):
         if self.structuring_format is not None and 'structuring_format' not in already_processed:
             already_processed.add('structuring_format')
             outfile.write(' structuring_format=%s' % (self.gds_format_string(quote_attrib(self.structuring_format).encode(ExternalEncoding), input_name='structuring_format'), ))
-    def exportChildren(self, outfile, level, namespace_='stixCommon:', name_='cybox_common.StructuredTextType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, outfile, level, namespace_='stixCommon:', name_='StructuredTextType', fromsubclass_=False, pretty_print=True):
         pass
-    def exportLiteral(self, outfile, level, name_='cybox_common.StructuredTextType'):
+    def exportLiteral(self, outfile, level, name_='StructuredTextType'):
         level += 1
         already_processed = set()
         self.exportLiteralAttributes(outfile, level, already_processed, name_)
@@ -3820,7 +3791,7 @@ class cybox_common.StructuredTextType(GeneratedsSuper):
             self.structuring_format = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
-# end class cybox_common.StructuredTextType
+# end class StructuredTextType
 
 class EncodedCDATAType(GeneratedsSuper):
     """This type is used to represent data in an XML CDATA block. Data in a
@@ -3910,8 +3881,8 @@ class EncodedCDATAType(GeneratedsSuper):
         pass
 # end class EncodedCDATAType
 
-class cybox_common.ControlledVocabularyStringType(GeneratedsSuper):
-    """The cybox_common.ControlledVocabularyStringType is used as the basis for defining
+class ControlledVocabularyStringType(GeneratedsSuper):
+    """The ControlledVocabularyStringType is used as the basis for defining
     controlled vocabularies.The vocab_name field specifies the name
     of the controlled vocabulary.The vocab_reference field specifies
     the URI to the location of where the controlled vocabulary is
@@ -3923,10 +3894,10 @@ class cybox_common.ControlledVocabularyStringType(GeneratedsSuper):
         self.vocab_name = _cast(None, vocab_name)
         self.valueOf_ = valueOf_
     def factory(*args_, **kwargs_):
-        if cybox_common.ControlledVocabularyStringType.subclass:
-            return cybox_common.ControlledVocabularyStringType.subclass(*args_, **kwargs_)
+        if ControlledVocabularyStringType.subclass:
+            return ControlledVocabularyStringType.subclass(*args_, **kwargs_)
         else:
-            return cybox_common.ControlledVocabularyStringType(*args_, **kwargs_)
+            return ControlledVocabularyStringType(*args_, **kwargs_)
     factory = staticmethod(factory)
     def get_vocab_reference(self): return self.vocab_reference
     def set_vocab_reference(self, vocab_reference): self.vocab_reference = vocab_reference
@@ -3941,7 +3912,7 @@ class cybox_common.ControlledVocabularyStringType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='stixCommon:', name_='cybox_common.ControlledVocabularyStringType', namespacedef_='', pretty_print=True):
+    def export(self, outfile, level, namespace_='stixCommon:', name_='ControlledVocabularyStringType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -3949,7 +3920,7 @@ class cybox_common.ControlledVocabularyStringType(GeneratedsSuper):
         showIndent(outfile, level, pretty_print)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='cybox_common.ControlledVocabularyStringType')
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='ControlledVocabularyStringType')
         if self.hasContent_():
             outfile.write('>')
             outfile.write(str(self.valueOf_).encode(ExternalEncoding))
@@ -3957,16 +3928,16 @@ class cybox_common.ControlledVocabularyStringType(GeneratedsSuper):
             outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='cybox_common.ControlledVocabularyStringType'):
+    def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='ControlledVocabularyStringType'):
         if self.vocab_reference is not None and 'vocab_reference' not in already_processed:
             already_processed.add('vocab_reference')
             outfile.write(' vocab_reference=%s' % (self.gds_format_string(quote_attrib(self.vocab_reference).encode(ExternalEncoding), input_name='vocab_reference'), ))
         if self.vocab_name is not None and 'vocab_name' not in already_processed:
             already_processed.add('vocab_name')
             outfile.write(' vocab_name=%s' % (self.gds_format_string(quote_attrib(self.vocab_name).encode(ExternalEncoding), input_name='vocab_name'), ))
-    def exportChildren(self, outfile, level, namespace_='stixCommon:', name_='cybox_common.ControlledVocabularyStringType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, outfile, level, namespace_='stixCommon:', name_='ControlledVocabularyStringType', fromsubclass_=False, pretty_print=True):
         pass
-    def exportLiteral(self, outfile, level, name_='cybox_common.ControlledVocabularyStringType'):
+    def exportLiteral(self, outfile, level, name_='ControlledVocabularyStringType'):
         level += 1
         already_processed = set()
         self.exportLiteralAttributes(outfile, level, already_processed, name_)
@@ -4003,143 +3974,142 @@ class cybox_common.ControlledVocabularyStringType(GeneratedsSuper):
             self.vocab_name = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
-# end class cybox_common.ControlledVocabularyStringType
+# end class ControlledVocabularyStringType
 
 GDSClassesMapping = {
-    'Build_Utility': cybox_common.BuildUtilityType,
-    'Errors': cybox_common.ErrorsType,
-    'Defined_Effect': cybox_core.DefinedEffectType,
-    'Time': cybox_common.TimeType,
-    'Action': cybox_core.ActionType,
-    'Certificate_Issuer': cybox_common.StringObjectPropertyType,
-    'Metadata': cybox_common.MetadataType,
-    'Hash': cybox_common.HashType,
-    'Object': cybox_core.ObjectType,
-    'Information_Source_Type': cybox_common.ControlledVocabularyStringType,
-    'Internal_Strings': cybox_common.InternalStringsType,
-    'Observable': cybox_core.ObservableType,
-    'SubDatum': cybox_common.MetadataType,
-    'Segment_Hash': cybox_common.HashValueType,
-    'Digital_Signature': cybox_common.DigitalSignatureInfoType,
-    'Code_Snippets': cybox_common.CodeSnippetsType,
-    'Related_Object': cybox_core.RelatedObjectType,
-    'Value': cybox_common.StringObjectPropertyType,
-    'Length': cybox_common.IntegerObjectPropertyType,
-    'Evasion_Techniques': cybox_core.ObfuscationTechniquesType,
-    'Old_Object': cybox_core.ObjectType,
-    'Reference': cybox_common.ReferenceType,
-    'Encoding': cybox_common.ControlledVocabularyStringType,
-    'Internationalization_Settings': cybox_common.InternationalizationSettingsType,
-    'Tool_Configuration': cybox_common.ToolConfigurationType,
-    'Associated_Objects': cybox_core.AssociatedObjectsType,
-    'Object_Pool': cybox_core.ObjectPoolType,
-    'English_Translation': cybox_common.StringObjectPropertyType,
-    'Event': cybox_core.EventType,
-    'Functions': cybox_common.FunctionsType,
-    'String_Value': cybox_common.StringObjectPropertyType,
-    'Build_Utility_Platform_Specification': cybox_common.PlatformSpecificationType,
-    'Compiler_Informal_Description': cybox_common.CompilerInformalDescriptionType,
-    'Related_Objects': cybox_core.RelatedObjectsType,
-    'System': cybox_common.ObjectPropertiesType,
-    'Source': cybox_common.ControlledVocabularyStringType,
-    'State': cybox_common.ControlledVocabularyStringType,
-    'Usage_Context_Assumptions': cybox_common.UsageContextAssumptionsType,
-    'Platform': cybox_common.PlatformSpecificationType,
-    'Type': cybox_common.ControlledVocabularyStringType,
-    'Compilers': cybox_common.CompilersType,
-    'Tool_Type': cybox_common.ControlledVocabularyStringType,
-    'String': cybox_common.ExtractedStringType,
-    'Relationship': cybox_common.ControlledVocabularyStringType,
-    'Custom_Properties': cybox_common.CustomPropertiesType,
-    'Build_Information': cybox_common.BuildInformationType,
-    'Obfuscation_Technique': cybox_core.ObfuscationTechniqueType,
-    'Tool_Hashes': cybox_common.HashListType,
-    'Error_Instances': cybox_common.ErrorInstancesType,
-    'Action_Pool': cybox_core.ActionPoolType,
-    'Data_Segment': cybox_common.StringObjectPropertyType,
-    'Certificate_Subject': cybox_common.StringObjectPropertyType,
-    'Properties': cybox_core.PropertiesType,
-    'Property': cybox_common.PropertyType,
-    'Strings': cybox_common.ExtractedStringsType,
-    'Action_Argument': cybox_core.ActionArgumentType,
-    'File_System_Offset': cybox_common.IntegerObjectPropertyType,
-    'Reference_Description': cybox_common.StructuredTextType,
-    'Code_Snippet': cybox_common.ObjectPropertiesType,
-    'Configuration_Settings': cybox_common.ConfigurationSettingsType,
-    'Compiler_Platform_Specification': cybox_common.PlatformSpecificationType,
-    'Observable_Source': cybox_common.MeasureSourceType,
-    'Byte_String_Value': cybox_common.HexBinaryObjectPropertyType,
-    'Association_Type': cybox_common.ControlledVocabularyStringType,
-    'Observable_Package_Source': cybox_common.MeasureSourceType,
-    'Instance': cybox_common.ObjectPropertiesType,
-    'Associated_Object': cybox_core.AssociatedObjectType,
-    'Observables': cybox_core.ObservablesType,
-    'Import': cybox_common.StringObjectPropertyType,
-    'Observable_Composition': cybox_core.ObservableCompositionType,
-    'Identifier': cybox_common.PlatformIdentifierType,
-    'Property_Pool': cybox_core.PropertyPoolType,
-    'Tool_Specific_Data': cybox_common.ToolSpecificDataType,
-    'Execution_Environment': cybox_common.ExecutionEnvironmentType,
-    'Search_Distance': cybox_common.IntegerObjectPropertyType,
-    'Domain_Specific_Object_Properties': cybox_core.DomainSpecificObjectPropertiesType,
-    'Dependencies': cybox_common.DependenciesType,
-    'Segment_Count': cybox_common.IntegerObjectPropertyType,
-    'Offset': cybox_common.IntegerObjectPropertyType,
-    'Date': cybox_common.DateRangeType,
-    'Hashes': cybox_common.HashListType,
-    'Data': cybox_common.DataSegmentType,
-    'Segments': cybox_common.HashSegmentsType,
-    'Action_Reference': cybox_core.ActionReferenceType,
-    'Language': cybox_common.StringObjectPropertyType,
-    'Usage_Context_Assumption': cybox_common.StructuredTextType,
-    'Block_Hash': cybox_common.FuzzyHashBlockType,
-    'Dependency': cybox_common.DependencyType,
-    'Error': cybox_common.ErrorType,
-    'Pools': cybox_core.PoolsType,
-    'Event_Pool': cybox_core.EventPoolType,
-    'Trigger_Point': cybox_common.HexBinaryObjectPropertyType,
-    'Environment_Variable': cybox_common.EnvironmentVariableType,
-    'Byte_Run': cybox_common.ByteRunType,
-    'Libraries': cybox_common.LibrariesType,
-    'Contributors': cybox_common.PersonnelType,
-    'Image_Offset': cybox_common.IntegerObjectPropertyType,
-    'Imports': cybox_common.ImportsType,
-    'Library': cybox_common.LibraryType,
-    'Action_Arguments': cybox_core.ActionArgumentsType,
-    'Frequency': cybox_core.FrequencyType,
-    'References': cybox_common.ToolReferencesType,
-    'Keywords': cybox_core.KeywordsType,
-    'Pattern_Fidelity': cybox_core.PatternFidelityType,
-    'Block_Hash_Value': cybox_common.HashValueType,
-    'Fuzzy_Hash_Structure': cybox_common.FuzzyHashStructureType,
-    'Configuration_Setting': cybox_common.ConfigurationSettingType,
-    'Relationships': cybox_core.RelationshipsType,
-    'Function': cybox_common.StringObjectPropertyType,
-    'Description': cybox_common.StructuredTextType,
-    'User_Account_Info': cybox_common.ObjectPropertiesType,
-    'Build_Configuration': cybox_common.BuildConfigurationType,
-    'Discovery_Method': cybox_common.MeasureSourceType,
-    'Action_Pertinent_Object_Properties': cybox_core.ActionPertinentObjectPropertiesType,
-    'Observation_Method': cybox_common.MeasureSourceType,
-    'Address': cybox_common.HexBinaryObjectPropertyType,
-    'Search_Within': cybox_common.IntegerObjectPropertyType,
-    'Segment': cybox_common.HashSegmentType,
-    'Compiler': cybox_common.CompilerType,
-    'Name': cybox_common.ControlledVocabularyStringType,
-    'Values': cybox_core.ValuesType,
-    'Signature_Description': cybox_common.StringObjectPropertyType,
-    'Block_Size': cybox_common.IntegerObjectPropertyType,
-    'Simple_Hash_Value': cybox_common.SimpleHashValueType,
-    'New_Object': cybox_core.ObjectType,
-    'Argument_Name': cybox_common.ControlledVocabularyStringType,
-    'Fuzzy_Hash_Value': cybox_common.FuzzyHashValueType,
-    'Actions': cybox_core.ActionsType,
-    'Data_Size': cybox_common.DataSizeType,
-    'Dependency_Description': cybox_common.StructuredTextType,
-    'Contributor': cybox_common.ContributorType,
-    'Action_Aliases': cybox_core.ActionAliasesType,
-    'Tools': cybox_common.ToolsInformationType,
-    'Tool': cybox_common.ToolInformationType,
+    'Build_Utility': cybox_common_binding.BuildUtilityType,
+    'Errors': cybox_common_binding.ErrorsType,
+    'Defined_Effect': cybox_core_binding.DefinedEffectType,
+    'Time': cybox_common_binding.TimeType,
+    'Action': cybox_core_binding.ActionType,
+    'Certificate_Issuer': cybox_common_binding.StringObjectPropertyType,
+    'Metadata': cybox_common_binding.MetadataType,
+    'Hash': cybox_common_binding.HashType,
+    'Object': cybox_core_binding.ObjectType,
+    'Internal_Strings': cybox_common_binding.InternalStringsType,
+    'Observable': cybox_core_binding.ObservableType,
+    'SubDatum': cybox_common_binding.MetadataType,
+    'Segment_Hash': cybox_common_binding.HashValueType,
+    'Digital_Signature': cybox_common_binding.DigitalSignatureInfoType,
+    'Code_Snippets': cybox_common_binding.CodeSnippetsType,
+    'Related_Object': cybox_core_binding.RelatedObjectType,
+    'Value': cybox_common_binding.StringObjectPropertyType,
+    'Length': cybox_common_binding.IntegerObjectPropertyType,
+    'Evasion_Techniques': cybox_core_binding.ObfuscationTechniquesType,
+    'Old_Object': cybox_core_binding.ObjectType,
+    'Reference': cybox_common_binding.ReferenceType,
+    'Encoding': ControlledVocabularyStringType,
+    'Internationalization_Settings': cybox_common_binding.InternationalizationSettingsType,
+    'Tool_Configuration': cybox_common_binding.ToolConfigurationType,
+    'Associated_Objects': cybox_core_binding.AssociatedObjectsType,
+    'Object_Pool': cybox_core_binding.ObjectPoolType,
+    'English_Translation': cybox_common_binding.StringObjectPropertyType,
+    'Event': cybox_core_binding.EventType,
+    'Functions': cybox_common_binding.FunctionsType,
+    'String_Value': cybox_common_binding.StringObjectPropertyType,
+    'Build_Utility_Platform_Specification': cybox_common_binding.PlatformSpecificationType,
+    'Compiler_Informal_Description': cybox_common_binding.CompilerInformalDescriptionType,
+    'Related_Objects': cybox_core_binding.RelatedObjectsType,
+    'System': cybox_common_binding.ObjectPropertiesType,
+    'Source': ControlledVocabularyStringType,
+    'State': ControlledVocabularyStringType,
+    'Usage_Context_Assumptions': cybox_common_binding.UsageContextAssumptionsType,
+    'Platform': cybox_common_binding.PlatformSpecificationType,
+    'Type': ControlledVocabularyStringType,
+    'Compilers': cybox_common_binding.CompilersType,
+    'Tool_Type': ControlledVocabularyStringType,
+    'String': cybox_common_binding.ExtractedStringType,
+    'Relationship': ControlledVocabularyStringType,
+    'Custom_Properties': cybox_common_binding.CustomPropertiesType,
+    'Build_Information': cybox_common_binding.BuildInformationType,
+    'Obfuscation_Technique': cybox_core_binding.ObfuscationTechniqueType,
+    'Tool_Hashes': cybox_common_binding.HashListType,
+    'Error_Instances': cybox_common_binding.ErrorInstancesType,
+    'Action_Pool': cybox_core_binding.ActionPoolType,
+    'Data_Segment': cybox_common_binding.StringObjectPropertyType,
+    'Certificate_Subject': cybox_common_binding.StringObjectPropertyType,
+    'Properties': cybox_core_binding.PropertiesType,
+    'Property': cybox_common_binding.PropertyType,
+    'Strings': cybox_common_binding.ExtractedStringsType,
+    'Action_Argument': cybox_core_binding.ActionArgumentType,
+    'File_System_Offset': cybox_common_binding.IntegerObjectPropertyType,
+    'Reference_Description': StructuredTextType,
+    'Code_Snippet': cybox_common_binding.ObjectPropertiesType,
+    'Configuration_Settings': cybox_common_binding.ConfigurationSettingsType,
+    'Compiler_Platform_Specification': cybox_common_binding.PlatformSpecificationType,
+    'Observable_Source': cybox_common_binding.MeasureSourceType,
+    'Byte_String_Value': cybox_common_binding.HexBinaryObjectPropertyType,
+    'Association_Type': ControlledVocabularyStringType,
+    'Observable_Package_Source': cybox_common_binding.MeasureSourceType,
+    'Instance': cybox_common_binding.ObjectPropertiesType,
+    'Associated_Object': cybox_core_binding.AssociatedObjectType,
+    'Observables': cybox_core_binding.ObservablesType,
+    'Import': cybox_common_binding.StringObjectPropertyType,
+    'Observable_Composition': cybox_core_binding.ObservableCompositionType,
+    'Identifier': cybox_common_binding.PlatformIdentifierType,
+    'Property_Pool': cybox_core_binding.PropertyPoolType,
+    'Tool_Specific_Data': cybox_common_binding.ToolSpecificDataType,
+    'Execution_Environment': cybox_common_binding.ExecutionEnvironmentType,
+    'Search_Distance': cybox_common_binding.IntegerObjectPropertyType,
+    'Domain_Specific_Object_Properties': cybox_core_binding.DomainSpecificObjectPropertiesType,
+    'Dependencies': cybox_common_binding.DependenciesType,
+    'Segment_Count': cybox_common_binding.IntegerObjectPropertyType,
+    'Offset': cybox_common_binding.IntegerObjectPropertyType,
+    'Date': cybox_common_binding.DateRangeType,
+    'Hashes': cybox_common_binding.HashListType,
+    'Data': cybox_common_binding.DataSegmentType,
+    'Segments': cybox_common_binding.HashSegmentsType,
+    'Action_Reference': cybox_core_binding.ActionReferenceType,
+    'Language': cybox_common_binding.StringObjectPropertyType,
+    'Usage_Context_Assumption': StructuredTextType,
+    'Block_Hash': cybox_common_binding.FuzzyHashBlockType,
+    'Dependency': cybox_common_binding.DependencyType,
+    'Error': cybox_common_binding.ErrorType,
+    'Pools': cybox_core_binding.PoolsType,
+    'Event_Pool': cybox_core_binding.EventPoolType,
+    'Trigger_Point': cybox_common_binding.HexBinaryObjectPropertyType,
+    'Environment_Variable': cybox_common_binding.EnvironmentVariableType,
+    'Byte_Run': cybox_common_binding.ByteRunType,
+    'Libraries': cybox_common_binding.LibrariesType,
+    'Contributors': cybox_common_binding.PersonnelType,
+    'Image_Offset': cybox_common_binding.IntegerObjectPropertyType,
+    'Imports': cybox_common_binding.ImportsType,
+    'Library': cybox_common_binding.LibraryType,
+    'Action_Arguments': cybox_core_binding.ActionArgumentsType,
+    'Frequency': cybox_core_binding.FrequencyType,
+    'References': cybox_common_binding.ToolReferencesType,
+    'Keywords': cybox_core_binding.KeywordsType,
+    'Pattern_Fidelity': cybox_core_binding.PatternFidelityType,
+    'Block_Hash_Value': cybox_common_binding.HashValueType,
+    'Fuzzy_Hash_Structure': cybox_common_binding.FuzzyHashStructureType,
+    'Configuration_Setting': cybox_common_binding.ConfigurationSettingType,
+    'Relationships': cybox_core_binding.RelationshipsType,
+    'Function': cybox_common_binding.StringObjectPropertyType,
+    'Description': StructuredTextType,
+    'User_Account_Info': cybox_common_binding.ObjectPropertiesType,
+    'Build_Configuration': cybox_common_binding.BuildConfigurationType,
+    'Discovery_Method': cybox_common_binding.MeasureSourceType,
+    'Action_Pertinent_Object_Properties': cybox_core_binding.ActionPertinentObjectPropertiesType,
+    'Observation_Method': cybox_common_binding.MeasureSourceType,
+    'Address': cybox_common_binding.HexBinaryObjectPropertyType,
+    'Search_Within': cybox_common_binding.IntegerObjectPropertyType,
+    'Segment': cybox_common_binding.HashSegmentType,
+    'Compiler': cybox_common_binding.CompilerType,
+    'Name': ControlledVocabularyStringType,
+    'Values': cybox_core_binding.ValuesType,
+    'Signature_Description': cybox_common_binding.StringObjectPropertyType,
+    'Block_Size': cybox_common_binding.IntegerObjectPropertyType,
+    'Simple_Hash_Value': cybox_common_binding.SimpleHashValueType,
+    'New_Object': cybox_core_binding.ObjectType,
+    'Argument_Name': ControlledVocabularyStringType,
+    'Fuzzy_Hash_Value': cybox_common_binding.FuzzyHashValueType,
+    'Actions': cybox_core_binding.ActionsType,
+    'Data_Size': cybox_common_binding.DataSizeType,
+    'Dependency_Description': StructuredTextType,
+    'Contributor': cybox_common_binding.ContributorType,
+    'Action_Aliases': cybox_core_binding.ActionAliasesType,
+    'Tools': cybox_common_binding.ToolsInformationType,
+    'Tool': cybox_common_binding.ToolInformationType,
 }
 
 USAGE_TEXT = """
@@ -4220,9 +4190,9 @@ def parseLiteral(inFileName):
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
     doc = None
-    sys.stdout.write('#from stix_common import *\n\n')
+    sys.stdout.write('#from stix_common_binding.import *\n\n')
     sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import stix_common as model_\n\n')
+    sys.stdout.write('import stix.bindings.stix_common as stix_common_binding_binding.as model_\n\n')
     sys.stdout.write('rootObj = model_.rootTag(\n')
     rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
     sys.stdout.write(')\n')

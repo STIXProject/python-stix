@@ -9,8 +9,8 @@ import sys
 import getopt
 import re as re_
 
-import stix_common
-import data_marking
+import stix.bindings.stix_common as stix_common_binding
+import stix.bindings.data_marking as data_marking_binding
 import base64
 from datetime import datetime, tzinfo, timedelta
 
@@ -20,43 +20,11 @@ Verbose_import_ = False
     XMLParser_import_elementtree
     ) = range(3)
 XMLParser_import_library = None
-try:
-    # lxml
-    from lxml import etree as etree_
-    XMLParser_import_library = XMLParser_import_lxml
-    if Verbose_import_:
-        print("running with lxml.etree")
-except ImportError:
-    try:
-        # cElementTree from Python 2.5+
-        import xml.etree.cElementTree as etree_
-        XMLParser_import_library = XMLParser_import_elementtree
-        if Verbose_import_:
-            print("running with cElementTree on Python 2.5+")
-    except ImportError:
-        try:
-            # ElementTree from Python 2.5+
-            import xml.etree.ElementTree as etree_
-            XMLParser_import_library = XMLParser_import_elementtree
-            if Verbose_import_:
-                print("running with ElementTree on Python 2.5+")
-        except ImportError:
-            try:
-                # normal cElementTree install
-                import cElementTree as etree_
-                XMLParser_import_library = XMLParser_import_elementtree
-                if Verbose_import_:
-                    print("running with cElementTree")
-            except ImportError:
-                try:
-                    # normal ElementTree install
-                    import elementtree.ElementTree as etree_
-                    XMLParser_import_library = XMLParser_import_elementtree
-                    if Verbose_import_:
-                        print("running with ElementTree")
-                except ImportError:
-                    raise ImportError(
-                        "Failed to import ElementTree from any known place")
+# lxml
+from lxml import etree as etree_
+XMLParser_import_library = XMLParser_import_lxml
+if Verbose_import_:
+    print("running with lxml.etree")
 
 def parsexml_(*args, **kwargs):
     if (XMLParser_import_library == XMLParser_import_lxml and
@@ -680,11 +648,11 @@ class ObjectiveType(GeneratedsSuper):
         pass
     def exportLiteralChildren(self, outfile, level, name_):
         if self.Description is not None:
-            outfile.write('Description=model_.stix_common.StructuredTextType(\n')
+            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             outfile.write('),\n')
         if self.Applicability_Confidence is not None:
-            outfile.write('Applicability_Confidence=model_.stix_common.ConfidenceType(\n')
+            outfile.write('Applicability_Confidence=model_.stix_common_binding.ConfidenceType(\n')
             self.Applicability_Confidence.exportLiteral(outfile, level, name_='Applicability_Confidence')
             outfile.write('),\n')
     def build(self, node):
@@ -697,23 +665,23 @@ class ObjectiveType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Description':
-            obj_ = stix_common.StructuredTextType.factory()
+            obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Applicability_Confidence':
-            obj_ = stix_common.ConfidenceType.factory()
+            obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_Applicability_Confidence(obj_)
 # end class ObjectiveType
 
-class CourseOfActionType(stix_common.CourseOfActionBaseType):
+class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     """The CourseOfActionType characterizes a Course of Action to be taken
     in regards to one of more cyber threats. NOTE: This construct is
     still in its early stages of maturity and will require a good
     deal of review and refinement.Specifies the relevant STIX-COA
     schema version for this content."""
     subclass = None
-    superclass = stix_common.CourseOfActionBaseType
+    superclass = stix_common_binding.CourseOfActionBaseType
     def __init__(self, idref=None, id=None, version='1.0', Title=None, Stage=None, Type=None, Description=None, Objective=None, Structured_COA=None, Impact=None, Cost=None, Efficacy=None, Handling=None):
         super(CourseOfActionType, self).__init__(idref, id, )
         self.version = _cast(None, version)
@@ -838,15 +806,15 @@ class CourseOfActionType(stix_common.CourseOfActionBaseType):
             showIndent(outfile, level)
             outfile.write('Title=%s,\n' % quote_python(self.Title).encode(ExternalEncoding))
         if self.Stage is not None:
-            outfile.write('Stage=model_.stix_common.ControlledVocabularyStringType(\n')
+            outfile.write('Stage=model_.stix_common_binding.ControlledVocabularyStringType(\n')
             self.Stage.exportLiteral(outfile, level, name_='Stage')
             outfile.write('),\n')
         if self.Type is not None:
-            outfile.write('Type=model_.stix_common.ControlledVocabularyStringType(\n')
+            outfile.write('Type=model_.stix_common_binding.ControlledVocabularyStringType(\n')
             self.Type.exportLiteral(outfile, level, name_='Type')
             outfile.write('),\n')
         if self.Description is not None:
-            outfile.write('Description=model_.stix_common.StructuredTextType(\n')
+            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             outfile.write('),\n')
         if self.Objective is not None:
@@ -860,19 +828,19 @@ class CourseOfActionType(stix_common.CourseOfActionBaseType):
             showIndent(outfile, level)
             outfile.write('),\n')
         if self.Impact is not None:
-            outfile.write('Impact=model_.stix_common.StatementType(\n')
+            outfile.write('Impact=model_.stix_common_binding.StatementType(\n')
             self.Impact.exportLiteral(outfile, level, name_='Impact')
             outfile.write('),\n')
         if self.Cost is not None:
-            outfile.write('Cost=model_.stix_common.StatementType(\n')
+            outfile.write('Cost=model_.stix_common_binding.StatementType(\n')
             self.Cost.exportLiteral(outfile, level, name_='Cost')
             outfile.write('),\n')
         if self.Efficacy is not None:
-            outfile.write('Efficacy=model_.stix_common.StatementType(\n')
+            outfile.write('Efficacy=model_.stix_common_binding.StatementType(\n')
             self.Efficacy.exportLiteral(outfile, level, name_='Efficacy')
             outfile.write('),\n')
         if self.Handling is not None:
-            outfile.write('Handling=model_.data_marking.MarkingType(\n')
+            outfile.write('Handling=model_.data_marking_binding.MarkingType(\n')
             self.Handling.exportLiteral(outfile, level, name_='Handling')
             outfile.write('),\n')
     def build(self, node):
@@ -893,15 +861,15 @@ class CourseOfActionType(stix_common.CourseOfActionBaseType):
             Title_ = self.gds_validate_string(Title_, node, 'Title')
             self.Title = Title_
         elif nodeName_ == 'Stage':
-            obj_ = stix_common.ControlledVocabularyStringType.factory()
+            obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)
             self.set_Stage(obj_)
         elif nodeName_ == 'Type':
-            obj_ = stix_common.ControlledVocabularyStringType.factory()
+            obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)
             self.set_Type(obj_)
         elif nodeName_ == 'Description':
-            obj_ = stix_common.StructuredTextType.factory()
+            obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Objective':
@@ -927,63 +895,63 @@ class CourseOfActionType(stix_common.CourseOfActionBaseType):
                     'Class not implemented for <Structured_COA> element')
             self.set_Structured_COA(obj_)
         elif nodeName_ == 'Impact':
-            obj_ = stix_common.StatementType.factory()
+            obj_ = stix_common_binding.StatementType.factory()
             obj_.build(child_)
             self.set_Impact(obj_)
         elif nodeName_ == 'Cost':
-            obj_ = stix_common.StatementType.factory()
+            obj_ = stix_common_binding.StatementType.factory()
             obj_.build(child_)
             self.set_Cost(obj_)
         elif nodeName_ == 'Efficacy':
-            obj_ = stix_common.StatementType.factory()
+            obj_ = stix_common_binding.StatementType.factory()
             obj_.build(child_)
             self.set_Efficacy(obj_)
         elif nodeName_ == 'Handling':
-            obj_ = data_marking.MarkingType.factory()
+            obj_ = data_marking_binding.MarkingType.factory()
             obj_.build(child_)
             self.set_Handling(obj_)
         super(CourseOfActionType, self).buildChildren(child_, node, nodeName_, True)
 # end class CourseOfActionType
 
 GDSClassesMapping = {
-    'Information_Source': stix_common.InformationSourceType,
-    'Indicator': stix_common.IndicatorBaseType,
-    'Exploit_Target': stix_common.ExploitTargetBaseType,
-    'Incident': stix_common.IncidentBaseType,
-    'Information_Source_Type': stix_common.ControlledVocabularyStringType,
-    'Confidence_Assertion_Chain': stix_common.ConfidenceAssertionChainType,
-    'Confidence_Assertion': stix_common.ConfidenceType,
-    'Campaign': stix_common.CampaignBaseType,
-    'Encoding': stix_common.ControlledVocabularyStringType,
-    'Impact': stix_common.StatementType,
-    'Source': stix_common.ControlledVocabularyStringType,
-    'State': stix_common.ControlledVocabularyStringType,
-    'Marking_Structure': data_marking.MarkingStructureType,
-    'Type': stix_common.ControlledVocabularyStringType,
-    'Tool_Type': stix_common.ControlledVocabularyStringType,
-    'Relationship': stix_common.ControlledVocabularyStringType,
-    'TTP': stix_common.TTPBaseType,
-    'Stage': stix_common.ControlledVocabularyStringType,
-    'Course_Of_Action': stix_common.CourseOfActionBaseType,
-    'Reference_Description': stix_common.StructuredTextType,
-    'Association_Type': stix_common.ControlledVocabularyStringType,
-    'Marking': data_marking.MarkingSpecificationType,
-    'Related_Identities': stix_common.RelatedIdentitiesType,
-    'Identity': stix_common.IdentityType,
-    'Usage_Context_Assumption': stix_common.StructuredTextType,
-    'Threat_Actor': stix_common.ThreatActorBaseType,
-    'Applicability_Confidence': stix_common.ConfidenceType,
-    'Confidence': stix_common.ConfidenceType,
-    'Kill_Chain': stix_common.KillChainType,
-    'Description': stix_common.StructuredTextType,
-    'Efficacy': stix_common.StatementType,
-    'Handling': data_marking.MarkingType,
-    'Name': stix_common.ControlledVocabularyStringType,
-    'Kill_Chain_Phase': stix_common.KillChainPhaseReferenceType,
-    'Related_Identity': stix_common.RelatedIdentityType,
-    'Argument_Name': stix_common.ControlledVocabularyStringType,
-    'Dependency_Description': stix_common.StructuredTextType,
-    'Cost': stix_common.StatementType,
+    'Information_Source': stix_common_binding.InformationSourceType,
+    'Indicator': stix_common_binding.IndicatorBaseType,
+    'Exploit_Target': stix_common_binding.ExploitTargetBaseType,
+    'Incident': stix_common_binding.IncidentBaseType,
+    'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
+    'Confidence_Assertion': stix_common_binding.ConfidenceType,
+    'Campaign': stix_common_binding.CampaignBaseType,
+    'Encoding': stix_common_binding.ControlledVocabularyStringType,
+    'Impact': stix_common_binding.StatementType,
+    'Source': stix_common_binding.ControlledVocabularyStringType,
+    'State': stix_common_binding.ControlledVocabularyStringType,
+    'Marking_Structure': data_marking_binding.MarkingStructureType,
+    'Type': stix_common_binding.ControlledVocabularyStringType,
+    'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Relationship': stix_common_binding.ControlledVocabularyStringType,
+    'TTP': stix_common_binding.TTPBaseType,
+    'Stage': stix_common_binding.ControlledVocabularyStringType,
+    'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
+    'Reference_Description': stix_common_binding.StructuredTextType,
+    'Association_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Marking': data_marking_binding.MarkingSpecificationType,
+    'Related_Identities': stix_common_binding.RelatedIdentitiesType,
+    'Identity': stix_common_binding.IdentityType,
+    'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
+    'Threat_Actor': stix_common_binding.ThreatActorBaseType,
+    'Applicability_Confidence': stix_common_binding.ConfidenceType,
+    'Confidence': stix_common_binding.ConfidenceType,
+    'Kill_Chain': stix_common_binding.KillChainType,
+    'Description': stix_common_binding.StructuredTextType,
+    'Efficacy': stix_common_binding.StatementType,
+    'Handling': data_marking_binding.MarkingType,
+    'Name': stix_common_binding.ControlledVocabularyStringType,
+    'Kill_Chain_Phase': stix_common_binding.KillChainPhaseReferenceType,
+    'Related_Identity': stix_common_binding.RelatedIdentityType,
+    'Argument_Name': stix_common_binding.ControlledVocabularyStringType,
+    'Dependency_Description': stix_common_binding.StructuredTextType,
+    'Cost': stix_common_binding.StatementType,
 }
 
 USAGE_TEXT = """

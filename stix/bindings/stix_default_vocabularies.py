@@ -9,7 +9,7 @@ import sys
 import getopt
 import re as re_
 
-import stix_common
+import stix.bindings.stix_common as stix_common_binding
 import base64
 from datetime import datetime, tzinfo, timedelta
 
@@ -19,43 +19,12 @@ Verbose_import_ = False
     XMLParser_import_elementtree
     ) = range(3)
 XMLParser_import_library = None
-try:
-    # lxml
-    from lxml import etree as etree_
-    XMLParser_import_library = XMLParser_import_lxml
-    if Verbose_import_:
-        print("running with lxml.etree")
-except ImportError:
-    try:
-        # cElementTree from Python 2.5+
-        import xml.etree.cElementTree as etree_
-        XMLParser_import_library = XMLParser_import_elementtree
-        if Verbose_import_:
-            print("running with cElementTree on Python 2.5+")
-    except ImportError:
-        try:
-            # ElementTree from Python 2.5+
-            import xml.etree.ElementTree as etree_
-            XMLParser_import_library = XMLParser_import_elementtree
-            if Verbose_import_:
-                print("running with ElementTree on Python 2.5+")
-        except ImportError:
-            try:
-                # normal cElementTree install
-                import cElementTree as etree_
-                XMLParser_import_library = XMLParser_import_elementtree
-                if Verbose_import_:
-                    print("running with cElementTree")
-            except ImportError:
-                try:
-                    # normal ElementTree install
-                    import elementtree.ElementTree as etree_
-                    XMLParser_import_library = XMLParser_import_elementtree
-                    if Verbose_import_:
-                        print("running with ElementTree")
-                except ImportError:
-                    raise ImportError(
-                        "Failed to import ElementTree from any known place")
+
+#lxml
+from lxml import etree as etree_
+XMLParser_import_library = XMLParser_import_lxml
+if Verbose_import_:
+    print("running with lxml.etree")
 
 def parsexml_(*args, **kwargs):
     if (XMLParser_import_library == XMLParser_import_lxml and
@@ -514,36 +483,36 @@ def _cast(typ, value):
 #
 
 GDSClassesMapping = {
-    'Information_Source': stix_common.InformationSourceType,
-    'Indicator': stix_common.IndicatorBaseType,
-    'Exploit_Target': stix_common.ExploitTargetBaseType,
-    'Incident': stix_common.IncidentBaseType,
-    'Information_Source_Type': stix_common.ControlledVocabularyStringType,
-    'Confidence_Assertion_Chain': stix_common.ConfidenceAssertionChainType,
-    'Confidence_Assertion': stix_common.ConfidenceType,
-    'Campaign': stix_common.CampaignBaseType,
-    'Encoding': stix_common.ControlledVocabularyStringType,
-    'Source': stix_common.ControlledVocabularyStringType,
-    'State': stix_common.ControlledVocabularyStringType,
-    'Type': stix_common.ControlledVocabularyStringType,
-    'Tool_Type': stix_common.ControlledVocabularyStringType,
-    'Relationship': stix_common.ControlledVocabularyStringType,
-    'TTP': stix_common.TTPBaseType,
-    'Course_Of_Action': stix_common.CourseOfActionBaseType,
-    'Reference_Description': stix_common.StructuredTextType,
-    'Association_Type': stix_common.ControlledVocabularyStringType,
-    'Related_Identities': stix_common.RelatedIdentitiesType,
-    'Identity': stix_common.IdentityType,
-    'Usage_Context_Assumption': stix_common.StructuredTextType,
-    'Threat_Actor': stix_common.ThreatActorBaseType,
-    'Confidence': stix_common.ConfidenceType,
-    'Kill_Chain': stix_common.KillChainType,
-    'Description': stix_common.StructuredTextType,
-    'Name': stix_common.ControlledVocabularyStringType,
-    'Kill_Chain_Phase': stix_common.KillChainPhaseReferenceType,
-    'Related_Identity': stix_common.RelatedIdentityType,
-    'Argument_Name': stix_common.ControlledVocabularyStringType,
-    'Dependency_Description': stix_common.StructuredTextType,
+    'Information_Source': stix_common_binding.InformationSourceType,
+    'Indicator': stix_common_binding.IndicatorBaseType,
+    'Exploit_Target': stix_common_binding.ExploitTargetBaseType,
+    'Incident': stix_common_binding.IncidentBaseType,
+    'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
+    'Confidence_Assertion': stix_common_binding.ConfidenceType,
+    'Campaign': stix_common_binding.CampaignBaseType,
+    'Encoding': stix_common_binding.ControlledVocabularyStringType,
+    'Source': stix_common_binding.ControlledVocabularyStringType,
+    'State': stix_common_binding.ControlledVocabularyStringType,
+    'Type': stix_common_binding.ControlledVocabularyStringType,
+    'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Relationship': stix_common_binding.ControlledVocabularyStringType,
+    'TTP': stix_common_binding.TTPBaseType,
+    'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
+    'Reference_Description': stix_common_binding.StructuredTextType,
+    'Association_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Related_Identities': stix_common_binding.RelatedIdentitiesType,
+    'Identity': stix_common_binding.IdentityType,
+    'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
+    'Threat_Actor': stix_common_binding.ThreatActorBaseType,
+    'Confidence': stix_common_binding.ConfidenceType,
+    'Kill_Chain': stix_common_binding.KillChainType,
+    'Description': stix_common_binding.StructuredTextType,
+    'Name': stix_common_binding.ControlledVocabularyStringType,
+    'Kill_Chain_Phase': stix_common_binding.KillChainPhaseReferenceType,
+    'Related_Identity': stix_common_binding.RelatedIdentityType,
+    'Argument_Name': stix_common_binding.ControlledVocabularyStringType,
+    'Dependency_Description': stix_common_binding.StructuredTextType,
 }
 
 USAGE_TEXT = """

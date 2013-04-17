@@ -9,9 +9,10 @@ import sys
 import getopt
 import re as re_
 
-import stix_common
-import cybox_core
-import data_marking
+import stix.bindings.stix_common as stix_common_binding
+import stix.bindings.data_marking as data_marking_binding
+import cybox.bindings.cybox_core as cybox_core_binding
+
 import base64
 from datetime import datetime, tzinfo, timedelta
 
@@ -21,44 +22,13 @@ Verbose_import_ = False
     XMLParser_import_elementtree
     ) = range(3)
 XMLParser_import_library = None
-try:
-    # lxml
-    from lxml import etree as etree_
-    XMLParser_import_library = XMLParser_import_lxml
-    if Verbose_import_:
-        print("running with lxml.etree")
-except ImportError:
-    try:
-        # cElementTree from Python 2.5+
-        import xml.etree.cElementTree as etree_
-        XMLParser_import_library = XMLParser_import_elementtree
-        if Verbose_import_:
-            print("running with cElementTree on Python 2.5+")
-    except ImportError:
-        try:
-            # ElementTree from Python 2.5+
-            import xml.etree.ElementTree as etree_
-            XMLParser_import_library = XMLParser_import_elementtree
-            if Verbose_import_:
-                print("running with ElementTree on Python 2.5+")
-        except ImportError:
-            try:
-                # normal cElementTree install
-                import cElementTree as etree_
-                XMLParser_import_library = XMLParser_import_elementtree
-                if Verbose_import_:
-                    print("running with cElementTree")
-            except ImportError:
-                try:
-                    # normal ElementTree install
-                    import elementtree.ElementTree as etree_
-                    XMLParser_import_library = XMLParser_import_elementtree
-                    if Verbose_import_:
-                        print("running with ElementTree")
-                except ImportError:
-                    raise ImportError(
-                        "Failed to import ElementTree from any known place")
 
+# lxml
+from lxml import etree as etree_
+XMLParser_import_library = XMLParser_import_lxml
+if Verbose_import_:
+    print("running with lxml.etree")
+    
 def parsexml_(*args, **kwargs):
     if (XMLParser_import_library == XMLParser_import_lxml and
         'parser' not in kwargs):
@@ -656,7 +626,7 @@ class STIXType(GeneratedsSuper):
             self.STIX_Header.exportLiteral(outfile, level, name_='STIX_Header')
             outfile.write('),\n')
         if self.Observables is not None:
-            outfile.write('Observables=model_.cybox_core.ObservablesType(\n')
+            outfile.write('Observables=model_.cybox_core_binding.ObservablesType(\n')
             self.Observables.exportLiteral(outfile, level, name_='Observables')
             outfile.write('),\n')
         if self.Indicators is not None:
@@ -668,7 +638,7 @@ class STIXType(GeneratedsSuper):
             self.TTPs.exportLiteral(outfile, level, name_='TTPs')
             outfile.write('),\n')
         if self.Exploit_Targets is not None:
-            outfile.write('Exploit_Targets=model_.stix_common.ExploitTargetsType(\n')
+            outfile.write('Exploit_Targets=model_.stix_common_binding.ExploitTargetsType(\n')
             self.Exploit_Targets.exportLiteral(outfile, level, name_='Exploit_Targets')
             outfile.write('),\n')
         if self.Incidents is not None:
@@ -712,7 +682,7 @@ class STIXType(GeneratedsSuper):
             obj_.build(child_)
             self.set_STIX_Header(obj_)
         elif nodeName_ == 'Observables':
-            obj_ = cybox_core.ObservablesType.factory()
+            obj_ = cybox_core_binding.ObservablesType.factory()
             obj_.build(child_)
             self.set_Observables(obj_)
         elif nodeName_ == 'Indicators':
@@ -724,7 +694,7 @@ class STIXType(GeneratedsSuper):
             obj_.build(child_)
             self.set_TTPs(obj_)
         elif nodeName_ == 'Exploit_Targets':
-            obj_ = stix_common.ExploitTargetsType.factory()
+            obj_ = stix_common_binding.ExploitTargetsType.factory()
             obj_.build(child_)
             self.set_Exploit_Targets(obj_)
         elif nodeName_ == 'Incidents':
@@ -830,19 +800,19 @@ class STIXHeaderType(GeneratedsSuper):
             showIndent(outfile, level)
             outfile.write('Title=%s,\n' % quote_python(self.Title).encode(ExternalEncoding))
         if self.Package_Intent is not None:
-            outfile.write('Package_Intent=model_.stix_common.ControlledVocabularyStringType(\n')
+            outfile.write('Package_Intent=model_.stix_common_binding.ControlledVocabularyStringType(\n')
             self.Package_Intent.exportLiteral(outfile, level, name_='Package_Intent')
             outfile.write('),\n')
         if self.Description is not None:
-            outfile.write('Description=model_.stix_common.StructuredTextType(\n')
+            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             outfile.write('),\n')
         if self.Handling is not None:
-            outfile.write('Handling=model_.data_marking.MarkingType(\n')
+            outfile.write('Handling=model_.data_marking_binding.MarkingType(\n')
             self.Handling.exportLiteral(outfile, level, name_='Handling')
             outfile.write('),\n')
         if self.Information_Source is not None:
-            outfile.write('Information_Source=model_.stix_common.InformationSourceType(\n')
+            outfile.write('Information_Source=model_.stix_common_binding.InformationSourceType(\n')
             self.Information_Source.exportLiteral(outfile, level, name_='Information_Source')
             outfile.write('),\n')
     def build(self, node):
@@ -859,19 +829,19 @@ class STIXHeaderType(GeneratedsSuper):
             Title_ = self.gds_validate_string(Title_, node, 'Title')
             self.Title = Title_
         elif nodeName_ == 'Package_Intent':
-            obj_ = stix_common.ControlledVocabularyStringType.factory()
+            obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)
             self.set_Package_Intent(obj_)
         elif nodeName_ == 'Description':
-            obj_ = stix_common.StructuredTextType.factory()
+            obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Handling':
-            obj_ = data_marking.MarkingType.factory()
+            obj_ = data_marking_binding.MarkingType.factory()
             obj_.build(child_)
             self.set_Handling(obj_)
         elif nodeName_ == 'Information_Source':
-            obj_ = stix_common.InformationSourceType.factory()
+            obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.set_Information_Source(obj_)
 # end class STIXHeaderType
@@ -939,8 +909,8 @@ class IndicatorsType(GeneratedsSuper):
         outfile.write('Indicator=[\n')
         level += 1
         for Indicator_ in self.Indicator:
-            outfile.write('model_.stix_common.IndicatorBaseType(\n')
-            Indicator_.exportLiteral(outfile, level, name_='stix_common.IndicatorBaseType')
+            outfile.write('model_.stix_common_binding.IndicatorBaseType(\n')
+            Indicator_.exportLiteral(outfile, level, name_='stix_common_binding.IndicatorBaseType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -956,7 +926,12 @@ class IndicatorsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Indicator':
-            obj_ = stix_common.IndicatorBaseType.factory()
+            #obj_ = stix_common_binding.IndicatorBaseType.factory()
+            # TODO : look at xsi:type and figure out the correct type to return
+            import stix.bindings.indicator as indicator_binding
+
+            #obj_ = stix_common_binding.IndicatorBaseType.factory()
+            obj_ = indicator_binding.IndicatorType.factory()
             obj_.build(child_)
             self.Indicator.append(obj_)
 # end class IndicatorsType
@@ -1030,15 +1005,15 @@ class TTPsType(GeneratedsSuper):
         outfile.write('TTP=[\n')
         level += 1
         for TTP_ in self.TTP:
-            outfile.write('model_.stix_common.TTPBaseType(\n')
-            TTP_.exportLiteral(outfile, level, name_='stix_common.TTPBaseType')
+            outfile.write('model_.stix_common_binding.TTPBaseType(\n')
+            TTP_.exportLiteral(outfile, level, name_='stix_common_binding.TTPBaseType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
         showIndent(outfile, level)
         outfile.write('],\n')
         if self.Kill_Chains is not None:
-            outfile.write('Kill_Chains=model_.stix_common.KillChainsType(\n')
+            outfile.write('Kill_Chains=model_.stix_common_binding.KillChainsType(\n')
             self.Kill_Chains.exportLiteral(outfile, level, name_='Kill_Chains')
             outfile.write('),\n')
     def build(self, node):
@@ -1051,11 +1026,14 @@ class TTPsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'TTP':
-            obj_ = stix_common.TTPBaseType.factory()
+            # TODO - figure out what type to store/return
+            import stix.bindings.ttp as ttp_binding
+            #obj_ = stix_common_binding.TTPBaseType.factory()
+            obj_ = ttp_binding.TTPType.factory()
             obj_.build(child_)
             self.TTP.append(obj_)
         elif nodeName_ == 'Kill_Chains':
-            obj_ = stix_common.KillChainsType.factory()
+            obj_ = stix_common_binding.KillChainsType.factory()
             obj_.build(child_)
             self.set_Kill_Chains(obj_)
 # end class TTPsType
@@ -1123,8 +1101,8 @@ class IncidentsType(GeneratedsSuper):
         outfile.write('Incident=[\n')
         level += 1
         for Incident_ in self.Incident:
-            outfile.write('model_.stix_common.IncidentBaseType(\n')
-            Incident_.exportLiteral(outfile, level, name_='stix_common.IncidentBaseType')
+            outfile.write('model_.stix_common_binding.IncidentBaseType(\n')
+            Incident_.exportLiteral(outfile, level, name_='stix_common_binding.IncidentBaseType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -1140,7 +1118,10 @@ class IncidentsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Incident':
-            obj_ = stix_common.IncidentBaseType.factory()
+            # TODO - look at the xsi:type and figure out what to return/store
+            import stix.bindings.incident as incident_binding
+            #obj_ = stix_common_binding.IncidentBaseType.factory()
+            obj_ = incident_binding.IncidentType.factory()
             obj_.build(child_)
             self.Incident.append(obj_)
 # end class IncidentsType
@@ -1208,8 +1189,8 @@ class CoursesOfActionType(GeneratedsSuper):
         outfile.write('Course_Of_Action=[\n')
         level += 1
         for Course_Of_Action_ in self.Course_Of_Action:
-            outfile.write('model_.stix_common.CourseOfActionBaseType(\n')
-            Course_Of_Action_.exportLiteral(outfile, level, name_='stix_common.CourseOfActionBaseType')
+            outfile.write('model_.stix_common_binding.CourseOfActionBaseType(\n')
+            Course_Of_Action_.exportLiteral(outfile, level, name_='stix_common_binding.CourseOfActionBaseType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -1225,7 +1206,10 @@ class CoursesOfActionType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Course_Of_Action':
-            obj_ = stix_common.CourseOfActionBaseType.factory()
+            # TODO - figure out what type to return/store
+            import stix.bindings.course_of_action as course_of_action_binding
+            #obj_ = stix_common_binding.CourseOfActionBaseType.factory()
+            obj_ = course_of_action_binding.CourseOfActionType.factory()
             obj_.build(child_)
             self.Course_Of_Action.append(obj_)
 # end class CoursesOfActionType
@@ -1293,8 +1277,8 @@ class CampaignsType(GeneratedsSuper):
         outfile.write('Campaign=[\n')
         level += 1
         for Campaign_ in self.Campaign:
-            outfile.write('model_.stix_common.CampaignBaseType(\n')
-            Campaign_.exportLiteral(outfile, level, name_='stix_common.CampaignBaseType')
+            outfile.write('model_.stix_common_binding.CampaignBaseType(\n')
+            Campaign_.exportLiteral(outfile, level, name_='stix_common_binding.CampaignBaseType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -1310,7 +1294,10 @@ class CampaignsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Campaign':
-            obj_ = stix_common.CampaignBaseType.factory()
+            # TODO - figure out the correct type to store/return
+            import stix.bindings.campaign as campaign_binding
+            #obj_ = stix_common_binding.CampaignBaseType.factory()
+            obj_ = campaign_binding.CampaignType.factory()
             obj_.build(child_)
             self.Campaign.append(obj_)
 # end class CampaignsType
@@ -1378,8 +1365,8 @@ class ThreatActorsType(GeneratedsSuper):
         outfile.write('Threat_Actor=[\n')
         level += 1
         for Threat_Actor_ in self.Threat_Actor:
-            outfile.write('model_.stix_common.ThreatActorBaseType(\n')
-            Threat_Actor_.exportLiteral(outfile, level, name_='stix_common.ThreatActorBaseType')
+            outfile.write('model_.stix_common_binding.ThreatActorBaseType(\n')
+            Threat_Actor_.exportLiteral(outfile, level, name_='stix_common_binding.ThreatActorBaseType')
             showIndent(outfile, level)
             outfile.write('),\n')
         level -= 1
@@ -1395,81 +1382,84 @@ class ThreatActorsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Threat_Actor':
-            obj_ = stix_common.ThreatActorBaseType.factory()
+            #TODO figure out what type to store/return
+            import stix.bindings.threat_actor as threat_actor_binding
+            #obj_ = stix_common_binding.ThreatActorBaseType.factory()
+            obj_ = threat_actor_binding.ThreatActorType.factory()
             obj_.build(child_)
             self.Threat_Actor.append(obj_)
 # end class ThreatActorsType
 
 GDSClassesMapping = {
-    'Information_Source': stix_common.InformationSourceType,
-    'Indicator': stix_common.IndicatorBaseType,
-    'Defined_Effect': cybox_core.DefinedEffectType,
-    'Exploit_Target': stix_common.ExploitTargetBaseType,
-    'Action': cybox_core.ActionType,
-    'Object': cybox_core.ObjectType,
-    'Incident': stix_common.IncidentBaseType,
-    'Information_Source_Type': stix_common.ControlledVocabularyStringType,
-    'Confidence_Assertion_Chain': stix_common.ConfidenceAssertionChainType,
-    'Observable': cybox_core.ObservableType,
-    'Confidence_Assertion': stix_common.ConfidenceType,
-    'Related_Object': cybox_core.RelatedObjectType,
-    'Argument_Name': stix_common.ControlledVocabularyStringType,
-    'Evasion_Techniques': cybox_core.ObfuscationTechniquesType,
-    'Old_Object': cybox_core.ObjectType,
-    'Campaign': stix_common.CampaignBaseType,
-    'Encoding': stix_common.ControlledVocabularyStringType,
-    'Associated_Objects': cybox_core.AssociatedObjectsType,
-    'Object_Pool': cybox_core.ObjectPoolType,
-    'Event': cybox_core.EventType,
-    'Source': stix_common.ControlledVocabularyStringType,
-    'State': stix_common.ControlledVocabularyStringType,
-    'Marking_Structure': data_marking.MarkingStructureType,
-    'Type': stix_common.ControlledVocabularyStringType,
-    'Tool_Type': stix_common.ControlledVocabularyStringType,
-    'Relationship': stix_common.ControlledVocabularyStringType,
-    'TTP': stix_common.TTPBaseType,
-    'Obfuscation_Technique': cybox_core.ObfuscationTechniqueType,
-    'Exploit_Targets': stix_common.ExploitTargetsType,
-    'Action_Pool': cybox_core.ActionPoolType,
-    'Properties': cybox_core.PropertiesType,
-    'Course_Of_Action': stix_common.CourseOfActionBaseType,
-    'Action_Argument': cybox_core.ActionArgumentType,
-    'Reference_Description': stix_common.StructuredTextType,
-    'Package_Intent': stix_common.ControlledVocabularyStringType,
-    'Association_Type': stix_common.ControlledVocabularyStringType,
-    'Marking': data_marking.MarkingSpecificationType,
-    'Associated_Object': cybox_core.AssociatedObjectType,
-    'Related_Objects': cybox_core.RelatedObjectsType,
-    'Related_Identities': stix_common.RelatedIdentitiesType,
-    'Observable_Composition': cybox_core.ObservableCompositionType,
-    'Property_Pool': cybox_core.PropertyPoolType,
-    'Domain_Specific_Object_Properties': cybox_core.DomainSpecificObjectPropertiesType,
-    'Kill_Chains': stix_common.KillChainsType,
-    'Identity': stix_common.IdentityType,
-    'Action_Reference': cybox_core.ActionReferenceType,
-    'Usage_Context_Assumption': stix_common.StructuredTextType,
-    'Pools': cybox_core.PoolsType,
-    'Threat_Actor': stix_common.ThreatActorBaseType,
-    'Event_Pool': cybox_core.EventPoolType,
-    'Action_Arguments': cybox_core.ActionArgumentsType,
-    'Frequency': cybox_core.FrequencyType,
-    'Keywords': cybox_core.KeywordsType,
-    'Pattern_Fidelity': cybox_core.PatternFidelityType,
-    'Confidence': stix_common.ConfidenceType,
-    'Kill_Chain': stix_common.KillChainType,
-    'Relationships': cybox_core.RelationshipsType,
-    'Description': stix_common.StructuredTextType,
-    'Action_Pertinent_Object_Properties': cybox_core.ActionPertinentObjectPropertiesType,
-    'Handling': data_marking.MarkingType,
-    'Name': stix_common.ControlledVocabularyStringType,
-    'Kill_Chain_Phase': stix_common.KillChainPhaseReferenceType,
-    'Related_Identity': stix_common.RelatedIdentityType,
-    'Values': cybox_core.ValuesType,
-    'Observables': cybox_core.ObservablesType,
-    'New_Object': cybox_core.ObjectType,
-    'Actions': cybox_core.ActionsType,
-    'Dependency_Description': stix_common.StructuredTextType,
-    'Action_Aliases': cybox_core.ActionAliasesType,
+    'Information_Source': stix_common_binding.InformationSourceType,
+    'Indicator': stix_common_binding.IndicatorBaseType,
+    'Defined_Effect': cybox_core_binding.DefinedEffectType,
+    'Exploit_Target': stix_common_binding.ExploitTargetBaseType,
+    'Action': cybox_core_binding.ActionType,
+    'Object': cybox_core_binding.ObjectType,
+    'Incident': stix_common_binding.IncidentBaseType,
+    'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
+    'Observable': cybox_core_binding.ObservableType,
+    'Confidence_Assertion': stix_common_binding.ConfidenceType,
+    'Related_Object': cybox_core_binding.RelatedObjectType,
+    'Argument_Name': stix_common_binding.ControlledVocabularyStringType,
+    'Evasion_Techniques': cybox_core_binding.ObfuscationTechniquesType,
+    'Old_Object': cybox_core_binding.ObjectType,
+    'Campaign': stix_common_binding.CampaignBaseType,
+    'Encoding': stix_common_binding.ControlledVocabularyStringType,
+    'Associated_Objects': cybox_core_binding.AssociatedObjectsType,
+    'Object_Pool': cybox_core_binding.ObjectPoolType,
+    'Event': cybox_core_binding.EventType,
+    'Source': stix_common_binding.ControlledVocabularyStringType,
+    'State': stix_common_binding.ControlledVocabularyStringType,
+    'Marking_Structure': data_marking_binding.MarkingStructureType,
+    'Type': stix_common_binding.ControlledVocabularyStringType,
+    'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Relationship': stix_common_binding.ControlledVocabularyStringType,
+    'TTP': stix_common_binding.TTPBaseType,
+    'Obfuscation_Technique': cybox_core_binding.ObfuscationTechniqueType,
+    'Exploit_Targets': stix_common_binding.ExploitTargetsType,
+    'Action_Pool': cybox_core_binding.ActionPoolType,
+    'Properties': cybox_core_binding.PropertiesType,
+    'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
+    'Action_Argument': cybox_core_binding.ActionArgumentType,
+    'Reference_Description': stix_common_binding.StructuredTextType,
+    'Package_Intent': stix_common_binding.ControlledVocabularyStringType,
+    'Association_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Marking': data_marking_binding.MarkingSpecificationType,
+    'Associated_Object': cybox_core_binding.AssociatedObjectType,
+    'Related_Objects': cybox_core_binding.RelatedObjectsType,
+    'Related_Identities': stix_common_binding.RelatedIdentitiesType,
+    'Observable_Composition': cybox_core_binding.ObservableCompositionType,
+    'Property_Pool': cybox_core_binding.PropertyPoolType,
+    'Domain_Specific_Object_Properties': cybox_core_binding.DomainSpecificObjectPropertiesType,
+    'Kill_Chains': stix_common_binding.KillChainsType,
+    'Identity': stix_common_binding.IdentityType,
+    'Action_Reference': cybox_core_binding.ActionReferenceType,
+    'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
+    'Pools': cybox_core_binding.PoolsType,
+    'Threat_Actor': stix_common_binding.ThreatActorBaseType,
+    'Event_Pool': cybox_core_binding.EventPoolType,
+    'Action_Arguments': cybox_core_binding.ActionArgumentsType,
+    'Frequency': cybox_core_binding.FrequencyType,
+    'Keywords': cybox_core_binding.KeywordsType,
+    'Pattern_Fidelity': cybox_core_binding.PatternFidelityType,
+    'Confidence': stix_common_binding.ConfidenceType,
+    'Kill_Chain': stix_common_binding.KillChainType,
+    'Relationships': cybox_core_binding.RelationshipsType,
+    'Description': stix_common_binding.StructuredTextType,
+    'Action_Pertinent_Object_Properties': cybox_core_binding.ActionPertinentObjectPropertiesType,
+    'Handling': data_marking_binding.MarkingType,
+    'Name': stix_common_binding.ControlledVocabularyStringType,
+    'Kill_Chain_Phase': stix_common_binding.KillChainPhaseReferenceType,
+    'Related_Identity': stix_common_binding.RelatedIdentityType,
+    'Values': cybox_core_binding.ValuesType,
+    'Observables': cybox_core_binding.ObservablesType,
+    'New_Object': cybox_core_binding.ObjectType,
+    'Actions': cybox_core_binding.ActionsType,
+    'Dependency_Description': stix_common_binding.StructuredTextType,
+    'Action_Aliases': cybox_core_binding.ActionAliasesType,
 }
 
 USAGE_TEXT = """

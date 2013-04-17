@@ -599,15 +599,15 @@ class GenericStructuredCOAType(course_of_action.StructuredCOAType):
     def exportLiteralChildren(self, outfile, level, name_):
         super(GenericStructuredCOAType, self).exportLiteralChildren(outfile, level, name_)
         if self.Description is not None:
-            outfile.write('Description=model_.stix_common.StructuredTextType(\n')
+            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
             self.Description.exportLiteral(outfile, level, name_='Description')
             outfile.write('),\n')
         if self.Type is not None:
-            outfile.write('Type=model_.stix_common.ControlledVocabularyStringType(\n')
+            outfile.write('Type=model_.stix_common_binding.ControlledVocabularyStringType(\n')
             self.Type.exportLiteral(outfile, level, name_='Type')
             outfile.write('),\n')
         if self.Specification is not None:
-            outfile.write('Specification=model_.stix_common.EncodedCDATAType(\n')
+            outfile.write('Specification=model_.stix_common_binding.EncodedCDATAType(\n')
             self.Specification.exportLiteral(outfile, level, name_='Specification')
             outfile.write('),\n')
     def build(self, node):
@@ -624,59 +624,59 @@ class GenericStructuredCOAType(course_of_action.StructuredCOAType):
         super(GenericStructuredCOAType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Description':
-            obj_ = stix_common.StructuredTextType.factory()
+            obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Type':
-            obj_ = stix_common.ControlledVocabularyStringType.factory()
+            obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)
             self.set_Type(obj_)
         elif nodeName_ == 'Specification':
-            obj_ = stix_common.EncodedCDATAType.factory()
+            obj_ = stix_common_binding.EncodedCDATAType.factory()
             obj_.build(child_)
             self.set_Specification(obj_)
         super(GenericStructuredCOAType, self).buildChildren(child_, node, nodeName_, True)
 # end class GenericStructuredCOAType
 
 GDSClassesMapping = {
-    'Information_Source': stix_common.InformationSourceType,
-    'Indicator': stix_common.IndicatorBaseType,
-    'Exploit_Target': stix_common.ExploitTargetBaseType,
-    'Incident': stix_common.IncidentBaseType,
-    'Information_Source_Type': stix_common.ControlledVocabularyStringType,
-    'Confidence_Assertion_Chain': stix_common.ConfidenceAssertionChainType,
-    'Confidence_Assertion': stix_common.ConfidenceType,
-    'Campaign': stix_common.CampaignBaseType,
-    'Encoding': stix_common.ControlledVocabularyStringType,
-    'Impact': stix_common.StatementType,
-    'Specification': stix_common.EncodedCDATAType,
-    'Source': stix_common.ControlledVocabularyStringType,
-    'State': stix_common.ControlledVocabularyStringType,
+    'Information_Source': stix_common_binding.InformationSourceType,
+    'Indicator': stix_common_binding.IndicatorBaseType,
+    'Exploit_Target': stix_common_binding.ExploitTargetBaseType,
+    'Incident': stix_common_binding.IncidentBaseType,
+    'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
+    'Confidence_Assertion': stix_common_binding.ConfidenceType,
+    'Campaign': stix_common_binding.CampaignBaseType,
+    'Encoding': stix_common_binding.ControlledVocabularyStringType,
+    'Impact': stix_common_binding.StatementType,
+    'Specification': stix_common_binding.EncodedCDATAType,
+    'Source': stix_common_binding.ControlledVocabularyStringType,
+    'State': stix_common_binding.ControlledVocabularyStringType,
     'Structured_COA': course_of_action.StructuredCOAType,
-    'Type': stix_common.ControlledVocabularyStringType,
-    'Tool_Type': stix_common.ControlledVocabularyStringType,
-    'Relationship': stix_common.ControlledVocabularyStringType,
-    'TTP': stix_common.TTPBaseType,
-    'Stage': stix_common.ControlledVocabularyStringType,
-    'Course_Of_Action': stix_common.CourseOfActionBaseType,
-    'Reference_Description': stix_common.StructuredTextType,
-    'Association_Type': stix_common.ControlledVocabularyStringType,
-    'Related_Identities': stix_common.RelatedIdentitiesType,
-    'Identity': stix_common.IdentityType,
-    'Usage_Context_Assumption': stix_common.StructuredTextType,
-    'Threat_Actor': stix_common.ThreatActorBaseType,
-    'Applicability_Confidence': stix_common.ConfidenceType,
-    'Confidence': stix_common.ConfidenceType,
-    'Kill_Chain': stix_common.KillChainType,
+    'Type': stix_common_binding.ControlledVocabularyStringType,
+    'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Relationship': stix_common_binding.ControlledVocabularyStringType,
+    'TTP': stix_common_binding.TTPBaseType,
+    'Stage': stix_common_binding.ControlledVocabularyStringType,
+    'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
+    'Reference_Description': stix_common_binding.StructuredTextType,
+    'Association_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Related_Identities': stix_common_binding.RelatedIdentitiesType,
+    'Identity': stix_common_binding.IdentityType,
+    'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
+    'Threat_Actor': stix_common_binding.ThreatActorBaseType,
+    'Applicability_Confidence': stix_common_binding.ConfidenceType,
+    'Confidence': stix_common_binding.ConfidenceType,
+    'Kill_Chain': stix_common_binding.KillChainType,
     'Objective': course_of_action.ObjectiveType,
-    'Description': stix_common.StructuredTextType,
-    'Efficacy': stix_common.StatementType,
-    'Name': stix_common.ControlledVocabularyStringType,
-    'Kill_Chain_Phase': stix_common.KillChainPhaseReferenceType,
-    'Related_Identity': stix_common.RelatedIdentityType,
-    'Argument_Name': stix_common.ControlledVocabularyStringType,
-    'Dependency_Description': stix_common.StructuredTextType,
-    'Cost': stix_common.StatementType,
+    'Description': stix_common_binding.StructuredTextType,
+    'Efficacy': stix_common_binding.StatementType,
+    'Name': stix_common_binding.ControlledVocabularyStringType,
+    'Kill_Chain_Phase': stix_common_binding.KillChainPhaseReferenceType,
+    'Related_Identity': stix_common_binding.RelatedIdentityType,
+    'Argument_Name': stix_common_binding.ControlledVocabularyStringType,
+    'Dependency_Description': stix_common_binding.StructuredTextType,
+    'Cost': stix_common_binding.StatementType,
 }
 
 USAGE_TEXT = """
