@@ -9,9 +9,7 @@ import sys
 import getopt
 import re as re_
 
-import indicator
-import oval-definitions-schema
-import oval-variables-schema
+import stix.bindings.indicator as indicator_binding
 import base64
 from datetime import datetime, tzinfo, timedelta
 
@@ -21,43 +19,12 @@ Verbose_import_ = False
     XMLParser_import_elementtree
     ) = range(3)
 XMLParser_import_library = None
-try:
-    # lxml
-    from lxml import etree as etree_
-    XMLParser_import_library = XMLParser_import_lxml
-    if Verbose_import_:
-        print("running with lxml.etree")
-except ImportError:
-    try:
-        # cElementTree from Python 2.5+
-        import xml.etree.cElementTree as etree_
-        XMLParser_import_library = XMLParser_import_elementtree
-        if Verbose_import_:
-            print("running with cElementTree on Python 2.5+")
-    except ImportError:
-        try:
-            # ElementTree from Python 2.5+
-            import xml.etree.ElementTree as etree_
-            XMLParser_import_library = XMLParser_import_elementtree
-            if Verbose_import_:
-                print("running with ElementTree on Python 2.5+")
-        except ImportError:
-            try:
-                # normal cElementTree install
-                import cElementTree as etree_
-                XMLParser_import_library = XMLParser_import_elementtree
-                if Verbose_import_:
-                    print("running with cElementTree")
-            except ImportError:
-                try:
-                    # normal ElementTree install
-                    import elementtree.ElementTree as etree_
-                    XMLParser_import_library = XMLParser_import_elementtree
-                    if Verbose_import_:
-                        print("running with ElementTree")
-                except ImportError:
-                    raise ImportError(
-                        "Failed to import ElementTree from any known place")
+
+# lxml
+from lxml import etree as etree_
+XMLParser_import_library = XMLParser_import_lxml
+if Verbose_import_:
+    print("running with lxml.etree")
 
 def parsexml_(*args, **kwargs):
     if (XMLParser_import_library == XMLParser_import_lxml and
@@ -515,12 +482,12 @@ def _cast(typ, value):
 # Data representation classes.
 #
 
-class OVAL5_10TestMechanismType(indicator.TestMechanismType):
+class OVAL5_10TestMechanismType(indicator_binding.TestMechanismType):
     """The OVALTestMechanismType provides an extension to the
-    indicator.TestMechanismType which imports and leverages the OVAL schema in
+    indicator_binding.TestMechanismType which imports and leverages the OVAL schema in
     order to include OVAL Definitions as the test mechanism."""
     subclass = None
-    superclass = indicator.TestMechanismType
+    superclass = indicator_binding.TestMechanismType
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, oval_definitions=None, oval_variables=None):
         super(OVAL5_10TestMechanismType, self).__init__(idref, id, Efficacy, Producer, )
         self.oval_definitions = oval_definitions
@@ -569,9 +536,13 @@ class OVAL5_10TestMechanismType(indicator.TestMechanismType):
         else:
             eol_ = ''
         if self.oval_definitions is not None:
-            self.oval_definitions.export(outfile, level, '', name_='oval_definitions', pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write(etree_.tostring(self.oval_definitions, pretty_print=pretty_print))
+            #self.oval_definitions.export(outfile, level, '', name_='oval_definitions', pretty_print=pretty_print)
         if self.oval_variables is not None:
-            self.oval_variables.export(outfile, level, '', name_='oval_variables', pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write(etree_.tostring(self.oval_variables, pretty_print=pretty_print))
+            #self.oval_variables.export(outfile, level, '', name_='oval_variables', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='OVAL5.10TestMechanismType'):
         level += 1
         already_processed = set()
@@ -582,18 +553,18 @@ class OVAL5_10TestMechanismType(indicator.TestMechanismType):
         super(OVAL5_10TestMechanismType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
     def exportLiteralChildren(self, outfile, level, name_):
         super(OVAL5_10TestMechanismType, self).exportLiteralChildren(outfile, level, name_)
-        if self.oval_definitions is not None:
-            showIndent(outfile, level)
-            outfile.write('oval_definitions=model_.oval_definitions(\n')
-            self.oval_definitions.exportLiteral(outfile, level)
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        if self.oval_variables is not None:
-            showIndent(outfile, level)
-            outfile.write('oval_variables=model_.oval_variables(\n')
-            self.oval_variables.exportLiteral(outfile, level)
-            showIndent(outfile, level)
-            outfile.write('),\n')
+#        if self.oval_definitions is not None:
+#            showIndent(outfile, level)
+#            outfile.write('oval_definitions=model_.oval_definitions(\n')
+#            self.oval_definitions.exportLiteral(outfile, level)
+#            showIndent(outfile, level)
+#            outfile.write('),\n')
+#        if self.oval_variables is not None:
+#            showIndent(outfile, level)
+#            outfile.write('oval_variables=model_.oval_variables(\n')
+#            self.oval_variables.exportLiteral(outfile, level)
+#            showIndent(outfile, level)
+#            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -604,64 +575,21 @@ class OVAL5_10TestMechanismType(indicator.TestMechanismType):
         super(OVAL5_10TestMechanismType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'oval_definitions':
-            obj_ = oval_definitions.factory()
-            obj_.build(child_)
-            self.set_oval_definitions(obj_)
+            self.set_oval_definitions(child_)
         elif nodeName_ == 'oval_variables':
-            obj_ = oval_variables.factory()
-            obj_.build(child_)
-            self.set_oval_variables(obj_)
+            self.set_oval_variables(child_)
         super(OVAL5_10TestMechanismType, self).buildChildren(child_, node, nodeName_, True)
 # end class OVAL5_10TestMechanismType
 
 GDSClassesMapping = {
-    'Metadata': oval-definitions-schema.MetadataType,
-    'unique': oval-definitions-schema.UniqueFunctionType,
-    'substring': oval-definitions-schema.SubstringFunctionType,
-    'Object': oval-definitions-schema.ObjectType,
-    'restriction': oval-definitions-schema.RestrictionType,
-    'tests': oval-definitions-schema.TestsType,
-    'SubDatum': oval-definitions-schema.MetadataType,
-    'affected': oval-definitions-schema.AffectedType,
-    'Suggested_COAs': indicator.SuggestedCOAsType,
-    'possible_value': oval-definitions-schema.PossibleValueType,
-    'regex_capture': oval-definitions-schema.RegexCaptureFunctionType,
-    'Reference': oval-definitions-schema.ReferenceType,
-    'notes': oval-definitions-schema.NotesType,
-    'count': oval-definitions-schema.CountFunctionType,
-    'reference': oval-definitions-schema.ReferenceType,
-    'escape_regex': oval-definitions-schema.EscapeRegexFunctionType,
-    'time_difference': oval-definitions-schema.TimeDifferenceFunctionType,
-    'metadata': oval-definitions-schema.MetadataType,
-    'object_component': oval-definitions-schema.ObjectComponentType,
-    'Related_Indicators': indicator.RelatedIndicatorsType,
-    'definition': oval-definitions-schema.DefinitionType,
-    'Valid_Time_Position': indicator.ValidTimeType,
-    'objects': oval-definitions-schema.ObjectsType,
-    'literal_component': oval-definitions-schema.LiteralComponentType,
-    'variables': oval-definitions-schema.VariablesType,
-    'Test_Mechanisms': indicator.TestMechanismsType,
-    'Sightings': indicator.SightingsType,
-    'Test_Mechanism': indicator.TestMechanismType,
-    'criteria': oval-definitions-schema.CriteriaType,
-    'Sighting': indicator.SightingType,
-    'Old_Object': oval-definitions-schema.ObjectType,
-    'states': oval-definitions-schema.StatesType,
-    'Composite_Indicator_Expression': indicator.CompositeIndicatorExpressionType,
-    'possible_restriction': oval-definitions-schema.PossibleRestrictionType,
-    'variable': oval-definitions-schema.VariableType,
-    'variable_component': oval-definitions-schema.VariableComponentType,
-    'end': oval-definitions-schema.EndFunctionType,
-    'field': oval-definitions-schema.EntityStateFieldType,
-    'criterion': oval-definitions-schema.CriterionType,
-    'split': oval-definitions-schema.SplitFunctionType,
-    'arithmetic': oval-definitions-schema.ArithmeticFunctionType,
-    'begin': oval-definitions-schema.BeginFunctionType,
-    'value': oval-definitions-schema.ValueType,
-    'definitions': oval-definitions-schema.DefinitionsType,
-    'concat': oval-definitions-schema.ConcatFunctionType,
-    'New_Object': oval-definitions-schema.ObjectType,
-    'extend_definition': oval-definitions-schema.ExtendDefinitionType,
+    'Suggested_COAs': indicator_binding.SuggestedCOAsType,
+    'Related_Indicators': indicator_binding.RelatedIndicatorsType,
+    'Valid_Time_Position': indicator_binding.ValidTimeType,
+    'Test_Mechanisms': indicator_binding.TestMechanismsType,
+    'Sightings': indicator_binding.SightingsType,
+    'Test_Mechanism': indicator_binding.TestMechanismType,
+    'Sighting': indicator_binding.SightingType,
+    'Composite_Indicator_Expression': indicator_binding.CompositeIndicatorExpressionType,
 }
 
 USAGE_TEXT = """

@@ -725,11 +725,12 @@ class TestMechanismType(GeneratedsSuper):
     reference to the ID of a Test Mechanism specified elsewhere."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, Efficacy=None, Producer=None):
+    def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, xsi_type=None):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
         self.Efficacy = Efficacy
         self.Producer = Producer
+        self.xsi_type = xsi_type
     def factory(*args_, **kwargs_):
         if TestMechanismType.subclass:
             return TestMechanismType.subclass(*args_, **kwargs_)
@@ -744,9 +745,11 @@ class TestMechanismType(GeneratedsSuper):
     def set_idref(self, idref): self.idref = idref
     def get_id(self): return self.id
     def set_id(self, id): self.id = id
+    def get_xsi_type(self): return self.xsi_type
+    def set_xsi_type(self, xsi_type): self.xsi_type = xsi_type
     def hasContent_(self):
         if (
-            self.Efficacy is not None or
+            self.Efficacy is not None and
             self.Producer is not None
             ):
             return True
@@ -775,6 +778,9 @@ class TestMechanismType(GeneratedsSuper):
         if self.id is not None and 'id' not in already_processed:
             already_processed.add('id')
             outfile.write(' id=%s' % (quote_attrib(self.id), ))
+        if self.xsi_type is not None and 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            outfile.write(' xsi:type="%s"' % self.xsi_type)
     def exportChildren(self, outfile, level, namespace_='indicator:', name_='TestMechanismType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
@@ -823,6 +829,10 @@ class TestMechanismType(GeneratedsSuper):
         if value is not None and 'id' not in already_processed:
             already_processed.add('id')
             self.id = value
+        value = find_attr_value_('xsi:type', node)
+        if value is not None and 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            self.xsi_type = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Efficacy':
             obj_ = stix_common_binding.StatementType.factory()
@@ -1131,8 +1141,7 @@ class TestMechanismsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Test_Mechanism':
-            type_name_ = child_.attrib.get(
-                '{http://www.w3.org/2001/XMLSchema-instance}type')
+            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
             if type_name_ is None:
                 type_name_ = child_.attrib.get('type')
             if type_name_ is not None:
@@ -1140,13 +1149,33 @@ class TestMechanismsType(GeneratedsSuper):
                 if len(type_names_) == 1:
                     type_name_ = type_names_[0]
                 else:
-                    type_name_ = type_names_[1]
-                class_ = globals()[type_name_]
-                obj_ = class_.factory()
-                obj_.build(child_)
+                    type_name_ = type_names_[1]            
+                    if type_name_ == "OVAL5.10TestMechanismType":
+                        import stix.bindings.extensions.test_mechanism.oval_5_10 as oval_5_10_tm_binding
+                        obj_ = oval_5_10_tm_binding.OVAL5_10TestMechanismType.factory()
+                        obj_.build(child_)
+                    elif type_name_ == "YaraTestMechanismType":
+                        import stix.bindings.extensions.test_mechanism.yara as yara_tm_binding
+                        obj_ = yara_tm_binding.YaraTestMechanismType.factory()
+                        obj_.build(child_)
+                    elif type_name_ == "SnortTestMechanismType":
+                        import stix.bindings.extensions.test_mechanism.snort as snort_tm_binding
+                        obj_ = snort_tm_binding.SnortTestMechanismType.factory()
+                        obj_.build(child_)
+                    elif type_name_ == "OpenIOC2010TestMechanismType":
+                        import stix.bindings.extensions.test_mechanism.open_ioc_2010 as openioc_tm_binding
+                        obj_ = openioc_tm_binding.OpenIOC2010TestMechanismType.factory()
+                        obj_.build(child_)
+                    elif type_name_ == "GenericTestMechanismType":
+                        import stix.bindings.extensions.test_mechanism.generic as generic_tm_binding
+                        obj_ = generic_tm_binding.GenericTestMechanismType.factory()
+                        obj_.build(child_)
+                    else:
+                        raise NotImplementedError('Class not implemented for <Test_Mechanism> element: ' + type_name_)
             else:
                 raise NotImplementedError(
-                    'Class not implemented for <Test_Mechanism> element')
+                    'Class not implemented for <Test_Mechanism> element: no xsi:type attribute found')
+                
             self.Test_Mechanism.append(obj_)
 # end class TestMechanismsType
 

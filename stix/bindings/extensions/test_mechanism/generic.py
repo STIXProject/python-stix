@@ -9,8 +9,9 @@ import sys
 import getopt
 import re as re_
 
-import indicator
-import stix_common
+import stix.bindings.indicator as indicator_binding
+import stix.bindings.stix_common as stix_common_binding
+
 import base64
 from datetime import datetime, tzinfo, timedelta
 
@@ -20,43 +21,12 @@ Verbose_import_ = False
     XMLParser_import_elementtree
     ) = range(3)
 XMLParser_import_library = None
-try:
-    # lxml
-    from lxml import etree as etree_
-    XMLParser_import_library = XMLParser_import_lxml
-    if Verbose_import_:
-        print("running with lxml.etree")
-except ImportError:
-    try:
-        # cElementTree from Python 2.5+
-        import xml.etree.cElementTree as etree_
-        XMLParser_import_library = XMLParser_import_elementtree
-        if Verbose_import_:
-            print("running with cElementTree on Python 2.5+")
-    except ImportError:
-        try:
-            # ElementTree from Python 2.5+
-            import xml.etree.ElementTree as etree_
-            XMLParser_import_library = XMLParser_import_elementtree
-            if Verbose_import_:
-                print("running with ElementTree on Python 2.5+")
-        except ImportError:
-            try:
-                # normal cElementTree install
-                import cElementTree as etree_
-                XMLParser_import_library = XMLParser_import_elementtree
-                if Verbose_import_:
-                    print("running with cElementTree")
-            except ImportError:
-                try:
-                    # normal ElementTree install
-                    import elementtree.ElementTree as etree_
-                    XMLParser_import_library = XMLParser_import_elementtree
-                    if Verbose_import_:
-                        print("running with ElementTree")
-                except ImportError:
-                    raise ImportError(
-                        "Failed to import ElementTree from any known place")
+
+# lxml
+from lxml import etree as etree_
+XMLParser_import_library = XMLParser_import_lxml
+if Verbose_import_:
+    print("running with lxml.etree")
 
 def parsexml_(*args, **kwargs):
     if (XMLParser_import_library == XMLParser_import_lxml and
@@ -514,13 +484,13 @@ def _cast(typ, value):
 # Data representation classes.
 #
 
-class GenericTestMechanismType(indicator.TestMechanismType):
+class GenericTestMechanismType(indicator_binding.TestMechanismType):
     """The GenericTestMechanismType specifies an instantial extension from
-    the abstract indicator.TestMechanismType intended to support the generic
+    the abstract indicator_binding.TestMechanismType intended to support the generic
     inclusion of any test mechanism content.Specifies a reference
     URL for the location of the Generic Test Mechanism."""
     subclass = None
-    superclass = indicator.TestMechanismType
+    superclass = indicator_binding.TestMechanismType
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, reference_location=None, Description=None, Type=None, Specification=None):
         super(GenericTestMechanismType, self).__init__(idref, id, Efficacy, Producer, )
         self.reference_location = _cast(None, reference_location)
@@ -646,7 +616,7 @@ GDSClassesMapping = {
     'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
     'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
     'Confidence_Assertion': stix_common_binding.ConfidenceType,
-    'Suggested_COAs': indicator.SuggestedCOAsType,
+    'Suggested_COAs': indicator_binding.SuggestedCOAsType,
     'Value': stix_common_binding.ControlledVocabularyStringType,
     'Information_Source': stix_common_binding.InformationSourceType,
     'Producer': stix_common_binding.InformationSourceType,
@@ -660,26 +630,26 @@ GDSClassesMapping = {
     'Relationship': stix_common_binding.ControlledVocabularyStringType,
     'TTP': stix_common_binding.TTPBaseType,
     'Indicated_TTP': stix_common_binding.RelatedTTPType,
-    'Related_Indicators': indicator.RelatedIndicatorsType,
+    'Related_Indicators': indicator_binding.RelatedIndicatorsType,
     'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
-    'Valid_Time_Position': indicator.ValidTimeType,
+    'Valid_Time_Position': indicator_binding.ValidTimeType,
     'Contributors': stix_common_binding.ContributorsType,
     'Campaign': stix_common_binding.CampaignBaseType,
     'Reference_Description': stix_common_binding.StructuredTextType,
     'Association_Type': stix_common_binding.ControlledVocabularyStringType,
     'Confidence': stix_common_binding.ConfidenceType,
-    'Test_Mechanisms': indicator.TestMechanismsType,
+    'Test_Mechanisms': indicator_binding.TestMechanismsType,
     'Related_Identities': stix_common_binding.RelatedIdentitiesType,
-    'Sightings': indicator.SightingsType,
+    'Sightings': indicator_binding.SightingsType,
     'Likely_Impact': stix_common_binding.StatementType,
     'Identity': stix_common_binding.IdentityType,
-    'Test_Mechanism': indicator.TestMechanismType,
+    'Test_Mechanism': indicator_binding.TestMechanismType,
     'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
-    'Sighting': indicator.SightingType,
+    'Sighting': indicator_binding.SightingType,
     'Threat_Actor': stix_common_binding.ThreatActorBaseType,
     'Kill_Chain': stix_common_binding.KillChainType,
     'References': stix_common_binding.ReferencesType,
-    'Composite_Indicator_Expression': indicator.CompositeIndicatorExpressionType,
+    'Composite_Indicator_Expression': indicator_binding.CompositeIndicatorExpressionType,
     'Description': stix_common_binding.StructuredTextType,
     'Efficacy': stix_common_binding.StatementType,
     'Related_Indicator': stix_common_binding.RelatedIndicatorType,

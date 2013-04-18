@@ -9,9 +9,8 @@ import sys
 import getopt
 import re as re_
 
-import indicator
-import ioc
-import ioc-tr
+import stix.bindings.indicator as indicator_binding
+
 import base64
 from datetime import datetime, tzinfo, timedelta
 
@@ -21,43 +20,12 @@ Verbose_import_ = False
     XMLParser_import_elementtree
     ) = range(3)
 XMLParser_import_library = None
-try:
-    # lxml
-    from lxml import etree as etree_
-    XMLParser_import_library = XMLParser_import_lxml
-    if Verbose_import_:
-        print("running with lxml.etree")
-except ImportError:
-    try:
-        # cElementTree from Python 2.5+
-        import xml.etree.cElementTree as etree_
-        XMLParser_import_library = XMLParser_import_elementtree
-        if Verbose_import_:
-            print("running with cElementTree on Python 2.5+")
-    except ImportError:
-        try:
-            # ElementTree from Python 2.5+
-            import xml.etree.ElementTree as etree_
-            XMLParser_import_library = XMLParser_import_elementtree
-            if Verbose_import_:
-                print("running with ElementTree on Python 2.5+")
-        except ImportError:
-            try:
-                # normal cElementTree install
-                import cElementTree as etree_
-                XMLParser_import_library = XMLParser_import_elementtree
-                if Verbose_import_:
-                    print("running with cElementTree")
-            except ImportError:
-                try:
-                    # normal ElementTree install
-                    import elementtree.ElementTree as etree_
-                    XMLParser_import_library = XMLParser_import_elementtree
-                    if Verbose_import_:
-                        print("running with ElementTree")
-                except ImportError:
-                    raise ImportError(
-                        "Failed to import ElementTree from any known place")
+
+# lxml
+from lxml import etree as etree_
+XMLParser_import_library = XMLParser_import_lxml
+if Verbose_import_:
+    print("running with lxml.etree")
 
 def parsexml_(*args, **kwargs):
     if (XMLParser_import_library == XMLParser_import_lxml and
@@ -515,13 +483,13 @@ def _cast(typ, value):
 # Data representation classes.
 #
 
-class OpenIOC2010TestMechanismType(indicator.TestMechanismType):
+class OpenIOC2010TestMechanismType(indicator_binding.TestMechanismType):
     """The OpenIOC2010TestMechanismType provides an extension to the
-    indicator.TestMechanismType which imports and leverages the 2010 Open IOC
+    indicator_binding.TestMechanismType which imports and leverages the 2010 Open IOC
     schema in order to include OpenIOC elements as the test
     mechanism."""
     subclass = None
-    superclass = indicator.TestMechanismType
+    superclass = indicator_binding.TestMechanismType
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, ioc=None):
         super(OpenIOC2010TestMechanismType, self).__init__(idref, id, Efficacy, Producer, )
         self.ioc = ioc
@@ -566,7 +534,9 @@ class OpenIOC2010TestMechanismType(indicator.TestMechanismType):
         else:
             eol_ = ''
         if self.ioc is not None:
-            self.ioc.export(outfile, level, '', name_='ioc', pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write(etree_.tostring(self.ioc, pretty_print=pretty_print))
+            #self.ioc.export(outfile, level, '', name_='ioc', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='OpenIOC2010TestMechanismType'):
         level += 1
         already_processed = set()
@@ -577,10 +547,10 @@ class OpenIOC2010TestMechanismType(indicator.TestMechanismType):
         super(OpenIOC2010TestMechanismType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
     def exportLiteralChildren(self, outfile, level, name_):
         super(OpenIOC2010TestMechanismType, self).exportLiteralChildren(outfile, level, name_)
-        if self.ioc is not None:
-            outfile.write('ioc=model_.ioc.IndicatorOfCompromise(\n')
-            self.ioc.exportLiteral(outfile, level, name_='ioc')
-            outfile.write('),\n')
+#        if self.ioc is not None:
+#            outfile.write('ioc=model_.ioc.IndicatorOfCompromise(\n')
+#            self.ioc.exportLiteral(outfile, level, name_='ioc')
+#            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -591,35 +561,19 @@ class OpenIOC2010TestMechanismType(indicator.TestMechanismType):
         super(OpenIOC2010TestMechanismType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'ioc':
-            obj_ = ioc.IndicatorOfCompromise.factory()
-            obj_.build(child_)
-            self.set_ioc(obj_)
+            self.set_ioc(child_)
         super(OpenIOC2010TestMechanismType, self).buildChildren(child_, node, nodeName_, True)
 # end class OpenIOC2010TestMechanismType
 
 GDSClassesMapping = {
-    'Indicator': ioc.IocIndicator,
-    'Content': ioc.IndicatorItemContent,
-    'indicator': ioc-tr.IocTest,
-    'ioctermlist': ioc.IocTermList,
-    'param': ioc-tr.Parameter,
-    'Suggested_COAs': indicator.SuggestedCOAsType,
-    'iocterm': ioc.IocTerm,
-    'Related_Indicators': indicator.RelatedIndicatorsType,
-    'definition': ioc.ArrayOfIocIndicator,
-    'Valid_Time_Position': indicator.ValidTimeType,
-    'Test_Mechanisms': indicator.TestMechanismsType,
-    'Sightings': indicator.SightingsType,
-    'ioc.Identity': IdentityType,
-    'Test_Mechanism': indicator.TestMechanismType,
-    'link': ioc.Link,
-    'Sighting': indicator.SightingType,
-    'Composite_Indicator_Expression': indicator.CompositeIndicatorExpressionType,
-    'links': ioc.ArrayOfLink,
-    'metric': ioc.Metric,
-    'metrics': ioc.MetricList,
-    'Context': ioc.IndicatorItemContext,
-    'ioc': ioc.IndicatorOfCompromise,
+    'Suggested_COAs': indicator_binding.SuggestedCOAsType,
+    'Related_Indicators': indicator_binding.RelatedIndicatorsType,
+    'Valid_Time_Position': indicator_binding.ValidTimeType,
+    'Test_Mechanisms': indicator_binding.TestMechanismsType,
+    'Sightings': indicator_binding.SightingsType,
+    'Test_Mechanism': indicator_binding.TestMechanismType,
+    'Sighting': indicator_binding.SightingType,
+    'Composite_Indicator_Expression': indicator_binding.CompositeIndicatorExpressionType,
 }
 
 USAGE_TEXT = """

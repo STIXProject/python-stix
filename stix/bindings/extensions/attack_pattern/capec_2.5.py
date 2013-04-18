@@ -9,8 +9,7 @@ import sys
 import getopt
 import re as re_
 
-import ttp
-import ap_schema_v2_5
+import stix.bindings.ttp as ttp_binding
 import base64
 from datetime import datetime, tzinfo, timedelta
 
@@ -20,43 +19,12 @@ Verbose_import_ = False
     XMLParser_import_elementtree
     ) = range(3)
 XMLParser_import_library = None
-try:
-    # lxml
-    from lxml import etree as etree_
-    XMLParser_import_library = XMLParser_import_lxml
-    if Verbose_import_:
-        print("running with lxml.etree")
-except ImportError:
-    try:
-        # cElementTree from Python 2.5+
-        import xml.etree.cElementTree as etree_
-        XMLParser_import_library = XMLParser_import_elementtree
-        if Verbose_import_:
-            print("running with cElementTree on Python 2.5+")
-    except ImportError:
-        try:
-            # ElementTree from Python 2.5+
-            import xml.etree.ElementTree as etree_
-            XMLParser_import_library = XMLParser_import_elementtree
-            if Verbose_import_:
-                print("running with ElementTree on Python 2.5+")
-        except ImportError:
-            try:
-                # normal cElementTree install
-                import cElementTree as etree_
-                XMLParser_import_library = XMLParser_import_elementtree
-                if Verbose_import_:
-                    print("running with cElementTree")
-            except ImportError:
-                try:
-                    # normal ElementTree install
-                    import elementtree.ElementTree as etree_
-                    XMLParser_import_library = XMLParser_import_elementtree
-                    if Verbose_import_:
-                        print("running with ElementTree")
-                except ImportError:
-                    raise ImportError(
-                        "Failed to import ElementTree from any known place")
+
+# lxml
+from lxml import etree as etree_
+XMLParser_import_library = XMLParser_import_lxml
+if Verbose_import_:
+    print("running with lxml.etree")
 
 def parsexml_(*args, **kwargs):
     if (XMLParser_import_library == XMLParser_import_lxml and
@@ -514,12 +482,12 @@ def _cast(typ, value):
 # Data representation classes.
 #
 
-class CAPEC2_5InstanceType(ttp.AttackPatternType):
+class CAPEC2_5InstanceType(ttp_binding.AttackPatternType):
     """The CAPECInstanceType provides an extension to the
     APStructureAbstractType which imports and leverages the CAPEC
     schema for structured characterization of Attack Patterns."""
     subclass = None
-    superclass = ttp.AttackPatternType
+    superclass = ttp_binding.AttackPatternType
     def __init__(self, capec_id=None, Description=None, CAPEC=None):
         super(CAPEC2_5InstanceType, self).__init__(capec_id, Description, )
         self.CAPEC = CAPEC
@@ -564,7 +532,9 @@ class CAPEC2_5InstanceType(ttp.AttackPatternType):
         else:
             eol_ = ''
         if self.CAPEC is not None:
-            self.CAPEC.export(outfile, level, '', name_='CAPEC', pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write(etree_.tostring(self.CAPEC, pretty_print=pretty_print))
+            #self.CAPEC.export(outfile, level, '', name_='CAPEC', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='CAPEC2.5InstanceType'):
         level += 1
         already_processed = set()
@@ -575,10 +545,10 @@ class CAPEC2_5InstanceType(ttp.AttackPatternType):
         super(CAPEC2_5InstanceType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
     def exportLiteralChildren(self, outfile, level, name_):
         super(CAPEC2_5InstanceType, self).exportLiteralChildren(outfile, level, name_)
-        if self.CAPEC is not None:
-            outfile.write('CAPEC=model_.ap_schema_v2_5.Attack_PatternType(\n')
-            self.CAPEC.exportLiteral(outfile, level, name_='CAPEC')
-            outfile.write('),\n')
+#        if self.CAPEC is not None:
+#            outfile.write('CAPEC=model_.ap_schema_v2_5.Attack_PatternType(\n')
+#            self.CAPEC.exportLiteral(outfile, level, name_='CAPEC')
+#            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -589,9 +559,7 @@ class CAPEC2_5InstanceType(ttp.AttackPatternType):
         super(CAPEC2_5InstanceType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'CAPEC':
-            obj_ = ap_schema_v2_5.Attack_PatternType.factory()
-            obj_.build(child_)
-            self.set_CAPEC(obj_)
+            self.set_CAPEC(child_)
         super(CAPEC2_5InstanceType, self).buildChildren(child_, node, nodeName_, True)
 # end class CAPEC2_5InstanceType
 
@@ -600,8 +568,8 @@ GDSClassesMapping = {
     'Related_Guideline': ap_schema_v2_5.Structured_Text_Type,
     'Stakeholder_Description': ap_schema_v2_5.Structured_Text_Type,
     'Pattern_Specific_Overrides': ap_schema_v2_5.Target_Attack_Surface_DescriptionType,
-    'Resources': ttp.ResourceType,
-    'Infrastructure': ttp.InfrastructureType,
+    'Resources': ttp_binding.ResourceType,
+    'Infrastructure': ttp_binding.InfrastructureType,
     'Alternate_Term_Description': ap_schema_v2_5.Structured_Text_Type,
     'IfPresent_Observables': ap_schema_v2_5.ObservablesType,
     'Activation_Zone': ap_schema_v2_5.Structured_Text_Type,
@@ -611,7 +579,7 @@ GDSClassesMapping = {
     'Indicator_Description': ap_schema_v2_5.Structured_Text_Type,
     'Reference': ap_schema_v2_5.Reference_Type,
     'IfNotPresent_Observables': ap_schema_v2_5.ObservablesType,
-    'Malware_Instance': ttp.MalwareInstanceType,
+    'Malware_Instance': ttp_binding.MalwareInstanceType,
     'Recommended_Design_Pattern': ap_schema_v2_5.Structured_Text_Type,
     'Relationship_Note': ap_schema_v2_5.Structured_Text_Type,
     'Non-Recommended_Design_Pattern': ap_schema_v2_5.Structured_Text_Type,
@@ -621,8 +589,8 @@ GDSClassesMapping = {
     'Example-Instance_Description': ap_schema_v2_5.Structured_Text_Type,
     'Payload': ap_schema_v2_5.Structured_Text_Type,
     'Background_Detail': ap_schema_v2_5.Structured_Text_Type,
-    'Behavior': ttp.BehaviorType,
-    'Victim_Targeting': ttp.VictimTargetingType,
+    'Behavior': ttp_binding.BehaviorType,
+    'Victim_Targeting': ttp_binding.VictimTargetingType,
     'Target_Attack_Surface': ap_schema_v2_5.Target_Attack_SurfaceType,
     'Reference_Description': ap_schema_v2_5.Structured_Text_Type,
     'Injection_Vector': ap_schema_v2_5.Structured_Text_Type,
@@ -635,13 +603,13 @@ GDSClassesMapping = {
     'Observable_Characterization': ap_schema_v2_5.ObservablesType,
     'Research_Gap': ap_schema_v2_5.Structured_Text_Type,
     'Example-Instance_Related_Vulnerability': ap_schema_v2_5.Structured_Text_Type,
-    'Exploits': ttp.ExploitsType,
+    'Exploits': ttp_binding.ExploitsType,
     'Target_Attack_Surface_Description': ap_schema_v2_5.Target_Attack_Surface_DescriptionType,
     'Related_Attack_Pattern': ap_schema_v2_5.RelationshipType,
-    'Malware': ttp.MalwareType,
+    'Malware': ttp_binding.MalwareType,
     'Attack_Step_Description': ap_schema_v2_5.Structured_Text_Type,
     'CAPEC': ap_schema_v2_5.Attack_PatternType,
-    'Related_TTPs': ttp.RelatedTTPsType,
+    'Related_TTPs': ttp_binding.RelatedTTPsType,
     'Extended_Description': ap_schema_v2_5.Structured_Text_Type,
     'Description': ap_schema_v2_5.Structured_Text_Type,
     'Explanation': ap_schema_v2_5.Structured_Text_Type,
@@ -653,7 +621,7 @@ GDSClassesMapping = {
     'Attack_Motivation-Consequence': ap_schema_v2_5.Common_ConsequenceType,
     'Attack_Prerequisite': ap_schema_v2_5.Structured_Text_Type,
     'Related_Security_Principle': ap_schema_v2_5.Structured_Text_Type,
-    'Exploit': ttp.ExploitType,
+    'Exploit': ttp_binding.ExploitType,
 }
 
 USAGE_TEXT = """

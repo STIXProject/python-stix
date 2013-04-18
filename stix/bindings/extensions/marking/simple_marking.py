@@ -9,7 +9,7 @@ import sys
 import getopt
 import re as re_
 
-import data_marking
+import stix.bindings.data_marking as data_marking_binding
 import base64
 from datetime import datetime, tzinfo, timedelta
 
@@ -19,43 +19,11 @@ Verbose_import_ = False
     XMLParser_import_elementtree
     ) = range(3)
 XMLParser_import_library = None
-try:
-    # lxml
-    from lxml import etree as etree_
-    XMLParser_import_library = XMLParser_import_lxml
-    if Verbose_import_:
-        print("running with lxml.etree")
-except ImportError:
-    try:
-        # cElementTree from Python 2.5+
-        import xml.etree.cElementTree as etree_
-        XMLParser_import_library = XMLParser_import_elementtree
-        if Verbose_import_:
-            print("running with cElementTree on Python 2.5+")
-    except ImportError:
-        try:
-            # ElementTree from Python 2.5+
-            import xml.etree.ElementTree as etree_
-            XMLParser_import_library = XMLParser_import_elementtree
-            if Verbose_import_:
-                print("running with ElementTree on Python 2.5+")
-        except ImportError:
-            try:
-                # normal cElementTree install
-                import cElementTree as etree_
-                XMLParser_import_library = XMLParser_import_elementtree
-                if Verbose_import_:
-                    print("running with cElementTree")
-            except ImportError:
-                try:
-                    # normal ElementTree install
-                    import elementtree.ElementTree as etree_
-                    XMLParser_import_library = XMLParser_import_elementtree
-                    if Verbose_import_:
-                        print("running with ElementTree")
-                except ImportError:
-                    raise ImportError(
-                        "Failed to import ElementTree from any known place")
+# lxml
+from lxml import etree as etree_
+XMLParser_import_library = XMLParser_import_lxml
+if Verbose_import_:
+    print("running with lxml.etree")
 
 def parsexml_(*args, **kwargs):
     if (XMLParser_import_library == XMLParser_import_lxml and
@@ -513,13 +481,13 @@ def _cast(typ, value):
 # Data representation classes.
 #
 
-class SimpleMarkingStructureType(data_marking.MarkingStructureType):
+class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
     """The SimpleMarkingStructureType is a basic implementation of the data
     marking schema that allows for a string statement to be
     associated with the data being marked. One example might be the
     application of a copyright statement to some data set."""
     subclass = None
-    superclass = data_marking.MarkingStructureType
+    superclass = data_marking_binding.MarkingStructureType
     def __init__(self, marking_model_ref=None, marking_model_name=None, Statement=None):
         super(SimpleMarkingStructureType, self).__init__(marking_model_ref, marking_model_name, )
         self.Statement = Statement
@@ -596,8 +564,8 @@ class SimpleMarkingStructureType(data_marking.MarkingStructureType):
 # end class SimpleMarkingStructureType
 
 GDSClassesMapping = {
-    'Marking': data_marking.MarkingSpecificationType,
-    'Marking_Structure': data_marking.MarkingStructureType,
+    'Marking': data_marking_binding.MarkingSpecificationType,
+    'Marking_Structure': data_marking_binding.MarkingStructureType,
 }
 
 USAGE_TEXT = """

@@ -9,8 +9,8 @@ import sys
 import getopt
 import re as re_
 
-import course_of_action
-import stix_common
+import stix.bindings.course_of_action as course_of_action_binding
+import stix.bindings.stix_common as stix_common_binding
 import base64
 from datetime import datetime, tzinfo, timedelta
 
@@ -514,13 +514,13 @@ def _cast(typ, value):
 # Data representation classes.
 #
 
-class GenericStructuredCOAType(course_of_action.StructuredCOAType):
+class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
     """The GenericStructuredCOAType specifies an instantial extension from
-    the abstract course_of_action.StructuredCOAType intended to support the generic
+    the abstract course_of_action_binding.StructuredCOAType intended to support the generic
     inclusion of any COA content.Specifies a reference URL for the
     location of the Generic Structured COA."""
     subclass = None
-    superclass = course_of_action.StructuredCOAType
+    superclass = course_of_action_binding.StructuredCOAType
     def __init__(self, idref=None, id=None, reference_location=None, Description=None, Type=None, Specification=None):
         super(GenericStructuredCOAType, self).__init__(idref, id, )
         self.reference_location = _cast(None, reference_location)
@@ -652,7 +652,7 @@ GDSClassesMapping = {
     'Specification': stix_common_binding.EncodedCDATAType,
     'Source': stix_common_binding.ControlledVocabularyStringType,
     'State': stix_common_binding.ControlledVocabularyStringType,
-    'Structured_COA': course_of_action.StructuredCOAType,
+    'Structured_COA': course_of_action_binding.StructuredCOAType,
     'Type': stix_common_binding.ControlledVocabularyStringType,
     'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
     'Relationship': stix_common_binding.ControlledVocabularyStringType,
@@ -668,7 +668,7 @@ GDSClassesMapping = {
     'Applicability_Confidence': stix_common_binding.ConfidenceType,
     'Confidence': stix_common_binding.ConfidenceType,
     'Kill_Chain': stix_common_binding.KillChainType,
-    'Objective': course_of_action.ObjectiveType,
+    'Objective': course_of_action_binding.ObjectiveType,
     'Description': stix_common_binding.StructuredTextType,
     'Efficacy': stix_common_binding.StatementType,
     'Name': stix_common_binding.ControlledVocabularyStringType,
