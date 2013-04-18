@@ -2,15 +2,14 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Thu Apr 11 15:07:47 2013 by generateDS.py version 2.9a.
+# Generated Thu Apr 11 15:07:45 2013 by generateDS.py version 2.9a.
 #
 
 import sys
 import getopt
 import re as re_
 
-import stix.bindings.ttp as ttp_binding
-
+import stix.bindings.stix_common as stix_common_binding
 import base64
 from datetime import datetime, tzinfo, timedelta
 
@@ -483,32 +482,44 @@ def _cast(typ, value):
 # Data representation classes.
 #
 
-class MAEC4_0InstanceType(ttp_binding.MalwareInstanceType):
-    """The MAEC4.0InstanceType provides an extension to ttp_binding.MalwareInstanceType
-    which imports and leverages the MAEC 4.0 schema for structured
-    characterization of Malware."""
+
+
+class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
+    """The CIQIdentity3.0InstanceType provides an extension to the
+    IdentityStructureAbstractType which imports and leverages
+    version 3.0 of the OASIS CIQ-PIL schema for structured
+    characterization of Identities."""
     subclass = None
-    superclass = ttp_binding.MalwareInstanceType
-    def __init__(self, Type=None, Name=None, Description=None, MAEC=None):
-        super(MAEC4_0InstanceType, self).__init__(Type, Name, Description, )
-        self.MAEC = MAEC
-    def factory(*args_, **kwargs_):
-        if MAEC4_0InstanceType.subclass:
-            return MAEC4_0InstanceType.subclass(*args_, **kwargs_)
+    superclass = stix_common_binding.IdentityType
+    def __init__(self, idref=None, id=None, Name=None, Related_Identities=None, Specification=None, Role=None):
+        super(CIQIdentity3_0InstanceType, self).__init__(idref, id, Name, Related_Identities, )
+        self.Specification = Specification
+        if Role is None:
+            self.Role = []
         else:
-            return MAEC4_0InstanceType(*args_, **kwargs_)
+            self.Role = Role
+    def factory(*args_, **kwargs_):
+        if CIQIdentity3_0InstanceType.subclass:
+            return CIQIdentity3_0InstanceType.subclass(*args_, **kwargs_)
+        else:
+            return CIQIdentity3_0InstanceType(*args_, **kwargs_)
     factory = staticmethod(factory)
-    def get_MAEC(self): return self.MAEC
-    def set_MAEC(self, MAEC): self.MAEC = MAEC
+    def get_Specification(self): return self.Specification
+    def set_Specification(self, Specification): self.Specification = Specification
+    def get_Role(self): return self.Role
+    def set_Role(self, Role): self.Role = Role
+    def add_Role(self, value): self.Role.append(value)
+    def insert_Role(self, index, value): self.Role[index] = value
     def hasContent_(self):
         if (
-            self.MAEC is not None or
-            super(MAEC4_0InstanceType, self).hasContent_()
+            self.Specification is not None or
+            self.Role or
+            super(CIQIdentity3_0InstanceType, self).hasContent_()
             ):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='MAEC4.0InstanceType', namespacedef_='', pretty_print=True):
+    def export(self, outfile, level, namespace_='', name_='CIQIdentity3.0InstanceType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -516,7 +527,7 @@ class MAEC4_0InstanceType(ttp_binding.MalwareInstanceType):
         showIndent(outfile, level, pretty_print)
         outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='MAEC4.0InstanceType')
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='CIQIdentity3.0InstanceType')
         if self.hasContent_():
             outfile.write('>%s' % (eol_, ))
             self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
@@ -524,32 +535,44 @@ class MAEC4_0InstanceType(ttp_binding.MalwareInstanceType):
             outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='MAEC4.0InstanceType'):
-        super(MAEC4_0InstanceType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='MAEC4.0InstanceType')
-    def exportChildren(self, outfile, level, namespace_='', name_='MAEC4.0InstanceType', fromsubclass_=False, pretty_print=True):
-        super(MAEC4_0InstanceType, self).exportChildren(outfile, level, '', name_, True, pretty_print=pretty_print)
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='CIQIdentity3.0InstanceType'):
+        super(CIQIdentity3_0InstanceType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='CIQIdentity3.0InstanceType')
+    def exportChildren(self, outfile, level, namespace_='', name_='CIQIdentity3.0InstanceType', fromsubclass_=False, pretty_print=True):
+        super(CIQIdentity3_0InstanceType, self).exportChildren(outfile, level, '', name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        if self.MAEC is not None:
+        if self.Specification is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write(etree_.tostring(self.MAEC, pretty_print=pretty_print))
-            #self.MAEC.export(outfile, level, '', name_='MAEC', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='MAEC4.0InstanceType'):
+            outfile.write(etree_.tostring(self.Specification, pretty_print=pretty_print))
+            #self.Specification.export(outfile, level, '', name_='Specification', pretty_print=pretty_print)
+        for Role_ in self.Role:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%sRole>%s</%sRole>%s' % ('', self.gds_format_string(quote_xml(Role_).encode(ExternalEncoding), input_name='Role'), '', eol_))
+    def exportLiteral(self, outfile, level, name_='CIQIdentity3.0InstanceType'):
         level += 1
         already_processed = set()
         self.exportLiteralAttributes(outfile, level, already_processed, name_)
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(MAEC4_0InstanceType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+        super(CIQIdentity3_0InstanceType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
     def exportLiteralChildren(self, outfile, level, name_):
-        super(MAEC4_0InstanceType, self).exportLiteralChildren(outfile, level, name_)
-        if self.MAEC is not None:
-            outfile.write('MAEC=model_.maec-package-schema.PackageType(\n')
-            self.MAEC.exportLiteral(outfile, level, name_='MAEC')
+        super(CIQIdentity3_0InstanceType, self).exportLiteralChildren(outfile, level, name_)
+        if self.Specification is not None:
+            outfile.write('Specification=model_.STIXCIQIdentity3_0Type(\n')
+            self.Specification.exportLiteral(outfile, level, name_='Specification')
             outfile.write('),\n')
+        showIndent(outfile, level)
+        outfile.write('Role=[\n')
+        level += 1
+        for Role_ in self.Role:
+            showIndent(outfile, level)
+            outfile.write('%s,\n' % quote_python(Role_).encode(ExternalEncoding))
+        level -= 1
+        showIndent(outfile, level)
+        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -557,59 +580,47 @@ class MAEC4_0InstanceType(ttp_binding.MalwareInstanceType):
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
-        super(MAEC4_0InstanceType, self).buildAttributes(node, attrs, already_processed)
+        super(CIQIdentity3_0InstanceType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'MAEC':
-            self.set_MAEC(child_)
-            
-        super(MAEC4_0InstanceType, self).buildChildren(child_, node, nodeName_, True)
-# end class MAEC4_0InstanceType
+        if nodeName_ == 'Specification':
+            self.set_Specification(child_)
+        elif nodeName_ == 'Role':
+            Role_ = child_.text
+            Role_ = self.gds_validate_string(Role_, node, 'Role')
+            self.Role.append(Role_)
+        super(CIQIdentity3_0InstanceType, self).buildChildren(child_, node, nodeName_, True)
+# end class CIQIdentity3_0InstanceType
 
 GDSClassesMapping = {
-    'Findings_Bundles': maec-package-schema.FindingsBundleListType,
-    'Analysis_Systems': maec-package-schema.AnalysisSystemListType,
-    'MAEC_Package': maec-package-schema.PackageType,
-    'Installed_Programs': maec-package-schema.InstalledProgramsType,
-    'Protocol': maec-package-schema.CapturedProtocolType,
-    'Action_Equivalences': maec-package-schema.ActionEquivalenceListType,
-    'Malware_Subject_Reference': maec-package-schema.MalwareSubjectReferenceType,
-    'Clustering_Metadata': maec-package-schema.ClusteringMetadataType,
-    'Attack_Pattern': ttp_binding.AttackPatternType,
-    'Exploits': ttp_binding.ExploitsType,
-    'Edge_Node_Pair': maec-package-schema.ClusterEdgeNodePairType,
-    'Meta_Analysis': maec-package-schema.MetaAnalysisType,
-    'Analysis': maec-package-schema.AnalysisType,
-    'Dynamic_Analysis_Metadata': maec-package-schema.DynamicAnalysisMetadataType,
-    'Victim_Targeting': ttp_binding.VictimTargetingType,
-    'Analyses': maec-package-schema.AnalysisListType,
-    'Attack_Patterns': ttp_binding.AttackPatternsType,
-    'Grouping_Relationships': maec-package-schema.GroupingRelationshipListType,
-    'Malware': ttp_binding.MalwareType,
-    'Related_TTPs': ttp_binding.RelatedTTPsType,
-    'Network_Infrastructure': maec-package-schema.NetworkInfrastructureType,
-    'Comments': maec-package-schema.CommentListType,
-    'Resources': ttp_binding.ResourceType,
-    'Infrastructure': ttp_binding.InfrastructureType,
-    'Captured_Protocols': maec-package-schema.CapturedProtocolListType,
-    'Malware_Subject': maec-package-schema.MalwareSubjectType,
-    'Cluster_Composition': maec-package-schema.ClusterCompositionType,
-    'Action_Equivalence': maec-package-schema.ActionEquivalenceType,
-    'Analysis_Environment': maec-package-schema.AnalysisEnvironmentType,
-    'Object_Equivalences': maec-package-schema.ObjectEquivalenceListType,
-    'Hypervisor_Host_System': maec-package-schema.HypervisorHostSystemType,
-    'Source': maec-package-schema.SourceType,
-    'MAEC': maec-package-schema.PackageType,
-    'Algorithm_Parameters': maec-package-schema.ClusteringAlgorithmParametersType,
-    'Malware_Subject_Node_A': maec-package-schema.MalwareSubjectReferenceType,
-    'Malware_Subject_Node_B': maec-package-schema.MalwareSubjectReferenceType,
-    'Exploit': ttp_binding.ExploitType,
-    'Grouping_Relationship': maec-package-schema.GroupingRelationshipType,
-    'Malware_Instance': ttp_binding.MalwareInstanceType,
-    'Analysis_System': maec-package-schema.AnalysisSystemType,
-    'Malware_Subjects': maec-package-schema.MalwareSubjectListType,
-    'Behavior': ttp_binding.BehaviorType,
-    'Comment': maec-package-schema.CommentType,
-    'Object_Equivalence': maec-package-schema.ObjectEquivalenceType,
+    'Information_Source': stix_common_binding.InformationSourceType,
+    'Indicator': stix_common_binding.IndicatorBaseType,
+    'Exploit_Target': stix_common_binding.ExploitTargetBaseType,
+    'Incident': stix_common_binding.IncidentBaseType,
+    'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
+    'Confidence_Assertion': stix_common_binding.ConfidenceType,
+    'Campaign': stix_common_binding.CampaignBaseType,
+    'Encoding': stix_common_binding.ControlledVocabularyStringType,
+    'Source': stix_common_binding.ControlledVocabularyStringType,
+    'State': stix_common_binding.ControlledVocabularyStringType,
+    'Type': stix_common_binding.ControlledVocabularyStringType,
+    'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
+    'TTP': stix_common_binding.TTPBaseType,
+    'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
+    'Reference_Description': stix_common_binding.StructuredTextType,
+    'Association_Type': stix_common_binding.ControlledVocabularyStringType,
+    'Related_Identities': stix_common_binding.RelatedIdentitiesType,
+    'Identity': stix_common_binding.IdentityType,
+    'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
+    'Threat_Actor': stix_common_binding.ThreatActorBaseType,
+    'Confidence': stix_common_binding.ConfidenceType,
+    'Kill_Chain': stix_common_binding.KillChainType,
+    'Description': stix_common_binding.StructuredTextType,
+    'Name': stix_common_binding.ControlledVocabularyStringType,
+    'Kill_Chain_Phase': stix_common_binding.KillChainPhaseReferenceType,
+    'Related_Identity': stix_common_binding.RelatedIdentityType,
+    'Argument_Name': stix_common_binding.ControlledVocabularyStringType,
+    'Dependency_Description': stix_common_binding.StructuredTextType,
 }
 
 USAGE_TEXT = """
@@ -632,8 +643,8 @@ def parse(inFileName):
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
-        rootTag = 'MAEC4.0InstanceType'
-        rootClass = MAEC4_0InstanceType
+        rootTag = 'CIQIdentity3.0InstanceType'
+        rootClass = CIQIdentity3_0InstanceType
     rootObj = rootClass.factory()
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
@@ -649,8 +660,8 @@ def parseEtree(inFileName):
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
-        rootTag = 'MAEC4.0InstanceType'
-        rootClass = MAEC4_0InstanceType
+        rootTag = 'CIQIdentity3.0InstanceType'
+        rootClass = CIQIdentity3_0InstanceType
     rootObj = rootClass.factory()
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
@@ -668,14 +679,14 @@ def parseString(inString):
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
-        rootTag = 'MAEC4.0InstanceType'
-        rootClass = MAEC4_0InstanceType
+        rootTag = 'CIQIdentity3.0InstanceType'
+        rootClass = CIQIdentity3_0InstanceType
     rootObj = rootClass.factory()
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
     doc = None
     sys.stdout.write('<?xml version="1.0" ?>\n')
-    rootObj.export(sys.stdout, 0, name_="MAEC4.0InstanceType",
+    rootObj.export(sys.stdout, 0, name_="CIQIdentity3.0InstanceType",
         namespacedef_='')
     return rootObj
 
@@ -684,15 +695,15 @@ def parseLiteral(inFileName):
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
-        rootTag = 'MAEC4.0InstanceType'
-        rootClass = MAEC4_0InstanceType
+        rootTag = 'CIQIdentity3.0InstanceType'
+        rootClass = CIQIdentity3_0InstanceType
     rootObj = rootClass.factory()
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
     doc = None
-    sys.stdout.write('#from maec_4.0 import *\n\n')
+    sys.stdout.write('#from ciq_identity_3.0 import *\n\n')
     sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import maec_4.0 as model_\n\n')
+    sys.stdout.write('import ciq_identity_3.0 as model_\n\n')
     sys.stdout.write('rootObj = model_.rootTag(\n')
     rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
     sys.stdout.write(')\n')
@@ -710,5 +721,6 @@ if __name__ == '__main__':
     main()
 
 __all__ = [
-    "MAEC4_0InstanceType"
+    "STIXCIQIdentity3_0Type",
+    "CIQIdentity3_0InstanceType"
     ]
