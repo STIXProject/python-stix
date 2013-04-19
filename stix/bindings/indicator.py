@@ -1153,29 +1153,25 @@ class TestMechanismsType(GeneratedsSuper):
                     if type_name_ == "OVAL5.10TestMechanismType":
                         import stix.bindings.extensions.test_mechanism.oval_5_10 as oval_5_10_tm_binding
                         obj_ = oval_5_10_tm_binding.OVAL5_10TestMechanismType.factory()
-                        obj_.build(child_)
                     elif type_name_ == "YaraTestMechanismType":
                         import stix.bindings.extensions.test_mechanism.yara as yara_tm_binding
                         obj_ = yara_tm_binding.YaraTestMechanismType.factory()
-                        obj_.build(child_)
                     elif type_name_ == "SnortTestMechanismType":
                         import stix.bindings.extensions.test_mechanism.snort as snort_tm_binding
                         obj_ = snort_tm_binding.SnortTestMechanismType.factory()
-                        obj_.build(child_)
                     elif type_name_ == "OpenIOC2010TestMechanismType":
                         import stix.bindings.extensions.test_mechanism.open_ioc_2010 as openioc_tm_binding
                         obj_ = openioc_tm_binding.OpenIOC2010TestMechanismType.factory()
-                        obj_.build(child_)
                     elif type_name_ == "GenericTestMechanismType":
                         import stix.bindings.extensions.test_mechanism.generic as generic_tm_binding
                         obj_ = generic_tm_binding.GenericTestMechanismType.factory()
-                        obj_.build(child_)
                     else:
                         raise NotImplementedError('Class not implemented for <Test_Mechanism> element: ' + type_name_)
             else:
                 raise NotImplementedError(
                     'Class not implemented for <Test_Mechanism> element: no xsi:type attribute found')
-                
+            
+            obj_.build(child_)
             self.Test_Mechanism.append(obj_)
 # end class TestMechanismsType
 
