@@ -1175,7 +1175,7 @@ class MalwareType(GeneratedsSuper):
                     import stix.bindings.extensions.malware.maec_4_0 as maec_4_0_binding
                     obj_ = maec_4_0_binding.MAEC4_0InstanceType.factory()
             else:
-                obj_ = MalwareInstanceType.factory() # IdentityType is not abstract
+                obj_ = MalwareInstanceType.factory() # MalwareInstanceType is not abstract
             
             obj_.build(child_)
             self.Malware_Instance.append(obj_)
