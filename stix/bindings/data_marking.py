@@ -12,6 +12,7 @@ import re as re_
 import stix.bindings.stix_common as stix_common_binding
 import base64
 from datetime import datetime, tzinfo, timedelta
+from stix.bindings.extensions.marking import simple_marking
 
 etree_ = None
 Verbose_import_ = False
@@ -824,8 +825,7 @@ class MarkingSpecificationType(GeneratedsSuper):
             Controlled_Structure_ = self.gds_validate_string(Controlled_Structure_, node, 'Controlled_Structure')
             self.Controlled_Structure = Controlled_Structure_
         elif nodeName_ == 'Marking_Structure':
-            type_name_ = child_.attrib.get(
-                '{http://www.w3.org/2001/XMLSchema-instance}type')
+            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
             if type_name_ is None:
                 type_name_ = child_.attrib.get('type')
             if type_name_ is not None:
@@ -834,12 +834,19 @@ class MarkingSpecificationType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-                class_ = globals()[type_name_]
-                obj_ = class_.factory()
-                obj_.build(child_)
+            
+                if type_name_ == "SimpleMarkingStructureType":
+                    import stix.bindings.extensions.marking.simple_marking as simple_marking_binding
+                    obj_ = simple_marking_binding.SimpleMarkingStructureType.factory()
+                elif type_name_ == "TLPMarkingStructureType":
+                    import stix.bindings.extensions.marking.tlp as tlp_marking_binding
+                    obj_ = tlp_marking_binding.TLPMarkingStructureType.factory()
+                else:
+                    raise NotImplementedError('Marking structure type not implemented ' + type_name_)
             else:
-                raise NotImplementedError(
-                    'Class not implemented for <Marking_Structure> element')
+                raise NotImplementedError('Marking structure type not declared: no xsi_type found')
+            
+            obj_.build(child_)
             self.Marking_Structure.append(obj_)
         elif nodeName_ == 'Information_Source':
             obj_ = stix_common_binding.InformationSourceType.factory()
