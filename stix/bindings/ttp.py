@@ -1161,7 +1161,22 @@ class MalwareType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Malware_Instance':
-            obj_ = MalwareInstanceType.factory()
+            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
+            if type_name_ is None:
+                type_name_ = child_.attrib.get('type')
+            if type_name_ is not None:
+                type_names_ = type_name_.split(':')
+                if len(type_names_) == 1:
+                    type_name_ = type_names_[0]
+                else:
+                    type_name_ = type_names_[1]
+            
+                if type_name_ == "MAEC4.0InstanceType":
+                    import stix.bindings.extensions.malware.maec_4_0 as maec_4_0_binding
+                    obj_ = maec_4_0_binding.MAEC4_0InstanceType.factory()
+            else:
+                obj_ = MalwareInstanceType.factory() # IdentityType is not abstract
+            
             obj_.build(child_)
             self.Malware_Instance.append(obj_)
 # end class MalwareType
