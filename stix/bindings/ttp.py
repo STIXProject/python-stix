@@ -1246,7 +1246,24 @@ class AttackPatternsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Attack_Pattern':
-            obj_ = AttackPatternType.factory()
+            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
+            if type_name_ is None:
+                type_name_ = child_.attrib.get('type')
+            if type_name_ is not None:
+                type_names_ = type_name_.split(':')
+                if len(type_names_) == 1:
+                    type_name_ = type_names_[0]
+                else:
+                    type_name_ = type_names_[1]
+                
+                if type_name_ == "CAPEC2.5InstanceType":
+                    import stix.bindings.extensions.attack_pattern.capec_2_5 as capec_2_5_binding
+                    obj_ = capec_2_5_binding.CAPEC2_5InstanceType.factory()
+                else:
+                    raise NotImplementedError('No implementation for type: ' + type_name_)
+            else:
+                obj_ = AttackPatternType.factory() # AttackPattern is not abstract
+                
             obj_.build(child_)
             self.Attack_Pattern.append(obj_)
 # end class AttackPatternsType
@@ -1551,7 +1568,22 @@ class VictimTargetingType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Identity':
-            obj_ = stix_common_binding.IdentityType.factory()
+            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
+            if type_name_ is None:
+                type_name_ = child_.attrib.get('type')
+            if type_name_ is not None:
+                type_names_ = type_name_.split(':')
+                if len(type_names_) == 1:
+                    type_name_ = type_names_[0]
+                else:
+                    type_name_ = type_names_[1]
+            
+                if type_name_ == "CIQIdentity3.0InstanceType":
+                    import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
+                    obj_ = ciq_identity_binding.CIQIdentity3_0InstanceType.factory()
+            else:
+                obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
+            
             obj_.build(child_)
             self.set_Identity(obj_)
         elif nodeName_ == 'Targeted_Systems':

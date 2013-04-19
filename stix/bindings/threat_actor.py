@@ -1005,7 +1005,22 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
             Title_ = self.gds_validate_string(Title_, node, 'Title')
             self.Title = Title_
         elif nodeName_ == 'Identity':
-            obj_ = stix_common_binding.IdentityType.factory()
+            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
+            if type_name_ is None:
+                type_name_ = child_.attrib.get('type')
+            if type_name_ is not None:
+                type_names_ = type_name_.split(':')
+                if len(type_names_) == 1:
+                    type_name_ = type_names_[0]
+                else:
+                    type_name_ = type_names_[1]
+            
+                if type_name_ == "CIQIdentity3.0InstanceType":
+                    import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
+                    obj_ = ciq_identity_binding.CIQIdentity3_0InstanceType.factory()
+            else:
+                obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
+            
             obj_.build(child_)
             self.set_Identity(obj_)
         elif nodeName_ == 'Type':
