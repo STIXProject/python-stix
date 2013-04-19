@@ -534,7 +534,9 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
         else:
             eol_ = ''
         if self.Location is not None:
-            self.Location.export(outfile, level, '', name_='Location', pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write(etree_.tostring(self.Location, pretty_print=pretty_print))
+            #self.Location.export(outfile, level, '', name_='Location', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='CIQAddress3.0InstanceType'):
         level += 1
         already_processed = set()
@@ -559,9 +561,7 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
         super(CIQAddress3_0InstanceType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Location':
-            obj_ = xal.AddressType.factory()
-            obj_.build(child_)
-            self.set_Location(obj_)
+            self.set_Location(child_)
         super(CIQAddress3_0InstanceType, self).buildChildren(child_, node, nodeName_, True)
 # end class CIQAddress3_0InstanceType
 
@@ -577,7 +577,6 @@ GDSClassesMapping = {
     'Encoding': stix_common_binding.ControlledVocabularyStringType,
     'Source': stix_common_binding.ControlledVocabularyStringType,
     'State': stix_common_binding.ControlledVocabularyStringType,
-    'Location': xal.AddressType,
     'Type': stix_common_binding.ControlledVocabularyStringType,
     'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
     'Relationship': stix_common_binding.ControlledVocabularyStringType,
@@ -586,15 +585,12 @@ GDSClassesMapping = {
     'Reference_Description': stix_common_binding.StructuredTextType,
     'Association_Type': stix_common_binding.ControlledVocabularyStringType,
     'Related_Identities': stix_common_binding.RelatedIdentitiesType,
-    'Identifier': xal.IdentifierType,
     'Identity': stix_common_binding.IdentityType,
     'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
     'Threat_Actor': stix_common_binding.ThreatActorBaseType,
-    'Number': xal.IdentifierType,
     'Confidence': stix_common_binding.ConfidenceType,
     'Kill_Chain': stix_common_binding.KillChainType,
     'Description': stix_common_binding.StructuredTextType,
-    'Address': xal.AddressType,
     'Name': stix_common_binding.ControlledVocabularyStringType,
     'Kill_Chain_Phase': stix_common_binding.KillChainPhaseReferenceType,
     'Related_Identity': stix_common_binding.RelatedIdentityType,

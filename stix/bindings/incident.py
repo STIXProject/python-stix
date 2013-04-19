@@ -787,8 +787,7 @@ class AffectedAssetType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Location_Class(obj_)
         elif nodeName_ == 'Location':
-            type_name_ = child_.attrib.get(
-                '{http://www.w3.org/2001/XMLSchema-instance}type')
+            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
             if type_name_ is None:
                 type_name_ = child_.attrib.get('type')
             if type_name_ is not None:
@@ -797,12 +796,16 @@ class AffectedAssetType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-                class_ = globals()[type_name_]
-                obj_ = class_.factory()
-                obj_.build(child_)
+                
+                if type_name_ == "CIQAddress3.0InstanceType":
+                    import stix.bindings.extensions.address.ciq_address_3_0 as ciq_address_binding
+                    obj_ = ciq_address_binding.CIQAddress3_0InstanceType.factory()
+                else:
+                    raise NotImplementedError('No implementation class found for: ' + type_name_)
             else:
-                raise NotImplementedError(
-                    'Class not implemented for <Location> element')
+                raise NotImplementedError('Class not implemented for <Location> element')
+            
+            obj_.build(child_)
             self.set_Location(obj_)
         elif nodeName_ == 'Nature_Of_Security_Effect':
             obj_ = NatureOfSecurityEffectType.factory()
