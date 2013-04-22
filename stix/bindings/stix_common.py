@@ -3935,10 +3935,11 @@ class ControlledVocabularyStringType(GeneratedsSuper):
     defined, e.g., in an externally located XML schema file."""
     subclass = None
     superclass = None
-    def __init__(self, vocab_reference=None, vocab_name=None, valueOf_=None):
+    def __init__(self, vocab_reference=None, vocab_name=None, valueOf_=None, xsi_type=None):
         self.vocab_reference = _cast(None, vocab_reference)
         self.vocab_name = _cast(None, vocab_name)
         self.valueOf_ = valueOf_
+        self.xsi_type = xsi_type
     def factory(*args_, **kwargs_):
         if ControlledVocabularyStringType.subclass:
             return ControlledVocabularyStringType.subclass(*args_, **kwargs_)
@@ -3951,6 +3952,8 @@ class ControlledVocabularyStringType(GeneratedsSuper):
     def set_vocab_name(self, vocab_name): self.vocab_name = vocab_name
     def get_valueOf_(self): return self.valueOf_
     def set_valueOf_(self, valueOf_): self.valueOf_ = valueOf_
+    def get_xsi_type(self): return self.xsi_type
+    def set_xsi_type(self, xsi_type): self.xsi_type = xsi_type
     def hasContent_(self):
         if (
             self.valueOf_
@@ -3975,6 +3978,9 @@ class ControlledVocabularyStringType(GeneratedsSuper):
         else:
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='ControlledVocabularyStringType'):
+        if self.xsi_type is not None and 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            outfile.write(' xsi:type=%s' % self.gds_format_string(quote_attrib(self.xsi_type).encode(ExternalEncoding), input_name='xsi:type'))
         if self.vocab_reference is not None and 'vocab_reference' not in already_processed:
             already_processed.add('vocab_reference')
             outfile.write(' vocab_reference=%s' % (self.gds_format_string(quote_attrib(self.vocab_reference).encode(ExternalEncoding), input_name='vocab_reference'), ))
@@ -4018,6 +4024,10 @@ class ControlledVocabularyStringType(GeneratedsSuper):
         if value is not None and 'vocab_name' not in already_processed:
             already_processed.add('vocab_name')
             self.vocab_name = value
+        value = find_attr_value_('xsi:type')
+        if value is not None and 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            self.xsi_type = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
 # end class ControlledVocabularyStringType

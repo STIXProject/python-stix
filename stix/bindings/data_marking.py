@@ -12,7 +12,6 @@ import re as re_
 import stix.bindings.stix_common as stix_common_binding
 import base64
 from datetime import datetime, tzinfo, timedelta
-from stix.bindings.extensions.marking import simple_marking
 
 etree_ = None
 Verbose_import_ = False

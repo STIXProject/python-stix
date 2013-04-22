@@ -12,6 +12,7 @@ import re as re_
 import cybox.bindings.cybox_core as cybox_core_binding
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
+
 import base64
 from datetime import datetime, tzinfo, timedelta
 
