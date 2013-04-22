@@ -1153,8 +1153,8 @@ class KillChainPhaseType(GeneratedsSuper):
             outfile.write(' phase_id=%s' % (quote_attrib(self.phase_id), ))
         if self.extensiontype_ is not None and 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
-            outfile.write(' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')
-            outfile.write(' xsi:type="%s"' % self.extensiontype_)
+            outfile.write('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')
+            outfile.write('  xsi:type="%s"' % self.extensiontype_)
     def exportChildren(self, outfile, level, namespace_='stixCommon:', name_='KillChainPhaseType', fromsubclass_=False, pretty_print=True):
         pass
     def exportLiteral(self, outfile, level, name_='KillChainPhaseType'):
@@ -1644,8 +1644,8 @@ class GenericRelationshipType(GeneratedsSuper):
     def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='GenericRelationshipType'):
         if self.extensiontype_ is not None and 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
-            outfile.write(' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')
-            outfile.write(' xsi:type="%s"' % self.extensiontype_)
+            outfile.write('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')
+            outfile.write('  xsi:type="%s"' % self.extensiontype_)
         pass
     def exportChildren(self, outfile, level, namespace_='stixCommon:', name_='GenericRelationshipType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
@@ -3880,7 +3880,13 @@ class EncodedCDATAType(GeneratedsSuper):
         self.exportAttributes(outfile, level, already_processed, namespace_, name_='EncodedCDATAType')
         if self.hasContent_():
             outfile.write('>')
-            outfile.write(str(self.valueOf_).encode(ExternalEncoding))
+            
+            if self.valueOf_ and self.valueOf_.strip()[:9] != "<![CDATA[":
+                value = "<![CDATA[" + self.valueOf_ + "]]>"
+            else:
+                value = self.valueOf_
+                
+            outfile.write(str(value).encode(ExternalEncoding))
             self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
             outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
         else:
@@ -3980,7 +3986,7 @@ class ControlledVocabularyStringType(GeneratedsSuper):
     def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='ControlledVocabularyStringType'):
         if self.xsi_type is not None and 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
-            outfile.write(' xsi:type=%s' % self.gds_format_string(quote_attrib(self.xsi_type).encode(ExternalEncoding), input_name='xsi:type'))
+            outfile.write('  xsi:type=%s' % self.gds_format_string(quote_attrib(self.xsi_type).encode(ExternalEncoding), input_name='xsi:type'))
         if self.vocab_reference is not None and 'vocab_reference' not in already_processed:
             already_processed.add('vocab_reference')
             outfile.write(' vocab_reference=%s' % (self.gds_format_string(quote_attrib(self.vocab_reference).encode(ExternalEncoding), input_name='vocab_reference'), ))
@@ -4024,7 +4030,7 @@ class ControlledVocabularyStringType(GeneratedsSuper):
         if value is not None and 'vocab_name' not in already_processed:
             already_processed.add('vocab_name')
             self.vocab_name = value
-        value = find_attr_value_('xsi:type')
+        value = find_attr_value_('xsi:type', node)
         if value is not None and 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
             self.xsi_type = value

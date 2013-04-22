@@ -532,11 +532,11 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
         super(TLPMarkingStructureType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='TLPMarkingStructureType')
         if 'xmlns' not in already_processed:
             already_processed.add('xmlns')
-            xmlns = "xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
             outfile.write(xmlns)   
         if 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
-            xsi_type = "xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
             outfile.write(xsi_type)
         if self.color is not None and 'color' not in already_processed:
             already_processed.add('color')

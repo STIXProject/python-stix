@@ -507,6 +507,7 @@ class STIXType(GeneratedsSuper):
         self.Courses_Of_Action = Courses_Of_Action
         self.Campaigns = Campaigns
         self.Threat_Actors = Threat_Actors
+        self.nsmap = {}
     def factory(*args_, **kwargs_):
         if STIXType.subclass:
             return STIXType.subclass(*args_, **kwargs_)
@@ -578,6 +579,10 @@ class STIXType(GeneratedsSuper):
         if self.version is not None and 'version' not in already_processed:
             already_processed.add('version')
             outfile.write(' version=%s' % (quote_attrib(self.version), ))
+            
+        for prefix, ns in self.nsmap.iteritems():
+            outfile.write(' xmlns:%s="%s"' % (prefix, ns) )
+            
     def exportChildren(self, outfile, level, namespace_='stix:', name_='STIXType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
@@ -659,6 +664,7 @@ class STIXType(GeneratedsSuper):
             outfile.write('),\n')
     def build(self, node):
         already_processed = set()
+        self.nsmap = node.nsmap
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]

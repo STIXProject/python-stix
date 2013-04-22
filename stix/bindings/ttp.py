@@ -1708,6 +1708,9 @@ class TTPType(stix_common_binding.TTPBaseType):
     superclass = stix_common_binding.TTPBaseType
     def __init__(self, idref=None, id=None, version='1.0', Title=None, Description=None, Intended_Effect=None, Behavior=None, Resources=None, Victim_Targeting=None, Exploit_Targets=None, Related_TTPs=None, Kill_Chain_Phases=None, Information_Source=None, Kill_Chains=None, Handling=None):
         super(TTPType, self).__init__(idref, id, )
+        self.xmlns          = "http://stix.mitre.org/TTP-1"
+        self.xmlns_prefix   = "ttp"
+        self.xml_type       = "TTPType"
         self.version = _cast(None, version)
         self.Title = Title
         self.Description = Description
@@ -1795,6 +1798,14 @@ class TTPType(stix_common_binding.TTPBaseType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='ttp:', name_='TTPType'):
         super(TTPType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='TTPType')
+        if 'xmlns' not in already_processed:
+            already_processed.add('xmlns')
+            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            outfile.write(xmlns)   
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            outfile.write(xsi_type)
         if self.version is not None and 'version' not in already_processed:
             already_processed.add('version')
             outfile.write(' version=%s' % (quote_attrib(self.version), ))

@@ -1029,6 +1029,9 @@ class CampaignType(stix_common_binding.CampaignBaseType):
     superclass = stix_common_binding.CampaignBaseType
     def __init__(self, idref=None, id=None, version='1.0', Title=None, Names=None, Intended_Effect=None, Status=None, Related_TTPs=None, Related_Incidents=None, Related_Indicators=None, Attribution=None, Associated_Campaigns=None, Confidence=None, Activity=None, Information_Source=None, Handling=None):
         super(CampaignType, self).__init__(idref, id, )
+        self.xmlns          = "http://stix.mitre.org/Campaign-1"
+        self.xmlns_prefix   = "campaign"
+        self.xml_type       = "CampaignType"
         self.version = _cast(None, version)
         self.Title = Title
         self.Names = Names
@@ -1130,6 +1133,14 @@ class CampaignType(stix_common_binding.CampaignBaseType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='campaign:', name_='CampaignType'):
         super(CampaignType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='CampaignType')
+        if 'xmlns' not in already_processed:
+            already_processed.add('xmlns')
+            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            outfile.write(xmlns)   
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            outfile.write(xsi_type)
         if self.version is not None and 'version' not in already_processed:
             already_processed.add('version')
             outfile.write(' version=%s' % (quote_attrib(self.version), ))

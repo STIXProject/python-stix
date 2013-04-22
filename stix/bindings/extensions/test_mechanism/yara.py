@@ -536,11 +536,11 @@ class YaraTestMechanismType(indicator_binding.TestMechanismType):
         super(YaraTestMechanismType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='YaraTestMechanismType')
         if 'xmlns' not in already_processed:
             already_processed.add('xmlns')
-            xmlns = "xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
             outfile.write(xmlns)   
         if 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
-            xsi_type = "xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
             outfile.write(xsi_type)
     def exportChildren(self, outfile, level, namespace_='yaraTM:', name_='YaraTestMechanismType', fromsubclass_=False, pretty_print=True):
         super(YaraTestMechanismType, self).exportChildren(outfile, level, 'yaraTM:', name_, True, pretty_print=pretty_print)

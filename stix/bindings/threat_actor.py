@@ -762,6 +762,9 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
     superclass = stix_common_binding.ThreatActorBaseType
     def __init__(self, idref=None, id=None, version='1.0', Title=None, Identity=None, Type=None, Motivation=None, Intended_Effect=None, Planning_And_Operational_Support=None, Observed_TTPs=None, Associated_Campaigns=None, Associated_Actors=None, Handling=None, Confidence=None, Information_Source=None):
         super(ThreatActorType, self).__init__(idref, id, )
+        self.xmlns          = "http://stix.mitre.org/ThreatActor-1"
+        self.xmlns_prefix   = "ta"
+        self.xml_type       = "ThreatActorType"
         self.version = _cast(None, version)
         self.Title = Title
         self.Identity = Identity
@@ -864,6 +867,14 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='ta:', name_='ThreatActorType'):
         super(ThreatActorType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='ThreatActorType')
+        if 'xmlns' not in already_processed:
+            already_processed.add('xmlns')
+            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            outfile.write(xmlns)   
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            outfile.write(xsi_type)
         if self.version is not None and 'version' not in already_processed:
             already_processed.add('version')
             outfile.write(' version=%s' % (quote_attrib(self.version), ))

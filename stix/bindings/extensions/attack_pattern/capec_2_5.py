@@ -531,11 +531,11 @@ class CAPEC2_5InstanceType(ttp_binding.AttackPatternType):
         super(CAPEC2_5InstanceType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='CAPEC2.5InstanceType')
         if 'xmlns' not in already_processed:
             already_processed.add('xmlns')
-            xmlns = "xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
             outfile.write(xmlns)   
         if 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
-            xsi_type = "xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            xsi_type = "  xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
             outfile.write(xsi_type)
     def exportChildren(self, outfile, level, namespace_='', name_='CAPEC2.5InstanceType', fromsubclass_=False, pretty_print=True):
         super(CAPEC2_5InstanceType, self).exportChildren(outfile, level, '', name_, True, pretty_print=pretty_print)

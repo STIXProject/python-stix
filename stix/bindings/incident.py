@@ -1117,8 +1117,8 @@ class COATakenType(GeneratedsSuper):
     def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='COATakenType'):
         if self.extensiontype_ is not None and 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
-            outfile.write(' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')
-            outfile.write(' xsi:type="%s"' % self.extensiontype_)
+            outfile.write('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')
+            outfile.write('  xsi:type="%s"' % self.extensiontype_)
         pass
     def exportChildren(self, outfile, level, namespace_='incident:', name_='COATakenType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
@@ -3160,6 +3160,9 @@ class IncidentType(stix_common_binding.IncidentBaseType):
     superclass = stix_common_binding.IncidentBaseType
     def __init__(self, idref=None, id=None, URL=None, version='1.0', Title=None, Time=None, Description=None, Categories=None, Reporter=None, Responder=None, Coordinator=None, Victim=None, Affected_Assets=None, Impact_Assessment=None, Status=None, Related_Indicators=None, Related_Observables=None, Leveraged_TTPs=None, Attributed_Threat_Actors=None, Intended_Effect=None, Security_Compromise=None, Discovery_Method=None, Related_Incidents=None, COA_Requested=None, COA_Taken=None, Confidence=None, Contact=None, History=None, Handling=None):
         super(IncidentType, self).__init__(idref, id, )
+        self.xmlns          = "http://stix.mitre.org/Incident-1"
+        self.xmlns_prefix   = "incident"
+        self.xml_type       = "IncidentType"
         self.URL = _cast(None, URL)
         self.version = _cast(None, version)
         self.Title = Title
@@ -3327,6 +3330,14 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='IncidentType'):
         super(IncidentType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='IncidentType')
+        if 'xmlns' not in already_processed:
+            already_processed.add('xmlns')
+            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            outfile.write(xmlns)   
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            outfile.write(xsi_type)
         if self.URL is not None and 'URL' not in already_processed:
             already_processed.add('URL')
             outfile.write(' URL=%s' % (self.gds_format_string(quote_attrib(self.URL).encode(ExternalEncoding), input_name='URL'), ))

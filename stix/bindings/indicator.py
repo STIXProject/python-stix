@@ -778,9 +778,11 @@ class TestMechanismType(GeneratedsSuper):
         if self.id is not None and 'id' not in already_processed:
             already_processed.add('id')
             outfile.write(' id=%s' % (quote_attrib(self.id), ))
-        if self.xsi_type is not None and 'xsi:type' not in already_processed:
-            already_processed.add('xsi:type')
-            outfile.write(' xsi:type="%s"' % self.xsi_type)
+        #=======================================================================
+        # if self.xsi_type is not None and 'xsi:type' not in already_processed:
+        #    already_processed.add('xsi:type')
+        #    outfile.write('  xsi:type="%s"' % self.xsi_type)
+        #=======================================================================
     def exportChildren(self, outfile, level, namespace_='indicator:', name_='TestMechanismType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
@@ -829,10 +831,12 @@ class TestMechanismType(GeneratedsSuper):
         if value is not None and 'id' not in already_processed:
             already_processed.add('id')
             self.id = value
-        value = find_attr_value_('xsi:type', node)
-        if value is not None and 'xsi:type' not in already_processed:
-            already_processed.add('xsi:type')
-            self.xsi_type = value
+        #=======================================================================
+        # value = find_attr_value_('xsi:type', node)
+        # if value is not None and 'xsi:type' not in already_processed:
+        #    already_processed.add('xsi:type')
+        #    self.xsi_type = value
+        #=======================================================================
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Efficacy':
             obj_ = stix_common_binding.StatementType.factory()
@@ -1369,6 +1373,10 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
     superclass = stix_common_binding.IndicatorBaseType
     def __init__(self, idref=None, id=None, negate=False, version='2.0', Title=None, Type=None, Alternative_ID=None, Description=None, Valid_Time_Position=None, Observable=None, Composite_Indicator_Expression=None, Indicated_TTP=None, Kill_Chain_Phases=None, Test_Mechanisms=None, Likely_Impact=None, Suggested_COAs=None, Handling=None, Confidence=None, Sightings=None, Related_Indicators=None, Producer=None):
         super(IndicatorType, self).__init__(idref, id, )
+        self.xmlns          = "http://stix.mitre.org/Indicator-2"
+        self.xmlns_prefix   = "indicator"
+        self.xml_type       = "IndicatorType"
+        
         self.negate = _cast(bool, negate)
         self.version = _cast(None, version)
         self.Title = Title
@@ -1489,6 +1497,14 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='indicator:', name_='IndicatorType'):
         super(IndicatorType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='IndicatorType')
+        if 'xmlns' not in already_processed:
+            already_processed.add('xmlns')
+            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            outfile.write(xmlns)   
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            outfile.write(xsi_type)
         if self.negate is not None and 'negate' not in already_processed:
             already_processed.add('negate')
             outfile.write(' negate="%s"' % self.gds_format_boolean(self.negate, input_name='negate'))

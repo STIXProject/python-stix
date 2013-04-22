@@ -505,6 +505,9 @@ class StructuredCOAType(GeneratedsSuper):
     subclass = None
     superclass = None
     def __init__(self, idref=None, id=None):
+        self.xmlns          = "http://stix.mitre.org/CourseOfAction-1"
+        self.xmlns_prefix   = "coa"
+        self.xml_type       = "CourseOfActionType"
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
         pass
@@ -541,6 +544,14 @@ class StructuredCOAType(GeneratedsSuper):
         else:
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='coa:', name_='StructuredCOAType'):
+        if 'xmlns' not in already_processed:
+            already_processed.add('xmlns')
+            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            outfile.write(xmlns)   
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            outfile.write(xsi_type)
         if self.idref is not None and 'idref' not in already_processed:
             already_processed.add('idref')
             outfile.write(' idref=%s' % (quote_attrib(self.idref), ))

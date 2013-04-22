@@ -534,11 +534,11 @@ class OVAL5_10TestMechanismType(indicator_binding.TestMechanismType):
         super(OVAL5_10TestMechanismType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='OVAL5.10TestMechanismType')
         if 'xmlns' not in already_processed:
             already_processed.add('xmlns')
-            xmlns = "xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
             outfile.write(xmlns)   
         if 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
-            xsi_type = "xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
             outfile.write(xsi_type)
     def exportChildren(self, outfile, level, namespace_='', name_='OVAL5.10TestMechanismType', fromsubclass_=False, pretty_print=True):
         super(OVAL5_10TestMechanismType, self).exportChildren(outfile, level, '', name_, True, pretty_print=pretty_print)
