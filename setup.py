@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="stix",
-    version="1.0a1",
+    version="1.0.0a1",
     author="STIX Project, MITRE Corporation",
     author_email="stix@mitre.org",
     description="An API for parsing and generating STIX content.",
