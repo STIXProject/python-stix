@@ -1,16 +1,15 @@
 # python-stix
 
 A python library for parsing, manipulating, and generating STIX content. The `python-stix` library
-utilizes the STIX v1.0 Draft 2 bindings, is under heavy development and should be considered **PRE-ALPHA**.
-There are no tagged releases at this time.
+utilizes the STIX v1.0 bindings, is under heavy development and should be considered **PRE-ALPHA**.
 
 For more information about STIX, see http://stix.mitre.org.
 
 
 ## Installation
 
-The `python-stix` package depends on the `lxml` XML parsing library, the 
-`python-cybox` CybOX library, and the `python-maec` MAEC library.
+The `python-stix` package depends on the `lxml` XML parsing library and the 
+`python-cybox` CybOX library.
 
 To build `lxml` on Ubuntu, you will need the following packages from the
 Ubuntu package repository:
@@ -30,17 +29,15 @@ Note, on Windows it is recommended to download a pre-compiled distribution of `l
 For more information about installing `lxml`, see
 http://lxml.de/installation.html
 
-The CybOX and MAEC libraries can be found at their GitHub repositories:
+The CybOX library can be found at its GitHub repositories:
 CybOX: https://github.com/CybOXProject/python-cybox
-MAEC: https://github.com/MAECProject/python-maec
 
 To install, download or clone the repositories into their own folders. Once cloned or downloaded,
-the setuptools script, setup.py can be run to install CybOX and then MAEC, in that order. MAEC
-depends on CybOX, so CybOX must be installed first. To install, run the following commands from
-within the project directories:
+the setuptools script, setup.py can be run to install CybOX. To install, run the following 
+commands from within the project directories:
 
 <code>
 $ python setup.py install
 </code>
 
-For more information about CybOX and MAEC, see http://cybox.mitre.org and http://maec.mitre.org 
+For more information about CybOX, see http://cybox.mitre.org
