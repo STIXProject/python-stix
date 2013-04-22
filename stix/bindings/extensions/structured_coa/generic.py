@@ -523,6 +523,9 @@ class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
     superclass = course_of_action_binding.StructuredCOAType
     def __init__(self, idref=None, id=None, reference_location=None, Description=None, Type=None, Specification=None):
         super(GenericStructuredCOAType, self).__init__(idref, id, )
+        self.xmlns          = "http://stix.mitre.org/extensions/StructuredCOA#Generic-1"
+        self.xmlns_prefix   = "genericStructuredCOA"
+        self.xml_type       = "GenericStructuredCOAType"
         self.reference_location = _cast(None, reference_location)
         self.Description = Description
         self.Type = Type
@@ -569,6 +572,14 @@ class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='genericStructuredCOA:', name_='GenericStructuredCOAType'):
         super(GenericStructuredCOAType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='GenericStructuredCOAType')
+        if 'xmlns' not in already_processed:
+            already_processed.add('xmlns')
+            xmlns = "xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            outfile.write(xmlns)   
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = "xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            outfile.write(xsi_type)
         if self.reference_location is not None and 'reference_location' not in already_processed:
             already_processed.add('reference_location')
             outfile.write(' reference_location=%s' % (self.gds_format_string(quote_attrib(self.reference_location).encode(ExternalEncoding), input_name='reference_location'), ))

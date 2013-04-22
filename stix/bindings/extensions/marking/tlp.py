@@ -493,6 +493,9 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
     superclass = data_marking_binding.MarkingStructureType
     def __init__(self, marking_model_ref=None, marking_model_name=None, color=None):
         super(TLPMarkingStructureType, self).__init__(marking_model_ref, marking_model_name, )
+        self.xmlns          = "http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1"
+        self.xmlns_prefix   = "tlpMarking"
+        self.xml_type       = "TLPMarkingStructureType"
         self.color = _cast(None, color)
         pass
     def factory(*args_, **kwargs_):
@@ -527,6 +530,14 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='tlpMarking:', name_='TLPMarkingStructureType'):
         super(TLPMarkingStructureType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='TLPMarkingStructureType')
+        if 'xmlns' not in already_processed:
+            already_processed.add('xmlns')
+            xmlns = "xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            outfile.write(xmlns)   
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = "xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            outfile.write(xsi_type)
         if self.color is not None and 'color' not in already_processed:
             already_processed.add('color')
             outfile.write(' color=%s' % (quote_attrib(self.color), ))

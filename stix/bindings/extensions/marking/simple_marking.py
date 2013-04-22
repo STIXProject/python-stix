@@ -490,6 +490,9 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
     superclass = data_marking_binding.MarkingStructureType
     def __init__(self, marking_model_ref=None, marking_model_name=None, Statement=None):
         super(SimpleMarkingStructureType, self).__init__(marking_model_ref, marking_model_name, )
+        self.xmlns          = "http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1"
+        self.xmlns_prefix   = "simpleMarking"
+        self.xml_type       = "SimpleMarkingStructureType"
         self.Statement = Statement
     def factory(*args_, **kwargs_):
         if SimpleMarkingStructureType.subclass:
@@ -525,6 +528,14 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='simpleMarking:', name_='SimpleMarkingStructureType'):
         super(SimpleMarkingStructureType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='SimpleMarkingStructureType')
+        if 'xmlns' not in already_processed:
+            already_processed.add('xmlns')
+            xmlns = "xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            outfile.write(xmlns)   
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = "xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            outfile.write(xsi_type)
     def exportChildren(self, outfile, level, namespace_='simpleMarking:', name_='SimpleMarkingStructureType', fromsubclass_=False, pretty_print=True):
         super(SimpleMarkingStructureType, self).exportChildren(outfile, level, 'simpleMarking:', name_, True, pretty_print=pretty_print)
         if pretty_print:

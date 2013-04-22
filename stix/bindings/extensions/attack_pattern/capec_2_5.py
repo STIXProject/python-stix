@@ -491,6 +491,10 @@ class CAPEC2_5InstanceType(ttp_binding.AttackPatternType):
     def __init__(self, capec_id=None, Description=None, CAPEC=None):
         super(CAPEC2_5InstanceType, self).__init__(capec_id, Description, )
         self.CAPEC = CAPEC
+        self.xmlns          = "http://stix.mitre.org/extensions/AP#CAPEC2.5-1"
+        self.xmlns_prefix   = "capecInstance"
+        self.xml_type       = "CAPEC2.5InstanceType"
+        
     def factory(*args_, **kwargs_):
         if CAPEC2_5InstanceType.subclass:
             return CAPEC2_5InstanceType.subclass(*args_, **kwargs_)
@@ -525,6 +529,14 @@ class CAPEC2_5InstanceType(ttp_binding.AttackPatternType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='CAPEC2.5InstanceType'):
         super(CAPEC2_5InstanceType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='CAPEC2.5InstanceType')
+        if 'xmlns' not in already_processed:
+            already_processed.add('xmlns')
+            xmlns = "xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            outfile.write(xmlns)   
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = "xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            outfile.write(xsi_type)
     def exportChildren(self, outfile, level, namespace_='', name_='CAPEC2.5InstanceType', fromsubclass_=False, pretty_print=True):
         super(CAPEC2_5InstanceType, self).exportChildren(outfile, level, '', name_, True, pretty_print=pretty_print)
         if pretty_print:

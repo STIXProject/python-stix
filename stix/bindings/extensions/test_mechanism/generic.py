@@ -493,6 +493,9 @@ class GenericTestMechanismType(indicator_binding.TestMechanismType):
     superclass = indicator_binding.TestMechanismType
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, reference_location=None, Description=None, Type=None, Specification=None):
         super(GenericTestMechanismType, self).__init__(idref, id, Efficacy, Producer, )
+        self.xmlns          = "http://stix.mitre.org/extensions/TestMechanism#Generic-1"
+        self.xmlns_prefix   = "genericTM"
+        self.xml_type       = "GenericTestMechanismType"
         self.reference_location = _cast(None, reference_location)
         self.Description = Description
         self.Type = Type
@@ -539,6 +542,14 @@ class GenericTestMechanismType(indicator_binding.TestMechanismType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='genericTM:', name_='GenericTestMechanismType'):
         super(GenericTestMechanismType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='GenericTestMechanismType')
+        if 'xmlns' not in already_processed:
+            already_processed.add('xmlns')
+            xmlns = "xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            outfile.write(xmlns)   
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = "xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            outfile.write(xsi_type)
         if self.reference_location is not None and 'reference_location' not in already_processed:
             already_processed.add('reference_location')
             outfile.write(' reference_location=%s' % (self.gds_format_string(quote_attrib(self.reference_location).encode(ExternalEncoding), input_name='reference_location'), ))

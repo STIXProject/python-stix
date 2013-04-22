@@ -490,6 +490,9 @@ class OVAL5_10TestMechanismType(indicator_binding.TestMechanismType):
     superclass = indicator_binding.TestMechanismType
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, oval_definitions=None, oval_variables=None):
         super(OVAL5_10TestMechanismType, self).__init__(idref, id, Efficacy, Producer, )
+        self.xmlns          = "http://stix.mitre.org/extensions/TestMechanism#OVAL5.10-1"
+        self.xmlns_prefix   = "ovalTM"
+        self.xml_type       = "OVAL5.10TestMechanismType"
         self.oval_definitions = oval_definitions
         self.oval_variables = oval_variables
     def factory(*args_, **kwargs_):
@@ -529,6 +532,14 @@ class OVAL5_10TestMechanismType(indicator_binding.TestMechanismType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='OVAL5.10TestMechanismType'):
         super(OVAL5_10TestMechanismType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='OVAL5.10TestMechanismType')
+        if 'xmlns' not in already_processed:
+            already_processed.add('xmlns')
+            xmlns = "xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            outfile.write(xmlns)   
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = "xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            outfile.write(xsi_type)
     def exportChildren(self, outfile, level, namespace_='', name_='OVAL5.10TestMechanismType', fromsubclass_=False, pretty_print=True):
         super(OVAL5_10TestMechanismType, self).exportChildren(outfile, level, '', name_, True, pretty_print=pretty_print)
         if pretty_print:

@@ -493,6 +493,9 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
     superclass = stix_common_binding.IdentityType
     def __init__(self, idref=None, id=None, Name=None, Related_Identities=None, Specification=None, Role=None):
         super(CIQIdentity3_0InstanceType, self).__init__(idref, id, Name, Related_Identities, )
+        self.xmlns          = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
+        self.xmlns_prefix   = "ciqIdentity"
+        self.xml_type       = "CIQIdentity3.0InstanceType"
         self.Specification = Specification
         if Role is None:
             self.Role = []
@@ -537,6 +540,14 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='CIQIdentity3.0InstanceType'):
         super(CIQIdentity3_0InstanceType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='CIQIdentity3.0InstanceType')
+        if 'xmlns' not in already_processed:
+            already_processed.add('xmlns')
+            xmlns = "xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            outfile.write(xmlns)   
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = "xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            outfile.write(xsi_type)
     def exportChildren(self, outfile, level, namespace_='', name_='CIQIdentity3.0InstanceType', fromsubclass_=False, pretty_print=True):
         super(CIQIdentity3_0InstanceType, self).exportChildren(outfile, level, '', name_, True, pretty_print=pretty_print)
         if pretty_print:

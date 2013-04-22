@@ -492,6 +492,9 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
     superclass = indicator_binding.TestMechanismType
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, Version=None, Rule=None):
         super(SnortTestMechanismType, self).__init__(idref, id, Efficacy, Producer, )
+        self.xmlns          = "http://stix.mitre.org/extensions/TestMechanism#Snort-1"
+        self.xmlns_prefix   = "snortTM"
+        self.xml_type       = "SnortTestMechanismType"
         self.Version = Version
         self.Rule = Rule
     def factory(*args_, **kwargs_):
@@ -531,6 +534,14 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='snortTM:', name_='SnortTestMechanismType'):
         super(SnortTestMechanismType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='SnortTestMechanismType')
+        if 'xmlns' not in already_processed:
+            already_processed.add('xmlns')
+            xmlns = "xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            outfile.write(xmlns)   
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = "xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            outfile.write(xsi_type)
     def exportChildren(self, outfile, level, namespace_='snortTM:', name_='SnortTestMechanismType', fromsubclass_=False, pretty_print=True):
         super(SnortTestMechanismType, self).exportChildren(outfile, level, 'snortTM:', name_, True, pretty_print=pretty_print)
         if pretty_print:
