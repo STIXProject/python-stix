@@ -3881,7 +3881,7 @@ class EncodedCDATAType(GeneratedsSuper):
         if self.hasContent_():
             outfile.write('>')
             
-            if self.valueOf_ and self.valueOf_.strip()[:9] != "<![CDATA[":
+            if self.valueOf_ and not (self.valueOf_.strip().startswith("<![CDATA[")):
                 value = "<![CDATA[" + self.valueOf_ + "]]>"
             else:
                 value = self.valueOf_
