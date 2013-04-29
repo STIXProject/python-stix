@@ -14,6 +14,8 @@ import stix.bindings.indicator as indicator_binding
 import base64
 from datetime import datetime, tzinfo, timedelta
 
+XML_NS = "http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1"
+
 etree_ = None
 Verbose_import_ = False
 (   XMLParser_import_none, XMLParser_import_lxml,

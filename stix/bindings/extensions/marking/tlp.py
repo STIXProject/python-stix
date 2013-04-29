@@ -13,6 +13,8 @@ import stix.bindings.data_marking as data_marking_binding
 import base64
 from datetime import datetime, tzinfo, timedelta
 
+XML_NS = "http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1"
+
 etree_ = None
 Verbose_import_ = False
 (   XMLParser_import_none, XMLParser_import_lxml,

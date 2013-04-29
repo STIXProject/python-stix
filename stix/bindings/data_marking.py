@@ -13,6 +13,8 @@ import stix.bindings.stix_common as stix_common_binding
 import base64
 from datetime import datetime, tzinfo, timedelta
 
+XML_NS  = "http://data-marking.mitre.org/Marking-1"
+
 etree_ = None
 Verbose_import_ = False
 (   XMLParser_import_none, XMLParser_import_lxml,
