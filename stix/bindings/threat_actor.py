@@ -888,7 +888,7 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
             eol_ = ''
         if self.Title is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), 'ta:', eol_))
+            outfile.write('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
         if self.Identity is not None:
             self.Identity.export(outfile, level, nsmap, namespace_, name_='Identity', pretty_print=pretty_print)
         for Type_ in self.Type:

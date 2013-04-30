@@ -550,7 +550,7 @@ class InformationSourceType(GeneratedsSuper):
         if self.Contributors is not None:
             self.Contributors.export(outfile, level, nsmap, namespace_, name_='Contributors', pretty_print=pretty_print)
         if self.Time is not None:
-            self.Time.export(outfile, level, nsmap, namespace_, name_='Time', pretty_print=pretty_print)
+            self.Time.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Time', pretty_print=pretty_print)
         if self.Tools is not None:
             self.Tools.export(outfile, level, nsmap, namespace_, name_='Tools', pretty_print=pretty_print)
         if self.References is not None:
@@ -811,7 +811,7 @@ class ActivityType(GeneratedsSuper):
             eol_ = ''
         if self.Date_Time is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Date_Time>%s</%s:Date_Time>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Date_Time).encode(ExternalEncoding), input_name='Date_Time'), 'stixCommon:', eol_))
+            outfile.write('<%s:Date_Time>%s</%s:Date_Time>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Date_Time).encode(ExternalEncoding), input_name='Date_Time'), nsmap[namespace_], eol_))
         if self.Description is not None:
             self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='ActivityType'):
@@ -1460,7 +1460,7 @@ class IdentityType(GeneratedsSuper):
             eol_ = ''
         if self.Name is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Name>%s</%s:Name>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Name).encode(ExternalEncoding), input_name='Name'), 'stixCommon:', eol_))
+            outfile.write('<%s:Name>%s</%s:Name>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Name).encode(ExternalEncoding), input_name='Name'), nsmap[namespace_], eol_))
         if self.Related_Identities is not None:
             self.Related_Identities.export(outfile, level, nsmap, namespace_, name_='Related_Identities', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='IdentityType'):
@@ -3419,7 +3419,7 @@ class ReferencesType(GeneratedsSuper):
             eol_ = ''
         for Reference_ in self.Reference:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Reference>%s</%s:Reference>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(Reference_).encode(ExternalEncoding), input_name='Reference'), 'stixCommon:', eol_))
+            outfile.write('<%s:Reference>%s</%s:Reference>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(Reference_).encode(ExternalEncoding), input_name='Reference'), nsmap[namespace_], eol_))
     def exportLiteral(self, outfile, level, name_='ReferencesType'):
         level += 1
         already_processed = set()

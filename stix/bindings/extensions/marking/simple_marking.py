@@ -546,7 +546,7 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
             eol_ = ''
         if self.Statement is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Statement>%s</%s:Statement>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Statement).encode(ExternalEncoding), input_name='Statement'), 'simpleMarking:', eol_))
+            outfile.write('<%s:Statement>%s</%s:Statement>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Statement).encode(ExternalEncoding), input_name='Statement'), nsmap[namespace_], eol_))
     def exportLiteral(self, outfile, level, name_='SimpleMarkingStructureType'):
         level += 1
         already_processed = set()

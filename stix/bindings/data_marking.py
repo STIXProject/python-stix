@@ -758,7 +758,7 @@ class MarkingSpecificationType(GeneratedsSuper):
             eol_ = ''
         if self.Controlled_Structure is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Controlled_Structure>%s</%s:Controlled_Structure>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Controlled_Structure).encode(ExternalEncoding), input_name='Controlled_Structure'), 'marking:', eol_))
+            outfile.write('<%s:Controlled_Structure>%s</%s:Controlled_Structure>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Controlled_Structure).encode(ExternalEncoding), input_name='Controlled_Structure'), nsmap[namespace_], eol_))
         for Marking_Structure_ in self.get_Marking_Structure():
             Marking_Structure_.export(outfile, level, nsmap, namespace_, name_='Marking_Structure', pretty_print=pretty_print)
         if self.Information_Source is not None:

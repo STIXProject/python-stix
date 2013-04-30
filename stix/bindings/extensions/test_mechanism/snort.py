@@ -552,7 +552,7 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
             eol_ = ''
         if self.Version is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Version>%s</%s:Version>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Version).encode(ExternalEncoding), input_name='Version'), 'snortTM:', eol_))
+            outfile.write('<%s:Version>%s</%s:Version>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Version).encode(ExternalEncoding), input_name='Version'), nsmap[namespace_], eol_))
         if self.Rule is not None:
             self.Rule.export(outfile, level, nsmap, namespace_, name_='Rule', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='SnortTestMechanismType'):

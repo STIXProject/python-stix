@@ -539,10 +539,10 @@ class ValidTimeType(GeneratedsSuper):
             eol_ = ''
         if self.Start_Time is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Start_Time>%s</%s:Start_Time>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Start_Time, input_name='Start_Time'), 'indicator:', eol_))
+            outfile.write('<%s:Start_Time>%s</%s:Start_Time>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Start_Time, input_name='Start_Time'), nsmap[namespace_], eol_))
         if self.End_Time is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:End_Time>%s</%s:End_Time>%s' % (nsmap[namespace_], self.gds_format_datetime(self.End_Time, input_name='End_Time'), 'indicator:', eol_))
+            outfile.write('<%s:End_Time>%s</%s:End_Time>%s' % (nsmap[namespace_], self.gds_format_datetime(self.End_Time, input_name='End_Time'), nsmap[namespace_], eol_))
     def exportLiteral(self, outfile, level, name_='ValidTimeType'):
         level += 1
         already_processed = set()
@@ -1012,7 +1012,7 @@ class SightingType(GeneratedsSuper):
             self.Source.export(outfile, level, nsmap, namespace_, name_='Source', pretty_print=pretty_print)
         if self.Reference is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Reference>%s</%s:Reference>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Reference).encode(ExternalEncoding), input_name='Reference'), 'indicator:', eol_))
+            outfile.write('<%s:Reference>%s</%s:Reference>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Reference).encode(ExternalEncoding), input_name='Reference'), nsmap[namespace_], eol_))
         if self.Confidence is not None:
             self.Confidence.export(outfile, level, nsmap, namespace_, name_='Confidence', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='SightingType'):
@@ -1521,12 +1521,12 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
             eol_ = ''
         if self.Title is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), 'indicator:', eol_))
+            outfile.write('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
         if self.Type is not None:
             self.Type.export(outfile, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
         for Alternative_ID_ in self.Alternative_ID:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Alternative_ID>%s</%s:Alternative_ID>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(Alternative_ID_).encode(ExternalEncoding), input_name='Alternative_ID'), 'indicator:', eol_))
+            outfile.write('<%s:Alternative_ID>%s</%s:Alternative_ID>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(Alternative_ID_).encode(ExternalEncoding), input_name='Alternative_ID'), nsmap[namespace_], eol_))
         if self.Description is not None:
             self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         for Valid_Time_Position_ in self.Valid_Time_Position:

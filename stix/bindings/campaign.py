@@ -1154,7 +1154,7 @@ class CampaignType(stix_common_binding.CampaignBaseType):
             eol_ = ''
         if self.Title is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), 'campaign:', eol_))
+            outfile.write('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
         if self.Names is not None:
             self.Names.export(outfile, level, nsmap, namespace_, name_='Names', pretty_print=pretty_print)
         for Intended_Effect_ in self.Intended_Effect:

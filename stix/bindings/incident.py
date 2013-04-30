@@ -1477,10 +1477,10 @@ class COATimeType(GeneratedsSuper):
             eol_ = ''
         if self.Start is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Start>%s</%s:Start>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Start, input_name='Start'), 'incident:', eol_))
+            outfile.write('<%s:Start>%s</%s:Start>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Start, input_name='Start'), nsmap[namespace_], eol_))
         if self.End is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:End>%s</%s:End>%s' % (nsmap[namespace_], self.gds_format_datetime(self.End, input_name='End'), 'incident:', eol_))
+            outfile.write('<%s:End>%s</%s:End>%s' % (nsmap[namespace_], self.gds_format_datetime(self.End, input_name='End'), nsmap[namespace_], eol_))
     def exportLiteral(self, outfile, level, name_='COATimeType'):
         level += 1
         already_processed = set()
@@ -2325,31 +2325,31 @@ class TimeType(GeneratedsSuper):
             eol_ = ''
         if self.First_Malicious_Action is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:First_Malicious_Action>%s</%s:First_Malicious_Action>%s' % (nsmap[namespace_], self.gds_format_datetime(self.First_Malicious_Action, input_name='First_Malicious_Action'), 'incident:', eol_))
+            outfile.write('<%s:First_Malicious_Action>%s</%s:First_Malicious_Action>%s' % (nsmap[namespace_], self.gds_format_datetime(self.First_Malicious_Action, input_name='First_Malicious_Action'), nsmap[namespace_], eol_))
         if self.Initial_Compromise is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Initial_Compromise>%s</%s:Initial_Compromise>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Initial_Compromise, input_name='Initial_Compromise'), 'incident:', eol_))
+            outfile.write('<%s:Initial_Compromise>%s</%s:Initial_Compromise>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Initial_Compromise, input_name='Initial_Compromise'), nsmap[namespace_], eol_))
         if self.First_Data_Exfiltration is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:First_Data_Exfiltration>%s</%s:First_Data_Exfiltration>%s' % (nsmap[namespace_], self.gds_format_datetime(self.First_Data_Exfiltration, input_name='First_Data_Exfiltration'), 'incident:', eol_))
+            outfile.write('<%s:First_Data_Exfiltration>%s</%s:First_Data_Exfiltration>%s' % (nsmap[namespace_], self.gds_format_datetime(self.First_Data_Exfiltration, input_name='First_Data_Exfiltration'), nsmap[namespace_], eol_))
         if self.Incident_Discovery is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Incident_Discovery>%s</%s:Incident_Discovery>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Incident_Discovery, input_name='Incident_Discovery'), 'incident:', eol_))
+            outfile.write('<%s:Incident_Discovery>%s</%s:Incident_Discovery>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Incident_Discovery, input_name='Incident_Discovery'), nsmap[namespace_], eol_))
         if self.Incident_Opened is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Incident_Opened>%s</%s:Incident_Opened>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Incident_Opened, input_name='Incident_Opened'), 'incident:', eol_))
+            outfile.write('<%s:Incident_Opened>%s</%s:Incident_Opened>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Incident_Opened, input_name='Incident_Opened'), nsmap[namespace_], eol_))
         if self.Containment_Achieved is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Containment_Achieved>%s</%s:Containment_Achieved>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Containment_Achieved, input_name='Containment_Achieved'), 'incident:', eol_))
+            outfile.write('<%s:Containment_Achieved>%s</%s:Containment_Achieved>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Containment_Achieved, input_name='Containment_Achieved'), nsmap[namespace_], eol_))
         if self.Restoration_Achieved is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Restoration_Achieved>%s</%s:Restoration_Achieved>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Restoration_Achieved, input_name='Restoration_Achieved'), 'incident:', eol_))
+            outfile.write('<%s:Restoration_Achieved>%s</%s:Restoration_Achieved>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Restoration_Achieved, input_name='Restoration_Achieved'), nsmap[namespace_], eol_))
         if self.Incident_Reported is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Incident_Reported>%s</%s:Incident_Reported>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Incident_Reported, input_name='Incident_Reported'), 'incident:', eol_))
+            outfile.write('<%s:Incident_Reported>%s</%s:Incident_Reported>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Incident_Reported, input_name='Incident_Reported'), nsmap[namespace_], eol_))
         if self.Incident_Closed is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Incident_Closed>%s</%s:Incident_Closed>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Incident_Closed, input_name='Incident_Closed'), 'incident:', eol_))
+            outfile.write('<%s:Incident_Closed>%s</%s:Incident_Closed>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Incident_Closed, input_name='Incident_Closed'), nsmap[namespace_], eol_))
     def exportLiteral(self, outfile, level, name_='TimeType'):
         level += 1
         already_processed = set()
@@ -3354,7 +3354,7 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             eol_ = ''
         if self.Title is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), 'incident:', eol_))
+            outfile.write('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
         if self.Time is not None:
             self.Time.export(outfile, level, nsmap, namespace_, name_='Time', pretty_print=pretty_print)
         if self.Description is not None:
