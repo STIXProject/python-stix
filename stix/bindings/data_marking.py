@@ -510,31 +510,31 @@ class MarkingType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='marking:', name_='MarkingType', namespacedef_='', pretty_print=True):
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='MarkingType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         showIndent(outfile, level, pretty_print)
-        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
         self.exportAttributes(outfile, level, already_processed, namespace_, name_='MarkingType')
         if self.hasContent_():
             outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(outfile, level, pretty_print)
-            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='marking:', name_='MarkingType'):
         pass
-    def exportChildren(self, outfile, level, namespace_='marking:', name_='MarkingType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='MarkingType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         for Marking_ in self.Marking:
-            Marking_.export(outfile, level, 'marking:', name_='Marking', pretty_print=pretty_print)
+            Marking_.export(outfile, level, nsmap, namespace_, name_='Marking', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='MarkingType'):
         level += 1
         already_processed = set()
@@ -620,19 +620,19 @@ class MarkingStructureType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='marking:', name_='MarkingStructureType', namespacedef_='', pretty_print=True):
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='MarkingStructureType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         showIndent(outfile, level, pretty_print)
-        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
         self.exportAttributes(outfile, level, already_processed, namespace_, name_='MarkingStructureType')
         if self.hasContent_():
             outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
-            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='marking:', name_='MarkingStructureType'):
@@ -642,7 +642,7 @@ class MarkingStructureType(GeneratedsSuper):
         if self.marking_model_name is not None and 'marking_model_name' not in already_processed:
             already_processed.add('marking_model_name')
             outfile.write(' marking_model_name=%s' % (quote_attrib(self.marking_model_name), ))
-    def exportChildren(self, outfile, level, namespace_='marking:', name_='MarkingStructureType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='MarkingStructureType', fromsubclass_=False, pretty_print=True):
         pass
     def exportLiteral(self, outfile, level, name_='MarkingStructureType'):
         level += 1
@@ -725,20 +725,20 @@ class MarkingSpecificationType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='marking:', name_='MarkingSpecificationType', namespacedef_='', pretty_print=True):
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='MarkingSpecificationType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         showIndent(outfile, level, pretty_print)
-        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
         self.exportAttributes(outfile, level, already_processed, namespace_, name_='MarkingSpecificationType')
         if self.hasContent_():
             outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(outfile, level, pretty_print)
-            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='marking:', name_='MarkingSpecificationType'):
@@ -751,18 +751,18 @@ class MarkingSpecificationType(GeneratedsSuper):
         if self.version is not None and 'version' not in already_processed:
             already_processed.add('version')
             outfile.write(' version=%s' % (self.gds_format_string(quote_attrib(self.version).encode(ExternalEncoding), input_name='version'), ))
-    def exportChildren(self, outfile, level, namespace_='marking:', name_='MarkingSpecificationType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='MarkingSpecificationType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         if self.Controlled_Structure is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%sControlled_Structure>%s</%sControlled_Structure>%s' % ('marking:', self.gds_format_string(quote_xml(self.Controlled_Structure).encode(ExternalEncoding), input_name='Controlled_Structure'), 'marking:', eol_))
+            outfile.write('<%s:Controlled_Structure>%s</%s:Controlled_Structure>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Controlled_Structure).encode(ExternalEncoding), input_name='Controlled_Structure'), 'marking:', eol_))
         for Marking_Structure_ in self.get_Marking_Structure():
-            Marking_Structure_.export(outfile, level, 'marking:', name_='Marking_Structure', pretty_print=pretty_print)
+            Marking_Structure_.export(outfile, level, nsmap, namespace_, name_='Marking_Structure', pretty_print=pretty_print)
         if self.Information_Source is not None:
-            self.Information_Source.export(outfile, level, 'marking:', name_='Information_Source', pretty_print=pretty_print)
+            self.Information_Source.export(outfile, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='MarkingSpecificationType'):
         level += 1
         already_processed = set()

@@ -518,20 +518,20 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='snortTM:', name_='SnortTestMechanismType', namespacedef_='', pretty_print=True):
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='SnortTestMechanismType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         showIndent(outfile, level, pretty_print)
-        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
         self.exportAttributes(outfile, level, already_processed, namespace_, name_='SnortTestMechanismType')
         if self.hasContent_():
             outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(outfile, level, pretty_print)
-            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='snortTM:', name_='SnortTestMechanismType'):
@@ -544,7 +544,7 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
             already_processed.add('xsi:type')
             xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
             outfile.write(xsi_type)
-    def exportChildren(self, outfile, level, namespace_='snortTM:', name_='SnortTestMechanismType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='SnortTestMechanismType', fromsubclass_=False, pretty_print=True):
         super(SnortTestMechanismType, self).exportChildren(outfile, level, 'snortTM:', name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
@@ -552,9 +552,9 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
             eol_ = ''
         if self.Version is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%sVersion>%s</%sVersion>%s' % ('snortTM:', self.gds_format_string(quote_xml(self.Version).encode(ExternalEncoding), input_name='Version'), 'snortTM:', eol_))
+            outfile.write('<%s:Version>%s</%s:Version>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Version).encode(ExternalEncoding), input_name='Version'), 'snortTM:', eol_))
         if self.Rule is not None:
-            self.Rule.export(outfile, level, 'snortTM:', name_='Rule', pretty_print=pretty_print)
+            self.Rule.export(outfile, level, nsmap, namespace_, name_='Rule', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='SnortTestMechanismType'):
         level += 1
         already_processed = set()

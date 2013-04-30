@@ -515,19 +515,19 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='tlpMarking:', name_='TLPMarkingStructureType', namespacedef_='', pretty_print=True):
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='TLPMarkingStructureType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         showIndent(outfile, level, pretty_print)
-        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
         self.exportAttributes(outfile, level, already_processed, namespace_, name_='TLPMarkingStructureType')
         if self.hasContent_():
             outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
-            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='tlpMarking:', name_='TLPMarkingStructureType'):
@@ -543,7 +543,7 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
         if self.color is not None and 'color' not in already_processed:
             already_processed.add('color')
             outfile.write(' color=%s' % (quote_attrib(self.color), ))
-    def exportChildren(self, outfile, level, namespace_='tlpMarking:', name_='TLPMarkingStructureType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='TLPMarkingStructureType', fromsubclass_=False, pretty_print=True):
         super(TLPMarkingStructureType, self).exportChildren(outfile, level, 'tlpMarking:', name_, True, pretty_print=pretty_print)
         pass
     def exportLiteral(self, outfile, level, name_='TLPMarkingStructureType'):

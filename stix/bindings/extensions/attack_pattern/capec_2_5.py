@@ -513,20 +513,20 @@ class CAPEC2_5InstanceType(ttp_binding.AttackPatternType):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='', name_='CAPEC2.5InstanceType', namespacedef_='', pretty_print=True):
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='CAPEC2.5InstanceType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         showIndent(outfile, level, pretty_print)
-        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
         self.exportAttributes(outfile, level, already_processed, namespace_, name_='CAPEC2.5InstanceType')
         if self.hasContent_():
             outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(outfile, level, pretty_print)
-            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='CAPEC2.5InstanceType'):
@@ -539,7 +539,7 @@ class CAPEC2_5InstanceType(ttp_binding.AttackPatternType):
             already_processed.add('xsi:type')
             xsi_type = "  xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
             outfile.write(xsi_type)
-    def exportChildren(self, outfile, level, namespace_='', name_='CAPEC2.5InstanceType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='CAPEC2.5InstanceType', fromsubclass_=False, pretty_print=True):
         super(CAPEC2_5InstanceType, self).exportChildren(outfile, level, '', name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
@@ -548,7 +548,7 @@ class CAPEC2_5InstanceType(ttp_binding.AttackPatternType):
         if self.CAPEC is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write(etree_.tostring(self.CAPEC, pretty_print=pretty_print))
-            #self.CAPEC.export(outfile, level, '', name_='CAPEC', pretty_print=pretty_print)
+            #self.CAPEC.export(outfile, level, nsmap, namespace_, name_='CAPEC', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='CAPEC2.5InstanceType'):
         level += 1
         already_processed = set()

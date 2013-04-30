@@ -556,20 +556,20 @@ class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
             return True
         else:
             return False
-    def export(self, outfile, level, namespace_='genericStructuredCOA:', name_='GenericStructuredCOAType', namespacedef_='', pretty_print=True):
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='GenericStructuredCOAType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         showIndent(outfile, level, pretty_print)
-        outfile.write('<%s%s%s' % (namespace_, name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
         self.exportAttributes(outfile, level, already_processed, namespace_, name_='GenericStructuredCOAType')
         if self.hasContent_():
             outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, namespace_, name_, pretty_print=pretty_print)
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             showIndent(outfile, level, pretty_print)
-            outfile.write('</%s%s>%s' % (namespace_, name_, eol_))
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='genericStructuredCOA:', name_='GenericStructuredCOAType'):
@@ -585,18 +585,18 @@ class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
         if self.reference_location is not None and 'reference_location' not in already_processed:
             already_processed.add('reference_location')
             outfile.write(' reference_location=%s' % (self.gds_format_string(quote_attrib(self.reference_location).encode(ExternalEncoding), input_name='reference_location'), ))
-    def exportChildren(self, outfile, level, namespace_='genericStructuredCOA:', name_='GenericStructuredCOAType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='GenericStructuredCOAType', fromsubclass_=False, pretty_print=True):
         super(GenericStructuredCOAType, self).exportChildren(outfile, level, 'genericStructuredCOA:', name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         if self.Description is not None:
-            self.Description.export(outfile, level, 'genericStructuredCOA:', name_='Description', pretty_print=pretty_print)
+            self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Type is not None:
-            self.Type.export(outfile, level, 'genericStructuredCOA:', name_='Type', pretty_print=pretty_print)
+            self.Type.export(outfile, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
         if self.Specification is not None:
-            self.Specification.export(outfile, level, 'genericStructuredCOA:', name_='Specification', pretty_print=pretty_print)
+            self.Specification.export(outfile, level, nsmap, namespace_, name_='Specification', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='GenericStructuredCOAType'):
         level += 1
         already_processed = set()
