@@ -2333,7 +2333,22 @@ class RelatedTTPType(GenericRelationshipType):
         super(RelatedTTPType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'TTP':
-            obj_ = TTPBaseType.factory()
+            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
+            if type_name_ is None:
+                type_name_ = child_.attrib.get('type')
+            if type_name_ is not None:
+                type_names_ = type_name_.split(':')
+                if len(type_names_) == 1:
+                    type_name_ = type_names_[0]
+                else:
+                    type_name_ = type_names_[1]
+            
+                if type_name_ == "TTPType":
+                    import stix.bindings.ttp as ttp_binding
+                    obj_ = ttp_binding.TTPType.factory()
+            else:
+                obj_ = TTPBaseType.factory() # IdentityType is not abstract
+            
             obj_.build(child_)
             self.set_TTP(obj_)
         super(RelatedTTPType, self).buildChildren(child_, node, nodeName_, True)

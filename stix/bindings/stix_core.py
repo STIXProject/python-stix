@@ -1511,7 +1511,10 @@ def get_root_tag(node):
         rootClass = globals().get(tag)
     return tag, rootClass
 
-def parse(inFileName):
+def parse(inFileName, nsmap=None):
+    if not nsmap:
+        nsmap = DEFAULT_XML_NS_MAP
+        
     doc = parsexml_(inFileName)
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
@@ -1523,7 +1526,7 @@ def parse(inFileName):
     # Enable Python to collect the space used by the DOM.
     doc = None
     sys.stdout.write('<?xml version="1.0" ?>\n')
-    rootObj.export(sys.stdout, 0, DEFAULT_XML_NS_MAP, name_=rootTag,
+    rootObj.export(sys.stdout, 0, nsmap, name_=rootTag,
         namespacedef_='',
         pretty_print=True)
     return rootObj
