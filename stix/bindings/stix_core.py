@@ -606,8 +606,9 @@ class STIXType(GeneratedsSuper):
         if self.version is not None and 'version' not in already_processed:
             already_processed.add('version')
             outfile.write(' version=%s' % (quote_attrib(self.version), ))
-            
-        for prefix, ns in nsmap.iteritems():
+        
+        prefix_map = {v:k for k,v in nsmap.iteritems()}
+        for prefix, ns in prefix_map.iteritems():
             outfile.write(' xmlns:%s="%s"' % (prefix, ns) )
             
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='STIXType', fromsubclass_=False, pretty_print=True):
