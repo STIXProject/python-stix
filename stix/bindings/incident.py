@@ -1175,7 +1175,24 @@ class COATakenType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Contributors(obj_)
         elif nodeName_ == 'Course_Of_Action':
-            obj_ = stix_common_binding.CourseOfActionBaseType.factory()
+            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
+            if type_name_ is None:
+                type_name_ = child_.attrib.get('type')
+            if type_name_ is not None:
+                type_names_ = type_name_.split(':')
+                if len(type_names_) == 1:
+                    type_name_ = type_names_[0]
+                else:
+                    type_name_ = type_names_[1]
+            
+                if type_name_ == "CourseOfActionType":
+                    import stix.bindings.course_of_action as coa_binding
+                    obj_ = coa_binding.CourseOfActionType.factory()
+                else:
+                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
+            else:
+                obj_ = stix_common_binding.CourseOfActionBaseType.factory() # not abstract
+           
             obj_.build(child_)
             self.set_Course_Of_Action(obj_)
 # end class COATakenType
