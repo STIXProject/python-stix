@@ -259,7 +259,7 @@ except ImportError, exp:
 # Globals
 #
 
-ExternalEncoding = 'ascii'
+ExternalEncoding = 'utf-8'
 Tag_pattern_ = re_.compile(r'({.*})?(.*)')
 String_cleanup_pat_ = re_.compile(r"[\n\r\s]+")
 Namespace_extract_pat_ = re_.compile(r'{(.*)}(.*)')
@@ -3918,7 +3918,7 @@ class StructuredTextType(GeneratedsSuper):
         self.exportAttributes(outfile, level, already_processed, namespace_, name_='StructuredTextType')
         if self.hasContent_():
             outfile.write('>')
-            outfile.write(str(self.valueOf_).encode(ExternalEncoding))
+            outfile.write(unicode(self.valueOf_).encode(ExternalEncoding))
             self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
