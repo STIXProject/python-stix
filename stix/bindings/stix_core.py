@@ -40,7 +40,8 @@ DEFAULT_XML_NS_MAP = {'http://stix.mitre.org/stix-1' : 'stix',
                       'http://stix.mitre.org/extensions/TestMechanism#OVAL5.10-1' : 'ovalTM',
                       'http://stix.mitre.org/extensions/TestMechanism#Snort-1' : 'snortTM',
                       'http://stix.mitre.org/extensions/TestMechanism#YARA-1' : 'yaraTM',
-                      'http://stix.mitre.org/extensions/Vulnerability#CVRF-1' : 'cvrfVuln'}
+                      'http://stix.mitre.org/extensions/Vulnerability#CVRF-1' : 'cvrfVuln',
+                      'http://www.w3.org/2001/XMLSchema-instance' : 'xsi'}
 
 
 etree_ = None
