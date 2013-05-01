@@ -1,3 +1,6 @@
+# Copyright (c) 2013, The MITRE Corporation. All rights reserved.
+# See LICENSE.txt for complete terms.
+
 import stix
 import stix.bindings.stix_common_0_2 as stix_common_binding
 import stix.bindings.stix_core_1_0 as stix_core_binding
