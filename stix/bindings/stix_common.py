@@ -1780,7 +1780,24 @@ class RelatedCampaignType(GenericRelationshipType):
         super(RelatedCampaignType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Campaign':
-            obj_ = CampaignBaseType.factory()
+            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
+            if type_name_ is None:
+                type_name_ = child_.attrib.get('type')
+            if type_name_ is not None:
+                type_names_ = type_name_.split(':')
+                if len(type_names_) == 1:
+                    type_name_ = type_names_[0]
+                else:
+                    type_name_ = type_names_[1]
+            
+                if type_name_ == "CampaignType":
+                    import stix.bindings.campaign as campaign_binding
+                    obj_ = campaign_binding.CampaignType.factory()
+                else:
+                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
+            else:
+                obj_ = CampaignBaseType.factory() # not abstract
+                
             obj_.build(child_)
             self.set_Campaign(obj_)
         super(RelatedCampaignType, self).buildChildren(child_, node, nodeName_, True)
@@ -1859,7 +1876,24 @@ class RelatedCourseOfActionType(GenericRelationshipType):
         super(RelatedCourseOfActionType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Course_Of_Action':
-            obj_ = CourseOfActionBaseType.factory()
+            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
+            if type_name_ is None:
+                type_name_ = child_.attrib.get('type')
+            if type_name_ is not None:
+                type_names_ = type_name_.split(':')
+                if len(type_names_) == 1:
+                    type_name_ = type_names_[0]
+                else:
+                    type_name_ = type_names_[1]
+            
+                if type_name_ == "CourseOfActionType":
+                    import stix.bindings.course_of_action as coa_binding
+                    obj_ = coa_binding.CourseOfActionType.factory()
+                else:
+                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
+            else:
+                obj_ = CourseOfActionBaseType.factory() # not abstract
+           
             obj_.build(child_)
             self.set_Course_Of_Action(obj_)
         super(RelatedCourseOfActionType, self).buildChildren(child_, node, nodeName_, True)
@@ -1938,7 +1972,24 @@ class RelatedExploitTargetType(GenericRelationshipType):
         super(RelatedExploitTargetType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Exploit_Target':
-            obj_ = ExploitTargetBaseType.factory()
+            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
+            if type_name_ is None:
+                type_name_ = child_.attrib.get('type')
+            if type_name_ is not None:
+                type_names_ = type_name_.split(':')
+                if len(type_names_) == 1:
+                    type_name_ = type_names_[0]
+                else:
+                    type_name_ = type_names_[1]
+            
+                if type_name_ == "ExploitTargetType":
+                    import stix.bindings.exploit_target as et_binding
+                    obj_ = et_binding.ExploitTargetType.factory()
+                else:
+                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
+            else:
+                obj_ = ExploitTargetBaseType.factory() # not abstract
+            
             obj_.build(child_)
             self.set_Exploit_Target(obj_)
         super(RelatedExploitTargetType, self).buildChildren(child_, node, nodeName_, True)
@@ -2017,7 +2068,24 @@ class RelatedIncidentType(GenericRelationshipType):
         super(RelatedIncidentType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Incident':
-            obj_ = IncidentBaseType.factory()
+            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
+            if type_name_ is None:
+                type_name_ = child_.attrib.get('type')
+            if type_name_ is not None:
+                type_names_ = type_name_.split(':')
+                if len(type_names_) == 1:
+                    type_name_ = type_names_[0]
+                else:
+                    type_name_ = type_names_[1]
+            
+                if type_name_ == "IncidentType":
+                    import stix.bindings.incident as incident_binding
+                    obj_ = incident_binding.IncidentType.factory()
+                else:
+                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
+            else:
+                obj_ = IncidentBaseType.factory() # not abstract
+            
             obj_.build(child_)
             self.set_Incident(obj_)
         super(RelatedIncidentType, self).buildChildren(child_, node, nodeName_, True)
@@ -2096,7 +2164,24 @@ class RelatedIndicatorType(GenericRelationshipType):
         super(RelatedIndicatorType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Indicator':
-            obj_ = IndicatorBaseType.factory()
+            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
+            if type_name_ is None:
+                type_name_ = child_.attrib.get('type')
+            if type_name_ is not None:
+                type_names_ = type_name_.split(':')
+                if len(type_names_) == 1:
+                    type_name_ = type_names_[0]
+                else:
+                    type_name_ = type_names_[1]
+            
+                if type_name_ == "IndicatorType":
+                    import stix.bindings.indicator as indicator_binding
+                    obj_ = indicator_binding.IndicatorType.factory()
+                else:
+                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
+            else:
+                obj_ = IndicatorBaseType.factory() # not abstract
+                
             obj_.build(child_)
             self.set_Indicator(obj_)
         super(RelatedIndicatorType, self).buildChildren(child_, node, nodeName_, True)
@@ -2254,7 +2339,24 @@ class RelatedThreatActorType(GenericRelationshipType):
         super(RelatedThreatActorType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Threat_Actor':
-            obj_ = ThreatActorBaseType.factory()
+            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
+            if type_name_ is None:
+                type_name_ = child_.attrib.get('type')
+            if type_name_ is not None:
+                type_names_ = type_name_.split(':')
+                if len(type_names_) == 1:
+                    type_name_ = type_names_[0]
+                else:
+                    type_name_ = type_names_[1]
+            
+                if type_name_ == "ThreatActorType":
+                    import stix.bindings.threat_actor as ta_binding
+                    obj_ = ta_binding.ThreatActorType.factory()
+                else:
+                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
+            else:
+                obj_ = ThreatActorBaseType.factory() # not abstract
+            
             obj_.build(child_)
             self.set_Threat_Actor(obj_)
         super(RelatedThreatActorType, self).buildChildren(child_, node, nodeName_, True)
@@ -2346,8 +2448,10 @@ class RelatedTTPType(GenericRelationshipType):
                 if type_name_ == "TTPType":
                     import stix.bindings.ttp as ttp_binding
                     obj_ = ttp_binding.TTPType.factory()
+                else:
+                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
-                obj_ = TTPBaseType.factory() # IdentityType is not abstract
+                obj_ = TTPBaseType.factory() # not abstract
             
             obj_.build(child_)
             self.set_TTP(obj_)
