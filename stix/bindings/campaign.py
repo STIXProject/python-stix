@@ -260,7 +260,7 @@ except ImportError, exp:
 # Globals
 #
 
-ExternalEncoding = 'ascii'
+ExternalEncoding = 'utf-8'
 Tag_pattern_ = re_.compile(r'({.*})?(.*)')
 String_cleanup_pat_ = re_.compile(r"[\n\r\s]+")
 Namespace_extract_pat_ = re_.compile(r'{(.*)}(.*)')
@@ -617,7 +617,7 @@ class AssociatedCampaignsType(stix_common_binding.GenericRelationshipListType):
     def exportAttributes(self, outfile, level, already_processed, namespace_='campaign:', name_='AssociatedCampaignsType'):
         super(AssociatedCampaignsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='AssociatedCampaignsType')
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='AssociatedCampaignsType', fromsubclass_=False, pretty_print=True):
-        super(AssociatedCampaignsType, self).exportChildren(outfile, level, 'campaign:', name_, True, pretty_print=pretty_print)
+        super(AssociatedCampaignsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
@@ -707,7 +707,7 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
     def exportAttributes(self, outfile, level, already_processed, namespace_='campaign:', name_='RelatedIndicatorsType'):
         super(RelatedIndicatorsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedIndicatorsType')
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedIndicatorsType', fromsubclass_=False, pretty_print=True):
-        super(RelatedIndicatorsType, self).exportChildren(outfile, level, 'campaign:', name_, True, pretty_print=pretty_print)
+        super(RelatedIndicatorsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
@@ -797,7 +797,7 @@ class RelatedIncidentsType(stix_common_binding.GenericRelationshipListType):
     def exportAttributes(self, outfile, level, already_processed, namespace_='campaign:', name_='RelatedIncidentsType'):
         super(RelatedIncidentsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedIncidentsType')
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedIncidentsType', fromsubclass_=False, pretty_print=True):
-        super(RelatedIncidentsType, self).exportChildren(outfile, level, 'campaign:', name_, True, pretty_print=pretty_print)
+        super(RelatedIncidentsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
@@ -887,7 +887,7 @@ class RelatedTTPsType(stix_common_binding.GenericRelationshipListType):
     def exportAttributes(self, outfile, level, already_processed, namespace_='campaign:', name_='RelatedTTPsType'):
         super(RelatedTTPsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedTTPsType')
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedTTPsType', fromsubclass_=False, pretty_print=True):
-        super(RelatedTTPsType, self).exportChildren(outfile, level, 'campaign:', name_, True, pretty_print=pretty_print)
+        super(RelatedTTPsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
@@ -979,7 +979,7 @@ class AttributionType(stix_common_binding.GenericRelationshipListType):
     def exportAttributes(self, outfile, level, already_processed, namespace_='campaign:', name_='AttributionType'):
         super(AttributionType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='AttributionType')
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='AttributionType', fromsubclass_=False, pretty_print=True):
-        super(AttributionType, self).exportChildren(outfile, level, 'campaign:', name_, True, pretty_print=pretty_print)
+        super(AttributionType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
@@ -1147,7 +1147,7 @@ class CampaignType(stix_common_binding.CampaignBaseType):
             already_processed.add('version')
             outfile.write(' version=%s' % (quote_attrib(self.version), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='CampaignType', fromsubclass_=False, pretty_print=True):
-        super(CampaignType, self).exportChildren(outfile, level, 'campaign:', name_, True, pretty_print=pretty_print)
+        super(CampaignType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:

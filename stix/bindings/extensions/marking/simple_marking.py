@@ -257,7 +257,7 @@ except ImportError, exp:
 # Globals
 #
 
-ExternalEncoding = 'ascii'
+ExternalEncoding = 'utf-8'
 Tag_pattern_ = re_.compile(r'({.*})?(.*)')
 String_cleanup_pat_ = re_.compile(r"[\n\r\s]+")
 Namespace_extract_pat_ = re_.compile(r'{(.*)}(.*)')
@@ -539,7 +539,7 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
             xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
             outfile.write(xsi_type)
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='SimpleMarkingStructureType', fromsubclass_=False, pretty_print=True):
-        super(SimpleMarkingStructureType, self).exportChildren(outfile, level, 'simpleMarking:', name_, True, pretty_print=pretty_print)
+        super(SimpleMarkingStructureType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:

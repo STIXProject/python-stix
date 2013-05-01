@@ -258,7 +258,7 @@ except ImportError, exp:
 # Globals
 #
 
-ExternalEncoding = 'ascii'
+ExternalEncoding = 'utf-8'
 Tag_pattern_ = re_.compile(r'({.*})?(.*)')
 String_cleanup_pat_ = re_.compile(r"[\n\r\s]+")
 Namespace_extract_pat_ = re_.compile(r'{(.*)}(.*)')
@@ -775,7 +775,7 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             already_processed.add('version')
             outfile.write(' version=%s' % (quote_attrib(self.version), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='CourseOfActionType', fromsubclass_=False, pretty_print=True):
-        super(CourseOfActionType, self).exportChildren(outfile, level, 'coa:', name_, True, pretty_print=pretty_print)
+        super(CourseOfActionType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:

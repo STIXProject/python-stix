@@ -261,7 +261,7 @@ except ImportError, exp:
 # Globals
 #
 
-ExternalEncoding = 'ascii'
+ExternalEncoding = 'utf-8'
 Tag_pattern_ = re_.compile(r'({.*})?(.*)')
 String_cleanup_pat_ = re_.compile(r"[\n\r\s]+")
 Namespace_extract_pat_ = re_.compile(r'{(.*)}(.*)')
@@ -533,7 +533,7 @@ class ObservedTTPsType(stix_common_binding.GenericRelationshipListType):
     def exportAttributes(self, outfile, level, already_processed, namespace_='ta:', name_='ObservedTTPsType'):
         super(ObservedTTPsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='ObservedTTPsType')
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ObservedTTPsType', fromsubclass_=False, pretty_print=True):
-        super(ObservedTTPsType, self).exportChildren(outfile, level, 'ta:', name_, True, pretty_print=pretty_print)
+        super(ObservedTTPsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
@@ -623,7 +623,7 @@ class AssociatedCampaignsType(stix_common_binding.GenericRelationshipListType):
     def exportAttributes(self, outfile, level, already_processed, namespace_='ta:', name_='AssociatedCampaignsType'):
         super(AssociatedCampaignsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='AssociatedCampaignsType')
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='AssociatedCampaignsType', fromsubclass_=False, pretty_print=True):
-        super(AssociatedCampaignsType, self).exportChildren(outfile, level, 'ta:', name_, True, pretty_print=pretty_print)
+        super(AssociatedCampaignsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
@@ -713,7 +713,7 @@ class AssociatedActorsType(stix_common_binding.GenericRelationshipListType):
     def exportAttributes(self, outfile, level, already_processed, namespace_='ta:', name_='AssociatedActorsType'):
         super(AssociatedActorsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='AssociatedActorsType')
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='AssociatedActorsType', fromsubclass_=False, pretty_print=True):
-        super(AssociatedActorsType, self).exportChildren(outfile, level, 'ta:', name_, True, pretty_print=pretty_print)
+        super(AssociatedActorsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
@@ -881,7 +881,7 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
             already_processed.add('version')
             outfile.write(' version=%s' % (quote_attrib(self.version), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ThreatActorType', fromsubclass_=False, pretty_print=True):
-        super(ThreatActorType, self).exportChildren(outfile, level, 'ta:', name_, True, pretty_print=pretty_print)
+        super(ThreatActorType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:

@@ -262,7 +262,7 @@ except ImportError, exp:
 # Globals
 #
 
-ExternalEncoding = 'ascii'
+ExternalEncoding = 'utf-8'
 Tag_pattern_ = re_.compile(r'({.*})?(.*)')
 String_cleanup_pat_ = re_.compile(r"[\n\r\s]+")
 Namespace_extract_pat_ = re_.compile(r'{(.*)}(.*)')
@@ -1227,7 +1227,7 @@ class SuggestedCOAsType(stix_common_binding.GenericRelationshipListType):
     def exportAttributes(self, outfile, level, already_processed, namespace_='indicator:', name_='SuggestedCOAsType'):
         super(SuggestedCOAsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='SuggestedCOAsType')
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='SuggestedCOAsType', fromsubclass_=False, pretty_print=True):
-        super(SuggestedCOAsType, self).exportChildren(outfile, level, 'indicator:', name_, True, pretty_print=pretty_print)
+        super(SuggestedCOAsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
@@ -1317,7 +1317,7 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
     def exportAttributes(self, outfile, level, already_processed, namespace_='indicator:', name_='RelatedIndicatorsType'):
         super(RelatedIndicatorsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedIndicatorsType')
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedIndicatorsType', fromsubclass_=False, pretty_print=True):
-        super(RelatedIndicatorsType, self).exportChildren(outfile, level, 'indicator:', name_, True, pretty_print=pretty_print)
+        super(RelatedIndicatorsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:

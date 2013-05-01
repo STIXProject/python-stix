@@ -261,7 +261,7 @@ except ImportError, exp:
 # Globals
 #
 
-ExternalEncoding = 'ascii'
+ExternalEncoding = 'utf-8'
 Tag_pattern_ = re_.compile(r'({.*})?(.*)')
 String_cleanup_pat_ = re_.compile(r"[\n\r\s]+")
 Namespace_extract_pat_ = re_.compile(r'{(.*)}(.*)')
@@ -861,7 +861,7 @@ class InfrastructureType(GeneratedsSuper):
         if self.Description is not None:
             self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Observable_Characterization is not None:
-            self.Observable_Characterization.export(outfile, level, nsmap, namespace_, name_='Observable_Characterization', pretty_print=pretty_print)
+            self.Observable_Characterization.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Observable_Characterization', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='InfrastructureType'):
         level += 1
         already_processed = set()
@@ -962,7 +962,7 @@ class ToolsType(GeneratedsSuper):
         else:
             eol_ = ''
         for Tool_ in self.Tool:
-            Tool_.export(outfile, level, nsmap, namespace_, name_='Tool', pretty_print=pretty_print)
+            Tool_.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Tool', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='ToolsType'):
         level += 1
         already_processed = set()
@@ -1659,7 +1659,7 @@ class RelatedTTPsType(stix_common_binding.GenericRelationshipListType):
     def exportAttributes(self, outfile, level, already_processed, namespace_='ttp:', name_='RelatedTTPsType'):
         super(RelatedTTPsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedTTPsType')
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedTTPsType', fromsubclass_=False, pretty_print=True):
-        super(RelatedTTPsType, self).exportChildren(outfile, level, 'ttp:', name_, True, pretty_print=pretty_print)
+        super(RelatedTTPsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
@@ -1812,7 +1812,7 @@ class TTPType(stix_common_binding.TTPBaseType):
             already_processed.add('version')
             outfile.write(' version=%s' % (quote_attrib(self.version), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='TTPType', fromsubclass_=False, pretty_print=True):
-        super(TTPType, self).exportChildren(outfile, level, 'ttp:', name_, True, pretty_print=pretty_print)
+        super(TTPType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:

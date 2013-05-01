@@ -41,6 +41,8 @@ DEFAULT_XML_NS_MAP = {'http://stix.mitre.org/stix-1' : 'stix',
                       'http://stix.mitre.org/extensions/TestMechanism#Snort-1' : 'snortTM',
                       'http://stix.mitre.org/extensions/TestMechanism#YARA-1' : 'yaraTM',
                       'http://stix.mitre.org/extensions/Vulnerability#CVRF-1' : 'cvrfVuln',
+                      'http://cybox.mitre.org/cybox-2' : 'cybox',
+                      'http://cybox.mitre.org/common-2' : 'cyboxCommon',
                       'http://www.w3.org/2001/XMLSchema-instance' : 'xsi'}
 
 
@@ -287,7 +289,7 @@ except ImportError, exp:
 # Globals
 #
 
-ExternalEncoding = 'ascii'
+ExternalEncoding = 'utf-8'
 Tag_pattern_ = re_.compile(r'({.*})?(.*)')
 String_cleanup_pat_ = re_.compile(r"[\n\r\s]+")
 Namespace_extract_pat_ = re_.compile(r'{(.*)}(.*)')

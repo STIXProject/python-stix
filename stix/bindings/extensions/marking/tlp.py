@@ -259,7 +259,7 @@ except ImportError, exp:
 # Globals
 #
 
-ExternalEncoding = 'ascii'
+ExternalEncoding = 'utf-8'
 Tag_pattern_ = re_.compile(r'({.*})?(.*)')
 String_cleanup_pat_ = re_.compile(r"[\n\r\s]+")
 Namespace_extract_pat_ = re_.compile(r'{(.*)}(.*)')
@@ -544,7 +544,7 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
             already_processed.add('color')
             outfile.write(' color=%s' % (quote_attrib(self.color), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='TLPMarkingStructureType', fromsubclass_=False, pretty_print=True):
-        super(TLPMarkingStructureType, self).exportChildren(outfile, level, 'tlpMarking:', name_, True, pretty_print=pretty_print)
+        super(TLPMarkingStructureType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         pass
     def exportLiteral(self, outfile, level, name_='TLPMarkingStructureType'):
         level += 1

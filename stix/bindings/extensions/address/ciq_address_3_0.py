@@ -259,7 +259,7 @@ except ImportError, exp:
 # Globals
 #
 
-ExternalEncoding = 'ascii'
+ExternalEncoding = 'utf-8'
 Tag_pattern_ = re_.compile(r'({.*})?(.*)')
 String_cleanup_pat_ = re_.compile(r"[\n\r\s]+")
 Namespace_extract_pat_ = re_.compile(r'{(.*)}(.*)')
@@ -542,7 +542,7 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
             outfile.write(xsi_type)
     
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='CIQAddress3.0InstanceType', fromsubclass_=False, pretty_print=True):
-        super(CIQAddress3_0InstanceType, self).exportChildren(outfile, level, '', name_, True, pretty_print=pretty_print)
+        super(CIQAddress3_0InstanceType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:

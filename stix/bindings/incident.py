@@ -260,7 +260,7 @@ except ImportError, exp:
 # Globals
 #
 
-ExternalEncoding = 'ascii'
+ExternalEncoding = 'utf-8'
 Tag_pattern_ = re_.compile(r'({.*})?(.*)')
 String_cleanup_pat_ = re_.compile(r"[\n\r\s]+")
 Namespace_extract_pat_ = re_.compile(r'{(.*)}(.*)')
@@ -1238,7 +1238,7 @@ class JournalEntryType(GeneratedsSuper):
         self.exportAttributes(outfile, level, already_processed, namespace_, name_='JournalEntryType')
         if self.hasContent_():
             outfile.write('>')
-            outfile.write(str(self.valueOf_).encode(ExternalEncoding))
+            outfile.write(unicode(self.valueOf_).encode(ExternalEncoding))
             self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
@@ -1340,7 +1340,7 @@ class COARequestedType(COATakenType):
             already_processed.add('priority')
             outfile.write(' priority=%s' % (self.gds_format_string(quote_attrib(self.priority).encode(ExternalEncoding), input_name='priority'), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='COARequestedType', fromsubclass_=False, pretty_print=True):
-        super(COARequestedType, self).exportChildren(outfile, level, 'incident:', name_, True, pretty_print=pretty_print)
+        super(COARequestedType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='COARequestedType'):
         level += 1
         already_processed = set()
@@ -2672,7 +2672,7 @@ class AttributedThreatActorsType(stix_common_binding.GenericRelationshipListType
     def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='AttributedThreatActorsType'):
         super(AttributedThreatActorsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='AttributedThreatActorsType')
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='AttributedThreatActorsType', fromsubclass_=False, pretty_print=True):
-        super(AttributedThreatActorsType, self).exportChildren(outfile, level, 'incident:', name_, True, pretty_print=pretty_print)
+        super(AttributedThreatActorsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
@@ -2762,7 +2762,7 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
     def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='RelatedIndicatorsType'):
         super(RelatedIndicatorsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedIndicatorsType')
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedIndicatorsType', fromsubclass_=False, pretty_print=True):
-        super(RelatedIndicatorsType, self).exportChildren(outfile, level, 'incident:', name_, True, pretty_print=pretty_print)
+        super(RelatedIndicatorsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
@@ -2852,7 +2852,7 @@ class RelatedObservablesType(stix_common_binding.GenericRelationshipListType):
     def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='RelatedObservablesType'):
         super(RelatedObservablesType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedObservablesType')
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedObservablesType', fromsubclass_=False, pretty_print=True):
-        super(RelatedObservablesType, self).exportChildren(outfile, level, 'incident:', name_, True, pretty_print=pretty_print)
+        super(RelatedObservablesType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
@@ -2942,7 +2942,7 @@ class LeveragedTTPsType(stix_common_binding.GenericRelationshipListType):
     def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='LeveragedTTPsType'):
         super(LeveragedTTPsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='LeveragedTTPsType')
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='LeveragedTTPsType', fromsubclass_=False, pretty_print=True):
-        super(LeveragedTTPsType, self).exportChildren(outfile, level, 'incident:', name_, True, pretty_print=pretty_print)
+        super(LeveragedTTPsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
@@ -3032,7 +3032,7 @@ class RelatedIncidentsType(stix_common_binding.GenericRelationshipListType):
     def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='RelatedIncidentsType'):
         super(RelatedIncidentsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedIncidentsType')
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedIncidentsType', fromsubclass_=False, pretty_print=True):
-        super(RelatedIncidentsType, self).exportChildren(outfile, level, 'incident:', name_, True, pretty_print=pretty_print)
+        super(RelatedIncidentsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
@@ -3123,7 +3123,7 @@ class AssetTypeType(stix_common_binding.ControlledVocabularyStringType):
         self.exportAttributes(outfile, level, already_processed, namespace_, name_='AssetTypeType')
         if self.hasContent_():
             outfile.write('>')
-            outfile.write(str(self.valueOf_).encode(ExternalEncoding))
+            outfile.write(unicode(self.valueOf_).encode(ExternalEncoding))
             self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
@@ -3134,7 +3134,7 @@ class AssetTypeType(stix_common_binding.ControlledVocabularyStringType):
             already_processed.add('count_affected')
             outfile.write(' count_affected=%s' % (self.gds_format_string(quote_attrib(self.count_affected).encode(ExternalEncoding), input_name='count_affected'), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='AssetTypeType', fromsubclass_=False, pretty_print=True):
-        super(AssetTypeType, self).exportChildren(outfile, level, 'incident:', name_, True, pretty_print=pretty_print)
+        super(AssetTypeType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         pass
     def exportLiteral(self, outfile, level, name_='AssetTypeType'):
         level += 1
@@ -3364,7 +3364,7 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             already_processed.add('version')
             outfile.write(' version=%s' % (quote_attrib(self.version), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='IncidentType', fromsubclass_=False, pretty_print=True):
-        super(IncidentType, self).exportChildren(outfile, level, 'incident:', name_, True, pretty_print=pretty_print)
+        super(IncidentType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:

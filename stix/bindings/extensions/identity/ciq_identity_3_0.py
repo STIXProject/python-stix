@@ -258,7 +258,7 @@ except ImportError, exp:
 # Globals
 #
 
-ExternalEncoding = 'ascii'
+ExternalEncoding = 'utf-8'
 Tag_pattern_ = re_.compile(r'({.*})?(.*)')
 String_cleanup_pat_ = re_.compile(r"[\n\r\s]+")
 Namespace_extract_pat_ = re_.compile(r'{(.*)}(.*)')
@@ -551,7 +551,7 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
             xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
             outfile.write(xsi_type)
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='CIQIdentity3.0InstanceType', fromsubclass_=False, pretty_print=True):
-        super(CIQIdentity3_0InstanceType, self).exportChildren(outfile, level, '', name_, True, pretty_print=pretty_print)
+        super(CIQIdentity3_0InstanceType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
@@ -562,7 +562,7 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
             #self.Specification.export(outfile, level, nsmap, namespace_, name_='Specification', pretty_print=pretty_print)
         for Role_ in self.Role:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Role>%s</%s:Role>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(Role_).encode(ExternalEncoding), input_name='Role'), '', eol_))
+            outfile.write('<%s:Role>%s</%s:Role>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(Role_).encode(ExternalEncoding), input_name='Role'), nsmap[namespace_], eol_))
     def exportLiteral(self, outfile, level, name_='CIQIdentity3.0InstanceType'):
         level += 1
         already_processed = set()
