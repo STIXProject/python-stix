@@ -5,7 +5,7 @@ import stix
 import stix.utils
 from stix_header import STIXHeader
 from stix.indicator import Indicator
-import stix.bindings.stix_core_1_0 as stix_core_binding
+import stix.bindings.stix_core as stix_core_binding
 from lxml import etree
 from StringIO import StringIO
 
