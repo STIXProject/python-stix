@@ -4,7 +4,7 @@
 import stix
 import stix.utils
 import stix.common
-import stix.bindings.stix_indicator_1_1 as stix_indicator_binding
+import stix.bindings.indicator as indicator_binding
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
 
@@ -138,14 +138,14 @@ class Indicator(stix.Entity):
     
     def to_obj(self, return_obj=None):
         if not return_obj:
-            return_obj = stix_indicator_binding.IndicatorType()
+            return_obj = indicator_binding.IndicatorType()
         
         if self.id_:
             return_obj.set_id(self.id_)
         
         '''most of this does not work because of the state of the cybox api development'''
         if self.observables:
-            observables_obj = stix_indicator_binding.ObservablesType()
+            observables_obj = indicator_binding.ObservableType()
             
             if len(self.observables) > 1:
                 root_observable = self._merge_observables(self.observables)
