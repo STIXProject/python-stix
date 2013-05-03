@@ -3,8 +3,7 @@
 
 import stix
 import stix.utils
-import stix.bindings.stix_common_0_2 as stix_common_binding
-import stix.bindings.oasis.xpil as oasis_xpil_binding
+import stix.bindings.stix_common as stix_common_binding
 
 
 class Identity(stix.Entity):

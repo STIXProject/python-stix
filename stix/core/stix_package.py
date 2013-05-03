@@ -5,7 +5,7 @@ import stix
 import stix.utils
 from stix_header import STIXHeader
 from stix.indicator import Indicator
-import stix.bindings.stix_core_1_0 as stix_core_binding
+import stix.bindings.stix_core as stix_core_binding
 from lxml import etree
 from StringIO import StringIO
 
@@ -14,13 +14,13 @@ class STIXPackage(stix.Entity):
     classdocs
     '''
 
-    def __init__(self, id_=None, idref_=None, stix_header=None, indicators=None, incidents=None, ttps=None, campaigns=None, coas=None, threat_actors=None, exploit_targets=None):
+    def __init__(self, id_=None, idref_=None, stix_header=None, indicators=None ):
         '''
         Constructor
         '''
         self.id_ = id_ if id_ else stix.utils.create_id() 
         self.idref_ = idref_
-        self.version = '1.0-draft2'
+        self.version = '1.0'
         self.indicators = indicators
         self.stix_header = stix_header
     
