@@ -2,10 +2,11 @@
 # See LICENSE.txt for complete terms.
 
 from setuptools import setup, find_packages
+import stix
 
 setup(
     name="stix",
-    version="1.0.0a2",
+    version=stix.__version__,
     author="STIX Project, MITRE Corporation",
     author_email="stix@mitre.org",
     description="An API for parsing and generating STIX content.",

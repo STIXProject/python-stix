@@ -145,15 +145,12 @@ class Indicator(stix.Entity):
         
         '''most of this does not work because of the state of the cybox api development'''
         if self.observables:
-            observables_obj = indicator_binding.ObservableType()
-            
             if len(self.observables) > 1:
                 root_observable = self._merge_observables(self.observables)
             else:
                 root_observable = self.observables[0]
             
-            observables_obj.set_Observable(root_observable.to_obj())
-            return_obj.set_Observables(observables_obj)
+            return_obj.set_Observable(root_observable)
 
         return_obj.set_Producer(self.producer.to_obj())
     

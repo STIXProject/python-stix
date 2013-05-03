@@ -7,9 +7,9 @@ from stix.common.identity import STIXCIQIdentity
 from stix.common.identity import Identity
 from cybox.common import Time
 
-import cybox.bindings.cybox_common_types_1_0 as cybox_common_binding
-import stix.bindings.stix_indicator_1_1 as stix_indicator_binding
-import stix.bindings.stix_common_0_2 as stix_common_binding
+import cybox.bindings.cybox_common as cybox_common_binding
+import stix.bindings.indicator as stix_indicator_binding
+import stix.bindings.stix_common as stix_common_binding
 
 
 
