@@ -4,8 +4,7 @@
 import stix
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.stix_core as stix_core_binding
-from stix.common import InformationSource
-from cybox.common import StructuredText
+from stix.common import InformationSource, StructuredText
 
 
 class STIXHeader(stix.Entity):
@@ -27,7 +26,7 @@ class STIXHeader(stix.Entity):
         
         if isinstance(value, basestring):
             st = StructuredText()
-            st.add_text(value)
+            st.value = value
             self._description = st
         elif isinstance(value, StructuredText):
             self._description = value
@@ -65,13 +64,13 @@ class STIXHeader(stix.Entity):
         if not return_obj:
             return_obj = stix_core_binding.STIXHeaderType()
         
-        return_obj.set_PackageIntent(self.package_intent)
+        return_obj.set_Package_Intent(self.package_intent)
         
         if self.description:
             return_obj.set_Description(self.description.to_obj())
             
         if self.information_source:
-            return_obj.set_InformationSource(self.information_source.to_obj())
+            return_obj.set_Information_Source(self.information_source.to_obj())
         
         return return_obj
     

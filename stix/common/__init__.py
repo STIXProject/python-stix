@@ -3,3 +3,5 @@
 
 from identity import *
 from information_source import InformationSource
+from generic_relationship import GenericRelationship
+from structured_text import StructuredText

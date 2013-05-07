@@ -10,12 +10,12 @@ Description: Build a STIX Indicator document containing a File observable with a
 from datetime import datetime
 from stix.indicator import Indicator
 from stix.core import STIXPackage, STIXHeader
-from cybox.common import Hash, SimpleHashValue
+from cybox.common import Hash
 from cybox.objects.file_object import File
 
 def main():
-    shv = SimpleHashValue()
-    shv.value = "4EC0027BEF4D7E1786A04D021FA8A67F"
+    shv = Hash()
+    shv.simple_hash_value = "4EC0027BEF4D7E1786A04D021FA8A67F"
     
     f = File()
     h = Hash(shv, Hash.TYPE_MD5)

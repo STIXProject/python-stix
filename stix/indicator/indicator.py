@@ -4,13 +4,14 @@
 import stix
 import stix.utils
 import stix.common
+import stix.extensions.identity as ext_identity
 import stix.bindings.indicator as indicator_binding
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
 
 class Indicator(stix.Entity):
-    TYPE_SOURCE_ORG = 0
-    TYPE_SOURCE_PERSON = 1
+    TYPE_SOURCE_ORG     = 0
+    TYPE_SOURCE_PERSON  = 1
     TYPES_SOURCE = (TYPE_SOURCE_ORG, TYPE_SOURCE_PERSON)
     
     def __init__(self, id_=None, producer=None, observables=None):
@@ -55,16 +56,16 @@ class Indicator(stix.Entity):
             raise ValueError('type_ not known')
         
         if type_ == self.TYPE_SOURCE_ORG:
-            org_name_element = stix.common.OrganisationNameElement(value=name)
-            org_name = stix.common.OrganisationName()
+            org_name_element = ext_identity.OrganisationNameElement(value=name)
+            org_name = ext_identity.OrganisationName()
             org_name.add_organisation_name_element(org_name_element)
-            self.producer.identity.party_name.add_organisation_name(org_name)
+            self.producer.identity.specification.party_name.add_organisation_name(org_name)
         
         if type_ == self.TYPE_SOURCE_PERSON:
-            person_name_element = stix.common.PersonNameElement(value=name)
-            person_name = stix.common.PersonName()
+            person_name_element = ext_identity.PersonNameElement(value=name)
+            person_name = ext_identity.PersonName()
             person_name.add_name_element(person_name_element)
-            self.producer.identity.party_name.add_person_name(person_name)
+            self.producer.identity.specification.party_name.add_person_name(person_name)
     
     def get_sources(self):
         '''
@@ -150,7 +151,7 @@ class Indicator(stix.Entity):
             else:
                 root_observable = self.observables[0]
             
-            return_obj.set_Observable(root_observable)
+            return_obj.set_Observable(root_observable.to_obj())
 
         return_obj.set_Producer(self.producer.to_obj())
     

@@ -3,7 +3,7 @@
 
 import stix
 
-from stix.common.identity import STIXCIQIdentity
+from stix.extensions.identity import CIQIdentity3_0Instance
 from stix.common.identity import Identity
 from cybox.common import Time
 
@@ -15,7 +15,7 @@ import stix.bindings.stix_common as stix_common_binding
 
 class InformationSource(stix.Entity):
     def __init__(self, identity=None, time=None):
-        self.identity = identity if identity else STIXCIQIdentity()
+        self.identity = identity if identity else CIQIdentity3_0Instance()
         #self.contributors = []
         self.time = time if time else Time()
         #self.tools = []
@@ -44,7 +44,10 @@ class InformationSource(stix.Entity):
         self._time = value
         
     
-    def to_obj(self, return_obj=stix_common_binding.InformationSourceType()):
+    def to_obj(self, return_obj=None):
+        if return_obj == None:
+            return_obj = stix_common_binding.InformationSourceType()
+        
         identity_obj = self.identity.to_obj() if self.identity else None
         time_obj = self.time.to_obj() if self.time else None
         
@@ -84,7 +87,7 @@ class InformationSource(stix.Entity):
             return_obj = cls()
         
         if obj.get_Identity():
-            return_obj.identity = STIXCIQIdentity.from_obj(obj.get_Identity())
+            return_obj.identity = CIQIdentity3_0Instance.from_obj(obj.get_Identity())
         
         if obj.get_Time():
             return_obj.time = Time.from_obj(obj.get_Time())
@@ -104,7 +107,7 @@ class InformationSource(stix.Entity):
         time_dict = dict_repr.get('time', None)
         
         if identity_dict:
-            return_obj.identity = STIXCIQIdentity.from_dict(identity_dict)
+            return_obj.identity = CIQIdentity3_0Instance.from_dict(identity_dict)
         
         if time_dict:
             return_obj.time = Time.from_dict(time_dict)
