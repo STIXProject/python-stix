@@ -22,14 +22,13 @@ def main():
     f.add_hash(h)
     
     indicator = Indicator()
-    indicator.add_source(Indicator.TYPE_SOURCE_PERSON, "John Smith")
-    indicator.add_source(Indicator.TYPE_SOURCE_ORG, "Hackme Inc.")
+    indicator.set_producer_identity("The MITRE Corporation")
     indicator.set_produced_time(datetime.now())
     indicator.add_object(f)
     
     stix_package = STIXPackage()
     stix_header = STIXHeader()
-    stix_header.description = "Example #02"
+    stix_header.description = "Example 02"
     stix_package.stix_header = stix_header
     stix_package.add_indicator(indicator)
     

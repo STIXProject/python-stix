@@ -3,23 +3,33 @@
 
 import stix
 import stix.utils
-import stix.common
+from stix.common import Identity, InformationSource, StructuredText
 import stix.extensions.identity as ext_identity
 import stix.bindings.indicator as indicator_binding
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
 
 class Indicator(stix.Entity):
-    TYPE_SOURCE_ORG     = 0
-    TYPE_SOURCE_PERSON  = 1
-    TYPES_SOURCE = (TYPE_SOURCE_ORG, TYPE_SOURCE_PERSON)
-    
-    def __init__(self, id_=None, producer=None, observables=None):
+    def __init__(self, id_=None, title=None, description=None, producer=None, observables=None):
         self.id_ = id_ if id_ is not None else stix.utils.create_id()
-        self.producer = producer if producer else stix.common.InformationSource()
+        self.producer = producer
         self.observables = observables
-        self.name = None
-        self.description = None
+        self.title = title
+        self.description = description
+        
+    @property
+    def description(self):
+        return self._description
+    
+    @description.setter
+    def description(self, value):
+        if value:
+            if isinstance(value, StructuredText):
+                self._description = value
+            else:
+                self._description = StructuredText(value=value)
+        else:
+            self._description = None
             
     @property
     def producer(self):
@@ -27,7 +37,7 @@ class Indicator(stix.Entity):
     
     @producer.setter
     def producer(self, value):
-        if value and not isinstance(value, stix.common.InformationSource):
+        if value and not isinstance(value, InformationSource):
             raise ValueError('value must be instance of InformationSource')
         
         self._producer = value
@@ -43,41 +53,25 @@ class Indicator(stix.Entity):
         if valuelist:
             for value in valuelist:
                 self.add_observable(value)
-    
-    def add_source(self, type_, name):
+  
+    def set_producer_identity(self, identity):
         '''
-        Adds a source to this indicator. 
-        
-        Keyword arguments:
-        type_ -- the type_ of source (Indicator.TYPE_SOURCE_ORG, Indicator.TYPE_SOURCE_PERSON)
-        name -- the name of the source
+        Sets the name of the producer of this indicator.
+        The identity param can be a string (name) or an Identity
+        instance.
         '''
-        if type_ not in self.TYPES_SOURCE:
-            raise ValueError('type_ not known')
+        if not self.producer:
+            self.producer = InformationSource()
         
-        if type_ == self.TYPE_SOURCE_ORG:
-            org_name_element = ext_identity.OrganisationNameElement(value=name)
-            org_name = ext_identity.OrganisationName()
-            org_name.add_organisation_name_element(org_name_element)
-            self.producer.identity.specification.party_name.add_organisation_name(org_name)
-        
-        if type_ == self.TYPE_SOURCE_PERSON:
-            person_name_element = ext_identity.PersonNameElement(value=name)
-            person_name = ext_identity.PersonName()
-            person_name.add_name_element(person_name_element)
-            self.producer.identity.specification.party_name.add_person_name(person_name)
-    
-    def get_sources(self):
-        '''
-        Returns a dictionary of source information, effectively returning
-        self.producer.identity.party_name.to_dict()
-       '''
-        try:
-            return_dict = self.producer.identity.party_name.to_dict()
-        except:
-            return_dict = {}
-        
-        return return_dict
+        if isinstance(identity, Identity):
+            self.producer.identity = identity
+        else:
+            if not self.producer.identity:
+                self.producer.identity = Identity()
+            
+            self.producer.identity.name = identity # assume it's a string
+            
+  
             
     def set_produced_time(self, produced_time):
         '''The produced date variable must be in ISO 8601 format'''
@@ -165,13 +159,13 @@ class Indicator(stix.Entity):
         if not return_obj:
             return_obj = cls()
         
-        return_obj.id_ = obj.get_id()
+        return_obj.id_          = obj.get_id()
+        return_obj.title        = obj.get_Title()
+        return_obj.description  = StructuredText.from_obj(obj.get_Description())
+        return_obj.producer     = InformationSource.from_obj(obj.get_Producer())
         
-        if obj.get_Producer():
-            return_obj.producer = stix.common.InformationSource.from_obj(obj.get_Producer())
-        
-        if obj.get_Observables() and obj.get_Observables().get_Observable():
-            observable_obj = obj.get_Observables().get_Observable()
+        if obj.get_Observable():
+            observable_obj = obj.get_Observable()
             observable = Observable.from_obj(observable_obj)
             return_obj.observables.append(observable)
         
@@ -193,6 +187,12 @@ class Indicator(stix.Entity):
         
         if self.producer:
             return_dict['producer'] = self.producer.to_dict()
+            
+        if self.title:
+            return_dict['title'] = self.title
+            
+        if self.description:
+            return_dict['description'] = self.description.to_dict()
         
         return return_dict
         
@@ -205,16 +205,20 @@ class Indicator(stix.Entity):
         if not return_obj:
             return_obj = cls()
         
-        return_obj.id_ = dict_repr.get('id', None)
-        
-        observable_dict = dict_repr.get('observable', )
-        producer_dict = dict_repr.get('producer', None)
+        return_obj.id_      = dict_repr.get('id')
+        return_obj.title    = dict_repr.get('title')
+        observable_dict     = dict_repr.get('observable')
+        producer_dict       = dict_repr.get('producer')
+        description_dict    = dict_repr.get('description')
         
         if observable_dict:
             return_obj.add_observable(Observable.from_dict(observable_dict))
             
         if producer_dict:
-            return_obj.producer = stix.common.InformationSource.from_dict(producer_dict)
+            return_obj.producer = InformationSource.from_dict(producer_dict)
+        
+        if description_dict:
+            return_obj.description = StructuredText.from_dict(description_dict)
         
         return return_obj
     

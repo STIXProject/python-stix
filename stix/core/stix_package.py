@@ -103,7 +103,7 @@ class STIXPackage(stix.Entity):
         return_obj.id_ = obj.get_id()
         return_obj.idref_ = obj.get_idref()
         return_obj.version = obj.get_version()
-        return_obj.stix_header = STIXHeader.from_obj(obj.get_STIXHeader())
+        return_obj.stix_header = STIXHeader.from_obj(obj.get_STIX_Header())
         
         if obj.get_Indicators():
             indicators_obj = obj.get_Indicators()

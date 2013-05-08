@@ -20,6 +20,10 @@ et.register_namespace('ExtSch', XML_NS_STIX_EXT)
 
 
 class CIQIdentity3_0Instance(Identity):
+    _XML_NS         = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
+    _XML_NS_PREFIX  = "ciqIdentity"
+    _XML_TYPE       = "CIQIdentity3.0InstanceType"
+    
     def __init__(self, roles=None, specification=None):
         super(CIQIdentity3_0Instance, self).__init__()
         self.roles = roles
@@ -107,6 +111,8 @@ class CIQIdentity3_0Instance(Identity):
         
         if self.specification:
             return_dict['specification'] = self.specification.to_dict()
+        
+        return_dict['xsi:type'] = "%s:%s" % (CIQIdentity3_0Instance._XML_NS_PREFIX, CIQIdentity3_0Instance._XML_TYPE)
         
         return return_dict
 
