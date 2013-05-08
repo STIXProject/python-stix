@@ -22,6 +22,8 @@ def main():
     f.add_hash(h)
     
     indicator = Indicator()
+    indicator.title = "File Hash Example"
+    indicator.description = "An indicator containing a File observable with an associated hash"
     indicator.set_producer_identity("The MITRE Corporation")
     indicator.set_produced_time(datetime.now())
     indicator.add_object(f)

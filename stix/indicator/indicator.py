@@ -138,7 +138,11 @@ class Indicator(stix.Entity):
         if self.id_:
             return_obj.set_id(self.id_)
         
-        '''most of this does not work because of the state of the cybox api development'''
+        if self.description:
+            return_obj.set_Description(self.description.to_obj())
+        
+        return_obj.set_Title(self.title)
+
         if self.observables:
             if len(self.observables) > 1:
                 root_observable = self._merge_observables(self.observables)
