@@ -12,7 +12,7 @@ setup(
     description="An API for parsing and generating STIX content.",
     url="http://stix.mitre.org",
     packages=find_packages(),
-    install_requires=['lxml>=2.3', 'python-dateutil', 'cybox>=2.0.0a1' ],
+    install_requires=['lxml>=2.3', 'python-dateutil', 'cybox>=2.0.0b1' ],
     classifiers=[
         "Programming Language :: Python",
         "Development Status :: 2 - Pre-Alpha",
