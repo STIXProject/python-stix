@@ -4,40 +4,24 @@
 	
 	Copyright (c) 2013, The MITRE Corporation. All rights reserved. 
     The contents of this file are subject to the terms of the STIX License located at http://stix.mitre.org/about/termsofuse.html.
-    
-	This example demonstrates a more complex usage of STIX to represent indicators of phishing activity along with suggested courses of action, previous sightings, and handling guidance. 
-	
-	It demonstrates the use of:
-	
-	   * STIX Indicators
-	   * Simple STIX TTPs
-	   * STIX Courses of Action
-	   * Handling (inline)
-	   * Sightings
-	   * CybOX within STIX
-	   * The CybOX Email Object (w/ Attachment)
-	   * CybOX Patterns (condition="Contains")
-	   * Controlled vocabularies
-	
-	Created by Sean Barnum
 -->
 <stix:STIX_Package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stix="http://stix.mitre.org/stix-1" xmlns:stixCommon="http://stix.mitre.org/common-1" xmlns:indicator="http://stix.mitre.org/Indicator-2" xmlns:TTP="http://stix.mitre.org/TTP-1" xmlns:COA="http://stix.mitre.org/CourseOfAction-1" xmlns:ciq="urn:oasis:names:tc:ciq:xpil:3" xmlns:n="urn:oasis:names:tc:ciq:xnl:3" xmlns:capec="http://stix.mitre.org/extensions/AP#CAPEC2.5-1" xmlns:marking="http://data-marking.mitre.org/Marking-1" xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1" xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1" xmlns:cybox="http://cybox.mitre.org/cybox-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:AddressObj="http://cybox.mitre.org/objects#AddressObject-2" xmlns:FileObj="http://cybox.mitre.org/objects#FileObject-2" xmlns:URIObj="http://cybox.mitre.org/objects#URIObject-2" xmlns:EmailMessageObj="http://cybox.mitre.org/objects#EmailMessageObject-2" xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2" xmlns:example="http://example.com/" xsi:schemaLocation="
-http://stix.mitre.org/stix-1 ../stix_core.xsd
-http://stix.mitre.org/common-1 ../stix_common.xsd
-http://stix.mitre.org/Indicator-2 ../indicator.xsd
-http://stix.mitre.org/TTP-1 ../ttp.xsd
-http://stix.mitre.org/CourseOfAction-1 ../course_of_action.xsd
-http://stix.mitre.org/extensions/AP#CAPEC2.5-1 ../extensions/attack_pattern/capec_2.5.xsd
-http://data-marking.mitre.org/Marking-1  ../data_marking.xsd
-http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1 ../extensions/marking/tlp.xsd
-http://stix.mitre.org/default_vocabularies-1 ../stix_default_vocabularies.xsd
-http://cybox.mitre.org/cybox-2 ../cybox/cybox_core.xsd
-http://cybox.mitre.org/common-2 ../cybox/cybox_common.xsd  
-http://cybox.mitre.org/objects#AddressObject-2 ../cybox/objects/Address_Object.xsd
-http://cybox.mitre.org/objects#FileObject-2 ../cybox/objects/File_Object.xsd
-http://cybox.mitre.org/objects#URIObject-2 ../cybox/objects/URI_Object.xsd
-http://cybox.mitre.org/objects#EmailMessageObject-2 ../cybox/objects/Email_Message_Object.xsd 
-http://cybox.mitre.org/default_vocabularies-2 ../cybox/cybox_default_vocabularies.xsd" id="example:Indicator-ba1d406e-937c-414f-9231-6e1dbe64fe8b" version="1.0">
+http://stix.mitre.org/stix-1 
+http://stix.mitre.org/common-1 
+http://stix.mitre.org/Indicator-2 
+http://stix.mitre.org/TTP-1 
+http://stix.mitre.org/CourseOfAction-1 
+http://stix.mitre.org/extensions/AP#CAPEC2.5-1 
+http://data-marking.mitre.org/Marking-1  
+http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1 
+http://stix.mitre.org/default_vocabularies-1 
+http://cybox.mitre.org/cybox-2 
+http://cybox.mitre.org/common-2 
+http://cybox.mitre.org/objects#AddressObject-2 
+http://cybox.mitre.org/objects#FileObject-2 
+http://cybox.mitre.org/objects#URIObject-2 
+http://cybox.mitre.org/objects#EmailMessageObject-2 
+http://cybox.mitre.org/default_vocabularies-2" id="example:Indicator-ba1d406e-937c-414f-9231-6e1dbe64fe8b" version="1.0">
 	<stix:Indicators>
 		<stix:Indicator xsi:type="indicator:IndicatorType" id="example:Indicator-19e5d914-cc0e-478f-a523-b099a34383f7">
 			<indicator:Title>"US-China" Phishing Indicator</indicator:Title>
