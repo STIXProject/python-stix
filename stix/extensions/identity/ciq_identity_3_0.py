@@ -7,7 +7,8 @@ import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
 
 # xml element tree creation
-from xml.etree import cElementTree as et
+#from xml.etree import cElementTree as et
+import lxml.etree as et
 
 XML_NS_XPIL     = "urn:oasis:names:tc:ciq:xpil:3"
 XML_NS_XNL      = "urn:oasis:names:tc:ciq:xnl:3"
@@ -346,8 +347,9 @@ class NameLine(stix.Entity):
         
         if self.type:
             return_obj.attrib = {'Type' : self.type}
-        
-        return_obj.text = self.value
+       
+        if self.value: 
+            return_obj.text = self.value
         
         return return_obj
     
@@ -583,13 +585,16 @@ class NameElement(stix.Entity):
     
     def to_obj(self, return_obj):
         return_obj.text = self.value
+        return return_obj
     
     @classmethod
     def from_dict(cls, dict_repr, return_obj):
         return_obj.value = dict_repr.get('value', None)
+        return return_obj
 
     def to_dict(self, return_dict):
         return_dict['value'] = self.value
+        return return_dict
         
 
 class PersonNameElement(NameElement):
@@ -631,7 +636,6 @@ class PersonNameElement(NameElement):
         if not return_obj:
             root_tag = PersonNameElement.XML_TAG
             return_obj = et.Element(root_tag)
-        
             
         if self.element_type:
             return_obj.attrib = {'ElementType' : self.element_type}

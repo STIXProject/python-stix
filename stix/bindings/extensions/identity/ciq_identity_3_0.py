@@ -31,6 +31,15 @@ XMLParser_import_library = XMLParser_import_lxml
 if Verbose_import_:
     print("running with lxml.etree")
 
+XML_NS_XPIL     = "urn:oasis:names:tc:ciq:xpil:3"
+XML_NS_XNL      = "urn:oasis:names:tc:ciq:xnl:3"
+XML_NS_STIX_EXT ="http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
+
+etree_.register_namespace('xpil', XML_NS_XPIL)
+etree_.register_namespace('xnl', XML_NS_XNL)
+etree_.register_namespace('ExtSch', XML_NS_STIX_EXT)
+
+
 def parsexml_(*args, **kwargs):
     if (XMLParser_import_library == XMLParser_import_lxml and
         'parser' not in kwargs):
