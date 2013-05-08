@@ -1,20 +1,24 @@
+# Copyright (c) 2013, The MITRE Corporation. All rights reserved.
+# See LICENSE.txt for complete terms.
+
 import stix
 
-from stix.common.identity import STIXCIQIdentity
+from stix.extensions.identity import CIQIdentity3_0Instance
 from stix.common.identity import Identity
 from cybox.common import Time
 
-import cybox.bindings.cybox_common_types_1_0 as cybox_common_binding
-import stix.bindings.stix_indicator_1_1 as stix_indicator_binding
-import stix.bindings.stix_common_0_2 as stix_common_binding
+import cybox.bindings.cybox_common as cybox_common_binding
+import stix.bindings.indicator as stix_indicator_binding
+import stix.bindings.stix_common as stix_common_binding
+import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
 
 
 
 class InformationSource(stix.Entity):
     def __init__(self, identity=None, time=None):
-        self.identity = identity if identity else STIXCIQIdentity()
+        self.identity = identity
         #self.contributors = []
-        self.time = time if time else Time()
+        self.time = time
         #self.tools = []
         #self.references = []
     
@@ -41,7 +45,10 @@ class InformationSource(stix.Entity):
         self._time = value
         
     
-    def to_obj(self, return_obj=stix_common_binding.InformationSourceType()):
+    def to_obj(self, return_obj=None):
+        if return_obj == None:
+            return_obj = stix_common_binding.InformationSourceType()
+        
         identity_obj = self.identity.to_obj() if self.identity else None
         time_obj = self.time.to_obj() if self.time else None
         
@@ -81,7 +88,11 @@ class InformationSource(stix.Entity):
             return_obj = cls()
         
         if obj.get_Identity():
-            return_obj.identity = STIXCIQIdentity.from_obj(obj.get_Identity())
+            identity_obj = obj.get_Identity()
+            if isinstance(identity_obj, ciq_identity_binding.CIQIdentity3_0InstanceType):
+                return_obj.identity = CIQIdentity3_0Instance.from_obj(identity_obj)
+            elif type(identity_obj) == stix_common_binding.IdentityType:
+                return_obj.identity = Identity.from_obj(identity_obj)
         
         if obj.get_Time():
             return_obj.time = Time.from_obj(obj.get_Time())
@@ -101,8 +112,16 @@ class InformationSource(stix.Entity):
         time_dict = dict_repr.get('time', None)
         
         if identity_dict:
-            return_obj.identity = STIXCIQIdentity.from_dict(identity_dict)
-        
+            xsi_type = identity_dict.get('xsi:type')
+            if xsi_type:
+                type_name = xsi_type.split(":")[1]
+                if  type_name == CIQIdentity3_0Instance._XML_TYPE:
+                    return_obj.identity = CIQIdentity3_0Instance.from_dict(identity_dict)
+                else:
+                    raise TypeError('No known class for xsi:type: %s' % (xsi_type))
+            else:
+                return_obj.identity = Identity.from_dict(identity_dict)
+                
         if time_dict:
             return_obj.time = Time.from_dict(time_dict)
         

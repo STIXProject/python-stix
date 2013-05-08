@@ -1,3 +1,6 @@
+# Copyright (c) 2013, The MITRE Corporation. All rights reserved.
+# See LICENSE.txt for complete terms.
+
 '''
 File: ex_01.py
 
@@ -10,7 +13,7 @@ from pprint import pprint
 
 from stix.core import STIXPackage
 from stix.indicator import Indicator
-import stix.bindings.stix_core_1_0 as stix_core_binding
+import stix.bindings.stix_core as stix_core_binding
 
 def main():
     fn = 'ex_01.xml'
