@@ -21,34 +21,6 @@ from datetime import datetime, tzinfo, timedelta
 
 XML_NS = "http://stix.mitre.org/stix-1"
 
-#
-#DEFAULT_XML_NS_MAP = {'http://stix.mitre.org/stix-1' : 'stix',
-#                      'http://stix.mitre.org/common-1' : 'stixCommon',
-#                      'http://stix.mitre.org/Incident-1' : 'incident',
-#                      'http://stix.mitre.org/Indicator-2' : 'indicator',
-#                      'http://stix.mitre.org/ExploitTarget-1' : 'et',
-#                      'http://data-marking.mitre.org/Marking-1' : 'marking',
-#                      'http://stix.mitre.org/CourseOfAction-1' : 'coa',
-#                      'http://stix.mitre.org/Campaign-1' : 'campaign',
-#                      'http://stix.mitre.org/ThreatActor-1' : 'ta',
-#                      'http://stix.mitre.org/TTP-1' : 'ttp',
-#                      'http://stix.mitre.org/extensions/Address#CIQAddress3.0-1' : 'ciqAddress',
-#                      'http://stix.mitre.org/extensions/AP#CAPEC2.5-1' : 'capecInstance',
-#                      'http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1': 'ciqIdentity', 
-#                      'http://stix.mitre.org/extensions/Malware#MAEC4.0-1' : 'maecInstance',
-#                      'http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1' : 'simpleMarking',
-#                      'http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1' : 'tlpMarking',
-#                      'http://stix.mitre.org/extensions/StructuredCOA#Generic-1' : 'genericStructuredCOA',
-#                      'http://stix.mitre.org/extensions/TestMechanism#Generic-1' : 'genericTM',
-#                      'http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1' : 'openiocTM',
-#                      'http://stix.mitre.org/extensions/TestMechanism#OVAL5.10-1' : 'ovalTM',
-#                      'http://stix.mitre.org/extensions/TestMechanism#Snort-1' : 'snortTM',
-#                      'http://stix.mitre.org/extensions/TestMechanism#YARA-1' : 'yaraTM',
-#                      'http://stix.mitre.org/extensions/Vulnerability#CVRF-1' : 'cvrfVuln',
-#                      'http://cybox.mitre.org/cybox-2' : 'cybox',
-#                      'http://cybox.mitre.org/common-2' : 'cyboxCommon',
-#                      'http://www.w3.org/2001/XMLSchema-instance' : 'xsi'}
-
 DEFAULT_XML_NS_MAP = {  'http://capec.mitre.org/capec-2': 'capec',
                          'http://cpe.mitre.org/language/2.0': 'cpe',
                          'http://cybox.mitre.org/common-2': 'cyboxCommon',
