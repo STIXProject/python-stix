@@ -5,7 +5,6 @@ python:
 
 install:
    - pip install -e git+https://github.com/CybOXProject/python-cybox.git#egg=python-cybox
-   - pip install -e git+https://github.com/MAECProject/python-maec.git#egg=python-maec
    - pip install . --use-mirrors
 
 script:
