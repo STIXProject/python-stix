@@ -1,4 +1,4 @@
-# python-stix
+# python-stix [![Build Status](https://travis-ci.org/STIXProject/python-stix.png?branch=master)](https://travis-ci.org/STIXProject/python-stix)
 
 A python library for parsing, manipulating, and generating STIX content. The `python-stix` library
 utilizes the STIX v1.0 bindings, is under heavy development and should be considered **PRE-ALPHA**.
