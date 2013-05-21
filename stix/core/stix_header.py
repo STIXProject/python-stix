@@ -12,8 +12,9 @@ class PackageIntent(VocabString):
 
 
 class STIXHeader(stix.Entity):
-    def __init__(self, package_intent=None, description=None, handling=None, information_source=None):
+    def __init__(self, package_intent=None, description=None, handling=None, information_source=None, title=None):
         self.package_intent = package_intent
+        self.title = title
         self.description = description
         #self.handling = handling # not implemented
         self.information_source = information_source
@@ -61,9 +62,9 @@ class STIXHeader(stix.Entity):
     def information_source(self, value):
         if value and not isinstance(value, InformationSource):
             raise ValueError('value must instance of InformationSource')
-        
+
         self._information_source = value
-    
+
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:
@@ -72,17 +73,22 @@ class STIXHeader(stix.Entity):
         if not return_obj:
             return_obj = cls()
         
+        return_obj.title = obj.get_Title()
         return_obj.package_intent = PackageIntent.from_obj(obj.get_PackageIntent())
         return_obj.description = StructuredText.from_obj(obj.get_Description())
         return_obj.information_source = InformationSource.from_obj(obj.get_InformationSource())
         
         return return_obj
-    
+
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = stix_core_binding.STIXHeaderType()
         
-        return_obj.set_Package_Intent(self.package_intent.to_obj())
+        if self.title:
+            return_obj.set_Title(self.title)
+        
+        if self.package_intent:
+            return_obj.set_Package_Intent(self.package_intent.to_obj())
         
         if self.description:
             return_obj.set_Description(self.description.to_obj())
@@ -100,6 +106,7 @@ class STIXHeader(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
+        return_obj.title = dict_repr.get('title')
         return_obj.package_intent = PackageIntent.from_dict(dict_repr.get('package_intent'))
 
         desc_dict = dict_repr.get('description')
@@ -113,6 +120,9 @@ class STIXHeader(stix.Entity):
     def to_dict(self, return_dict=None):
         if not return_dict:
             return_dict = {}
+
+        if self.title:
+            return_dict['title'] = self.title
 
         if self.package_intent:
             return_dict['package_intent'] = self.package_intent.to_dict()
