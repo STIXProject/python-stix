@@ -74,9 +74,9 @@ class STIXHeader(stix.Entity):
             return_obj = cls()
         
         return_obj.title = obj.get_Title()
-        return_obj.package_intent = PackageIntent.from_obj(obj.get_PackageIntent())
+        return_obj.package_intent = PackageIntent.from_obj(obj.get_Package_Intent())
         return_obj.description = StructuredText.from_obj(obj.get_Description())
-        return_obj.information_source = InformationSource.from_obj(obj.get_InformationSource())
+        return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
         
         return return_obj
 
