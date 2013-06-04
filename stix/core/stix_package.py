@@ -5,7 +5,11 @@ import stix
 import stix.utils
 from stix_header import STIXHeader
 from stix.indicator import Indicator
+from cybox.core import Observables
+
 import stix.bindings.stix_core as stix_core_binding
+import cybox.bindings.cybox_core as cybox_core_binding
+
 from lxml import etree
 from StringIO import StringIO
 
@@ -14,7 +18,7 @@ class STIXPackage(stix.Entity):
     classdocs
     '''
 
-    def __init__(self, id_=None, idref_=None, stix_header=None, indicators=None ):
+    def __init__(self, id_=None, idref_=None, stix_header=None, indicators=None, observables=None):
         '''
         Constructor
         '''
@@ -22,6 +26,7 @@ class STIXPackage(stix.Entity):
         self.idref_ = idref_
         self.version = '1.0'
         self.indicators = indicators
+        self.observables = observables
         self.stix_header = stix_header
     
     @property
@@ -46,12 +51,29 @@ class STIXPackage(stix.Entity):
         if valuelist:   
             for value in valuelist:
                 self.add_indicator(value)
+    
+    @property
+    def observables(self):
+        return self._observables
+    
+    @observables.setter
+    def observables(self, value):
+        if value and not isinstance(value, Observables):
+            raise ValueError('value must be instance of cybox.core.Observables')
+            
+        self._observables = value
         
     def add_indicator(self, indicator):
         if indicator and not isinstance(indicator, Indicator):
             raise ValueError('indicator must be instance of stix.indicator.Indicator')
     
         self.indicators.append(indicator)
+        
+    def add_observable(self, observable):
+        if not self.observables:
+            self.observables = Observables(observable)
+        else:
+            self.observables.add(observable)
         
     def to_obj(self, return_obj=None):
         if not return_obj:
@@ -71,7 +93,11 @@ class STIXPackage(stix.Entity):
                 indicators_obj.add_Indicator(indicator.to_obj())
             
             return_obj.set_Indicators(indicators_obj)
-            
+        
+        if self.observables:
+            observables_obj = self.observables.to_obj()
+            return_obj.set_Observables(observables_obj)
+        
         return return_obj
     
     def to_dict(self, return_dict=None):
@@ -92,6 +118,9 @@ class STIXPackage(stix.Entity):
         if self.indicators:
             for indicator in self.indicators:
                 return_dict.setdefault('indicators', []).append(indicator.to_dict())
+                
+        if self.observables:
+            return_dict['observables'] = self.observables.to_dict()
         
         return return_dict
         
@@ -111,6 +140,10 @@ class STIXPackage(stix.Entity):
                 for indicator_obj in indicators_obj.get_Indicator():
                     return_obj.add_indicator(Indicator.from_obj(indicator_obj))
         
+        if obj.get_Observables():
+            observables_obj = obj.get_Observables()
+            return_obj.observables = Observables.from_obj(observables_obj)
+        
         return return_obj
     
     @classmethod
@@ -128,7 +161,10 @@ class STIXPackage(stix.Entity):
         indicators = dict_repr.get('indicators', [])
         for indicator_dict in indicators:
             return_obj.add_indicator(Indicator.from_dict(indicator_dict))
-            
+        
+        observables_dict = dict_repr.get('observables')
+        return_obj.observables = Observables.from_dict(observables_dict)
+        
         return return_obj
     
     @classmethod
