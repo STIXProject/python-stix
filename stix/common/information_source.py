@@ -5,21 +5,19 @@ import stix
 
 from stix.extensions.identity import CIQIdentity3_0Instance
 from stix.common.identity import Identity
-from cybox.common import Time
+from cybox.common import Time, ToolInformationList
 
-import cybox.bindings.cybox_common as cybox_common_binding
-import stix.bindings.indicator as stix_indicator_binding
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
 
 
 
 class InformationSource(stix.Entity):
-    def __init__(self, identity=None, time=None):
+    def __init__(self, identity=None, time=None, tools=None):
         self.identity = identity
         #self.contributors = []
         self.time = time
-        #self.tools = []
+        self.tools = tools
         #self.references = []
     
     @property
@@ -44,13 +42,25 @@ class InformationSource(stix.Entity):
         
         self._time = value
         
+    @property
+    def tools(self):
+        return self._tools
     
+    @tools.setter
+    def tools(self, value):
+        if value and not isinstance(value, ToolInformationList):
+            raise ValueError('value must be instance of cybox.common.ToolInformationList')
+        
+        self._tools = value
+            
+        
     def to_obj(self, return_obj=None):
         if return_obj == None:
             return_obj = stix_common_binding.InformationSourceType()
         
-        identity_obj = self.identity.to_obj() if self.identity else None
-        time_obj = self.time.to_obj() if self.time else None
+        identity_obj    = self.identity.to_obj() if self.identity else None
+        time_obj        = self.time.to_obj() if self.time else None
+        tools_obj       = self.tools.to_obj() if self.tools else None
         
         #=======================================================================
         # contributors_obj = stix_common_binding.ContributorsType() if self.contributors else None
@@ -59,10 +69,6 @@ class InformationSource(stix.Entity):
         #    contributors_obj.add_Contributor(contributor_obj)
         # 
         # 
-        # tools_obj = cybox_common_binding.ToolsInformationType() if self.tools else None
-        # for tool in self.tools:
-        #    tool_obj = tool.to_obj()
-        #    tools_obj.add_Tool(tool_obj)
         #    
         # references_obj = stix_common_binding.ReferencesType() if self.references else None
         # for reference in self.references:
@@ -73,6 +79,7 @@ class InformationSource(stix.Entity):
         
         return_obj.set_Identity(identity_obj)
         return_obj.set_Time(time_obj)
+        return_obj.set_Tools(tools_obj)
         #return_obj.set_Contributors(contributors_obj)
         #return_obj.set_Tools(tools_obj)
         #return_obj.set_References(references_obj)
@@ -96,7 +103,10 @@ class InformationSource(stix.Entity):
         
         if obj.get_Time():
             return_obj.time = Time.from_obj(obj.get_Time())
-            
+        
+        if obj.get_Tools():
+            return_obj.tools = ToolInformationList.from_obj(obj.get_Tools())
+        
         return return_obj
         
         
@@ -108,8 +118,9 @@ class InformationSource(stix.Entity):
         if not return_obj:
             return_obj = cls()
         
-        identity_dict = dict_repr.get('identity', None)
-        time_dict = dict_repr.get('time', None)
+        identity_dict   = dict_repr.get('identity')
+        time_dict       = dict_repr.get('time')
+        tools_list      = dict_repr.get('tools')
         
         if identity_dict:
             xsi_type = identity_dict.get('xsi:type')
@@ -125,6 +136,9 @@ class InformationSource(stix.Entity):
         if time_dict:
             return_obj.time = Time.from_dict(time_dict)
         
+        if tools_list:
+            return_obj.tools = ToolInformationList.from_list(tools_list)
+        
         return return_obj
     
     
@@ -137,6 +151,9 @@ class InformationSource(stix.Entity):
             
         if self.time:
             return_dict['time']  = self.time.to_dict()
+        
+        if self.tools:
+            return_dict['tools'] = self.tools.to_list()
         
         return return_dict
     

@@ -555,7 +555,7 @@ class InformationSourceType(GeneratedsSuper):
         if self.Time is not None:
             self.Time.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Time', pretty_print=pretty_print)
         if self.Tools is not None:
-            self.Tools.export(outfile, level, nsmap, namespace_, name_='Tools', pretty_print=pretty_print)
+            self.Tools.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Tools', pretty_print=pretty_print)
         if self.References is not None:
             self.References.export(outfile, level, nsmap, namespace_, name_='References', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='InformationSourceType'):
