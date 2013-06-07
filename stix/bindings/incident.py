@@ -3376,7 +3376,7 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             showIndent(outfile, level, pretty_print)
             outfile.write('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
         if self.Time is not None:
-            self.Time.export(outfile, level, nsmap, namespace_, name_='Time', pretty_print=pretty_print)
+            self.Time.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Time', pretty_print=pretty_print)
         if self.Description is not None:
             self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Categories is not None:
