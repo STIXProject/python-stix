@@ -192,7 +192,7 @@ class STIXPackage(stix.Entity):
         '''Overrides the stix.to_xml() method. Namespace definitions are hardcoded--this is only temporary'''
         s = StringIO()
         if namespace_def_list == None:
-            self.to_obj().export(s, 0,  core_binding.DEFAULT_XML_NS_MAP)
+            self.to_obj().export(s, 0,  stix_core_binding.DEFAULT_XML_NS_MAP)
         elif isinstance(namespace_def_list, list) and len(namespace_def_list) > 0:
             xml_ns_map = stix_core_binding.DEFAULT_XML_NS_MAP
             for namespace_def in namespace_def_list:
