@@ -10,7 +10,6 @@ from cybox.core import Observables
 import stix.bindings.stix_core as stix_core_binding
 import cybox.bindings.cybox_core as cybox_core_binding
 
-from lxml import etree
 from StringIO import StringIO
 
 class STIXPackage(stix.Entity):
@@ -180,8 +179,8 @@ class STIXPackage(stix.Entity):
         else:
             f = xml_file
         
-        doc = etree.parse(f)
-        stix_package_obj = stix_core_binding.STIXType()
+        doc = stix_core_binding.parsexml_(f)
+        stix_package_obj = stix_core_binding.STIXType().factory()
         stix_package_obj.build(doc.getroot())
         stix_package = STIXPackage().from_obj(stix_package_obj)
         
@@ -203,7 +202,6 @@ class STIXPackage(stix.Entity):
         s = StringIO()
         self.to_obj().export(s, 0, export_ns_dict)
         return s.getvalue()
-        
     
         
     
