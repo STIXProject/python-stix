@@ -2238,7 +2238,7 @@ class RelatedObservableType(GenericRelationshipType):
         else:
             eol_ = ''
         if self.Observable is not None:
-            self.Observable.export(outfile, level, nsmap, namespace_, name_='Observable', pretty_print=pretty_print)
+            self.Observable.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Observable', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='RelatedObservableType'):
         level += 1
         already_processed = set()
