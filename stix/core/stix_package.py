@@ -188,17 +188,20 @@ class STIXPackage(stix.Entity):
         return (stix_package, stix_package_obj)
             
     
-    def to_xml(self, namespace_def_list = None):
-        '''Overrides the stix.to_xml() method. Namespace definitions are hardcoded--this is only temporary'''
+    def to_xml(self, ns_dict=None):
+        '''
+        Overrides the stix.to_xml() method.
+        The ns_dict parameter is a dictionary where keys are namespaces
+        and values are prefixes. The NS:PREFIX pairs are appended to the 
+        stix_core_binding.DEFAULT_XML_NS_MAP dictionary. 
+        '''
+        
+        export_ns_dict = dict(stix_core_binding.DEFAULT_XML_NS_MAP)
+        if ns_dict:
+            export_ns_dict.update(ns_dict)
+        
         s = StringIO()
-        if namespace_def_list == None:
-            self.to_obj().export(s, 0,  stix_core_binding.DEFAULT_XML_NS_MAP)
-        elif isinstance(namespace_def_list, list) and len(namespace_def_list) > 0:
-            xml_ns_map = stix_core_binding.DEFAULT_XML_NS_MAP
-            for namespace_def in namespace_def_list:
-                split_namespace_def = namespace_def.split('=')
-                xml_ns_map[split_namespace_def[1].strip('"')] = split_namespace_def[0].split('xmlns:')[1]
-            self.to_obj().export(s, 0, xml_ns_map)
+        self.to_obj().export(s, 0, export_ns_dict)
         return s.getvalue()
         
     
