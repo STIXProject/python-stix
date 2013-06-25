@@ -151,7 +151,8 @@ class Indicator(stix.Entity):
             
             return_obj.set_Observable(root_observable.to_obj())
 
-        return_obj.set_Producer(self.producer.to_obj())
+        if self.producer:
+            return_obj.set_Producer(self.producer.to_obj())
     
         return return_obj
     
