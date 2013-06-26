@@ -13,7 +13,7 @@ the root directory:
 python setup.py install
 </code>
 
-The python-stix library is also hosted at [pypi](https://pypi.python.org/pypi/stix/) and can be
+The python-stix library is also hosted at [PyPI](https://pypi.python.org/pypi/stix/) and can be
 installed via [pip](https://pypi.python.org/pypi/pip):
 
 <code>
