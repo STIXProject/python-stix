@@ -21,10 +21,12 @@ pip install stix
 </code>
 
 *Note that if using pip, you MUST install python-cybox before python-stix:
+
 <code>
 pip install cybox
 </code>
-We're documented and working on a fix for this issue, see: https://github.com/STIXProject/python-stix/issues/24
+
+We've documented and working on a fix for this issue, see: https://github.com/STIXProject/python-stix/issues/24
 
 
 ## Dependencies
