@@ -1,7 +1,7 @@
 # Copyright (c) 2013, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-__version__ = "1.0.0a4"
+__version__ = "1.0.0a5"
 
 import json
 from StringIO import StringIO
