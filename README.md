@@ -14,11 +14,18 @@ python setup.py install
 </code>
 
 The python-stix library is also hosted at [PyPI](https://pypi.python.org/pypi/stix/) and can be
-installed via [pip](https://pypi.python.org/pypi/pip):
+installed via [pip](https://pypi.python.org/pypi/pip)*:
 
 <code>
 pip install stix
 </code>
+
+*Note that if using pip, you MUST install python-cybox before python-stix:
+<code>
+pip install cybox
+</code>
+We're documented and working on a fix for this issue, see: https://github.com/STIXProject/python-stix/issues/24
+
 
 ## Dependencies
 The python-stix library depends on the presence of certain packages/libraries to function.
