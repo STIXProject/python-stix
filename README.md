@@ -20,12 +20,6 @@ installed via [pip](https://pypi.python.org/pypi/pip)*:
 pip install stix
 </code>
 
-*Note that if using pip, you MUST install python-cybox before python-stix:
-
-<code>
-pip install cybox
-</code>
-
 We've documented and are working on a fix for this issue, see: https://github.com/STIXProject/python-stix/issues/24
 
 
