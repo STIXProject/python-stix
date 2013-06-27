@@ -26,7 +26,7 @@ pip install stix
 pip install cybox
 </code>
 
-We've documented and working on a fix for this issue, see: https://github.com/STIXProject/python-stix/issues/24
+We've documented and are working on a fix for this issue, see: https://github.com/STIXProject/python-stix/issues/24
 
 
 ## Dependencies
