@@ -6,7 +6,6 @@ __version__ = "1.0.0a4"
 import json
 from StringIO import StringIO
 
-import stix.bindings.stix_core as core_binding
 
 class Entity(object):
     """Base class for all classes in the STIX API."""
@@ -22,6 +21,7 @@ class Entity(object):
         """Export an object as an XML String"""
         s = StringIO()
         # For now, just export all the namespaces
+        import stix.bindings.stix_core as core_binding
         self.to_obj().export(s, 0,  core_binding.DEFAULT_XML_NS_MAP)
         return s.getvalue()
 
