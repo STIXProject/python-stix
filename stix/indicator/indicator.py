@@ -3,19 +3,25 @@
 
 import stix
 import stix.utils
-from stix.common import Identity, InformationSource, StructuredText
+from stix.common import Identity, InformationSource, StructuredText, VocabString
 import stix.extensions.identity as ext_identity
 import stix.bindings.indicator as indicator_binding
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
 
+    
+class IndicatorType(VocabString):
+    _XSI_TYPE = 'stixVocabs:IndicatorTypeVocab-1.0'
+
+
 class Indicator(stix.Entity):
-    def __init__(self, id_=None, title=None, description=None, producer=None, observables=None):
+    def __init__(self, id_=None, title=None, description=None, indicator_type=None, producer=None, observables=None):
         self.id_ = id_ if id_ is not None else stix.utils.create_id()
         self.producer = producer
         self.observables = observables
         self.title = title
         self.description = description
+        self.indicator_type = indicator_type
         
     @property
     def description(self):
@@ -53,6 +59,18 @@ class Indicator(stix.Entity):
         if valuelist:
             for value in valuelist:
                 self.add_observable(value)
+  
+    @property
+    def indicator_type(self):
+        return self._indicator_tye
+
+    @indicator_type.setter
+    def indicator_type(self, value):
+        if value and not isinstance(value, IndicatorType):
+            value = IndicatorType(value)
+
+        self._indicator_type = value
+  
   
     def set_producer_identity(self, identity):
         '''
@@ -141,6 +159,9 @@ class Indicator(stix.Entity):
         if self.description:
             return_obj.set_Description(self.description.to_obj())
         
+        if self.indicator_type:
+            return_obj.set_Type(self.indicator_type.to_obj())
+        
         return_obj.set_Title(self.title)
 
         if self.observables:
@@ -164,10 +185,11 @@ class Indicator(stix.Entity):
         if not return_obj:
             return_obj = cls()
         
-        return_obj.id_          = obj.get_id()
-        return_obj.title        = obj.get_Title()
-        return_obj.description  = StructuredText.from_obj(obj.get_Description())
-        return_obj.producer     = InformationSource.from_obj(obj.get_Producer())
+        return_obj.id_              = obj.get_id()
+        return_obj.title            = obj.get_Title()
+        return_obj.description      = StructuredText.from_obj(obj.get_Description())
+        return_obj.producer         = InformationSource.from_obj(obj.get_Producer())
+        return_obj.indicator_type   = IndicatorType.from_obj(obj.get_Type()) 
         
         if obj.get_Observable():
             observable_obj = obj.get_Observable()
@@ -199,6 +221,9 @@ class Indicator(stix.Entity):
         if self.description:
             return_dict['description'] = self.description.to_dict()
         
+        if self.indicator_type:
+            return_dict['indicator_type'] = self.indicator_type.to_dict()
+        
         return return_dict
         
     
@@ -215,6 +240,7 @@ class Indicator(stix.Entity):
         observable_dict     = dict_repr.get('observable')
         producer_dict       = dict_repr.get('producer')
         description_dict    = dict_repr.get('description')
+        indicator_type_dict = dict_repr.get('indicator_type')
         
         if observable_dict:
             return_obj.add_observable(Observable.from_dict(observable_dict))
@@ -225,8 +251,11 @@ class Indicator(stix.Entity):
         if description_dict:
             return_obj.description = StructuredText.from_dict(description_dict)
         
+        if indicator_type_dict:
+            return_obj.indicator_type = IndicatorType.from_dict(indicator_type_dict)
+        
         return return_obj
     
     
-    
+
     
