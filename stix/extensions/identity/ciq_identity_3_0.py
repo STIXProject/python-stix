@@ -79,7 +79,7 @@ class CIQIdentity3_0Instance(Identity):
     
     @classmethod
     def from_obj(cls, obj, return_obj=None):
-        if not obj:
+        if obj is None:
             return None
         
         if not return_obj:
@@ -94,7 +94,7 @@ class CIQIdentity3_0Instance(Identity):
             for role in roles:
                 return_obj.add_role(role)
         
-        if specification:
+        if specification is not None:
             return_obj.specification = STIXCIQIdentity3_0.from_obj(specification)
             
         return return_obj 
@@ -159,7 +159,7 @@ class STIXCIQIdentity3_0(stix.Entity):
     
     @classmethod
     def from_obj(cls, obj, return_obj=None):
-        if not obj:
+        if obj is None:
             return None
         
         if not return_obj:
@@ -257,7 +257,7 @@ class PartyName(stix.Entity):
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
-        if not obj:
+        if obj is None:
             return None
         
         if not return_obj:
@@ -361,7 +361,7 @@ class NameLine(stix.Entity):
     
     @classmethod
     def from_obj (cls, obj, return_obj=None):
-        if not obj:
+        if obj is None:
             return None
         
         if not return_obj:
@@ -429,7 +429,7 @@ class PersonName(stix.Entity):
     
     @classmethod
     def from_obj(cls, obj, return_obj=None):
-        if not obj:
+        if obj is None:
             return None
         
         if not return_obj:
@@ -514,7 +514,7 @@ class OrganisationName(stix.Entity):
     
     @classmethod
     def from_obj(cls, obj, return_obj=None):
-        if not obj:
+        if obj is None:
             return None
         
         if not return_obj:
@@ -651,7 +651,7 @@ class PersonNameElement(NameElement):
     
     @classmethod
     def from_obj(cls, obj, return_obj=None):
-        if not obj:
+        if obj is None:
             return None
         
         if not return_obj:
@@ -725,7 +725,7 @@ class OrganisationNameElement(NameElement):
         
     @classmethod
     def from_obj(cls, obj, return_obj=None):
-        if not obj:
+        if obj is None:
             return None
         
         if not return_obj:
@@ -803,7 +803,7 @@ class SubDivisionName(stix.Entity):
         
     @classmethod
     def from_obj(cls, obj, return_obj=None):
-        if not obj:
+        if obj is None:
             return None
         
         if not return_obj:
