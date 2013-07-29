@@ -62,7 +62,7 @@ class Indicator(stix.Entity):
   
     @property
     def indicator_type(self):
-        return self._indicator_tye
+        return self._indicator_type
 
     @indicator_type.setter
     def indicator_type(self, value):
