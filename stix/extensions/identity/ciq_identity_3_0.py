@@ -199,8 +199,7 @@ class STIXCIQIdentity3_0(stix.Entity):
     def to_dict(self, return_dict=None):
         if not return_dict:
             return_dict = {}
-        
-        super(STIXCIQIdentity3_0, self).to_dict(return_dict)
+            
         if self.party_name:
             return_dict['party_name'] = self.party_name.to_dict()
         
