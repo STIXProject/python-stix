@@ -1177,8 +1177,8 @@ class MalwareType(GeneratedsSuper):
                     type_name_ = type_names_[1]
             
                 if type_name_ == "MAEC4.0InstanceType":
-                    import stix.bindings.extensions.malware.maec_4_0 as maec_4_0_binding
-                    obj_ = maec_4_0_binding.MAEC4_0InstanceType.factory()
+                    import stix.bindings.extensions.malware.maec_4_0_1 as maec_4_0_1_binding
+                    obj_ = maec_4_0_1_binding.MAEC4_0InstanceType.factory()
             else:
                 obj_ = MalwareInstanceType.factory() # MalwareInstanceType is not abstract
             
@@ -1276,9 +1276,9 @@ class AttackPatternsType(GeneratedsSuper):
                 else:
                     type_name_ = type_names_[1]
                 
-                if type_name_ == "CAPEC2.5InstanceType":
-                    import stix.bindings.extensions.attack_pattern.capec_2_5 as capec_2_5_binding
-                    obj_ = capec_2_5_binding.CAPEC2_5InstanceType.factory()
+                if type_name_ == "CAPEC2.6InstanceType":
+                    import stix.bindings.extensions.attack_pattern.capec_2_6_1 as capec_2_6_1_binding
+                    obj_ = capec_2_6_1_binding.CAPEC2_6InstanceType.factory()
                 else:
                     raise NotImplementedError('No implementation for type: ' + type_name_)
             else:
@@ -1711,7 +1711,7 @@ class TTPType(stix_common_binding.TTPBaseType):
     relevant STIX-TTP schema version for this content."""
     subclass = None
     superclass = stix_common_binding.TTPBaseType
-    def __init__(self, idref=None, id=None, version='1.0', Title=None, Description=None, Intended_Effect=None, Behavior=None, Resources=None, Victim_Targeting=None, Exploit_Targets=None, Related_TTPs=None, Kill_Chain_Phases=None, Information_Source=None, Kill_Chains=None, Handling=None):
+    def __init__(self, idref=None, id=None, version=None, Title=None, Description=None, Intended_Effect=None, Behavior=None, Resources=None, Victim_Targeting=None, Exploit_Targets=None, Related_TTPs=None, Kill_Chain_Phases=None, Information_Source=None, Kill_Chains=None, Handling=None):
         super(TTPType, self).__init__(idref, id, )
         self.xmlns          = "http://stix.mitre.org/TTP-1"
         self.xmlns_prefix   = "ttp"

@@ -126,7 +126,7 @@ DEFAULT_XML_NS_MAP = {  'http://capec.mitre.org/capec-2': 'capec',
                          'http://stix.mitre.org/ThreatActor-1': 'ta',
                          'http://stix.mitre.org/common-1': 'stixCommon',
                          'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
-                         'http://stix.mitre.org/extensions/AP#CAPEC2.5-1': 'capecInstance',
+                         'http://stix.mitre.org/extensions/AP#CAPEC2.6-1': 'capecInstance',
                          'http://stix.mitre.org/extensions/Address#CIQAddress3.0-1': 'ciqAddress',
                          'http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1': 'ciqIdentity',
                          'http://stix.mitre.org/extensions/Malware#MAEC4.0-1': 'maecInstance',
@@ -629,7 +629,7 @@ class STIXType(GeneratedsSuper):
     version for this content."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, version='1.0', STIX_Header=None, Observables=None, Indicators=None, TTPs=None, Exploit_Targets=None, Incidents=None, Courses_Of_Action=None, Campaigns=None, Threat_Actors=None):
+    def __init__(self, idref=None, id=None, version=None, STIX_Header=None, Observables=None, Indicators=None, TTPs=None, Exploit_Targets=None, Incidents=None, Courses_Of_Action=None, Campaigns=None, Threat_Actors=None):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
         self.version = _cast(None, version)

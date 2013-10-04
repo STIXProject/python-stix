@@ -698,7 +698,7 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     schema version for this content."""
     subclass = None
     superclass = stix_common_binding.CourseOfActionBaseType
-    def __init__(self, idref=None, id=None, version='1.0', Title=None, Stage=None, Type=None, Description=None, Objective=None, Structured_COA=None, Impact=None, Cost=None, Efficacy=None, Handling=None):
+    def __init__(self, idref=None, id=None, version=None, Title=None, Stage=None, Type=None, Description=None, Objective=None, Structured_COA=None, Impact=None, Cost=None, Efficacy=None, Handling=None):
         super(CourseOfActionType, self).__init__(idref, id, )
         self.version = _cast(None, version)
         self.Title = Title
