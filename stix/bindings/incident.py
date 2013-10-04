@@ -3180,7 +3180,7 @@ class IncidentType(stix_common_binding.IncidentBaseType):
     Incident specification."""
     subclass = None
     superclass = stix_common_binding.IncidentBaseType
-    def __init__(self, idref=None, id=None, URL=None, version='1.0', Title=None, Time=None, Description=None, Categories=None, Reporter=None, Responder=None, Coordinator=None, Victim=None, Affected_Assets=None, Impact_Assessment=None, Status=None, Related_Indicators=None, Related_Observables=None, Leveraged_TTPs=None, Attributed_Threat_Actors=None, Intended_Effect=None, Security_Compromise=None, Discovery_Method=None, Related_Incidents=None, COA_Requested=None, COA_Taken=None, Confidence=None, Contact=None, History=None, Handling=None):
+    def __init__(self, idref=None, id=None, URL=None, version=None, Title=None, Time=None, Description=None, Categories=None, Reporter=None, Responder=None, Coordinator=None, Victim=None, Affected_Assets=None, Impact_Assessment=None, Status=None, Related_Indicators=None, Related_Observables=None, Leveraged_TTPs=None, Attributed_Threat_Actors=None, Intended_Effect=None, Security_Compromise=None, Discovery_Method=None, Related_Incidents=None, COA_Requested=None, COA_Taken=None, Confidence=None, Contact=None, History=None, Handling=None):
         super(IncidentType, self).__init__(idref, id, )
         self.xmlns          = "http://stix.mitre.org/Incident-1"
         self.xmlns_prefix   = "incident"

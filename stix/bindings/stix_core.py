@@ -629,7 +629,7 @@ class STIXType(GeneratedsSuper):
     version for this content."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, version='1.0', STIX_Header=None, Observables=None, Indicators=None, TTPs=None, Exploit_Targets=None, Incidents=None, Courses_Of_Action=None, Campaigns=None, Threat_Actors=None):
+    def __init__(self, idref=None, id=None, version=None, STIX_Header=None, Observables=None, Indicators=None, TTPs=None, Exploit_Targets=None, Incidents=None, Courses_Of_Action=None, Campaigns=None, Threat_Actors=None):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
         self.version = _cast(None, version)

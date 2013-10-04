@@ -1032,7 +1032,7 @@ class CampaignType(stix_common_binding.CampaignBaseType):
     this content."""
     subclass = None
     superclass = stix_common_binding.CampaignBaseType
-    def __init__(self, idref=None, id=None, version='1.0', Title=None, Names=None, Intended_Effect=None, Status=None, Related_TTPs=None, Related_Incidents=None, Related_Indicators=None, Attribution=None, Associated_Campaigns=None, Confidence=None, Activity=None, Information_Source=None, Handling=None):
+    def __init__(self, idref=None, id=None, version=None, Title=None, Names=None, Intended_Effect=None, Status=None, Related_TTPs=None, Related_Incidents=None, Related_Indicators=None, Attribution=None, Associated_Campaigns=None, Confidence=None, Activity=None, Information_Source=None, Handling=None):
         super(CampaignType, self).__init__(idref, id, )
         self.xmlns          = "http://stix.mitre.org/Campaign-1"
         self.xmlns_prefix   = "campaign"

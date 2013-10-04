@@ -1711,7 +1711,7 @@ class TTPType(stix_common_binding.TTPBaseType):
     relevant STIX-TTP schema version for this content."""
     subclass = None
     superclass = stix_common_binding.TTPBaseType
-    def __init__(self, idref=None, id=None, version='1.0', Title=None, Description=None, Intended_Effect=None, Behavior=None, Resources=None, Victim_Targeting=None, Exploit_Targets=None, Related_TTPs=None, Kill_Chain_Phases=None, Information_Source=None, Kill_Chains=None, Handling=None):
+    def __init__(self, idref=None, id=None, version=None, Title=None, Description=None, Intended_Effect=None, Behavior=None, Resources=None, Victim_Targeting=None, Exploit_Targets=None, Related_TTPs=None, Kill_Chain_Phases=None, Information_Source=None, Kill_Chains=None, Handling=None):
         super(TTPType, self).__init__(idref, id, )
         self.xmlns          = "http://stix.mitre.org/TTP-1"
         self.xmlns_prefix   = "ttp"
