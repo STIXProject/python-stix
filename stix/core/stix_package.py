@@ -23,7 +23,7 @@ class STIXPackage(stix.Entity):
         '''
         self.id_ = id_ if id_ else stix.utils.create_id() 
         self.idref_ = idref_
-        self.version = '1.0'
+        self.version = '1.0.1'
         self.indicators = indicators
         self.observables = observables
         self.stix_header = stix_header
