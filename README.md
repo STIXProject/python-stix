@@ -1,7 +1,7 @@
 # python-stix [![Build Status](https://travis-ci.org/STIXProject/python-stix.png?branch=master)](https://travis-ci.org/STIXProject/python-stix)
 
 A python library for parsing, manipulating, and generating STIX content. The `python-stix` library
-utilizes the STIX v1.0 bindings, is under heavy development and should be considered **PRE-ALPHA**.
+utilizes the STIX v1.0.1 bindings, is under heavy development.
 
 For more information about STIX, see http://stix.mitre.org.
 
@@ -44,6 +44,6 @@ The python-stix package layout is as follows:
 * stix/core/ : APIs for core STIX constructs (e.g., STIX Header, STIX Package)
 * stix/common/ : APIs for common STIX constructs (e.g., Structured Text, Information Source)
 * stix/indicator/ : APIs for STIX Indicator constructs
-* stix/extensions/ : APIs for STIX extensions (e.g., OVAL Test Mechanisms, CIQ Identity)
+* stix/extensions/ : APIs for STIX extensions (e.g.CIQ Identity)
 
 Please refer to examples for concrete examples of how to interact with the python-stix library
