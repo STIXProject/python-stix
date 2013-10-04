@@ -20,9 +20,6 @@ installed via [pip](https://pypi.python.org/pypi/pip)*:
 pip install stix
 </code>
 
-We've documented and are working on a fix for this issue, see: https://github.com/STIXProject/python-stix/issues/24
-
-
 ## Dependencies
 The python-stix library depends on the presence of certain packages/libraries to function.
 Please refer to their installation documentation for installation instructions.
