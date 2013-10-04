@@ -1276,9 +1276,9 @@ class AttackPatternsType(GeneratedsSuper):
                 else:
                     type_name_ = type_names_[1]
                 
-                if type_name_ == "CAPEC2.5InstanceType":
-                    import stix.bindings.extensions.attack_pattern.capec_2_5 as capec_2_5_binding
-                    obj_ = capec_2_5_binding.CAPEC2_5InstanceType.factory()
+                if type_name_ == "CAPEC2.6InstanceType":
+                    import stix.bindings.extensions.attack_pattern.capec_2_6_1 as capec_2_6_1_binding
+                    obj_ = capec_2_6_1_binding.CAPEC2_6InstanceType.factory()
                 else:
                     raise NotImplementedError('No implementation for type: ' + type_name_)
             else:

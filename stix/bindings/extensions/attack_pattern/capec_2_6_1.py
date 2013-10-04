@@ -16,7 +16,7 @@ import stix.bindings.ttp as ttp_binding
 import base64
 from datetime import datetime, tzinfo, timedelta
 
-XML_NS = "http://stix.mitre.org/extensions/AP#CAPEC2.5-1"
+XML_NS = "http://stix.mitre.org/extensions/AP#CAPEC2.6-1"
 
 etree_ = None
 Verbose_import_ = False
@@ -487,36 +487,36 @@ def _cast(typ, value):
 # Data representation classes.
 #
 
-class CAPEC2_5InstanceType(ttp_binding.AttackPatternType):
+class CAPEC2_6InstanceType(ttp_binding.AttackPatternType):
     """The CAPECInstanceType provides an extension to the
     APStructureAbstractType which imports and leverages the CAPEC
     schema for structured characterization of Attack Patterns."""
     subclass = None
     superclass = ttp_binding.AttackPatternType
     def __init__(self, capec_id=None, Description=None, CAPEC=None):
-        super(CAPEC2_5InstanceType, self).__init__(capec_id, Description, )
+        super(CAPEC2_6InstanceType, self).__init__(capec_id, Description, )
         self.CAPEC = CAPEC
-        self.xmlns          = "http://stix.mitre.org/extensions/AP#CAPEC2.5-1"
+        self.xmlns          = "http://stix.mitre.org/extensions/AP#CAPEC2.6-1"
         self.xmlns_prefix   = "capecInstance"
-        self.xml_type       = "CAPEC2.5InstanceType"
+        self.xml_type       = "CAPEC2.6InstanceType"
         
     def factory(*args_, **kwargs_):
-        if CAPEC2_5InstanceType.subclass:
-            return CAPEC2_5InstanceType.subclass(*args_, **kwargs_)
+        if CAPEC2_6InstanceType.subclass:
+            return CAPEC2_6InstanceType.subclass(*args_, **kwargs_)
         else:
-            return CAPEC2_5InstanceType(*args_, **kwargs_)
+            return CAPEC2_6InstanceType(*args_, **kwargs_)
     factory = staticmethod(factory)
     def get_CAPEC(self): return self.CAPEC
     def set_CAPEC(self, CAPEC): self.CAPEC = CAPEC
     def hasContent_(self):
         if (
             self.CAPEC is not None or
-            super(CAPEC2_5InstanceType, self).hasContent_()
+            super(CAPEC2_6InstanceType, self).hasContent_()
             ):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='CAPEC2.5InstanceType', namespacedef_='', pretty_print=True):
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='CAPEC2.6InstanceType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -524,7 +524,7 @@ class CAPEC2_5InstanceType(ttp_binding.AttackPatternType):
         showIndent(outfile, level, pretty_print)
         outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='CAPEC2.5InstanceType')
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='CAPEC2.6InstanceType')
         if self.hasContent_():
             outfile.write('>%s' % (eol_, ))
             self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
@@ -532,8 +532,8 @@ class CAPEC2_5InstanceType(ttp_binding.AttackPatternType):
             outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='CAPEC2.5InstanceType'):
-        super(CAPEC2_5InstanceType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='CAPEC2.5InstanceType')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='', name_='CAPEC2.6InstanceType'):
+        super(CAPEC2_6InstanceType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='CAPEC2.6InstanceType')
         if 'xmlns' not in already_processed:
             already_processed.add('xmlns')
             xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
@@ -542,8 +542,8 @@ class CAPEC2_5InstanceType(ttp_binding.AttackPatternType):
             already_processed.add('xsi:type')
             xsi_type = "  xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
             outfile.write(xsi_type)
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='CAPEC2.5InstanceType', fromsubclass_=False, pretty_print=True):
-        super(CAPEC2_5InstanceType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='CAPEC2.6InstanceType', fromsubclass_=False, pretty_print=True):
+        super(CAPEC2_6InstanceType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
@@ -552,18 +552,18 @@ class CAPEC2_5InstanceType(ttp_binding.AttackPatternType):
             showIndent(outfile, level, pretty_print)
             outfile.write(etree_.tostring(self.CAPEC, pretty_print=pretty_print))
             #self.CAPEC.export(outfile, level, nsmap, namespace_, name_='CAPEC', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='CAPEC2.5InstanceType'):
+    def exportLiteral(self, outfile, level, name_='CAPEC2.6InstanceType'):
         level += 1
         already_processed = set()
         self.exportLiteralAttributes(outfile, level, already_processed, name_)
         if self.hasContent_():
             self.exportLiteralChildren(outfile, level, name_)
     def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(CAPEC2_5InstanceType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
+        super(CAPEC2_6InstanceType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
     def exportLiteralChildren(self, outfile, level, name_):
-        super(CAPEC2_5InstanceType, self).exportLiteralChildren(outfile, level, name_)
+        super(CAPEC2_6InstanceType, self).exportLiteralChildren(outfile, level, name_)
 #        if self.CAPEC is not None:
-#            outfile.write('CAPEC=model_.ap_schema_v2_5.Attack_PatternType(\n')
+#            outfile.write('CAPEC=model_.ap_schema_v2_6.Attack_PatternType(\n')
 #            self.CAPEC.exportLiteral(outfile, level, name_='CAPEC')
 #            outfile.write('),\n')
     def build(self, node):
@@ -573,12 +573,12 @@ class CAPEC2_5InstanceType(ttp_binding.AttackPatternType):
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
-        super(CAPEC2_5InstanceType, self).buildAttributes(node, attrs, already_processed)
+        super(CAPEC2_6InstanceType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'CAPEC':
             self.set_CAPEC(child_)
-        super(CAPEC2_5InstanceType, self).buildChildren(child_, node, nodeName_, True)
-# end class CAPEC2_5InstanceType
+        super(CAPEC2_6InstanceType, self).buildChildren(child_, node, nodeName_, True)
+# end class CAPEC2_6InstanceType
 
 GDSClassesMapping = {
     'Resources': ttp_binding.ResourceType,
@@ -612,8 +612,8 @@ def parse(inFileName):
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
-        rootTag = 'CAPEC2.5InstanceType'
-        rootClass = CAPEC2_5InstanceType
+        rootTag = 'CAPEC2.6InstanceType'
+        rootClass = CAPEC2_6InstanceType
     rootObj = rootClass.factory()
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
@@ -629,8 +629,8 @@ def parseEtree(inFileName):
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
-        rootTag = 'CAPEC2.5InstanceType'
-        rootClass = CAPEC2_5InstanceType
+        rootTag = 'CAPEC2.6InstanceType'
+        rootClass = CAPEC2_6InstanceType
     rootObj = rootClass.factory()
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
@@ -648,14 +648,14 @@ def parseString(inString):
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
-        rootTag = 'CAPEC2.5InstanceType'
-        rootClass = CAPEC2_5InstanceType
+        rootTag = 'CAPEC2.6InstanceType'
+        rootClass = CAPEC2_6InstanceType
     rootObj = rootClass.factory()
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
     doc = None
     sys.stdout.write('<?xml version="1.0" ?>\n')
-    rootObj.export(sys.stdout, 0, name_="CAPEC2.5InstanceType",
+    rootObj.export(sys.stdout, 0, name_="CAPEC2.6InstanceType",
         namespacedef_='')
     return rootObj
 
@@ -664,15 +664,15 @@ def parseLiteral(inFileName):
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
-        rootTag = 'CAPEC2.5InstanceType'
-        rootClass = CAPEC2_5InstanceType
+        rootTag = 'CAPEC2.6InstanceType'
+        rootClass = CAPEC2_6InstanceType
     rootObj = rootClass.factory()
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
     doc = None
-    sys.stdout.write('#from capec_2.5 import *\n\n')
+    sys.stdout.write('#from capec_2.6 import *\n\n')
     sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import capec_2.5 as model_\n\n')
+    sys.stdout.write('import capec_2.6 as model_\n\n')
     sys.stdout.write('rootObj = model_.rootTag(\n')
     rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
     sys.stdout.write(')\n')
@@ -690,5 +690,5 @@ if __name__ == '__main__':
     main()
 
 __all__ = [
-    "CAPEC2_5InstanceType"
+    "CAPEC2_6InstanceType"
     ]
