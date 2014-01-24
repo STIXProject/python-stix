@@ -710,7 +710,7 @@ class AffectedAssetType(GeneratedsSuper):
         if self.Nature_Of_Security_Effect is not None:
             self.Nature_Of_Security_Effect.export(outfile, level, nsmap, namespace_, name_='Nature_Of_Security_Effect', pretty_print=pretty_print)
         if self.Structured_Description is not None:
-            self.Structured_Description.export(outfile, level, nsmap, namespace_, name_='Structured_Description', pretty_print=pretty_print)
+            self.Structured_Description.export(outfile, level + 1, name_='Structured_Description', pretty_print=pretty_print)
     def exportLiteral(self, outfile, level, name_='AffectedAssetType'):
         level += 1
         already_processed = set()
