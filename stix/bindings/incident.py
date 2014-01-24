@@ -2537,7 +2537,7 @@ class CategoriesType(GeneratedsSuper):
         if nodeName_ == 'Category':
             obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)
-            self.set_Category(obj_)
+            self.add_Category(obj_)
 # end class CategoriesType
 
 class EffectsType(GeneratedsSuper):
