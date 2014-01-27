@@ -1670,7 +1670,6 @@ GDSClassesMapping = {
     'Pattern_Fidelity': cybox_core_binding.PatternFidelityType,
     'Confidence': stix_common_binding.ConfidenceType,
     'Kill_Chain': stix_common_binding.KillChainType,
-    'Relationships': cybox_core_binding.RelationshipsType,
     'Description': stix_common_binding.StructuredTextType,
     'Action_Pertinent_Object_Properties': cybox_core_binding.ActionPertinentObjectPropertiesType,
     'Handling': data_marking_binding.MarkingType,

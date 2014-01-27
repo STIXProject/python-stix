@@ -3750,7 +3750,6 @@ GDSClassesMapping = {
     'Evasion_Techniques': cybox_core_binding.ObfuscationTechniquesType,
     'Certificate_Subject': cybox_common_binding.StringObjectPropertyType,
     'Related_Observable': stix_common_binding.RelatedObservableType,
-    'Reference': cybox_common_binding.ReferenceType,
     'Encoding': stix_common_binding.ControlledVocabularyStringType,
     'Internationalization_Settings': cybox_common_binding.InternationalizationSettingsType,
     'Image_Offset': cybox_common_binding.IntegerObjectPropertyType,

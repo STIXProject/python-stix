@@ -2007,7 +2007,6 @@ GDSClassesMapping = {
     'Length': cybox_common_binding.IntegerObjectPropertyType,
     'Evasion_Techniques': cybox_core_binding.ObfuscationTechniquesType,
     'Campaign': stix_common_binding.CampaignBaseType,
-    'Reference': cybox_common_binding.ReferenceType,
     'Encoding': stix_common_binding.ControlledVocabularyStringType,
     'Internationalization_Settings': cybox_common_binding.InternationalizationSettingsType,
     'Image_Offset': cybox_common_binding.IntegerObjectPropertyType,

@@ -1756,7 +1756,6 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
 # end class IndicatorType
 
 GDSClassesMapping = {
-    'Relationships': cybox_core_binding.RelationshipsType,
     'Indicator': stix_common_binding.IndicatorBaseType,
     'Defined_Effect': cybox_core_binding.DefinedEffectType,
     'Action_Argument': cybox_core_binding.ActionArgumentType,
