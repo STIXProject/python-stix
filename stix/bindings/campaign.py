@@ -1352,7 +1352,6 @@ class CampaignType(stix_common_binding.CampaignBaseType):
 
 GDSClassesMapping = {
     'Information_Source': stix_common_binding.InformationSourceType,
-    'Relationships': cybox_core_binding.RelationshipsType,
     'Indicator': stix_common_binding.IndicatorBaseType,
     'Defined_Effect': cybox_core_binding.DefinedEffectType,
     'Action_Argument': cybox_core_binding.ActionArgumentType,

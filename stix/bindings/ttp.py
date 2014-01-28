@@ -1979,7 +1979,6 @@ class TTPType(stix_common_binding.TTPBaseType):
 
 GDSClassesMapping = {
     'Information_Source': stix_common_binding.InformationSourceType,
-    'Relationships': cybox_core_binding.RelationshipsType,
     'Indicator': stix_common_binding.IndicatorBaseType,
     'Errors': cybox_common_binding.ErrorsType,
     'Defined_Effect': cybox_core_binding.DefinedEffectType,

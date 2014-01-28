@@ -3718,7 +3718,6 @@ class IncidentType(stix_common_binding.IncidentBaseType):
 # end class IncidentType
 
 GDSClassesMapping = {
-    'Relationships': cybox_core_binding.RelationshipsType,
     'Build_Utility': cybox_common_binding.BuildUtilityType,
     'Indicator': stix_common_binding.IndicatorBaseType,
     'Defined_Effect': cybox_core_binding.DefinedEffectType,
