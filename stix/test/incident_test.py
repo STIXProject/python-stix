@@ -1,9 +1,11 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from StringIO import StringIO
 import unittest
 
 import stix.bindings.incident as incident_binding
+from cybox.common import StructuredText
 
 
 INCIDENT_CATEGORIES = """<?xml version="1.0" encoding="UTF-8"?>
@@ -29,6 +31,25 @@ class IncidentTest(unittest.TestCase):
         categories = incident.Categories.Category
         self.assertEqual('Foo', categories[0].valueOf_)
         self.assertEqual('Bar', categories[1].valueOf_)
+
+    def test_description_output(self):
+        incident = incident_binding.IncidentType()
+
+        assets = incident_binding.AffectedAssetsType()
+        asset = incident_binding.AffectedAssetType()
+
+        description = StructuredText("A Description")
+        asset.set_Structured_Description(description.to_obj())
+
+        assets.add_Affected_Asset(asset)
+        incident.set_Affected_Assets(assets)
+
+        s = StringIO()
+
+        incident.export(s, 0, {'http://stix.mitre.org/Incident-1': 'incident'})
+        xml = s.getvalue()
+        self.assertTrue("A Description" in xml, "Description not exported")
+
 
 if __name__ == "__main__":
     unittest.main()
