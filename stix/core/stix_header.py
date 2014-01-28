@@ -5,6 +5,7 @@ import stix
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.stix_core as stix_core_binding
 from stix.common import InformationSource, StructuredText, VocabString
+from stix.common.handling import Handling
 
 
 class PackageIntent(VocabString):
@@ -16,7 +17,7 @@ class STIXHeader(stix.Entity):
         self.package_intent = package_intent
         self.title = title
         self.description = description
-        #self.handling = handling # not implemented
+        self.handling = handling
         self.information_source = information_source
 
     @property
@@ -44,6 +45,17 @@ class STIXHeader(stix.Entity):
             raise ValueError('value must be instance of StructuredText or basestring')
 
     @property
+    def handling(self):
+        return self._handling
+
+    @handling.setter
+    def handling(self, value):
+        if value and not isinstance(value, Handling):
+            raise ValueError('value must be instance of Handling')
+
+        self._handling = value
+
+    @property
     def package_intent(self):
         return self._package_intent
 
@@ -69,35 +81,39 @@ class STIXHeader(stix.Entity):
     def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
-        
+
         if not return_obj:
             return_obj = cls()
-        
+
         return_obj.title = obj.get_Title()
         return_obj.package_intent = PackageIntent.from_obj(obj.get_Package_Intent())
         return_obj.description = StructuredText.from_obj(obj.get_Description())
+        return_obj.handling = Handling.from_obj(obj.get_Handling())
         return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
-        
+
         return return_obj
 
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = stix_core_binding.STIXHeaderType()
-        
+
         if self.title:
             return_obj.set_Title(self.title)
-        
+
         if self.package_intent:
             return_obj.set_Package_Intent(self.package_intent.to_obj())
-        
+
         if self.description:
             return_obj.set_Description(self.description.to_obj())
-            
+
+        if self.handling:
+            return_obj.set_Handling(self.handling.to_obj())
+
         if self.information_source:
             return_obj.set_Information_Source(self.information_source.to_obj())
-        
+
         return return_obj
-    
+
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
         if not dict_repr:
@@ -111,6 +127,9 @@ class STIXHeader(stix.Entity):
 
         desc_dict = dict_repr.get('description')
         return_obj.description = StructuredText.from_dict(desc_dict)
+
+        handling_dict = dict_repr.get('handling')
+        return_obj.handling = Handling.from_dict(handling_dict)
 
         info_dict = dict_repr.get('information_source', None)
         return_obj.information_source = InformationSource.from_dict(info_dict)
@@ -129,6 +148,9 @@ class STIXHeader(stix.Entity):
 
         if self.description:
             return_dict['description'] = self.description.to_dict()
+
+        if self.handling:
+            return_dict['handling'] = self.handling.to_dict()
 
         if self.information_source:
             return_dict['information_source'] = self.information_source.to_dict()
