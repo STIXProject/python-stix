@@ -3729,7 +3729,7 @@ GDSClassesMapping = {
     'Metadata': cybox_common_binding.MetadataType,
     'Hash': cybox_common_binding.HashType,
     'Object': cybox_core_binding.ObjectType,
-    'Incident': stix_common_binding.IncidentBaseType,
+    'Incident': IncidentType,
     'Obfuscation_Technique': cybox_core_binding.ObfuscationTechniqueType,
     'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
     'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
@@ -3929,10 +3929,10 @@ def parse(inFileName):
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
     doc = None
-    sys.stdout.write('<?xml version="1.0" ?>\n')
-    rootObj.export(sys.stdout, 0, name_=rootTag,
-        namespacedef_='',
-        pretty_print=True)
+    # sys.stdout.write('<?xml version="1.0" ?>\n')
+    # rootObj.export(sys.stdout, 0, name_=rootTag,
+    #     namespacedef_='',
+    #     pretty_print=True)
     return rootObj
 
 def parseEtree(inFileName):
@@ -3965,9 +3965,9 @@ def parseString(inString):
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
     doc = None
-    sys.stdout.write('<?xml version="1.0" ?>\n')
-    rootObj.export(sys.stdout, 0, name_="Incident",
-        namespacedef_='')
+    # sys.stdout.write('<?xml version="1.0" ?>\n')
+    # rootObj.export(sys.stdout, 0, name_="Incident",
+    #     namespacedef_='')
     return rootObj
 
 def parseLiteral(inFileName):
