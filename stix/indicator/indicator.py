@@ -155,7 +155,7 @@ class Indicator(stix.Entity):
     
     def to_obj(self, return_obj=None):
         if not return_obj:
-            return_obj = indicator_binding.IndicatorType()
+            return_obj = self._binding.IndicatorType()
         
         if self.id_:
             return_obj.set_id(self.id_)

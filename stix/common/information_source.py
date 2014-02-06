@@ -59,7 +59,7 @@ class InformationSource(stix.Entity):
         
     def to_obj(self, return_obj=None):
         if return_obj == None:
-            return_obj = stix_common_binding.InformationSourceType()
+            return_obj = self._binding.InformationSourceType()
         
         identity_obj    = self.identity.to_obj() if self.identity else None
         time_obj        = self.time.to_obj() if self.time else None

@@ -99,7 +99,7 @@ class STIXHeader(stix.Entity):
 
     def to_obj(self, return_obj=None):
         if not return_obj:
-            return_obj = stix_core_binding.STIXHeaderType()
+            return_obj = self._binding.STIXHeaderType()
 
         if self.title:
             return_obj.set_Title(self.title)

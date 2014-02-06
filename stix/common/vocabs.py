@@ -47,7 +47,7 @@ class VocabString(stix.Entity):
         )
 
     def to_obj(self):
-        vocab_obj = stix_common_binding.ControlledVocabularyStringType()
+        vocab_obj = self._binding.ControlledVocabularyStringType()
 
         #TODO: handle normalization
         #vocab_obj.set_valueOf_(normalize_to_xml(self.value))

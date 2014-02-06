@@ -75,7 +75,7 @@ class STIXPackage(stix.Entity):
         
     def to_obj(self, return_obj=None):
         if not return_obj:
-            return_obj = stix_core_binding.STIXType()
+            return_obj = self._binding.STIXType()
         
         return_obj.set_id(self.id_)
         return_obj.set_idref(self.idref_)

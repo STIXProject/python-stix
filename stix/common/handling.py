@@ -29,7 +29,7 @@ class Handling(stix.Entity):
 
     def to_obj(self, return_obj=None):
         if return_obj == None:
-            return_obj = stix_data_marking_binding.MarkingType()
+            return_obj = self._binding.MarkingType()
 
         if self.marking:
             return_obj.set_Marking(self.marking)

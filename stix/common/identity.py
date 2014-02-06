@@ -55,7 +55,7 @@ class Identity(stix.Entity):
     
     def to_obj(self, return_obj=None):
         if not return_obj:
-            return_obj = stix_common_binding.IdentityType()
+            return_obj = self._binding.IdentityType()
         
         #return_obj.set_id(self.id_)
         #return_obj.set_idref(self.idref_)
@@ -143,7 +143,7 @@ class RelatedIdentity(GenericRelationship):
     
     def to_obj(self, return_obj=None):
         if not return_obj:
-            return_obj = stix_common_binding.RelatedIdentityType()
+            return_obj = self._binding.RelatedIdentityType()
             
         super(RelatedIdentity, self).to_obj(return_obj)
         

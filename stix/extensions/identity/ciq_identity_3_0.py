@@ -62,7 +62,7 @@ class CIQIdentity3_0Instance(Identity):
     
     def to_obj(self, return_obj=None):
         if not return_obj:
-            return_obj = ciq_identity_binding.CIQIdentity3_0InstanceType()
+            return_obj = self._binding.CIQIdentity3_0InstanceType()
         
         super(CIQIdentity3_0Instance, self).to_obj(return_obj)
         
