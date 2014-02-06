@@ -5,7 +5,7 @@ __version__ = "1.0.1.0"
 
 import json
 from StringIO import StringIO
-
+from stix.utils import NamespaceParser
 
 class Entity(object):
     """Base class for all classes in the STIX API."""
