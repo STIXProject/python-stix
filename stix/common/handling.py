@@ -6,10 +6,13 @@ from stix.bindings.extensions.marking.tlp import TLPMarkingStructureType
 from stix.bindings.extensions.marking.simple_marking import SimpleMarkingStructureType
 from stix.common.structured_text import StructuredText
 
-import stix.bindings.data_marking as stix_bindings_data_marking
+import stix.bindings.data_marking as stix_data_marking_binding
 
 
 class Handling(stix.Entity):
+    _binding = stix_data_marking_binding
+    _namespace = 'http://data-marking.mitre.org/Marking-1'
+    
     def __init__(self, marking=None):
         self.marking = marking
 
@@ -26,7 +29,7 @@ class Handling(stix.Entity):
 
     def to_obj(self, return_obj=None):
         if return_obj == None:
-            return_obj = stix_bindings_data_marking.MarkingType()
+            return_obj = stix_data_marking_binding.MarkingType()
 
         if self.marking:
             return_obj.set_Marking(self.marking)

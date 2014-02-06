@@ -13,6 +13,9 @@ import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_bindin
 
 
 class InformationSource(stix.Entity):
+    _binding = stix_common_binding
+    _namespace = 'http://stix.mitre.org/common-1'
+    
     def __init__(self, identity=None, time=None, tools=None):
         self.identity = identity
         #self.contributors = []

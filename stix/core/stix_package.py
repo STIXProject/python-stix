@@ -13,9 +13,8 @@ import cybox.bindings.cybox_core as cybox_core_binding
 from StringIO import StringIO
 
 class STIXPackage(stix.Entity):
-    '''
-    classdocs
-    '''
+    _binding = stix_core_binding
+    _namespace = 'http://stix.mitre.org/stix-1'
 
     def __init__(self, id_=None, idref_=None, stix_header=None, indicators=None, observables=None):
         '''

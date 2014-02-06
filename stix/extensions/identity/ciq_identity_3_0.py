@@ -20,7 +20,8 @@ et.register_namespace('ExtSch', XML_NS_STIX_EXT)
 
 
 class CIQIdentity3_0Instance(Identity):
-    _XML_NS         = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
+    _binding        = ciq_identity_binding
+    _namespace      = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
     _XML_NS_PREFIX  = "ciqIdentity"
     _XML_TYPE       = "CIQIdentity3.0InstanceType"
     
@@ -136,12 +137,10 @@ class CIQIdentity3_0Instance(Identity):
             return_obj.specification = STIXCIQIdentity3_0.from_dict(specification)
             
         return return_obj
-
-    
-    
     
 class STIXCIQIdentity3_0(stix.Entity):
-    XML_TAG = "{%s}Specification" % XML_NS_STIX_EXT
+    _namespace      = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
+    XML_TAG = "{%s}Specification" % _namespace
     
     def __init__(self, party_name=None):
         self.party_name = party_name if party_name else PartyName()
@@ -205,10 +204,9 @@ class STIXCIQIdentity3_0(stix.Entity):
         
         return return_dict
     
-
-
 class PartyName(stix.Entity):
-    XML_TAG = "{%s}PartyName" % XML_NS_XPIL
+    _namespace = XML_NS_XPIL
+    XML_TAG = "{%s}PartyName" % _namespace
     
     def __init__(self):
         self.name_lines = []
@@ -326,9 +324,9 @@ class PartyName(stix.Entity):
             
         return return_obj
 
-
 class NameLine(stix.Entity):
-    XML_TAG = "{%s}NameLine" % XML_NS_XNL
+    _namespace = XML_NS_XNL
+    XML_TAG = "{%s}NameLine" % _namespace
     
     def __init__(self, value=None, type_=None):
         self.value = value
@@ -396,9 +394,9 @@ class NameLine(stix.Entity):
         
         return return_obj
     
-
 class PersonName(stix.Entity):
-    XML_TAG = "{%s}PersonName" % XML_NS_XNL
+    _namespace = XML_NS_XNL
+    XML_TAG = "{%s}PersonName" % _namespace
     
     def __init__(self, name_elements=None):
         self.name_elements = []
@@ -467,9 +465,9 @@ class PersonName(stix.Entity):
         
         return return_obj
 
-
 class OrganisationName(stix.Entity):
-    XML_TAG = "{%s}OrganisationName" % XML_NS_XNL
+    _namespace = XML_NS_XNL
+    XML_TAG = "{%s}OrganisationName" % _namespace
     
     def __init__(self, name_elements=None, sub_division_names=None):
         self.name_elements = []
@@ -566,7 +564,6 @@ class OrganisationName(stix.Entity):
             
         return return_obj
     
-
 class NameElement(stix.Entity):
     '''Do not instantiate directly: use PersonNameElement or OrganisationNameElement'''
     def __init__(self, value=None):
@@ -601,9 +598,9 @@ class NameElement(stix.Entity):
         return_dict['value'] = self.value
         return return_dict
         
-
 class PersonNameElement(NameElement):
-    XML_TAG = "{%s}NameElement" % XML_NS_XNL
+    _namespace = XML_NS_XNL
+    XML_TAG = "{%s}NameElement" % _namespace
     
     TYPE_TITLE = 'Title'
     TYPE_PRECEDING_TITLE = 'PrecedingTitle'
@@ -685,9 +682,9 @@ class PersonNameElement(NameElement):
         
         return return_obj
     
-    
 class OrganisationNameElement(NameElement):
-    XML_TAG = "{%s}NameElement" % XML_NS_XNL
+    _namespace = XML_NS_XNL
+    XML_TAG = "{%s}NameElement" % _namespace
     
     TYPE_NAME_ONLY = "NameOnly"
     TYPE_TYPE_ONLY = "TypeOnly"
@@ -759,10 +756,10 @@ class OrganisationNameElement(NameElement):
         return_obj.element_type = dict_repr.get('element_type', None)
         
         return return_obj
-        
 
 class SubDivisionName(stix.Entity):
-    XML_TAG = "{%s}SubDivisionName" % XML_NS_XNL
+    _namespace = XML_NS_XNL
+    XML_TAG = "{%s}SubDivisionName" % _namespace
     
     TYPE_DEPARTMENT = 'Department'
     TYPE_DIVISION = 'Division'

@@ -9,6 +9,9 @@ import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_bindin
 from stix.common.generic_relationship import GenericRelationship
 
 class Identity(stix.Entity):
+    _binding = stix_common_binding
+    _namespace = 'http://stix.mitre.org/common-1'
+    
     def __init__(self, id=None, idref=None, name=None, related_identities=None):
         self.id_ = id if id else stix.utils.create_id()
         self.idref_ = idref
@@ -118,6 +121,9 @@ class Identity(stix.Entity):
 
 
 class RelatedIdentity(GenericRelationship):
+    _binding = stix_common_binding
+    _namespace = 'http://stix.mitre.org/common-1'
+    
     def __init__(self, identity=None, relationship=None):
         super(RelatedIdentity, self).__init__()
         self.identity = identity

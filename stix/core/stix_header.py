@@ -9,10 +9,14 @@ from stix.common.handling import Handling
 
 
 class PackageIntent(VocabString):
+    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:PackageIntentVocab-1.0'
 
 
 class STIXHeader(stix.Entity):
+    _binding = stix_core_binding
+    _namespace = 'http://stix.mitre.org/stix-1'
+    
     def __init__(self, package_intent=None, description=None, handling=None, information_source=None, title=None):
         self.package_intent = package_intent
         self.title = title
