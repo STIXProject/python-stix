@@ -88,11 +88,17 @@ def set_id_namespace(namespace):
     """ Set the namespace for the module-level ID Generator"""
     _get_generator().namespace = namespace
 
-
 def set_id_method(method):
     """ Set the method for the module-level ID Generator"""
     _get_generator().method = method
 
+def get_id_namespace():
+    """Return the namespace associated with generated ids"""
+    return _get_generator().namespace.iterkeys().next()
+
+def get_id_namespace_alias():
+    """Returns the namespace alias assoicated with generated ids"""
+    return _get_generator().namespace.itervalues().next()
 
 def create_id(prefix=None):
     """ Create an ID using the module-level ID Generator"""

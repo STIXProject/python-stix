@@ -6,7 +6,6 @@ import stix
 from cybox.core import Observable
 import cybox.utils.nsparser as cybox_nsparser
 
-
 class NamespaceParser(object):
     def __init__(self):
         pass

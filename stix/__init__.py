@@ -26,12 +26,14 @@ class Entity(object):
         # do this here so we don't cause problems with distutils setup.py
         import cybox.utils.nsparser as cybox_nsparser
         import stix.utils.nsparser as nsparser
+        import stix.utils.idgen as idgen
         import stix.bindings.stix_core as core_binding
         
         xml_ns_dict = {'http://www.w3.org/1999/xlink': 'xlink',
                        'http://www.w3.org/2000/09/xmldsig#': 'ds',
                        'http://www.w3.org/2001/XMLSchema': 'xs',
-                       'http://www.w3.org/2001/XMLSchema-instance': 'xsi'}
+                       'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
+                       idgen.get_id_namespace() : idgen.get_id_namespace_alias()}
         
         all_ns_dict = dict(xml_ns_dict)
         
