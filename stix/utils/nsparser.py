@@ -64,12 +64,31 @@ class NamespaceParser(object):
                 print "! Cannot map %s to a schemalocation." % (ns)
                 
         return d
+    
+    def _get_xmlns_str(self, ns_dict):
+        return "\n\t".join(['xmlns:%s="%s"' % (alias,ns) for ns,alias in ns_dict.iteritems()])
+    
+    def _get_schemaloc_str(self, schemaloc_dict):
+        schemaloc_str_start = 'xsi:schemaLocation="\n\t'
+        schemaloc_str_end = '"'
+        schemaloc_str_content = ""
+        
+        schemaloc_str_content = "\n\t".join(["%s %s" % (ns, loc) for ns,loc in schemaloc_dict.iteritems()])
+        
+        #for ns, schemaloc in schemaloc_dict.iteritems():
+        #    schemaloc_str_content += "%s %s\n\t" % (ns, schemaloc)
+        
+        return schemaloc_str_start + schemaloc_str_content + schemaloc_str_end
+    
+    def get_namespace_def_str(self, ns_dict, schemaloc_dict):
+        return self._get_xmlns_str(ns_dict) + "\n\t" + self._get_schemaloc_str(schemaloc_dict)
+
 
 XML_NAMESPACES = ['http://www.w3.org/2001/XMLSchema-instance', 'http://www.w3.org/2001/XMLSchema']
 
 STIX_NS_TO_SCHEMALOCATION = {
-         'http://stix.mitre.org/stix-1': 'http://stix.mitre.org/XMLSchema/stix_core/1.0.1/stix_core.xsd',
-         'http://stix.mitre.org/common-1': 'http://stix.mitre.org/XMLSchema/stix_common/1.0.1/stix_common.xsd',
+         'http://stix.mitre.org/stix-1': 'http://stix.mitre.org/XMLSchema/core/1.0.1/stix_core.xsd',
+         'http://stix.mitre.org/common-1': 'http://stix.mitre.org/XMLSchema/common/1.0.1/stix_common.xsd',
          'http://data-marking.mitre.org/Marking-1': 'http://stix.mitre.org/XMLSchema/data_marking/1.0.1/data_marking.xsd',
          'http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1': 'http://stix.mitre.org/XMLSchema/extensions/marking/simple_marking/1.0.1/simple_marking.xsd',
          'http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1': 'http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.0.1/tlp.xsd',

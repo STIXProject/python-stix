@@ -23,21 +23,23 @@ class Entity(object):
         
         s = StringIO()
         
-        # do this here so we don't cause problems with distutils setup.py
-        import cybox.utils.nsparser as cybox_nsparser
         import stix.utils.nsparser as nsparser
+        import cybox.utils.nsparser as cybox_nsparser
         import stix.utils.idgen as idgen
         import stix.bindings.stix_core as core_binding
         
+        if not ns_dict: ns_dict = {}
         xml_ns_dict = {'http://www.w3.org/1999/xlink': 'xlink',
                        'http://www.w3.org/2000/09/xmldsig#': 'ds',
                        'http://www.w3.org/2001/XMLSchema': 'xs',
                        'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
                        idgen.get_id_namespace() : idgen.get_id_namespace_alias()}
         
+        namespace_parser = nsparser.NamespaceParser()
         all_ns_dict = dict(xml_ns_dict)
+        schemaloc_dict = namespace_parser.get_namespace_schemalocation_dict(self)
+        ns_set = namespace_parser.get_namespaces(self)
         
-        ns_set = nsparser.NamespaceParser().get_namespaces(self)
         for ns in ns_set:
             if ns in ns_dict:
                 all_ns_dict[ns] = ns_dict[ns]
@@ -48,7 +50,7 @@ class Entity(object):
             else:
                 all_ns_dict[ns] = nsparser.DEFAULT_STIX_NS_TO_PREFIX[ns]
         
-        self.to_obj().export(s, 0, all_ns_dict)
+        self.to_obj().export(s, 0, all_ns_dict, namespacedef_=namespace_parser.get_namespace_def_str(all_ns_dict, schemaloc_dict))
         return s.getvalue()
 
     def to_json(self):
