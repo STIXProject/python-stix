@@ -1,4 +1,4 @@
-# Copyright (c) 2013, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 import stix
@@ -9,6 +9,9 @@ import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_bindin
 from stix.common.generic_relationship import GenericRelationship
 
 class Identity(stix.Entity):
+    _binding = stix_common_binding
+    _namespace = 'http://stix.mitre.org/common-1'
+    
     def __init__(self, id=None, idref=None, name=None, related_identities=None):
         self.id_ = id if id else stix.utils.create_id()
         self.idref_ = idref
@@ -52,7 +55,7 @@ class Identity(stix.Entity):
     
     def to_obj(self, return_obj=None):
         if not return_obj:
-            return_obj = stix_common_binding.IdentityType()
+            return_obj = self._binding.IdentityType()
         
         #return_obj.set_id(self.id_)
         #return_obj.set_idref(self.idref_)
@@ -118,6 +121,9 @@ class Identity(stix.Entity):
 
 
 class RelatedIdentity(GenericRelationship):
+    _binding = stix_common_binding
+    _namespace = 'http://stix.mitre.org/common-1'
+    
     def __init__(self, identity=None, relationship=None):
         super(RelatedIdentity, self).__init__()
         self.identity = identity
@@ -137,7 +143,7 @@ class RelatedIdentity(GenericRelationship):
     
     def to_obj(self, return_obj=None):
         if not return_obj:
-            return_obj = stix_common_binding.RelatedIdentityType()
+            return_obj = self._binding.RelatedIdentityType()
             
         super(RelatedIdentity, self).to_obj(return_obj)
         

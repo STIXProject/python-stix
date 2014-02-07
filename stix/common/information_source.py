@@ -1,4 +1,4 @@
-# Copyright (c) 2013, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 import stix
@@ -13,6 +13,9 @@ import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_bindin
 
 
 class InformationSource(stix.Entity):
+    _binding = stix_common_binding
+    _namespace = 'http://stix.mitre.org/common-1'
+    
     def __init__(self, identity=None, time=None, tools=None):
         self.identity = identity
         #self.contributors = []
@@ -56,7 +59,7 @@ class InformationSource(stix.Entity):
         
     def to_obj(self, return_obj=None):
         if return_obj == None:
-            return_obj = stix_common_binding.InformationSourceType()
+            return_obj = self._binding.InformationSourceType()
         
         identity_obj    = self.identity.to_obj() if self.identity else None
         time_obj        = self.time.to_obj() if self.time else None

@@ -1,4 +1,4 @@
-# Copyright (c) 2013, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 import stix
@@ -11,10 +11,14 @@ from cybox.common import Time
 
     
 class IndicatorType(VocabString):
+    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:IndicatorTypeVocab-1.0'
 
 
 class Indicator(stix.Entity):
+    _binding = indicator_binding
+    _namespace = 'http://stix.mitre.org/Indicator-2'
+    
     def __init__(self, id_=None, title=None, description=None, indicator_type=None, producer=None, observables=None):
         self.id_ = id_ if id_ is not None else stix.utils.create_id()
         self.producer = producer
@@ -89,8 +93,6 @@ class Indicator(stix.Entity):
             
             self.producer.identity.name = identity # assume it's a string
             
-  
-            
     def set_produced_time(self, produced_time):
         '''The produced date variable must be in ISO 8601 format'''
         if not self.producer.time:
@@ -151,7 +153,7 @@ class Indicator(stix.Entity):
     
     def to_obj(self, return_obj=None):
         if not return_obj:
-            return_obj = indicator_binding.IndicatorType()
+            return_obj = self._binding.IndicatorType()
         
         if self.id_:
             return_obj.set_id(self.id_)

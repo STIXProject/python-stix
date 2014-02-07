@@ -1,4 +1,4 @@
-# Copyright (c) 2013, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 from setuptools import setup, find_packages
@@ -12,7 +12,7 @@ setup(
     description="An API for parsing and generating STIX content.",
     url="http://stix.mitre.org",
     packages=find_packages(),
-    install_requires=['lxml>=2.3', 'python-dateutil', 'cybox>=2.0.1.0' ],
+    install_requires=['lxml>=2.3', 'python-dateutil', 'cybox>=2.0.1.0,<2.1.0.0' ],
     classifiers=[
         "Programming Language :: Python",
         "Development Status :: 2 - Pre-Alpha",

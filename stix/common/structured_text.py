@@ -1,18 +1,20 @@
-# Copyright (c) 2013, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.bindings.stix_common as common_binding
+import stix.bindings.stix_common as stix_common_binding
 
 
 class StructuredText(stix.Entity):
-
+    _binding = stix_common_binding
+    _namespace = 'http://stix.mitre.org/common-1'
+    
     def __init__(self, value=None):
         self.value = value
         self.structuring_format = None
 
     def to_obj(self):
-        text_obj = common_binding.StructuredTextType()
+        text_obj = self._binding.StructuredTextType()
 
         text_obj.set_valueOf_(self.value)
         if self.structuring_format is not None:

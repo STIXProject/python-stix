@@ -1,14 +1,16 @@
-# Copyright (c) 2013, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.bindings.stix_common as common_binding
+import stix.bindings.stix_common as stix_common_binding
 #TODO: handle normalization
 #from cybox.utils import normalize_to_xml, denormalize_from_xml
 
 
 class VocabString(stix.Entity):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _binding = stix_common_binding
+    _namespace = 'http://stix.mitre.org/common-1'
+    
     # All subclasses should override this
     _XSI_TYPE = "BAD_XSI_TYPE"
 
@@ -45,7 +47,7 @@ class VocabString(stix.Entity):
         )
 
     def to_obj(self):
-        vocab_obj = common_binding.ControlledVocabularyStringType()
+        vocab_obj = self._binding.ControlledVocabularyStringType()
 
         #TODO: handle normalization
         #vocab_obj.set_valueOf_(normalize_to_xml(self.value))

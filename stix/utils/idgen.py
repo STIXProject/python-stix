@@ -1,8 +1,9 @@
-# Copyright (c) 2013, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 import uuid
 
+EXAMPLE_NAMESPACE = {'http://example.com' : 'example'}
 
 class InvalidMethodError(ValueError):
     def __init__(self, method):
@@ -16,7 +17,7 @@ class IDGenerator(object):
 
     METHODS = (METHOD_UUID, METHOD_INT,)
 
-    def __init__(self, namespace="stix", method=METHOD_UUID):
+    def __init__(self, namespace=EXAMPLE_NAMESPACE, method=METHOD_UUID):
         self.namespace = namespace
         self.method = method
         self.next_int = 1
@@ -27,6 +28,12 @@ class IDGenerator(object):
 
     @namespace.setter
     def namespace(self, value):
+        if not isinstance(value, dict):
+            raise ValueError("Must be a dictionary: ex {'http://example.com' : 'example'}")
+        
+        if len(value) != 1:
+            raise ValueError("Provided dictionary must have at most one entry")
+        
         self._namespace = value
 
     @property
@@ -53,7 +60,8 @@ class IDGenerator(object):
         else:
             raise InvalidMethodError()
 
-        return "%s:%s-%s" % (self.namespace, prefix, id_)
+        ns, ns_prefix = self.namespace.iteritems().next()
+        return "%s:%s-%s" % (ns_prefix, prefix, id_)
 
 
 
@@ -80,11 +88,17 @@ def set_id_namespace(namespace):
     """ Set the namespace for the module-level ID Generator"""
     _get_generator().namespace = namespace
 
-
 def set_id_method(method):
     """ Set the method for the module-level ID Generator"""
     _get_generator().method = method
 
+def get_id_namespace():
+    """Return the namespace associated with generated ids"""
+    return _get_generator().namespace.iterkeys().next()
+
+def get_id_namespace_alias():
+    """Returns the namespace alias assoicated with generated ids"""
+    return _get_generator().namespace.itervalues().next()
 
 def create_id(prefix=None):
     """ Create an ID using the module-level ID Generator"""

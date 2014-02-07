@@ -1,4 +1,4 @@
-# Copyright (c) 2013, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 import stix
@@ -18,9 +18,9 @@ et.register_namespace('xpil', XML_NS_XPIL)
 et.register_namespace('xnl', XML_NS_XNL)
 et.register_namespace('ExtSch', XML_NS_STIX_EXT)
 
-
 class CIQIdentity3_0Instance(Identity):
-    _XML_NS         = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
+    _binding        = ciq_identity_binding
+    _namespace      = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
     _XML_NS_PREFIX  = "ciqIdentity"
     _XML_TYPE       = "CIQIdentity3.0InstanceType"
     
@@ -61,7 +61,7 @@ class CIQIdentity3_0Instance(Identity):
     
     def to_obj(self, return_obj=None):
         if not return_obj:
-            return_obj = ciq_identity_binding.CIQIdentity3_0InstanceType()
+            return_obj = self._binding.CIQIdentity3_0InstanceType()
         
         super(CIQIdentity3_0Instance, self).to_obj(return_obj)
         
@@ -136,12 +136,10 @@ class CIQIdentity3_0Instance(Identity):
             return_obj.specification = STIXCIQIdentity3_0.from_dict(specification)
             
         return return_obj
-
-    
-    
     
 class STIXCIQIdentity3_0(stix.Entity):
-    XML_TAG = "{%s}Specification" % XML_NS_STIX_EXT
+    _namespace      = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
+    XML_TAG = "{%s}Specification" % _namespace
     
     def __init__(self, party_name=None):
         self.party_name = party_name if party_name else PartyName()
@@ -205,38 +203,50 @@ class STIXCIQIdentity3_0(stix.Entity):
         
         return return_dict
     
-
-
 class PartyName(stix.Entity):
-    XML_TAG = "{%s}PartyName" % XML_NS_XPIL
+    _namespace = XML_NS_XPIL
+    XML_TAG = "{%s}PartyName" % _namespace
     
-    def __init__(self):
+    def __init__(self, name_lines=None, person_names=None, organisation_names=None):
         self.name_lines = []
         self.person_names = []
         self.organisation_names = []
         
+        if name_lines:
+            for value in name_lines:
+                self.add_name_line(value)
+        
+        if person_names:
+            for value in person_names:
+                self.add_person_name(value)
+        
+        if organisation_names:
+            for value in self.organisation_names:
+                self.add_organisation_name(value)
 
     def add_name_line(self, value):
         if isinstance(value, basestring):
             self.name_lines.append(NameLine(value))
-    
         elif isinstance(value, NameLine):
             self.name_lines.append(value)
-            
         else:
-            raise ValueError('value must be a string or NameLine instance')
+            raise ValueError('value must be a basestring or NameLine instance')
         
     def add_person_name(self, value):
-        if not isinstance(value, PersonName):
-            raise ValueError('value must be instance of PersonName')
-        
-        self.person_names.append(value) 
-    
+        if isinstance(value, basestring):
+            self.person_names.append(PersonName(name_elements=[value]))
+        elif isinstance(value, PersonName):
+            self.person_names.append(value) 
+        else:
+            raise ValueError('value must be instance of PersonName or basestring')
+           
     def add_organisation_name(self, value):
-        if not isinstance(value, OrganisationName):
+        if isinstance(value, basestring):
+            self.organisation_names.append(OrganisationName(name_elements=[value]))  
+        elif isinstance(value, OrganisationName):
+            self.organisation_names.append(value)
+        else:    
             raise ValueError('value must be instance of OrganisationName')
-        
-        self.organisation_names.append(value)
 
     def to_obj(self, return_obj=None):
         if not return_obj:
@@ -326,9 +336,9 @@ class PartyName(stix.Entity):
             
         return return_obj
 
-
 class NameLine(stix.Entity):
-    XML_TAG = "{%s}NameLine" % XML_NS_XNL
+    _namespace = XML_NS_XNL
+    XML_TAG = "{%s}NameLine" % _namespace
     
     def __init__(self, value=None, type_=None):
         self.value = value
@@ -396,9 +406,9 @@ class NameLine(stix.Entity):
         
         return return_obj
     
-
 class PersonName(stix.Entity):
-    XML_TAG = "{%s}PersonName" % XML_NS_XNL
+    _namespace = XML_NS_XNL
+    XML_TAG = "{%s}PersonName" % _namespace
     
     def __init__(self, name_elements=None):
         self.name_elements = []
@@ -407,13 +417,13 @@ class PersonName(stix.Entity):
             for name_element in name_elements:
                 self.add_name_element(name_element)
 
-
     def add_name_element(self, value):
-        if not isinstance(value, PersonNameElement):
+        if isinstance(value, basestring):
+            self.name_elements.append(PersonNameElement(value=value))
+        elif isinstance(value, PersonNameElement):
+            self.name_elements.append(value)
+        else:
             raise ValueError('value must be instance of PersonNameElement')
-        
-        self.name_elements.append(value)
-
         
     def to_obj(self, return_obj=None):
         if not return_obj:
@@ -467,9 +477,9 @@ class PersonName(stix.Entity):
         
         return return_obj
 
-
 class OrganisationName(stix.Entity):
-    XML_TAG = "{%s}OrganisationName" % XML_NS_XNL
+    _namespace = XML_NS_XNL
+    XML_TAG = "{%s}OrganisationName" % _namespace
     
     def __init__(self, name_elements=None, sub_division_names=None):
         self.name_elements = []
@@ -485,10 +495,12 @@ class OrganisationName(stix.Entity):
         
     
     def add_organisation_name_element(self, value):
-        if not isinstance(value, OrganisationNameElement):
+        if isinstance(value, basestring):
+            self.name_elements.append(OrganisationNameElement(value=value))
+        elif isinstance(value, OrganisationNameElement):
+            self.name_elements.append(value)
+        else:
             raise ValueError('value must be instance of OrganisationNameElement')
-        
-        self.name_elements.append(value)
 
 
     def add_subdivision_name(self, value):
@@ -566,7 +578,6 @@ class OrganisationName(stix.Entity):
             
         return return_obj
     
-
 class NameElement(stix.Entity):
     '''Do not instantiate directly: use PersonNameElement or OrganisationNameElement'''
     def __init__(self, value=None):
@@ -601,9 +612,9 @@ class NameElement(stix.Entity):
         return_dict['value'] = self.value
         return return_dict
         
-
 class PersonNameElement(NameElement):
-    XML_TAG = "{%s}NameElement" % XML_NS_XNL
+    _namespace = XML_NS_XNL
+    XML_TAG = "{%s}NameElement" % _namespace
     
     TYPE_TITLE = 'Title'
     TYPE_PRECEDING_TITLE = 'PrecedingTitle'
@@ -685,9 +696,9 @@ class PersonNameElement(NameElement):
         
         return return_obj
     
-    
 class OrganisationNameElement(NameElement):
-    XML_TAG = "{%s}NameElement" % XML_NS_XNL
+    _namespace = XML_NS_XNL
+    XML_TAG = "{%s}NameElement" % _namespace
     
     TYPE_NAME_ONLY = "NameOnly"
     TYPE_TYPE_ONLY = "TypeOnly"
@@ -759,10 +770,10 @@ class OrganisationNameElement(NameElement):
         return_obj.element_type = dict_repr.get('element_type', None)
         
         return return_obj
-        
 
 class SubDivisionName(stix.Entity):
-    XML_TAG = "{%s}SubDivisionName" % XML_NS_XNL
+    _namespace = XML_NS_XNL
+    XML_TAG = "{%s}SubDivisionName" % _namespace
     
     TYPE_DEPARTMENT = 'Department'
     TYPE_DIVISION = 'Division'

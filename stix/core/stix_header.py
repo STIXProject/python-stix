@@ -1,4 +1,4 @@
-# Copyright (c) 2013, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 import stix
@@ -9,10 +9,14 @@ from stix.common.handling import Handling
 
 
 class PackageIntent(VocabString):
+    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:PackageIntentVocab-1.0'
 
 
 class STIXHeader(stix.Entity):
+    _binding = stix_core_binding
+    _namespace = 'http://stix.mitre.org/stix-1'
+    
     def __init__(self, package_intent=None, description=None, handling=None, information_source=None, title=None):
         self.package_intent = package_intent
         self.title = title
@@ -95,7 +99,7 @@ class STIXHeader(stix.Entity):
 
     def to_obj(self, return_obj=None):
         if not return_obj:
-            return_obj = stix_core_binding.STIXHeaderType()
+            return_obj = self._binding.STIXHeaderType()
 
         if self.title:
             return_obj.set_Title(self.title)

@@ -1,4 +1,4 @@
-# Copyright (c) 2013, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 import stix
@@ -13,9 +13,8 @@ import cybox.bindings.cybox_core as cybox_core_binding
 from StringIO import StringIO
 
 class STIXPackage(stix.Entity):
-    '''
-    classdocs
-    '''
+    _binding = stix_core_binding
+    _namespace = 'http://stix.mitre.org/stix-1'
 
     def __init__(self, id_=None, idref_=None, stix_header=None, indicators=None, observables=None):
         '''
@@ -76,7 +75,7 @@ class STIXPackage(stix.Entity):
         
     def to_obj(self, return_obj=None):
         if not return_obj:
-            return_obj = stix_core_binding.STIXType()
+            return_obj = self._binding.STIXType()
         
         return_obj.set_id(self.id_)
         return_obj.set_idref(self.idref_)
@@ -185,23 +184,6 @@ class STIXPackage(stix.Entity):
         stix_package = STIXPackage().from_obj(stix_package_obj)
         
         return (stix_package, stix_package_obj)
-            
-    
-    def to_xml(self, ns_dict=None):
-        '''
-        Overrides the stix.to_xml() method.
-        The ns_dict parameter is a dictionary where keys are namespaces
-        and values are prefixes. The NS:PREFIX pairs are appended to the 
-        stix_core_binding.DEFAULT_XML_NS_MAP dictionary. 
-        '''
-        
-        export_ns_dict = dict(stix_core_binding.DEFAULT_XML_NS_MAP)
-        if ns_dict:
-            export_ns_dict.update(ns_dict)
-        
-        s = StringIO()
-        self.to_obj().export(s, 0, export_ns_dict)
-        return s.getvalue()
-    
+
         
     
