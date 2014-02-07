@@ -18,7 +18,6 @@ et.register_namespace('xpil', XML_NS_XPIL)
 et.register_namespace('xnl', XML_NS_XNL)
 et.register_namespace('ExtSch', XML_NS_STIX_EXT)
 
-
 class CIQIdentity3_0Instance(Identity):
     _binding        = ciq_identity_binding
     _namespace      = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
@@ -208,33 +207,46 @@ class PartyName(stix.Entity):
     _namespace = XML_NS_XPIL
     XML_TAG = "{%s}PartyName" % _namespace
     
-    def __init__(self):
+    def __init__(self, name_lines=None, person_names=None, organisation_names=None):
         self.name_lines = []
         self.person_names = []
         self.organisation_names = []
         
+        if name_lines:
+            for value in name_lines:
+                self.add_name_line(value)
+        
+        if person_names:
+            for value in person_names:
+                self.add_person_name(value)
+        
+        if organisation_names:
+            for value in self.organisation_names:
+                self.add_organisation_name(value)
 
     def add_name_line(self, value):
         if isinstance(value, basestring):
             self.name_lines.append(NameLine(value))
-    
         elif isinstance(value, NameLine):
             self.name_lines.append(value)
-            
         else:
-            raise ValueError('value must be a string or NameLine instance')
+            raise ValueError('value must be a basestring or NameLine instance')
         
     def add_person_name(self, value):
-        if not isinstance(value, PersonName):
-            raise ValueError('value must be instance of PersonName')
-        
-        self.person_names.append(value) 
-    
+        if isinstance(value, basestring):
+            self.person_names.append(PersonName(name_elements=[value]))
+        elif isinstance(value, PersonName):
+            self.person_names.append(value) 
+        else:
+            raise ValueError('value must be instance of PersonName or basestring')
+           
     def add_organisation_name(self, value):
-        if not isinstance(value, OrganisationName):
+        if isinstance(value, basestring):
+            self.organisation_names.append(OrganisationName(name_elements=[value]))  
+        elif isinstance(value, OrganisationName):
+            self.organisation_names.append(value)
+        else:    
             raise ValueError('value must be instance of OrganisationName')
-        
-        self.organisation_names.append(value)
 
     def to_obj(self, return_obj=None):
         if not return_obj:
@@ -405,13 +417,15 @@ class PersonName(stix.Entity):
             for name_element in name_elements:
                 self.add_name_element(name_element)
 
-
     def add_name_element(self, value):
-        if not isinstance(value, PersonNameElement):
+        if isinstance(value, basestring):
+            self.name_elements.append(PersonNameElement(value=value))
+        elif isinstance(value, PersonNameElement):
+            self.name_elements.append(value)
+        else:
             raise ValueError('value must be instance of PersonNameElement')
         
-        self.name_elements.append(value)
-
+        
         
     def to_obj(self, return_obj=None):
         if not return_obj:
@@ -483,10 +497,12 @@ class OrganisationName(stix.Entity):
         
     
     def add_organisation_name_element(self, value):
-        if not isinstance(value, OrganisationNameElement):
+        if isinstance(value, basestring):
+            self.name_elements.append(OrganisationNameElement(value=value))
+        elif isinstance(value, OrganisationNameElement):
+            self.name_elements.append(value)
+        else:
             raise ValueError('value must be instance of OrganisationNameElement')
-        
-        self.name_elements.append(value)
 
 
     def add_subdivision_name(self, value):

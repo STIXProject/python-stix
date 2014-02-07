@@ -63,6 +63,9 @@ class NamespaceParser(object):
             elif ns in STIX_NS_TO_SCHEMALOCATION:
                 schemalocation = STIX_NS_TO_SCHEMALOCATION[ns]
                 d[ns] = schemalocation
+            elif ns in EXT_NS_TO_SCHEMALOCATION:
+                schemalocation = EXT_NS_TO_SCHEMALOCATION[ns]
+                d[ns] = schemalocation
             elif ns.startswith("http://cybox.mitre.org"):
                 for cybox_ns_tup in cybox_nsparser.NS_LIST:
                     if cybox_ns_tup[0] == ns:
@@ -84,9 +87,12 @@ class NamespaceParser(object):
     def get_namespace_def_str(self, ns_dict, schemaloc_dict):
         return "\n\t" + self._get_xmlns_str(ns_dict) + "\n\t" + self._get_schemaloc_str(schemaloc_dict)
 
+XML_NAMESPACES = {'http://www.w3.org/2001/XMLSchema-instance' : 'xsi', 
+                  'http://www.w3.org/2001/XMLSchema' : 'xs',
+                  'http://www.w3.org/1999/xlink' : 'xlink',
+                  'http://www.w3.org/2000/09/xmldsig#': 'ds'}
 
-XML_NAMESPACES = ['http://www.w3.org/2001/XMLSchema-instance', 'http://www.w3.org/2001/XMLSchema']
-
+# Schema locations for namespaces defined by the STIX language
 STIX_NS_TO_SCHEMALOCATION = {
          'http://stix.mitre.org/stix-1': 'http://stix.mitre.org/XMLSchema/core/1.0.1/stix_core.xsd',
          'http://stix.mitre.org/common-1': 'http://stix.mitre.org/XMLSchema/common/1.0.1/stix_common.xsd',
@@ -112,9 +118,12 @@ STIX_NS_TO_SCHEMALOCATION = {
          'http://stix.mitre.org/extensions/TestMechanism#Snort-1': 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/snort/1.0.1/snort.xsd',
          'http://stix.mitre.org/extensions/TestMechanism#YARA-1': 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/yara/1.0.1/yara.xsd',
          'http://stix.mitre.org/extensions/Vulnerability#CVRF-1': 'http://stix.mitre.org/XMLSchema/extensions/vulnerability/cvrf_1.1/1.0.1/cvrf_1.1.xsd'}
-                
-EXT_NS_TO_SCHEMALOCATION = {} 
 
+# Schema locations for namespaces not defined by STIX, but hosted on the STIX website     
+EXT_NS_TO_SCHEMALOCATION = {'urn:oasis:names:tc:ciq:xpil:3' : 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd',
+                            'urn:oasis:names:tc:ciq:xnl:3' : 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xNL.xsd'}
+
+# Default namespace->alias mappings. These can be overriden by user-provided dictionaries on export
 DEFAULT_STIX_NS_TO_PREFIX = {
      'http://stix.mitre.org/Campaign-1': 'campaign',
      'http://stix.mitre.org/CourseOfAction-1': 'coa',
@@ -147,3 +156,5 @@ DEFAULT_STIX_NS_TO_PREFIX = {
      'http://www.w3.org/2001/XMLSchema-instance': 'xsi'}
              
 
+DEFAULT_EXT_TO_PREFIX = {'urn:oasis:names:tc:ciq:xpil:3' : 'xpil',
+                         'urn:oasis:names:tc:ciq:xnl:3' : 'xnl'}

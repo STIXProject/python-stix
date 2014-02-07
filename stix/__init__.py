@@ -40,6 +40,8 @@ class Entity(object):
                 for cybox_ns_tup in cybox_nsparser.NS_LIST:
                     if ns == cybox_ns_tup[0]:
                         all_ns_dict[ns] = cybox_ns_tup[1]
+            elif ns in nsparser.DEFAULT_EXT_TO_PREFIX:
+                all_ns_dict[ns] = nsparser.DEFAULT_EXT_TO_PREFIX[ns]
             else:
                 all_ns_dict[ns] = nsparser.DEFAULT_STIX_NS_TO_PREFIX[ns]
         

@@ -93,8 +93,6 @@ class Indicator(stix.Entity):
             
             self.producer.identity.name = identity # assume it's a string
             
-  
-            
     def set_produced_time(self, produced_time):
         '''The produced date variable must be in ISO 8601 format'''
         if not self.producer.time:
