@@ -425,8 +425,6 @@ class PersonName(stix.Entity):
         else:
             raise ValueError('value must be instance of PersonNameElement')
         
-        
-        
     def to_obj(self, return_obj=None):
         if not return_obj:
             root_tag = PersonName.XML_TAG

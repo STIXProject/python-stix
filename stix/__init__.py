@@ -67,9 +67,8 @@ class Entity(object):
         
         if not pretty:
             namespace_def = namespace_def.replace('\n\t', ' ')
-
         
-        self.to_obj().export(s, 0, all_ns_dict, namespacedef_=namespace_def)
+        self.to_obj().export(s, 0, all_ns_dict, pretty_print=pretty, namespacedef_=namespace_def)
         return s.getvalue()
 
     def to_json(self):
