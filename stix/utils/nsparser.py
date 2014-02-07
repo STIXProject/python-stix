@@ -73,22 +73,16 @@ class NamespaceParser(object):
         return d
     
     def _get_xmlns_str(self, ns_dict):
-        return "\n\t".join(['xmlns:%s="%s"' % (alias,ns) for ns,alias in ns_dict.iteritems()])
+        return "\n\t".join(['xmlns:%s="%s"' % (alias,ns) for ns,alias in sorted(ns_dict.iteritems())])
     
     def _get_schemaloc_str(self, schemaloc_dict):
         schemaloc_str_start = 'xsi:schemaLocation="\n\t'
         schemaloc_str_end = '"'
-        schemaloc_str_content = ""
-        
-        schemaloc_str_content = "\n\t".join(["%s %s" % (ns, loc) for ns,loc in schemaloc_dict.iteritems()])
-        
-        #for ns, schemaloc in schemaloc_dict.iteritems():
-        #    schemaloc_str_content += "%s %s\n\t" % (ns, schemaloc)
-        
+        schemaloc_str_content = "\n\t".join(["%s %s" % (ns, loc) for ns,loc in sorted(schemaloc_dict.iteritems())])
         return schemaloc_str_start + schemaloc_str_content + schemaloc_str_end
     
     def get_namespace_def_str(self, ns_dict, schemaloc_dict):
-        return self._get_xmlns_str(ns_dict) + "\n\t" + self._get_schemaloc_str(schemaloc_dict)
+        return "\n\t" + self._get_xmlns_str(ns_dict) + "\n\t" + self._get_schemaloc_str(schemaloc_dict)
 
 
 XML_NAMESPACES = ['http://www.w3.org/2001/XMLSchema-instance', 'http://www.w3.org/2001/XMLSchema']
@@ -106,7 +100,7 @@ STIX_NS_TO_SCHEMALOCATION = {
          'http://stix.mitre.org/Indicator-2': 'http://stix.mitre.org/XMLSchema/indicator/2.0.1/indicator.xsd',
          'http://stix.mitre.org/TTP-1': 'http://stix.mitre.org/XMLSchema/ttp/1.0.1/ttp.xsd',
          'http://stix.mitre.org/ThreatActor-1': 'http://stix.mitre.org/XMLSchema/threat_actor/1.0.1/threat_actor.xsd',
-         'http://stix.mitre.org/default_vocabularies-1': 'http://stix.mitre.org/XMLSchema/stix_default_vocabularies/1.0.1/stix_default_vocabularies.xsd',
+         'http://stix.mitre.org/default_vocabularies-1': 'http://stix.mitre.org/XMLSchema/default_vocabularies/1.0.1/stix_default_vocabularies.xsd',
          'http://stix.mitre.org/extensions/AP#CAPEC2.6-1': 'http://stix.mitre.org/XMLSchema/extensions/attack_pattern/capec_2.6.1/1.0.1/capec_2.6.1.xsd',
          'http://stix.mitre.org/extensions/Address#CIQAddress3.0-1': 'http://stix.mitre.org/XMLSchema/extensions/address/ciq_address_3.0/1.0.1/ciq_address_3.0.xsd',
          'http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1': 'http://stix.mitre.org/XMLSchema/extensions/identity/ciq_identity_3.0/1.0.1/ciq_identity_3.0.xsd',
