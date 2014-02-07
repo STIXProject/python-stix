@@ -184,23 +184,6 @@ class STIXPackage(stix.Entity):
         stix_package = STIXPackage().from_obj(stix_package_obj)
         
         return (stix_package, stix_package_obj)
-            
-    
-    def to_xml(self, ns_dict=None):
-        '''
-        Overrides the stix.to_xml() method.
-        The ns_dict parameter is a dictionary where keys are namespaces
-        and values are prefixes. The NS:PREFIX pairs are appended to the 
-        stix_core_binding.DEFAULT_XML_NS_MAP dictionary. 
-        '''
-        
-        export_ns_dict = dict(stix_core_binding.DEFAULT_XML_NS_MAP)
-        if ns_dict:
-            export_ns_dict.update(ns_dict)
-        
-        s = StringIO()
-        self.to_obj().export(s, 0, export_ns_dict)
-        return s.getvalue()
-    
+
         
     
