@@ -29,10 +29,7 @@ class Entity(object):
         import stix.bindings.stix_core as core_binding
         
         if not ns_dict: ns_dict = {}
-        xml_ns_dict = {'http://www.w3.org/1999/xlink': 'xlink',
-                       'http://www.w3.org/2000/09/xmldsig#': 'ds',
-                       'http://www.w3.org/2001/XMLSchema': 'xs',
-                       'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
+        xml_ns_dict = {'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
                        idgen.get_id_namespace() : idgen.get_id_namespace_alias()}
         
         namespace_parser = nsparser.NamespaceParser()

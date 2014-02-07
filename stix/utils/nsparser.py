@@ -3,7 +3,7 @@
 
 import inspect
 import stix
-from cybox.core import Observable
+from cybox.core import Observables, Observable
 import cybox.utils.nsparser as cybox_nsparser
 
 class NamespaceParser(object):
@@ -26,6 +26,9 @@ class NamespaceParser(object):
         entity.nsparser_touched = True
         if isinstance(entity, Observable):
             all_namespaces.update(self._get_observable_namespaces(entity))
+        elif isinstance(entity, Observables):
+            for child in self._get_children(entity):
+                all_namespaces.update(self.get_namespaces(child))
         elif hasattr(entity, "_namespace"):
             all_namespaces.add(entity._namespace)
         
@@ -43,6 +46,9 @@ class NamespaceParser(object):
                 yield obj
             elif isinstance(obj, Observable):
                 yield obj
+            elif isinstance(obj, Observables):
+                for obs in obj.observables:
+                    yield obs
             elif isinstance(obj, list):
                 for item in obj:
                     if isinstance(item, stix.Entity) or isinstance(item, Observable):
