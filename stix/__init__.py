@@ -78,3 +78,13 @@ class Entity(object):
     def from_dict(dict_repr, return_obj=None):
         """Convert from dict representation to object representation."""
         return return_obj
+
+    @classmethod
+    def object_from_dict(cls, entity_dict):
+        """Convert from dict representation to object representation."""
+        return cls.from_dict(entity_dict).to_obj()
+
+    @classmethod
+    def dict_from_object(cls, entity_obj):
+        """Convert from object representation to dict representation."""
+        return cls.from_obj(entity_obj).to_dict()
