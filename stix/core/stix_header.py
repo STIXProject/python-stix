@@ -5,7 +5,7 @@ import stix
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.stix_core as stix_core_binding
 from stix.common import InformationSource, StructuredText, VocabString
-from stix.common.handling import Handling
+from stix.data_marking import Handling
 
 
 class PackageIntent(VocabString):
