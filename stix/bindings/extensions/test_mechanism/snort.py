@@ -558,23 +558,6 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
             outfile.write('<%s:Version>%s</%s:Version>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Version).encode(ExternalEncoding), input_name='Version'), nsmap[namespace_], eol_))
         if self.Rule is not None:
             self.Rule.export(outfile, level, nsmap, namespace_, name_='Rule', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='SnortTestMechanismType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(SnortTestMechanismType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(SnortTestMechanismType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Version is not None:
-            showIndent(outfile, level)
-            outfile.write('Version=%s,\n' % quote_python(self.Version).encode(ExternalEncoding))
-        if self.Rule is not None:
-            outfile.write('Rule=model_.stix_common_binding.EncodedCDATAType(\n')
-            self.Rule.exportLiteral(outfile, level, name_='Rule')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -712,25 +695,6 @@ def parseString(inString):
     sys.stdout.write('<?xml version="1.0" ?>\n')
     rootObj.export(sys.stdout, 0, name_="SnortTestMechanismType",
         namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'SnortTestMechanismType'
-        rootClass = SnortTestMechanismType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from snort import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import snort as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

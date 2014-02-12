@@ -558,35 +558,6 @@ class InformationSourceType(GeneratedsSuper):
             self.Tools.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Tools', pretty_print=pretty_print)
         if self.References is not None:
             self.References.export(outfile, level, nsmap, namespace_, name_='References', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='InformationSourceType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Identity is not None:
-            outfile.write('Identity=model_.IdentityType(\n')
-            self.Identity.exportLiteral(outfile, level, name_='Identity')
-            outfile.write('),\n')
-        if self.Contributors is not None:
-            outfile.write('Contributors=model_.ContributorsType(\n')
-            self.Contributors.exportLiteral(outfile, level, name_='Contributors')
-            outfile.write('),\n')
-        if self.Time is not None:
-            outfile.write('Time=model_.cybox_common_binding.TimeType(\n')
-            self.Time.exportLiteral(outfile, level, name_='Time')
-            outfile.write('),\n')
-        if self.Tools is not None:
-            outfile.write('Tools=model_.cybox_common_binding.ToolsInformationType(\n')
-            self.Tools.exportLiteral(outfile, level, name_='Tools')
-            outfile.write('),\n')
-        if self.References is not None:
-            outfile.write('References=model_.ReferencesType(\n')
-            self.References.exportLiteral(outfile, level, name_='References')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -704,34 +675,6 @@ class ConfidenceType(GeneratedsSuper):
             self.Source.export(outfile, level, nsmap, namespace_, name_='Source', pretty_print=pretty_print)
         if self.Confidence_Assertion_Chain is not None:
             self.Confidence_Assertion_Chain.export(outfile, level, nsmap, namespace_, name_='Confidence_Assertion_Chain', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='ConfidenceType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.timestamp is not None and 'timestamp' not in already_processed:
-            already_processed.add('timestamp')
-            showIndent(outfile, level)
-            outfile.write('timestamp = "%s",\n' % (self.timestamp,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Value is not None:
-            outfile.write('Value=model_.ControlledVocabularyStringType(\n')
-            self.Value.exportLiteral(outfile, level, name_='Value')
-            outfile.write('),\n')
-        if self.Description is not None:
-            outfile.write('Description=model_.StructuredTextType(\n')
-            self.Description.exportLiteral(outfile, level, name_='Description')
-            outfile.write('),\n')
-        if self.Source is not None:
-            outfile.write('Source=model_.ControlledVocabularyStringType(\n')
-            self.Source.exportLiteral(outfile, level, name_='Source')
-            outfile.write('),\n')
-        if self.Confidence_Assertion_Chain is not None:
-            outfile.write('Confidence_Assertion_Chain=model_.ConfidenceAssertionChainType(\n')
-            self.Confidence_Assertion_Chain.exportLiteral(outfile, level, name_='Confidence_Assertion_Chain')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -817,22 +760,6 @@ class ActivityType(GeneratedsSuper):
             outfile.write('<%s:Date_Time>%s</%s:Date_Time>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Date_Time).encode(ExternalEncoding), input_name='Date_Time'), nsmap[namespace_], eol_))
         if self.Description is not None:
             self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='ActivityType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Date_Time is not None:
-            showIndent(outfile, level)
-            outfile.write('Date_Time=%s,\n' % quote_python(self.Date_Time).encode(ExternalEncoding))
-        if self.Description is not None:
-            outfile.write('Description=model_.StructuredTextType(\n')
-            self.Description.exportLiteral(outfile, level, name_='Description')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -902,26 +829,6 @@ class KillChainsType(GeneratedsSuper):
             eol_ = ''
         for Kill_Chain_ in self.Kill_Chain:
             Kill_Chain_.export(outfile, level, nsmap, namespace_, name_='Kill_Chain', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='KillChainsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Kill_Chain=[\n')
-        level += 1
-        for Kill_Chain_ in self.Kill_Chain:
-            outfile.write('model_.KillChainType(\n')
-            Kill_Chain_.exportLiteral(outfile, level, name_='KillChainType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1023,45 +930,6 @@ class KillChainType(GeneratedsSuper):
             eol_ = ''
         for Kill_Chain_Phase_ in self.Kill_Chain_Phase:
             Kill_Chain_Phase_.export(outfile, level, nsmap, namespace_, name_='Kill_Chain_Phase', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='KillChainType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.reference is not None and 'reference' not in already_processed:
-            already_processed.add('reference')
-            showIndent(outfile, level)
-            outfile.write('reference = "%s",\n' % (self.reference,))
-        if self.number_of_phases is not None and 'number_of_phases' not in already_processed:
-            already_processed.add('number_of_phases')
-            showIndent(outfile, level)
-            outfile.write('number_of_phases = "%s",\n' % (self.number_of_phases,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-        if self.definer is not None and 'definer' not in already_processed:
-            already_processed.add('definer')
-            showIndent(outfile, level)
-            outfile.write('definer = "%s",\n' % (self.definer,))
-        if self.name is not None and 'name' not in already_processed:
-            already_processed.add('name')
-            showIndent(outfile, level)
-            outfile.write('name = "%s",\n' % (self.name,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Kill_Chain_Phase=[\n')
-        level += 1
-        for Kill_Chain_Phase_ in self.Kill_Chain_Phase:
-            outfile.write('model_.KillChainPhaseType(\n')
-            Kill_Chain_Phase_.exportLiteral(outfile, level, name_='KillChainPhaseType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1162,27 +1030,6 @@ class KillChainPhaseType(GeneratedsSuper):
             outfile.write('  xsi:type="%s"' % self.extensiontype_)
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='KillChainPhaseType', fromsubclass_=False, pretty_print=True):
         pass
-    def exportLiteral(self, outfile, level, name_='KillChainPhaseType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.ordinality is not None and 'ordinality' not in already_processed:
-            already_processed.add('ordinality')
-            showIndent(outfile, level)
-            outfile.write('ordinality = %d,\n' % (self.ordinality,))
-        if self.name is not None and 'name' not in already_processed:
-            already_processed.add('name')
-            showIndent(outfile, level)
-            outfile.write('name = "%s",\n' % (self.name,))
-        if self.phase_id is not None and 'phase_id' not in already_processed:
-            already_processed.add('phase_id')
-            showIndent(outfile, level)
-            outfile.write('phase_id = %s,\n' % (self.phase_id,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        pass
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1263,26 +1110,6 @@ class KillChainPhasesReferenceType(GeneratedsSuper):
             eol_ = ''
         for Kill_Chain_Phase_ in self.Kill_Chain_Phase:
             Kill_Chain_Phase_.export(outfile, level, nsmap, namespace_, name_='Kill_Chain_Phase', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='KillChainPhasesReferenceType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Kill_Chain_Phase=[\n')
-        level += 1
-        for Kill_Chain_Phase_ in self.Kill_Chain_Phase:
-            outfile.write('model_.KillChainPhaseReferenceType(\n')
-            Kill_Chain_Phase_.exportLiteral(outfile, level, name_='KillChainPhaseReferenceType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1350,25 +1177,6 @@ class KillChainPhaseReferenceType(KillChainPhaseType):
             outfile.write(' kill_chain_id=%s' % (quote_attrib(self.kill_chain_id), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='KillChainPhaseReferenceType', fromsubclass_=False, pretty_print=True):
         super(KillChainPhaseReferenceType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
-        pass
-    def exportLiteral(self, outfile, level, name_='KillChainPhaseReferenceType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.kill_chain_name is not None and 'kill_chain_name' not in already_processed:
-            already_processed.add('kill_chain_name')
-            showIndent(outfile, level)
-            outfile.write('kill_chain_name = "%s",\n' % (self.kill_chain_name,))
-        if self.kill_chain_id is not None and 'kill_chain_id' not in already_processed:
-            already_processed.add('kill_chain_id')
-            showIndent(outfile, level)
-            outfile.write('kill_chain_id = %s,\n' % (self.kill_chain_id,))
-        super(KillChainPhaseReferenceType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(KillChainPhaseReferenceType, self).exportLiteralChildren(outfile, level, name_)
         pass
     def build(self, node):
         already_processed = set()
@@ -1466,29 +1274,6 @@ class IdentityType(GeneratedsSuper):
             outfile.write('<%s:Name>%s</%s:Name>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Name).encode(ExternalEncoding), input_name='Name'), nsmap[namespace_], eol_))
         if self.Related_Identities is not None:
             self.Related_Identities.export(outfile, level, nsmap, namespace_, name_='Related_Identities', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='IdentityType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Name is not None:
-            showIndent(outfile, level)
-            outfile.write('Name=%s,\n' % quote_python(self.Name).encode(ExternalEncoding))
-        if self.Related_Identities is not None:
-            outfile.write('Related_Identities=model_.RelatedIdentitiesType(\n')
-            self.Related_Identities.exportLiteral(outfile, level, name_='Related_Identities')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1567,19 +1352,6 @@ class GenericRelationshipListType(GeneratedsSuper):
             already_processed.add('scope')
             outfile.write(' scope=%s' % (quote_attrib(self.scope), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='GenericRelationshipListType', fromsubclass_=False, pretty_print=True):
-        pass
-    def exportLiteral(self, outfile, level, name_='GenericRelationshipListType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.scope is not None and 'scope' not in already_processed:
-            already_processed.add('scope')
-            showIndent(outfile, level)
-            outfile.write('scope = %s,\n' % (self.scope,))
-    def exportLiteralChildren(self, outfile, level, name_):
         pass
     def build(self, node):
         already_processed = set()
@@ -1663,27 +1435,6 @@ class GenericRelationshipType(GeneratedsSuper):
             self.Information_Source.export(outfile, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
         if self.Relationship is not None:
             self.Relationship.export(outfile, level, nsmap, namespace_, name_='Relationship', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='GenericRelationshipType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Confidence is not None:
-            outfile.write('Confidence=model_.ConfidenceType(\n')
-            self.Confidence.exportLiteral(outfile, level, name_='Confidence')
-            outfile.write('),\n')
-        if self.Information_Source is not None:
-            outfile.write('Information_Source=model_.InformationSourceType(\n')
-            self.Information_Source.exportLiteral(outfile, level, name_='Information_Source')
-            outfile.write('),\n')
-        if self.Relationship is not None:
-            outfile.write('Relationship=model_.ControlledVocabularyStringType(\n')
-            self.Relationship.exportLiteral(outfile, level, name_='Relationship')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1759,20 +1510,6 @@ class RelatedCampaignType(GenericRelationshipType):
             eol_ = ''
         if self.Campaign is not None:
             self.Campaign.export(outfile, level, nsmap, namespace_, name_='Campaign', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedCampaignType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedCampaignType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedCampaignType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Campaign is not None:
-            outfile.write('Campaign=model_.CampaignBaseType(\n')
-            self.Campaign.exportLiteral(outfile, level, name_='Campaign')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1855,20 +1592,6 @@ class RelatedCourseOfActionType(GenericRelationshipType):
             eol_ = ''
         if self.Course_Of_Action is not None:
             self.Course_Of_Action.export(outfile, level, nsmap, namespace_, name_='Course_Of_Action', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedCourseOfActionType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedCourseOfActionType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedCourseOfActionType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Course_Of_Action is not None:
-            outfile.write('Course_Of_Action=model_.CourseOfActionBaseType(\n')
-            self.Course_Of_Action.exportLiteral(outfile, level, name_='Course_Of_Action')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1951,20 +1674,6 @@ class RelatedExploitTargetType(GenericRelationshipType):
             eol_ = ''
         if self.Exploit_Target is not None:
             self.Exploit_Target.export(outfile, level, nsmap, namespace_, name_='Exploit_Target', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedExploitTargetType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedExploitTargetType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedExploitTargetType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Exploit_Target is not None:
-            outfile.write('Exploit_Target=model_.ExploitTargetBaseType(\n')
-            self.Exploit_Target.exportLiteral(outfile, level, name_='Exploit_Target')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2047,20 +1756,6 @@ class RelatedIncidentType(GenericRelationshipType):
             eol_ = ''
         if self.Incident is not None:
             self.Incident.export(outfile, level, nsmap, namespace_, name_='Incident', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedIncidentType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedIncidentType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedIncidentType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Incident is not None:
-            outfile.write('Incident=model_.IncidentBaseType(\n')
-            self.Incident.exportLiteral(outfile, level, name_='Incident')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2143,20 +1838,6 @@ class RelatedIndicatorType(GenericRelationshipType):
             eol_ = ''
         if self.Indicator is not None:
             self.Indicator.export(outfile, level, nsmap, namespace_, name_='Indicator', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedIndicatorType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedIndicatorType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedIndicatorType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Indicator is not None:
-            outfile.write('Indicator=model_.IndicatorBaseType(\n')
-            self.Indicator.exportLiteral(outfile, level, name_='Indicator')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2239,20 +1920,6 @@ class RelatedObservableType(GenericRelationshipType):
             eol_ = ''
         if self.Observable is not None:
             self.Observable.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Observable', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedObservableType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedObservableType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedObservableType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Observable is not None:
-            outfile.write('Observable=model_.cybox_core_binding.ObservableType(\n')
-            self.Observable.exportLiteral(outfile, level, name_='Observable')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2318,20 +1985,6 @@ class RelatedThreatActorType(GenericRelationshipType):
             eol_ = ''
         if self.Threat_Actor is not None:
             self.Threat_Actor.export(outfile, level, nsmap, namespace_, name_='Threat_Actor', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedThreatActorType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedThreatActorType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedThreatActorType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Threat_Actor is not None:
-            outfile.write('Threat_Actor=model_.ThreatActorBaseType(\n')
-            self.Threat_Actor.exportLiteral(outfile, level, name_='Threat_Actor')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2414,20 +2067,6 @@ class RelatedTTPType(GenericRelationshipType):
             eol_ = ''
         if self.TTP is not None:
             self.TTP.export(outfile, level, nsmap, namespace_, name_='TTP', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedTTPType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedTTPType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedTTPType, self).exportLiteralChildren(outfile, level, name_)
-        if self.TTP is not None:
-            outfile.write('TTP=model_.TTPBaseType(\n')
-            self.TTP.exportLiteral(outfile, level, name_='TTP')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2510,20 +2149,6 @@ class RelatedIdentityType(GenericRelationshipType):
             eol_ = ''
         if self.Identity is not None:
             self.Identity.export(outfile, level, nsmap, namespace_, name_='Identity', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedIdentityType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedIdentityType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedIdentityType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Identity is not None:
-            outfile.write('Identity=model_.IdentityType(\n')
-            self.Identity.exportLiteral(outfile, level, name_='Identity')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2616,23 +2241,6 @@ class IndicatorBaseType(GeneratedsSuper):
             outfile.write(' id=%s' % (quote_attrib(self.id), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='IndicatorBaseType', fromsubclass_=False, pretty_print=True):
         pass
-    def exportLiteral(self, outfile, level, name_='IndicatorBaseType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        pass
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2713,23 +2321,6 @@ class IncidentBaseType(GeneratedsSuper):
             outfile.write(' id=%s' % (quote_attrib(self.id), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='IncidentBaseType', fromsubclass_=False, pretty_print=True):
         pass
-    def exportLiteral(self, outfile, level, name_='IncidentBaseType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        pass
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2808,23 +2399,6 @@ class TTPBaseType(GeneratedsSuper):
             already_processed.add('id')
             outfile.write(' id=%s' % (quote_attrib(self.id), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='TTPBaseType', fromsubclass_=False, pretty_print=True):
-        pass
-    def exportLiteral(self, outfile, level, name_='TTPBaseType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
         pass
     def build(self, node):
         already_processed = set()
@@ -2907,23 +2481,6 @@ class ExploitTargetBaseType(GeneratedsSuper):
             outfile.write(' id=%s' % (quote_attrib(self.id), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ExploitTargetBaseType', fromsubclass_=False, pretty_print=True):
         pass
-    def exportLiteral(self, outfile, level, name_='ExploitTargetBaseType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        pass
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3005,23 +2562,6 @@ class CourseOfActionBaseType(GeneratedsSuper):
             outfile.write(' id=%s' % (quote_attrib(self.id), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='CourseOfActionBaseType', fromsubclass_=False, pretty_print=True):
         pass
-    def exportLiteral(self, outfile, level, name_='CourseOfActionBaseType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        pass
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3101,23 +2641,6 @@ class CampaignBaseType(GeneratedsSuper):
             already_processed.add('id')
             outfile.write(' id=%s' % (quote_attrib(self.id), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='CampaignBaseType', fromsubclass_=False, pretty_print=True):
-        pass
-    def exportLiteral(self, outfile, level, name_='CampaignBaseType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
         pass
     def build(self, node):
         already_processed = set()
@@ -3199,23 +2722,6 @@ class ThreatActorBaseType(GeneratedsSuper):
             outfile.write(' id=%s' % (quote_attrib(self.id), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ThreatActorBaseType', fromsubclass_=False, pretty_print=True):
         pass
-    def exportLiteral(self, outfile, level, name_='ThreatActorBaseType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        pass
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3285,26 +2791,6 @@ class ExploitTargetsType(GeneratedsSuper):
             eol_ = ''
         for Exploit_Target_ in self.Exploit_Target:
             Exploit_Target_.export(outfile, level, nsmap, namespace_, name_='Exploit_Target', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='ExploitTargetsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Exploit_Target=[\n')
-        level += 1
-        for Exploit_Target_ in self.Exploit_Target:
-            outfile.write('model_.ExploitTargetBaseType(\n')
-            Exploit_Target_.exportLiteral(outfile, level, name_='ExploitTargetBaseType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3369,16 +2855,6 @@ class AddressAbstractType(GeneratedsSuper):
         pass
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='AddressAbstractType', fromsubclass_=False, pretty_print=True):
         pass
-    def exportLiteral(self, outfile, level, name_='AddressAbstractType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        pass
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3441,26 +2917,6 @@ class ContributorsType(GeneratedsSuper):
             eol_ = ''
         for Contributor_ in self.Contributor:
             Contributor_.export(outfile, level, nsmap, namespace_, name_='Contributor', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='ContributorsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Contributor=[\n')
-        level += 1
-        for Contributor_ in self.Contributor:
-            outfile.write('model_.IdentityType(\n')
-            Contributor_.exportLiteral(outfile, level, name_='IdentityType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3542,24 +2998,6 @@ class ReferencesType(GeneratedsSuper):
         for Reference_ in self.Reference:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%s:Reference>%s</%s:Reference>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(Reference_).encode(ExternalEncoding), input_name='Reference'), nsmap[namespace_], eol_))
-    def exportLiteral(self, outfile, level, name_='ReferencesType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Reference=[\n')
-        level += 1
-        for Reference_ in self.Reference:
-            showIndent(outfile, level)
-            outfile.write('%s,\n' % quote_python(Reference_).encode(ExternalEncoding))
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3625,26 +3063,6 @@ class RelatedIdentitiesType(GeneratedsSuper):
             eol_ = ''
         for Related_Identity_ in self.Related_Identity:
             Related_Identity_.export(outfile, level, nsmap, namespace_, name_='Related_Identity', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedIdentitiesType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Related_Identity=[\n')
-        level += 1
-        for Related_Identity_ in self.Related_Identity:
-            outfile.write('model_.RelatedIdentityType(\n')
-            Related_Identity_.exportLiteral(outfile, level, name_='RelatedIdentityType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3710,26 +3128,6 @@ class ConfidenceAssertionChainType(GeneratedsSuper):
             eol_ = ''
         for Confidence_Assertion_ in self.Confidence_Assertion:
             Confidence_Assertion_.export(outfile, level, nsmap, namespace_, name_='Confidence_Assertion', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='ConfidenceAssertionChainType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Confidence_Assertion=[\n')
-        level += 1
-        for Confidence_Assertion_ in self.Confidence_Assertion:
-            outfile.write('model_.ConfidenceType(\n')
-            Confidence_Assertion_.exportLiteral(outfile, level, name_='ConfidenceType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3816,34 +3214,6 @@ class StatementType(GeneratedsSuper):
             self.Source.export(outfile, level, nsmap, namespace_, name_='Source', pretty_print=pretty_print)
         if self.Confidence is not None:
             self.Confidence.export(outfile, level, nsmap, namespace_, name_='Confidence', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='StatementType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.timestamp is not None and 'timestamp' not in already_processed:
-            already_processed.add('timestamp')
-            showIndent(outfile, level)
-            outfile.write('timestamp = "%s",\n' % (self.timestamp,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Value is not None:
-            outfile.write('Value=model_.ControlledVocabularyStringType(\n')
-            self.Value.exportLiteral(outfile, level, name_='Value')
-            outfile.write('),\n')
-        if self.Description is not None:
-            outfile.write('Description=model_.StructuredTextType(\n')
-            self.Description.exportLiteral(outfile, level, name_='Description')
-            outfile.write('),\n')
-        if self.Source is not None:
-            outfile.write('Source=model_.ControlledVocabularyStringType(\n')
-            self.Source.exportLiteral(outfile, level, name_='Source')
-            outfile.write('),\n')
-        if self.Confidence is not None:
-            outfile.write('Confidence=model_.ConfidenceType(\n')
-            self.Confidence.exportLiteral(outfile, level, name_='Confidence')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3932,21 +3302,6 @@ class StructuredTextType(GeneratedsSuper):
             outfile.write(' structuring_format=%s' % (self.gds_format_string(quote_attrib(self.structuring_format).encode(ExternalEncoding), input_name='structuring_format'), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='StructuredTextType', fromsubclass_=False, pretty_print=True):
         pass
-    def exportLiteral(self, outfile, level, name_='StructuredTextType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.structuring_format is not None and 'structuring_format' not in already_processed:
-            already_processed.add('structuring_format')
-            showIndent(outfile, level)
-            outfile.write('structuring_format = "%s",\n' % (self.structuring_format,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        pass
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -4020,21 +3375,6 @@ class EncodedCDATAType(GeneratedsSuper):
             already_processed.add('encoded')
             outfile.write(' encoded="%s"' % self.gds_format_boolean(self.encoded, input_name='encoded'))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='EncodedCDATAType', fromsubclass_=False, pretty_print=True):
-        pass
-    def exportLiteral(self, outfile, level, name_='EncodedCDATAType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.encoded is not None and 'encoded' not in already_processed:
-            already_processed.add('encoded')
-            showIndent(outfile, level)
-            outfile.write('encoded = %s,\n' % (self.encoded,))
-    def exportLiteralChildren(self, outfile, level, name_):
         pass
     def build(self, node):
         already_processed = set()
@@ -4118,25 +3458,6 @@ class ControlledVocabularyStringType(GeneratedsSuper):
             already_processed.add('vocab_name')
             outfile.write(' vocab_name=%s' % (self.gds_format_string(quote_attrib(self.vocab_name).encode(ExternalEncoding), input_name='vocab_name'), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ControlledVocabularyStringType', fromsubclass_=False, pretty_print=True):
-        pass
-    def exportLiteral(self, outfile, level, name_='ControlledVocabularyStringType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.vocab_reference is not None and 'vocab_reference' not in already_processed:
-            already_processed.add('vocab_reference')
-            showIndent(outfile, level)
-            outfile.write('vocab_reference = "%s",\n' % (self.vocab_reference,))
-        if self.vocab_name is not None and 'vocab_name' not in already_processed:
-            already_processed.add('vocab_name')
-            showIndent(outfile, level)
-            outfile.write('vocab_name = "%s",\n' % (self.vocab_name,))
-    def exportLiteralChildren(self, outfile, level, name_):
         pass
     def build(self, node):
         already_processed = set()
@@ -4361,25 +3682,6 @@ def parseString(inString):
     # sys.stdout.write('<?xml version="1.0" ?>\n')
     # rootObj.export(sys.stdout, 0, name_="InformationSourceType",
     #     namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'InformationSourceType'
-        rootClass = InformationSourceType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from stix_common_binding.import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import stix.bindings.stix_common as stix_common_binding_binding.as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

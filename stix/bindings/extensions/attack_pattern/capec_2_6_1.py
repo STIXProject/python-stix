@@ -552,20 +552,6 @@ class CAPEC2_6InstanceType(ttp_binding.AttackPatternType):
             showIndent(outfile, level, pretty_print)
             outfile.write(etree_.tostring(self.CAPEC, pretty_print=pretty_print))
             #self.CAPEC.export(outfile, level, nsmap, namespace_, name_='CAPEC', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='CAPEC2.6InstanceType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(CAPEC2_6InstanceType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(CAPEC2_6InstanceType, self).exportLiteralChildren(outfile, level, name_)
-#        if self.CAPEC is not None:
-#            outfile.write('CAPEC=model_.ap_schema_v2_6.Attack_PatternType(\n')
-#            self.CAPEC.exportLiteral(outfile, level, name_='CAPEC')
-#            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -657,25 +643,6 @@ def parseString(inString):
     sys.stdout.write('<?xml version="1.0" ?>\n')
     rootObj.export(sys.stdout, 0, name_="CAPEC2.6InstanceType",
         namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'CAPEC2.6InstanceType'
-        rootClass = CAPEC2_6InstanceType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from capec_2.6 import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import capec_2.6 as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

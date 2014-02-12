@@ -575,29 +575,6 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
         for Role_ in self.Role:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%s:Role>%s</%s:Role>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(Role_).encode(ExternalEncoding), input_name='Role'), nsmap[namespace_], eol_))
-    def exportLiteral(self, outfile, level, name_='CIQIdentity3.0InstanceType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(CIQIdentity3_0InstanceType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(CIQIdentity3_0InstanceType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Specification is not None:
-            outfile.write('Specification=model_.STIXCIQIdentity3_0Type(\n')
-            self.Specification.exportLiteral(outfile, level, name_='Specification')
-            outfile.write('),\n')
-        showIndent(outfile, level)
-        outfile.write('Role=[\n')
-        level += 1
-        for Role_ in self.Role:
-            showIndent(outfile, level)
-            outfile.write('%s,\n' % quote_python(Role_).encode(ExternalEncoding))
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -713,25 +690,6 @@ def parseString(inString):
     sys.stdout.write('<?xml version="1.0" ?>\n')
     rootObj.export(sys.stdout, 0, name_="CIQIdentity3.0InstanceType",
         namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'CIQIdentity3.0InstanceType'
-        rootClass = CIQIdentity3_0InstanceType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from ciq_identity_3.0 import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import ciq_identity_3.0 as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

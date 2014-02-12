@@ -554,20 +554,6 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
             showIndent(outfile, level, pretty_print)
             outfile.write(etree_.tostring(self.Location, pretty_print=pretty_print))
             #self.Location.export(outfile, level, nsmap, namespace_, name_='Location', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='CIQAddress3.0InstanceType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(CIQAddress3_0InstanceType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(CIQAddress3_0InstanceType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Location is not None:
-            outfile.write('Location=model_.xal.AddressType(\n')
-            self.Location.exportLiteral(outfile, level, name_='Location')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -680,25 +666,6 @@ def parseString(inString):
     sys.stdout.write('<?xml version="1.0" ?>\n')
     rootObj.export(sys.stdout, 0, name_="CIQAddress3.0InstanceType",
         namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'CIQAddress3.0InstanceType'
-        rootClass = CIQAddress3_0InstanceType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from ciq_address_3.0 import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import ciq_address_3.0 as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

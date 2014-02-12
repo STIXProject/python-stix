@@ -5,19 +5,20 @@
 # -*- coding: utf-8 -*-
 
 #
-# Generated Thu Apr 11 15:07:51 2013 by generateDS.py version 2.9a.
+# Generated Thu Apr 11 15:07:52 2013 by generateDS.py version 2.9a.
 #
 
 import sys
 import getopt
 import re as re_
 
-import stix.bindings.course_of_action as course_of_action_binding
+import stix.bindings.indicator as indicator_binding
 import stix.bindings.stix_common as stix_common_binding
+
 import base64
 from datetime import datetime, tzinfo, timedelta
 
-XML_NS = "http://stix.mitre.org/extensions/StructuredCOA#Generic-1"
+XML_NS = "http://stix.mitre.org/extensions/TestMechanism#Generic-1"
 
 etree_ = None
 Verbose_import_ = False
@@ -25,43 +26,12 @@ Verbose_import_ = False
     XMLParser_import_elementtree
     ) = range(3)
 XMLParser_import_library = None
-try:
-    # lxml
-    from lxml import etree as etree_
-    XMLParser_import_library = XMLParser_import_lxml
-    if Verbose_import_:
-        print("running with lxml.etree")
-except ImportError:
-    try:
-        # cElementTree from Python 2.5+
-        import xml.etree.cElementTree as etree_
-        XMLParser_import_library = XMLParser_import_elementtree
-        if Verbose_import_:
-            print("running with cElementTree on Python 2.5+")
-    except ImportError:
-        try:
-            # ElementTree from Python 2.5+
-            import xml.etree.ElementTree as etree_
-            XMLParser_import_library = XMLParser_import_elementtree
-            if Verbose_import_:
-                print("running with ElementTree on Python 2.5+")
-        except ImportError:
-            try:
-                # normal cElementTree install
-                import cElementTree as etree_
-                XMLParser_import_library = XMLParser_import_elementtree
-                if Verbose_import_:
-                    print("running with cElementTree")
-            except ImportError:
-                try:
-                    # normal ElementTree install
-                    import elementtree.ElementTree as etree_
-                    XMLParser_import_library = XMLParser_import_elementtree
-                    if Verbose_import_:
-                        print("running with ElementTree")
-                except ImportError:
-                    raise ImportError(
-                        "Failed to import ElementTree from any known place")
+
+# lxml
+from lxml import etree as etree_
+XMLParser_import_library = XMLParser_import_lxml
+if Verbose_import_:
+    print("running with lxml.etree")
 
 def parsexml_(*args, **kwargs):
     if (XMLParser_import_library == XMLParser_import_lxml and
@@ -519,27 +489,27 @@ def _cast(typ, value):
 # Data representation classes.
 #
 
-class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
-    """The GenericStructuredCOAType specifies an instantial extension from
-    the abstract course_of_action_binding.StructuredCOAType intended to support the generic
-    inclusion of any COA content.Specifies a reference URL for the
-    location of the Generic Structured COA."""
+class GenericTestMechanismType(indicator_binding.TestMechanismType):
+    """The GenericTestMechanismType specifies an instantial extension from
+    the abstract indicator_binding.TestMechanismType intended to support the generic
+    inclusion of any test mechanism content.Specifies a reference
+    URL for the location of the Generic Test Mechanism."""
     subclass = None
-    superclass = course_of_action_binding.StructuredCOAType
-    def __init__(self, idref=None, id=None, reference_location=None, Description=None, Type=None, Specification=None):
-        super(GenericStructuredCOAType, self).__init__(idref, id, )
-        self.xmlns          = "http://stix.mitre.org/extensions/StructuredCOA#Generic-1"
-        self.xmlns_prefix   = "genericStructuredCOA"
-        self.xml_type       = "GenericStructuredCOAType"
+    superclass = indicator_binding.TestMechanismType
+    def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, reference_location=None, Description=None, Type=None, Specification=None):
+        super(GenericTestMechanismType, self).__init__(idref, id, Efficacy, Producer, )
+        self.xmlns          = "http://stix.mitre.org/extensions/TestMechanism#Generic-1"
+        self.xmlns_prefix   = "genericTM"
+        self.xml_type       = "GenericTestMechanismType"
         self.reference_location = _cast(None, reference_location)
         self.Description = Description
         self.Type = Type
         self.Specification = Specification
     def factory(*args_, **kwargs_):
-        if GenericStructuredCOAType.subclass:
-            return GenericStructuredCOAType.subclass(*args_, **kwargs_)
+        if GenericTestMechanismType.subclass:
+            return GenericTestMechanismType.subclass(*args_, **kwargs_)
         else:
-            return GenericStructuredCOAType(*args_, **kwargs_)
+            return GenericTestMechanismType(*args_, **kwargs_)
     factory = staticmethod(factory)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
@@ -554,12 +524,12 @@ class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
             self.Description is not None or
             self.Type is not None or
             self.Specification is not None or
-            super(GenericStructuredCOAType, self).hasContent_()
+            super(GenericTestMechanismType, self).hasContent_()
             ):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='GenericStructuredCOAType', namespacedef_='', pretty_print=True):
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='GenericTestMechanismType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -567,7 +537,7 @@ class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
         showIndent(outfile, level, pretty_print)
         outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='GenericStructuredCOAType')
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='GenericTestMechanismType')
         if self.hasContent_():
             outfile.write('>%s' % (eol_, ))
             self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
@@ -575,8 +545,8 @@ class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
             outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='genericStructuredCOA:', name_='GenericStructuredCOAType'):
-        super(GenericStructuredCOAType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='GenericStructuredCOAType')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='genericTM:', name_='GenericTestMechanismType'):
+        super(GenericTestMechanismType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='GenericTestMechanismType')
         if 'xmlns' not in already_processed:
             already_processed.add('xmlns')
             xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
@@ -588,8 +558,8 @@ class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
         if self.reference_location is not None and 'reference_location' not in already_processed:
             already_processed.add('reference_location')
             outfile.write(' reference_location=%s' % (self.gds_format_string(quote_attrib(self.reference_location).encode(ExternalEncoding), input_name='reference_location'), ))
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='GenericStructuredCOAType', fromsubclass_=False, pretty_print=True):
-        super(GenericStructuredCOAType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='GenericTestMechanismType', fromsubclass_=False, pretty_print=True):
+        super(GenericTestMechanismType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
@@ -600,32 +570,6 @@ class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
             self.Type.export(outfile, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
         if self.Specification is not None:
             self.Specification.export(outfile, level, nsmap, namespace_, name_='Specification', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='GenericStructuredCOAType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.reference_location is not None and 'reference_location' not in already_processed:
-            already_processed.add('reference_location')
-            showIndent(outfile, level)
-            outfile.write('reference_location = "%s",\n' % (self.reference_location,))
-        super(GenericStructuredCOAType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(GenericStructuredCOAType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Description is not None:
-            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
-            self.Description.exportLiteral(outfile, level, name_='Description')
-            outfile.write('),\n')
-        if self.Type is not None:
-            outfile.write('Type=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Type.exportLiteral(outfile, level, name_='Type')
-            outfile.write('),\n')
-        if self.Specification is not None:
-            outfile.write('Specification=model_.stix_common_binding.EncodedCDATAType(\n')
-            self.Specification.exportLiteral(outfile, level, name_='Specification')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -637,7 +581,7 @@ class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
         if value is not None and 'reference_location' not in already_processed:
             already_processed.add('reference_location')
             self.reference_location = value
-        super(GenericStructuredCOAType, self).buildAttributes(node, attrs, already_processed)
+        super(GenericTestMechanismType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
@@ -651,48 +595,59 @@ class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
             obj_ = stix_common_binding.EncodedCDATAType.factory()
             obj_.build(child_)
             self.set_Specification(obj_)
-        super(GenericStructuredCOAType, self).buildChildren(child_, node, nodeName_, True)
-# end class GenericStructuredCOAType
+        super(GenericTestMechanismType, self).buildChildren(child_, node, nodeName_, True)
+# end class GenericTestMechanismType
 
 GDSClassesMapping = {
-    'Information_Source': stix_common_binding.InformationSourceType,
     'Indicator': stix_common_binding.IndicatorBaseType,
     'Exploit_Target': stix_common_binding.ExploitTargetBaseType,
+    'Suggested_COA': stix_common_binding.RelatedCourseOfActionType,
     'Incident': stix_common_binding.IncidentBaseType,
     'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
     'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
     'Confidence_Assertion': stix_common_binding.ConfidenceType,
-    'Campaign': stix_common_binding.CampaignBaseType,
+    'Suggested_COAs': indicator_binding.SuggestedCOAsType,
+    'Value': stix_common_binding.ControlledVocabularyStringType,
+    'Information_Source': stix_common_binding.InformationSourceType,
+    'Producer': stix_common_binding.InformationSourceType,
     'Encoding': stix_common_binding.ControlledVocabularyStringType,
-    'Impact': stix_common_binding.StatementType,
+    'Kill_Chain_Phases': stix_common_binding.KillChainPhasesReferenceType,
     'Specification': stix_common_binding.EncodedCDATAType,
     'Source': stix_common_binding.ControlledVocabularyStringType,
     'State': stix_common_binding.ControlledVocabularyStringType,
-    'Structured_COA': course_of_action_binding.StructuredCOAType,
     'Type': stix_common_binding.ControlledVocabularyStringType,
     'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
     'Relationship': stix_common_binding.ControlledVocabularyStringType,
     'TTP': stix_common_binding.TTPBaseType,
-    'Stage': stix_common_binding.ControlledVocabularyStringType,
+    'Indicated_TTP': stix_common_binding.RelatedTTPType,
+    'Related_Indicators': indicator_binding.RelatedIndicatorsType,
     'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
+    'Valid_Time_Position': indicator_binding.ValidTimeType,
+    'Contributors': stix_common_binding.ContributorsType,
+    'Campaign': stix_common_binding.CampaignBaseType,
     'Reference_Description': stix_common_binding.StructuredTextType,
     'Association_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Related_Identities': stix_common_binding.RelatedIdentitiesType,
-    'Identity': stix_common_binding.IdentityType,
-    'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
-    'Threat_Actor': stix_common_binding.ThreatActorBaseType,
-    'Applicability_Confidence': stix_common_binding.ConfidenceType,
     'Confidence': stix_common_binding.ConfidenceType,
+    'Test_Mechanisms': indicator_binding.TestMechanismsType,
+    'Related_Identities': stix_common_binding.RelatedIdentitiesType,
+    'Sightings': indicator_binding.SightingsType,
+    'Likely_Impact': stix_common_binding.StatementType,
+    'Identity': stix_common_binding.IdentityType,
+    'Test_Mechanism': indicator_binding.TestMechanismType,
+    'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
+    'Sighting': indicator_binding.SightingType,
+    'Threat_Actor': stix_common_binding.ThreatActorBaseType,
     'Kill_Chain': stix_common_binding.KillChainType,
-    'Objective': course_of_action_binding.ObjectiveType,
+    'References': stix_common_binding.ReferencesType,
+    'Composite_Indicator_Expression': indicator_binding.CompositeIndicatorExpressionType,
     'Description': stix_common_binding.StructuredTextType,
     'Efficacy': stix_common_binding.StatementType,
-    'Name': stix_common_binding.ControlledVocabularyStringType,
+    'Related_Indicator': stix_common_binding.RelatedIndicatorType,
     'Kill_Chain_Phase': stix_common_binding.KillChainPhaseReferenceType,
     'Related_Identity': stix_common_binding.RelatedIdentityType,
     'Argument_Name': stix_common_binding.ControlledVocabularyStringType,
     'Dependency_Description': stix_common_binding.StructuredTextType,
-    'Cost': stix_common_binding.StatementType,
+    'Contributor': stix_common_binding.IdentityType,
 }
 
 USAGE_TEXT = """
@@ -715,8 +670,8 @@ def parse(inFileName):
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
-        rootTag = 'GenericStructuredCOAType'
-        rootClass = GenericStructuredCOAType
+        rootTag = 'GenericTestMechanismType'
+        rootClass = GenericTestMechanismType
     rootObj = rootClass.factory()
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
@@ -732,8 +687,8 @@ def parseEtree(inFileName):
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
-        rootTag = 'GenericStructuredCOAType'
-        rootClass = GenericStructuredCOAType
+        rootTag = 'GenericTestMechanismType'
+        rootClass = GenericTestMechanismType
     rootObj = rootClass.factory()
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
@@ -751,34 +706,15 @@ def parseString(inString):
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
-        rootTag = 'GenericStructuredCOAType'
-        rootClass = GenericStructuredCOAType
+        rootTag = 'GenericTestMechanismType'
+        rootClass = GenericTestMechanismType
     rootObj = rootClass.factory()
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
     doc = None
     sys.stdout.write('<?xml version="1.0" ?>\n')
-    rootObj.export(sys.stdout, 0, name_="GenericStructuredCOAType",
+    rootObj.export(sys.stdout, 0, name_="GenericTestMechanismType",
         namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'GenericStructuredCOAType'
-        rootClass = GenericStructuredCOAType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from generic import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import generic as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():
@@ -793,5 +729,5 @@ if __name__ == '__main__':
     main()
 
 __all__ = [
-    "GenericStructuredCOAType"
+    "GenericTestMechanismType"
     ]

@@ -570,32 +570,6 @@ class GenericTestMechanismType(indicator_binding.TestMechanismType):
             self.Type.export(outfile, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
         if self.Specification is not None:
             self.Specification.export(outfile, level, nsmap, namespace_, name_='Specification', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='GenericTestMechanismType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.reference_location is not None and 'reference_location' not in already_processed:
-            already_processed.add('reference_location')
-            showIndent(outfile, level)
-            outfile.write('reference_location = "%s",\n' % (self.reference_location,))
-        super(GenericTestMechanismType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(GenericTestMechanismType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Description is not None:
-            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
-            self.Description.exportLiteral(outfile, level, name_='Description')
-            outfile.write('),\n')
-        if self.Type is not None:
-            outfile.write('Type=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Type.exportLiteral(outfile, level, name_='Type')
-            outfile.write('),\n')
-        if self.Specification is not None:
-            outfile.write('Specification=model_.stix_common_binding.EncodedCDATAType(\n')
-            self.Specification.exportLiteral(outfile, level, name_='Specification')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -741,25 +715,6 @@ def parseString(inString):
     sys.stdout.write('<?xml version="1.0" ?>\n')
     rootObj.export(sys.stdout, 0, name_="GenericTestMechanismType",
         namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'GenericTestMechanismType'
-        rootClass = GenericTestMechanismType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from generic import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import generic as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

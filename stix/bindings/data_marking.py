@@ -538,26 +538,6 @@ class MarkingType(GeneratedsSuper):
             eol_ = ''
         for Marking_ in self.Marking:
             Marking_.export(outfile, level, nsmap, namespace_, name_='Marking', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='MarkingType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Marking=[\n')
-        level += 1
-        for Marking_ in self.Marking:
-            outfile.write('model_.MarkingSpecificationType(\n')
-            Marking_.exportLiteral(outfile, level, name_='MarkingSpecificationType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -646,23 +626,6 @@ class MarkingStructureType(GeneratedsSuper):
             already_processed.add('marking_model_name')
             outfile.write(' marking_model_name=%s' % (quote_attrib(self.marking_model_name), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='MarkingStructureType', fromsubclass_=False, pretty_print=True):
-        pass
-    def exportLiteral(self, outfile, level, name_='MarkingStructureType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.marking_model_ref is not None and 'marking_model_ref' not in already_processed:
-            already_processed.add('marking_model_ref')
-            showIndent(outfile, level)
-            outfile.write('marking_model_ref = "%s",\n' % (self.marking_model_ref,))
-        if self.marking_model_name is not None and 'marking_model_name' not in already_processed:
-            already_processed.add('marking_model_name')
-            showIndent(outfile, level)
-            outfile.write('marking_model_name = %s,\n' % (self.marking_model_name,))
-    def exportLiteralChildren(self, outfile, level, name_):
         pass
     def build(self, node):
         already_processed = set()
@@ -766,44 +729,6 @@ class MarkingSpecificationType(GeneratedsSuper):
             Marking_Structure_.export(outfile, level, nsmap, namespace_, name_='Marking_Structure', pretty_print=pretty_print)
         if self.Information_Source is not None:
             self.Information_Source.export(outfile, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='MarkingSpecificationType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-        if self.version is not None and 'version' not in already_processed:
-            already_processed.add('version')
-            showIndent(outfile, level)
-            outfile.write('version = "%s",\n' % (self.version,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Controlled_Structure is not None:
-            showIndent(outfile, level)
-            outfile.write('Controlled_Structure=%s,\n' % quote_python(self.Controlled_Structure).encode(ExternalEncoding))
-        showIndent(outfile, level)
-        outfile.write('Marking_Structure=[\n')
-        level += 1
-        for Marking_Structure_ in self.Marking_Structure:
-            outfile.write('model_.MarkingStructureType(\n')
-            Marking_Structure_.exportLiteral(outfile, level, name_='MarkingStructureType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-        if self.Information_Source is not None:
-            outfile.write('Information_Source=model_.stix_common_binding.InformationSourceType(\n')
-            self.Information_Source.exportLiteral(outfile, level, name_='Information_Source')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -956,25 +881,6 @@ def parseString(inString):
     # sys.stdout.write('<?xml version="1.0" ?>\n')
     # rootObj.export(sys.stdout, 0, name_="MarkingType",
     #     namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'MarkingType'
-        rootClass = MarkingType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from data_marking import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import data_marking as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

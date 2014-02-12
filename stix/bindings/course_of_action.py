@@ -565,23 +565,6 @@ class StructuredCOAType(GeneratedsSuper):
             outfile.write(' id=%s' % (quote_attrib(self.id), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='StructuredCOAType', fromsubclass_=False, pretty_print=True):
         pass
-    def exportLiteral(self, outfile, level, name_='StructuredCOAType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        pass
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -654,23 +637,6 @@ class ObjectiveType(GeneratedsSuper):
             self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Applicability_Confidence is not None:
             self.Applicability_Confidence.export(outfile, level, nsmap, namespace_, name_='Applicability_Confidence', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='ObjectiveType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Description is not None:
-            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
-            self.Description.exportLiteral(outfile, level, name_='Description')
-            outfile.write('),\n')
-        if self.Applicability_Confidence is not None:
-            outfile.write('Applicability_Confidence=model_.stix_common_binding.ConfidenceType(\n')
-            self.Applicability_Confidence.exportLiteral(outfile, level, name_='Applicability_Confidence')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -804,61 +770,6 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             self.Efficacy.export(outfile, level, nsmap, namespace_, name_='Efficacy', pretty_print=pretty_print)
         if self.Handling is not None:
             self.Handling.export(outfile, level, nsmap, namespace_, name_='Handling', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='CourseOfActionType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.version is not None and 'version' not in already_processed:
-            already_processed.add('version')
-            showIndent(outfile, level)
-            outfile.write('version = %s,\n' % (self.version,))
-        super(CourseOfActionType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(CourseOfActionType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Title is not None:
-            showIndent(outfile, level)
-            outfile.write('Title=%s,\n' % quote_python(self.Title).encode(ExternalEncoding))
-        if self.Stage is not None:
-            outfile.write('Stage=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Stage.exportLiteral(outfile, level, name_='Stage')
-            outfile.write('),\n')
-        if self.Type is not None:
-            outfile.write('Type=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Type.exportLiteral(outfile, level, name_='Type')
-            outfile.write('),\n')
-        if self.Description is not None:
-            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
-            self.Description.exportLiteral(outfile, level, name_='Description')
-            outfile.write('),\n')
-        if self.Objective is not None:
-            outfile.write('Objective=model_.ObjectiveType(\n')
-            self.Objective.exportLiteral(outfile, level, name_='Objective')
-            outfile.write('),\n')
-        if self.StructuredCOAType is not None:
-            showIndent(outfile, level)
-            outfile.write('StructuredCOAType=model_.StructuredCOAType(\n')
-            self.StructuredCOAType.exportLiteral(outfile, level)
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        if self.Impact is not None:
-            outfile.write('Impact=model_.stix_common_binding.StatementType(\n')
-            self.Impact.exportLiteral(outfile, level, name_='Impact')
-            outfile.write('),\n')
-        if self.Cost is not None:
-            outfile.write('Cost=model_.stix_common_binding.StatementType(\n')
-            self.Cost.exportLiteral(outfile, level, name_='Cost')
-            outfile.write('),\n')
-        if self.Efficacy is not None:
-            outfile.write('Efficacy=model_.stix_common_binding.StatementType(\n')
-            self.Efficacy.exportLiteral(outfile, level, name_='Efficacy')
-            outfile.write('),\n')
-        if self.Handling is not None:
-            outfile.write('Handling=model_.data_marking_binding.MarkingType(\n')
-            self.Handling.exportLiteral(outfile, level, name_='Handling')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1038,25 +949,6 @@ def parseString(inString):
     # sys.stdout.write('<?xml version="1.0" ?>\n')
     # rootObj.export(sys.stdout, 0, name_="Course_Of_Action",
     #     namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'Course_Of_Action'
-        rootClass = CourseOfActionType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from course_of_action import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import course_of_action as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

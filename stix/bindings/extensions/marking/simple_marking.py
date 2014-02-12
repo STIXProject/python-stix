@@ -550,19 +550,6 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
         if self.Statement is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%s:Statement>%s</%s:Statement>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Statement).encode(ExternalEncoding), input_name='Statement'), nsmap[namespace_], eol_))
-    def exportLiteral(self, outfile, level, name_='SimpleMarkingStructureType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(SimpleMarkingStructureType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(SimpleMarkingStructureType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Statement is not None:
-            showIndent(outfile, level)
-            outfile.write('Statement=%s,\n' % quote_python(self.Statement).encode(ExternalEncoding))
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -649,25 +636,6 @@ def parseString(inString):
     sys.stdout.write('<?xml version="1.0" ?>\n')
     rootObj.export(sys.stdout, 0, name_="SimpleMarkingStructureType",
         namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'SimpleMarkingStructureType'
-        rootClass = SimpleMarkingStructureType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from simple_marking import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import simple_marking as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

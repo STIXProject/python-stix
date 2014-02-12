@@ -539,26 +539,6 @@ class NamesType(GeneratedsSuper):
             eol_ = ''
         for Name_ in self.Name:
             Name_.export(outfile, level, nsmap, namespace_, name_='Name', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='NamesType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Name=[\n')
-        level += 1
-        for Name_ in self.Name:
-            outfile.write('model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            Name_.exportLiteral(outfile, level, name_='stix_common_binding.ControlledVocabularyStringType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -627,27 +607,6 @@ class AssociatedCampaignsType(stix_common_binding.GenericRelationshipListType):
             eol_ = ''
         for Associated_Campaign_ in self.Associated_Campaign:
             Associated_Campaign_.export(outfile, level, nsmap, namespace_, name_='Associated_Campaign', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='AssociatedCampaignsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(AssociatedCampaignsType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(AssociatedCampaignsType, self).exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('Associated_Campaign=[\n')
-        level += 1
-        for Associated_Campaign_ in self.Associated_Campaign:
-            outfile.write('model_.stix_common_binding.RelatedCampaignType(\n')
-            Associated_Campaign_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedCampaignType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -717,27 +676,6 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
             eol_ = ''
         for Related_Indicator_ in self.Related_Indicator:
             Related_Indicator_.export(outfile, level, nsmap, namespace_, name_='Related_Indicator', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedIndicatorsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedIndicatorsType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedIndicatorsType, self).exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('Related_Indicator=[\n')
-        level += 1
-        for Related_Indicator_ in self.Related_Indicator:
-            outfile.write('model_.stix_common_binding.RelatedIndicatorType(\n')
-            Related_Indicator_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedIndicatorType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -807,27 +745,6 @@ class RelatedIncidentsType(stix_common_binding.GenericRelationshipListType):
             eol_ = ''
         for Related_Incident_ in self.Related_Incident:
             Related_Incident_.export(outfile, level, nsmap, namespace_, name_='Related_Incident', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedIncidentsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedIncidentsType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedIncidentsType, self).exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('Related_Incident=[\n')
-        level += 1
-        for Related_Incident_ in self.Related_Incident:
-            outfile.write('model_.stix_common_binding.RelatedIncidentType(\n')
-            Related_Incident_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedIncidentType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -897,27 +814,6 @@ class RelatedTTPsType(stix_common_binding.GenericRelationshipListType):
             eol_ = ''
         for Related_TTP_ in self.Related_TTP:
             Related_TTP_.export(outfile, level, nsmap, namespace_, name_='Related_TTP', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedTTPsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedTTPsType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedTTPsType, self).exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('Related_TTP=[\n')
-        level += 1
-        for Related_TTP_ in self.Related_TTP:
-            outfile.write('model_.stix_common_binding.RelatedTTPType(\n')
-            Related_TTP_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedTTPType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -989,27 +885,6 @@ class AttributionType(stix_common_binding.GenericRelationshipListType):
             eol_ = ''
         for Attributed_Threat_Actor_ in self.Attributed_Threat_Actor:
             Attributed_Threat_Actor_.export(outfile, level, nsmap, namespace_, name_='Attributed_Threat_Actor', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='AttributionType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(AttributionType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(AttributionType, self).exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('Attributed_Threat_Actor=[\n')
-        level += 1
-        for Attributed_Threat_Actor_ in self.Attributed_Threat_Actor:
-            outfile.write('model_.stix_common_binding.RelatedThreatActorType(\n')
-            Attributed_Threat_Actor_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedThreatActorType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1182,92 +1057,6 @@ class CampaignType(stix_common_binding.CampaignBaseType):
             self.Information_Source.export(outfile, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
         if self.Handling is not None:
             self.Handling.export(outfile, level, nsmap, namespace_, name_='Handling', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='CampaignType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.version is not None and 'version' not in already_processed:
-            already_processed.add('version')
-            showIndent(outfile, level)
-            outfile.write('version = %s,\n' % (self.version,))
-        super(CampaignType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(CampaignType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Title is not None:
-            showIndent(outfile, level)
-            outfile.write('Title=%s,\n' % quote_python(self.Title).encode(ExternalEncoding))
-        if self.Names is not None:
-            outfile.write('Names=model_.NamesType(\n')
-            self.Names.exportLiteral(outfile, level, name_='Names')
-            outfile.write('),\n')
-        showIndent(outfile, level)
-        outfile.write('Intended_Effect=[\n')
-        level += 1
-        for Intended_Effect_ in self.Intended_Effect:
-            outfile.write('model_.stix_common_binding.StatementType(\n')
-            Intended_Effect_.exportLiteral(outfile, level, name_='stix_common_binding.StatementType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-        if self.Status is not None:
-            outfile.write('Status=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Status.exportLiteral(outfile, level, name_='Status')
-            outfile.write('),\n')
-        if self.Related_TTPs is not None:
-            outfile.write('Related_TTPs=model_.RelatedTTPsType(\n')
-            self.Related_TTPs.exportLiteral(outfile, level, name_='Related_TTPs')
-            outfile.write('),\n')
-        if self.Related_Incidents is not None:
-            outfile.write('Related_Incidents=model_.RelatedIncidentsType(\n')
-            self.Related_Incidents.exportLiteral(outfile, level, name_='Related_Incidents')
-            outfile.write('),\n')
-        if self.Related_Indicators is not None:
-            outfile.write('Related_Indicators=model_.RelatedIndicatorsType(\n')
-            self.Related_Indicators.exportLiteral(outfile, level, name_='Related_Indicators')
-            outfile.write('),\n')
-        showIndent(outfile, level)
-        outfile.write('Attribution=[\n')
-        level += 1
-        for Attribution_ in self.Attribution:
-            outfile.write('model_.AttributionType(\n')
-            Attribution_.exportLiteral(outfile, level, name_='AttributionType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-        if self.Associated_Campaigns is not None:
-            outfile.write('Associated_Campaigns=model_.AssociatedCampaignsType(\n')
-            self.Associated_Campaigns.exportLiteral(outfile, level, name_='Associated_Campaigns')
-            outfile.write('),\n')
-        if self.Confidence is not None:
-            outfile.write('Confidence=model_.stix_common_binding.ConfidenceType(\n')
-            self.Confidence.exportLiteral(outfile, level, name_='Confidence')
-            outfile.write('),\n')
-        showIndent(outfile, level)
-        outfile.write('Activity=[\n')
-        level += 1
-        for Activity_ in self.Activity:
-            outfile.write('model_.stix_common_binding.ActivityType(\n')
-            Activity_.exportLiteral(outfile, level, name_='stix_common_binding.ActivityType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-        if self.Information_Source is not None:
-            outfile.write('Information_Source=model_.stix_common_binding.InformationSourceType(\n')
-            self.Information_Source.exportLiteral(outfile, level, name_='Information_Source')
-            outfile.write('),\n')
-        if self.Handling is not None:
-            outfile.write('Handling=model_.data_marking_binding.MarkingType(\n')
-            self.Handling.exportLiteral(outfile, level, name_='Handling')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1494,25 +1283,6 @@ def parseString(inString):
     # sys.stdout.write('<?xml version="1.0" ?>\n')
     # rootObj.export(sys.stdout, 0, name_="Campaign",
     #     namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'Campaign'
-        rootClass = CampaignType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from campaign import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import campaign as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

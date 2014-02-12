@@ -546,21 +546,6 @@ class ValidTimeType(GeneratedsSuper):
         if self.End_Time is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%s:End_Time>%s</%s:End_Time>%s' % (nsmap[namespace_], self.gds_format_datetime(self.End_Time, input_name='End_Time'), nsmap[namespace_], eol_))
-    def exportLiteral(self, outfile, level, name_='ValidTimeType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Start_Time is not None:
-            showIndent(outfile, level)
-            outfile.write('Start_Time=datetime_.strptime("%s", "%%Y-%%m-%%dT%%H:%%M:%%S"),\n' % self.gds_format_datetime(self.Start_Time, input_name='Start_Time'))
-        if self.End_Time is not None:
-            showIndent(outfile, level)
-            outfile.write('End_Time=datetime_.strptime("%s", "%%Y-%%m-%%dT%%H:%%M:%%S"),\n' % self.gds_format_datetime(self.End_Time, input_name='End_Time'))
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -638,29 +623,6 @@ class CompositeIndicatorExpressionType(GeneratedsSuper):
             eol_ = ''
         for Indicator_ in self.Indicator:
             Indicator_.export(outfile, level, nsmap, namespace_, name_='Indicator', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='CompositeIndicatorExpressionType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.operator is not None and 'operator' not in already_processed:
-            already_processed.add('operator')
-            showIndent(outfile, level)
-            outfile.write('operator = %s,\n' % (self.operator,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Indicator=[\n')
-        level += 1
-        for Indicator_ in self.Indicator:
-            outfile.write('model_.Indicator(\n')
-            Indicator_.exportLiteral(outfile, level)
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -797,30 +759,6 @@ class TestMechanismType(GeneratedsSuper):
             self.Efficacy.export(outfile, level, nsmap, namespace_, name_='Efficacy', pretty_print=pretty_print)
         if self.Producer is not None:
             self.Producer.export(outfile, level, nsmap, namespace_, name_='Producer', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='TestMechanismType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Efficacy is not None:
-            outfile.write('Efficacy=model_.stix_common_binding.StatementType(\n')
-            self.Efficacy.exportLiteral(outfile, level, name_='Efficacy')
-            outfile.write('),\n')
-        if self.Producer is not None:
-            outfile.write('Producer=model_.stix_common_binding.InformationSourceType(\n')
-            self.Producer.exportLiteral(outfile, level, name_='Producer')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -909,29 +847,6 @@ class SightingsType(GeneratedsSuper):
             eol_ = ''
         for Sighting_ in self.Sighting:
             Sighting_.export(outfile, level, nsmap, namespace_, name_='Sighting', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='SightingsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.sightings_count is not None and 'sightings_count' not in already_processed:
-            already_processed.add('sightings_count')
-            showIndent(outfile, level)
-            outfile.write('sightings_count = %d,\n' % (self.sightings_count,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Sighting=[\n')
-        level += 1
-        for Sighting_ in self.Sighting:
-            outfile.write('model_.SightingType(\n')
-            Sighting_.exportLiteral(outfile, level, name_='SightingType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1018,29 +933,6 @@ class SightingType(GeneratedsSuper):
             outfile.write('<%s:Reference>%s</%s:Reference>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Reference).encode(ExternalEncoding), input_name='Reference'), nsmap[namespace_], eol_))
         if self.Confidence is not None:
             self.Confidence.export(outfile, level, nsmap, namespace_, name_='Confidence', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='SightingType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.timestamp is not None and 'timestamp' not in already_processed:
-            already_processed.add('timestamp')
-            showIndent(outfile, level)
-            outfile.write('timestamp = "%s",\n' % (self.timestamp,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Source is not None:
-            outfile.write('Source=model_.stix_common_binding.StructuredTextType(\n')
-            self.Source.exportLiteral(outfile, level, name_='Source')
-            outfile.write('),\n')
-        if self.Reference is not None:
-            showIndent(outfile, level)
-            outfile.write('Reference=%s,\n' % quote_python(self.Reference).encode(ExternalEncoding))
-        if self.Confidence is not None:
-            outfile.write('Confidence=model_.stix_common_binding.ConfidenceType(\n')
-            self.Confidence.exportLiteral(outfile, level, name_='Confidence')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1120,26 +1012,6 @@ class TestMechanismsType(GeneratedsSuper):
             eol_ = ''
         for Test_Mechanism_ in self.get_Test_Mechanism():
             Test_Mechanism_.export(outfile, level, nsmap, namespace_, name_='Test_Mechanism', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='TestMechanismsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Test_Mechanism=[\n')
-        level += 1
-        for Test_Mechanism_ in self.Test_Mechanism:
-            outfile.write('model_.TestMechanismType(\n')
-            Test_Mechanism_.exportLiteral(outfile, level, name_='TestMechanismType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1237,27 +1109,6 @@ class SuggestedCOAsType(stix_common_binding.GenericRelationshipListType):
             eol_ = ''
         for Suggested_COA_ in self.Suggested_COA:
             Suggested_COA_.export(outfile, level, nsmap, namespace_, name_='Suggested_COA', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='SuggestedCOAsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(SuggestedCOAsType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(SuggestedCOAsType, self).exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('Suggested_COA=[\n')
-        level += 1
-        for Suggested_COA_ in self.Suggested_COA:
-            outfile.write('model_.stix_common_binding.RelatedCourseOfActionType(\n')
-            Suggested_COA_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedCourseOfActionType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1327,27 +1178,6 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
             eol_ = ''
         for Related_Indicator_ in self.Related_Indicator:
             Related_Indicator_.export(outfile, level, nsmap, namespace_, name_='Related_Indicator', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedIndicatorsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedIndicatorsType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedIndicatorsType, self).exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('Related_Indicator=[\n')
-        level += 1
-        for Related_Indicator_ in self.Related_Indicator:
-            outfile.write('model_.stix_common_binding.RelatedIndicatorType(\n')
-            Related_Indicator_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedIndicatorType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1558,110 +1388,6 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
             self.Related_Indicators.export(outfile, level, nsmap, namespace_, name_='Related_Indicators', pretty_print=pretty_print)
         if self.Producer is not None:
             self.Producer.export(outfile, level, nsmap, namespace_, name_='Producer', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='IndicatorType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.negate is not None and 'negate' not in already_processed:
-            already_processed.add('negate')
-            showIndent(outfile, level)
-            outfile.write('negate = %s,\n' % (self.negate,))
-        if self.version is not None and 'version' not in already_processed:
-            already_processed.add('version')
-            showIndent(outfile, level)
-            outfile.write('version = %s,\n' % (self.version,))
-        super(IndicatorType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(IndicatorType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Title is not None:
-            showIndent(outfile, level)
-            outfile.write('Title=%s,\n' % quote_python(self.Title).encode(ExternalEncoding))
-        if self.Type is not None:
-            outfile.write('Type=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Type.exportLiteral(outfile, level, name_='Type')
-            outfile.write('),\n')
-        showIndent(outfile, level)
-        outfile.write('Alternative_ID=[\n')
-        level += 1
-        for Alternative_ID_ in self.Alternative_ID:
-            showIndent(outfile, level)
-            outfile.write('%s,\n' % quote_python(Alternative_ID_).encode(ExternalEncoding))
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-        if self.Description is not None:
-            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
-            self.Description.exportLiteral(outfile, level, name_='Description')
-            outfile.write('),\n')
-        showIndent(outfile, level)
-        outfile.write('Valid_Time_Position=[\n')
-        level += 1
-        for Valid_Time_Position_ in self.Valid_Time_Position:
-            outfile.write('model_.ValidTimeType(\n')
-            Valid_Time_Position_.exportLiteral(outfile, level, name_='ValidTimeType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-        if self.Observable is not None:
-            outfile.write('Observable=model_.cybox_core_binding.ObservableType(\n')
-            self.Observable.exportLiteral(outfile, level, name_='Observable')
-            outfile.write('),\n')
-        if self.Composite_Indicator_Expression is not None:
-            outfile.write('Composite_Indicator_Expression=model_.CompositeIndicatorExpressionType(\n')
-            self.Composite_Indicator_Expression.exportLiteral(outfile, level, name_='Composite_Indicator_Expression')
-            outfile.write('),\n')
-        showIndent(outfile, level)
-        outfile.write('Indicated_TTP=[\n')
-        level += 1
-        for Indicated_TTP_ in self.Indicated_TTP:
-            outfile.write('model_.stix_common_binding.RelatedTTPType(\n')
-            Indicated_TTP_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedTTPType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-        if self.Kill_Chain_Phases is not None:
-            outfile.write('Kill_Chain_Phases=model_.stix_common_binding.KillChainPhasesReferenceType(\n')
-            self.Kill_Chain_Phases.exportLiteral(outfile, level, name_='Kill_Chain_Phases')
-            outfile.write('),\n')
-        if self.Test_Mechanisms is not None:
-            outfile.write('Test_Mechanisms=model_.TestMechanismsType(\n')
-            self.Test_Mechanisms.exportLiteral(outfile, level, name_='Test_Mechanisms')
-            outfile.write('),\n')
-        if self.Likely_Impact is not None:
-            outfile.write('Likely_Impact=model_.stix_common_binding.StatementType(\n')
-            self.Likely_Impact.exportLiteral(outfile, level, name_='Likely_Impact')
-            outfile.write('),\n')
-        if self.Suggested_COAs is not None:
-            outfile.write('Suggested_COAs=model_.SuggestedCOAsType(\n')
-            self.Suggested_COAs.exportLiteral(outfile, level, name_='Suggested_COAs')
-            outfile.write('),\n')
-        if self.Handling is not None:
-            outfile.write('Handling=model_.data_marking_binding.MarkingType(\n')
-            self.Handling.exportLiteral(outfile, level, name_='Handling')
-            outfile.write('),\n')
-        if self.Confidence is not None:
-            outfile.write('Confidence=model_.stix_common_binding.ConfidenceType(\n')
-            self.Confidence.exportLiteral(outfile, level, name_='Confidence')
-            outfile.write('),\n')
-        if self.Sightings is not None:
-            outfile.write('Sightings=model_.SightingsType(\n')
-            self.Sightings.exportLiteral(outfile, level, name_='Sightings')
-            outfile.write('),\n')
-        if self.Related_Indicators is not None:
-            outfile.write('Related_Indicators=model_.RelatedIndicatorsType(\n')
-            self.Related_Indicators.exportLiteral(outfile, level, name_='Related_Indicators')
-            outfile.write('),\n')
-        if self.Producer is not None:
-            outfile.write('Producer=model_.stix_common_binding.InformationSourceType(\n')
-            self.Producer.exportLiteral(outfile, level, name_='Producer')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1898,25 +1624,6 @@ def parseString(inString):
     # sys.stdout.write('<?xml version="1.0" ?>\n')
     # rootObj.export(sys.stdout, 0, name_="Indicator",
     #     namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'Indicator'
-        rootClass = IndicatorType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from indicator import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import indicator as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():
