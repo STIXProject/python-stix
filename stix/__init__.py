@@ -11,11 +11,12 @@ class Entity(object):
     """Base class for all classes in the STIX API."""
     def to_obj(self, return_obj=None):
         """Export an object as a binding object representation"""
-        pass
-
-    def from_obj(self, obj):
+        raise NotImplementedError()
+    
+    @classmethod
+    def from_obj(cls, obj):
         """Create an object from a binding object"""
-        pass
+        raise NotImplementedError()
 
     def _get_namespaces(self, ns_dict):
         import stix.utils.nsparser as nsparser
@@ -74,7 +75,10 @@ class Entity(object):
     def to_json(self):
         return json.dumps(self.to_dict())
 
-    @staticmethod
-    def from_dict(dict_repr, return_obj=None):
-        """Convert from dict representation to object representation."""
-        return return_obj
+    def to_dict(self, return_dict=None):
+        raise NotImplementedError()
+
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None):
+        """Convert from dict representation to object representation. This should be overriden by a subclass"""
+        raise NotImplementedError()
