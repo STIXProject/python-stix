@@ -490,6 +490,8 @@ def _cast(typ, value):
 # Data representation classes.
 #
 
+
+
 class STIXType(GeneratedsSuper):
     """STIXType defines a bundle of information characterized in the
     Structured Threat Information eXpression (STIX)
@@ -499,9 +501,10 @@ class STIXType(GeneratedsSuper):
     version for this content."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, version=None, STIX_Header=None, Observables=None, Indicators=None, TTPs=None, Exploit_Targets=None, Incidents=None, Courses_Of_Action=None, Campaigns=None, Threat_Actors=None):
+    def __init__(self, idref=None, id=None, timestamp_ref=None, version=None, STIX_Header=None, Observables=None, Indicators=None, TTPs=None, Exploit_Targets=None, Incidents=None, Courses_Of_Action=None, Campaigns=None, Threat_Actors=None):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
+        self.timestamp_ref = _cast(None, timestamp_ref)
         self.version = _cast(None, version)
         self.STIX_Header = STIX_Header
         self.Observables = Observables
@@ -543,6 +546,8 @@ class STIXType(GeneratedsSuper):
     def set_id(self, id): self.id = id
     def get_version(self): return self.version
     def set_version(self, version): self.version = version
+    def get_timestamp_ref(self): return self.timestamp_ref
+    def set_timestamp_ref(self, timestamp_ref): self.timestamp_ref = timestamp_ref
     def hasContent_(self):
         if (
             self.STIX_Header is not None or
@@ -584,6 +589,9 @@ class STIXType(GeneratedsSuper):
         if self.version is not None and 'version' not in already_processed:
             already_processed.add('version')
             outfile.write(' version=%s' % (quote_attrib(self.version), ))
+        if self.timestamp_ref is not None and 'timestamp_ref' not in already_processed:
+            already_processed.add('timestamp_ref')
+            outfile.write(' timestamp_ref="%s"' % self.gds_format_datetime(self.timestamp_ref, input_name='timestamp_ref'))
 
         #for ns, prefix in nsmap.iteritems():
         #    outfile.write(' xmlns:%s="%s"' % (prefix, ns))
@@ -631,6 +639,12 @@ class STIXType(GeneratedsSuper):
         if value is not None and 'version' not in already_processed:
             already_processed.add('version')
             self.version = value
+        if value is not None and 'timestamp_ref' not in already_processed:
+            already_processed.add('timestamp_ref')
+            try:
+                self.timestamp_ref = self.gds_parse_datetime(value, node, 'timestamp_ref')
+            except ValueError, exp:
+                raise ValueError('Bad date-time attribute (timestamp_ref): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'STIX_Header':
             obj_ = STIXHeaderType.factory()
@@ -670,16 +684,157 @@ class STIXType(GeneratedsSuper):
             self.set_Threat_Actors(obj_)
 # end class STIXType
 
+
+class RelatedPackagesType(stix_common_binding.GenericRelationshipListType):
+    subclass = None
+    superclass = stix_common_binding.GenericRelationshipListType
+    def __init__(self, scope='exclusive', Related_Package=None):
+        super(RelatedPackagesType, self).__init__(scope, )
+        if Related_Package is None:
+            self.Related_Package = []
+        else:
+            self.Related_Package = Related_Package
+    def factory(*args_, **kwargs_):
+        if RelatedPackagesType.subclass:
+            return RelatedPackagesType.subclass(*args_, **kwargs_)
+        else:
+            return RelatedPackagesType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_Related_Package(self): return self.Related_Package
+    def set_Related_Package(self, Related_Package): self.Related_Package = Related_Package
+    def add_Related_Package(self, value): self.Related_Package.append(value)
+    def insert_Related_Package(self, index, value): self.Related_Package[index] = value
+    def hasContent_(self):
+        if (
+            self.Related_Package or
+            super(RelatedPackagesType, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedPackagesType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedPackagesType')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='stix:', name_='RelatedPackagesType'):
+        super(RelatedPackagesType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedPackagesType')
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedPackagesType', fromsubclass_=False, pretty_print=True):
+        super(RelatedPackagesType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for Related_Package_ in self.Related_Package:
+            Related_Package_.export(outfile, level, namespace_, name_='Related_Package', pretty_print=pretty_print)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(RelatedPackagesType, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'Related_Package':
+            obj_ = RelatedPackageType.factory()
+            obj_.build(child_)
+            self.Related_Package.append(obj_)
+        super(RelatedPackagesType, self).buildChildren(child_, node, nodeName_, True)
+# end class RelatedPackagesType
+
+class RelatedPackageType(stix_common_binding.GenericRelationshipType):
+    """Identifies or characterizes a relationship to a Package."""
+    subclass = None
+    superclass = stix_common_binding.GenericRelationshipType
+    def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Package=None):
+        super(RelatedPackageType, self).__init__(Confidence, Information_Source, Relationship, )
+        self.Package = Package
+    def factory(*args_, **kwargs_):
+        if RelatedPackageType.subclass:
+            return RelatedPackageType.subclass(*args_, **kwargs_)
+        else:
+            return RelatedPackageType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_Package(self): return self.Package
+    def set_Package(self, Package): self.Package = Package
+    def hasContent_(self):
+        if (
+            self.Package is not None or
+            super(RelatedPackageType, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedPackageType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedPackageType')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='stix:', name_='RelatedPackageType'):
+        super(RelatedPackageType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedPackageType')
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedPackageType', fromsubclass_=False, pretty_print=True):
+        super(RelatedPackageType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.Package is not None:
+            self.Package.export(outfile, level, namespace_, name_='Package', pretty_print=pretty_print)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(RelatedPackageType, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'Package':
+            obj_ = STIXType.factory()
+            obj_.build(child_)
+            self.set_Package(obj_)
+        super(RelatedPackageType, self).buildChildren(child_, node, nodeName_, True)
+# end class RelatedPackageType
+
+
 class STIXHeaderType(GeneratedsSuper):
     """The STIXHeaderType provides a structure for characterizing a package
     of STIX content."""
     subclass = None
     superclass = None
-    def __init__(self, Title=None, Package_Intent=None, Description=None, Handling=None, Information_Source=None):
+    def __init__(self, Title=None, Package_Intent=None, Description=None, Short_Description=None, Profiles=None, Handling=None, Information_Source=None):
         self.Title = Title
-        self.Package_Intent = Package_Intent
+        if Package_Intent is None:
+            self.Package_Intent = []
+        else:
+            self.Package_Intent = Package_Intent
         self.Description = Description
         self.Handling = Handling
+        self.Short_Description = Short_Description
+        self.Profiles = Profiles
         self.Information_Source = Information_Source
     def factory(*args_, **kwargs_):
         if STIXHeaderType.subclass:
@@ -693,6 +848,10 @@ class STIXHeaderType(GeneratedsSuper):
     def set_Package_Intent(self, Package_Intent): self.Package_Intent = Package_Intent
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def get_Short_Description(self): return self.Short_Description
+    def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
+    def get_Profiles(self): return self.Profiles
+    def set_Profiles(self, Profiles): self.Profiles = Profiles
     def get_Handling(self): return self.Handling
     def set_Handling(self, Handling): self.Handling = Handling
     def get_Information_Source(self): return self.Information_Source
@@ -700,8 +859,10 @@ class STIXHeaderType(GeneratedsSuper):
     def hasContent_(self):
         if (
             self.Title is not None or
-            self.Package_Intent is not None or
+            self.Package_Intent or
             self.Description is not None or
+            self.Short_Description is not None or
+            self.Profiles is not None or
             self.Handling is not None or
             self.Information_Source is not None
             ):
@@ -734,10 +895,14 @@ class STIXHeaderType(GeneratedsSuper):
         if self.Title is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
-        if self.Package_Intent is not None:
-            self.Package_Intent.export(outfile, level, nsmap, namespace_, name_='Package_Intent', pretty_print=pretty_print)
+        for Package_Intent_ in self.Package_Intent:
+            Package_Intent_.export(outfile, level, nsmap, namespace_, name_='Package_Intent', pretty_print=pretty_print)
         if self.Description is not None:
             self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        if self.Short_Description is not None:
+            self.Short_Description.export(outfile, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+        if self.Profiles is not None:
+            self.Profiles.export(outfile, level, nsmap, namespace_, name_='Profiles', pretty_print=pretty_print)
         if self.Handling is not None:
             self.Handling.export(outfile, level, nsmap, namespace_, name_='Handling', pretty_print=pretty_print)
         if self.Information_Source is not None:
@@ -758,11 +923,19 @@ class STIXHeaderType(GeneratedsSuper):
         elif nodeName_ == 'Package_Intent':
             obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)
-            self.set_Package_Intent(obj_)
+            self.Package_Intent.append(obj_)
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
+        elif nodeName_ == 'Short_Description':
+            obj_ = stix_common_binding.StructuredTextType.factory()
+            obj_.build(child_)
+            self.set_Short_Description(obj_)
+        elif nodeName_ == 'Profiles':
+            obj_ = stix_common_binding.ProfilesType.factory()
+            obj_.build(child_)
+            self.set_Profiles(obj_)
         elif nodeName_ == 'Handling':
             obj_ = data_marking_binding.MarkingType.factory()
             obj_.build(child_)

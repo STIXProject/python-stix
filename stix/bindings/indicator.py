@@ -1347,7 +1347,7 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
             already_processed.add('version')
             outfile.write(' version=%s' % (quote_attrib(self.version), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='IndicatorType', fromsubclass_=False, pretty_print=True):
-        super(IndicatorType, self).exportChildren(outfile, level, namespace_, name_, True, pretty_print=pretty_print)
+        super(IndicatorType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
