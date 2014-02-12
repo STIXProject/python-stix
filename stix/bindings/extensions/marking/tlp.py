@@ -535,10 +535,10 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='tlpMarking:', name_='TLPMarkingStructureType'):
         super(TLPMarkingStructureType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='TLPMarkingStructureType')
-        if 'xmlns' not in already_processed:
-            already_processed.add('xmlns')
-            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
-            outfile.write(xmlns)   
+        # if 'xmlns' not in already_processed:
+        #     already_processed.add('xmlns')
+        #     xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+        #     outfile.write(xmlns)   
         if 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
             xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
@@ -597,10 +597,10 @@ def parse(inFileName):
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
     doc = None
-    sys.stdout.write('<?xml version="1.0" ?>\n')
-    rootObj.export(sys.stdout, 0, name_=rootTag,
-        namespacedef_='',
-        pretty_print=True)
+    # sys.stdout.write('<?xml version="1.0" ?>\n')
+    # rootObj.export(sys.stdout, 0, name_=rootTag,
+    #     namespacedef_='',
+    #     pretty_print=True)
     return rootObj
 
 def parseEtree(inFileName):
@@ -633,9 +633,9 @@ def parseString(inString):
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
     doc = None
-    sys.stdout.write('<?xml version="1.0" ?>\n')
-    rootObj.export(sys.stdout, 0, name_="TLPMarkingStructureType",
-        namespacedef_='')
+    # sys.stdout.write('<?xml version="1.0" ?>\n')
+    # rootObj.export(sys.stdout, 0, name_="TLPMarkingStructureType",
+    #     namespacedef_='')
     return rootObj
 
 def main():

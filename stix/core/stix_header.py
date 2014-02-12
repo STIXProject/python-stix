@@ -5,7 +5,7 @@ import stix
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.stix_core as stix_core_binding
 from stix.common import InformationSource, StructuredText, VocabString
-from stix.common.handling import Handling
+from stix.data_marking import Marking
 
 
 class PackageIntent(VocabString):
@@ -54,8 +54,8 @@ class STIXHeader(stix.Entity):
 
     @handling.setter
     def handling(self, value):
-        if value and not isinstance(value, Handling):
-            raise ValueError('value must be instance of Handling')
+        if value and not isinstance(value, Marking):
+            raise ValueError('value must be instance of Marking')
 
         self._handling = value
 
@@ -92,7 +92,7 @@ class STIXHeader(stix.Entity):
         return_obj.title = obj.get_Title()
         return_obj.package_intent = PackageIntent.from_obj(obj.get_Package_Intent())
         return_obj.description = StructuredText.from_obj(obj.get_Description())
-        return_obj.handling = Handling.from_obj(obj.get_Handling())
+        return_obj.handling = Marking.from_obj(obj.get_Handling())
         return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
 
         return return_obj
@@ -133,7 +133,7 @@ class STIXHeader(stix.Entity):
         return_obj.description = StructuredText.from_dict(desc_dict)
 
         handling_dict = dict_repr.get('handling')
-        return_obj.handling = Handling.from_dict(handling_dict)
+        return_obj.handling = Marking.from_dict(handling_dict)
 
         info_dict = dict_repr.get('information_source', None)
         return_obj.information_source = InformationSource.from_dict(info_dict)
