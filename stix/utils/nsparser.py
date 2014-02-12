@@ -127,6 +127,7 @@ EXT_NS_TO_SCHEMALOCATION = {'urn:oasis:names:tc:ciq:xpil:3' : 'http://stix.mitre
 DEFAULT_STIX_NS_TO_PREFIX = {
      'http://data-marking.mitre.org/Marking-1': 'marking',
      'http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1': 'tlpMarking',
+     'http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1': 'simpleMarking',
      'http://stix.mitre.org/Campaign-1': 'campaign',
      'http://stix.mitre.org/CourseOfAction-1': 'coa',
      'http://stix.mitre.org/ExploitTarget-1': 'et',
