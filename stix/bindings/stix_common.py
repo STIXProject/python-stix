@@ -905,9 +905,9 @@ class ToolInformationType(cybox_common_binding.ToolInformationType):
     def hasContent_(self):
         if (
             super(ToolInformationType, self).hasContent() or
-            self.Title or
-            self.sDescription or
-            self.Short_Description
+            self.Title is not None or
+            self.sDescription is not None or
+            self.Short_Description is not None
             ):
             return True
         else:

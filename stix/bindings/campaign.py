@@ -907,13 +907,15 @@ class CampaignType(stix_common_binding.CampaignBaseType):
     this content."""
     subclass = None
     superclass = stix_common_binding.CampaignBaseType
-    def __init__(self, idref=None, id=None, version=None, Title=None, Names=None, Intended_Effect=None, Status=None, Related_TTPs=None, Related_Incidents=None, Related_Indicators=None, Attribution=None, Associated_Campaigns=None, Confidence=None, Activity=None, Information_Source=None, Handling=None):
+    def __init__(self, idref=None, id=None, version=None, Title=None, Description=None, Short_Description=None, Names=None, Intended_Effect=None, Status=None, Related_TTPs=None, Related_Incidents=None, Related_Indicators=None, Attribution=None, Associated_Campaigns=None, Confidence=None, Activity=None, Information_Source=None, Handling=None, Related_Packages=None):
         super(CampaignType, self).__init__(idref, id, )
         self.xmlns          = "http://stix.mitre.org/Campaign-1"
         self.xmlns_prefix   = "campaign"
         self.xml_type       = "CampaignType"
         self.version = _cast(None, version)
         self.Title = Title
+        self.Description = Description
+        self.Short_Description = Short_Description
         self.Names = Names
         if Intended_Effect is None:
             self.Intended_Effect = []
@@ -935,6 +937,7 @@ class CampaignType(stix_common_binding.CampaignBaseType):
             self.Activity = Activity
         self.Information_Source = Information_Source
         self.Handling = Handling
+        self.Related_Packages = Related_Packages
     def factory(*args_, **kwargs_):
         if CampaignType.subclass:
             return CampaignType.subclass(*args_, **kwargs_)
@@ -943,6 +946,10 @@ class CampaignType(stix_common_binding.CampaignBaseType):
     factory = staticmethod(factory)
     def get_Title(self): return self.Title
     def set_Title(self, Title): self.Title = Title
+    def get_Description(self): return self.Description
+    def set_Description(self, Description): self.Description = Description
+    def get_Short_Description(self): return self.Short_Description
+    def set_ShortDescription(self, Short_Description): self.Short_Description = Short_Description
     def get_Names(self): return self.Names
     def set_Names(self, Names): self.Names = Names
     def get_Intended_Effect(self): return self.Intended_Effect
@@ -973,11 +980,15 @@ class CampaignType(stix_common_binding.CampaignBaseType):
     def set_Information_Source(self, Information_Source): self.Information_Source = Information_Source
     def get_Handling(self): return self.Handling
     def set_Handling(self, Handling): self.Handling = Handling
+    def get_Related_Packages(self): return self.Related_Packages
+    def set_Related_Packages(self, Related_Packages): self.Related_Packages = Related_Packages
     def get_version(self): return self.version
     def set_version(self, version): self.version = version
     def hasContent_(self):
         if (
             self.Title is not None or
+            self.Description is not None or
+            self.Short_Description is not None or
             self.Names is not None or
             self.Intended_Effect or
             self.Status is not None or
@@ -990,6 +1001,7 @@ class CampaignType(stix_common_binding.CampaignBaseType):
             self.Activity or
             self.Information_Source is not None or
             self.Handling is not None or
+            self.Related_Packages is not None or
             super(CampaignType, self).hasContent_()
             ):
             return True
@@ -1033,6 +1045,10 @@ class CampaignType(stix_common_binding.CampaignBaseType):
         if self.Title is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
+        if self.Description is not None:
+            self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        if self.Short_Description is not None:
+            self.Short_Description.export(outfile, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         if self.Names is not None:
             self.Names.export(outfile, level, nsmap, namespace_, name_='Names', pretty_print=pretty_print)
         for Intended_Effect_ in self.Intended_Effect:
@@ -1057,6 +1073,8 @@ class CampaignType(stix_common_binding.CampaignBaseType):
             self.Information_Source.export(outfile, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
         if self.Handling is not None:
             self.Handling.export(outfile, level, nsmap, namespace_, name_='Handling', pretty_print=pretty_print)
+        if self.Related_Packages is not None:
+            self.Related_Packages.export(outfile, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1074,6 +1092,14 @@ class CampaignType(stix_common_binding.CampaignBaseType):
             Title_ = child_.text
             Title_ = self.gds_validate_string(Title_, node, 'Title')
             self.Title = Title_
+        elif nodeName_ == 'Description':
+            obj_ = stix_common_binding.StructuredTextType.factory()
+            obj_.build(child_)
+            self.set_sDescription(obj_)
+        elif nodeName_ == 'Short_Description':
+            obj_ = stix_common_binding.StructuredTextType.factory()
+            obj_.build(child_)
+            self.set_Short_Description(obj_)
         elif nodeName_ == 'Names':
             obj_ = NamesType.factory()
             obj_.build(child_)
@@ -1136,6 +1162,10 @@ class CampaignType(stix_common_binding.CampaignBaseType):
             obj_ = data_marking_binding.MarkingType.factory()
             obj_.build(child_)
             self.set_Handling(obj_)
+        elif nodeName_ == "Related_Packages":
+            obj_ = stix_common_binding.RelatedPackageRefsType.factory()
+            obj_.build(child_)
+            self.set_Related_Packages(obj_)
         super(CampaignType, self).buildChildren(child_, node, nodeName_, True)
 # end class CampaignType
 
