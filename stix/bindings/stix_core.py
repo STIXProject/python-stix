@@ -501,10 +501,10 @@ class STIXType(GeneratedsSuper):
     version for this content."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, timestamp_ref=None, version=None, STIX_Header=None, Observables=None, Indicators=None, TTPs=None, Exploit_Targets=None, Incidents=None, Courses_Of_Action=None, Campaigns=None, Threat_Actors=None):
+    def __init__(self, idref=None, id=None, timestamp=None, version=None, STIX_Header=None, Observables=None, Indicators=None, TTPs=None, Exploit_Targets=None, Incidents=None, Courses_Of_Action=None, Campaigns=None, Threat_Actors=None):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
-        self.timestamp_ref = _cast(None, timestamp_ref)
+        self.timestamp = _cast(None, timestamp)
         self.version = _cast(None, version)
         self.STIX_Header = STIX_Header
         self.Observables = Observables
@@ -546,8 +546,8 @@ class STIXType(GeneratedsSuper):
     def set_id(self, id): self.id = id
     def get_version(self): return self.version
     def set_version(self, version): self.version = version
-    def get_timestamp_ref(self): return self.timestamp_ref
-    def set_timestamp_ref(self, timestamp_ref): self.timestamp_ref = timestamp_ref
+    def get_timestamp(self): return self.timestamp
+    def set_timestamp(self, timestamp): self.timestamp = timestamp
     def hasContent_(self):
         if (
             self.STIX_Header is not None or
@@ -589,9 +589,9 @@ class STIXType(GeneratedsSuper):
         if self.version is not None and 'version' not in already_processed:
             already_processed.add('version')
             outfile.write(' version=%s' % (quote_attrib(self.version), ))
-        if self.timestamp_ref is not None and 'timestamp_ref' not in already_processed:
-            already_processed.add('timestamp_ref')
-            outfile.write(' timestamp_ref="%s"' % self.gds_format_datetime(self.timestamp_ref, input_name='timestamp_ref'))
+        if self.timestamp is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            outfile.write(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
 
         #for ns, prefix in nsmap.iteritems():
         #    outfile.write(' xmlns:%s="%s"' % (prefix, ns))
@@ -639,12 +639,12 @@ class STIXType(GeneratedsSuper):
         if value is not None and 'version' not in already_processed:
             already_processed.add('version')
             self.version = value
-        if value is not None and 'timestamp_ref' not in already_processed:
-            already_processed.add('timestamp_ref')
+        if value is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
             try:
-                self.timestamp_ref = self.gds_parse_datetime(value, node, 'timestamp_ref')
+                self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
             except ValueError, exp:
-                raise ValueError('Bad date-time attribute (timestamp_ref): %s' % exp)
+                raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'STIX_Header':
             obj_ = STIXHeaderType.factory()
