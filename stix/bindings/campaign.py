@@ -949,7 +949,7 @@ class CampaignType(stix_common_binding.CampaignBaseType):
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
     def get_Short_Description(self): return self.Short_Description
-    def set_ShortDescription(self, Short_Description): self.Short_Description = Short_Description
+    def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Names(self): return self.Names
     def set_Names(self, Names): self.Names = Names
     def get_Intended_Effect(self): return self.Intended_Effect
