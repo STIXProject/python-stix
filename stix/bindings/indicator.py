@@ -1491,7 +1491,7 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
         for Valid_Time_Position_ in self.Valid_Time_Position:
             Valid_Time_Position_.export(outfile, level, nsmap, namespace_, name_='Valid_Time_Position', pretty_print=pretty_print)
         if self.Observable is not None:
-            self.Observable.export(outfile, level, nsmap, namespace_, name_='Observable', pretty_print=pretty_print)
+            self.Observable.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Observable', pretty_print=pretty_print)
         if self.Composite_Indicator_Expression is not None:
             self.Composite_Indicator_Expression.export(outfile, level, nsmap, namespace_, name_='Composite_Indicator_Expression', pretty_print=pretty_print)
         for Indicated_TTP_ in self.Indicated_TTP:
