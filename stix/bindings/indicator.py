@@ -1686,97 +1686,11 @@ class RelatedCampaignReferencesType(stix_common_binding.GenericRelationshipListT
         super(RelatedCampaignReferencesType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Related_Campaign':
-            obj_ = CampaignReferenceType.factory()
+            obj_ = stix_common_binding.CampaignReferenceType.factory()
             obj_.build(child_)
             self.Related_Campaign.append(obj_)
         super(RelatedCampaignReferencesType, self).buildChildren(child_, node, nodeName_, True)
 # end class RelatedCampaignReferencesType
-
-class CampaignReferenceType(GeneratedsSuper):
-    """Characterizes a reference to a campaign.Specifies a globally unique
-    identifier for a cyber threat campaign defined elsewhere.In
-    conjunction with the idref, this field may be used to reference
-    a specific version of a campaign defined elsewhere.This field
-    must only be used in conjunction with the idref field."""
-    subclass = None
-    superclass = None
-    def __init__(self, timestamp=None, idref=None, Names=None):
-        self.timestamp = _cast(None, timestamp)
-        self.idref = _cast(None, idref)
-        self.Names = Names
-    def factory(*args_, **kwargs_):
-        if CampaignReferenceType.subclass:
-            return CampaignReferenceType.subclass(*args_, **kwargs_)
-        else:
-            return CampaignReferenceType(*args_, **kwargs_)
-    factory = staticmethod(factory)
-    def get_Names(self): return self.Names
-    def set_Names(self, Names): self.Names = Names
-    def get_timestamp(self): return self.timestamp
-    def set_timestamp(self, timestamp): self.timestamp = timestamp
-    def get_idref(self): return self.idref
-    def set_idref(self, idref): self.idref = idref
-    def hasContent_(self):
-        if (
-            self.Names is not None
-            ):
-            return True
-        else:
-            return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='CampaignReferenceType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
-        already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='CampaignReferenceType')
-        if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
-        else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='indicator:', name_='CampaignReferenceType'):
-        if self.timestamp is not None and 'timestamp' not in already_processed:
-            already_processed.add('timestamp')
-            outfile.write(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            outfile.write(' idref=%s' % (quote_attrib(self.idref), ))
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='CampaignReferenceType', fromsubclass_=False, pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
-        if self.Names is not None:
-            self.Names.export(outfile, level, nsmap, namespace_, name_='Names', pretty_print=pretty_print)
-    def build(self, node):
-        already_processed = set()
-        self.buildAttributes(node, node.attrib, already_processed)
-        for child in node:
-            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
-            self.buildChildren(child, node, nodeName_)
-    def buildAttributes(self, node, attrs, already_processed):
-        value = find_attr_value_('timestamp', node)
-        if value is not None and 'timestamp' not in already_processed:
-            already_processed.add('timestamp')
-            try:
-                self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
-                raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
-        value = find_attr_value_('idref', node)
-        if value is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            self.idref = value
-    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'Names':
-            obj_ = NamesType.factory()
-            obj_.build(child_)
-            self.set_Names(obj_)
-# end class CampaignReferenceType
 
 
 GDSClassesMapping = {
@@ -1814,7 +1728,6 @@ GDSClassesMapping = {
     'Indicated_TTP': stix_common_binding.RelatedTTPType,
     'Action_Pool': cybox_core_binding.ActionPoolType,
     'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
-    'Contributors': stix_common_binding.ContributorsType,
     'Campaign': stix_common_binding.CampaignBaseType,
     'Reference_Description': stix_common_binding.StructuredTextType,
     'Association_Type': stix_common_binding.ControlledVocabularyStringType,
