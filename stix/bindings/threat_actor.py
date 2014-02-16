@@ -702,13 +702,15 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
     content."""
     subclass = None
     superclass = stix_common_binding.ThreatActorBaseType
-    def __init__(self, idref=None, id=None, version=None, Title=None, Identity=None, Type=None, Motivation=None, Intended_Effect=None, Planning_And_Operational_Support=None, Observed_TTPs=None, Associated_Campaigns=None, Associated_Actors=None, Handling=None, Confidence=None, Information_Source=None):
-        super(ThreatActorType, self).__init__(idref, id, )
+    def __init__(self, idref=None, id=None, version=None, Title=None, Description=None, Short_Description=None, Identity=None, Type=None, Motivation=None, Sophistication=None, Intended_Effect=None, Planning_And_Operational_Support=None, Observed_TTPs=None, Associated_Campaigns=None, Associated_Actors=None, Handling=None, Confidence=None, Information_Source=None, Related_Packages=None):
+        super(ThreatActorType, self).__init__(idref=idref, id=id, )
         self.xmlns          = "http://stix.mitre.org/ThreatActor-1"
         self.xmlns_prefix   = "ta"
         self.xml_type       = "ThreatActorType"
         self.version = _cast(None, version)
         self.Title = Title
+        self.Description = Description
+        self.Short_Description = Short_Description
         self.Identity = Identity
         if Type is None:
             self.Type = []
@@ -718,6 +720,10 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
             self.Motivation = []
         else:
             self.Motivation = Motivation
+        if Sophistication is None:
+            self.Sophistication = []
+        else:
+            self.Sophistication = Sophistication
         if Intended_Effect is None:
             self.Intended_Effect = []
         else:
@@ -732,6 +738,7 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
         self.Handling = Handling
         self.Confidence = Confidence
         self.Information_Source = Information_Source
+        self.Related_Packages = Related_Packages
     def factory(*args_, **kwargs_):
         if ThreatActorType.subclass:
             return ThreatActorType.subclass(*args_, **kwargs_)
@@ -740,6 +747,10 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
     factory = staticmethod(factory)
     def get_Title(self): return self.Title
     def set_Title(self, Title): self.Title = Title
+    def get_Description(self): return self.Description
+    def set_Description(self, Description): self.Description = Description
+    def get_Short_Description(self): return self.Short_Description
+    def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Identity(self): return self.Identity
     def set_Identity(self, Identity): self.Identity = Identity
     def get_Type(self): return self.Type
@@ -750,6 +761,10 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
     def set_Motivation(self, Motivation): self.Motivation = Motivation
     def add_Motivation(self, value): self.Motivation.append(value)
     def insert_Motivation(self, index, value): self.Motivation[index] = value
+    def get_Sophistication(self): return self.Sophistication
+    def set_Sophistication(self, Sophistication): self.Sophistication = Sophistication
+    def add_Sophistication(self, value): self.Sophistication.append(value)
+    def insert_Sophistication(self, index, value): self.Sophistication[index] = value
     def get_Intended_Effect(self): return self.Intended_Effect
     def set_Intended_Effect(self, Intended_Effect): self.Intended_Effect = Intended_Effect
     def add_Intended_Effect(self, value): self.Intended_Effect.append(value)
@@ -770,14 +785,19 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
     def set_Confidence(self, Confidence): self.Confidence = Confidence
     def get_Information_Source(self): return self.Information_Source
     def set_Information_Source(self, Information_Source): self.Information_Source = Information_Source
+    def get_Related_Packages(self): return self.Related_Packages
+    def set_Related_Packages(self, Related_Packages): self.Related_Packages = Related_Packages
     def get_version(self): return self.version
     def set_version(self, version): self.version = version
     def hasContent_(self):
         if (
             self.Title is not None or
+            self.Description is not None or
+            self.Short_Description is not None or
             self.Identity is not None or
             self.Type or
             self.Motivation or
+            self.Sophistication or
             self.Intended_Effect or
             self.Planning_And_Operational_Support or
             self.Observed_TTPs is not None or
@@ -786,6 +806,7 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
             self.Handling is not None or
             self.Confidence is not None or
             self.Information_Source is not None or
+            self.Related_Packages is not None or
             super(ThreatActorType, self).hasContent_()
             ):
             return True
@@ -829,12 +850,18 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
         if self.Title is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
+        if self.Description is not None:
+            self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        if self.Short_Description is not None:
+            self.Short_Description.export(outfile, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         if self.Identity is not None:
             self.Identity.export(outfile, level, nsmap, namespace_, name_='Identity', pretty_print=pretty_print)
         for Type_ in self.Type:
             Type_.export(outfile, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
         for Motivation_ in self.Motivation:
             Motivation_.export(outfile, level, nsmap, namespace_, name_='Motivation', pretty_print=pretty_print)
+        for Sophistication_ in self.Sophistication:
+            Sophistication_.export(outfile, level, nsmap, namespace_, name_='Sophistication', pretty_print=pretty_print)
         for Intended_Effect_ in self.Intended_Effect:
             Intended_Effect_.export(outfile, level, nsmap, namespace_, name_='Intended_Effect', pretty_print=pretty_print)
         for Planning_And_Operational_Support_ in self.Planning_And_Operational_Support:
@@ -851,6 +878,8 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
             self.Confidence.export(outfile, level, nsmap, namespace_, name_='Confidence', pretty_print=pretty_print)
         if self.Information_Source is not None:
             self.Information_Source.export(outfile, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
+        if self.Related_Packages is not None:
+            self.Related_Packages.export(outfile, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -868,6 +897,14 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
             Title_ = child_.text
             Title_ = self.gds_validate_string(Title_, node, 'Title')
             self.Title = Title_
+        elif nodeName_ == 'Description':
+            obj_ = stix_common_binding.StructuredTextType.factory()
+            obj_.build(child_)
+            self.set_Description(obj_)
+        elif nodeName_ == 'Short_Description':
+            obj_ = stix_common_binding.StructuredTextType.factory()
+            obj_.build(child_)
+            self.set_Short_Description(obj_)
         elif nodeName_ == 'Identity':
             type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
             if type_name_ is None:
@@ -895,6 +932,10 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
             obj_ = stix_common_binding.StatementType.factory()
             obj_.build(child_)
             self.Motivation.append(obj_)
+        elif nodeName_ == 'Sophistication':
+            obj_ = stix_common_binding.StatementType.factory()
+            obj_.build(child_)
+            self.Sophistication.append(obj_)
         elif nodeName_ == 'Intended_Effect':
             obj_ = stix_common_binding.StatementType.factory()
             obj_.build(child_)
@@ -927,6 +968,10 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
             obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.set_Information_Source(obj_)
+        elif nodeName_ == 'Related_Packages':
+            obj_ = stix_common_binding.RelatedPackageRefsType.factory()
+            obj_.build(child_)
+            self.set_Related_Packages(obj_)
         super(ThreatActorType, self).buildChildren(child_, node, nodeName_, True)
 # end class ThreatActorType
 
