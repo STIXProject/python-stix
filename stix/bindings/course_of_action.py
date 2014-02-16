@@ -678,6 +678,9 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     superclass = stix_common_binding.CourseOfActionBaseType
     def __init__(self, idref=None, id=None, version=None, Title=None, Stage=None, Type=None, Description=None, Short_Description=None, Objective=None, Parameter_Observables=None, Structured_COA=None, Impact=None, Cost=None, Efficacy=None, Information_Source=None, Handling=None, Related_COAs=None, Related_Packages=None):
         super(CourseOfActionType, self).__init__(idref, id, )
+        self.xmlns          = "http://stix.mitre.org/CourseOfAction-1"
+        self.xmlns_prefix   = "coa"
+        self.xml_type       = "CourseOfActionType"
         self.version = _cast(None, version)
         self.Title = Title
         self.Stage = Stage
@@ -772,6 +775,14 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='coa:', name_='CourseOfActionType'):
         super(CourseOfActionType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='CourseOfActionType')
+        if 'xmlns' not in already_processed:
+            already_processed.add('xmlns')
+            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            outfile.write(xmlns)   
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            outfile.write(xsi_type)
         if self.version is not None and 'version' not in already_processed:
             already_processed.add('version')
             outfile.write(' version=%s' % (quote_attrib(self.version), ))
