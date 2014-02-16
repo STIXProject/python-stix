@@ -533,7 +533,7 @@ class ValidTimeType(GeneratedsSuper):
             outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_=XML_NS, name_='ValidTimeType'):
+    def exportAttributes(self, outfile, level, already_processed, namespace_='indicator:', name_='ValidTimeType'):
         pass
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ValidTimeType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
@@ -541,11 +541,9 @@ class ValidTimeType(GeneratedsSuper):
         else:
             eol_ = ''
         if self.Start_Time is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Start_Time>%s</%s:Start_Time>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Start_Time, input_name='Start_Time'), nsmap[namespace_], eol_))
+            self.Start_Time.export(outfile, level, nsmap, namespace_, name_='Start_Time', pretty_print=pretty_print)
         if self.End_Time is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:End_Time>%s</%s:End_Time>%s' % (nsmap[namespace_], self.gds_format_datetime(self.End_Time, input_name='End_Time'), nsmap[namespace_], eol_))
+            self.End_Time.export(outfile, level, nsmap, namespace_, name_='End_Time', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -556,14 +554,15 @@ class ValidTimeType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Start_Time':
-            sval_ = child_.text
-            dval_ = self.gds_parse_datetime(sval_, node, 'Start_Time')
-            self.Start_Time = dval_
+            obj_ = stix_common_binding.DateTimeWithPrecisionType.factory()
+            obj_.build(child_)
+            self.set_Start_Time(obj_)
         elif nodeName_ == 'End_Time':
-            sval_ = child_.text
-            dval_ = self.gds_parse_datetime(sval_, node, 'End_Time')
-            self.End_Time = dval_
+            obj_ = stix_common_binding.DateTimeWithPrecisionType.factory()
+            obj_.build(child_)
+            self.set_End_Time(obj_)
 # end class ValidTimeType
+
 
 class CompositeIndicatorExpressionType(GeneratedsSuper):
     """Type for allowing content creators to create composite indicator
@@ -870,14 +869,24 @@ class SightingsType(GeneratedsSuper):
 
 class SightingType(GeneratedsSuper):
     """Describes a single sighting of an indicator.This field provides the
-    date and time of the Indicator sighting."""
+    date and time of the Indicator sighting.In order to avoid
+    ambiguity, it is strongly suggest that all timestamps include a
+    specification of the timezone if it is known.Represents the
+    precision of the associated timestamp value. If omitted, the
+    default is "second", meaning the timestamp is precise to the
+    full field value. Digits in the timestamp that are required by
+    the xs:dateTime datatype but are beyond the specified precision
+    should be zeroed out."""
     subclass = None
     superclass = None
-    def __init__(self, timestamp=None, Source=None, Reference=None, Confidence=None):
+    def __init__(self, timestamp=None, timestamp_precision='second', Source=None, Reference=None, Confidence=None, Description=None, Related_Observables=None):
         self.timestamp = _cast(None, timestamp)
+        self.timestamp_precision = _cast(None, timestamp_precision)
         self.Source = Source
         self.Reference = Reference
         self.Confidence = Confidence
+        self.Description = Description
+        self.Related_Observables = Related_Observables
     def factory(*args_, **kwargs_):
         if SightingType.subclass:
             return SightingType.subclass(*args_, **kwargs_)
@@ -890,13 +899,21 @@ class SightingType(GeneratedsSuper):
     def set_Reference(self, Reference): self.Reference = Reference
     def get_Confidence(self): return self.Confidence
     def set_Confidence(self, Confidence): self.Confidence = Confidence
+    def get_Description(self): return self.Description
+    def set_Description(self, Description): self.Description = Description
+    def get_Related_Observables(self): return self.Related_Observables
+    def set_Related_Observables(self, Related_Observables): self.Related_Observables = Related_Observables
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
+    def get_timestamp_precision(self): return self.timestamp_precision
+    def set_timestamp_precision(self, timestamp_precision): self.timestamp_precision = timestamp_precision
     def hasContent_(self):
         if (
             self.Source is not None or
             self.Reference is not None or
-            self.Confidence is not None
+            self.Confidence is not None or
+            self.Description is not None or
+            self.Related_Observables is not None
             ):
             return True
         else:
@@ -921,6 +938,9 @@ class SightingType(GeneratedsSuper):
         if self.timestamp is not None and 'timestamp' not in already_processed:
             already_processed.add('timestamp')
             outfile.write(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
+        if self.timestamp_precision is not None and 'timestamp_precision' not in already_processed:
+            already_processed.add('timestamp_precision')
+            outfile.write(' timestamp_precision=%s' % (quote_attrib(self.timestamp_precision), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='SightingType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
@@ -933,6 +953,10 @@ class SightingType(GeneratedsSuper):
             outfile.write('<%s:Reference>%s</%s:Reference>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Reference).encode(ExternalEncoding), input_name='Reference'), nsmap[namespace_], eol_))
         if self.Confidence is not None:
             self.Confidence.export(outfile, level, nsmap, namespace_, name_='Confidence', pretty_print=pretty_print)
+        if self.Description is not None:
+            self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        if self.Related_Observables is not None:
+            self.Related_Observables.export(outfile, level, nsmap, namespace_, name_='Related_Observables', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -947,6 +971,10 @@ class SightingType(GeneratedsSuper):
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
             except ValueError, exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
+        value = find_attr_value_('timestamp_precision', node)
+        if value is not None and 'timestamp_precision' not in already_processed:
+            already_processed.add('timestamp_precision')
+            self.timestamp_precision = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Source':
             obj_ = stix_common_binding.StructuredTextType.factory()
@@ -960,7 +988,86 @@ class SightingType(GeneratedsSuper):
             obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_Confidence(obj_)
+        elif nodeName_ == 'Description':
+            obj_ = stix_common_binding.StructuredTextType.factory()
+            obj_.build(child_)
+            self.set_Description(obj_)
+        elif nodeName_ == 'Related_Observables':
+            obj_ = RelatedObservablesType.factory()
+            obj_.build(child_)
+            self.set_Related_Observables(obj_)
 # end class SightingType
+
+
+
+class RelatedObservablesType(stix_common_binding.GenericRelationshipListType):
+    subclass = None
+    superclass = stix_common_binding.GenericRelationshipListType
+    def __init__(self, scope='exclusive', Related_Observable=None):
+        super(RelatedObservablesType, self).__init__(scope, )
+        if Related_Observable is None:
+            self.Related_Observable = []
+        else:
+            self.Related_Observable = Related_Observable
+    def factory(*args_, **kwargs_):
+        if RelatedObservablesType.subclass:
+            return RelatedObservablesType.subclass(*args_, **kwargs_)
+        else:
+            return RelatedObservablesType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_Related_Observable(self): return self.Related_Observable
+    def set_Related_Observable(self, Related_Observable): self.Related_Observable = Related_Observable
+    def add_Related_Observable(self, value): self.Related_Observable.append(value)
+    def insert_Related_Observable(self, index, value): self.Related_Observable[index] = value
+    def hasContent_(self):
+        if (
+            self.Related_Observable or
+            super(RelatedObservablesType, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedObservablesType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedObservablesType')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='indicator:', name_='RelatedObservablesType'):
+        super(RelatedObservablesType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedObservablesType')
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedObservablesType', fromsubclass_=False, pretty_print=True):
+        super(RelatedObservablesType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for Related_Observable_ in self.Related_Observable:
+            Related_Observable_.export(outfile, level, nsmap, namespace_, name_='Related_Observable', pretty_print=pretty_print)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(RelatedObservablesType, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'Related_Observable':
+            obj_ = stix_common_binding.RelatedObservableType.factory()
+            obj_.build(child_)
+            self.Related_Observable.append(obj_)
+        super(RelatedObservablesType, self).buildChildren(child_, node, nodeName_, True)
+# end class RelatedObservablesType
 
 class TestMechanismsType(GeneratedsSuper):
     subclass = None
@@ -1206,8 +1313,8 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
     specifies the absence of the pattern."""
     subclass = None
     superclass = stix_common_binding.IndicatorBaseType
-    def __init__(self, idref=None, id=None, negate=False, version=None, Title=None, Type=None, Alternative_ID=None, Description=None, Valid_Time_Position=None, Observable=None, Composite_Indicator_Expression=None, Indicated_TTP=None, Kill_Chain_Phases=None, Test_Mechanisms=None, Likely_Impact=None, Suggested_COAs=None, Handling=None, Confidence=None, Sightings=None, Related_Indicators=None, Producer=None):
-        super(IndicatorType, self).__init__(idref, id, )
+    def __init__(self, timestamp=None, idref=None, id=None, negate=False, version=None, Title=None, Type=None, Alternative_ID=None, Description=None, Short_Description=None, Valid_Time_Position=None, Observable=None, Composite_Indicator_Expression=None, Indicated_TTP=None, Kill_Chain_Phases=None, Test_Mechanisms=None, Likely_Impact=None, Suggested_COAs=None, Handling=None, Confidence=None, Sightings=None, Related_Indicators=None, Related_Campaigns=None, Related_Packages=None, Producer=None):
+        super(IndicatorType, self).__init__(idref=idref, id=id, )
         self.xmlns          = "http://stix.mitre.org/Indicator-2"
         self.xmlns_prefix   = "indicator"
         self.xml_type       = "IndicatorType"
@@ -1215,12 +1322,16 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
         self.negate = _cast(bool, negate)
         self.version = _cast(None, version)
         self.Title = Title
-        self.Type = Type
+        if Type is None:
+            self.Type = []
+        else:
+            self.Type = Type
         if Alternative_ID is None:
             self.Alternative_ID = []
         else:
             self.Alternative_ID = Alternative_ID
         self.Description = Description
+        self.Short_Description = Short_Description
         if Valid_Time_Position is None:
             self.Valid_Time_Position = []
         else:
@@ -1239,6 +1350,8 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
         self.Confidence = Confidence
         self.Sightings = Sightings
         self.Related_Indicators = Related_Indicators
+        self.Related_Campaigns = Related_Campaigns
+        self.Related_Packages = Related_Packages
         self.Producer = Producer
     def factory(*args_, **kwargs_):
         if IndicatorType.subclass:
@@ -1250,12 +1363,16 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
     def set_Title(self, Title): self.Title = Title
     def get_Type(self): return self.Type
     def set_Type(self, Type): self.Type = Type
+    def add_Type(self, value): self.Type.append(value)
+    def insert_Type(self, index, value): self.Type[index] = value
     def get_Alternative_ID(self): return self.Alternative_ID
     def set_Alternative_ID(self, Alternative_ID): self.Alternative_ID = Alternative_ID
     def add_Alternative_ID(self, value): self.Alternative_ID.append(value)
     def insert_Alternative_ID(self, index, value): self.Alternative_ID[index] = value
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def get_Short_Description(self): return self.Short_Description
+    def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Valid_Time_Position(self): return self.Valid_Time_Position
     def set_Valid_Time_Position(self, Valid_Time_Position): self.Valid_Time_Position = Valid_Time_Position
     def add_Valid_Time_Position(self, value): self.Valid_Time_Position.append(value)
@@ -1284,6 +1401,10 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
     def set_Sightings(self, Sightings): self.Sightings = Sightings
     def get_Related_Indicators(self): return self.Related_Indicators
     def set_Related_Indicators(self, Related_Indicators): self.Related_Indicators = Related_Indicators
+    def get_Related_Campaigns(self): return self.Related_Campaigns
+    def set_Related_Campaigns(self, Related_Campaigns): self.Related_Campaigns = Related_Campaigns
+    def get_Related_Packages(self): return self.Related_Packages
+    def set_Related_Packages(self, Related_Packages): self.Related_Packages = Related_Packages
     def get_Producer(self): return self.Producer
     def set_Producer(self, Producer): self.Producer = Producer
     def get_negate(self): return self.negate
@@ -1293,9 +1414,10 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
     def hasContent_(self):
         if (
             self.Title is not None or
-            self.Type is not None or
+            self.Type or
             self.Alternative_ID or
             self.Description is not None or
+            self.Short_Description is not None or
             self.Valid_Time_Position or
             self.Observable is not None or
             self.Composite_Indicator_Expression is not None or
@@ -1308,6 +1430,8 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
             self.Confidence is not None or
             self.Sightings is not None or
             self.Related_Indicators is not None or
+            self.Related_Campaigns is not None or
+            self.Related_Packages is not None or
             self.Producer is not None or
             super(IndicatorType, self).hasContent_()
             ):
@@ -1322,7 +1446,7 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
         showIndent(outfile, level, pretty_print)
         outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, XML_NS, name_='IndicatorType')
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='IndicatorType')
         if self.hasContent_():
             outfile.write('>%s' % (eol_, ))
             self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
@@ -1330,7 +1454,7 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
             outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_=XML_NS, name_='IndicatorType'):
+    def exportAttributes(self, outfile, level, already_processed, namespace_='indicator:', name_='IndicatorType'):
         super(IndicatorType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='IndicatorType')
         if 'xmlns' not in already_processed:
             already_processed.add('xmlns')
@@ -1355,17 +1479,19 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
         if self.Title is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
-        if self.Type is not None:
-            self.Type.export(outfile, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
+        for Type_ in self.Type:
+            Type_.export(outfile, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
         for Alternative_ID_ in self.Alternative_ID:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%s:Alternative_ID>%s</%s:Alternative_ID>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(Alternative_ID_).encode(ExternalEncoding), input_name='Alternative_ID'), nsmap[namespace_], eol_))
         if self.Description is not None:
             self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        if self.Short_Description is not None:
+            self.Short_Description.export(outfile, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         for Valid_Time_Position_ in self.Valid_Time_Position:
             Valid_Time_Position_.export(outfile, level, nsmap, namespace_, name_='Valid_Time_Position', pretty_print=pretty_print)
         if self.Observable is not None:
-            self.Observable.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Observable', pretty_print=pretty_print) # requires a hack to make the namespace work..no nsmap parameter
+            self.Observable.export(outfile, level, nsmap, namespace_, name_='Observable', pretty_print=pretty_print)
         if self.Composite_Indicator_Expression is not None:
             self.Composite_Indicator_Expression.export(outfile, level, nsmap, namespace_, name_='Composite_Indicator_Expression', pretty_print=pretty_print)
         for Indicated_TTP_ in self.Indicated_TTP:
@@ -1386,6 +1512,10 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
             self.Sightings.export(outfile, level, nsmap, namespace_, name_='Sightings', pretty_print=pretty_print)
         if self.Related_Indicators is not None:
             self.Related_Indicators.export(outfile, level, nsmap, namespace_, name_='Related_Indicators', pretty_print=pretty_print)
+        if self.Related_Campaigns is not None:
+            self.Related_Campaigns.export(outfile, level, nsmap, namespace_, name_='Related_Campaigns', pretty_print=pretty_print)
+        if self.Related_Packages is not None:
+            self.Related_Packages.export(outfile, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
         if self.Producer is not None:
             self.Producer.export(outfile, level, nsmap, namespace_, name_='Producer', pretty_print=pretty_print)
     def build(self, node):
@@ -1417,7 +1547,7 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
         elif nodeName_ == 'Type':
             obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)
-            self.set_Type(obj_)
+            self.Type.append(obj_)
         elif nodeName_ == 'Alternative_ID':
             Alternative_ID_ = child_.text
             Alternative_ID_ = self.gds_validate_string(Alternative_ID_, node, 'Alternative_ID')
@@ -1426,6 +1556,10 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
+        elif nodeName_ == 'Short_Description':
+            obj_ = stix_common_binding.StructuredTextType.factory()
+            obj_.build(child_)
+            self.set_Short_Description(obj_)
         elif nodeName_ == 'Valid_Time_Position':
             obj_ = ValidTimeType.factory()
             obj_.build(child_)
@@ -1474,12 +1608,176 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
             obj_ = RelatedIndicatorsType.factory()
             obj_.build(child_)
             self.set_Related_Indicators(obj_)
+        elif nodeName_ == 'Related_Campaigns':
+            obj_ = RelatedCampaignReferencesType.factory()
+            obj_.build(child_)
+            self.set_Related_Campaigns(obj_)
+        elif nodeName_ == 'Related_Packages':
+            obj_ = stix_common_binding.RelatedPackageRefsType.factory()
+            obj_.build(child_)
+            self.set_Related_Packages(obj_)
         elif nodeName_ == 'Producer':
             obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.set_Producer(obj_)
         super(IndicatorType, self).buildChildren(child_, node, nodeName_, True)
 # end class IndicatorType
+
+class RelatedCampaignReferencesType(stix_common_binding.GenericRelationshipListType):
+    subclass = None
+    superclass = stix_common_binding.GenericRelationshipListType
+    def __init__(self, scope='exclusive', Related_Campaign=None):
+        super(RelatedCampaignReferencesType, self).__init__(scope=scope, )
+        if Related_Campaign is None:
+            self.Related_Campaign = []
+        else:
+            self.Related_Campaign = Related_Campaign
+    def factory(*args_, **kwargs_):
+        if RelatedCampaignReferencesType.subclass:
+            return RelatedCampaignReferencesType.subclass(*args_, **kwargs_)
+        else:
+            return RelatedCampaignReferencesType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_Related_Campaign(self): return self.Related_Campaign
+    def set_Related_Campaign(self, Related_Campaign): self.Related_Campaign = Related_Campaign
+    def add_Related_Campaign(self, value): self.Related_Campaign.append(value)
+    def insert_Related_Campaign(self, index, value): self.Related_Campaign[index] = value
+    def hasContent_(self):
+        if (
+            self.Related_Campaign or
+            super(RelatedCampaignReferencesType, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedCampaignReferencesType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedCampaignReferencesType')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='indicator:', name_='RelatedCampaignReferencesType'):
+        super(RelatedCampaignReferencesType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedCampaignReferencesType')
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedCampaignReferencesType', fromsubclass_=False, pretty_print=True):
+        super(RelatedCampaignReferencesType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for Related_Campaign_ in self.Related_Campaign:
+            Related_Campaign_.export(outfile, level, nsmap, namespace_, name_='Related_Campaign', pretty_print=pretty_print)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(RelatedCampaignReferencesType, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'Related_Campaign':
+            obj_ = CampaignReferenceType.factory()
+            obj_.build(child_)
+            self.Related_Campaign.append(obj_)
+        super(RelatedCampaignReferencesType, self).buildChildren(child_, node, nodeName_, True)
+# end class RelatedCampaignReferencesType
+
+class CampaignReferenceType(GeneratedsSuper):
+    """Characterizes a reference to a campaign.Specifies a globally unique
+    identifier for a cyber threat campaign defined elsewhere.In
+    conjunction with the idref, this field may be used to reference
+    a specific version of a campaign defined elsewhere.This field
+    must only be used in conjunction with the idref field."""
+    subclass = None
+    superclass = None
+    def __init__(self, timestamp=None, idref=None, Names=None):
+        self.timestamp = _cast(None, timestamp)
+        self.idref = _cast(None, idref)
+        self.Names = Names
+    def factory(*args_, **kwargs_):
+        if CampaignReferenceType.subclass:
+            return CampaignReferenceType.subclass(*args_, **kwargs_)
+        else:
+            return CampaignReferenceType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_Names(self): return self.Names
+    def set_Names(self, Names): self.Names = Names
+    def get_timestamp(self): return self.timestamp
+    def set_timestamp(self, timestamp): self.timestamp = timestamp
+    def get_idref(self): return self.idref
+    def set_idref(self, idref): self.idref = idref
+    def hasContent_(self):
+        if (
+            self.Names is not None
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='CampaignReferenceType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='CampaignReferenceType')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='indicator:', name_='CampaignReferenceType'):
+        if self.timestamp is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            outfile.write(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
+        if self.idref is not None and 'idref' not in already_processed:
+            already_processed.add('idref')
+            outfile.write(' idref=%s' % (quote_attrib(self.idref), ))
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='CampaignReferenceType', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.Names is not None:
+            self.Names.export(outfile, level, nsmap, namespace_, name_='Names', pretty_print=pretty_print)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        value = find_attr_value_('timestamp', node)
+        if value is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            try:
+                self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
+            except ValueError, exp:
+                raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
+        value = find_attr_value_('idref', node)
+        if value is not None and 'idref' not in already_processed:
+            already_processed.add('idref')
+            self.idref = value
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'Names':
+            obj_ = NamesType.factory()
+            obj_.build(child_)
+            self.set_Names(obj_)
+# end class CampaignReferenceType
+
 
 GDSClassesMapping = {
     'Indicator': stix_common_binding.IndicatorBaseType,
