@@ -553,38 +553,61 @@ class MarkingType(GeneratedsSuper):
             self.Marking.append(obj_)
 # end class MarkingType
 
+
 class MarkingStructureType(GeneratedsSuper):
     """The MarkingStructureType contains the marking information to be
-    applied to a portion of XML content. This type is defined as
+    applied to a portion of XML content.This type is defined as
     abstract and is intended to be extended to enable the expression
-    of any structured or unstructured data marking mechanism. STIX
-    provides two options: Simple, and TLP.Additionally, those who
-    wish to use another format may do so by defining a new extension
-    to this type. The information for the STIX-provided extensions
-    is: 1. Simple: The Simple marking structures allows for the
+    of any structured or unstructured data marking mechanism. The
+    data marking structure is simply a mechanism for applying
+    existing marking systems to nodes. The data marking systems
+    themselves define the semantics of what the markings mean, how
+    multiple markings to the same node should be applied, and what
+    to do if a node is unmarked.It is valid per this specification
+    to mark a node with multiple markings from the same system or
+    mark a node across multiple marking systems. If a node is marked
+    multiple times using the same marking system, that system
+    specifies the semantic meaning of multiple markings and (if
+    necessary) how conflicts should be resolved. If a node is marked
+    across multiple marking systems, each system is considered
+    individually applicable. If there are conflicting markings
+    across marking systems the behavior is undefined, therefore
+    producers should make every effort to ensure documents are
+    marked consistently and correctly among all marking systems.STIX
+    provides two marking system extensions: Simple, and TLP. Those
+    who wish to use another format may do so by defining a new
+    extension to this type. The STIX-provided extensions are:1.
+    Simple: The Simple marking structures allows for the
     specification of unstructured statements through the use of a
     string field. The type is named SimpleMarkingStructureType and
     is in the http://data-
     marking.mitre.org/extensions/MarkingStructure#Simple-1
     namespace. The extension is defined in the file
     extensions/marking/simple_marking.xsd or at the URL http://stix.
-    mitre.org/XMLSchema/extensions/marking/simple_marking/1.0/simple
-    _marking.xsd. 2. TLP: The TLP marking structure allows for the
+    mitre.org/XMLSchema/extensions/marking/simple_marking/1.1/simple
+    _marking.xsd.2. TLP: The TLP marking structure allows for the
     expression of Traffic Light Protocol statements through the use
     of a simple enumeration. The type is named
     TLPMarkingStructureType and is in the http://data-
     marking.mitre.org/extensions/MarkingStructure#TLP-1 namespace.
-    The extension is defined in the file extensions/marking/tlp.xsd
-    or at the URL http://stix.mitre.org/XMLSchema/extensions/marking
-    /tlp/1.0/tlp.xsd. This field specifies the name of the marking
-    model to be applied within this Marking_Structure.This field
-    contains a reference to an authoritative source on the marking
-    model to be applied within this Marking_Structure."""
+    The extension is defined in the file
+    extensions/marking/tlp_marking.xsd or at the URL http://stix.mit
+    re.org/XMLSchema/extensions/marking/tlp/1.1/tlp_marking.xsd.This
+    field specifies the name of the marking model to be applied
+    within this Marking_Structure.This field contains a reference to
+    an authoritative source on the marking model to be applied
+    within this Marking_Structure.Specifies a unique ID for this
+    Marking_Structure.Specifies a reference to the ID of a
+    Marking_Structure defined elsewhere.When idref is specified, the
+    id attribute must not be specified, and any instance of this
+    Marking_Structure should not hold content."""
     subclass = None
     superclass = None
-    def __init__(self, marking_model_ref=None, marking_model_name=None):
+    def __init__(self, idref=None, id=None, marking_model_ref=None, marking_model_name=None):
+        self.idref = _cast(None, idref)
         self.marking_model_ref = _cast(None, marking_model_ref)
         self.marking_model_name = _cast(None, marking_model_name)
+        self.id = _cast(None, id)
         pass
     def factory(*args_, **kwargs_):
         if MarkingStructureType.subclass:
@@ -592,10 +615,14 @@ class MarkingStructureType(GeneratedsSuper):
         else:
             return MarkingStructureType(*args_, **kwargs_)
     factory = staticmethod(factory)
+    def get_idref(self): return self.idref
+    def set_idref(self, idref): self.idref = idref
     def get_marking_model_ref(self): return self.marking_model_ref
     def set_marking_model_ref(self, marking_model_ref): self.marking_model_ref = marking_model_ref
     def get_marking_model_name(self): return self.marking_model_name
     def set_marking_model_name(self, marking_model_name): self.marking_model_name = marking_model_name
+    def get_id(self): return self.id
+    def set_id(self, id): self.id = id
     def hasContent_(self):
         if (
 
@@ -619,12 +646,18 @@ class MarkingStructureType(GeneratedsSuper):
         else:
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='marking:', name_='MarkingStructureType'):
+        if self.idref is not None and 'idref' not in already_processed:
+            already_processed.add('idref')
+            outfile.write(' idref=%s' % (quote_attrib(self.idref), ))
         if self.marking_model_ref is not None and 'marking_model_ref' not in already_processed:
             already_processed.add('marking_model_ref')
             outfile.write(' marking_model_ref=%s' % (self.gds_format_string(quote_attrib(self.marking_model_ref).encode(ExternalEncoding), input_name='marking_model_ref'), ))
         if self.marking_model_name is not None and 'marking_model_name' not in already_processed:
             already_processed.add('marking_model_name')
             outfile.write(' marking_model_name=%s' % (quote_attrib(self.marking_model_name), ))
+        if self.id is not None and 'id' not in already_processed:
+            already_processed.add('id')
+            outfile.write(' id=%s' % (quote_attrib(self.id), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='MarkingStructureType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
@@ -634,6 +667,10 @@ class MarkingStructureType(GeneratedsSuper):
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
+        value = find_attr_value_('idref', node)
+        if value is not None and 'idref' not in already_processed:
+            already_processed.add('idref')
+            self.idref = value
         value = find_attr_value_('marking_model_ref', node)
         if value is not None and 'marking_model_ref' not in already_processed:
             already_processed.add('marking_model_ref')
@@ -642,9 +679,14 @@ class MarkingStructureType(GeneratedsSuper):
         if value is not None and 'marking_model_name' not in already_processed:
             already_processed.add('marking_model_name')
             self.marking_model_name = value
+        value = find_attr_value_('id', node)
+        if value is not None and 'id' not in already_processed:
+            already_processed.add('id')
+            self.id = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
 # end class MarkingStructureType
+
 
 class MarkingSpecificationType(GeneratedsSuper):
     """Specifies a unique ID for this Marking.Specifies a reference to the
