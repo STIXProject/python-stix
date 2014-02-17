@@ -20,7 +20,7 @@ class Indicator(stix.Entity):
     _namespace = 'http://stix.mitre.org/Indicator-2'
     
     def __init__(self, id_=None, title=None, description=None, indicator_type=None, producer=None, observables=None):
-        self.id_ = id_ if id_ is not None else stix.utils.create_id()
+        self.id_ = id_ or stix.utils.create_id("Indicator")
         self.producer = producer
         self.observables = observables
         self.title = title

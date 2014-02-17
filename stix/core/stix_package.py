@@ -20,7 +20,7 @@ class STIXPackage(stix.Entity):
         '''
         Constructor
         '''
-        self.id_ = id_ if id_ else stix.utils.create_id() 
+        self.id_ = id_ or stix.utils.create_id("Package")
         self.idref_ = idref_
         self.version = '1.0.1'
         self.indicators = indicators

@@ -12,8 +12,8 @@ class Identity(stix.Entity):
     _binding = stix_common_binding
     _namespace = 'http://stix.mitre.org/common-1'
 
-    def __init__(self, id=None, idref=None, name=None, related_identities=None):
-        self.id_ = id if id else stix.utils.create_id()
+    def __init__(self, id_=None, idref=None, name=None, related_identities=None):
+        self.id_ = id_ or stix.utils.create_id("Identity")
         self.idref = idref
         self.name = name
         #self.related_identities = related_identities

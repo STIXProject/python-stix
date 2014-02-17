@@ -20,7 +20,7 @@ class Incident(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
     
     def __init__(self, id_=None, title=None, description=None):
-        self.id_ = id_ or stix.utils.create_id()
+        self.id_ = id_ or stix.utils.create_id("Incident")
         self.description = description
         self.title = title
         self.time = None
