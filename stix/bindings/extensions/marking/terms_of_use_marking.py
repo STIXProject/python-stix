@@ -498,23 +498,23 @@ class TermsOfUseMarkingStructureType(data_marking_binding.MarkingStructureType):
     Of Use Marking Statement."""
     subclass = None
     superclass = data_marking_binding.MarkingStructureType
-    def __init__(self, idref=None, marking_model_ref=None, marking_model_name=None, id=None, terms_of_use=None):
+    def __init__(self, idref=None, marking_model_ref=None, marking_model_name=None, id=None, Terms_Of_Use=None):
         super(TermsOfUseMarkingStructureType, self).__init__(idref=idref, marking_model_ref=marking_model_ref, marking_model_name=marking_model_name, id=id)
         self.xmlns          = "http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1"
         self.xmlns_prefix   = "TOUMarking"
         self.xml_type       = "TermsOfUseMarkingStructureType"
-        self.terms_of_use = terms_of_use
+        self.Terms_Of_Use = Terms_Of_Use
     def factory(*args_, **kwargs_):
         if TermsOfUseMarkingStructureType.subclass:
             return TermsOfUseMarkingStructureType.subclass(*args_, **kwargs_)
         else:
             return TermsOfUseMarkingStructureType(*args_, **kwargs_)
     factory = staticmethod(factory)
-    def get_terms_of_use(self): return self.terms_of_use
-    def set_terms_of_use(self, terms_of_use): self.terms_of_use = terms_of_use
+    def get_Terms_Of_Use(self): return self.Terms_Of_Use
+    def set_Terms_Of_Use(self, Terms_Of_Use): self.Terms_Of_Use = Terms_Of_Use
     def hasContent_(self):
         if (
-            self.terms_of_use is not None or
+            self.Terms_Of_Use is not None or
             super(TermsOfUseMarkingStructureType, self).hasContent_()
             ):
             return True
@@ -548,9 +548,9 @@ class TermsOfUseMarkingStructureType(data_marking_binding.MarkingStructureType):
             eol_ = '\n'
         else:
             eol_ = ''
-        if self.terms_of_use is not None:
+        if self.Terms_Of_Use is not None:
             showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:terms_of_use>%s</%s:terms_of_use>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.terms_of_use).encode(ExternalEncoding), input_name='terms_of_use'), nsmap[namespace_], eol_))
+            outfile.write('<%s:Terms_Of_Use>%s</%s:Terms_Of_Use>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Terms_Of_Use).encode(ExternalEncoding), input_name='Terms_Of_Use'), nsmap[namespace_], eol_))
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -560,10 +560,10 @@ class TermsOfUseMarkingStructureType(data_marking_binding.MarkingStructureType):
     def buildAttributes(self, node, attrs, already_processed):
         super(TermsOfUseMarkingStructureType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'terms_of_use':
-            terms_of_use_ = child_.text
-            terms_of_use_ = self.gds_validate_string(terms_of_use_, node, 'terms_of_use')
-            self.terms_of_use = terms_of_use_
+        if nodeName_ == 'Terms_Of_Use':
+            Terms_Of_Use_ = child_.text
+            Terms_Of_Use_ = self.gds_validate_string(Terms_Of_Use_, node, 'Terms_Of_Use')
+            self.Terms_Of_Use = Terms_Of_Use_
         super(TermsOfUseMarkingStructureType, self).buildChildren(child_, node, nodeName_, True)
 # end class TermsOfUseMarkingStructureType
 
