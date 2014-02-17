@@ -886,11 +886,10 @@ class ToolInformationType(cybox_common_binding.ToolInformationType):
     unless an extension of the type allows it."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, Name=None, Type=None, cDescription=None, References=None, Vendor=None, Version=None, Service_Pack=None, Tool_Specific_Data=None, Tool_Hashes=None, Tool_Configuration=None, Execution_Environment=None, Errors=None, Metadata=None, Compensation_Model=None, Title=None, sDescription=None, Short_Description=None, extensiontype_=None):
-        super(ToolInformationType, self).__init__(idref=idref, id=id, Name=Name, Type=Type, Description=cDescription, References=References, Vendor=Vendor, Version=Version, Service_Pack=Service_Pack, Tool_Specific_Data=Tool_Specific_Data, Execution_Environment=Execution_Environment, Errors=Errors, Metadata=Metadata, Compensation_Model=Compensation_Model)
+    def __init__(self, idref=None, id=None, Name=None, Type=None, Description=None, References=None, Vendor=None, Version=None, Service_Pack=None, Tool_Specific_Data=None, Tool_Hashes=None, Tool_Configuration=None, Execution_Environment=None, Errors=None, Metadata=None, Compensation_Model=None, Title=None, Short_Description=None, extensiontype_=None):
+        super(ToolInformationType, self).__init__(idref=idref, id=id, Name=Name, Type=Type, Description=Description, References=References, Vendor=Vendor, Version=Version, Service_Pack=Service_Pack, Tool_Specific_Data=Tool_Specific_Data, Execution_Environment=Execution_Environment, Errors=Errors, Metadata=Metadata, Compensation_Model=Compensation_Model)
         self.Title = Title
-        self.sDescription = sDescription
-        self.Short_Description= Short_Description
+        self.Short_Description = Short_Description
         self.extensiontype_ = extensiontype_
     def factory(*args_, **kwargs_):
         if ToolInformationType.subclass:
@@ -900,15 +899,12 @@ class ToolInformationType(cybox_common_binding.ToolInformationType):
     factory = staticmethod(factory)
     def get_Title(self): return self.Title
     def set_Title(self, Title): self.Title = Title
-    def get_sDescription(self): return self.sDescription
-    def set_sDescription(self, sDescription): self.sDescription = sDescription
     def get_Short_Description(self): return self.Short_Description
     def set_ShortDescription(self, Short_Description): self.Short_Description = Short_Description
     def hasContent_(self):
         if (
             super(ToolInformationType, self).hasContent() or
             self.Title is not None or
-            self.sDescription is not None or
             self.Short_Description is not None
             ):
             return True
@@ -945,8 +941,6 @@ class ToolInformationType(cybox_common_binding.ToolInformationType):
         if self.Title:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_],self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
-        if self.sDescription is not None:
-            self.sDescription.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Short_Description is not None:
             self.Short_Description.export(outfile, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
     def build(self, node):
@@ -967,15 +961,6 @@ class ToolInformationType(cybox_common_binding.ToolInformationType):
             Title_ = child_.text
             Title_ = self.gds_validate_string(Title_, node, 'Title')
             self.Title = Title_
-        elif nodeName_ == 'Description':
-            if child_.tag.startswith("{%s}" % XML_NS): # Is it the stix common Description element?
-                obj_ = StructuredTextType.factory()
-                obj_.build(child_)
-                self.set_sDescription(obj_)
-            if child_.tag.startswith("{http://cybox.mitre.org/common-2}"): # Is it the cybox common Description element?
-                obj_ = cybox_common_binding.StructuredTextType.factory()
-                obj_.build(child_)
-                super.set_Description(obj_)
         elif nodeName_ == 'Short_Description':
             obj_ = StructuredTextType.factory()
             obj_.build(child_)
