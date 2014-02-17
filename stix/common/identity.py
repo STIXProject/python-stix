@@ -24,12 +24,7 @@ class Identity(stix.Entity):
 
     @name.setter
     def name(self, value):
-        if value and not isinstance(value, basestring):
-            raise ValueError('value must be instance of basestring')
-
-        self._name = value
-
-
+        self._name = unicode(value) if value else None
 
 #    @property
 #    def related_identities(self):
