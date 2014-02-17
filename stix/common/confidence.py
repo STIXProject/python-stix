@@ -23,7 +23,7 @@ class Confidence(stix.Entity):
         self.description = description
         self.source = source
         #TODO: support confidence_assertion_chain
-        self.confidence_assertion_chain = None
+        #self.onfidence_assertion_chain = None
 
     @property
     def timestamp(self):
@@ -77,14 +77,14 @@ class Confidence(stix.Entity):
         else:
             self._description = StructuredText(value=value)
 
-    @property
-    def confidence_assertion_chain(self):
-        return self._confidence_assertion_chain
+    # @property
+    # def confidence_assertion_chain(self):
+    #     return self._confidence_assertion_chain
 
-    @confidence_assertion_chain.setter
-    def confidence_assertion_chain(self, value):
-        if value:
-            raise NotImplementedError()
+    # @confidence_assertion_chain.setter
+    # def confidence_assertion_chain(self, value):
+    #     if value:
+    #         raise NotImplementedError()
 
     def to_obj(self):
         obj = self._binding_class()
