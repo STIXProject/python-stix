@@ -59,14 +59,15 @@ class Entity(object):
         s = StringIO()
         namespace_def = ""
         
+        import stix.utils.nsparser as nsparser
         if include_namespaces:
             if not ns_dict: ns_dict = {}
             all_ns_dict = self._get_namespaces(ns_dict)
             schemaloc_dict = self._get_schema_locations()
-            
-            import stix.utils.nsparser as nsparser
             namespace_def = nsparser.NamespaceParser().get_namespace_def_str(all_ns_dict, schemaloc_dict)
-        
+        else:
+            all_ns_dict = dict(nsparser.DEFAULT_STIX_NS_TO_PREFIX.items() + nsparser.DEFAULT_EXT_TO_PREFIX.items())
+            
         if not pretty:
             namespace_def = namespace_def.replace('\n\t', ' ')
         
