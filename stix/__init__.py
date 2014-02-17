@@ -93,3 +93,4 @@ class Entity(object):
     def dict_from_object(cls, entity_obj):
         """Convert from object representation to dict representation."""
         return cls.from_obj(entity_obj).to_dict()
+\

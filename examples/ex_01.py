@@ -18,7 +18,7 @@ import stix.bindings.stix_core as stix_core_binding
 
 def main():
     fn = 'ex_01.xml'
-    (stix_package, stix_package_binding_obj) = STIXPackage.from_xml(fn)
+    stix_package = STIXPackage.from_xml(fn)
     stix_dict = stix_package.to_dict() # parse to dictionary
     pprint(stix_dict)
     
