@@ -5,7 +5,7 @@ from __future__ import absolute_import
 
 import stix
 
-from cybox.common import Time, ToolInformationList
+import cybox.common
 
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
@@ -55,7 +55,7 @@ class InformationSource(stix.Entity):
     
     @time.setter
     def time(self, value):
-        if value and not isinstance(value, Time):
+        if value and not isinstance(value, cybox.common.Time):
             raise ValueError('value must be instance of Time')
         
         self._time = value
@@ -66,7 +66,7 @@ class InformationSource(stix.Entity):
     
     @tools.setter
     def tools(self, value):
-        if value and not isinstance(value, ToolInformationList):
+        if value and not isinstance(value, cybox.common.ToolInformationList):
             raise ValueError('value must be instance of cybox.common.ToolInformationList')
         
         self._tools = value
@@ -124,10 +124,10 @@ class InformationSource(stix.Entity):
                 return_obj.identity = Identity.from_obj(identity_obj)
         
         if obj.get_Time():
-            return_obj.time = Time.from_obj(obj.get_Time())
+            return_obj.time = cybox.common.Time.from_obj(obj.get_Time())
         
         if obj.get_Tools():
-            return_obj.tools = ToolInformationList.from_obj(obj.get_Tools())
+            return_obj.tools = cybox.common.ToolInformationList.from_obj(obj.get_Tools())
 
         return return_obj
 
@@ -157,10 +157,10 @@ class InformationSource(stix.Entity):
                 return_obj.identity = Identity.from_dict(identity_dict)
                 
         if time_dict:
-            return_obj.time = Time.from_dict(time_dict)
+            return_obj.time = cybox.common.Time.from_dict(time_dict)
         
         if tools_list:
-            return_obj.tools = ToolInformationList.from_list(tools_list)
+            return_obj.tools = cybox.common.ToolInformationList.from_list(tools_list)
 
         return return_obj
 
