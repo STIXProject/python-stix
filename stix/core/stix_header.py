@@ -18,11 +18,15 @@ class STIXHeader(stix.Entity):
     _namespace = 'http://stix.mitre.org/stix-1'
     
     def __init__(self, package_intent=None, description=None, handling=None, information_source=None, title=None):
-        self.package_intent = package_intent
+        self.package_intent = []
         self.title = title
         self.description = description
         self.handling = handling
         self.information_source = information_source
+        
+        if package_intent:
+            for pi in package_intent:
+                self.add_package_intent(pi)
 
     @property
     def description(self):
@@ -65,10 +69,19 @@ class STIXHeader(stix.Entity):
 
     @package_intent.setter
     def package_intent(self, value):
-        if value and not isinstance(value, PackageIntent):
-            value = PackageIntent(value)
+        self._package_intent = []
+        if value and isinstance(value, list):
+            for v in value:
+                self.add_package_intent(v)
+        else:
+            self.add_package_intent(value)
 
-        self._package_intent = value
+    def add_package_intent(self, package_intent):
+        if isinstance(package_intent, PackageIntent):
+            self.package_intent.append(package_intent)
+        else:
+            tmp_package_intent = PackageIntent(value=package_intent)
+            self.package_intent.append(tmp_package_intent)
 
     @property
     def information_source(self):
@@ -90,10 +103,15 @@ class STIXHeader(stix.Entity):
             return_obj = cls()
 
         return_obj.title = obj.get_Title()
-        return_obj.package_intent = PackageIntent.from_obj(obj.get_Package_Intent())
         return_obj.description = StructuredText.from_obj(obj.get_Description())
         return_obj.handling = Marking.from_obj(obj.get_Handling())
         return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
+        
+        package_intent_list = obj.get_Package_Intent()
+        if package_intent_list:
+            for pi in package_intent_list:
+                tmp_package_intent = PackageIntent.from_obj(pi)
+                return_obj.add_package_intent(tmp_package_intent)
 
         return return_obj
 
@@ -104,8 +122,8 @@ class STIXHeader(stix.Entity):
         if self.title:
             return_obj.set_Title(self.title)
 
-        if self.package_intent:
-            return_obj.set_Package_Intent(self.package_intent.to_obj())
+        for pi in self.package_intent:
+            return_obj.add_Package_Intent(pi.to_obj())
 
         if self.description:
             return_obj.set_Description(self.description.to_obj())
@@ -138,6 +156,10 @@ class STIXHeader(stix.Entity):
         info_dict = dict_repr.get('information_source', None)
         return_obj.information_source = InformationSource.from_dict(info_dict)
 
+        package_intent_list = dict_repr.get('package_intent', [])
+        for package_intent_dict in package_intent_list:
+            return_obj.add_package_intent(PackageIntent.from_dict(package_intent_dict))
+
         return return_obj
 
     def to_dict(self, return_dict=None):
@@ -148,7 +170,8 @@ class STIXHeader(stix.Entity):
             return_dict['title'] = self.title
 
         if self.package_intent:
-            return_dict['package_intent'] = self.package_intent.to_dict()
+            package_intent_list = [x.to_dict() for x in self.package_intent]
+            return_dict['package_intent'] = package_intent_list
 
         if self.description:
             return_dict['description'] = self.description.to_dict()
