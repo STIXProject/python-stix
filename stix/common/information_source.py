@@ -28,6 +28,17 @@ class InformationSource(stix.Entity):
         #self.references = []
     
     @property
+    def description(self):
+        return self._description
+    
+    @description.setter
+    def description(self, value):
+        if isinstance(value, StructuredText):
+            self._description = value
+        else:
+            self._description = StructuredText(value=value)
+            
+    @property
     def identity(self):
         return self._identity
     
