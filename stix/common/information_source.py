@@ -159,6 +159,4 @@ class InformationSource(stix.Entity):
             return_dict['tools'] = self.tools.to_list()
         
         return return_dict
-    
-    
-    
+
