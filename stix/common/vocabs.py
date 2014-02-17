@@ -12,7 +12,7 @@ class VocabString(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
     
     # All subclasses should override this
-    _XSI_TYPE = "BAD_XSI_TYPE"
+    _XSI_TYPE = None
 
     def __init__(self, value=None):
         super(VocabString, self).__init__()
