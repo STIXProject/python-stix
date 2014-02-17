@@ -18,7 +18,7 @@ class STIXHeader(stix.Entity):
     _namespace = 'http://stix.mitre.org/stix-1'
     
     def __init__(self, package_intent=None, description=None, handling=None, information_source=None, title=None):
-        self.package_intent = []
+        self.package_intent = package_intent
         self.title = title
         self.description = description
         self.handling = handling
@@ -77,6 +77,8 @@ class STIXHeader(stix.Entity):
             self.add_package_intent(value)
 
     def add_package_intent(self, package_intent):
+        if not package_intent:
+            return
         if isinstance(package_intent, PackageIntent):
             self.package_intent.append(package_intent)
         else:
