@@ -491,31 +491,67 @@ def _cast(typ, value):
 
 class SnortTestMechanismType(indicator_binding.TestMechanismType):
     """The SnortTestMechanismType specifies an instantial extension from
-    the abstract indicator_binding.TestMechanismType intended to support the inclusion
+    the abstract TestMechanismType intended to support the inclusion
     of a Snort rule as a test mechanism content."""
     subclass = None
     superclass = indicator_binding.TestMechanismType
-    def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, Version=None, Rule=None):
-        super(SnortTestMechanismType, self).__init__(idref, id, Efficacy, Producer, )
+    def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, Product_Name=None, Version=None, Rule=None, Event_Filter=None, Rate_Filter=None, Event_Suppression=None):
+        super(SnortTestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer, )
         self.xmlns          = "http://stix.mitre.org/extensions/TestMechanism#Snort-1"
         self.xmlns_prefix   = "snortTM"
         self.xml_type       = "SnortTestMechanismType"
+        self.Product_Name = Product_Name
         self.Version = Version
-        self.Rule = Rule
+        if Rule is None:
+            self.Rule = []
+        else:
+            self.Rule = Rule
+        if Event_Filter is None:
+            self.Event_Filter = []
+        else:
+            self.Event_Filter = Event_Filter
+        if Rate_Filter is None:
+            self.Rate_Filter = []
+        else:
+            self.Rate_Filter = Rate_Filter
+        if Event_Suppression is None:
+            self.Event_Suppression = []
+        else:
+            self.Event_Suppression = Event_Suppression
     def factory(*args_, **kwargs_):
         if SnortTestMechanismType.subclass:
             return SnortTestMechanismType.subclass(*args_, **kwargs_)
         else:
             return SnortTestMechanismType(*args_, **kwargs_)
     factory = staticmethod(factory)
+    def get_Product_Name(self): return self.Product_Name
+    def set_Product_Name(self, Product_Name): self.Product_Name = Product_Name
     def get_Version(self): return self.Version
     def set_Version(self, Version): self.Version = Version
     def get_Rule(self): return self.Rule
     def set_Rule(self, Rule): self.Rule = Rule
+    def add_Rule(self, value): self.Rule.append(value)
+    def insert_Rule(self, index, value): self.Rule[index] = value
+    def get_Event_Filter(self): return self.Event_Filter
+    def set_Event_Filter(self, Event_Filter): self.Event_Filter = Event_Filter
+    def add_Event_Filter(self, value): self.Event_Filter.append(value)
+    def insert_Event_Filter(self, index, value): self.Event_Filter[index] = value
+    def get_Rate_Filter(self): return self.Rate_Filter
+    def set_Rate_Filter(self, Rate_Filter): self.Rate_Filter = Rate_Filter
+    def add_Rate_Filter(self, value): self.Rate_Filter.append(value)
+    def insert_Rate_Filter(self, index, value): self.Rate_Filter[index] = value
+    def get_Event_Suppression(self): return self.Event_Suppression
+    def set_Event_Suppression(self, Event_Suppression): self.Event_Suppression = Event_Suppression
+    def add_Event_Suppression(self, value): self.Event_Suppression.append(value)
+    def insert_Event_Suppression(self, index, value): self.Event_Suppression[index] = value
     def hasContent_(self):
         if (
+            self.Product_Name is not None or
             self.Version is not None or
-            self.Rule is not None or
+            self.Rule or
+            self.Event_Filter or
+            self.Rate_Filter or
+            self.Event_Suppression or
             super(SnortTestMechanismType, self).hasContent_()
             ):
             return True
@@ -553,11 +589,20 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
             eol_ = '\n'
         else:
             eol_ = ''
+        if self.Product_Name is not None:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%s:Product_Name>%s</%s:Product_Name>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Product_Name).encode(ExternalEncoding), input_name='Product_Name'), nsmap[namespace_], eol_))
         if self.Version is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%s:Version>%s</%s:Version>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Version).encode(ExternalEncoding), input_name='Version'), nsmap[namespace_], eol_))
-        if self.Rule is not None:
-            self.Rule.export(outfile, level, nsmap, namespace_, name_='Rule', pretty_print=pretty_print)
+        for Rule_ in self.Rule:
+            Rule_.export(outfile, level, nsmap, namespace_, name_='Rule', pretty_print=pretty_print)
+        for Event_Filter_ in self.Event_Filter:
+            Event_Filter_.export(outfile, level, nsmap, namespace_, name_='Event_Filter', pretty_print=pretty_print)
+        for Rate_Filter_ in self.Rate_Filter:
+            Rate_Filter_.export(outfile, level, nsmap, namespace_, name_='Rate_Filter', pretty_print=pretty_print)
+        for Event_Suppression_ in self.Event_Suppression:
+            Event_Suppression_.export(outfile, level, nsmap, namespace_, name_='Event_Suppression', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -567,16 +612,35 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
     def buildAttributes(self, node, attrs, already_processed):
         super(SnortTestMechanismType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'Version':
+        if nodeName_ == 'Product_Name':
+            Product_Name_ = child_.text
+            Product_Name_ = self.gds_validate_string(Product_Name_, node, 'Product_Name')
+            self.Product_Name = Product_Name_
+        elif nodeName_ == 'Version':
             Version_ = child_.text
             Version_ = self.gds_validate_string(Version_, node, 'Version')
             self.Version = Version_
         elif nodeName_ == 'Rule':
             obj_ = stix_common_binding.EncodedCDATAType.factory()
             obj_.build(child_)
-            self.set_Rule(obj_)
+            self.Rule.append(obj_)
+        elif nodeName_ == 'Event_Filter':
+            obj_ = stix_common_binding.EncodedCDATAType.factory()
+            obj_.build(child_)
+            self.Event_Filter.append(obj_)
+        elif nodeName_ == 'Rate_Filter':
+            obj_ = stix_common_binding.EncodedCDATAType.factory()
+            obj_.build(child_)
+            self.Rate_Filter.append(obj_)
+        elif nodeName_ == 'Event_Suppression':
+            obj_ = stix_common_binding.EncodedCDATAType.factory()
+            obj_.build(child_)
+            self.Event_Suppression.append(obj_)
         super(SnortTestMechanismType, self).buildChildren(child_, node, nodeName_, True)
 # end class SnortTestMechanismType
+
+
+
 
 GDSClassesMapping = {
     'Indicator': stix_common_binding.IndicatorBaseType,
@@ -602,7 +666,6 @@ GDSClassesMapping = {
     'Related_Indicators': indicator_binding.RelatedIndicatorsType,
     'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
     'Valid_Time_Position': indicator_binding.ValidTimeType,
-    'Contributors': stix_common_binding.ContributorsType,
     'Campaign': stix_common_binding.CampaignBaseType,
     'Reference_Description': stix_common_binding.StructuredTextType,
     'Association_Type': stix_common_binding.ControlledVocabularyStringType,

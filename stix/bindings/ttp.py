@@ -1193,13 +1193,13 @@ class MalwareType(GeneratedsSuper):
             if type_name_ is not None:
                 type_names_ = type_name_.split(':')
                 if len(type_names_) == 1:
-                else:
                     type_name_ = type_names_[0]
+                else:
                     type_name_ = type_names_[1]
             
-                if type_name_ == "MAEC4.0InstanceType":
-                    import stix.bindings.extensions.malware.maec_4_0_1 as maec_4_0_1_binding
-                    obj_ = maec_4_0_1_binding.MAEC4_0InstanceType.factory()
+                if type_name_ == "MAEC4.1InstanceType":
+                    import stix.bindings.extensions.malware.maec_4_1 as maec_4_1_binding
+                    obj_ = maec_4_1_binding.MAEC4_1InstanceType.factory()
             else:
                 obj_ = MalwareInstanceType.factory() # MalwareInstanceType is not abstract
             
@@ -1277,9 +1277,9 @@ class AttackPatternsType(GeneratedsSuper):
                 else:
                     type_name_ = type_names_[1]
                 
-                if type_name_ == "CAPEC2.6InstanceType":
-                    import stix.bindings.extensions.attack_pattern.capec_2_6_1 as capec_2_6_1_binding
-                    obj_ = capec_2_6_1_binding.CAPEC2_6InstanceType.factory()
+                if type_name_ == "CAPEC2.7InstanceType":
+                    import stix.bindings.extensions.attack_pattern.capec_2_7 as capec_2_7_binding
+                    obj_ = capec_2_7_binding.CAPEC2_7InstanceType.factory()
                 else:
                     raise NotImplementedError('No implementation for type: ' + type_name_)
             else:
