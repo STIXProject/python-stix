@@ -7,10 +7,5 @@ from .identity import *
 from .information_source import InformationSource
 from .generic_relationship import GenericRelationship
 from .structured_text import StructuredText
-from .vocabs import VocabString
-
-
-class HighMediumLow(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
-    _XSI_TYPE = 'stixVocabs:HighMediumLowVocab-1.0'
-
+from .vocabs import VocabString, HighMediumLow
+from .confidence import Confidence

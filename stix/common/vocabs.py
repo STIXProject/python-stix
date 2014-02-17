@@ -112,3 +112,9 @@ class VocabString(stix.Entity):
             vocab_str.vocab_reference = vocab_dict.get('vocab_reference')
 
         return vocab_str
+
+
+class HighMediumLow(VocabString):
+    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _XSI_TYPE = 'stixVocabs:HighMediumLowVocab-1.0'
+
