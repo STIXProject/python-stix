@@ -1004,7 +1004,7 @@ class RelatedObservablesType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_Observable=None):
-        super(RelatedObservablesType, self).__init__(scope, )
+        super(RelatedObservablesType, self).__init__(scope=scope)
         if Related_Observable is None:
             self.Related_Observable = []
         else:
@@ -1167,7 +1167,7 @@ class SuggestedCOAsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Suggested_COA=None):
-        super(SuggestedCOAsType, self).__init__(scope, )
+        super(SuggestedCOAsType, self).__init__(scope=scope)
         if Suggested_COA is None:
             self.Suggested_COA = []
         else:
@@ -1236,7 +1236,7 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_Indicator=None):
-        super(RelatedIndicatorsType, self).__init__(scope, )
+        super(RelatedIndicatorsType, self).__init__(scope=scope)
         if Related_Indicator is None:
             self.Related_Indicator = []
         else:
@@ -1314,7 +1314,7 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
     subclass = None
     superclass = stix_common_binding.IndicatorBaseType
     def __init__(self, timestamp=None, idref=None, id=None, negate=False, version=None, Title=None, Type=None, Alternative_ID=None, Description=None, Short_Description=None, Valid_Time_Position=None, Observable=None, Composite_Indicator_Expression=None, Indicated_TTP=None, Kill_Chain_Phases=None, Test_Mechanisms=None, Likely_Impact=None, Suggested_COAs=None, Handling=None, Confidence=None, Sightings=None, Related_Indicators=None, Related_Campaigns=None, Related_Packages=None, Producer=None):
-        super(IndicatorType, self).__init__(idref=idref, id=id, )
+        super(IndicatorType, self).__init__(idref=idref, id=id)
         self.xmlns          = "http://stix.mitre.org/Indicator-2"
         self.xmlns_prefix   = "indicator"
         self.xml_type       = "IndicatorType"
@@ -1627,7 +1627,7 @@ class RelatedCampaignReferencesType(stix_common_binding.GenericRelationshipListT
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_Campaign=None):
-        super(RelatedCampaignReferencesType, self).__init__(scope=scope, )
+        super(RelatedCampaignReferencesType, self).__init__(scope=scope)
         if Related_Campaign is None:
             self.Related_Campaign = []
         else:

@@ -497,7 +497,7 @@ class GenericTestMechanismType(indicator_binding.TestMechanismType):
     subclass = None
     superclass = indicator_binding.TestMechanismType
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, reference_location=None, Description=None, Type=None, Specification=None):
-        super(GenericTestMechanismType, self).__init__(idref, id, Efficacy, Producer, )
+        super(GenericTestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
         self.xmlns          = "http://stix.mitre.org/extensions/TestMechanism#Generic-1"
         self.xmlns_prefix   = "genericTM"
         self.xml_type       = "GenericTestMechanismType"

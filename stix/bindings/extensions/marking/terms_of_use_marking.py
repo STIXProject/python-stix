@@ -499,7 +499,7 @@ class TermsOfUseMarkingStructureType(data_marking_binding.MarkingStructureType):
     subclass = None
     superclass = data_marking_binding.MarkingStructureType
     def __init__(self, idref=None, marking_model_ref=None, marking_model_name=None, id=None, terms_of_use=None):
-        super(TermsOfUseMarkingStructureType, self).__init__(idref, marking_model_ref, marking_model_name, id, )
+        super(TermsOfUseMarkingStructureType, self).__init__(idref=idref, marking_model_ref=marking_model_ref, marking_model_name=marking_model_name, id=id)
         self.xmlns          = "http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1"
         self.xmlns_prefix   = "TOUMarking"
         self.xml_type       = "TermsOfUseMarkingStructureType"

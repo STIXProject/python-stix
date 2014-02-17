@@ -735,7 +735,7 @@ class RelatedPackageRefType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, idref=None, timestamp=None):
-        super(RelatedPackageRefType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedPackageRefType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.idref = _cast(None, idref)
         self.timestamp = _cast(None, timestamp)
         pass
@@ -1655,7 +1655,7 @@ class KillChainPhaseReferenceType(KillChainPhaseType):
     subclass = None
     superclass = KillChainPhaseType
     def __init__(self, ordinality=None, name=None, phase_id=None, kill_chain_name=None, kill_chain_id=None):
-        super(KillChainPhaseReferenceType, self).__init__(ordinality, name, phase_id, )
+        super(KillChainPhaseReferenceType, self).__init__(ordinality=ordinality, name=name, phase_id=phase_id)
         self.kill_chain_name = _cast(None, kill_chain_name)
         self.kill_chain_id = _cast(None, kill_chain_id)
         pass
@@ -1898,7 +1898,7 @@ class RelatedCampaignType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Campaign=None):
-        super(RelatedCampaignType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedCampaignType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.Campaign = Campaign
     def factory(*args_, **kwargs_):
         if RelatedCampaignType.subclass:
@@ -1980,7 +1980,7 @@ class RelatedCourseOfActionType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Course_Of_Action=None):
-        super(RelatedCourseOfActionType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedCourseOfActionType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.Course_Of_Action = Course_Of_Action
     def factory(*args_, **kwargs_):
         if RelatedCourseOfActionType.subclass:
@@ -2062,7 +2062,7 @@ class RelatedExploitTargetType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Exploit_Target=None):
-        super(RelatedExploitTargetType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedExploitTargetType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.Exploit_Target = Exploit_Target
     def factory(*args_, **kwargs_):
         if RelatedExploitTargetType.subclass:
@@ -2144,7 +2144,7 @@ class RelatedIncidentType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Incident=None):
-        super(RelatedIncidentType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedIncidentType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.Incident = Incident
     def factory(*args_, **kwargs_):
         if RelatedIncidentType.subclass:
@@ -2226,7 +2226,7 @@ class RelatedIndicatorType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Indicator=None):
-        super(RelatedIndicatorType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedIndicatorType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.Indicator = Indicator
     def factory(*args_, **kwargs_):
         if RelatedIndicatorType.subclass:
@@ -2308,7 +2308,7 @@ class RelatedObservableType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Observable=None):
-        super(RelatedObservableType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedObservableType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.Observable = Observable
     def factory(*args_, **kwargs_):
         if RelatedObservableType.subclass:
@@ -2373,7 +2373,7 @@ class RelatedThreatActorType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Threat_Actor=None):
-        super(RelatedThreatActorType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedThreatActorType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.Threat_Actor = Threat_Actor
     def factory(*args_, **kwargs_):
         if RelatedThreatActorType.subclass:
@@ -2455,7 +2455,7 @@ class RelatedTTPType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, TTP=None):
-        super(RelatedTTPType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedTTPType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.TTP = TTP
     def factory(*args_, **kwargs_):
         if RelatedTTPType.subclass:
@@ -2537,7 +2537,7 @@ class RelatedIdentityType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Identity=None):
-        super(RelatedIdentityType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedIdentityType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.Identity = Identity
     def factory(*args_, **kwargs_):
         if RelatedIdentityType.subclass:
@@ -3115,7 +3115,7 @@ class RelatedCampaignReferenceType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Campaign=None):
-        super(RelatedCampaignReferenceType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedCampaignReferenceType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.Campaign = Campaign
     def factory(*args_, **kwargs_):
         if RelatedCampaignReferenceType.subclass:

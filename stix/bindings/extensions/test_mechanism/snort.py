@@ -496,7 +496,7 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
     subclass = None
     superclass = indicator_binding.TestMechanismType
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, Product_Name=None, Version=None, Rule=None, Event_Filter=None, Rate_Filter=None, Event_Suppression=None):
-        super(SnortTestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer, )
+        super(SnortTestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
         self.xmlns          = "http://stix.mitre.org/extensions/TestMechanism#Snort-1"
         self.xmlns_prefix   = "snortTM"
         self.xml_type       = "SnortTestMechanismType"
