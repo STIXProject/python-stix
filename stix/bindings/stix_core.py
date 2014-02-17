@@ -847,6 +847,8 @@ class STIXHeaderType(GeneratedsSuper):
     def set_Title(self, Title): self.Title = Title
     def get_Package_Intent(self): return self.Package_Intent
     def set_Package_Intent(self, Package_Intent): self.Package_Intent = Package_Intent
+    def add_Package_Intent(self, value): self.Package_Intent.append(value)
+    def insert_Package_Intent(self, index, value): self.Package_Intent[index] = value
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
     def get_Short_Description(self): return self.Short_Description
