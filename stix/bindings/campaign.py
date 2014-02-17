@@ -558,7 +558,7 @@ class AssociatedCampaignsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Associated_Campaign=None):
-        super(AssociatedCampaignsType, self).__init__(scope, )
+        super(AssociatedCampaignsType, self).__init__(scope=scope)
         if Associated_Campaign is None:
             self.Associated_Campaign = []
         else:
@@ -627,7 +627,7 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_Indicator=None):
-        super(RelatedIndicatorsType, self).__init__(scope, )
+        super(RelatedIndicatorsType, self).__init__(scope=scope)
         if Related_Indicator is None:
             self.Related_Indicator = []
         else:
@@ -696,7 +696,7 @@ class RelatedIncidentsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_Incident=None):
-        super(RelatedIncidentsType, self).__init__(scope, )
+        super(RelatedIncidentsType, self).__init__(scope=scope)
         if Related_Incident is None:
             self.Related_Incident = []
         else:
@@ -765,7 +765,7 @@ class RelatedTTPsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_TTP=None):
-        super(RelatedTTPsType, self).__init__(scope, )
+        super(RelatedTTPsType, self).__init__(scope=scope)
         if Related_TTP is None:
             self.Related_TTP = []
         else:
@@ -836,7 +836,7 @@ class AttributionType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Attributed_Threat_Actor=None):
-        super(AttributionType, self).__init__(scope, )
+        super(AttributionType, self).__init__(scope=scope)
         if Attributed_Threat_Actor is None:
             self.Attributed_Threat_Actor = []
         else:
@@ -908,7 +908,7 @@ class CampaignType(stix_common_binding.CampaignBaseType):
     subclass = None
     superclass = stix_common_binding.CampaignBaseType
     def __init__(self, idref=None, id=None, version=None, Title=None, Description=None, Short_Description=None, Names=None, Intended_Effect=None, Status=None, Related_TTPs=None, Related_Incidents=None, Related_Indicators=None, Attribution=None, Associated_Campaigns=None, Confidence=None, Activity=None, Information_Source=None, Handling=None, Related_Packages=None):
-        super(CampaignType, self).__init__(idref, id, )
+        super(CampaignType, self).__init__(idref=idref, id=id)
         self.xmlns          = "http://stix.mitre.org/Campaign-1"
         self.xmlns_prefix   = "campaign"
         self.xml_type       = "CampaignType"

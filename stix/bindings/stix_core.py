@@ -689,7 +689,7 @@ class RelatedPackagesType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_Package=None):
-        super(RelatedPackagesType, self).__init__(scope, )
+        super(RelatedPackagesType, self).__init__(scope=scope)
         if Related_Package is None:
             self.Related_Package = []
         else:
@@ -759,7 +759,7 @@ class RelatedPackageType(stix_common_binding.GenericRelationshipType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Package=None):
-        super(RelatedPackageType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedPackageType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.Package = Package
     def factory(*args_, **kwargs_):
         if RelatedPackageType.subclass:

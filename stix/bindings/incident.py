@@ -1153,7 +1153,7 @@ class COARequestedType(COATakenType):
     subclass = None
     superclass = COATakenType
     def __init__(self, Time=None, Contributors=None, Course_Of_Action=None, priority=None):
-        super(COARequestedType, self).__init__(Time, Contributors, Course_Of_Action, )
+        super(COARequestedType, self).__init__(Time=Time, Contributors=Contributors, Course_Of_Action=Course_Of_Action)
         self.priority = _cast(None, priority)
         pass
     def factory(*args_, **kwargs_):
@@ -2195,7 +2195,7 @@ class AttributedThreatActorsType(stix_common_binding.GenericRelationshipListType
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Threat_Actor=None):
-        super(AttributedThreatActorsType, self).__init__(scope, )
+        super(AttributedThreatActorsType, self).__init__(scope=scope)
         if Threat_Actor is None:
             self.Threat_Actor = []
         else:
@@ -2264,7 +2264,7 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_Indicator=None):
-        super(RelatedIndicatorsType, self).__init__(scope, )
+        super(RelatedIndicatorsType, self).__init__(scope=scope)
         if Related_Indicator is None:
             self.Related_Indicator = []
         else:
@@ -2333,7 +2333,7 @@ class RelatedObservablesType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_Observable=None):
-        super(RelatedObservablesType, self).__init__(scope, )
+        super(RelatedObservablesType, self).__init__(scope=scope)
         if Related_Observable is None:
             self.Related_Observable = []
         else:
@@ -2402,7 +2402,7 @@ class LeveragedTTPsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Leveraged_TTP=None):
-        super(LeveragedTTPsType, self).__init__(scope, )
+        super(LeveragedTTPsType, self).__init__(scope=scope)
         if Leveraged_TTP is None:
             self.Leveraged_TTP = []
         else:
@@ -2471,7 +2471,7 @@ class RelatedIncidentsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_Incident=None):
-        super(RelatedIncidentsType, self).__init__(scope, )
+        super(RelatedIncidentsType, self).__init__(scope=scope)
         if Related_Incident is None:
             self.Related_Incident = []
         else:
@@ -2551,7 +2551,7 @@ class AssetTypeType(stix_common_binding.ControlledVocabularyStringType):
     subclass = None
     superclass = stix_common_binding.ControlledVocabularyStringType
     def __init__(self, vocab_reference=None, vocab_name=None, count_affected=None, valueOf_=None):
-        super(AssetTypeType, self).__init__(vocab_reference, vocab_name, valueOf_, )
+        super(AssetTypeType, self).__init__(vocab_reference=vocab_reference, vocab_name=vocab_name, valueOf_=valueOf_)
         self.count_affected = _cast(None, count_affected)
         self.valueOf_ = valueOf_
     def factory(*args_, **kwargs_):
@@ -2621,7 +2621,7 @@ class IncidentType(stix_common_binding.IncidentBaseType):
     subclass = None
     superclass = stix_common_binding.IncidentBaseType
     def __init__(self, timestamp=None, idref=None, id=None, URL=None, version=None, Title=None, External_ID=None, Time=None, Description=None, Short_Description=None, Categories=None, Reporter=None, Responder=None, Coordinator=None, Victim=None, Affected_Assets=None, Impact_Assessment=None, Status=None, Related_Indicators=None, Related_Observables=None, Leveraged_TTPs=None, Attributed_Threat_Actors=None, Intended_Effect=None, Security_Compromise=None, Discovery_Method=None, Related_Incidents=None, COA_Requested=None, COA_Taken=None, Confidence=None, Contact=None, History=None, Information_Source=None, Handling=None, Related_Packages=None):
-        super(IncidentType, self).__init__(timestamp=timestamp, idref=idref, id=id, )
+        super(IncidentType, self).__init__(timestamp=timestamp, idref=idref, id=id)
         self.xmlns          = "http://stix.mitre.org/Incident-1"
         self.xmlns_prefix   = "incident"
         self.xml_type       = "IncidentType"
@@ -3060,7 +3060,7 @@ class NonPublicDataCompromisedType(stix_common_binding.ControlledVocabularyStrin
     subclass = None
     superclass = stix_common_binding.ControlledVocabularyStringType
     def __init__(self, vocab_reference=None, vocab_name=None, data_encrypted=None):
-        super(NonPublicDataCompromisedType, self).__init__(vocab_reference, vocab_name, )
+        super(NonPublicDataCompromisedType, self).__init__(vocab_reference=vocab_reference, vocab_name=vocab_name)
         self.data_encrypted = _cast(bool, data_encrypted)
         pass
     def factory(*args_, **kwargs_):

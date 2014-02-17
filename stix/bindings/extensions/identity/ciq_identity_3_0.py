@@ -506,7 +506,7 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
     subclass = None
     superclass = stix_common_binding.IdentityType
     def __init__(self, idref=None, id=None, Name=None, Related_Identities=None, Specification=None, Role=None):
-        super(CIQIdentity3_0InstanceType, self).__init__(idref, id, Name, Related_Identities, )
+        super(CIQIdentity3_0InstanceType, self).__init__(idref=idref, id=id, Name=Name, Related_Identities=Related_Identities)
         self.xmlns          = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
         self.xmlns_prefix   = "stix-ciqidentity"
         self.xml_type       = "CIQIdentity3.0InstanceType"
