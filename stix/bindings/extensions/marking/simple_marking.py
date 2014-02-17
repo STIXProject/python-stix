@@ -566,10 +566,7 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
         super(SimpleMarkingStructureType, self).buildChildren(child_, node, nodeName_, True)
 # end class SimpleMarkingStructureType
 
-GDSClassesMapping = {
-    'Marking': data_marking_binding.MarkingSpecificationType,
-    'Marking_Structure': data_marking_binding.MarkingStructureType,
-}
+GDSClassesMapping = {}
 
 USAGE_TEXT = """
 Usage: python <Parser>.py [ -s ] <in_xml_file>

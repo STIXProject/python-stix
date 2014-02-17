@@ -569,10 +569,7 @@ class TermsOfUseMarkingStructureType(data_marking_binding.MarkingStructureType):
 
 
 
-GDSClassesMapping = {
-    'Marking': data_marking_binding.MarkingSpecificationType,
-    'Marking_Structure': data_marking_binding.MarkingStructureType,
-}
+GDSClassesMapping = {}
 
 USAGE_TEXT = """
 Usage: python <Parser>.py [ -s ] <in_xml_file>

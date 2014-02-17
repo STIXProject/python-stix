@@ -567,16 +567,7 @@ class OpenIOC2010TestMechanismType(indicator_binding.TestMechanismType):
         super(OpenIOC2010TestMechanismType, self).buildChildren(child_, node, nodeName_, True)
 # end class OpenIOC2010TestMechanismType
 
-GDSClassesMapping = {
-    'Suggested_COAs': indicator_binding.SuggestedCOAsType,
-    'Related_Indicators': indicator_binding.RelatedIndicatorsType,
-    'Valid_Time_Position': indicator_binding.ValidTimeType,
-    'Test_Mechanisms': indicator_binding.TestMechanismsType,
-    'Sightings': indicator_binding.SightingsType,
-    'Test_Mechanism': indicator_binding.TestMechanismType,
-    'Sighting': indicator_binding.SightingType,
-    'Composite_Indicator_Expression': indicator_binding.CompositeIndicatorExpressionType,
-}
+GDSClassesMapping = {}
 
 USAGE_TEXT = """
 Usage: python <Parser>.py [ -s ] <in_xml_file>

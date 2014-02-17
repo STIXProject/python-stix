@@ -566,8 +566,7 @@ class CAPEC2_7InstanceType(ttp_binding.AttackPatternType):
         super(CAPEC2_7InstanceType, self).buildChildren(child_, node, nodeName_, True)
 # end class CAPEC2_6InstanceType
 
-GDSClassesMapping = {
-}
+GDSClassesMapping = {}
 
 USAGE_TEXT = """
 Usage: python <Parser>.py [ -s ] <in_xml_file>
