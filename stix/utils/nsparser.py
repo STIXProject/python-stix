@@ -3,6 +3,7 @@
 
 import inspect
 import stix
+import cybox
 from cybox.core import Observables, Observable
 import cybox.utils.nsparser as cybox_nsparser
 
@@ -20,7 +21,7 @@ class NamespaceParser(object):
     def get_namespaces(self, entity):
         all_namespaces = set()
         
-        if not (isinstance(entity, stix.Entity) or isinstance(entity, Observable)):
+        if not isinstance(entity, (stix.Entity, cybox.Entity)):
             raise ValueError("Must provide an instance of stix.Entity or cybox.core.Observable")
         
         entity.nsparser_touched = True
@@ -42,13 +43,11 @@ class NamespaceParser(object):
     
     def _get_children(self, entity):
         for (name, obj) in inspect.getmembers(entity):
-            if isinstance(obj, stix.Entity):
-                yield obj
-            elif isinstance(obj, Observable):
-                yield obj
-            elif isinstance(obj, Observables):
+            if isinstance(obj, Observables):
                 for obs in obj.observables:
                     yield obs
+            elif isinstance(obj, (stix.Entity, cybox.Entity)):
+                yield obj
             elif isinstance(obj, list):
                 for item in obj:
                     if isinstance(item, stix.Entity) or isinstance(item, Observable):
