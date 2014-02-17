@@ -3,6 +3,7 @@
 
 import stix
 import stix.utils
+from stix.utils.parser import EntityParser
 from stix_header import STIXHeader
 from stix.indicator import Indicator
 from cybox.core import Observables
@@ -167,23 +168,8 @@ class STIXPackage(stix.Entity):
     
     @classmethod
     def from_xml(cls, xml_file):
-        '''
-        Returns a tuple of (api_object, binding_object).
-        Parameters:
-        xml_file - either a filename or a stream object
-        '''
-        
-        if isinstance(xml_file, basestring):
-            f = open(xml_file, "rb")
-        else:
-            f = xml_file
-        
-        doc = stix_core_binding.parsexml_(f)
-        stix_package_obj = stix_core_binding.STIXType().factory()
-        stix_package_obj.build(doc.getroot())
-        stix_package = STIXPackage().from_obj(stix_package_obj)
-        
-        return (stix_package, stix_package_obj)
+        parser = EntityParser()
+        return parser.parse_xml(xml_file)
 
         
     
