@@ -2693,6 +2693,7 @@ class IndicatorBaseType(GeneratedsSuper):
         if value is not None and 'id' not in already_processed:
             already_processed.add('id')
             self.id = value
+        value = find_attr_value_('timestamp', node)
         if value is not None and 'timestamp' not in already_processed:
             already_processed.add('timestamp')
             try:
