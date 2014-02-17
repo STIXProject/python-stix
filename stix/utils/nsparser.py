@@ -98,6 +98,8 @@ STIX_NS_TO_SCHEMALOCATION = {
          'http://data-marking.mitre.org/Marking-1': 'http://stix.mitre.org/XMLSchema/data_marking/1.0.1/data_marking.xsd',
          'http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1': 'http://stix.mitre.org/XMLSchema/extensions/marking/simple_marking/1.0.1/simple_marking.xsd',
          'http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1': 'http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.0.1/tlp.xsd',
+         #TODO: the Terms Of Use marking doesn't have a location yet.
+         'http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1': 'http://stix.mitre.org/XMLSchema/extensions/marking/TO_BE_DETERMINED.xsd',
          'http://stix.mitre.org/Campaign-1': 'http://stix.mitre.org/XMLSchema/campaign/1.0.1/campaign.xsd',
          'http://stix.mitre.org/CourseOfAction-1': 'http://stix.mitre.org/XMLSchema/course_of_action/1.0.1/course_of_action.xsd',
          'http://stix.mitre.org/ExploitTarget-1': 'http://stix.mitre.org/XMLSchema/exploit_target/1.0.1/exploit_target.xsd',
@@ -127,6 +129,7 @@ DEFAULT_STIX_NS_TO_PREFIX = {
      'http://data-marking.mitre.org/Marking-1': 'marking',
      'http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1': 'tlpMarking',
      'http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1': 'simpleMarking',
+     'http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1': 'TOUMarking',
      'http://stix.mitre.org/Campaign-1': 'campaign',
      'http://stix.mitre.org/CourseOfAction-1': 'coa',
      'http://stix.mitre.org/ExploitTarget-1': 'et',
