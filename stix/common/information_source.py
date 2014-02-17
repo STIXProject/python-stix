@@ -1,15 +1,18 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from __future__ import absolute_import
+
 import stix
 
-from stix.extensions.identity import CIQIdentity3_0Instance
-from stix.common.identity import Identity
 from cybox.common import Time, ToolInformationList
 
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
+from stix.extensions.identity import CIQIdentity3_0Instance
 
+from .identity import Identity
+from .structured_text import StructuredText
 
 
 class InformationSource(stix.Entity):
@@ -17,6 +20,7 @@ class InformationSource(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
     
     def __init__(self, identity=None, time=None, tools=None):
+        self.description = None
         self.identity = identity
         #self.contributors = []
         self.time = time
@@ -60,6 +64,9 @@ class InformationSource(stix.Entity):
     def to_obj(self, return_obj=None):
         if return_obj == None:
             return_obj = self._binding.InformationSourceType()
+
+        if self.description is not None:
+            return_obj.set_Description(self.description.to_obj())
         
         identity_obj    = self.identity.to_obj() if self.identity else None
         time_obj        = self.time.to_obj() if self.time else None
@@ -84,7 +91,6 @@ class InformationSource(stix.Entity):
         return_obj.set_Time(time_obj)
         return_obj.set_Tools(tools_obj)
         #return_obj.set_Contributors(contributors_obj)
-        #return_obj.set_Tools(tools_obj)
         #return_obj.set_References(references_obj)
     
         return return_obj
@@ -96,7 +102,9 @@ class InformationSource(stix.Entity):
         
         if not return_obj:
             return_obj = cls()
-        
+
+        return_obj.description = StructuredText.from_obj(obj.get_Description())
+
         if obj.get_Identity():
             identity_obj = obj.get_Identity()
             if isinstance(identity_obj, ciq_identity_binding.CIQIdentity3_0InstanceType):
@@ -109,10 +117,9 @@ class InformationSource(stix.Entity):
         
         if obj.get_Tools():
             return_obj.tools = ToolInformationList.from_obj(obj.get_Tools())
-        
+
         return return_obj
-        
-        
+
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
         if not dict_repr:
@@ -120,11 +127,13 @@ class InformationSource(stix.Entity):
         
         if not return_obj:
             return_obj = cls()
-        
+
+        return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
+
         identity_dict   = dict_repr.get('identity')
         time_dict       = dict_repr.get('time')
         tools_list      = dict_repr.get('tools')
-        
+
         if identity_dict:
             xsi_type = identity_dict.get('xsi:type')
             if xsi_type:
@@ -141,14 +150,16 @@ class InformationSource(stix.Entity):
         
         if tools_list:
             return_obj.tools = ToolInformationList.from_list(tools_list)
-        
+
         return return_obj
-    
-    
+
     def to_dict(self, return_dict=None):
         if not return_dict:
             return_dict = {}
-        
+
+        if self.description:
+            return_dict['description'] = self.description.to_dict()
+
         if self.identity:
             return_dict['identity'] = self.identity.to_dict()
             

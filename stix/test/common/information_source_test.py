@@ -8,6 +8,7 @@ from stix.common import InformationSource
 class InformationSourceTests(EntityTestCase, unittest.TestCase):
     klass = InformationSource
     _full_dict = {
+        'description': "An amazing source",
         'identity': {
             'name': "Spiderman",
         },
