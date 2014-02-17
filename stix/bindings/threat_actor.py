@@ -494,7 +494,7 @@ class ObservedTTPsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Observed_TTP=None):
-        super(ObservedTTPsType, self).__init__(scope, )
+        super(ObservedTTPsType, self).__init__(scope=scope)
         if Observed_TTP is None:
             self.Observed_TTP = []
         else:
@@ -563,7 +563,7 @@ class AssociatedCampaignsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Associated_Campaign=None):
-        super(AssociatedCampaignsType, self).__init__(scope, )
+        super(AssociatedCampaignsType, self).__init__(scope=scope)
         if Associated_Campaign is None:
             self.Associated_Campaign = []
         else:
@@ -632,7 +632,7 @@ class AssociatedActorsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Associated_Actor=None):
-        super(AssociatedActorsType, self).__init__(scope, )
+        super(AssociatedActorsType, self).__init__(scope=scope)
         if Associated_Actor is None:
             self.Associated_Actor = []
         else:
@@ -703,7 +703,7 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
     subclass = None
     superclass = stix_common_binding.ThreatActorBaseType
     def __init__(self, idref=None, id=None, version=None, Title=None, Description=None, Short_Description=None, Identity=None, Type=None, Motivation=None, Sophistication=None, Intended_Effect=None, Planning_And_Operational_Support=None, Observed_TTPs=None, Associated_Campaigns=None, Associated_Actors=None, Handling=None, Confidence=None, Information_Source=None, Related_Packages=None):
-        super(ThreatActorType, self).__init__(idref=idref, id=id, )
+        super(ThreatActorType, self).__init__(idref=idref, id=id)
         self.xmlns          = "http://stix.mitre.org/ThreatActor-1"
         self.xmlns_prefix   = "ta"
         self.xml_type       = "ThreatActorType"

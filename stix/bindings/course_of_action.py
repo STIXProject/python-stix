@@ -677,7 +677,7 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     subclass = None
     superclass = stix_common_binding.CourseOfActionBaseType
     def __init__(self, idref=None, id=None, version=None, Title=None, Stage=None, Type=None, Description=None, Short_Description=None, Objective=None, Parameter_Observables=None, Structured_COA=None, Impact=None, Cost=None, Efficacy=None, Information_Source=None, Handling=None, Related_COAs=None, Related_Packages=None):
-        super(CourseOfActionType, self).__init__(idref, id, )
+        super(CourseOfActionType, self).__init__(idref=idref, id=id)
         self.xmlns          = "http://stix.mitre.org/CourseOfAction-1"
         self.xmlns_prefix   = "coa"
         self.xml_type       = "CourseOfActionType"
@@ -921,7 +921,7 @@ class RelatedCOAsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_COA=None):
-        super(RelatedCOAsType, self).__init__(scope, )
+        super(RelatedCOAsType, self).__init__(scope=scope)
         if Related_COA is None:
             self.Related_COA = []
         else:

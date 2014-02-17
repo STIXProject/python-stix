@@ -497,7 +497,7 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
     subclass = None
     superclass = data_marking_binding.MarkingStructureType
     def __init__(self, marking_model_ref=None, marking_model_name=None, color=None):
-        super(TLPMarkingStructureType, self).__init__(marking_model_ref, marking_model_name, )
+        super(TLPMarkingStructureType, self).__init__(marking_model_ref=marking_model_ref, marking_model_name=marking_model_name)
         self.xmlns          = "http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1"
         self.xmlns_prefix   = "tlpMarking"
         self.xml_type       = "TLPMarkingStructureType"
