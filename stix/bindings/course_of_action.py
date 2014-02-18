@@ -676,8 +676,8 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     schema version for this content."""
     subclass = None
     superclass = stix_common_binding.CourseOfActionBaseType
-    def __init__(self, idref=None, id=None, version=None, Title=None, Stage=None, Type=None, Description=None, Short_Description=None, Objective=None, Parameter_Observables=None, Structured_COA=None, Impact=None, Cost=None, Efficacy=None, Information_Source=None, Handling=None, Related_COAs=None, Related_Packages=None):
-        super(CourseOfActionType, self).__init__(idref=idref, id=id)
+    def __init__(self, timestamp=None, idref=None, id=None, version=None, Title=None, Stage=None, Type=None, Description=None, Short_Description=None, Objective=None, Parameter_Observables=None, Structured_COA=None, Impact=None, Cost=None, Efficacy=None, Information_Source=None, Handling=None, Related_COAs=None, Related_Packages=None):
+        super(CourseOfActionType, self).__init__(idref=idref, id=id, timestamp=timestamp)
         self.xmlns          = "http://stix.mitre.org/CourseOfAction-1"
         self.xmlns_prefix   = "coa"
         self.xml_type       = "CourseOfActionType"

@@ -1720,7 +1720,7 @@ class TTPType(stix_common_binding.TTPBaseType):
     subclass = None
     superclass = stix_common_binding.TTPBaseType
     def __init__(self, timestamp=None, idref=None, id=None, version=None, Title=None, Description=None, Short_Description=None, Intended_Effect=None, Behavior=None, Resources=None, Victim_Targeting=None, Exploit_Targets=None, Related_TTPs=None, Kill_Chain_Phases=None, Information_Source=None, Kill_Chains=None, Handling=None, Related_Packages=None):
-        super(TTPType, self).__init__(idref=idref, id=id)
+        super(TTPType, self).__init__(idref=idref, id=id, timestamp=timestamp)
         self.xmlns          = "http://stix.mitre.org/TTP-1"
         self.xmlns_prefix   = "ttp"
         self.xml_type       = "TTPType"

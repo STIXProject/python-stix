@@ -703,7 +703,7 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
     subclass = None
     superclass = stix_common_binding.ThreatActorBaseType
     def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Description=None, Short_Description=None, Identity=None, Type=None, Motivation=None, Sophistication=None, Intended_Effect=None, Planning_And_Operational_Support=None, Observed_TTPs=None, Associated_Campaigns=None, Associated_Actors=None, Handling=None, Confidence=None, Information_Source=None, Related_Packages=None):
-        super(ThreatActorType, self).__init__(idref=idref, id=id)
+        super(ThreatActorType, self).__init__(idref=idref, id=id, timestamp=timestamp)
         self.xmlns          = "http://stix.mitre.org/ThreatActor-1"
         self.xmlns_prefix   = "ta"
         self.xml_type       = "ThreatActorType"
