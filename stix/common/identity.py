@@ -1,11 +1,15 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from __future__ import absolute_import
+
 import stix
-import stix.utils
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
-from stix.common.generic_relationship import GenericRelationship
+import stix.utils
+
+# import of GenericRelationship is below
+
 
 class Identity(stix.Entity):
     _binding = stix_common_binding
@@ -120,6 +124,9 @@ class Identity(stix.Entity):
 #            return_obj.add_related_identity(RelatedIdentity.from_dict(related_identity_dict))
 
         return return_obj
+
+
+from .generic_relationship import GenericRelationship
 
 
 class RelatedIdentity(GenericRelationship):
