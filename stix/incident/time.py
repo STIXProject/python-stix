@@ -18,7 +18,7 @@ class Time(stix.Entity):
         self.incident_opened = None
         self.containment_achieved  = None
         self.restoration_achieved = None
-        self.incident_reported = None
+        self.incident_reported = None`
         self.incident_closed = None
     
     def _parse_value(self, value):
@@ -112,7 +112,7 @@ class Time(stix.Entity):
         if not return_obj:
             return_obj = cls()
             
-        return_obj.first_malicious_action = obj.get_
+        return_obj.first_malicious_action = None
         return_obj.initial_compromise = None
         return_obj.first_data_exfiltration = None
         return_obj.incident_discovery = None
