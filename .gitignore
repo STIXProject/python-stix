@@ -9,6 +9,9 @@
 *.pydevproject
 *.settings
 
+# pycharm
+.idea/ 
+
 # python setuptools
 build/
 dist/
