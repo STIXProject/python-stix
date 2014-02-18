@@ -1,6 +1,10 @@
 import stix
-from stix.common import VocabString, InformationSource, Confidence
 import stix.bindings.stix_common as common_binding
+
+from .confidence import Confidence
+from .information_source import InformationSource
+from .vocabs import VocabString
+
 
 class Relationship(VocabString):
     _namespace = "http://stix.mitre.org/common-1"
@@ -111,5 +115,3 @@ class GenericRelationship(stix.Entity):
             return_dict['relationship'] = self.relationship.to_dict()
             
         return return_dict
-    
-    

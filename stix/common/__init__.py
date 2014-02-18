@@ -3,10 +3,12 @@
 
 from __future__ import absolute_import
 
-from .identity import *
-from .information_source import InformationSource
-from .generic_relationship import GenericRelationship
 from .structured_text import StructuredText
 from .vocabs import VocabString, HighMediumLow
+
 from .confidence import Confidence
+from .identity import Identity, RelatedIdentity
+from .information_source import InformationSource
 from .statement import Statement
+
+from .generic_relationship import GenericRelationship

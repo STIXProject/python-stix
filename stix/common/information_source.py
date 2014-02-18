@@ -3,13 +3,10 @@
 
 from __future__ import absolute_import
 
-import stix
-
 import cybox.common
 
+import stix
 import stix.bindings.stix_common as stix_common_binding
-import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
-from stix.extensions.identity import CIQIdentity3_0Instance
 
 from .identity import Identity
 from .structured_text import StructuredText
@@ -108,6 +105,11 @@ class InformationSource(stix.Entity):
         
     @classmethod
     def from_obj(cls, obj, return_obj=None):
+        # To resolve circular dependency
+        # TODO: Improve how this extension is handled.
+        import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
+        from stix.extensions.identity import CIQIdentity3_0Instance
+
         if not obj:
             return None
         
@@ -133,6 +135,10 @@ class InformationSource(stix.Entity):
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
+        # To resolve circular dependency
+        # TODO: Improve how this extension is handled.
+        from stix.extensions.identity import CIQIdentity3_0Instance
+
         if not dict_repr:
             return None
         
