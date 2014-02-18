@@ -74,9 +74,8 @@ class EntityParser(object):
             f = xml_file
         
         import stix.bindings.stix_core as stix_core_binding 
-        doc = stix_core_binding.parsexml_(f)
         stix_package_obj = stix_core_binding.STIXType().factory()
-        stix_package_obj.build(doc.getroot())
+        stix_package_obj.build(tree.getroot())
         
         return stix_package_obj
     
