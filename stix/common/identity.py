@@ -5,7 +5,6 @@ import stix
 import stix.utils
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
-
 from stix.common.generic_relationship import GenericRelationship
 
 class Identity(stix.Entity):
@@ -128,9 +127,8 @@ class RelatedIdentity(GenericRelationship):
     _namespace = 'http://stix.mitre.org/common-1'
 
     def __init__(self, identity=None, relationship=None):
-        super(RelatedIdentity, self).__init__()
+        super(RelatedIdentity, self).__init__(relationship=relationship)
         self.identity = identity
-
 
     @property
     def identity(self):
