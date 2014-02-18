@@ -2620,7 +2620,7 @@ class IncidentType(stix_common_binding.IncidentBaseType):
     Incident specification."""
     subclass = None
     superclass = stix_common_binding.IncidentBaseType
-    def __init__(self, timestamp=None, idref=None, id=None, URL=None, version=None, Title=None, External_ID=None, Time=None, Description=None, Short_Description=None, Categories=None, Reporter=None, Responder=None, Coordinator=None, Victim=None, Affected_Assets=None, Impact_Assessment=None, Status=None, Related_Indicators=None, Related_Observables=None, Leveraged_TTPs=None, Attributed_Threat_Actors=None, Intended_Effect=None, Security_Compromise=None, Discovery_Method=None, Related_Incidents=None, COA_Requested=None, COA_Taken=None, Confidence=None, Contact=None, History=None, Information_Source=None, Handling=None, Related_Packages=None):
+    def __init__(self, idref=None, id=None, timestamp=None, URL=None, version=None, Title=None, External_ID=None, Time=None, Description=None, Short_Description=None, Categories=None, Reporter=None, Responder=None, Coordinator=None, Victim=None, Affected_Assets=None, Impact_Assessment=None, Status=None, Related_Indicators=None, Related_Observables=None, Leveraged_TTPs=None, Attributed_Threat_Actors=None, Intended_Effect=None, Security_Compromise=None, Discovery_Method=None, Related_Incidents=None, COA_Requested=None, COA_Taken=None, Confidence=None, Contact=None, History=None, Information_Source=None, Handling=None, Related_Packages=None):
         super(IncidentType, self).__init__(timestamp=timestamp, idref=idref, id=id)
         self.xmlns          = "http://stix.mitre.org/Incident-1"
         self.xmlns_prefix   = "incident"

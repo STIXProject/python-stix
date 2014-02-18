@@ -1313,7 +1313,7 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
     specifies the absence of the pattern."""
     subclass = None
     superclass = stix_common_binding.IndicatorBaseType
-    def __init__(self, timestamp=None, idref=None, id=None, negate=False, version=None, Title=None, Type=None, Alternative_ID=None, Description=None, Short_Description=None, Valid_Time_Position=None, Observable=None, Composite_Indicator_Expression=None, Indicated_TTP=None, Kill_Chain_Phases=None, Test_Mechanisms=None, Likely_Impact=None, Suggested_COAs=None, Handling=None, Confidence=None, Sightings=None, Related_Indicators=None, Related_Campaigns=None, Related_Packages=None, Producer=None):
+    def __init__(self, idref=None, id=None, timestamp=None, negate=False, version=None, Title=None, Type=None, Alternative_ID=None, Description=None, Short_Description=None, Valid_Time_Position=None, Observable=None, Composite_Indicator_Expression=None, Indicated_TTP=None, Kill_Chain_Phases=None, Test_Mechanisms=None, Likely_Impact=None, Suggested_COAs=None, Handling=None, Confidence=None, Sightings=None, Related_Indicators=None, Related_Campaigns=None, Related_Packages=None, Producer=None):
         super(IndicatorType, self).__init__(idref=idref, id=id, timestamp=timestamp)
         self.xmlns          = "http://stix.mitre.org/Indicator-2"
         self.xmlns_prefix   = "indicator"
