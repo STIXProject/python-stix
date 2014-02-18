@@ -16,6 +16,7 @@ from StringIO import StringIO
 class STIXPackage(stix.Entity):
     _binding = stix_core_binding
     _namespace = 'http://stix.mitre.org/stix-1'
+    _version = "1.1"
 
     def __init__(self, id_=None, idref_=None, stix_header=None, indicators=None, observables=None):
         '''
@@ -23,7 +24,7 @@ class STIXPackage(stix.Entity):
         '''
         self.id_ = id_ or stix.utils.create_id("Package")
         self.idref_ = idref_
-        self.version = '1.0.1'
+        self.version = self._version
         self.indicators = indicators
         self.observables = observables
         self.stix_header = stix_header
@@ -105,8 +106,9 @@ class STIXPackage(stix.Entity):
         
         if self.id_:
             return_dict['id'] = self.id_
-            
-        return_dict['version'] = self.version
+        
+        if self.version:    
+            return_dict['version'] = self.version
         
         if self.idref_:
             return_dict['idref'] = self.idref_
@@ -130,8 +132,10 @@ class STIXPackage(stix.Entity):
             
         return_obj.id_ = obj.get_id()
         return_obj.idref_ = obj.get_idref()
-        return_obj.version = obj.get_version()
         return_obj.stix_header = STIXHeader.from_obj(obj.get_STIX_Header())
+        
+        if obj.get_version():
+            return_obj.version = obj.get_version()
         
         if obj.get_Indicators():
             indicators_obj = obj.get_Indicators()
@@ -152,8 +156,7 @@ class STIXPackage(stix.Entity):
         
         return_obj.id_ = dict_repr.get('id', None)
         return_obj.idref_ = dict_repr.get('idref', None)
-        return_obj.version = dict_repr.get('version', None)
-        
+        return_obj.version = dict_repr.get('version', cls._version)
         header_dict = dict_repr.get('stix_header', None)
         return_obj.stix_header = STIXHeader.from_dict(header_dict)
         

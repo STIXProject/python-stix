@@ -17,12 +17,13 @@ class ThreatActor(stix.Entity):
     _binding = threat_actor_binding
     _binding_class = threat_actor_binding.ThreatActorType
     _namespace = 'http://stix.mitre.org/ThreatActor-1'
+    _version = "1.1"
 
     def __init__(self):
         self.id_ = stix.utils.create_id("Indicator")
         self.idref = None
         self.timestamp = None
-        self.version = "1.1"
+        self.version = self._version
         self.title = None
         self.description = None
         self.short_description = None
@@ -101,7 +102,7 @@ class ThreatActor(stix.Entity):
         return_obj.id_ = obj.get_id()
         return_obj.idref = obj.get_idref()
         return_obj.timestamp = obj.get_timestamp()
-        return_obj.version = obj.get_version()
+        return_obj.version = obj.get_version() if obj.get_version() else cls._version
         return_obj.title = obj.get_Title()
         return_obj.description = StructuredText.from_obj(obj.get_Description())
         return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
@@ -169,7 +170,7 @@ class ThreatActor(stix.Entity):
         return_obj.id_ = dict_repr.get('id')
         return_obj.idref = dict_repr.get('idref')
         return_obj.timestamp = dict_repr.get('timestamp')
-        return_obj.version = dict_repr.get('version')
+        return_obj.version = dict_repr.get('version', cls._version)
         return_obj.title = dict_repr.get('title')
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))

@@ -18,9 +18,11 @@ class IndicatorType(VocabString):
 class Indicator(stix.Entity):
     _binding = indicator_binding
     _namespace = 'http://stix.mitre.org/Indicator-2'
+    _version = "2.1"
     
     def __init__(self, id_=None, title=None, description=None, indicator_type=None, producer=None, observables=None):
         self.id_ = id_ or stix.utils.create_id("Indicator")
+        self.version = self._version
         self.producer = producer
         self.observables = observables
         self.title = title
@@ -170,6 +172,9 @@ class Indicator(stix.Entity):
         if self.id_:
             return_obj.set_id(self.id_)
         
+        if self.version:
+            return_obj.set_version(self._version)
+        
         if self.description:
             return_obj.set_Description(self.description.to_obj())
         
@@ -206,6 +211,9 @@ class Indicator(stix.Entity):
         return_obj.description      = StructuredText.from_obj(obj.get_Description())
         return_obj.producer         = InformationSource.from_obj(obj.get_Producer())
         
+        if obj.get_version():
+            return_obj.version = obj.get_version()
+        
         if obj.get_Type():
             for indicator_type in obj.get_Type():
                 return_obj.add_indicator_type(IndicatorType.from_obj(indicator_type)) 
@@ -223,6 +231,9 @@ class Indicator(stix.Entity):
         
         if self.id_:
             return_dict['id'] = self.id_
+        
+        if self.version:
+            return_dict['version'] = self.version
         
         if self.observables:
             if len(self.observables) == 1:
@@ -256,6 +267,7 @@ class Indicator(stix.Entity):
         
         return_obj.id_      = dict_repr.get('id')
         return_obj.title    = dict_repr.get('title')
+        return_obj.version  = dict_repr.get('version', cls._version)
         observable_dict     = dict_repr.get('observable')
         producer_dict       = dict_repr.get('producer')
         description_dict    = dict_repr.get('description')

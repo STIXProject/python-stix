@@ -18,9 +18,11 @@ class IncidentCategory(VocabString):
 class Incident(stix.Entity):
     _binding = incident_binding
     _namespace = "http://stix.mitre.org/Incident-1"
+    _version = "1.1"
     
     def __init__(self, id_=None, title=None, description=None):
         self.id_ = id_ or stix.utils.create_id("Incident")
+        self.version = self._version
         self.description = description
         self.title = title
         self.time = None
