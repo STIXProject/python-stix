@@ -71,7 +71,10 @@ class DateTimeWithPrecision(stix.Entity):
     
     def to_dict(self, return_dict=None):    
         if not return_dict:
-            return_dict  = {}
+            if self.precision == 'second':
+                return self.value
+            else:
+                return_dict  = {}
                 
         return_dict['value'] = serialize_value(self.value)
         return_dict['precision'] = self.precision
@@ -85,7 +88,11 @@ class DateTimeWithPrecision(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.precision = dict_.get('precision')
-        return_obj.value = dict_.get('value')
+        if not isinstance(dict_, dict):
+            return_obj.value = dict_
+        else:
+            return_obj.precision = dict_.get('precision')
+            return_obj.value = dict_.get('value')
+        
         return return_obj
     

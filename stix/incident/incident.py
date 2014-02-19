@@ -63,7 +63,7 @@ class Incident(stix.Entity):
     
     @time.setter
     def time(self, value):
-        if value and not isinstance(time, time.Time): # try to cast this?
+        if value and not isinstance(time, time.Time):
             raise ValueError("value must be instance of stix.incident.time.Time")
     
         self._time = value
