@@ -5,7 +5,7 @@ from __future__ import absolute_import
 
 from .structured_text import StructuredText
 from .vocabs import VocabString, HighMediumLow
-
+from .datetimewithprecision import DateTimeWithPrecision
 from .confidence import Confidence
 from .identity import Identity, RelatedIdentity
 from .information_source import InformationSource

@@ -4,10 +4,13 @@
 import stix
 import dateutil
 import stix.bindings.incident as incident_binding
+from stix.common import DateTimeWithPrecision
 from datetime import datetime
+
 
 class Time(stix.Entity):
     _binding = incident_binding
+    _binding_class = _binding.TimeType
     _namespace = "http://stix.mitre.org/Incident-1"
     
     def __init__(self):
@@ -18,15 +21,8 @@ class Time(stix.Entity):
         self.incident_opened = None
         self.containment_achieved  = None
         self.restoration_achieved = None
-        self.incident_reported = None`
+        self.incident_reported = None
         self.incident_closed = None
-    
-    def _parse_value(self, value):
-        if not value:
-            return None
-        elif isinstance(value, datetime):
-            return value
-        return dateutil.parser.parse(value)
     
     @property
     def first_malicious_action(self):
@@ -34,7 +30,13 @@ class Time(stix.Entity):
     
     @first_malicious_action.setter
     def first_malicious_action(self, value):
-        self._first_malicious_action = self._parse_value(value)
+        if value:
+            if isinstance(value, DateTimeWithPrecision):
+                self._first_malicious_action = value
+            else:
+                self._first_malicious_action = DateTimeWithPrecision(value=value)
+        else:
+            self._first_malicioius_action = None
         
     @property
     def initial_compromise(self):
@@ -42,7 +44,13 @@ class Time(stix.Entity):
     
     @initial_compromise.setter
     def initial_compromise(self, value):
-        self._initial_compromise = self._parse_value(value)
+        if value:
+            if isinstance(value, DateTimeWithPrecision):
+                self._initial_compromise = value
+            else:
+                self._initial_compromise = DateTimeWithPrecision(value=value)
+        else:
+            self._initial_compromise = None
         
     @property
     def first_data_exfiltration(self):
@@ -50,7 +58,13 @@ class Time(stix.Entity):
     
     @first_data_exfiltration.setter
     def first_data_exfiltration(self, value):
-        self._first_data_exfiltration = self._parse_value(value)
+        if value:
+            if isinstance(value, DateTimeWithPrecision):
+                self._first_data_exfiltration = value
+            else:
+                self._first_data_exfiltration = DateTimeWithPrecision(value=value)
+        else:
+            self._first_data_exfiltration = None
         
     @property
     def incident_discovery(self):
@@ -58,7 +72,13 @@ class Time(stix.Entity):
     
     @incident_discovery.setter
     def incident_discovery(self, value):
-        self._incident_discovery = self._parse_value(value)
+        if value:
+            if isinstance(value, DateTimeWithPrecision):
+                self._incident_discovery = value
+            else:
+                self._incident_discovery = DateTimeWithPrecision(value=value)
+        else:
+            self._incident_discovery = None
         
     @property
     def incident_opened(self):
@@ -66,7 +86,13 @@ class Time(stix.Entity):
     
     @incident_opened.setter
     def incident_opened(self, value):
-        self._incident_opened = self._parse_value(value)
+        if value:
+            if isinstance(value, DateTimeWithPrecision):
+                self._incident_opened = value
+            else:
+                self._incident_opened = DateTimeWithPrecision(value=value)
+        else:
+            self._incident_opened = None
         
     @property
     def containment_achieved(self):
@@ -74,7 +100,13 @@ class Time(stix.Entity):
     
     @containment_achieved.setter
     def containment_achieved(self, value):
-        self._first_malicious_action = self._parse_value(value)
+        if value:
+            if isinstance(value, DateTimeWithPrecision):
+                self._containment_achieved = value
+            else:
+                self._containment_achieved = DateTimeWithPrecision(value=value)
+        else:
+            self._containment_achieved = None
         
     @property
     def restoration_achieved(self):
@@ -82,7 +114,13 @@ class Time(stix.Entity):
     
     @restoration_achieved.setter
     def restoration_achieved(self, value):
-        self._restoration_achieved = self._parse_value(value)
+        if value:
+            if isinstance(value, DateTimeWithPrecision):
+                self._restoration_achieved = value
+            else:
+                self._restoration_achieved = DateTimeWithPrecision(value=value)
+        else:
+            self._restoration_achieved = None
         
     @property
     def incident_reported(self):
@@ -90,7 +128,13 @@ class Time(stix.Entity):
     
     @incident_reported.setter
     def incident_reported(self, value):
-        self._incident_reported = self._parse_value(value)
+        if value:
+            if isinstance(value, DateTimeWithPrecision):
+                self._incident_reported = value
+            else:
+                self._incident_reported = DateTimeWithPrecision(value=value)
+        else:
+            self._incident_reported = None
         
     @property
     def incident_closed(self):
@@ -98,11 +142,39 @@ class Time(stix.Entity):
     
     @incident_closed.setter
     def incident_closed(self, value):
-        self._incident_closed = self._parse_value(value)
+        if value:
+            if isinstance(value, DateTimeWithPrecision):
+                self._incident_closed = value
+            else:
+                self._incident_closed = DateTimeWithPrecision(value=value)
+        else:
+            self._incident_closed = None
         
     
     def to_obj(self, return_obj=None):
-        pass
+        if not return_obj:
+            return_obj = self._binding_class()
+        
+        if self.first_malicious_action:
+            return_obj.set_First_Malicious_Action(self._first_malicious_action.to_obj())
+        if self.initial_compromise:
+            return_obj.set_Initial_Compromise(self.initial_compromise.to_obj())
+        if self.first_data_exfiltration:
+            return_obj.set_First_Data_Exfiltration(self.first_data_exfiltration.to_obj())
+        if self._incident_discovery:
+            return_obj.set_Incident_Discovery(self.incident_discovery.to_obj())
+        if self.incident_opened:
+            return_obj.set_Incident_Opened(self.incident_opened.to_obj())
+        if self.containment_achieved:
+            return_obj.set_Containment_Achieved(self.containment_achieved.to_obj())
+        if self.restoration_achieved:
+            return_obj.set_Restoration_Achieved(self.restoration_achieved.to_obj())
+        if self.incident_reported:
+            return_obj.set_Incident_Reported(self.incident_reported.to_obj())
+        if self.incident_closed:
+            return_obj.set_Incident_Closed(self.incident_closed.to_obj())
+        
+        return return_obj
     
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -112,12 +184,62 @@ class Time(stix.Entity):
         if not return_obj:
             return_obj = cls()
             
-        return_obj.first_malicious_action = None
-        return_obj.initial_compromise = None
-        return_obj.first_data_exfiltration = None
-        return_obj.incident_discovery = None
-        return_obj.incident_opened = None
-        return_obj.containment_achieved  = None
-        return_obj.restoration_achieved = None
-        return_obj.incident_reported = None
-        return_obj.incident_closed = None
+        return_obj.first_malicious_action = DateTimeWithPrecision.from_obj(obj.get_First_Malicious_Action())
+        return_obj.initial_compromise = DateTimeWithPrecision.from_obj(obj.get_Initial_Compromise())
+        return_obj.first_data_exfiltration = DateTimeWithPrecision.from_obj(obj.get_Data_Exfiltration())
+        return_obj.incident_discovery = DateTimeWithPrecision.from_obj(obj.get_Incident_Discovery())
+        return_obj.incident_opened = DateTimeWithPrecision.from_obj(obj.get_Incident_Opened())
+        return_obj.containment_achieved  = DateTimeWithPrecision.from_obj(obj.get_Containment_Achieved())
+        return_obj.restoration_achieved = DateTimeWithPrecision.from_obj(obj.get_Restoration_Achieved())
+        return_obj.incident_reported = DateTimeWithPrecision.from_obj(obj.get_Incident_Reported())
+        return_obj.incident_closed = DateTimeWithPrecision.from_obj(obj.get_Incident_Closed())
+        
+        return return_obj
+    
+    def to_dict(self, dict_repr, return_dict=None):
+        if not dict_repr:
+            return None
+        
+        if not return_dict:
+            return_dict = {}
+            
+        if self.first_malicious_action:
+            return_dict['first_malicious_action'] = self.first_malicious_action.to_dict()
+        if self.initial_compromise:
+            return_dict['initial_compromise'] = self.initial_compromise.to_dict()
+        if self.first_data_exfiltration:
+            return_dict['first_data_exfiltration'] = self.first_data_exfiltration.to_dict()
+        if self.incident_discovery:
+            return_dict['incident_discovery'] = self.incident_discovery.to_dict()
+        if self.incident_opened:
+            return_dict['incident_opened'] = self.incident_opened.to_dict()
+        if self.containment_achieved:
+            return_dict['containment_achieved'] = self.containment_achieved.to_dict()
+        if self.restoration_achieved:
+            return_dict['restoration_achieved'] = self.restoration_achieved.to_dict()
+        if self.incident_reported:
+            return_dict['incident_reported'] = self.incident_reported.to_dict()
+        if self.incident_closed:
+            return_dict['incident_closed'] = self.incident_closed.to_dict()
+            
+    @classmethod
+    def from_dict(cls, dict_, return_obj=None):
+        if not dict_:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+            
+        return_obj.first_malicious_action = DateTimeWithPrecision.from_dict(dict_.get('first_malicious_action'))
+        return_obj.initial_compromise = DateTimeWithPrecision.from_dict(dict_.get('initial_compromise'))
+        return_obj.first_data_exfiltration = DateTimeWithPrecision.from_dict(dict_.get('first_data_exfiltration'))
+        return_obj.incident_discovery = DateTimeWithPrecision.from_dict(dict_.get('incident_discovery'))
+        return_obj.incident_opened = DateTimeWithPrecision.from_dict(dict_.get('incident_opened'))
+        return_obj.containment_achieved = DateTimeWithPrecision.from_dict(dict_.get('containment_achieved'))
+        return_obj.restoration_achieved = DateTimeWithPrecision.from_dict(dict_.get('restoration_achieved'))
+        return_obj.incident_reported = DateTimeWithPrecision.from_dict(dict_.get('incident_reported'))
+        return_obj.incident_closed = DateTimeWithPrecision.from_dict(dict_.get('incident_closed'))
+        
+        return return_obj
+        
+        
