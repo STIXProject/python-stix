@@ -13,10 +13,10 @@ class NamespaceParser(object):
     
     def _get_observable_namespaces(self, obs):
         '''Returns namespaces used within a CybOX Observable'''
-        cybox_parser = cybox_nsparser.NamespaceParser([obs.to_obj()])
-        d = cybox_parser.get_namespace_dict()
-        d['http://cybox.mitre.org/default_vocabularies-2'] = 'cyboxVocabs' # this is just added by default in python-cybox
-        return [ns for ns in d.iterkeys()]
+        obs_namespaces = obs._get_namespaces()
+        namespaces = [x.name for x in obs_namespaces]
+        namespaces.append('http://cybox.mitre.org/default_vocabularies-2')
+        return namespaces
     
     def get_namespaces(self, entity):
         all_namespaces = set()
