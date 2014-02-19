@@ -16,17 +16,13 @@ class PackageIntent(VocabString):
 class STIXHeader(stix.Entity):
     _binding = stix_core_binding
     _namespace = 'http://stix.mitre.org/stix-1'
-    
+
     def __init__(self, package_intent=None, description=None, handling=None, information_source=None, title=None):
         self.package_intent = package_intent
         self.title = title
         self.description = description
         self.handling = handling
         self.information_source = information_source
-        
-        if package_intent:
-            for pi in package_intent:
-                self.add_package_intent(pi)
 
     @property
     def description(self):

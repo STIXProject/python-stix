@@ -4247,7 +4247,7 @@ class ControlledVocabularyStringType(GeneratedsSuper):
     def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='ControlledVocabularyStringType'):
         if self.xsi_type is not None and 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
-            outfile.write('  xsi:type=%s' % self.gds_format_string(quote_attrib(self.xsi_type).encode(ExternalEncoding), input_name='xsi:type'))
+            outfile.write(' xsi:type=%s' % self.gds_format_string(quote_attrib(self.xsi_type).encode(ExternalEncoding), input_name='xsi:type'))
         if self.vocab_reference is not None and 'vocab_reference' not in already_processed:
             already_processed.add('vocab_reference')
             outfile.write(' vocab_reference=%s' % (self.gds_format_string(quote_attrib(self.vocab_reference).encode(ExternalEncoding), input_name='vocab_reference'), ))
