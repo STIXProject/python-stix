@@ -20,19 +20,15 @@ class Indicator(stix.Entity):
     _namespace = 'http://stix.mitre.org/Indicator-2'
     _version = "2.1"
 
-    def __init__(self, id_=None, title=None, description=None, indicator_type=None, producer=None, observables=None):
+    def __init__(self, id_=None, title=None, description=None, indicator_types=None, producer=None, observables=None):
         self.id_ = id_ or stix.utils.create_id("indicator")
         self.version = self._version
         self.producer = producer
         self.observables = observables
         self.title = title
         self.description = description
-
-        self.indicator_type = []
-        if indicator_type:
-            for it in indicator_type:
-                self.add_indicator_type(it)
-
+        self.indicator_types = indicator_types
+       
     @property
     def description(self):
         return self._description
@@ -71,24 +67,28 @@ class Indicator(stix.Entity):
                 self.add_observable(value)
 
     @property
-    def indicator_type(self):
-        return self._indicator_type
+    def indicator_types(self):
+        return self._indicator_types
 
-    @indicator_type.setter
-    def indicator_type(self, value):
-        self._indicator_type = []
-        if value and isinstance(value, list):
+    @indicator_types.setter
+    def indicator_types(self, value):
+        self._indicator_types = []
+        if not value:
+            return
+        elif isinstance(value, list):
             for v in value:
                 self.add_indicator_type(v)
         else:
             self.add_indicator_type(value)
 
     def add_indicator_type(self, value):
-        if isinstance(value, IndicatorType):
-            self.indicator_type.append(value)
+        if not value:
+            return
+        elif isinstance(value, IndicatorType):
+            self.indicator_types.append(value)
         else:
             tmp_indicator_type = IndicatorType(value=value)
-            self.indicator_type.append(tmp_indicator_type)
+            self.indicator_types.append(tmp_indicator_type)
 
     def set_producer_identity(self, identity):
         '''
@@ -178,8 +178,8 @@ class Indicator(stix.Entity):
         if self.description:
             return_obj.set_Description(self.description.to_obj())
 
-        if self.indicator_type:
-            for indicator_type in self.indicator_type:
+        if self.indicator_types:
+            for indicator_type in self.indicator_types:
                 tmp_indicator_type = indicator_type.to_obj()
                 return_obj.add_Type(tmp_indicator_type)
 
@@ -251,8 +251,8 @@ class Indicator(stix.Entity):
         if self.description:
             return_dict['description'] = self.description.to_dict()
 
-        if self.indicator_type:
-            return_dict['indicator_type'] = [x.to_dict() for x in self.indicator_type]
+        if self.indicator_types:
+            return_dict['indicator_types'] = [x.to_dict() for x in self.indicator_types]
 
         return return_dict
 
@@ -271,7 +271,7 @@ class Indicator(stix.Entity):
         observable_dict     = dict_repr.get('observable')
         producer_dict       = dict_repr.get('producer')
         description_dict    = dict_repr.get('description')
-        indicator_type_list = dict_repr.get('indicator_type')
+        indicator_type_list = dict_repr.get('indicator_types')
 
         if observable_dict:
             return_obj.add_observable(Observable.from_dict(observable_dict))
