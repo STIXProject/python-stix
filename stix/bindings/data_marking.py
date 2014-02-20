@@ -805,7 +805,7 @@ class MarkingSpecificationType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "SimpleMarkingStructureType":
                     import stix.bindings.extensions.marking.simple_marking as simple_marking_binding
                     obj_ = simple_marking_binding.SimpleMarkingStructureType.factory()
@@ -819,7 +819,7 @@ class MarkingSpecificationType(GeneratedsSuper):
                     raise NotImplementedError('Marking structure type not implemented ' + type_name_)
             else:
                 raise NotImplementedError('Marking structure type not declared: no xsi_type found')
-            
+
             obj_.build(child_)
             self.Marking_Structure.append(obj_)
         elif nodeName_ == 'Information_Source':

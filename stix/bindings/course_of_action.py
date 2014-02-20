@@ -874,7 +874,7 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-                    
+
                 if type_name_ == "GenericStructuredCOAType":
                     import stix.bindings.extensions.structured_coa.generic as generic_coa_binding
                     obj_ = generic_coa_binding.GenericStructuredCOAType.factory()
@@ -882,7 +882,7 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
                     raise NotImplementedError('No implementation class for Structured_COA: ' + type_name_)
             else:
                 raise NotImplementedError('Structured_COA type not declared: missing xsi_type attribute') 
-            
+
             obj_.build(child_)
             self.set_Structured_COA(obj_)
         elif nodeName_ == 'Impact':

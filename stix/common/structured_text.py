@@ -8,7 +8,7 @@ import stix.bindings.stix_common as stix_common_binding
 class StructuredText(stix.Entity):
     _binding = stix_common_binding
     _namespace = 'http://stix.mitre.org/common-1'
-    
+
     def __init__(self, value=None):
         self.value = value
         self.structuring_format = None

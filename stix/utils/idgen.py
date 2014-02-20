@@ -30,10 +30,10 @@ class IDGenerator(object):
     def namespace(self, value):
         if not isinstance(value, dict):
             raise ValueError("Must be a dictionary: ex {'http://example.com' : 'example'}")
-        
+
         if len(value) != 1:
             raise ValueError("Provided dictionary must have at most one entry")
-        
+
         self._namespace = value
 
     @property

@@ -1158,7 +1158,7 @@ class TestMechanismsType(GeneratedsSuper):
             else:
                 raise NotImplementedError(
                     'Class not implemented for <Test_Mechanism> element: no xsi:type attribute found')
-            
+
             obj_.build(child_)
             self.Test_Mechanism.append(obj_)
 # end class TestMechanismsType
@@ -1318,7 +1318,7 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
         self.xmlns          = "http://stix.mitre.org/Indicator-2"
         self.xmlns_prefix   = "indicator"
         self.xml_type       = "IndicatorType"
-        
+
         self.negate = _cast(bool, negate)
         self.version = _cast(None, version)
         self.Title = Title

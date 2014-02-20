@@ -1196,13 +1196,13 @@ class MalwareType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "MAEC4.1InstanceType":
                     import stix.bindings.extensions.malware.maec_4_1 as maec_4_1_binding
                     obj_ = maec_4_1_binding.MAEC4_1InstanceType.factory()
             else:
                 obj_ = MalwareInstanceType.factory() # MalwareInstanceType is not abstract
-            
+
             obj_.build(child_)
             self.Malware_Instance.append(obj_)
 # end class MalwareType
@@ -1276,7 +1276,7 @@ class AttackPatternsType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-                
+
                 if type_name_ == "CAPEC2.7InstanceType":
                     import stix.bindings.extensions.attack_pattern.capec_2_7 as capec_2_7_binding
                     obj_ = capec_2_7_binding.CAPEC2_7InstanceType.factory()
@@ -1284,7 +1284,7 @@ class AttackPatternsType(GeneratedsSuper):
                     raise NotImplementedError('No implementation for type: ' + type_name_)
             else:
                 obj_ = AttackPatternType.factory() # AttackPattern is not abstract
-                
+
             obj_.build(child_)
             self.Attack_Pattern.append(obj_)
 # end class AttackPatternsType
@@ -1438,13 +1438,13 @@ class PersonasType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "CIQIdentity3.0InstanceType":
                     import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
                     obj_ = ciq_identity_binding.CIQIdentity3_0InstanceType.factory()
             else:
                 obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
-            
+
             obj_.build(child_)
             self.set_Identity(obj_)
 # end class PersonasType
@@ -1622,13 +1622,13 @@ class VictimTargetingType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "CIQIdentity3.0InstanceType":
                     import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
                     obj_ = ciq_identity_binding.CIQIdentity3_0InstanceType.factory()
             else:
                 obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
-            
+
             obj_.build(child_)
             self.set_Identity(obj_)
         elif nodeName_ == 'Targeted_Systems':
@@ -1725,7 +1725,7 @@ class TTPType(stix_common_binding.TTPBaseType):
         self.xmlns_prefix   = "ttp"
         self.xml_type       = "TTPType"
         self.version = _cast(None, version)
-        
+
         self.Title = Title
         self.Description = Description
         self.Short_Description = Short_Description

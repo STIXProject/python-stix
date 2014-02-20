@@ -10,20 +10,20 @@ import cybox.utils.nsparser as cybox_nsparser
 class NamespaceParser(object):
     def __init__(self):
         pass
-    
+
     def _get_observable_namespaces(self, obs):
         '''Returns namespaces used within a CybOX Observable'''
         obs_namespaces = obs._get_namespaces()
         namespaces = [x.name for x in obs_namespaces]
         namespaces.append('http://cybox.mitre.org/default_vocabularies-2')
         return namespaces
-    
+
     def get_namespaces(self, entity):
         all_namespaces = set()
-        
+
         if not isinstance(entity, (stix.Entity, cybox.Entity)):
             raise ValueError("Must provide an instance of stix.Entity or cybox.core.Observable")
-        
+
         entity.nsparser_touched = True
         if isinstance(entity, Observable):
             all_namespaces.update(self._get_observable_namespaces(entity))
@@ -32,15 +32,15 @@ class NamespaceParser(object):
                 all_namespaces.update(self.get_namespaces(child))
         elif hasattr(entity, "_namespace"):
             all_namespaces.add(entity._namespace)
-        
+
             for child in self._get_children(entity):
                 if not hasattr(child, "nsparser_touched"):
                     if hasattr(child, "_namespace") or isinstance(child, Observable):
                         all_namespaces.update(self.get_namespaces(child))
-        
+
         del entity.nsparser_touched
         return all_namespaces
-    
+
     def _get_children(self, entity):
         for (name, obj) in inspect.getmembers(entity):
             if isinstance(obj, Observables):
@@ -52,7 +52,7 @@ class NamespaceParser(object):
                 for item in obj:
                     if isinstance(item, stix.Entity) or isinstance(item, Observable):
                         yield item
-    
+
     def get_namespace_schemalocation_dict(self, entity):
         d = {}
         ns_set = self.get_namespaces(entity)
@@ -71,18 +71,18 @@ class NamespaceParser(object):
                         d[ns] = cybox_ns_tup[2]
             else:
                 print "! Cannot map %s to a schemalocation." % (ns)
-                
+
         return d
-    
+
     def _get_xmlns_str(self, ns_dict):
         return "\n\t".join(['xmlns:%s="%s"' % (alias,ns) for ns,alias in sorted(ns_dict.iteritems())])
-    
+
     def _get_schemaloc_str(self, schemaloc_dict):
         schemaloc_str_start = 'xsi:schemaLocation="\n\t'
         schemaloc_str_end = '"'
         schemaloc_str_content = "\n\t".join(["%s %s" % (ns, loc) for ns,loc in sorted(schemaloc_dict.iteritems())])
         return schemaloc_str_start + schemaloc_str_content + schemaloc_str_end
-    
+
     def get_namespace_def_str(self, ns_dict, schemaloc_dict):
         return "\n\t" + self._get_xmlns_str(ns_dict) + "\n\t" + self._get_schemaloc_str(schemaloc_dict)
 

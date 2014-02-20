@@ -1077,13 +1077,13 @@ class InformationSourceType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "CIQIdentity3.0InstanceType":
                     import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
                     obj_ = ciq_identity_binding.CIQIdentity3_0InstanceType.factory()
             else:
                 obj_ = IdentityType.factory() # IdentityType is not abstract
-            
+
             obj_.build(child_)
             self.set_Identity(obj_)
         elif nodeName_ == 'Role':
@@ -1948,7 +1948,7 @@ class RelatedCampaignType(GenericRelationshipType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "CampaignType":
                     import stix.bindings.campaign as campaign_binding
                     obj_ = campaign_binding.CampaignType.factory()
@@ -1956,7 +1956,7 @@ class RelatedCampaignType(GenericRelationshipType):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = CampaignBaseType.factory() # not abstract
-                
+
             obj_.build(child_)
             self.set_Campaign(obj_)
         super(RelatedCampaignType, self).buildChildren(child_, node, nodeName_, True)
@@ -2030,7 +2030,7 @@ class RelatedCourseOfActionType(GenericRelationshipType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "CourseOfActionType":
                     import stix.bindings.course_of_action as coa_binding
                     obj_ = coa_binding.CourseOfActionType.factory()
@@ -2038,7 +2038,7 @@ class RelatedCourseOfActionType(GenericRelationshipType):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = CourseOfActionBaseType.factory() # not abstract
-           
+
             obj_.build(child_)
             self.set_Course_Of_Action(obj_)
         super(RelatedCourseOfActionType, self).buildChildren(child_, node, nodeName_, True)
@@ -2112,7 +2112,7 @@ class RelatedExploitTargetType(GenericRelationshipType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "ExploitTargetType":
                     import stix.bindings.exploit_target as et_binding
                     obj_ = et_binding.ExploitTargetType.factory()
@@ -2120,7 +2120,7 @@ class RelatedExploitTargetType(GenericRelationshipType):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = ExploitTargetBaseType.factory() # not abstract
-            
+
             obj_.build(child_)
             self.set_Exploit_Target(obj_)
         super(RelatedExploitTargetType, self).buildChildren(child_, node, nodeName_, True)
@@ -2194,7 +2194,7 @@ class RelatedIncidentType(GenericRelationshipType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "IncidentType":
                     import stix.bindings.incident as incident_binding
                     obj_ = incident_binding.IncidentType.factory()
@@ -2202,7 +2202,7 @@ class RelatedIncidentType(GenericRelationshipType):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = IncidentBaseType.factory() # not abstract
-            
+
             obj_.build(child_)
             self.set_Incident(obj_)
         super(RelatedIncidentType, self).buildChildren(child_, node, nodeName_, True)
@@ -2276,7 +2276,7 @@ class RelatedIndicatorType(GenericRelationshipType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "IndicatorType":
                     import stix.bindings.indicator as indicator_binding
                     obj_ = indicator_binding.IndicatorType.factory()
@@ -2284,7 +2284,7 @@ class RelatedIndicatorType(GenericRelationshipType):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = IndicatorBaseType.factory() # not abstract
-                
+
             obj_.build(child_)
             self.set_Indicator(obj_)
         super(RelatedIndicatorType, self).buildChildren(child_, node, nodeName_, True)
@@ -2423,7 +2423,7 @@ class RelatedThreatActorType(GenericRelationshipType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "ThreatActorType":
                     import stix.bindings.threat_actor as ta_binding
                     obj_ = ta_binding.ThreatActorType.factory()
@@ -2431,7 +2431,7 @@ class RelatedThreatActorType(GenericRelationshipType):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = ThreatActorBaseType.factory() # not abstract
-            
+
             obj_.build(child_)
             self.set_Threat_Actor(obj_)
         super(RelatedThreatActorType, self).buildChildren(child_, node, nodeName_, True)
@@ -2505,7 +2505,7 @@ class RelatedTTPType(GenericRelationshipType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "TTPType":
                     import stix.bindings.ttp as ttp_binding
                     obj_ = ttp_binding.TTPType.factory()
@@ -2513,7 +2513,7 @@ class RelatedTTPType(GenericRelationshipType):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = TTPBaseType.factory() # not abstract
-            
+
             obj_.build(child_)
             self.set_TTP(obj_)
         super(RelatedTTPType, self).buildChildren(child_, node, nodeName_, True)
@@ -2587,13 +2587,13 @@ class RelatedIdentityType(GenericRelationshipType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "CIQIdentity3.0InstanceType":
                     import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
                     obj_ = ciq_identity_binding.CIQIdentity3_0InstanceType.factory()
             else:
                 obj_ = IdentityType.factory() # IdentityType is not abstract
-            
+
             obj_.build(child_)
             self.set_Identity(obj_)
         super(RelatedIdentityType, self).buildChildren(child_, node, nodeName_, True)
@@ -3589,7 +3589,7 @@ class ExploitTargetsType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "ExploitTargetType":
                     import stix.bindings.exploit_target as exploit_target_binding
                     obj_ = exploit_target_binding.ExploitTargetType.factory()
@@ -3597,10 +3597,10 @@ class ExploitTargetsType(GeneratedsSuper):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = ExploitTargetBaseType.factory() # not abstract
-                
+
             obj_.build(child_)
             self.Exploit_Target.append(obj_)
-            
+
 # end class ExploitTargetsType
 
 
@@ -4156,12 +4156,12 @@ class EncodedCDATAType(GeneratedsSuper):
         self.exportAttributes(outfile, level, already_processed, namespace_, name_='EncodedCDATAType')
         if self.hasContent_():
             outfile.write('>')
-            
+
             if self.valueOf_ and not (self.valueOf_.strip().startswith("<![CDATA[")):
                 value = "<![CDATA[" + self.valueOf_ + "]]>"
             else:
                 value = self.valueOf_
-                
+
             outfile.write(str(value).encode(ExternalEncoding))
             self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))

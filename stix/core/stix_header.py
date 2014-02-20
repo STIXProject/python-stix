@@ -104,7 +104,7 @@ class STIXHeader(stix.Entity):
         return_obj.description = StructuredText.from_obj(obj.get_Description())
         return_obj.handling = Marking.from_obj(obj.get_Handling())
         return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
-        
+
         package_intent_list = obj.get_Package_Intent()
         if package_intent_list:
             for pi in package_intent_list:

@@ -33,7 +33,7 @@ from lxml import etree as etree_
 XMLParser_import_library = XMLParser_import_lxml
 if Verbose_import_:
     print("running with lxml.etree")
-    
+
 def parsexml_(*args, **kwargs):
     if (XMLParser_import_library == XMLParser_import_lxml and
         'parser' not in kwargs):
@@ -1018,7 +1018,7 @@ class IndicatorsType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "IndicatorType":
                     import stix.bindings.indicator as indicator_binding
                     obj_ = indicator_binding.IndicatorType.factory()
@@ -1026,7 +1026,7 @@ class IndicatorsType(GeneratedsSuper):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = stix_common_binding.IndicatorBaseType.factory() # not abstract
-                
+
             obj_.build(child_)
             self.Indicator.append(obj_)
 # end class IndicatorsType
@@ -1106,7 +1106,7 @@ class TTPsType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "TTPType":
                     import stix.bindings.ttp as ttp_binding
                     obj_ = ttp_binding.TTPType.factory()
@@ -1114,7 +1114,7 @@ class TTPsType(GeneratedsSuper):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = stix_common_binding.TTPBaseType.factory() # not abstract
-                
+
             obj_.build(child_)
             self.TTP.append(obj_)
         elif nodeName_ == 'Kill_Chains':
@@ -1192,7 +1192,7 @@ class IncidentsType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "IncidentType":
                     import stix.bindings.incident as incident_binding
                     obj_ = incident_binding.IncidentType.factory()
@@ -1200,7 +1200,7 @@ class IncidentsType(GeneratedsSuper):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = stix_common_binding.IncidentBaseType.factory() # not abstract
-                
+
             obj_.build(child_)
             self.Incident.append(obj_)
 # end class IncidentsType
@@ -1274,7 +1274,7 @@ class CoursesOfActionType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "CourseOfActionType":
                     import stix.bindings.course_of_action as coa_binding
                     obj_ = coa_binding.CourseOfActionType.factory()
@@ -1282,7 +1282,7 @@ class CoursesOfActionType(GeneratedsSuper):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = stix_common_binding.CourseOfActionBaseType.factory() # not abstract
-                
+
             obj_.build(child_)
             self.Course_Of_Action.append(obj_)
 # end class CoursesOfActionType
@@ -1356,7 +1356,7 @@ class CampaignsType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "CampaignType":
                     import stix.bindings.campaign as campaign_binding
                     obj_ = campaign_binding.CampaignType.factory()
@@ -1364,7 +1364,7 @@ class CampaignsType(GeneratedsSuper):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = stix_common_binding.CampaignBaseType.factory() # not abstract
-                
+
             obj_.build(child_)
             self.Campaign.append(obj_)
 # end class CampaignsType
@@ -1438,7 +1438,7 @@ class ThreatActorsType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "ThreatActorType":
                     import stix.bindings.threat_actor as ta_binding
                     obj_ = ta_binding.ThreatActorType.factory()
@@ -1446,7 +1446,7 @@ class ThreatActorsType(GeneratedsSuper):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = stix_common_binding.ThreatActorBaseType.factory() # not abstract
-                
+
             obj_.build(child_)
             self.Threat_Actor.append(obj_)
 # end class ThreatActorsType
@@ -1473,7 +1473,7 @@ def parse(inFileName, nsmap=None):
     if not nsmap:
         import stix.utils.nsparser
         nsmap = stix.utils.nsparser.DEFAULT_STIX_NS_TO_PREFIX
-        
+
     doc = parsexml_(inFileName)
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

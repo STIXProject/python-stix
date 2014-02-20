@@ -543,7 +543,7 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
             already_processed.add('xsi:type')
             xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
             outfile.write(xsi_type)
-    
+
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='CIQAddress3.0InstanceType', fromsubclass_=False, pretty_print=True):
         super(CIQAddress3_0InstanceType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:

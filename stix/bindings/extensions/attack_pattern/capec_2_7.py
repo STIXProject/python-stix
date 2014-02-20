@@ -499,7 +499,7 @@ class CAPEC2_7InstanceType(ttp_binding.AttackPatternType):
         self.xmlns          = "http://stix.mitre.org/extensions/AP#CAPEC2.7-1"
         self.xmlns_prefix   = "capecInstance"
         self.xml_type       = "CAPEC2.7InstanceType"
-        
+
     def factory(*args_, **kwargs_):
         if CAPEC2_7InstanceType.subclass:
             return CAPEC2_7InstanceType.subclass(*args_, **kwargs_)

@@ -10,7 +10,7 @@ import stix.bindings.stix_common as stix_common_binding
 class VocabString(stix.Entity):
     _binding = stix_common_binding
     _namespace = 'http://stix.mitre.org/common-1'
-    
+
     # All subclasses should override this
     _XSI_TYPE = None
 

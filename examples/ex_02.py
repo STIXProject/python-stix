@@ -17,24 +17,24 @@ from cybox.objects.file_object import File
 def main():
     shv = Hash()
     shv.simple_hash_value = "4EC0027BEF4D7E1786A04D021FA8A67F"
-    
+
     f = File()
     h = Hash(shv, Hash.TYPE_MD5)
     f.add_hash(h)
-    
+
     indicator = Indicator()
     indicator.title = "File Hash Example"
     indicator.description = "An indicator containing a File observable with an associated hash"
     indicator.set_producer_identity("The MITRE Corporation")
     indicator.set_produced_time(datetime.now())
     indicator.add_object(f)
-    
+
     stix_package = STIXPackage()
     stix_header = STIXHeader()
     stix_header.description = "Example 02"
     stix_package.stix_header = stix_header
     stix_package.add_indicator(indicator)
-    
+
     print(stix_package.to_xml())
 
 if __name__ == '__main__':

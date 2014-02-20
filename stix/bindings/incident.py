@@ -725,7 +725,7 @@ class AffectedAssetType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-                
+
                 if type_name_ == "CIQAddress3.0InstanceType":
                     import stix.bindings.extensions.address.ciq_address_3_0 as ciq_address_binding
                     obj_ = ciq_address_binding.CIQAddress3_0InstanceType.factory()
@@ -733,7 +733,7 @@ class AffectedAssetType(GeneratedsSuper):
                     raise NotImplementedError('No implementation class found for: ' + type_name_)
             else:
                 raise NotImplementedError('Class not implemented for <Location> element')
-            
+
             obj_.build(child_)
             self.set_Location(obj_)
         elif nodeName_ == 'Nature_Of_Security_Effect':
@@ -1038,7 +1038,7 @@ class COATakenType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "CourseOfActionType":
                     import stix.bindings.course_of_action as coa_binding
                     obj_ = coa_binding.CourseOfActionType.factory()
@@ -1046,7 +1046,7 @@ class COATakenType(GeneratedsSuper):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = stix_common_binding.CourseOfActionBaseType.factory() # not abstract
-           
+
             obj_.build(child_)
             self.set_Course_Of_Action(obj_)
 # end class COATakenType
@@ -2965,7 +2965,7 @@ class IncidentType(stix_common_binding.IncidentBaseType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "CIQIdentity3.0InstanceType":
                     import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
                     obj_ = ciq_identity_binding.CIQIdentity3_0InstanceType.factory()
