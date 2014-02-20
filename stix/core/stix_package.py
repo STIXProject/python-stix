@@ -6,6 +6,7 @@ import stix.utils
 from stix.utils.parser import EntityParser
 from stix_header import STIXHeader
 from stix.indicator import Indicator
+from stix.incident import Incident
 from cybox.core import Observables
 
 import stix.bindings.stix_core as stix_core_binding
@@ -18,15 +19,13 @@ class STIXPackage(stix.Entity):
     _namespace = 'http://stix.mitre.org/stix-1'
     _version = "1.1"
 
-    def __init__(self, id_=None, idref_=None, stix_header=None, indicators=None, observables=None):
-        '''
-        Constructor
-        '''
+    def __init__(self, id_=None, idref_=None, stix_header=None, indicators=None, observables=None, incidents=None):
         self.id_ = id_ or stix.utils.create_id("Package")
         self.idref_ = idref_
         self.version = self._version
         self.indicators = indicators
         self.observables = observables
+        self.incidents = incidents
         self.stix_header = stix_header
 
     @property
@@ -45,12 +44,16 @@ class STIXPackage(stix.Entity):
         return self._indicators
 
     @indicators.setter
-    def indicators(self, valuelist):
-        self._indicators = [] # initialize
+    def indicators(self, value):
+        self._indicators = []
 
-        if valuelist:   
-            for value in valuelist:
-                self.add_indicator(value)
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_indicator(v)
+        else:
+            self.add_indicator(value)
 
     @property
     def observables(self):
@@ -63,11 +66,37 @@ class STIXPackage(stix.Entity):
 
         self._observables = value
 
-    def add_indicator(self, indicator):
-        if indicator and not isinstance(indicator, Indicator):
-            raise ValueError('indicator must be instance of stix.indicator.Indicator')
+    @property
+    def incidents(self):
+        return self._incidents
+    
+    @incidents.setter
+    def incidents(self, value):
+        self._incidents = []
+        
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_incident(v)
+        else:
+            self.add_incident(value)
+    
+    def add_incident(self, incident):
+        if not incident:
+            return
+        elif isinstance(incident, Incident):
+            self.incidents.append(incident)
+        else:
+            raise ValueError('Cannot add %s to incident list' % type(incident))
 
-        self.indicators.append(indicator)
+    def add_indicator(self, indicator):
+        if not indicator:
+            return
+        elif isinstance(indicator, Indicator):
+            self.indicators.append(indicator)
+        else:
+            raise ValueError('indicator must be instance of stix.indicator.Indicator')
 
     def add_observable(self, observable):
         if not self.observables:
@@ -88,16 +117,17 @@ class STIXPackage(stix.Entity):
 
         if self.indicators:
             indicators_obj = stix_core_binding.IndicatorsType()
-
-            for indicator in self.indicators:
-                indicators_obj.add_Indicator(indicator.to_obj())
-
+            indicators_obj.set_Indicator([x.to_obj() for x in self.indicators])
             return_obj.set_Indicators(indicators_obj)
 
         if self.observables:
-            observables_obj = self.observables.to_obj()
-            return_obj.set_Observables(observables_obj)
+            return_obj.set_Observables(self.observables.to_obj())
 
+        if self.incidents:
+            incidents_obj = stix_core_binding.IncidentsType()
+            incidents_obj.set_Incident([x.to_obj() for x in self.incidents])
+            return_obj.set_Incidents(incidents_obj)
+            
         return return_obj
 
     def to_dict(self, return_dict=None):
@@ -106,22 +136,18 @@ class STIXPackage(stix.Entity):
 
         if self.id_:
             return_dict['id'] = self.id_
-
         if self.version:    
             return_dict['version'] = self.version
-
         if self.idref_:
             return_dict['idref'] = self.idref_
-
         if self.stix_header:
             return_dict['stix_header'] = self.stix_header.to_dict()
-
         if self.indicators:
-            for indicator in self.indicators:
-                return_dict.setdefault('indicators', []).append(indicator.to_dict())
-
+            return_dict['indicators'] = [x.to_dict() for x in self.indicators]
         if self.observables:
             return_dict['observables'] = self.observables.to_dict()
+        if self.incidents:
+            return_dict['incidents'] = [x.to_dict() for x in self.incidents]
 
         return return_dict
 
@@ -136,17 +162,13 @@ class STIXPackage(stix.Entity):
 
         if obj.get_version():
             return_obj.version = obj.get_version()
-
         if obj.get_Indicators():
-            indicators_obj = obj.get_Indicators()
-            if indicators_obj.get_Indicator():
-                for indicator_obj in indicators_obj.get_Indicator():
-                    return_obj.add_indicator(Indicator.from_obj(indicator_obj))
-
+            return_obj.indicators = [Indicator.from_obj(x) for x in obj.get_Indicators().get_Indicator()]
         if obj.get_Observables():
-            observables_obj = obj.get_Observables()
-            return_obj.observables = Observables.from_obj(observables_obj)
-
+            return_obj.observables = Observables.from_obj(obj.get_Observables())
+        if obj.get_Incidents():
+            return_obj.incidents = [Incident.from_obj(x) for x in obj.get_Incidents().get_Incident()]
+        
         return return_obj
 
     @classmethod
@@ -159,13 +181,9 @@ class STIXPackage(stix.Entity):
         return_obj.version = dict_repr.get('version', cls._version)
         header_dict = dict_repr.get('stix_header', None)
         return_obj.stix_header = STIXHeader.from_dict(header_dict)
-
-        indicators = dict_repr.get('indicators', [])
-        for indicator_dict in indicators:
-            return_obj.add_indicator(Indicator.from_dict(indicator_dict))
-
-        observables_dict = dict_repr.get('observables')
-        return_obj.observables = Observables.from_dict(observables_dict)
+        return_obj.indicators = [Indicator.from_dict(x) for x in dict_repr.get('indicators', [])]
+        return_obj.observables = Observables.from_dict(dict_repr.get('observables'))
+        return_obj.incidents = [Incident.from_dict(x) for x in dict_repr.get('incidents', [])]
 
         return return_obj
 
