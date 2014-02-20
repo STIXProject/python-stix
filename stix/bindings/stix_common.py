@@ -16,6 +16,7 @@ import cybox.bindings.cybox_common as cybox_common_binding
 import cybox.bindings.cybox_core as cybox_core_binding
 import base64
 from datetime import datetime, tzinfo, timedelta
+from cybox.bindings import cybox_common
 
 XML_NS = "http://stix.mitre.org/common-1"
 
@@ -131,6 +132,8 @@ except ImportError, exp:
         def gds_validate_datetime(self, input_data, node, input_name=''):
             return input_data
         def gds_format_datetime(self, input_data, input_name=''):
+            if isinstance(input_data, basestring):
+                return input_data
             if input_data.microsecond == 0:
                 _svalue = input_data.strftime('%Y-%m-%dT%H:%M:%S')
             else:
@@ -488,13 +491,494 @@ def _cast(typ, value):
 # Data representation classes.
 #
 
+class GenericRelationshipType(GeneratedsSuper):
+    """Allows the expression of relationships between STIX components. It
+    is extended by each component relationship type to add the
+    component itself."""
+    subclass = None
+    superclass = None
+    def __init__(self, Confidence=None, Information_Source=None, Relationship=None, extensiontype_=None):
+        self.Confidence = Confidence
+        self.Information_Source = Information_Source
+        self.Relationship = Relationship
+        self.extensiontype_ = extensiontype_
+    def factory(*args_, **kwargs_):
+        if GenericRelationshipType.subclass:
+            return GenericRelationshipType.subclass(*args_, **kwargs_)
+        else:
+            return GenericRelationshipType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_Confidence(self): return self.Confidence
+    def set_Confidence(self, Confidence): self.Confidence = Confidence
+    def get_Information_Source(self): return self.Information_Source
+    def set_Information_Source(self, Information_Source): self.Information_Source = Information_Source
+    def get_Relationship(self): return self.Relationship
+    def set_Relationship(self, Relationship): self.Relationship = Relationship
+    def get_extensiontype_(self): return self.extensiontype_
+    def set_extensiontype_(self, extensiontype_): self.extensiontype_ = extensiontype_
+    def hasContent_(self):
+        if (
+            self.Confidence is not None or
+            self.Information_Source is not None or
+            self.Relationship is not None
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='GenericRelationshipType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='GenericRelationshipType')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='GenericRelationshipType'):
+        if self.extensiontype_ is not None and 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            outfile.write('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')
+            outfile.write('  xsi:type="%s"' % self.extensiontype_)
+        pass
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='GenericRelationshipType', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.Confidence is not None:
+            self.Confidence.export(outfile, level, nsmap, namespace_, name_='Confidence', pretty_print=pretty_print)
+        if self.Information_Source is not None:
+            self.Information_Source.export(outfile, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
+        if self.Relationship is not None:
+            self.Relationship.export(outfile, level, nsmap, namespace_, name_='Relationship', pretty_print=pretty_print)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        value = find_attr_value_('xsi:type', node)
+        if value is not None and 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            self.extensiontype_ = value
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'Confidence':
+            obj_ = ConfidenceType.factory()
+            obj_.build(child_)
+            self.set_Confidence(obj_)
+        elif nodeName_ == 'Information_Source':
+            obj_ = InformationSourceType.factory()
+            obj_.build(child_)
+            self.set_Information_Source(obj_)
+        elif nodeName_ == 'Relationship':
+            obj_ = ControlledVocabularyStringType.factory()
+            obj_.build(child_)
+            self.set_Relationship(obj_)
+# end class GenericRelationshipType
+
+
+class DateTimeWithPrecisionType(GeneratedsSuper):
+    """This type is used as a replacement for the standard xs:dateTime type
+    but allows for the representation of the precision of the
+    dateTime. If the precision is given, consumers must ignore the
+    portions of this field that is more precise than the given
+    precision. Producers should zero-out (fill with zeros) digits in
+    the dateTime that are required by the xs:dateTime datatype but
+    are beyond the specified precision.In order to avoid ambiguity,
+    it is strongly suggested that all dateTimes include a
+    specification of the timezone if it is known.The precision of
+    the associated dateTime. If omitted, the default is "second",
+    meaning the full field value (including fractional seconds)."""
+    subclass = None
+    superclass = None
+    def __init__(self, precision='second', valueOf_=None):
+        self.precision = _cast(None, precision)
+        self.valueOf_ = valueOf_
+    def factory(*args_, **kwargs_):
+        if DateTimeWithPrecisionType.subclass:
+            return DateTimeWithPrecisionType.subclass(*args_, **kwargs_)
+        else:
+            return DateTimeWithPrecisionType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_precision(self): return self.precision
+    def set_precision(self, precision): self.precision = precision
+    def get_valueOf_(self): return self.valueOf_
+    def set_valueOf_(self, valueOf_): self.valueOf_ = valueOf_
+    def hasContent_(self):
+        if (
+            self.valueOf_
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='DateTimeWithPrecisionType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='DateTimeWithPrecisionType')
+        if self.hasContent_():
+            outfile.write('>')
+            outfile.write(str(self.valueOf_).encode(ExternalEncoding))
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='DateTimeWithPrecisionType'):
+        if self.precision is not None and 'precision' not in already_processed:
+            already_processed.add('precision')
+            outfile.write(' precision=%s' % (quote_attrib(self.precision), ))
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='DateTimeWithPrecisionType', fromsubclass_=False, pretty_print=True):
+        pass
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        self.valueOf_ = get_all_text_(node)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        value = find_attr_value_('precision', node)
+        if value is not None and 'precision' not in already_processed:
+            already_processed.add('precision')
+            self.precision = value
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        pass
+# end class DateTimeWithPrecisionType
+
+class ProfilesType(GeneratedsSuper):
+    """The ProfilesType represents a list of STIX Profiles"""
+    subclass = None
+    superclass = None
+    def __init__(self, Profile=None):
+        if Profile is None:
+            self.Profile = []
+        else:
+            self.Profile = Profile
+    def factory(*args_, **kwargs_):
+        if ProfilesType.subclass:
+            return ProfilesType.subclass(*args_, **kwargs_)
+        else:
+            return ProfilesType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_Profile(self): return self.Profile
+    def set_Profile(self, Profile): self.Profile = Profile
+    def add_Profile(self, value): self.Profile.append(value)
+    def insert_Profile(self, index, value): self.Profile[index] = value
+    def hasContent_(self):
+        if (
+            self.Profile
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='ProfilesType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='ProfilesType')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='ProfilesType'):
+        pass
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ProfilesType', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for Profile_ in self.Profile:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%s:Profile>%s</%s:Profile>%s' % (nsmap[namespace_],self.gds_format_string(quote_xml(Profile_).encode(ExternalEncoding), input_name='Profile'), nsmap[namespace_], eol_))
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'Profile':
+            Profile_ = child_.text
+            Profile_ = self.gds_validate_string(Profile_, node, 'Profile')
+            self.Profile.append(Profile_)
+# end class ProfilesType
+
+
+class RelatedPackageRefType(GenericRelationshipType):
+    """Identifies or characterizes a relationship to a Package.Specifies a
+    globally unique identifier of a STIX Package specified
+    elsewhere.In conjunction with the idref, this field may be used
+    to reference a specific version of a STIX Package defined
+    elsewhere. The referenced version timestamp is contained in the
+    STIX_Header/Information_Source/Time/Produced_Time field of the
+    related package and must be an exact match.This field must only
+    be used in conjunction with the idref field."""
+    subclass = None
+    superclass = GenericRelationshipType
+    def __init__(self, Confidence=None, Information_Source=None, Relationship=None, idref=None, timestamp=None):
+        super(RelatedPackageRefType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
+        self.idref = _cast(None, idref)
+        self.timestamp = _cast(None, timestamp)
+        pass
+    def factory(*args_, **kwargs_):
+        if RelatedPackageRefType.subclass:
+            return RelatedPackageRefType.subclass(*args_, **kwargs_)
+        else:
+            return RelatedPackageRefType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_idref(self): return self.idref
+    def set_idref(self, idref): self.idref = idref
+    def get_timestamp(self): return self.timestamp
+    def set_timestamp(self, timestamp): self.timestamp = timestamp
+    def hasContent_(self):
+        if (
+            super(RelatedPackageRefType, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedPackageRefType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedPackageRefType')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='RelatedPackageRefType'):
+        super(RelatedPackageRefType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedPackageRefType')
+        if self.idref is not None and 'idref' not in already_processed:
+            already_processed.add('idref')
+            outfile.write(' idref=%s' % (quote_attrib(self.idref), ))
+        if self.timestamp is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            outfile.write(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedPackageRefType', fromsubclass_=False, pretty_print=True):
+        super(RelatedPackageRefType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        value = find_attr_value_('idref', node)
+        if value is not None and 'idref' not in already_processed:
+            already_processed.add('idref')
+            self.idref = value
+        value = find_attr_value_('timestamp', node)
+        if value is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            try:
+                self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
+            except ValueError, exp:
+                raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
+        super(RelatedPackageRefType, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        super(RelatedPackageRefType, self).buildChildren(child_, node, nodeName_, True)
+        pass
+# end class RelatedPackageRefType
+
+
+class RelatedPackageRefsType(GeneratedsSuper):
+    """Identifies or characterizes relationships to set of related
+    Packages."""
+    subclass = None
+    superclass = None
+    def __init__(self, Package_Reference=None):
+        if Package_Reference is None:
+            self.Package_Reference = []
+        else:
+            self.Package_Reference = Package_Reference
+    def factory(*args_, **kwargs_):
+        if RelatedPackageRefsType.subclass:
+            return RelatedPackageRefsType.subclass(*args_, **kwargs_)
+        else:
+            return RelatedPackageRefsType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_Package_Reference(self): return self.Package_Reference
+    def set_Package_Reference(self, Package_Reference): self.Package_Reference = Package_Reference
+    def add_Package_Reference(self, value): self.Package_Reference.append(value)
+    def insert_Package_Reference(self, index, value): self.Package_Reference[index] = value
+    def hasContent_(self):
+        if (
+            self.Package_Reference
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedPackageRefsType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedPackageRefsType')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='RelatedPackageRefsType'):
+        pass
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedPackageRefsType', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for Package_Reference_ in self.Package_Reference:
+            Package_Reference_.export(outfile, level, nsmap, namespace_, name_='Package_Reference', pretty_print=pretty_print)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'Package_Reference':
+            obj_ = RelatedPackageRefType.factory()
+            obj_.build(child_)
+            self.Package_Reference.append(obj_)
+# end class RelatedPackageRefsType
+
+class ToolInformationType(cybox_common_binding.ToolInformationType):
+    """The ToolInformationType is intended to characterize the properties
+    of a hardware or software tool, including those related to
+    instances of its use.The id field specifies a unique ID for this
+    Tool.The idref field specifies reference to a unique ID for this
+    Tool.When idref is specified, the id attribute must not be
+    specified, and any instance of this type should not hold content
+    unless an extension of the type allows it."""
+    subclass = None
+    superclass = None
+    def __init__(self, idref=None, id=None, Name=None, Type=None, Description=None, References=None, Vendor=None, Version=None, Service_Pack=None, Tool_Specific_Data=None, Tool_Hashes=None, Tool_Configuration=None, Execution_Environment=None, Errors=None, Metadata=None, Compensation_Model=None, Title=None, Short_Description=None, extensiontype_=None):
+        super(ToolInformationType, self).__init__(idref=idref, id=id, Name=Name, Type=Type, Description=Description, References=References, Vendor=Vendor, Version=Version, Service_Pack=Service_Pack, Tool_Specific_Data=Tool_Specific_Data, Execution_Environment=Execution_Environment, Errors=Errors, Metadata=Metadata, Compensation_Model=Compensation_Model)
+        self.Title = Title
+        self.Short_Description = Short_Description
+        self.extensiontype_ = extensiontype_
+    def factory(*args_, **kwargs_):
+        if ToolInformationType.subclass:
+            return ToolInformationType.subclass(*args_, **kwargs_)
+        else:
+            return ToolInformationType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_Title(self): return self.Title
+    def set_Title(self, Title): self.Title = Title
+    def get_Short_Description(self): return self.Short_Description
+    def set_ShortDescription(self, Short_Description): self.Short_Description = Short_Description
+    def hasContent_(self):
+        if (
+            super(ToolInformationType, self).hasContent() or
+            self.Title is not None or
+            self.Short_Description is not None
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='ToolInformationType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='ToolInformationType')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='ToolInformationType'):
+        super(ToolInformationType, self).exportAttributes(outfile, level, already_processed, namespace="cyboxCommon:", name_=name_)
+        if self.extensiontype_ is not None and 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            outfile.write(' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')
+            outfile.write(' xsi:type="%s"' % self.extensiontype_)
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ToolInformationType', fromsubclass_=False, pretty_print=True):
+        super(ToolInformationType, self).exportChildren(outfile, level, namespace_="cyboxCommon:", name_=name_, fromsubclass_=True, pretty_print=pretty_print) # exporting cyboxCommon-defined children
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.Title:
+            showIndent(outfile, level, pretty_print)
+            outfile.write('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_],self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
+        if self.Short_Description is not None:
+            self.Short_Description.export(outfile, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(ToolInformationType, self).buildAttributes(node, attrs, already_processed)
+        value = find_attr_value_('xsi:type', node)
+        if value is not None and 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            self.extensiontype_ = value
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        super(ToolInformationType, self).buildChildren(child_, node, nodeName_, fromsubclass_=True)
+        if nodeName_ == 'Title':
+            Title_ = child_.text
+            Title_ = self.gds_validate_string(Title_, node, 'Title')
+            self.Title = Title_
+        elif nodeName_ == 'Short_Description':
+            obj_ = StructuredTextType.factory()
+            obj_.build(child_)
+            self.set_Short_Description(obj_)
+# end class ToolInformationType
+
 class InformationSourceType(GeneratedsSuper):
     """The InformationSourceType details the source of a given data entry."""
     subclass = None
     superclass = None
-    def __init__(self, Identity=None, Contributors=None, Time=None, Tools=None, References=None):
+    def __init__(self, Description=None, Identity=None, Role=None, Contributing_Sources=None, Time=None, Tools=None, References=None):
+        self.Description = Description
         self.Identity = Identity
-        self.Contributors = Contributors
+        if Role is None:
+            self.Role = []
+        else:
+            self.Role = Role
+        self.Contributing_Sources = Contributing_Sources
         self.Time = Time
         self.Tools = Tools
         self.References = References
@@ -504,10 +988,16 @@ class InformationSourceType(GeneratedsSuper):
         else:
             return InformationSourceType(*args_, **kwargs_)
     factory = staticmethod(factory)
+    def get_Description(self): return self.Description
+    def set_Description(self, Description): self.Description = Description
     def get_Identity(self): return self.Identity
     def set_Identity(self, Identity): self.Identity = Identity
-    def get_Contributors(self): return self.Contributors
-    def set_Contributors(self, Contributors): self.Contributors = Contributors
+    def get_Role(self): return self.Role
+    def set_Role(self, Role): self.Role = Role
+    def add_Role(self, value): self.Role.append(value)
+    def insert_Role(self, index, value): self.Role[index] = value
+    def get_Contributing_Sources(self): return self.Contributing_Sources
+    def set_Contributing_Sources(self, Contributing_Sources): self.Contributing_Sources = Contributing_Sources
     def get_Time(self): return self.Time
     def set_Time(self, Time): self.Time = Time
     def get_Tools(self): return self.Tools
@@ -516,8 +1006,10 @@ class InformationSourceType(GeneratedsSuper):
     def set_References(self, References): self.References = References
     def hasContent_(self):
         if (
+            self.Description is not None or
             self.Identity is not None or
-            self.Contributors is not None or
+            self.Role or
+            self.Contributing_Sources is not None or
             self.Time is not None or
             self.Tools is not None or
             self.References is not None
@@ -548,45 +1040,20 @@ class InformationSourceType(GeneratedsSuper):
             eol_ = '\n'
         else:
             eol_ = ''
+        if self.Description is not None:
+            self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Identity is not None:
             self.Identity.export(outfile, level, nsmap, namespace_, name_='Identity', pretty_print=pretty_print)
-        if self.Contributors is not None:
-            self.Contributors.export(outfile, level, nsmap, namespace_, name_='Contributors', pretty_print=pretty_print)
+        for Role_ in self.Role:
+            Role_.export(outfile, level, nsmap, namespace_, name_='Role', pretty_print=pretty_print)
+        if self.Contributing_Sources is not None:
+            self.Contributing_Sources.export(outfile, level, nsmap, namespace_, name_='Contributing_Sources', pretty_print=pretty_print)
         if self.Time is not None:
             self.Time.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Time', pretty_print=pretty_print)
         if self.Tools is not None:
             self.Tools.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Tools', pretty_print=pretty_print)
         if self.References is not None:
             self.References.export(outfile, level, nsmap, namespace_, name_='References', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='InformationSourceType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Identity is not None:
-            outfile.write('Identity=model_.IdentityType(\n')
-            self.Identity.exportLiteral(outfile, level, name_='Identity')
-            outfile.write('),\n')
-        if self.Contributors is not None:
-            outfile.write('Contributors=model_.ContributorsType(\n')
-            self.Contributors.exportLiteral(outfile, level, name_='Contributors')
-            outfile.write('),\n')
-        if self.Time is not None:
-            outfile.write('Time=model_.cybox_common_binding.TimeType(\n')
-            self.Time.exportLiteral(outfile, level, name_='Time')
-            outfile.write('),\n')
-        if self.Tools is not None:
-            outfile.write('Tools=model_.cybox_common_binding.ToolsInformationType(\n')
-            self.Tools.exportLiteral(outfile, level, name_='Tools')
-            outfile.write('),\n')
-        if self.References is not None:
-            outfile.write('References=model_.ReferencesType(\n')
-            self.References.exportLiteral(outfile, level, name_='References')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -596,7 +1063,11 @@ class InformationSourceType(GeneratedsSuper):
     def buildAttributes(self, node, attrs, already_processed):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'Identity':
+        if nodeName_ == 'Description':
+            obj_ = StructuredTextType.factory()
+            obj_.build(child_)
+            self.set_Description(obj_)
+        elif nodeName_ == 'Identity':
             type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
             if type_name_ is None:
                 type_name_ = child_.attrib.get('type')
@@ -606,20 +1077,23 @@ class InformationSourceType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "CIQIdentity3.0InstanceType":
                     import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
                     obj_ = ciq_identity_binding.CIQIdentity3_0InstanceType.factory()
             else:
                 obj_ = IdentityType.factory() # IdentityType is not abstract
-            
+
             obj_.build(child_)
             self.set_Identity(obj_)
-                
-        elif nodeName_ == 'Contributors':
-            obj_ = ContributorsType.factory()
+        elif nodeName_ == 'Role':
+            obj_ = ControlledVocabularyStringType.factory()
             obj_.build(child_)
-            self.set_Contributors(obj_)
+            self.Role.append(obj_)
+        elif nodeName_ == 'Contributing_Sources':
+            obj_ = ContributingSourcesType.factory()
+            obj_.build(child_)
+            self.set_Contributing_Sources(obj_)
         elif nodeName_ == 'Time':
             obj_ = cybox_common_binding.TimeType.factory()
             obj_.build(child_)
@@ -639,8 +1113,9 @@ class ConfidenceType(GeneratedsSuper):
     assertion.Specifies the time of this Confidence assertion."""
     subclass = None
     superclass = None
-    def __init__(self, timestamp=None, Value=None, Description=None, Source=None, Confidence_Assertion_Chain=None):
+    def __init__(self, timestamp=None, timestamp_precision='second', Value=None, Description=None, Source=None, Confidence_Assertion_Chain=None):
         self.timestamp = _cast(None, timestamp)
+        self.timestamp_precision = _cast(None, timestamp_precision)
         self.Value = Value
         self.Description = Description
         self.Source = Source
@@ -661,6 +1136,8 @@ class ConfidenceType(GeneratedsSuper):
     def set_Confidence_Assertion_Chain(self, Confidence_Assertion_Chain): self.Confidence_Assertion_Chain = Confidence_Assertion_Chain
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
+    def get_timestamp_precision(self): return self.timestamp_precision
+    def set_timestamp_precision(self, timestamp_precision): self.timestamp_precision = timestamp_precision
     def hasContent_(self):
         if (
             self.Value is not None or
@@ -691,6 +1168,9 @@ class ConfidenceType(GeneratedsSuper):
         if self.timestamp is not None and 'timestamp' not in already_processed:
             already_processed.add('timestamp')
             outfile.write(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
+        if self.timestamp_precision is not None and 'timestamp_precision' not in already_processed:
+            already_processed.add('timestamp_precision')
+            outfile.write(' timestamp_precision=%s' % (quote_attrib(self.timestamp_precision), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ConfidenceType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
@@ -704,34 +1184,6 @@ class ConfidenceType(GeneratedsSuper):
             self.Source.export(outfile, level, nsmap, namespace_, name_='Source', pretty_print=pretty_print)
         if self.Confidence_Assertion_Chain is not None:
             self.Confidence_Assertion_Chain.export(outfile, level, nsmap, namespace_, name_='Confidence_Assertion_Chain', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='ConfidenceType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.timestamp is not None and 'timestamp' not in already_processed:
-            already_processed.add('timestamp')
-            showIndent(outfile, level)
-            outfile.write('timestamp = "%s",\n' % (self.timestamp,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Value is not None:
-            outfile.write('Value=model_.ControlledVocabularyStringType(\n')
-            self.Value.exportLiteral(outfile, level, name_='Value')
-            outfile.write('),\n')
-        if self.Description is not None:
-            outfile.write('Description=model_.StructuredTextType(\n')
-            self.Description.exportLiteral(outfile, level, name_='Description')
-            outfile.write('),\n')
-        if self.Source is not None:
-            outfile.write('Source=model_.ControlledVocabularyStringType(\n')
-            self.Source.exportLiteral(outfile, level, name_='Source')
-            outfile.write('),\n')
-        if self.Confidence_Assertion_Chain is not None:
-            outfile.write('Confidence_Assertion_Chain=model_.ConfidenceAssertionChainType(\n')
-            self.Confidence_Assertion_Chain.exportLiteral(outfile, level, name_='Confidence_Assertion_Chain')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -746,6 +1198,9 @@ class ConfidenceType(GeneratedsSuper):
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
             except ValueError, exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
+        if value is not None and 'timestamp_precision' not in already_processed:
+            already_processed.add('timestamp_precision')
+            self.timestamp_precision = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Value':
             obj_ = ControlledVocabularyStringType.factory()
@@ -813,26 +1268,9 @@ class ActivityType(GeneratedsSuper):
         else:
             eol_ = ''
         if self.Date_Time is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Date_Time>%s</%s:Date_Time>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Date_Time).encode(ExternalEncoding), input_name='Date_Time'), nsmap[namespace_], eol_))
+            self.Date_Time.export(outfile, level, nsmap, namespace_, name_='Date_Time', pretty_print=pretty_print)
         if self.Description is not None:
             self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='ActivityType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Date_Time is not None:
-            showIndent(outfile, level)
-            outfile.write('Date_Time=%s,\n' % quote_python(self.Date_Time).encode(ExternalEncoding))
-        if self.Description is not None:
-            outfile.write('Description=model_.StructuredTextType(\n')
-            self.Description.exportLiteral(outfile, level, name_='Description')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -843,9 +1281,9 @@ class ActivityType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Date_Time':
-            Date_Time_ = child_.text
-            Date_Time_ = self.gds_validate_string(Date_Time_, node, 'Date_Time')
-            self.Date_Time = Date_Time_
+            obj_ = DateTimeWithPrecisionType.factory()
+            obj_.build(child_)
+            self.set_Date_Time(obj_)
         elif nodeName_ == 'Description':
             obj_ = StructuredTextType.factory()
             obj_.build(child_)
@@ -902,26 +1340,6 @@ class KillChainsType(GeneratedsSuper):
             eol_ = ''
         for Kill_Chain_ in self.Kill_Chain:
             Kill_Chain_.export(outfile, level, nsmap, namespace_, name_='Kill_Chain', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='KillChainsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Kill_Chain=[\n')
-        level += 1
-        for Kill_Chain_ in self.Kill_Chain:
-            outfile.write('model_.KillChainType(\n')
-            Kill_Chain_.exportLiteral(outfile, level, name_='KillChainType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1023,45 +1441,6 @@ class KillChainType(GeneratedsSuper):
             eol_ = ''
         for Kill_Chain_Phase_ in self.Kill_Chain_Phase:
             Kill_Chain_Phase_.export(outfile, level, nsmap, namespace_, name_='Kill_Chain_Phase', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='KillChainType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.reference is not None and 'reference' not in already_processed:
-            already_processed.add('reference')
-            showIndent(outfile, level)
-            outfile.write('reference = "%s",\n' % (self.reference,))
-        if self.number_of_phases is not None and 'number_of_phases' not in already_processed:
-            already_processed.add('number_of_phases')
-            showIndent(outfile, level)
-            outfile.write('number_of_phases = "%s",\n' % (self.number_of_phases,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-        if self.definer is not None and 'definer' not in already_processed:
-            already_processed.add('definer')
-            showIndent(outfile, level)
-            outfile.write('definer = "%s",\n' % (self.definer,))
-        if self.name is not None and 'name' not in already_processed:
-            already_processed.add('name')
-            showIndent(outfile, level)
-            outfile.write('name = "%s",\n' % (self.name,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Kill_Chain_Phase=[\n')
-        level += 1
-        for Kill_Chain_Phase_ in self.Kill_Chain_Phase:
-            outfile.write('model_.KillChainPhaseType(\n')
-            Kill_Chain_Phase_.exportLiteral(outfile, level, name_='KillChainPhaseType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1162,27 +1541,6 @@ class KillChainPhaseType(GeneratedsSuper):
             outfile.write('  xsi:type="%s"' % self.extensiontype_)
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='KillChainPhaseType', fromsubclass_=False, pretty_print=True):
         pass
-    def exportLiteral(self, outfile, level, name_='KillChainPhaseType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.ordinality is not None and 'ordinality' not in already_processed:
-            already_processed.add('ordinality')
-            showIndent(outfile, level)
-            outfile.write('ordinality = %d,\n' % (self.ordinality,))
-        if self.name is not None and 'name' not in already_processed:
-            already_processed.add('name')
-            showIndent(outfile, level)
-            outfile.write('name = "%s",\n' % (self.name,))
-        if self.phase_id is not None and 'phase_id' not in already_processed:
-            already_processed.add('phase_id')
-            showIndent(outfile, level)
-            outfile.write('phase_id = %s,\n' % (self.phase_id,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        pass
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1263,26 +1621,6 @@ class KillChainPhasesReferenceType(GeneratedsSuper):
             eol_ = ''
         for Kill_Chain_Phase_ in self.Kill_Chain_Phase:
             Kill_Chain_Phase_.export(outfile, level, nsmap, namespace_, name_='Kill_Chain_Phase', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='KillChainPhasesReferenceType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Kill_Chain_Phase=[\n')
-        level += 1
-        for Kill_Chain_Phase_ in self.Kill_Chain_Phase:
-            outfile.write('model_.KillChainPhaseReferenceType(\n')
-            Kill_Chain_Phase_.exportLiteral(outfile, level, name_='KillChainPhaseReferenceType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1304,7 +1642,7 @@ class KillChainPhaseReferenceType(KillChainPhaseType):
     subclass = None
     superclass = KillChainPhaseType
     def __init__(self, ordinality=None, name=None, phase_id=None, kill_chain_name=None, kill_chain_id=None):
-        super(KillChainPhaseReferenceType, self).__init__(ordinality, name, phase_id, )
+        super(KillChainPhaseReferenceType, self).__init__(ordinality=ordinality, name=name, phase_id=phase_id)
         self.kill_chain_name = _cast(None, kill_chain_name)
         self.kill_chain_id = _cast(None, kill_chain_id)
         pass
@@ -1350,25 +1688,6 @@ class KillChainPhaseReferenceType(KillChainPhaseType):
             outfile.write(' kill_chain_id=%s' % (quote_attrib(self.kill_chain_id), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='KillChainPhaseReferenceType', fromsubclass_=False, pretty_print=True):
         super(KillChainPhaseReferenceType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
-        pass
-    def exportLiteral(self, outfile, level, name_='KillChainPhaseReferenceType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.kill_chain_name is not None and 'kill_chain_name' not in already_processed:
-            already_processed.add('kill_chain_name')
-            showIndent(outfile, level)
-            outfile.write('kill_chain_name = "%s",\n' % (self.kill_chain_name,))
-        if self.kill_chain_id is not None and 'kill_chain_id' not in already_processed:
-            already_processed.add('kill_chain_id')
-            showIndent(outfile, level)
-            outfile.write('kill_chain_id = %s,\n' % (self.kill_chain_id,))
-        super(KillChainPhaseReferenceType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(KillChainPhaseReferenceType, self).exportLiteralChildren(outfile, level, name_)
         pass
     def build(self, node):
         already_processed = set()
@@ -1466,29 +1785,6 @@ class IdentityType(GeneratedsSuper):
             outfile.write('<%s:Name>%s</%s:Name>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Name).encode(ExternalEncoding), input_name='Name'), nsmap[namespace_], eol_))
         if self.Related_Identities is not None:
             self.Related_Identities.export(outfile, level, nsmap, namespace_, name_='Related_Identities', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='IdentityType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Name is not None:
-            showIndent(outfile, level)
-            outfile.write('Name=%s,\n' % quote_python(self.Name).encode(ExternalEncoding))
-        if self.Related_Identities is not None:
-            outfile.write('Related_Identities=model_.RelatedIdentitiesType(\n')
-            self.Related_Identities.exportLiteral(outfile, level, name_='Related_Identities')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1568,19 +1864,6 @@ class GenericRelationshipListType(GeneratedsSuper):
             outfile.write(' scope=%s' % (quote_attrib(self.scope), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='GenericRelationshipListType', fromsubclass_=False, pretty_print=True):
         pass
-    def exportLiteral(self, outfile, level, name_='GenericRelationshipListType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.scope is not None and 'scope' not in already_processed:
-            already_processed.add('scope')
-            showIndent(outfile, level)
-            outfile.write('scope = %s,\n' % (self.scope,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        pass
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1596,126 +1879,13 @@ class GenericRelationshipListType(GeneratedsSuper):
         pass
 # end class GenericRelationshipListType
 
-class GenericRelationshipType(GeneratedsSuper):
-    """Allows the expression of relationships between STIX components. It
-    is extended by each component relationship type to add the
-    component itself."""
-    subclass = None
-    superclass = None
-    def __init__(self, Confidence=None, Information_Source=None, Relationship=None, extensiontype_=None):
-        self.Confidence = Confidence
-        self.Information_Source = Information_Source
-        self.Relationship = Relationship
-        self.extensiontype_ = extensiontype_
-    def factory(*args_, **kwargs_):
-        if GenericRelationshipType.subclass:
-            return GenericRelationshipType.subclass(*args_, **kwargs_)
-        else:
-            return GenericRelationshipType(*args_, **kwargs_)
-    factory = staticmethod(factory)
-    def get_Confidence(self): return self.Confidence
-    def set_Confidence(self, Confidence): self.Confidence = Confidence
-    def get_Information_Source(self): return self.Information_Source
-    def set_Information_Source(self, Information_Source): self.Information_Source = Information_Source
-    def get_Relationship(self): return self.Relationship
-    def set_Relationship(self, Relationship): self.Relationship = Relationship
-    def get_extensiontype_(self): return self.extensiontype_
-    def set_extensiontype_(self, extensiontype_): self.extensiontype_ = extensiontype_
-    def hasContent_(self):
-        if (
-            self.Confidence is not None or
-            self.Information_Source is not None or
-            self.Relationship is not None
-            ):
-            return True
-        else:
-            return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='GenericRelationshipType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
-        already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='GenericRelationshipType')
-        if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
-        else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='GenericRelationshipType'):
-        if self.extensiontype_ is not None and 'xsi:type' not in already_processed:
-            already_processed.add('xsi:type')
-            outfile.write('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')
-            outfile.write('  xsi:type="%s"' % self.extensiontype_)
-        pass
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='GenericRelationshipType', fromsubclass_=False, pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
-        if self.Confidence is not None:
-            self.Confidence.export(outfile, level, nsmap, namespace_, name_='Confidence', pretty_print=pretty_print)
-        if self.Information_Source is not None:
-            self.Information_Source.export(outfile, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
-        if self.Relationship is not None:
-            self.Relationship.export(outfile, level, nsmap, namespace_, name_='Relationship', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='GenericRelationshipType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Confidence is not None:
-            outfile.write('Confidence=model_.ConfidenceType(\n')
-            self.Confidence.exportLiteral(outfile, level, name_='Confidence')
-            outfile.write('),\n')
-        if self.Information_Source is not None:
-            outfile.write('Information_Source=model_.InformationSourceType(\n')
-            self.Information_Source.exportLiteral(outfile, level, name_='Information_Source')
-            outfile.write('),\n')
-        if self.Relationship is not None:
-            outfile.write('Relationship=model_.ControlledVocabularyStringType(\n')
-            self.Relationship.exportLiteral(outfile, level, name_='Relationship')
-            outfile.write('),\n')
-    def build(self, node):
-        already_processed = set()
-        self.buildAttributes(node, node.attrib, already_processed)
-        for child in node:
-            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
-            self.buildChildren(child, node, nodeName_)
-    def buildAttributes(self, node, attrs, already_processed):
-        value = find_attr_value_('xsi:type', node)
-        if value is not None and 'xsi:type' not in already_processed:
-            already_processed.add('xsi:type')
-            self.extensiontype_ = value
-    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'Confidence':
-            obj_ = ConfidenceType.factory()
-            obj_.build(child_)
-            self.set_Confidence(obj_)
-        elif nodeName_ == 'Information_Source':
-            obj_ = InformationSourceType.factory()
-            obj_.build(child_)
-            self.set_Information_Source(obj_)
-        elif nodeName_ == 'Relationship':
-            obj_ = ControlledVocabularyStringType.factory()
-            obj_.build(child_)
-            self.set_Relationship(obj_)
-# end class GenericRelationshipType
 
 class RelatedCampaignType(GenericRelationshipType):
     """Identifies or characterizes a relationship to a campaign."""
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Campaign=None):
-        super(RelatedCampaignType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedCampaignType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.Campaign = Campaign
     def factory(*args_, **kwargs_):
         if RelatedCampaignType.subclass:
@@ -1759,20 +1929,6 @@ class RelatedCampaignType(GenericRelationshipType):
             eol_ = ''
         if self.Campaign is not None:
             self.Campaign.export(outfile, level, nsmap, namespace_, name_='Campaign', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedCampaignType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedCampaignType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedCampaignType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Campaign is not None:
-            outfile.write('Campaign=model_.CampaignBaseType(\n')
-            self.Campaign.exportLiteral(outfile, level, name_='Campaign')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1792,7 +1948,7 @@ class RelatedCampaignType(GenericRelationshipType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "CampaignType":
                     import stix.bindings.campaign as campaign_binding
                     obj_ = campaign_binding.CampaignType.factory()
@@ -1800,7 +1956,7 @@ class RelatedCampaignType(GenericRelationshipType):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = CampaignBaseType.factory() # not abstract
-                
+
             obj_.build(child_)
             self.set_Campaign(obj_)
         super(RelatedCampaignType, self).buildChildren(child_, node, nodeName_, True)
@@ -1811,7 +1967,7 @@ class RelatedCourseOfActionType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Course_Of_Action=None):
-        super(RelatedCourseOfActionType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedCourseOfActionType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.Course_Of_Action = Course_Of_Action
     def factory(*args_, **kwargs_):
         if RelatedCourseOfActionType.subclass:
@@ -1855,20 +2011,6 @@ class RelatedCourseOfActionType(GenericRelationshipType):
             eol_ = ''
         if self.Course_Of_Action is not None:
             self.Course_Of_Action.export(outfile, level, nsmap, namespace_, name_='Course_Of_Action', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedCourseOfActionType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedCourseOfActionType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedCourseOfActionType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Course_Of_Action is not None:
-            outfile.write('Course_Of_Action=model_.CourseOfActionBaseType(\n')
-            self.Course_Of_Action.exportLiteral(outfile, level, name_='Course_Of_Action')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1888,7 +2030,7 @@ class RelatedCourseOfActionType(GenericRelationshipType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "CourseOfActionType":
                     import stix.bindings.course_of_action as coa_binding
                     obj_ = coa_binding.CourseOfActionType.factory()
@@ -1896,7 +2038,7 @@ class RelatedCourseOfActionType(GenericRelationshipType):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = CourseOfActionBaseType.factory() # not abstract
-           
+
             obj_.build(child_)
             self.set_Course_Of_Action(obj_)
         super(RelatedCourseOfActionType, self).buildChildren(child_, node, nodeName_, True)
@@ -1907,7 +2049,7 @@ class RelatedExploitTargetType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Exploit_Target=None):
-        super(RelatedExploitTargetType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedExploitTargetType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.Exploit_Target = Exploit_Target
     def factory(*args_, **kwargs_):
         if RelatedExploitTargetType.subclass:
@@ -1951,20 +2093,6 @@ class RelatedExploitTargetType(GenericRelationshipType):
             eol_ = ''
         if self.Exploit_Target is not None:
             self.Exploit_Target.export(outfile, level, nsmap, namespace_, name_='Exploit_Target', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedExploitTargetType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedExploitTargetType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedExploitTargetType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Exploit_Target is not None:
-            outfile.write('Exploit_Target=model_.ExploitTargetBaseType(\n')
-            self.Exploit_Target.exportLiteral(outfile, level, name_='Exploit_Target')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1984,7 +2112,7 @@ class RelatedExploitTargetType(GenericRelationshipType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "ExploitTargetType":
                     import stix.bindings.exploit_target as et_binding
                     obj_ = et_binding.ExploitTargetType.factory()
@@ -1992,7 +2120,7 @@ class RelatedExploitTargetType(GenericRelationshipType):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = ExploitTargetBaseType.factory() # not abstract
-            
+
             obj_.build(child_)
             self.set_Exploit_Target(obj_)
         super(RelatedExploitTargetType, self).buildChildren(child_, node, nodeName_, True)
@@ -2003,7 +2131,7 @@ class RelatedIncidentType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Incident=None):
-        super(RelatedIncidentType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedIncidentType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.Incident = Incident
     def factory(*args_, **kwargs_):
         if RelatedIncidentType.subclass:
@@ -2047,20 +2175,6 @@ class RelatedIncidentType(GenericRelationshipType):
             eol_ = ''
         if self.Incident is not None:
             self.Incident.export(outfile, level, nsmap, namespace_, name_='Incident', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedIncidentType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedIncidentType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedIncidentType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Incident is not None:
-            outfile.write('Incident=model_.IncidentBaseType(\n')
-            self.Incident.exportLiteral(outfile, level, name_='Incident')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2080,7 +2194,7 @@ class RelatedIncidentType(GenericRelationshipType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "IncidentType":
                     import stix.bindings.incident as incident_binding
                     obj_ = incident_binding.IncidentType.factory()
@@ -2088,7 +2202,7 @@ class RelatedIncidentType(GenericRelationshipType):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = IncidentBaseType.factory() # not abstract
-            
+
             obj_.build(child_)
             self.set_Incident(obj_)
         super(RelatedIncidentType, self).buildChildren(child_, node, nodeName_, True)
@@ -2099,7 +2213,7 @@ class RelatedIndicatorType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Indicator=None):
-        super(RelatedIndicatorType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedIndicatorType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.Indicator = Indicator
     def factory(*args_, **kwargs_):
         if RelatedIndicatorType.subclass:
@@ -2143,20 +2257,6 @@ class RelatedIndicatorType(GenericRelationshipType):
             eol_ = ''
         if self.Indicator is not None:
             self.Indicator.export(outfile, level, nsmap, namespace_, name_='Indicator', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedIndicatorType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedIndicatorType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedIndicatorType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Indicator is not None:
-            outfile.write('Indicator=model_.IndicatorBaseType(\n')
-            self.Indicator.exportLiteral(outfile, level, name_='Indicator')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2176,7 +2276,7 @@ class RelatedIndicatorType(GenericRelationshipType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "IndicatorType":
                     import stix.bindings.indicator as indicator_binding
                     obj_ = indicator_binding.IndicatorType.factory()
@@ -2184,7 +2284,7 @@ class RelatedIndicatorType(GenericRelationshipType):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = IndicatorBaseType.factory() # not abstract
-                
+
             obj_.build(child_)
             self.set_Indicator(obj_)
         super(RelatedIndicatorType, self).buildChildren(child_, node, nodeName_, True)
@@ -2195,7 +2295,7 @@ class RelatedObservableType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Observable=None):
-        super(RelatedObservableType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedObservableType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.Observable = Observable
     def factory(*args_, **kwargs_):
         if RelatedObservableType.subclass:
@@ -2239,20 +2339,6 @@ class RelatedObservableType(GenericRelationshipType):
             eol_ = ''
         if self.Observable is not None:
             self.Observable.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Observable', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedObservableType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedObservableType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedObservableType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Observable is not None:
-            outfile.write('Observable=model_.cybox_core_binding.ObservableType(\n')
-            self.Observable.exportLiteral(outfile, level, name_='Observable')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2274,7 +2360,7 @@ class RelatedThreatActorType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Threat_Actor=None):
-        super(RelatedThreatActorType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedThreatActorType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.Threat_Actor = Threat_Actor
     def factory(*args_, **kwargs_):
         if RelatedThreatActorType.subclass:
@@ -2318,20 +2404,6 @@ class RelatedThreatActorType(GenericRelationshipType):
             eol_ = ''
         if self.Threat_Actor is not None:
             self.Threat_Actor.export(outfile, level, nsmap, namespace_, name_='Threat_Actor', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedThreatActorType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedThreatActorType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedThreatActorType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Threat_Actor is not None:
-            outfile.write('Threat_Actor=model_.ThreatActorBaseType(\n')
-            self.Threat_Actor.exportLiteral(outfile, level, name_='Threat_Actor')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2351,7 +2423,7 @@ class RelatedThreatActorType(GenericRelationshipType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "ThreatActorType":
                     import stix.bindings.threat_actor as ta_binding
                     obj_ = ta_binding.ThreatActorType.factory()
@@ -2359,7 +2431,7 @@ class RelatedThreatActorType(GenericRelationshipType):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = ThreatActorBaseType.factory() # not abstract
-            
+
             obj_.build(child_)
             self.set_Threat_Actor(obj_)
         super(RelatedThreatActorType, self).buildChildren(child_, node, nodeName_, True)
@@ -2370,7 +2442,7 @@ class RelatedTTPType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, TTP=None):
-        super(RelatedTTPType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedTTPType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.TTP = TTP
     def factory(*args_, **kwargs_):
         if RelatedTTPType.subclass:
@@ -2414,20 +2486,6 @@ class RelatedTTPType(GenericRelationshipType):
             eol_ = ''
         if self.TTP is not None:
             self.TTP.export(outfile, level, nsmap, namespace_, name_='TTP', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedTTPType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedTTPType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedTTPType, self).exportLiteralChildren(outfile, level, name_)
-        if self.TTP is not None:
-            outfile.write('TTP=model_.TTPBaseType(\n')
-            self.TTP.exportLiteral(outfile, level, name_='TTP')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2447,7 +2505,7 @@ class RelatedTTPType(GenericRelationshipType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "TTPType":
                     import stix.bindings.ttp as ttp_binding
                     obj_ = ttp_binding.TTPType.factory()
@@ -2455,7 +2513,7 @@ class RelatedTTPType(GenericRelationshipType):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = TTPBaseType.factory() # not abstract
-            
+
             obj_.build(child_)
             self.set_TTP(obj_)
         super(RelatedTTPType, self).buildChildren(child_, node, nodeName_, True)
@@ -2466,7 +2524,7 @@ class RelatedIdentityType(GenericRelationshipType):
     subclass = None
     superclass = GenericRelationshipType
     def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Identity=None):
-        super(RelatedIdentityType, self).__init__(Confidence, Information_Source, Relationship, )
+        super(RelatedIdentityType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
         self.Identity = Identity
     def factory(*args_, **kwargs_):
         if RelatedIdentityType.subclass:
@@ -2510,20 +2568,6 @@ class RelatedIdentityType(GenericRelationshipType):
             eol_ = ''
         if self.Identity is not None:
             self.Identity.export(outfile, level, nsmap, namespace_, name_='Identity', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedIdentityType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedIdentityType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedIdentityType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Identity is not None:
-            outfile.write('Identity=model_.IdentityType(\n')
-            self.Identity.exportLiteral(outfile, level, name_='Identity')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2543,13 +2587,13 @@ class RelatedIdentityType(GenericRelationshipType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "CIQIdentity3.0InstanceType":
                     import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
                     obj_ = ciq_identity_binding.CIQIdentity3_0InstanceType.factory()
             else:
                 obj_ = IdentityType.factory() # IdentityType is not abstract
-            
+
             obj_.build(child_)
             self.set_Identity(obj_)
         super(RelatedIdentityType, self).buildChildren(child_, node, nodeName_, True)
@@ -2571,10 +2615,10 @@ class IndicatorBaseType(GeneratedsSuper):
     specified elsewhere."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None):
+    def __init__(self, idref=None, id=None, timestamp=None):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
-        pass
+        self.timestamp = _cast(None, timestamp)
     def factory(*args_, **kwargs_):
         if IndicatorBaseType.subclass:
             return IndicatorBaseType.subclass(*args_, **kwargs_)
@@ -2585,6 +2629,8 @@ class IndicatorBaseType(GeneratedsSuper):
     def set_idref(self, idref): self.idref = idref
     def get_id(self): return self.id
     def set_id(self, id): self.id = id
+    def get_timestamp(self): return self.timestamp
+    def set_timestamp(self, timestamp): self.timestamp = timestamp
     def hasContent_(self):
         if (
 
@@ -2614,24 +2660,10 @@ class IndicatorBaseType(GeneratedsSuper):
         if self.id is not None and 'id' not in already_processed:
             already_processed.add('id')
             outfile.write(' id=%s' % (quote_attrib(self.id), ))
+        if self.timestamp is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            outfile.write(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='IndicatorBaseType', fromsubclass_=False, pretty_print=True):
-        pass
-    def exportLiteral(self, outfile, level, name_='IndicatorBaseType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
         pass
     def build(self, node):
         already_processed = set()
@@ -2648,6 +2680,13 @@ class IndicatorBaseType(GeneratedsSuper):
         if value is not None and 'id' not in already_processed:
             already_processed.add('id')
             self.id = value
+        value = find_attr_value_('timestamp', node)
+        if value is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            try:
+                self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
+            except ValueError, exp:
+                raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
 # end class IndicatorBaseType
@@ -2659,18 +2698,27 @@ class IncidentBaseType(GeneratedsSuper):
     using STIX must do so using the xsi:type extension feature. The
     STIX-defined Incident type is IncidentType in the
     http://stix.mitre.org/Incident-1 namespace. This type is defined
-    in the incident.xsd file or at the URL
-    http://stix.mitre.org/XMLSchema/incident/1.0/incident.xsd.
-    Alternatively, uses that require simply specifying an idref as a
-    reference to an incident defined elsewhere can do so without
-    specifying an xsi:type. Specifies a globally unique identifier
-    for this cyber threat Incident.Specifies a globally unique
-    identifier for a cyber threat Incident specified elsewhere."""
+    in the incident.xsd file or at the URL http://stix.mitre.org/XML
+    Schema/incident/1.1/incident.xsd.Alternatively, uses that
+    require simply specifying an idref as a reference to an incident
+    defined elsewhere can do so without specifying an
+    xsi:type.Specifies a globally unique identifier for this cyber
+    threat Incident.Specifies a globally unique identifier for a
+    cyber threat Incident specified elsewhere.When idref is
+    specified, the id attribute must not be specified, and any
+    instance of this Incident should not hold content.In conjunction
+    with the idref, this field may be used to reference a specific
+    version of an incident defined elsewhere. The referenced version
+    timestamp is contained in the
+    Information_Source/Time/Produced_Time field of the related
+    incident and must be an exact match.This field must only be used
+    in conjunction with the idref field."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None):
+    def __init__(self, idref=None, id=None, timestamp=None):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
+        self.timestamp = _cast(None, timestamp)
         pass
     def factory(*args_, **kwargs_):
         if IncidentBaseType.subclass:
@@ -2682,6 +2730,8 @@ class IncidentBaseType(GeneratedsSuper):
     def set_idref(self, idref): self.idref = idref
     def get_id(self): return self.id
     def set_id(self, id): self.id = id
+    def get_timestamp(self): return self.timestamp
+    def set_timestamp(self, timestamp): self.timestamp = timestamp
     def hasContent_(self):
         if (
 
@@ -2711,24 +2761,10 @@ class IncidentBaseType(GeneratedsSuper):
         if self.id is not None and 'id' not in already_processed:
             already_processed.add('id')
             outfile.write(' id=%s' % (quote_attrib(self.id), ))
+        if self.timestamp is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            outfile.write(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='IncidentBaseType', fromsubclass_=False, pretty_print=True):
-        pass
-    def exportLiteral(self, outfile, level, name_='IncidentBaseType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
         pass
     def build(self, node):
         already_processed = set()
@@ -2745,9 +2781,17 @@ class IncidentBaseType(GeneratedsSuper):
         if value is not None and 'id' not in already_processed:
             already_processed.add('id')
             self.id = value
+        value = find_attr_value_('timestamp', node)
+        if value is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            try:
+                self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
+            except ValueError, exp:
+                raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
 # end class IncidentBaseType
+
 
 class TTPBaseType(GeneratedsSuper):
     """This type represents the STIX TTP component. It is extended using
@@ -2756,17 +2800,26 @@ class TTPBaseType(GeneratedsSuper):
     must do so using the xsi:type extension feature. The STIX-
     defined TTP type is TTPType in the http://stix.mitre.org/TTP-1
     namespace. This type is defined in the ttp.xsd file or at the
-    URL http://stix.mitre.org/XMLSchema/ttp/1.0/ttp.xsd.
-    Alternatively, uses that require simply specifying an idref as a
-    reference to a TTP defined elsewhere can do so without
-    specifying an xsi:type. Specifies a globally unique identifier
-    for this TTP item. Specifies a globally unique identifier of a
-    TTP item specified elsewhere."""
+    URL
+    http://stix.mitre.org/XMLSchema/ttp/1.1/ttp.xsd.Alternatively,
+    uses that require simply specifying an idref as a reference to a
+    TTP defined elsewhere can do so without specifying an
+    xsi:type.Specifies a globally unique identifier for this TTP
+    item. Specifies a globally unique identifier of a TTP item
+    specified elsewhere.When idref is specified, the id attribute
+    must not be specified, and any instance of this TTP item should
+    not hold content.In conjunction with the idref, this field may
+    be used to reference a specific version of a TTP defined
+    elsewhere. The referenced version timestamp is contained in the
+    Information_Source/Time/Produced_Time field of the related TTP
+    and must be an exact match.This field must only be used in
+    conjunction with the idref field."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None):
+    def __init__(self, idref=None, id=None, timestamp=None):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
+        self.timestamp = _cast(None, timestamp)
         pass
     def factory(*args_, **kwargs_):
         if TTPBaseType.subclass:
@@ -2778,6 +2831,8 @@ class TTPBaseType(GeneratedsSuper):
     def set_idref(self, idref): self.idref = idref
     def get_id(self): return self.id
     def set_id(self, id): self.id = id
+    def get_timestamp(self): return self.timestamp
+    def set_timestamp(self, timestamp): self.timestamp = timestamp
     def hasContent_(self):
         if (
 
@@ -2807,24 +2862,10 @@ class TTPBaseType(GeneratedsSuper):
         if self.id is not None and 'id' not in already_processed:
             already_processed.add('id')
             outfile.write(' id=%s' % (quote_attrib(self.id), ))
+        if self.timestamp is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            outfile.write(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='TTPBaseType', fromsubclass_=False, pretty_print=True):
-        pass
-    def exportLiteral(self, outfile, level, name_='TTPBaseType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
         pass
     def build(self, node):
         already_processed = set()
@@ -2841,6 +2882,13 @@ class TTPBaseType(GeneratedsSuper):
         if value is not None and 'id' not in already_processed:
             already_processed.add('id')
             self.id = value
+        value = find_attr_value_('timestamp', node)
+        if value is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            try:
+                self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
+            except ValueError, exp:
+                raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
 # end class TTPBaseType
@@ -2854,17 +2902,26 @@ class ExploitTargetBaseType(GeneratedsSuper):
     is ExploitTargetType in the
     http://stix.mitre.org/ExploitTarget-1 namespace. This type is
     defined in the exploit_target.xsd file or at the URL http://stix
-    .mitre.org/XMLSchema/exploit_target/1.0/exploit_target.xsd.
-    Alternatively, uses that require simply specifying an idref as a
+    .mitre.org/XMLSchema/exploit_target/1.1/exploit_target.xsd.Alter
+    natively, uses that require simply specifying an idref as a
     reference to an exploit target defined elsewhere can do so
-    without specifying an xsi:type. Specifies a globally unique
+    without specifying an xsi:type.Specifies a globally unique
     identifier for this ExploitTarget. Specifies a globally unique
-    identifier of an ExploitTarget specified elsewhere."""
+    identifier of an ExploitTarget specified elsewhere.When idref is
+    specified, the id attribute must not be specified, and any
+    instance of this ExploitTarget should not hold content.In
+    conjunction with the idref, this field may be used to reference
+    a specific version of an exploit target defined elsewhere. The
+    referenced version timestamp is contained in the
+    Information_Source/Time/Produced_Time field of the related
+    exploit target and must be an exact match.This field must only
+    be used in conjunction with the idref field."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None):
+    def __init__(self, idref=None, id=None, timestamp=None):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
+        self.timestamp = _cast(None, timestamp)
         pass
     def factory(*args_, **kwargs_):
         if ExploitTargetBaseType.subclass:
@@ -2876,6 +2933,8 @@ class ExploitTargetBaseType(GeneratedsSuper):
     def set_idref(self, idref): self.idref = idref
     def get_id(self): return self.id
     def set_id(self, id): self.id = id
+    def get_timestamp(self): return self.timestamp
+    def set_timestamp(self, timestamp): self.timestamp = timestamp
     def hasContent_(self):
         if (
 
@@ -2905,24 +2964,10 @@ class ExploitTargetBaseType(GeneratedsSuper):
         if self.id is not None and 'id' not in already_processed:
             already_processed.add('id')
             outfile.write(' id=%s' % (quote_attrib(self.id), ))
+        if self.timestamp is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            outfile.write(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ExploitTargetBaseType', fromsubclass_=False, pretty_print=True):
-        pass
-    def exportLiteral(self, outfile, level, name_='ExploitTargetBaseType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
         pass
     def build(self, node):
         already_processed = set()
@@ -2939,6 +2984,13 @@ class ExploitTargetBaseType(GeneratedsSuper):
         if value is not None and 'id' not in already_processed:
             already_processed.add('id')
             self.id = value
+        value = find_attr_value_('timestamp', node)
+        if value is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            try:
+                self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
+            except ValueError, exp:
+                raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
 # end class ExploitTargetBaseType
@@ -2952,17 +3004,25 @@ class CourseOfActionBaseType(GeneratedsSuper):
     type is CourseOfActionType in the
     http://stix.mitre.org/CourseOfAction-1 namespace. This type is
     defined in the course_of_action.xsd file or at the URL http://st
-    ix.mitre.org/XMLSchema/course_of_action/1.0/course_of_action.xsd
-    . Alternatively, uses that require simply specifying an idref as
+    ix.mitre.org/XMLSchema/course_of_action/1.1/course_of_action.xsd
+    .Alternatively, uses that require simply specifying an idref as
     a reference to a course of action defined elsewhere can do so
-    without specifying an xsi:type. Specifies a globally unique
+    without specifying an xsi:type.Specifies a globally unique
     identifier for this COA. Specifies a globally unique identifier
-    of a COA specified elsewhere."""
+    of a COA specified elsewhere.When idref is specified, the id
+    attribute must not be specified, and any instance of this COA
+    should not hold content.In conjunction with the idref, this
+    field may be used to reference a specific version of a course of
+    action defined elsewhere. The referenced version timestamp is
+    contained in the Information_Source/Time/Produced_Time field of
+    the related course of action and must be an exact match.This
+    field must only be used in conjunction with the idref field."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None):
+    def __init__(self, idref=None, id=None, timestamp=None):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
+        self.timestamp = _cast(None, timestamp)
         pass
     def factory(*args_, **kwargs_):
         if CourseOfActionBaseType.subclass:
@@ -2974,6 +3034,8 @@ class CourseOfActionBaseType(GeneratedsSuper):
     def set_idref(self, idref): self.idref = idref
     def get_id(self): return self.id
     def set_id(self, id): self.id = id
+    def get_timestamp(self): return self.timestamp
+    def set_timestamp(self, timestamp): self.timestamp = timestamp
     def hasContent_(self):
         if (
 
@@ -3003,24 +3065,10 @@ class CourseOfActionBaseType(GeneratedsSuper):
         if self.id is not None and 'id' not in already_processed:
             already_processed.add('id')
             outfile.write(' id=%s' % (quote_attrib(self.id), ))
+        if self.timestamp is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            outfile.write(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='CourseOfActionBaseType', fromsubclass_=False, pretty_print=True):
-        pass
-    def exportLiteral(self, outfile, level, name_='CourseOfActionBaseType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
         pass
     def build(self, node):
         already_processed = set()
@@ -3037,9 +3085,236 @@ class CourseOfActionBaseType(GeneratedsSuper):
         if value is not None and 'id' not in already_processed:
             already_processed.add('id')
             self.id = value
+        value = find_attr_value_('timestamp', node)
+        if value is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            try:
+                self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
+            except ValueError, exp:
+                raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
 # end class CourseOfActionBaseType
+
+class RelatedCampaignReferenceType(GenericRelationshipType):
+    """Identifies or characterizes a relationship by reference to a
+    campaign."""
+    subclass = None
+    superclass = GenericRelationshipType
+    def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Campaign=None):
+        super(RelatedCampaignReferenceType, self).__init__(Confidence=Confidence, Information_Source=Information_Source, Relationship=Relationship)
+        self.Campaign = Campaign
+    def factory(*args_, **kwargs_):
+        if RelatedCampaignReferenceType.subclass:
+            return RelatedCampaignReferenceType.subclass(*args_, **kwargs_)
+        else:
+            return RelatedCampaignReferenceType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_Campaign(self): return self.Campaign
+    def set_Campaign(self, Campaign): self.Campaign = Campaign
+    def hasContent_(self):
+        if (
+            self.Campaign is not None or
+            super(RelatedCampaignReferenceType, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedCampaignReferenceType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedCampaignReferenceType')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='RelatedCampaignReferenceType'):
+        super(RelatedCampaignReferenceType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedCampaignReferenceType')
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedCampaignReferenceType', fromsubclass_=False, pretty_print=True):
+        super(RelatedCampaignReferenceType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.Campaign is not None:
+            self.Campaign.export(outfile, level, nsmap, namespace_, name_='Campaign', pretty_print=pretty_print)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(RelatedCampaignReferenceType, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'Campaign':
+            obj_ = CampaignReferenceType.factory()
+            obj_.build(child_)
+            self.set_Campaign(obj_)
+        super(RelatedCampaignReferenceType, self).buildChildren(child_, node, nodeName_, True)
+# end class RelatedCampaignReferenceType
+
+class CampaignReferenceType(GeneratedsSuper):
+    """Characterizes a reference to a campaign.Specifies a globally unique
+    identifier for a cyber threat campaign defined elsewhere.In
+    conjunction with the idref, this field may be used to reference
+    a specific version of a campaign defined elsewhere. The
+    referenced version timestamp is contained in the
+    Information_Source/Time/Produced_Time field of the related
+    campaign and must be an exact match.This field must only be used
+    in conjunction with the idref field."""
+    subclass = None
+    superclass = None
+    def __init__(self, idref=None, timestamp=None, Names=None):
+        self.idref = _cast(None, idref)
+        self.timestamp = _cast(None, timestamp)
+        self.Names = Names
+    def factory(*args_, **kwargs_):
+        if CampaignReferenceType.subclass:
+            return CampaignReferenceType.subclass(*args_, **kwargs_)
+        else:
+            return CampaignReferenceType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_Names(self): return self.Names
+    def set_Names(self, Names): self.Names = Names
+    def get_idref(self): return self.idref
+    def set_idref(self, idref): self.idref = idref
+    def get_timestamp(self): return self.timestamp
+    def set_timestamp(self, timestamp): self.timestamp = timestamp
+    def hasContent_(self):
+        if (
+            self.Names is not None
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='CampaignReferenceType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='CampaignReferenceType')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='CampaignReferenceType'):
+        if self.idref is not None and 'idref' not in already_processed:
+            already_processed.add('idref')
+            outfile.write(' idref=%s' % (quote_attrib(self.idref), ))
+        if self.timestamp is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            outfile.write(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='CampaignReferenceType', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        if self.Names is not None:
+            self.Names.export(outfile, level, nsmap, namespace_, name_='Names', pretty_print=pretty_print)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        value = find_attr_value_('idref', node)
+        if value is not None and 'idref' not in already_processed:
+            already_processed.add('idref')
+            self.idref = value
+        value = find_attr_value_('timestamp', node)
+        if value is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            try:
+                self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
+            except ValueError, exp:
+                raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'Names':
+            obj_ = NamesType.factory()
+            obj_.build(child_)
+            self.set_Names(obj_)
+# end class CampaignReferenceType
+
+class NamesType(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, Name=None):
+        if Name is None:
+            self.Name = []
+        else:
+            self.Name = Name
+    def factory(*args_, **kwargs_):
+        if NamesType.subclass:
+            return NamesType.subclass(*args_, **kwargs_)
+        else:
+            return NamesType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_Name(self): return self.Name
+    def set_Name(self, Name): self.Name = Name
+    def add_Name(self, value): self.Name.append(value)
+    def insert_Name(self, index, value): self.Name[index] = value
+    def hasContent_(self):
+        if (
+            self.Name
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='NamesType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='NamesType')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='NamesType'):
+        pass
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='NamesType', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for Name_ in self.Name:
+            Name_.export(outfile, level, nsmap, namespace_, name_='Name', pretty_print=pretty_print)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'Name':
+            obj_ = ControlledVocabularyStringType.factory()
+            obj_.build(child_)
+            self.Name.append(obj_)
+# end class NamesType
 
 class CampaignBaseType(GeneratedsSuper):
     """This type represents the STIX Campaign component. It is extended
@@ -3048,18 +3323,27 @@ class CampaignBaseType(GeneratedsSuper):
     using STIX must do so using the xsi:type extension feature. The
     STIX-defined Campaign type is CampaignType in the
     http://stix.mitre.org/Campaign-1 namespace. This type is defined
-    in the campaign.xsd file or at the URL
-    http://stix.mitre.org/XMLSchema/campaign/1.0/campaign.xsd.
-    Alternatively, uses that require simply specifying an idref as a
-    reference to a campaign defined elsewhere can do so without
-    specifying an xsi:type. Specifies a globally unique identifier
-    for this cyber threat Campaign.Specifies a globally unique
-    identifier for a cyber threat Campaign specified elsewhere."""
+    in the campaign.xsd file or at the URL http://stix.mitre.org/XML
+    Schema/campaign/1.1/campaign.xsd.Alternatively, uses that
+    require simply specifying an idref as a reference to a campaign
+    defined elsewhere can do so without specifying an
+    xsi:type.Specifies a globally unique identifier for this cyber
+    threat Campaign.Specifies a globally unique identifier for a
+    cyber threat Campaign specified elsewhere.When idref is
+    specified, the id attribute must not be specified, and any
+    instance of this Campaign should not hold content.In conjunction
+    with the idref, this field may be used to reference a specific
+    version of a campaign defined elsewhere. The referenced version
+    timestamp is contained in the
+    Information_Source/Time/Produced_Time field of the related
+    campaign and must be an exact match.This field must only be used
+    in conjunction with the idref field."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None):
+    def __init__(self, idref=None, id=None, timestamp=None):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
+        self.timestamp = _cast(None, timestamp)
         pass
     def factory(*args_, **kwargs_):
         if CampaignBaseType.subclass:
@@ -3071,6 +3355,8 @@ class CampaignBaseType(GeneratedsSuper):
     def set_idref(self, idref): self.idref = idref
     def get_id(self): return self.id
     def set_id(self, id): self.id = id
+    def get_timestamp(self): return self.timestamp
+    def set_timestamp(self, timestamp): self.timestamp = timestamp
     def hasContent_(self):
         if (
 
@@ -3100,24 +3386,10 @@ class CampaignBaseType(GeneratedsSuper):
         if self.id is not None and 'id' not in already_processed:
             already_processed.add('id')
             outfile.write(' id=%s' % (quote_attrib(self.id), ))
+        if self.timestamp is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            outfile.write(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='CampaignBaseType', fromsubclass_=False, pretty_print=True):
-        pass
-    def exportLiteral(self, outfile, level, name_='CampaignBaseType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
         pass
     def build(self, node):
         already_processed = set()
@@ -3134,9 +3406,17 @@ class CampaignBaseType(GeneratedsSuper):
         if value is not None and 'id' not in already_processed:
             already_processed.add('id')
             self.id = value
+        value = find_attr_value_('timestamp', node)
+        if value is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            try:
+                self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
+            except ValueError, exp:
+                raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
 # end class CampaignBaseType
+
 
 class ThreatActorBaseType(GeneratedsSuper):
     """This type represents the STIX Threat Actor component. It is extended
@@ -3146,17 +3426,26 @@ class ThreatActorBaseType(GeneratedsSuper):
     feature. The STIX-defined Threat Actor type is ThreatActorType
     in the http://stix.mitre.org/ThreatActor-1 namespace. This type
     is defined in the threat_actor.xsd file or at the URL http://sti
-    x.mitre.org/XMLSchema/threat_actor/1.0/threat_actor.xsd.
-    Alternatively, uses that require simply specifying an idref as a
+    x.mitre.org/XMLSchema/threat_actor/1.1/threat_actor.xsd.Alternat
+    ively, uses that require simply specifying an idref as a
     reference to a threat actor defined elsewhere can do so without
-    specifying an xsi:type. Specifies a globally unique identifier
+    specifying an xsi:type.Specifies a globally unique identifier
     for this ThreatActor. Specifies a globally unique identifier of
-    a ThreatActor specified elsewhere."""
+    a ThreatActor specified elsewhere.When idref is specified, the
+    id attribute must not be specified, and any instance of this
+    ThreatActor should not hold content.In conjunction with the
+    idref, this field may be used to reference a specific version of
+    a threat actor defined elsewhere. The referenced version
+    timestamp is contained in the
+    Information_Source/Time/Produced_Time field of the related
+    threat actor and must be an exact match.This field must only be
+    used in conjunction with the idref field."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None):
+    def __init__(self, idref=None, id=None, timestamp=None):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
+        self.timestamp = _cast(None, timestamp)
         pass
     def factory(*args_, **kwargs_):
         if ThreatActorBaseType.subclass:
@@ -3168,6 +3457,8 @@ class ThreatActorBaseType(GeneratedsSuper):
     def set_idref(self, idref): self.idref = idref
     def get_id(self): return self.id
     def set_id(self, id): self.id = id
+    def get_timestamp(self): return self.timestamp
+    def set_timestamp(self, timestamp): self.timestamp = timestamp
     def hasContent_(self):
         if (
 
@@ -3197,24 +3488,10 @@ class ThreatActorBaseType(GeneratedsSuper):
         if self.id is not None and 'id' not in already_processed:
             already_processed.add('id')
             outfile.write(' id=%s' % (quote_attrib(self.id), ))
+        if self.timestamp is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            outfile.write(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ThreatActorBaseType', fromsubclass_=False, pretty_print=True):
-        pass
-    def exportLiteral(self, outfile, level, name_='ThreatActorBaseType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
         pass
     def build(self, node):
         already_processed = set()
@@ -3231,9 +3508,17 @@ class ThreatActorBaseType(GeneratedsSuper):
         if value is not None and 'id' not in already_processed:
             already_processed.add('id')
             self.id = value
+        value = find_attr_value_('timestamp', node)
+        if value is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            try:
+                self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
+            except ValueError, exp:
+                raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
 # end class ThreatActorBaseType
+
 
 class ExploitTargetsType(GeneratedsSuper):
     subclass = None
@@ -3285,26 +3570,6 @@ class ExploitTargetsType(GeneratedsSuper):
             eol_ = ''
         for Exploit_Target_ in self.Exploit_Target:
             Exploit_Target_.export(outfile, level, nsmap, namespace_, name_='Exploit_Target', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='ExploitTargetsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Exploit_Target=[\n')
-        level += 1
-        for Exploit_Target_ in self.Exploit_Target:
-            outfile.write('model_.ExploitTargetBaseType(\n')
-            Exploit_Target_.exportLiteral(outfile, level, name_='ExploitTargetBaseType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3315,13 +3580,29 @@ class ExploitTargetsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Exploit_Target':
-            # TODO - figure out what type to return/store
-            import stix.bindings.exploit_target as exploit_target_binding
-            #obj_ = ExploitTargetBaseType.factory()
-            obj_ = exploit_target_binding.ExploitTargetType.factory()
+            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
+            if type_name_ is None:
+                type_name_ = child_.attrib.get('type')
+            if type_name_ is not None:
+                type_names_ = type_name_.split(':')
+                if len(type_names_) == 1:
+                    type_name_ = type_names_[0]
+                else:
+                    type_name_ = type_names_[1]
+
+                if type_name_ == "ExploitTargetType":
+                    import stix.bindings.exploit_target as exploit_target_binding
+                    obj_ = exploit_target_binding.ExploitTargetType.factory()
+                else:
+                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
+            else:
+                obj_ = ExploitTargetBaseType.factory() # not abstract
+
             obj_.build(child_)
             self.Exploit_Target.append(obj_)
+
 # end class ExploitTargetsType
+
 
 class AddressAbstractType(GeneratedsSuper):
     """The AddressAbstractType is used to express geographic address
@@ -3369,16 +3650,6 @@ class AddressAbstractType(GeneratedsSuper):
         pass
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='AddressAbstractType', fromsubclass_=False, pretty_print=True):
         pass
-    def exportLiteral(self, outfile, level, name_='AddressAbstractType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        pass
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3391,32 +3662,32 @@ class AddressAbstractType(GeneratedsSuper):
         pass
 # end class AddressAbstractType
 
-class ContributorsType(GeneratedsSuper):
+class ContributingSourcesType(GeneratedsSuper):
     subclass = None
     superclass = None
-    def __init__(self, Contributor=None):
-        if Contributor is None:
-            self.Contributor = []
+    def __init__(self, Source=None):
+        if Source is None:
+            self.Source = []
         else:
-            self.Contributor = Contributor
+            self.Source = Source
     def factory(*args_, **kwargs_):
-        if ContributorsType.subclass:
-            return ContributorsType.subclass(*args_, **kwargs_)
+        if ContributingSourcesType.subclass:
+            return ContributingSourcesType.subclass(*args_, **kwargs_)
         else:
-            return ContributorsType(*args_, **kwargs_)
+            return ContributingSourcesType(*args_, **kwargs_)
     factory = staticmethod(factory)
-    def get_Contributor(self): return self.Contributor
-    def set_Contributor(self, Contributor): self.Contributor = Contributor
-    def add_Contributor(self, value): self.Contributor.append(value)
-    def insert_Contributor(self, index, value): self.Contributor[index] = value
+    def get_Source(self): return self.Source
+    def set_Source(self, Source): self.Source = Source
+    def add_Source(self, value): self.Source.append(value)
+    def insert_Source(self, index, value): self.Source[index] = value
     def hasContent_(self):
         if (
-            self.Contributor
+            self.Source
             ):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='ContributorsType', namespacedef_='', pretty_print=True):
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='ContributingSourcesType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -3424,7 +3695,7 @@ class ContributorsType(GeneratedsSuper):
         showIndent(outfile, level, pretty_print)
         outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='ContributorsType')
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='ContributingSourcesType')
         if self.hasContent_():
             outfile.write('>%s' % (eol_, ))
             self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
@@ -3432,35 +3703,15 @@ class ContributorsType(GeneratedsSuper):
             outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='ContributorsType'):
+    def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='ContributingSourcesType'):
         pass
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ContributorsType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ContributingSourcesType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        for Contributor_ in self.Contributor:
-            Contributor_.export(outfile, level, nsmap, namespace_, name_='Contributor', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='ContributorsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Contributor=[\n')
-        level += 1
-        for Contributor_ in self.Contributor:
-            outfile.write('model_.IdentityType(\n')
-            Contributor_.exportLiteral(outfile, level, name_='IdentityType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
+        for Source_ in self.Source:
+            Source_.export(outfile, level, nsmap, namespace_, name_='Source', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3470,26 +3721,11 @@ class ContributorsType(GeneratedsSuper):
     def buildAttributes(self, node, attrs, already_processed):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'Contributor':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-            
-                if type_name_ == "CIQIdentity3.0InstanceType":
-                    import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
-                    obj_ = ciq_identity_binding.CIQIdentity3_0InstanceType.factory()
-            else:
-                obj_ = IdentityType.factory() # IdentityType is not abstract
-            
+        if nodeName_ == 'Source':
+            obj_ = InformationSourceType.factory()
             obj_.build(child_)
-            self.Contributor.append(obj_)
-# end class ContributorsType
+            self.Source.append(obj_)
+# end class ContributingSourcesType
 
 class ReferencesType(GeneratedsSuper):
     subclass = None
@@ -3542,24 +3778,6 @@ class ReferencesType(GeneratedsSuper):
         for Reference_ in self.Reference:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%s:Reference>%s</%s:Reference>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(Reference_).encode(ExternalEncoding), input_name='Reference'), nsmap[namespace_], eol_))
-    def exportLiteral(self, outfile, level, name_='ReferencesType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Reference=[\n')
-        level += 1
-        for Reference_ in self.Reference:
-            showIndent(outfile, level)
-            outfile.write('%s,\n' % quote_python(Reference_).encode(ExternalEncoding))
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3625,26 +3843,6 @@ class RelatedIdentitiesType(GeneratedsSuper):
             eol_ = ''
         for Related_Identity_ in self.Related_Identity:
             Related_Identity_.export(outfile, level, nsmap, namespace_, name_='Related_Identity', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedIdentitiesType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Related_Identity=[\n')
-        level += 1
-        for Related_Identity_ in self.Related_Identity:
-            outfile.write('model_.RelatedIdentityType(\n')
-            Related_Identity_.exportLiteral(outfile, level, name_='RelatedIdentityType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3710,26 +3908,6 @@ class ConfidenceAssertionChainType(GeneratedsSuper):
             eol_ = ''
         for Confidence_Assertion_ in self.Confidence_Assertion:
             Confidence_Assertion_.export(outfile, level, nsmap, namespace_, name_='Confidence_Assertion', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='ConfidenceAssertionChainType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Confidence_Assertion=[\n')
-        level += 1
-        for Confidence_Assertion_ in self.Confidence_Assertion:
-            outfile.write('model_.ConfidenceType(\n')
-            Confidence_Assertion_.exportLiteral(outfile, level, name_='ConfidenceType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3748,11 +3926,19 @@ class ConfidenceAssertionChainType(GeneratedsSuper):
 class StatementType(GeneratedsSuper):
     """StatementType allows the expression of a statement with an
     associated value, description, source, confidence, and
-    timestamp. Specifies the time this statement was asserted."""
+    timestamp. Specifies the time this statement was asserted.In
+    order to avoid ambiguity, it is strongly suggest that all
+    timestamps include a specification of the timezone if it is
+    known.Represents the precision of the associated timestamp
+    value. If omitted, the default is "second", meaning the
+    timestamp is precise to the full field value. Digits in the
+    timestamp that are required by the xs:dateTime datatype but are
+    beyond the specified precision should be zeroed out."""
     subclass = None
     superclass = None
-    def __init__(self, timestamp=None, Value=None, Description=None, Source=None, Confidence=None):
+    def __init__(self, timestamp=None, timestamp_precision='second', Value=None, Description=None, Source=None, Confidence=None):
         self.timestamp = _cast(None, timestamp)
+        self.timestamp_precision = _cast(None, timestamp_precision)
         self.Value = Value
         self.Description = Description
         self.Source = Source
@@ -3773,6 +3959,8 @@ class StatementType(GeneratedsSuper):
     def set_Confidence(self, Confidence): self.Confidence = Confidence
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
+    def get_timestamp_precision(self): return self.timestamp_precision
+    def set_timestamp_precision(self, timestamp_precision): self.timestamp_precision = timestamp_precision
     def hasContent_(self):
         if (
             self.Value is not None or
@@ -3803,6 +3991,9 @@ class StatementType(GeneratedsSuper):
         if self.timestamp is not None and 'timestamp' not in already_processed:
             already_processed.add('timestamp')
             outfile.write(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
+        if self.timestamp_precision is not None and 'timestamp_precision' not in already_processed:
+            already_processed.add('timestamp_precision')
+            outfile.write(' timestamp_precision=%s' % (quote_attrib(self.timestamp_precision), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='StatementType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
@@ -3816,34 +4007,6 @@ class StatementType(GeneratedsSuper):
             self.Source.export(outfile, level, nsmap, namespace_, name_='Source', pretty_print=pretty_print)
         if self.Confidence is not None:
             self.Confidence.export(outfile, level, nsmap, namespace_, name_='Confidence', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='StatementType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.timestamp is not None and 'timestamp' not in already_processed:
-            already_processed.add('timestamp')
-            showIndent(outfile, level)
-            outfile.write('timestamp = "%s",\n' % (self.timestamp,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Value is not None:
-            outfile.write('Value=model_.ControlledVocabularyStringType(\n')
-            self.Value.exportLiteral(outfile, level, name_='Value')
-            outfile.write('),\n')
-        if self.Description is not None:
-            outfile.write('Description=model_.StructuredTextType(\n')
-            self.Description.exportLiteral(outfile, level, name_='Description')
-            outfile.write('),\n')
-        if self.Source is not None:
-            outfile.write('Source=model_.ControlledVocabularyStringType(\n')
-            self.Source.exportLiteral(outfile, level, name_='Source')
-            outfile.write('),\n')
-        if self.Confidence is not None:
-            outfile.write('Confidence=model_.ConfidenceType(\n')
-            self.Confidence.exportLiteral(outfile, level, name_='Confidence')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3858,6 +4021,10 @@ class StatementType(GeneratedsSuper):
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
             except ValueError, exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
+        value = find_attr_value_('timestamp_precision', node)
+        if value is not None and 'timestamp_precision' not in already_processed:
+            already_processed.add('timestamp_precision')
+            self.timestamp_precision = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Value':
             obj_ = ControlledVocabularyStringType.factory()
@@ -3932,21 +4099,6 @@ class StructuredTextType(GeneratedsSuper):
             outfile.write(' structuring_format=%s' % (self.gds_format_string(quote_attrib(self.structuring_format).encode(ExternalEncoding), input_name='structuring_format'), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='StructuredTextType', fromsubclass_=False, pretty_print=True):
         pass
-    def exportLiteral(self, outfile, level, name_='StructuredTextType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.structuring_format is not None and 'structuring_format' not in already_processed:
-            already_processed.add('structuring_format')
-            showIndent(outfile, level)
-            outfile.write('structuring_format = "%s",\n' % (self.structuring_format,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        pass
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -4004,12 +4156,12 @@ class EncodedCDATAType(GeneratedsSuper):
         self.exportAttributes(outfile, level, already_processed, namespace_, name_='EncodedCDATAType')
         if self.hasContent_():
             outfile.write('>')
-            
+
             if self.valueOf_ and not (self.valueOf_.strip().startswith("<![CDATA[")):
                 value = "<![CDATA[" + self.valueOf_ + "]]>"
             else:
                 value = self.valueOf_
-                
+
             outfile.write(str(value).encode(ExternalEncoding))
             self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
@@ -4020,21 +4172,6 @@ class EncodedCDATAType(GeneratedsSuper):
             already_processed.add('encoded')
             outfile.write(' encoded="%s"' % self.gds_format_boolean(self.encoded, input_name='encoded'))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='EncodedCDATAType', fromsubclass_=False, pretty_print=True):
-        pass
-    def exportLiteral(self, outfile, level, name_='EncodedCDATAType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.encoded is not None and 'encoded' not in already_processed:
-            already_processed.add('encoded')
-            showIndent(outfile, level)
-            outfile.write('encoded = %s,\n' % (self.encoded,))
-    def exportLiteralChildren(self, outfile, level, name_):
         pass
     def build(self, node):
         already_processed = set()
@@ -4110,7 +4247,7 @@ class ControlledVocabularyStringType(GeneratedsSuper):
     def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='ControlledVocabularyStringType'):
         if self.xsi_type is not None and 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
-            outfile.write('  xsi:type=%s' % self.gds_format_string(quote_attrib(self.xsi_type).encode(ExternalEncoding), input_name='xsi:type'))
+            outfile.write(' xsi:type=%s' % self.gds_format_string(quote_attrib(self.xsi_type).encode(ExternalEncoding), input_name='xsi:type'))
         if self.vocab_reference is not None and 'vocab_reference' not in already_processed:
             already_processed.add('vocab_reference')
             outfile.write(' vocab_reference=%s' % (self.gds_format_string(quote_attrib(self.vocab_reference).encode(ExternalEncoding), input_name='vocab_reference'), ))
@@ -4118,25 +4255,6 @@ class ControlledVocabularyStringType(GeneratedsSuper):
             already_processed.add('vocab_name')
             outfile.write(' vocab_name=%s' % (self.gds_format_string(quote_attrib(self.vocab_name).encode(ExternalEncoding), input_name='vocab_name'), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ControlledVocabularyStringType', fromsubclass_=False, pretty_print=True):
-        pass
-    def exportLiteral(self, outfile, level, name_='ControlledVocabularyStringType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.vocab_reference is not None and 'vocab_reference' not in already_processed:
-            already_processed.add('vocab_reference')
-            showIndent(outfile, level)
-            outfile.write('vocab_reference = "%s",\n' % (self.vocab_reference,))
-        if self.vocab_name is not None and 'vocab_name' not in already_processed:
-            already_processed.add('vocab_name')
-            showIndent(outfile, level)
-            outfile.write('vocab_name = "%s",\n' % (self.vocab_name,))
-    def exportLiteralChildren(self, outfile, level, name_):
         pass
     def build(self, node):
         already_processed = set()
@@ -4162,139 +4280,7 @@ class ControlledVocabularyStringType(GeneratedsSuper):
         pass
 # end class ControlledVocabularyStringType
 
-GDSClassesMapping = {
-    'Build_Utility': cybox_common_binding.BuildUtilityType,
-    'Errors': cybox_common_binding.ErrorsType,
-    'Defined_Effect': cybox_core_binding.DefinedEffectType,
-    'Time': cybox_common_binding.TimeType,
-    'Action': cybox_core_binding.ActionType,
-    'Certificate_Issuer': cybox_common_binding.StringObjectPropertyType,
-    'Metadata': cybox_common_binding.MetadataType,
-    'Hash': cybox_common_binding.HashType,
-    'Object': cybox_core_binding.ObjectType,
-    'Internal_Strings': cybox_common_binding.InternalStringsType,
-    'Observable': cybox_core_binding.ObservableType,
-    'SubDatum': cybox_common_binding.MetadataType,
-    'Segment_Hash': cybox_common_binding.HashValueType,
-    'Digital_Signature': cybox_common_binding.DigitalSignatureInfoType,
-    'Code_Snippets': cybox_common_binding.CodeSnippetsType,
-    'Related_Object': cybox_core_binding.RelatedObjectType,
-    'Value': cybox_common_binding.StringObjectPropertyType,
-    'Length': cybox_common_binding.IntegerObjectPropertyType,
-    'Evasion_Techniques': cybox_core_binding.ObfuscationTechniquesType,
-    'Old_Object': cybox_core_binding.ObjectType,
-    'Encoding': ControlledVocabularyStringType,
-    'Internationalization_Settings': cybox_common_binding.InternationalizationSettingsType,
-    'Tool_Configuration': cybox_common_binding.ToolConfigurationType,
-    'Associated_Objects': cybox_core_binding.AssociatedObjectsType,
-    'Object_Pool': cybox_core_binding.ObjectPoolType,
-    'English_Translation': cybox_common_binding.StringObjectPropertyType,
-    'Event': cybox_core_binding.EventType,
-    'Functions': cybox_common_binding.FunctionsType,
-    'String_Value': cybox_common_binding.StringObjectPropertyType,
-    'Build_Utility_Platform_Specification': cybox_common_binding.PlatformSpecificationType,
-    'Compiler_Informal_Description': cybox_common_binding.CompilerInformalDescriptionType,
-    'Related_Objects': cybox_core_binding.RelatedObjectsType,
-    'System': cybox_common_binding.ObjectPropertiesType,
-    'Source': ControlledVocabularyStringType,
-    'State': ControlledVocabularyStringType,
-    'Usage_Context_Assumptions': cybox_common_binding.UsageContextAssumptionsType,
-    'Platform': cybox_common_binding.PlatformSpecificationType,
-    'Type': ControlledVocabularyStringType,
-    'Compilers': cybox_common_binding.CompilersType,
-    'Tool_Type': ControlledVocabularyStringType,
-    'String': cybox_common_binding.ExtractedStringType,
-    'Relationship': ControlledVocabularyStringType,
-    'Custom_Properties': cybox_common_binding.CustomPropertiesType,
-    'Build_Information': cybox_common_binding.BuildInformationType,
-    'Obfuscation_Technique': cybox_core_binding.ObfuscationTechniqueType,
-    'Tool_Hashes': cybox_common_binding.HashListType,
-    'Error_Instances': cybox_common_binding.ErrorInstancesType,
-    'Action_Pool': cybox_core_binding.ActionPoolType,
-    'Data_Segment': cybox_common_binding.StringObjectPropertyType,
-    'Certificate_Subject': cybox_common_binding.StringObjectPropertyType,
-    'Properties': cybox_core_binding.PropertiesType,
-    'Property': cybox_common_binding.PropertyType,
-    'Strings': cybox_common_binding.ExtractedStringsType,
-    'Action_Argument': cybox_core_binding.ActionArgumentType,
-    'File_System_Offset': cybox_common_binding.IntegerObjectPropertyType,
-    'Reference_Description': StructuredTextType,
-    'Code_Snippet': cybox_common_binding.ObjectPropertiesType,
-    'Configuration_Settings': cybox_common_binding.ConfigurationSettingsType,
-    'Compiler_Platform_Specification': cybox_common_binding.PlatformSpecificationType,
-    'Observable_Source': cybox_common_binding.MeasureSourceType,
-    'Byte_String_Value': cybox_common_binding.HexBinaryObjectPropertyType,
-    'Association_Type': ControlledVocabularyStringType,
-    'Observable_Package_Source': cybox_common_binding.MeasureSourceType,
-    'Instance': cybox_common_binding.ObjectPropertiesType,
-    'Associated_Object': cybox_core_binding.AssociatedObjectType,
-    'Observables': cybox_core_binding.ObservablesType,
-    'Import': cybox_common_binding.StringObjectPropertyType,
-    'Observable_Composition': cybox_core_binding.ObservableCompositionType,
-    'Identifier': cybox_common_binding.PlatformIdentifierType,
-    'Property_Pool': cybox_core_binding.PropertyPoolType,
-    'Tool_Specific_Data': cybox_common_binding.ToolSpecificDataType,
-    'Execution_Environment': cybox_common_binding.ExecutionEnvironmentType,
-    'Search_Distance': cybox_common_binding.IntegerObjectPropertyType,
-    'Domain_Specific_Object_Properties': cybox_core_binding.DomainSpecificObjectPropertiesType,
-    'Dependencies': cybox_common_binding.DependenciesType,
-    'Segment_Count': cybox_common_binding.IntegerObjectPropertyType,
-    'Offset': cybox_common_binding.IntegerObjectPropertyType,
-    'Date': cybox_common_binding.DateRangeType,
-    'Hashes': cybox_common_binding.HashListType,
-    'Data': cybox_common_binding.DataSegmentType,
-    'Segments': cybox_common_binding.HashSegmentsType,
-    'Action_Reference': cybox_core_binding.ActionReferenceType,
-    'Language': cybox_common_binding.StringObjectPropertyType,
-    'Usage_Context_Assumption': StructuredTextType,
-    'Block_Hash': cybox_common_binding.FuzzyHashBlockType,
-    'Dependency': cybox_common_binding.DependencyType,
-    'Error': cybox_common_binding.ErrorType,
-    'Pools': cybox_core_binding.PoolsType,
-    'Event_Pool': cybox_core_binding.EventPoolType,
-    'Trigger_Point': cybox_common_binding.HexBinaryObjectPropertyType,
-    'Environment_Variable': cybox_common_binding.EnvironmentVariableType,
-    'Byte_Run': cybox_common_binding.ByteRunType,
-    'Libraries': cybox_common_binding.LibrariesType,
-    'Contributors': cybox_common_binding.PersonnelType,
-    'Image_Offset': cybox_common_binding.IntegerObjectPropertyType,
-    'Imports': cybox_common_binding.ImportsType,
-    'Library': cybox_common_binding.LibraryType,
-    'Action_Arguments': cybox_core_binding.ActionArgumentsType,
-    'Frequency': cybox_core_binding.FrequencyType,
-    'References': cybox_common_binding.ToolReferencesType,
-    'Keywords': cybox_core_binding.KeywordsType,
-    'Pattern_Fidelity': cybox_core_binding.PatternFidelityType,
-    'Block_Hash_Value': cybox_common_binding.HashValueType,
-    'Fuzzy_Hash_Structure': cybox_common_binding.FuzzyHashStructureType,
-    'Configuration_Setting': cybox_common_binding.ConfigurationSettingType,
-    'Function': cybox_common_binding.StringObjectPropertyType,
-    'Description': StructuredTextType,
-    'User_Account_Info': cybox_common_binding.ObjectPropertiesType,
-    'Build_Configuration': cybox_common_binding.BuildConfigurationType,
-    'Discovery_Method': cybox_common_binding.MeasureSourceType,
-    'Action_Pertinent_Object_Properties': cybox_core_binding.ActionPertinentObjectPropertiesType,
-    'Observation_Method': cybox_common_binding.MeasureSourceType,
-    'Address': cybox_common_binding.HexBinaryObjectPropertyType,
-    'Search_Within': cybox_common_binding.IntegerObjectPropertyType,
-    'Segment': cybox_common_binding.HashSegmentType,
-    'Compiler': cybox_common_binding.CompilerType,
-    'Name': ControlledVocabularyStringType,
-    'Values': cybox_core_binding.ValuesType,
-    'Signature_Description': cybox_common_binding.StringObjectPropertyType,
-    'Block_Size': cybox_common_binding.IntegerObjectPropertyType,
-    'Simple_Hash_Value': cybox_common_binding.SimpleHashValueType,
-    'New_Object': cybox_core_binding.ObjectType,
-    'Argument_Name': ControlledVocabularyStringType,
-    'Fuzzy_Hash_Value': cybox_common_binding.FuzzyHashValueType,
-    'Actions': cybox_core_binding.ActionsType,
-    'Data_Size': cybox_common_binding.DataSizeType,
-    'Dependency_Description': StructuredTextType,
-    'Contributor': cybox_common_binding.ContributorType,
-    'Action_Aliases': cybox_core_binding.ActionAliasesType,
-    'Tools': cybox_common_binding.ToolsInformationType,
-    'Tool': cybox_common_binding.ToolInformationType,
-}
+GDSClassesMapping = {}
 
 USAGE_TEXT = """
 Usage: python <Parser>.py [ -s ] <in_xml_file>
@@ -4361,25 +4347,6 @@ def parseString(inString):
     # sys.stdout.write('<?xml version="1.0" ?>\n')
     # rootObj.export(sys.stdout, 0, name_="InformationSourceType",
     #     namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'InformationSourceType'
-        rootClass = InformationSourceType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from stix_common_binding.import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import stix.bindings.stix_common as stix_common_binding_binding.as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

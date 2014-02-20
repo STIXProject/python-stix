@@ -22,7 +22,7 @@ from datetime import datetime, tzinfo, timedelta
 XML_NS = "http://stix.mitre.org/Incident-1"
 
 etree_ = None
-Verbose_import_ = False
+Verbose_import_ = False 
 (   XMLParser_import_none, XMLParser_import_lxml,
     XMLParser_import_elementtree
     ) = range(3)
@@ -558,35 +558,6 @@ class PropertyAffectedType(GeneratedsSuper):
             self.Duration_Of_Availability_Loss.export(outfile, level, nsmap, namespace_, name_='Duration_Of_Availability_Loss', pretty_print=pretty_print)
         if self.Non_Public_Data_Compromised is not None:
             self.Non_Public_Data_Compromised.export(outfile, level, nsmap, namespace_, name_='Non_Public_Data_Compromised', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='PropertyAffectedType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Property is not None:
-            outfile.write('Property=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Property.exportLiteral(outfile, level, name_='Property')
-            outfile.write('),\n')
-        if self.Description_Of_Effect is not None:
-            outfile.write('Description_Of_Effect=model_.stix_common_binding.StructuredTextType(\n')
-            self.Description_Of_Effect.exportLiteral(outfile, level, name_='Description_Of_Effect')
-            outfile.write('),\n')
-        if self.Type_Of_Availability_Loss is not None:
-            outfile.write('Type_Of_Availability_Loss=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Type_Of_Availability_Loss.exportLiteral(outfile, level, name_='Type_Of_Availability_Loss')
-            outfile.write('),\n')
-        if self.Duration_Of_Availability_Loss is not None:
-            outfile.write('Duration_Of_Availability_Loss=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Duration_Of_Availability_Loss.exportLiteral(outfile, level, name_='Duration_Of_Availability_Loss')
-            outfile.write('),\n')
-        if self.Non_Public_Data_Compromised is not None:
-            outfile.write('Non_Public_Data_Compromised=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Non_Public_Data_Compromised.exportLiteral(outfile, level, name_='Non_Public_Data_Compromised')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -613,7 +584,7 @@ class PropertyAffectedType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Duration_Of_Availability_Loss(obj_)
         elif nodeName_ == 'Non_Public_Data_Compromised':
-            obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
+            obj_ = NonPublicDataCompromisedType.factory()
             obj_.build(child_)
             self.set_Non_Public_Data_Compromised(obj_)
 # end class PropertyAffectedType
@@ -711,53 +682,6 @@ class AffectedAssetType(GeneratedsSuper):
             self.Nature_Of_Security_Effect.export(outfile, level, nsmap, namespace_, name_='Nature_Of_Security_Effect', pretty_print=pretty_print)
         if self.Structured_Description is not None:
             self.Structured_Description.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Structured_Description', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='AffectedAssetType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Type is not None:
-            outfile.write('Type=model_.AssetTypeType(\n')
-            self.Type.exportLiteral(outfile, level, name_='Type')
-            outfile.write('),\n')
-        if self.Description is not None:
-            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
-            self.Description.exportLiteral(outfile, level, name_='Description')
-            outfile.write('),\n')
-        if self.Business_Function_Or_Role is not None:
-            outfile.write('Business_Function_Or_Role=model_.stix_common_binding.StructuredTextType(\n')
-            self.Business_Function_Or_Role.exportLiteral(outfile, level, name_='Business_Function_Or_Role')
-            outfile.write('),\n')
-        if self.Ownership_Class is not None:
-            outfile.write('Ownership_Class=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Ownership_Class.exportLiteral(outfile, level, name_='Ownership_Class')
-            outfile.write('),\n')
-        if self.Management_Class is not None:
-            outfile.write('Management_Class=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Management_Class.exportLiteral(outfile, level, name_='Management_Class')
-            outfile.write('),\n')
-        if self.Location_Class is not None:
-            outfile.write('Location_Class=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Location_Class.exportLiteral(outfile, level, name_='Location_Class')
-            outfile.write('),\n')
-        if self.stix_common_binding.AddressAbstractType is not None:
-            showIndent(outfile, level)
-            outfile.write('stix_common_binding.AddressAbstractType=model_.stix_common_binding.AddressAbstractType(\n')
-            self.stix_common_binding.AddressAbstractType.exportLiteral(outfile, level)
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        if self.Nature_Of_Security_Effect is not None:
-            outfile.write('Nature_Of_Security_Effect=model_.NatureOfSecurityEffectType(\n')
-            self.Nature_Of_Security_Effect.exportLiteral(outfile, level, name_='Nature_Of_Security_Effect')
-            outfile.write('),\n')
-        if self.Structured_Description is not None:
-            outfile.write('Structured_Description=model_.cybox_core_binding.ObservablesType(\n')
-            self.Structured_Description.exportLiteral(outfile, level, name_='Structured_Description')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -801,7 +725,7 @@ class AffectedAssetType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-                
+
                 if type_name_ == "CIQAddress3.0InstanceType":
                     import stix.bindings.extensions.address.ciq_address_3_0 as ciq_address_binding
                     obj_ = ciq_address_binding.CIQAddress3_0InstanceType.factory()
@@ -809,7 +733,7 @@ class AffectedAssetType(GeneratedsSuper):
                     raise NotImplementedError('No implementation class found for: ' + type_name_)
             else:
                 raise NotImplementedError('Class not implemented for <Location> element')
-            
+
             obj_.build(child_)
             self.set_Location(obj_)
         elif nodeName_ == 'Nature_Of_Security_Effect':
@@ -899,41 +823,6 @@ class ImpactAssessmentType(GeneratedsSuper):
             self.Effects.export(outfile, level, nsmap, namespace_, name_='Effects', pretty_print=pretty_print)
         if self.External_Impact_Assessment_Model is not None:
             self.External_Impact_Assessment_Model.export(outfile, level, nsmap, namespace_, name_='External_Impact_Assessment_Model', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='ImpactAssessmentType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Direct_Impact_Summary is not None:
-            outfile.write('Direct_Impact_Summary=model_.DirectImpactSummaryType(\n')
-            self.Direct_Impact_Summary.exportLiteral(outfile, level, name_='Direct_Impact_Summary')
-            outfile.write('),\n')
-        if self.Indirect_Impact_Summary is not None:
-            outfile.write('Indirect_Impact_Summary=model_.IndirectImpactSummaryType(\n')
-            self.Indirect_Impact_Summary.exportLiteral(outfile, level, name_='Indirect_Impact_Summary')
-            outfile.write('),\n')
-        if self.Total_Loss_Estimation is not None:
-            outfile.write('Total_Loss_Estimation=model_.TotalLossEstimationType(\n')
-            self.Total_Loss_Estimation.exportLiteral(outfile, level, name_='Total_Loss_Estimation')
-            outfile.write('),\n')
-        if self.Impact_Qualification is not None:
-            outfile.write('Impact_Qualification=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Impact_Qualification.exportLiteral(outfile, level, name_='Impact_Qualification')
-            outfile.write('),\n')
-        if self.Effects is not None:
-            outfile.write('Effects=model_.EffectsType(\n')
-            self.Effects.exportLiteral(outfile, level, name_='Effects')
-            outfile.write('),\n')
-        if self.ExternalImpactAssessmentModelType is not None:
-            showIndent(outfile, level)
-            outfile.write('ExternalImpactAssessmentModelType=model_.ExternalImpactAssessmentModelType(\n')
-            self.ExternalImpactAssessmentModelType.exportLiteral(outfile, level)
-            showIndent(outfile, level)
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1036,23 +925,6 @@ class ExternalImpactAssessmentModelType(GeneratedsSuper):
             outfile.write(' model_reference=%s' % (self.gds_format_string(quote_attrib(self.model_reference).encode(ExternalEncoding), input_name='model_reference'), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ExternalImpactAssessmentModelType', fromsubclass_=False, pretty_print=True):
         pass
-    def exportLiteral(self, outfile, level, name_='ExternalImpactAssessmentModelType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.model_name is not None and 'model_name' not in already_processed:
-            already_processed.add('model_name')
-            showIndent(outfile, level)
-            outfile.write('model_name = "%s",\n' % (self.model_name,))
-        if self.model_reference is not None and 'model_reference' not in already_processed:
-            already_processed.add('model_reference')
-            showIndent(outfile, level)
-            outfile.write('model_reference = "%s",\n' % (self.model_reference,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        pass
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1136,27 +1008,6 @@ class COATakenType(GeneratedsSuper):
             self.Contributors.export(outfile, level, nsmap, namespace_, name_='Contributors', pretty_print=pretty_print)
         if self.Course_Of_Action is not None:
             self.Course_Of_Action.export(outfile, level, nsmap, namespace_, name_='Course_Of_Action', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='COATakenType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Time is not None:
-            outfile.write('Time=model_.COATimeType(\n')
-            self.Time.exportLiteral(outfile, level, name_='Time')
-            outfile.write('),\n')
-        if self.Contributors is not None:
-            outfile.write('Contributors=model_.ContributorsType(\n')
-            self.Contributors.exportLiteral(outfile, level, name_='Contributors')
-            outfile.write('),\n')
-        if self.Course_Of_Action is not None:
-            outfile.write('Course_Of_Action=model_.stix_common_binding.CourseOfActionBaseType(\n')
-            self.Course_Of_Action.exportLiteral(outfile, level, name_='Course_Of_Action')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1187,7 +1038,7 @@ class COATakenType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "CourseOfActionType":
                     import stix.bindings.course_of_action as coa_binding
                     obj_ = coa_binding.CourseOfActionType.factory()
@@ -1195,7 +1046,7 @@ class COATakenType(GeneratedsSuper):
                     raise NotImplementedError('Class not implemented for element type: ' + type_name_)
             else:
                 obj_ = stix_common_binding.CourseOfActionBaseType.factory() # not abstract
-           
+
             obj_.build(child_)
             self.set_Course_Of_Action(obj_)
 # end class COATakenType
@@ -1204,11 +1055,19 @@ class JournalEntryType(GeneratedsSuper):
     """The JournalEntryType is optional and provides journal notes for
     information discovered during the handling of the
     Incident.Specifies the author of the JournalEntry note.Specifies
-    the date and time that the JournalEntry note was written."""
+    the date and time that the JournalEntry note was written.In
+    order to avoid ambiguity, it is strongly suggest that all
+    timestamps include a specification of the timezone if it is
+    known.Represents the precision of the associated time value. If
+    omitted, the default is "second", meaning the timestamp is
+    precise to the full field value. Digits in the timestamp that
+    are required by the xs:dateTime datatype but are beyond the
+    specified precision should be zeroed out."""
     subclass = None
     superclass = None
-    def __init__(self, time=None, author=None, valueOf_=None):
+    def __init__(self, time=None, time_precision='second', author=None, valueOf_=None):
         self.time = _cast(None, time)
+        self.time_precision = _cast(None, time_precision)
         self.author = _cast(None, author)
         self.valueOf_ = valueOf_
     def factory(*args_, **kwargs_):
@@ -1219,6 +1078,8 @@ class JournalEntryType(GeneratedsSuper):
     factory = staticmethod(factory)
     def get_time(self): return self.time
     def set_time(self, time): self.time = time
+    def get_time_precision(self): return self.time_precision
+    def set_time_precision(self, time_precision): self.time_precision = time_precision
     def get_author(self): return self.author
     def set_author(self, author): self.author = author
     def get_valueOf_(self): return self.valueOf_
@@ -1241,7 +1102,7 @@ class JournalEntryType(GeneratedsSuper):
         self.exportAttributes(outfile, level, already_processed, namespace_, name_='JournalEntryType')
         if self.hasContent_():
             outfile.write('>')
-            outfile.write(unicode(self.valueOf_).encode(ExternalEncoding))
+            outfile.write(str(self.valueOf_).encode(ExternalEncoding))
             self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
@@ -1250,29 +1111,13 @@ class JournalEntryType(GeneratedsSuper):
         if self.time is not None and 'time' not in already_processed:
             already_processed.add('time')
             outfile.write(' time="%s"' % self.gds_format_datetime(self.time, input_name='time'))
+        if self.time_precision is not None and 'time_precision' not in already_processed:
+            already_processed.add('time_precision')
+            outfile.write(' time_precision=%s' % (quote_attrib(self.time_precision), ))
         if self.author is not None and 'author' not in already_processed:
             already_processed.add('author')
             outfile.write(' author=%s' % (self.gds_format_string(quote_attrib(self.author).encode(ExternalEncoding), input_name='author'), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='JournalEntryType', fromsubclass_=False, pretty_print=True):
-        pass
-    def exportLiteral(self, outfile, level, name_='JournalEntryType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.time is not None and 'time' not in already_processed:
-            already_processed.add('time')
-            showIndent(outfile, level)
-            outfile.write('time = "%s",\n' % (self.time,))
-        if self.author is not None and 'author' not in already_processed:
-            already_processed.add('author')
-            showIndent(outfile, level)
-            outfile.write('author = "%s",\n' % (self.author,))
-    def exportLiteralChildren(self, outfile, level, name_):
         pass
     def build(self, node):
         already_processed = set()
@@ -1289,6 +1134,10 @@ class JournalEntryType(GeneratedsSuper):
                 self.time = self.gds_parse_datetime(value, node, 'time')
             except ValueError, exp:
                 raise ValueError('Bad date-time attribute (time): %s' % exp)
+        value = find_attr_value_('time_precision', node)
+        if value is not None and 'time_precision' not in already_processed:
+            already_processed.add('time_precision')
+            self.time_precision = value
         value = find_attr_value_('author', node)
         if value is not None and 'author' not in already_processed:
             already_processed.add('author')
@@ -1297,13 +1146,14 @@ class JournalEntryType(GeneratedsSuper):
         pass
 # end class JournalEntryType
 
+
 class COARequestedType(COATakenType):
     """Specifies a suggested level of priority to be applied to this
     requested COA."""
     subclass = None
     superclass = COATakenType
     def __init__(self, Time=None, Contributors=None, Course_Of_Action=None, priority=None):
-        super(COARequestedType, self).__init__(Time, Contributors, Course_Of_Action, )
+        super(COARequestedType, self).__init__(Time=Time, Contributors=Contributors, Course_Of_Action=Course_Of_Action)
         self.priority = _cast(None, priority)
         pass
     def factory(*args_, **kwargs_):
@@ -1344,20 +1194,6 @@ class COARequestedType(COATakenType):
             outfile.write(' priority=%s' % (self.gds_format_string(quote_attrib(self.priority).encode(ExternalEncoding), input_name='priority'), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='COARequestedType', fromsubclass_=False, pretty_print=True):
         super(COARequestedType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='COARequestedType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.priority is not None and 'priority' not in already_processed:
-            already_processed.add('priority')
-            showIndent(outfile, level)
-            outfile.write('priority = "%s",\n' % (self.priority,))
-        super(COARequestedType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(COARequestedType, self).exportLiteralChildren(outfile, level, name_)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1420,19 +1256,6 @@ class ContributorsType(GeneratedsSuper):
             eol_ = ''
         if self.Contributor is not None:
             self.Contributor.export(outfile, level, nsmap, namespace_, name_='Contributor', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='ContributorsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Contributor is not None:
-            outfile.write('Contributor=model_.cybox_common_binding.ContributorType(\n')
-            self.Contributor.exportLiteral(outfile, level, name_='Contributor')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1496,26 +1319,9 @@ class COATimeType(GeneratedsSuper):
         else:
             eol_ = ''
         if self.Start is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Start>%s</%s:Start>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Start, input_name='Start'), nsmap[namespace_], eol_))
+            self.Start.export(outfile, level, nsmap, namespace_, name_='Start', pretty_print=pretty_print)
         if self.End is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:End>%s</%s:End>%s' % (nsmap[namespace_], self.gds_format_datetime(self.End, input_name='End'), nsmap[namespace_], eol_))
-    def exportLiteral(self, outfile, level, name_='COATimeType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Start is not None:
-            showIndent(outfile, level)
-            outfile.write('Start=datetime_.strptime("%s", "%%Y-%%m-%%dT%%H:%%M:%%S"),\n' % self.gds_format_datetime(self.Start, input_name='Start'))
-        if self.End is not None:
-            showIndent(outfile, level)
-            outfile.write('End=datetime_.strptime("%s", "%%Y-%%m-%%dT%%H:%%M:%%S"),\n' % self.gds_format_datetime(self.End, input_name='End'))
+            self.End.export(outfile, level, nsmap, namespace_, name_='End', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1526,13 +1332,13 @@ class COATimeType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Start':
-            sval_ = child_.text
-            dval_ = self.gds_parse_datetime(sval_, node, 'Start')
-            self.Start = dval_
+            obj_ = stix_common_binding.DateTimeWithPrecisionType.factory()
+            obj_.build(child_)
+            self.set_Start(obj_)
         elif nodeName_ == 'End':
-            sval_ = child_.text
-            dval_ = self.gds_parse_datetime(sval_, node, 'End')
-            self.End = dval_
+            obj_ = stix_common_binding.DateTimeWithPrecisionType.factory()
+            obj_.build(child_)
+            self.set_End(obj_)
 # end class COATimeType
 
 class LossEstimationType(GeneratedsSuper):
@@ -1584,23 +1390,6 @@ class LossEstimationType(GeneratedsSuper):
             already_processed.add('amount')
             outfile.write(' amount=%s' % (self.gds_format_string(quote_attrib(self.amount).encode(ExternalEncoding), input_name='amount'), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='LossEstimationType', fromsubclass_=False, pretty_print=True):
-        pass
-    def exportLiteral(self, outfile, level, name_='LossEstimationType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.iso_currency_code is not None and 'iso_currency_code' not in already_processed:
-            already_processed.add('iso_currency_code')
-            showIndent(outfile, level)
-            outfile.write('iso_currency_code = "%s",\n' % (self.iso_currency_code,))
-        if self.amount is not None and 'amount' not in already_processed:
-            already_processed.add('amount')
-            showIndent(outfile, level)
-            outfile.write('amount = "%s",\n' % (self.amount,))
-    def exportLiteralChildren(self, outfile, level, name_):
         pass
     def build(self, node):
         already_processed = set()
@@ -1672,23 +1461,6 @@ class TotalLossEstimationType(GeneratedsSuper):
             self.Initial_Reported_Total_Loss_Estimation.export(outfile, level, nsmap, namespace_, name_='Initial_Reported_Total_Loss_Estimation', pretty_print=pretty_print)
         if self.Actual_Total_Loss_Estimation is not None:
             self.Actual_Total_Loss_Estimation.export(outfile, level, nsmap, namespace_, name_='Actual_Total_Loss_Estimation', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='TotalLossEstimationType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Initial_Reported_Total_Loss_Estimation is not None:
-            outfile.write('Initial_Reported_Total_Loss_Estimation=model_.LossEstimationType(\n')
-            self.Initial_Reported_Total_Loss_Estimation.exportLiteral(outfile, level, name_='Initial_Reported_Total_Loss_Estimation')
-            outfile.write('),\n')
-        if self.Actual_Total_Loss_Estimation is not None:
-            outfile.write('Actual_Total_Loss_Estimation=model_.LossEstimationType(\n')
-            self.Actual_Total_Loss_Estimation.exportLiteral(outfile, level, name_='Actual_Total_Loss_Estimation')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1771,31 +1543,6 @@ class IndirectImpactSummaryType(GeneratedsSuper):
             self.Increased_Operating_Costs.export(outfile, level, nsmap, namespace_, name_='Increased_Operating_Costs', pretty_print=pretty_print)
         if self.Legal_And_Regulatory_Costs is not None:
             self.Legal_And_Regulatory_Costs.export(outfile, level, nsmap, namespace_, name_='Legal_And_Regulatory_Costs', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='IndirectImpactSummaryType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Loss_Of_Competitive_Advantage is not None:
-            outfile.write('Loss_Of_Competitive_Advantage=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Loss_Of_Competitive_Advantage.exportLiteral(outfile, level, name_='Loss_Of_Competitive_Advantage')
-            outfile.write('),\n')
-        if self.Brand_And_Market_Damage is not None:
-            outfile.write('Brand_And_Market_Damage=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Brand_And_Market_Damage.exportLiteral(outfile, level, name_='Brand_And_Market_Damage')
-            outfile.write('),\n')
-        if self.Increased_Operating_Costs is not None:
-            outfile.write('Increased_Operating_Costs=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Increased_Operating_Costs.exportLiteral(outfile, level, name_='Increased_Operating_Costs')
-            outfile.write('),\n')
-        if self.Legal_And_Regulatory_Costs is not None:
-            outfile.write('Legal_And_Regulatory_Costs=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Legal_And_Regulatory_Costs.exportLiteral(outfile, level, name_='Legal_And_Regulatory_Costs')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1880,29 +1627,6 @@ class DirectImpactSummaryType(GeneratedsSuper):
             self.Business_Mission_Disruption.export(outfile, level, nsmap, namespace_, name_='Business-Mission_Disruption', pretty_print=pretty_print)
         if self.Response_And_Recovery_Costs is not None:
             self.Response_And_Recovery_Costs.export(outfile, level, nsmap, namespace_, name_='Response_And_Recovery_Costs', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='DirectImpactSummaryType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Asset_Losses is not None:
-            outfile.write('Asset_Losses=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Asset_Losses.exportLiteral(outfile, level, name_='Asset_Losses')
-            outfile.write('),\n')
-        if self.Business_Mission_Disruption is not None:
-            showIndent(outfile, level)
-            outfile.write('Business_Mission_Disruption=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Business_Mission_Disruption.exportLiteral(outfile, level, name_='Business_Mission_Disruption')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        if self.Response_And_Recovery_Costs is not None:
-            outfile.write('Response_And_Recovery_Costs=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Response_And_Recovery_Costs.exportLiteral(outfile, level, name_='Response_And_Recovery_Costs')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1976,26 +1700,6 @@ class NatureOfSecurityEffectType(GeneratedsSuper):
             eol_ = ''
         for Property_Affected_ in self.Property_Affected:
             Property_Affected_.export(outfile, level, nsmap, namespace_, name_='Property_Affected', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='NatureOfSecurityEffectType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Property_Affected=[\n')
-        level += 1
-        for Property_Affected_ in self.Property_Affected:
-            outfile.write('model_.PropertyAffectedType(\n')
-            Property_Affected_.exportLiteral(outfile, level, name_='PropertyAffectedType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2062,23 +1766,6 @@ class HistoryItemType(GeneratedsSuper):
             self.Action_Entry.export(outfile, level, nsmap, namespace_, name_='Action_Entry', pretty_print=pretty_print)
         if self.Journal_Entry is not None:
             self.Journal_Entry.export(outfile, level, nsmap, namespace_, name_='Journal_Entry', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='HistoryItemType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Action_Entry is not None:
-            outfile.write('Action_Entry=model_.COATakenType(\n')
-            self.Action_Entry.exportLiteral(outfile, level, name_='Action_Entry')
-            outfile.write('),\n')
-        if self.Journal_Entry is not None:
-            outfile.write('Journal_Entry=model_.JournalEntryType(\n')
-            self.Journal_Entry.exportLiteral(outfile, level, name_='Journal_Entry')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2148,26 +1835,6 @@ class HistoryType(GeneratedsSuper):
             eol_ = ''
         for History_Item_ in self.History_Item:
             History_Item_.export(outfile, level, nsmap, namespace_, name_='History_Item', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='HistoryType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('History_Item=[\n')
-        level += 1
-        for History_Item_ in self.History_Item:
-            outfile.write('model_.HistoryItemType(\n')
-            History_Item_.exportLiteral(outfile, level, name_='HistoryItemType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2233,26 +1900,6 @@ class AffectedAssetsType(GeneratedsSuper):
             eol_ = ''
         for Affected_Asset_ in self.Affected_Asset:
             Affected_Asset_.export(outfile, level, nsmap, namespace_, name_='Affected_Asset', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='AffectedAssetsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Affected_Asset=[\n')
-        level += 1
-        for Affected_Asset_ in self.Affected_Asset:
-            outfile.write('model_.AffectedAssetType(\n')
-            Affected_Asset_.exportLiteral(outfile, level, name_='AffectedAssetType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2344,68 +1991,23 @@ class TimeType(GeneratedsSuper):
         else:
             eol_ = ''
         if self.First_Malicious_Action is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:First_Malicious_Action>%s</%s:First_Malicious_Action>%s' % (nsmap[namespace_], self.gds_format_datetime(self.First_Malicious_Action, input_name='First_Malicious_Action'), nsmap[namespace_], eol_))
+            self.First_Malicious_Action.export(outfile, level, nsmap, namespace_, name_='First_Malicious_Action', pretty_print=pretty_print)
         if self.Initial_Compromise is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Initial_Compromise>%s</%s:Initial_Compromise>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Initial_Compromise, input_name='Initial_Compromise'), nsmap[namespace_], eol_))
+            self.Initial_Compromise.export(outfile, level, nsmap, namespace_, name_='Initial_Compromise', pretty_print=pretty_print)
         if self.First_Data_Exfiltration is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:First_Data_Exfiltration>%s</%s:First_Data_Exfiltration>%s' % (nsmap[namespace_], self.gds_format_datetime(self.First_Data_Exfiltration, input_name='First_Data_Exfiltration'), nsmap[namespace_], eol_))
+            self.First_Data_Exfiltration.export(outfile, level, nsmap, namespace_, name_='First_Data_Exfiltration', pretty_print=pretty_print)
         if self.Incident_Discovery is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Incident_Discovery>%s</%s:Incident_Discovery>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Incident_Discovery, input_name='Incident_Discovery'), nsmap[namespace_], eol_))
+            self.Incident_Discovery.export(outfile, level, nsmap, namespace_, name_='Incident_Discovery', pretty_print=pretty_print)
         if self.Incident_Opened is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Incident_Opened>%s</%s:Incident_Opened>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Incident_Opened, input_name='Incident_Opened'), nsmap[namespace_], eol_))
+            self.Incident_Opened.export(outfile, level, nsmap, namespace_, name_='Incident_Opened', pretty_print=pretty_print)
         if self.Containment_Achieved is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Containment_Achieved>%s</%s:Containment_Achieved>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Containment_Achieved, input_name='Containment_Achieved'), nsmap[namespace_], eol_))
+            self.Containment_Achieved.export(outfile, level, nsmap, namespace_, name_='Containment_Achieved', pretty_print=pretty_print)
         if self.Restoration_Achieved is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Restoration_Achieved>%s</%s:Restoration_Achieved>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Restoration_Achieved, input_name='Restoration_Achieved'), nsmap[namespace_], eol_))
+            self.Restoration_Achieved.export(outfile, level, nsmap, namespace_, name_='Restoration_Achieved', pretty_print=pretty_print)
         if self.Incident_Reported is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Incident_Reported>%s</%s:Incident_Reported>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Incident_Reported, input_name='Incident_Reported'), nsmap[namespace_], eol_))
+            self.Incident_Reported.export(outfile, level, nsmap, namespace_, name_='Incident_Reported', pretty_print=pretty_print)
         if self.Incident_Closed is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Incident_Closed>%s</%s:Incident_Closed>%s' % (nsmap[namespace_], self.gds_format_datetime(self.Incident_Closed, input_name='Incident_Closed'), nsmap[namespace_], eol_))
-    def exportLiteral(self, outfile, level, name_='TimeType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.First_Malicious_Action is not None:
-            showIndent(outfile, level)
-            outfile.write('First_Malicious_Action=datetime_.strptime("%s", "%%Y-%%m-%%dT%%H:%%M:%%S"),\n' % self.gds_format_datetime(self.First_Malicious_Action, input_name='First_Malicious_Action'))
-        if self.Initial_Compromise is not None:
-            showIndent(outfile, level)
-            outfile.write('Initial_Compromise=datetime_.strptime("%s", "%%Y-%%m-%%dT%%H:%%M:%%S"),\n' % self.gds_format_datetime(self.Initial_Compromise, input_name='Initial_Compromise'))
-        if self.First_Data_Exfiltration is not None:
-            showIndent(outfile, level)
-            outfile.write('First_Data_Exfiltration=datetime_.strptime("%s", "%%Y-%%m-%%dT%%H:%%M:%%S"),\n' % self.gds_format_datetime(self.First_Data_Exfiltration, input_name='First_Data_Exfiltration'))
-        if self.Incident_Discovery is not None:
-            showIndent(outfile, level)
-            outfile.write('Incident_Discovery=datetime_.strptime("%s", "%%Y-%%m-%%dT%%H:%%M:%%S"),\n' % self.gds_format_datetime(self.Incident_Discovery, input_name='Incident_Discovery'))
-        if self.Incident_Opened is not None:
-            showIndent(outfile, level)
-            outfile.write('Incident_Opened=datetime_.strptime("%s", "%%Y-%%m-%%dT%%H:%%M:%%S"),\n' % self.gds_format_datetime(self.Incident_Opened, input_name='Incident_Opened'))
-        if self.Containment_Achieved is not None:
-            showIndent(outfile, level)
-            outfile.write('Containment_Achieved=datetime_.strptime("%s", "%%Y-%%m-%%dT%%H:%%M:%%S"),\n' % self.gds_format_datetime(self.Containment_Achieved, input_name='Containment_Achieved'))
-        if self.Restoration_Achieved is not None:
-            showIndent(outfile, level)
-            outfile.write('Restoration_Achieved=datetime_.strptime("%s", "%%Y-%%m-%%dT%%H:%%M:%%S"),\n' % self.gds_format_datetime(self.Restoration_Achieved, input_name='Restoration_Achieved'))
-        if self.Incident_Reported is not None:
-            showIndent(outfile, level)
-            outfile.write('Incident_Reported=datetime_.strptime("%s", "%%Y-%%m-%%dT%%H:%%M:%%S"),\n' % self.gds_format_datetime(self.Incident_Reported, input_name='Incident_Reported'))
-        if self.Incident_Closed is not None:
-            showIndent(outfile, level)
-            outfile.write('Incident_Closed=datetime_.strptime("%s", "%%Y-%%m-%%dT%%H:%%M:%%S"),\n' % self.gds_format_datetime(self.Incident_Closed, input_name='Incident_Closed'))
+            self.Incident_Closed.export(outfile, level, nsmap, namespace_, name_='Incident_Closed', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2416,41 +2018,41 @@ class TimeType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'First_Malicious_Action':
-            sval_ = child_.text
-            dval_ = self.gds_parse_datetime(sval_, node, 'First_Malicious_Action')
-            self.First_Malicious_Action = dval_
+            obj_ = stix_common_binding.DateTimeWithPrecisionType.factory()
+            obj_.build(child_)
+            self.set_First_Malicious_Action(obj_)
         elif nodeName_ == 'Initial_Compromise':
-            sval_ = child_.text
-            dval_ = self.gds_parse_datetime(sval_, node, 'Initial_Compromise')
-            self.Initial_Compromise = dval_
+            obj_ = stix_common_binding.DateTimeWithPrecisionType.factory()
+            obj_.build(child_)
+            self.set_Initial_Compromise(obj_)
         elif nodeName_ == 'First_Data_Exfiltration':
-            sval_ = child_.text
-            dval_ = self.gds_parse_datetime(sval_, node, 'First_Data_Exfiltration')
-            self.First_Data_Exfiltration = dval_
+            obj_ = stix_common_binding.DateTimeWithPrecisionType.factory()
+            obj_.build(child_)
+            self.set_First_Data_Exfiltration(obj_)
         elif nodeName_ == 'Incident_Discovery':
-            sval_ = child_.text
-            dval_ = self.gds_parse_datetime(sval_, node, 'Incident_Discovery')
-            self.Incident_Discovery = dval_
+            obj_ = stix_common_binding.DateTimeWithPrecisionType.factory()
+            obj_.build(child_)
+            self.set_Incident_Discovery(obj_)
         elif nodeName_ == 'Incident_Opened':
-            sval_ = child_.text
-            dval_ = self.gds_parse_datetime(sval_, node, 'Incident_Opened')
-            self.Incident_Opened = dval_
+            obj_ = stix_common_binding.DateTimeWithPrecisionType.factory()
+            obj_.build(child_)
+            self.set_Incident_Opened(obj_)
         elif nodeName_ == 'Containment_Achieved':
-            sval_ = child_.text
-            dval_ = self.gds_parse_datetime(sval_, node, 'Containment_Achieved')
-            self.Containment_Achieved = dval_
+            obj_ = stix_common_binding.DateTimeWithPrecisionType.factory()
+            obj_.build(child_)
+            self.set_Containment_Achieved(obj_)
         elif nodeName_ == 'Restoration_Achieved':
-            sval_ = child_.text
-            dval_ = self.gds_parse_datetime(sval_, node, 'Restoration_Achieved')
-            self.Restoration_Achieved = dval_
+            obj_ = stix_common_binding.DateTimeWithPrecisionType.factory()
+            obj_.build(child_)
+            self.set_Restoration_Achieved(obj_)
         elif nodeName_ == 'Incident_Reported':
-            sval_ = child_.text
-            dval_ = self.gds_parse_datetime(sval_, node, 'Incident_Reported')
-            self.Incident_Reported = dval_
+            obj_ = stix_common_binding.DateTimeWithPrecisionType.factory()
+            obj_.build(child_)
+            self.set_Incident_Reported(obj_)
         elif nodeName_ == 'Incident_Closed':
-            sval_ = child_.text
-            dval_ = self.gds_parse_datetime(sval_, node, 'Incident_Closed')
-            self.Incident_Closed = dval_
+            obj_ = stix_common_binding.DateTimeWithPrecisionType.factory()
+            obj_.build(child_)
+            self.set_Incident_Closed(obj_)
 # end class TimeType
 
 class CategoriesType(GeneratedsSuper):
@@ -2505,26 +2107,6 @@ class CategoriesType(GeneratedsSuper):
             eol_ = ''
         for Category_ in self.Category:
             Category_.export(outfile, level, nsmap, namespace_, name_='Category', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='CategoriesType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Category=[\n')
-        level += 1
-        for Category_ in self.Category:
-            outfile.write('model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            Category_.exportLiteral(outfile, level, name_='stix_common_binding.ControlledVocabularyStringType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2592,26 +2174,6 @@ class EffectsType(GeneratedsSuper):
             eol_ = ''
         for Effect_ in self.Effect:
             Effect_.export(outfile, level, nsmap, namespace_, name_='Effect', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='EffectsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Effect=[\n')
-        level += 1
-        for Effect_ in self.Effect:
-            outfile.write('model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            Effect_.exportLiteral(outfile, level, name_='stix_common_binding.ControlledVocabularyStringType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2633,7 +2195,7 @@ class AttributedThreatActorsType(stix_common_binding.GenericRelationshipListType
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Threat_Actor=None):
-        super(AttributedThreatActorsType, self).__init__(scope, )
+        super(AttributedThreatActorsType, self).__init__(scope=scope)
         if Threat_Actor is None:
             self.Threat_Actor = []
         else:
@@ -2682,27 +2244,6 @@ class AttributedThreatActorsType(stix_common_binding.GenericRelationshipListType
             eol_ = ''
         for Threat_Actor_ in self.Threat_Actor:
             Threat_Actor_.export(outfile, level, nsmap, namespace_, name_='Threat_Actor', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='AttributedThreatActorsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(AttributedThreatActorsType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(AttributedThreatActorsType, self).exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('Threat_Actor=[\n')
-        level += 1
-        for Threat_Actor_ in self.Threat_Actor:
-            outfile.write('model_.stix_common_binding.RelatedThreatActorType(\n')
-            Threat_Actor_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedThreatActorType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2723,7 +2264,7 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_Indicator=None):
-        super(RelatedIndicatorsType, self).__init__(scope, )
+        super(RelatedIndicatorsType, self).__init__(scope=scope)
         if Related_Indicator is None:
             self.Related_Indicator = []
         else:
@@ -2772,27 +2313,6 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
             eol_ = ''
         for Related_Indicator_ in self.Related_Indicator:
             Related_Indicator_.export(outfile, level, nsmap, namespace_, name_='Related_Indicator', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedIndicatorsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedIndicatorsType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedIndicatorsType, self).exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('Related_Indicator=[\n')
-        level += 1
-        for Related_Indicator_ in self.Related_Indicator:
-            outfile.write('model_.stix_common_binding.RelatedIndicatorType(\n')
-            Related_Indicator_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedIndicatorType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2813,7 +2333,7 @@ class RelatedObservablesType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_Observable=None):
-        super(RelatedObservablesType, self).__init__(scope, )
+        super(RelatedObservablesType, self).__init__(scope=scope)
         if Related_Observable is None:
             self.Related_Observable = []
         else:
@@ -2862,27 +2382,6 @@ class RelatedObservablesType(stix_common_binding.GenericRelationshipListType):
             eol_ = ''
         for Related_Observable_ in self.Related_Observable:
             Related_Observable_.export(outfile, level, nsmap, namespace_, name_='Related_Observable', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedObservablesType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedObservablesType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedObservablesType, self).exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('Related_Observable=[\n')
-        level += 1
-        for Related_Observable_ in self.Related_Observable:
-            outfile.write('model_.stix_common_binding.RelatedObservableType(\n')
-            Related_Observable_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedObservableType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2903,7 +2402,7 @@ class LeveragedTTPsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Leveraged_TTP=None):
-        super(LeveragedTTPsType, self).__init__(scope, )
+        super(LeveragedTTPsType, self).__init__(scope=scope)
         if Leveraged_TTP is None:
             self.Leveraged_TTP = []
         else:
@@ -2952,27 +2451,6 @@ class LeveragedTTPsType(stix_common_binding.GenericRelationshipListType):
             eol_ = ''
         for Leveraged_TTP_ in self.Leveraged_TTP:
             Leveraged_TTP_.export(outfile, level, nsmap, namespace_, name_='Leveraged_TTP', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='LeveragedTTPsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(LeveragedTTPsType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(LeveragedTTPsType, self).exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('Leveraged_TTP=[\n')
-        level += 1
-        for Leveraged_TTP_ in self.Leveraged_TTP:
-            outfile.write('model_.stix_common_binding.RelatedTTPType(\n')
-            Leveraged_TTP_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedTTPType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2993,7 +2471,7 @@ class RelatedIncidentsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_Incident=None):
-        super(RelatedIncidentsType, self).__init__(scope, )
+        super(RelatedIncidentsType, self).__init__(scope=scope)
         if Related_Incident is None:
             self.Related_Incident = []
         else:
@@ -3042,27 +2520,6 @@ class RelatedIncidentsType(stix_common_binding.GenericRelationshipListType):
             eol_ = ''
         for Related_Incident_ in self.Related_Incident:
             Related_Incident_.export(outfile, level, nsmap, namespace_, name_='Related_Incident', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedIncidentsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedIncidentsType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedIncidentsType, self).exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('Related_Incident=[\n')
-        level += 1
-        for Related_Incident_ in self.Related_Incident:
-            outfile.write('model_.stix_common_binding.RelatedIncidentType(\n')
-            Related_Incident_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedIncidentType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3094,7 +2551,7 @@ class AssetTypeType(stix_common_binding.ControlledVocabularyStringType):
     subclass = None
     superclass = stix_common_binding.ControlledVocabularyStringType
     def __init__(self, vocab_reference=None, vocab_name=None, count_affected=None, valueOf_=None):
-        super(AssetTypeType, self).__init__(vocab_reference, vocab_name, valueOf_, )
+        super(AssetTypeType, self).__init__(vocab_reference=vocab_reference, vocab_name=vocab_name, valueOf_=valueOf_)
         self.count_affected = _cast(None, count_affected)
         self.valueOf_ = valueOf_
     def factory(*args_, **kwargs_):
@@ -3139,23 +2596,6 @@ class AssetTypeType(stix_common_binding.ControlledVocabularyStringType):
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='AssetTypeType', fromsubclass_=False, pretty_print=True):
         super(AssetTypeType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         pass
-    def exportLiteral(self, outfile, level, name_='AssetTypeType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('valueOf_ = """%s""",\n' % (self.valueOf_,))
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.count_affected is not None and 'count_affected' not in already_processed:
-            already_processed.add('count_affected')
-            showIndent(outfile, level)
-            outfile.write('count_affected = "%s",\n' % (self.count_affected,))
-        super(AssetTypeType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(AssetTypeType, self).exportLiteralChildren(outfile, level, name_)
-        pass
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3180,16 +2620,21 @@ class IncidentType(stix_common_binding.IncidentBaseType):
     Incident specification."""
     subclass = None
     superclass = stix_common_binding.IncidentBaseType
-    def __init__(self, idref=None, id=None, URL=None, version=None, Title=None, Time=None, Description=None, Categories=None, Reporter=None, Responder=None, Coordinator=None, Victim=None, Affected_Assets=None, Impact_Assessment=None, Status=None, Related_Indicators=None, Related_Observables=None, Leveraged_TTPs=None, Attributed_Threat_Actors=None, Intended_Effect=None, Security_Compromise=None, Discovery_Method=None, Related_Incidents=None, COA_Requested=None, COA_Taken=None, Confidence=None, Contact=None, History=None, Handling=None):
-        super(IncidentType, self).__init__(idref, id, )
+    def __init__(self, idref=None, id=None, timestamp=None, URL=None, version=None, Title=None, External_ID=None, Time=None, Description=None, Short_Description=None, Categories=None, Reporter=None, Responder=None, Coordinator=None, Victim=None, Affected_Assets=None, Impact_Assessment=None, Status=None, Related_Indicators=None, Related_Observables=None, Leveraged_TTPs=None, Attributed_Threat_Actors=None, Intended_Effect=None, Security_Compromise=None, Discovery_Method=None, Related_Incidents=None, COA_Requested=None, COA_Taken=None, Confidence=None, Contact=None, History=None, Information_Source=None, Handling=None, Related_Packages=None):
+        super(IncidentType, self).__init__(timestamp=timestamp, idref=idref, id=id)
         self.xmlns          = "http://stix.mitre.org/Incident-1"
         self.xmlns_prefix   = "incident"
         self.xml_type       = "IncidentType"
         self.URL = _cast(None, URL)
         self.version = _cast(None, version)
         self.Title = Title
+        if External_ID is None:
+            self.External_ID = []
+        else:
+            self.External_ID = External_ID
         self.Time = Time
         self.Description = Description
+        self.Short_Description = Short_Description
         self.Categories = Categories
         self.Reporter = Reporter
         if Responder is None:
@@ -3221,15 +2666,23 @@ class IncidentType(stix_common_binding.IncidentBaseType):
         else:
             self.Discovery_Method = Discovery_Method
         self.Related_Incidents = Related_Incidents
-        self.COA_Requested = COA_Requested
-        self.COA_Taken = COA_Taken
+        if COA_Requested is None:
+            self.COA_Requested = []
+        else:
+            self.COA_Requested = COA_Requested
+        if COA_Taken is None:
+            self.COA_Taken = []
+        else:
+            self.COA_Taken = COA_Taken
         self.Confidence = Confidence
         if Contact is None:
             self.Contact = []
         else:
             self.Contact = Contact
         self.History = History
+        self.Information_Source = Information_Source
         self.Handling = Handling
+        self.Related_Packages = Related_Packages
     def factory(*args_, **kwargs_):
         if IncidentType.subclass:
             return IncidentType.subclass(*args_, **kwargs_)
@@ -3238,10 +2691,16 @@ class IncidentType(stix_common_binding.IncidentBaseType):
     factory = staticmethod(factory)
     def get_Title(self): return self.Title
     def set_Title(self, Title): self.Title = Title
+    def get_External_ID(self): return self.External_ID
+    def set_External_ID(self, External_ID): self.External_ID = External_ID
+    def add_External_ID(self, value): self.External_ID.append(value)
+    def insert_External_ID(self, index, value): self.External_ID[index] = value
     def get_Time(self): return self.Time
     def set_Time(self, Time): self.Time = Time
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def get_Short_Description(self): return self.Short_Description
+    def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Categories(self): return self.Categories
     def set_Categories(self, Categories): self.Categories = Categories
     def get_Reporter(self): return self.Reporter
@@ -3286,8 +2745,12 @@ class IncidentType(stix_common_binding.IncidentBaseType):
     def set_Related_Incidents(self, Related_Incidents): self.Related_Incidents = Related_Incidents
     def get_COA_Requested(self): return self.COA_Requested
     def set_COA_Requested(self, COA_Requested): self.COA_Requested = COA_Requested
+    def add_COA_Requested(self, value): self.COA_Requested.append(value)
+    def insert_COA_Requested(self, index, value): self.COA_Requested[index] = value
     def get_COA_Taken(self): return self.COA_Taken
     def set_COA_Taken(self, COA_Taken): self.COA_Taken = COA_Taken
+    def add_COA_Taken(self, value): self.COA_Taken.append(value)
+    def insert_COA_Taken(self, index, value): self.COA_Taken[index] = value
     def get_Confidence(self): return self.Confidence
     def set_Confidence(self, Confidence): self.Confidence = Confidence
     def get_Contact(self): return self.Contact
@@ -3296,8 +2759,12 @@ class IncidentType(stix_common_binding.IncidentBaseType):
     def insert_Contact(self, index, value): self.Contact[index] = value
     def get_History(self): return self.History
     def set_History(self, History): self.History = History
+    def get_Information_Source(self): return self.Information_Source
+    def set_Information_Source(self, Information_Source): self.Information_Source = Information_Source
     def get_Handling(self): return self.Handling
     def set_Handling(self, Handling): self.Handling = Handling
+    def get_Related_Packages(self): return self.Related_Packages
+    def set_Related_Packages(self, Related_Packages): self.Related_Packages = Related_Packages
     def get_URL(self): return self.URL
     def set_URL(self, URL): self.URL = URL
     def get_version(self): return self.version
@@ -3305,8 +2772,10 @@ class IncidentType(stix_common_binding.IncidentBaseType):
     def hasContent_(self):
         if (
             self.Title is not None or
+            self.External_ID or
             self.Time is not None or
             self.Description is not None or
+            self.Short_Description is not None or
             self.Categories is not None or
             self.Reporter is not None or
             self.Responder or
@@ -3323,12 +2792,14 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             self.Security_Compromise is not None or
             self.Discovery_Method or
             self.Related_Incidents is not None or
-            self.COA_Requested is not None or
-            self.COA_Taken is not None or
+            self.COA_Requested or
+            self.COA_Taken or
             self.Confidence is not None or
             self.Contact or
             self.History is not None or
+            self.Information_Source is not None or
             self.Handling is not None or
+            self.Related_Packages is not None or
             super(IncidentType, self).hasContent_()
             ):
             return True
@@ -3375,10 +2846,14 @@ class IncidentType(stix_common_binding.IncidentBaseType):
         if self.Title is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
+        for External_ID_ in self.External_ID:
+            External_ID_.export(outfile, level, nsmap, namespace_, name_='External_ID', pretty_print=pretty_print)
         if self.Time is not None:
             self.Time.export(outfile, level, nsmap, namespace_, name_='Time', pretty_print=pretty_print)
         if self.Description is not None:
             self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        if self.Short_Description is not None:
+            self.Short_Description.export(outfile, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         if self.Categories is not None:
             self.Categories.export(outfile, level, nsmap, namespace_, name_='Categories', pretty_print=pretty_print)
         if self.Reporter is not None:
@@ -3411,177 +2886,22 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             Discovery_Method_.export(outfile, level, nsmap, namespace_, name_='Discovery_Method', pretty_print=pretty_print)
         if self.Related_Incidents is not None:
             self.Related_Incidents.export(outfile, level, nsmap, namespace_, name_='Related_Incidents', pretty_print=pretty_print)
-        if self.COA_Requested is not None:
-            self.COA_Requested.export(outfile, level, nsmap, namespace_, name_='COA_Requested', pretty_print=pretty_print)
-        if self.COA_Taken is not None:
-            self.COA_Taken.export(outfile, level, nsmap, namespace_, name_='COA_Taken', pretty_print=pretty_print)
+        for COA_Requested_ in self.COA_Requested:
+            COA_Requested_.export(outfile, level, nsmap, namespace_, name_='COA_Requested', pretty_print=pretty_print)
+        for COA_Taken_ in self.COA_Taken:
+            COA_Taken_.export(outfile, level, nsmap, namespace_, name_='COA_Taken', pretty_print=pretty_print)
         if self.Confidence is not None:
             self.Confidence.export(outfile, level, nsmap, namespace_, name_='Confidence', pretty_print=pretty_print)
         for Contact_ in self.Contact:
             Contact_.export(outfile, level, nsmap, namespace_, name_='Contact', pretty_print=pretty_print)
         if self.History is not None:
             self.History.export(outfile, level, nsmap, namespace_, name_='History', pretty_print=pretty_print)
+        if self.Information_Source is not None:
+            self.Information_Source.export(outfile, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
         if self.Handling is not None:
             self.Handling.export(outfile, level, nsmap, namespace_, name_='Handling', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='IncidentType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.URL is not None and 'URL' not in already_processed:
-            already_processed.add('URL')
-            showIndent(outfile, level)
-            outfile.write('URL = "%s",\n' % (self.URL,))
-        if self.version is not None and 'version' not in already_processed:
-            already_processed.add('version')
-            showIndent(outfile, level)
-            outfile.write('version = %s,\n' % (self.version,))
-        super(IncidentType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(IncidentType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Title is not None:
-            showIndent(outfile, level)
-            outfile.write('Title=%s,\n' % quote_python(self.Title).encode(ExternalEncoding))
-        if self.Time is not None:
-            outfile.write('Time=model_.TimeType(\n')
-            self.Time.exportLiteral(outfile, level, name_='Time')
-            outfile.write('),\n')
-        if self.Description is not None:
-            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
-            self.Description.exportLiteral(outfile, level, name_='Description')
-            outfile.write('),\n')
-        if self.Categories is not None:
-            outfile.write('Categories=model_.CategoriesType(\n')
-            self.Categories.exportLiteral(outfile, level, name_='Categories')
-            outfile.write('),\n')
-        if self.Reporter is not None:
-            outfile.write('Reporter=model_.stix_common_binding.InformationSourceType(\n')
-            self.Reporter.exportLiteral(outfile, level, name_='Reporter')
-            outfile.write('),\n')
-        showIndent(outfile, level)
-        outfile.write('Responder=[\n')
-        level += 1
-        for Responder_ in self.Responder:
-            outfile.write('model_.stix_common_binding.InformationSourceType(\n')
-            Responder_.exportLiteral(outfile, level, name_='stix_common_binding.InformationSourceType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-        showIndent(outfile, level)
-        outfile.write('Coordinator=[\n')
-        level += 1
-        for Coordinator_ in self.Coordinator:
-            outfile.write('model_.stix_common_binding.InformationSourceType(\n')
-            Coordinator_.exportLiteral(outfile, level, name_='stix_common_binding.InformationSourceType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-        showIndent(outfile, level)
-        outfile.write('Victim=[\n')
-        level += 1
-        for Victim_ in self.Victim:
-            outfile.write('model_.stix_common_binding.IdentityType(\n')
-            Victim_.exportLiteral(outfile, level, name_='stix_common_binding.IdentityType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-        if self.Affected_Assets is not None:
-            outfile.write('Affected_Assets=model_.AffectedAssetsType(\n')
-            self.Affected_Assets.exportLiteral(outfile, level, name_='Affected_Assets')
-            outfile.write('),\n')
-        if self.Impact_Assessment is not None:
-            outfile.write('Impact_Assessment=model_.ImpactAssessmentType(\n')
-            self.Impact_Assessment.exportLiteral(outfile, level, name_='Impact_Assessment')
-            outfile.write('),\n')
-        if self.Status is not None:
-            outfile.write('Status=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Status.exportLiteral(outfile, level, name_='Status')
-            outfile.write('),\n')
-        if self.Related_Indicators is not None:
-            outfile.write('Related_Indicators=model_.RelatedIndicatorsType(\n')
-            self.Related_Indicators.exportLiteral(outfile, level, name_='Related_Indicators')
-            outfile.write('),\n')
-        if self.Related_Observables is not None:
-            outfile.write('Related_Observables=model_.RelatedObservablesType(\n')
-            self.Related_Observables.exportLiteral(outfile, level, name_='Related_Observables')
-            outfile.write('),\n')
-        if self.Leveraged_TTPs is not None:
-            outfile.write('Leveraged_TTPs=model_.LeveragedTTPsType(\n')
-            self.Leveraged_TTPs.exportLiteral(outfile, level, name_='Leveraged_TTPs')
-            outfile.write('),\n')
-        if self.Attributed_Threat_Actors is not None:
-            outfile.write('Attributed_Threat_Actors=model_.AttributedThreatActorsType(\n')
-            self.Attributed_Threat_Actors.exportLiteral(outfile, level, name_='Attributed_Threat_Actors')
-            outfile.write('),\n')
-        showIndent(outfile, level)
-        outfile.write('Intended_Effect=[\n')
-        level += 1
-        for Intended_Effect_ in self.Intended_Effect:
-            outfile.write('model_.stix_common_binding.StatementType(\n')
-            Intended_Effect_.exportLiteral(outfile, level, name_='stix_common_binding.StatementType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-        if self.Security_Compromise is not None:
-            outfile.write('Security_Compromise=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Security_Compromise.exportLiteral(outfile, level, name_='Security_Compromise')
-            outfile.write('),\n')
-        showIndent(outfile, level)
-        outfile.write('Discovery_Method=[\n')
-        level += 1
-        for Discovery_Method_ in self.Discovery_Method:
-            outfile.write('model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            Discovery_Method_.exportLiteral(outfile, level, name_='stix_common_binding.ControlledVocabularyStringType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-        if self.Related_Incidents is not None:
-            outfile.write('Related_Incidents=model_.RelatedIncidentsType(\n')
-            self.Related_Incidents.exportLiteral(outfile, level, name_='Related_Incidents')
-            outfile.write('),\n')
-        if self.COA_Requested is not None:
-            outfile.write('COA_Requested=model_.COARequestedType(\n')
-            self.COA_Requested.exportLiteral(outfile, level, name_='COA_Requested')
-            outfile.write('),\n')
-        if self.COA_Taken is not None:
-            outfile.write('COA_Taken=model_.COATakenType(\n')
-            self.COA_Taken.exportLiteral(outfile, level, name_='COA_Taken')
-            outfile.write('),\n')
-        if self.Confidence is not None:
-            outfile.write('Confidence=model_.stix_common_binding.ConfidenceType(\n')
-            self.Confidence.exportLiteral(outfile, level, name_='Confidence')
-            outfile.write('),\n')
-        showIndent(outfile, level)
-        outfile.write('Contact=[\n')
-        level += 1
-        for Contact_ in self.Contact:
-            outfile.write('model_.stix_common_binding.InformationSourceType(\n')
-            Contact_.exportLiteral(outfile, level, name_='stix_common_binding.InformationSourceType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-        if self.History is not None:
-            outfile.write('History=model_.HistoryType(\n')
-            self.History.exportLiteral(outfile, level, name_='History')
-            outfile.write('),\n')
-        if self.Handling is not None:
-            outfile.write('Handling=model_.data_marking_binding.MarkingType(\n')
-            self.Handling.exportLiteral(outfile, level, name_='Handling')
-            outfile.write('),\n')
+        if self.Related_Packages is not None:
+            self.Related_Packages.export(outfile, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3603,6 +2923,10 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             Title_ = child_.text
             Title_ = self.gds_validate_string(Title_, node, 'Title')
             self.Title = Title_
+        elif nodeName_ == 'External_ID':
+            obj_ = ExternalIDType.factory()
+            obj_.build(child_)
+            self.External_ID.append(obj_)
         elif nodeName_ == 'Time':
             obj_ = TimeType.factory()
             obj_.build(child_)
@@ -3611,6 +2935,10 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
+        elif nodeName_ == 'Short_Description':
+            obj_ = stix_common_binding.StructuredTextType.factory()
+            obj_.build(child_)
+            self.set_Short_Description(obj_)
         elif nodeName_ == 'Categories':
             obj_ = CategoriesType.factory()
             obj_.build(child_)
@@ -3637,13 +2965,12 @@ class IncidentType(stix_common_binding.IncidentBaseType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "CIQIdentity3.0InstanceType":
                     import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
                     obj_ = ciq_identity_binding.CIQIdentity3_0InstanceType.factory()
             else:
                 obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
-            
             obj_.build(child_)
             self.Victim.append(obj_)
         elif nodeName_ == 'Affected_Assets':
@@ -3685,7 +3012,7 @@ class IncidentType(stix_common_binding.IncidentBaseType):
         elif nodeName_ == 'Discovery_Method':
             obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)
-            self.set_Discovery_Method(obj_)
+            self.Discovery_Method.append(obj_)
         elif nodeName_ == 'Related_Incidents':
             obj_ = RelatedIncidentsType.factory()
             obj_.build(child_)
@@ -3693,11 +3020,12 @@ class IncidentType(stix_common_binding.IncidentBaseType):
         elif nodeName_ == 'COA_Requested':
             obj_ = COARequestedType.factory()
             obj_.build(child_)
-            self.set_COA_Requested(obj_)
+            self.COA_Requested.append(obj_)
         elif nodeName_ == 'COA_Taken':
-            obj_ = COATakenType.factory()
+            class_obj_ = self.get_class_obj_(child_, COATakenType)
+            obj_ = class_obj_.factory()
             obj_.build(child_)
-            self.set_COA_Taken(obj_)
+            self.COA_Taken.append(obj_)
         elif nodeName_ == 'Confidence':
             obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
@@ -3710,198 +3038,155 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             obj_ = HistoryType.factory()
             obj_.build(child_)
             self.set_History(obj_)
+        elif nodeName_ == 'Information_Source':
+            obj_ = stix_common_binding.InformationSourceType.factory()
+            obj_.build(child_)
+            self.set_Information_Source(obj_)
         elif nodeName_ == 'Handling':
             obj_ = data_marking_binding.MarkingType.factory()
             obj_.build(child_)
             self.set_Handling(obj_)
+        elif nodeName_ == 'Related_Packages':
+            obj_ = stix_common_binding.RelatedPackageRefsType.factory()
+            obj_.build(child_)
+            self.set_Related_Packages(obj_)
         super(IncidentType, self).buildChildren(child_, node, nodeName_, True)
 # end class IncidentType
 
-GDSClassesMapping = {
-    'Build_Utility': cybox_common_binding.BuildUtilityType,
-    'Indicator': stix_common_binding.IndicatorBaseType,
-    'Defined_Effect': cybox_core_binding.DefinedEffectType,
-    'Search_Distance': cybox_common_binding.IntegerObjectPropertyType,
-    'Action_Argument': cybox_core_binding.ActionArgumentType,
-    'Exploit_Target': stix_common_binding.ExploitTargetBaseType,
-    'Pools': cybox_core_binding.PoolsType,
-    'Errors': cybox_common_binding.ErrorsType,
-    'Metadata': cybox_common_binding.MetadataType,
-    'Hash': cybox_common_binding.HashType,
-    'Object': cybox_core_binding.ObjectType,
-    'Incident': IncidentType,
-    'Obfuscation_Technique': cybox_core_binding.ObfuscationTechniqueType,
-    'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
-    'Type_Of_Availability_Loss': stix_common_binding.ControlledVocabularyStringType,
-    'Segment_Hash': cybox_common_binding.HashValueType,
-    'Internal_Strings': cybox_common_binding.InternalStringsType,
-    'Observable': cybox_core_binding.ObservableType,
-    'Description_Of_Effect': stix_common_binding.StructuredTextType,
-    'Tool_Hashes': cybox_common_binding.HashListType,
-    'Digital_Signature': cybox_common_binding.DigitalSignatureInfoType,
-    'Confidence_Assertion': stix_common_binding.ConfidenceType,
-    'Code_Snippets': cybox_common_binding.CodeSnippetsType,
-    'Address': cybox_common_binding.HexBinaryObjectPropertyType,
-    'Value': stix_common_binding.ControlledVocabularyStringType,
-    'Length': cybox_common_binding.IntegerObjectPropertyType,
-    'Information_Source': stix_common_binding.InformationSourceType,
-    'Evasion_Techniques': cybox_core_binding.ObfuscationTechniquesType,
-    'Certificate_Subject': cybox_common_binding.StringObjectPropertyType,
-    'Related_Observable': stix_common_binding.RelatedObservableType,
-    'Encoding': stix_common_binding.ControlledVocabularyStringType,
-    'Internationalization_Settings': cybox_common_binding.InternationalizationSettingsType,
-    'Image_Offset': cybox_common_binding.IntegerObjectPropertyType,
-    'Associated_Objects': cybox_core_binding.AssociatedObjectsType,
-    'Location_Class': stix_common_binding.ControlledVocabularyStringType,
-    'Signature_Description': cybox_common_binding.StringObjectPropertyType,
-    'File_System_Offset': cybox_common_binding.IntegerObjectPropertyType,
-    'Coordinator': stix_common_binding.InformationSourceType,
-    'Certificate_Issuer': cybox_common_binding.StringObjectPropertyType,
-    'Victim': stix_common_binding.IdentityType,
-    'Imports': cybox_common_binding.ImportsType,
-    'Compiler_Informal_Description': cybox_common_binding.CompilerInformalDescriptionType,
-    'English_Translation': cybox_common_binding.StringObjectPropertyType,
-    'Event': cybox_core_binding.EventType,
-    'Segments': cybox_common_binding.HashSegmentsType,
-    'Functions': cybox_common_binding.FunctionsType,
-    'String_Value': cybox_common_binding.StringObjectPropertyType,
-    'Build_Utility_Platform_Specification': cybox_common_binding.PlatformSpecificationType,
-    'Domain_Specific_Object_Properties': cybox_core_binding.DomainSpecificObjectPropertiesType,
-    'Related_Objects': cybox_core_binding.RelatedObjectsType,
-    'Intended_Effect': stix_common_binding.StatementType,
-    'System': cybox_common_binding.ObjectPropertiesType,
-    'Platform': cybox_common_binding.PlatformSpecificationType,
-    'State': stix_common_binding.ControlledVocabularyStringType,
-    'Marking_Structure': data_marking_binding.MarkingStructureType,
-    'Action_Arguments': cybox_core_binding.ActionArgumentsType,
-    'Type': stix_common_binding.ControlledVocabularyStringType,
-    'Compilers': cybox_common_binding.CompilersType,
-    'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
-    'String': cybox_common_binding.ExtractedStringType,
-    'Relationship': stix_common_binding.ControlledVocabularyStringType,
-    'Tool': cybox_common_binding.ToolInformationType,
-    'TTP': stix_common_binding.TTPBaseType,
-    'Build_Information': cybox_common_binding.BuildInformationType,
-    'Business_Function_Or_Role': stix_common_binding.StructuredTextType,
-    'Observable_Composition': cybox_core_binding.ObservableCompositionType,
-    'Error_Instances': cybox_common_binding.ErrorInstancesType,
-    'Asset_Losses': stix_common_binding.ControlledVocabularyStringType,
-    'Action_Pool': cybox_core_binding.ActionPoolType,
-    'Data_Segment': cybox_common_binding.StringObjectPropertyType,
-    'Contact': stix_common_binding.InformationSourceType,
-    'Property': cybox_common_binding.PropertyType,
-    'Structured_Description': cybox_core_binding.ObservablesType,
-    'Ownership_Class': stix_common_binding.ControlledVocabularyStringType,
-    'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
-    'Contributors': ContributorsType,
-    'Campaign': stix_common_binding.CampaignBaseType,
-    'Reference_Description': stix_common_binding.StructuredTextType,
-    'User_Account_Info': cybox_common_binding.ObjectPropertiesType,
-    'Legal_And_Regulatory_Costs': stix_common_binding.ControlledVocabularyStringType,
-    'Configuration_Settings': cybox_common_binding.ConfigurationSettingsType,
-    'Compiler_Platform_Specification': cybox_common_binding.PlatformSpecificationType,
-    'Observable_Source': cybox_common_binding.MeasureSourceType,
-    'Byte_String_Value': cybox_common_binding.HexBinaryObjectPropertyType,
-    'Category': stix_common_binding.ControlledVocabularyStringType,
-    'Association_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Marking': data_marking_binding.MarkingSpecificationType,
-    'Increased_Operating_Costs': stix_common_binding.ControlledVocabularyStringType,
-    'Observable_Package_Source': cybox_common_binding.MeasureSourceType,
-    'Instance': cybox_common_binding.ObjectPropertiesType,
-    'Business-Mission_Disruption': stix_common_binding.ControlledVocabularyStringType,
-    'Associated_Object': cybox_core_binding.AssociatedObjectType,
-    'Brand_And_Market_Damage': stix_common_binding.ControlledVocabularyStringType,
-    'Loss_Of_Competitive_Advantage': stix_common_binding.ControlledVocabularyStringType,
-    'Import': cybox_common_binding.StringObjectPropertyType,
-    'Status': stix_common_binding.ControlledVocabularyStringType,
-    'Identifier': cybox_common_binding.PlatformIdentifierType,
-    'Property_Pool': cybox_core_binding.PropertyPoolType,
-    'Tool_Specific_Data': cybox_common_binding.ToolSpecificDataType,
-    'Reporter': stix_common_binding.InformationSourceType,
-    'Management_Class': stix_common_binding.ControlledVocabularyStringType,
-    'Effect': stix_common_binding.ControlledVocabularyStringType,
-    'Strings': cybox_common_binding.ExtractedStringsType,
-    'Duration_Of_Availability_Loss': stix_common_binding.ControlledVocabularyStringType,
-    'Dependencies': cybox_common_binding.DependenciesType,
-    'Segment_Count': cybox_common_binding.IntegerObjectPropertyType,
-    'Offset': cybox_common_binding.IntegerObjectPropertyType,
-    'Date': cybox_common_binding.DateRangeType,
-    'Hashes': cybox_common_binding.HashListType,
-    'Data': cybox_common_binding.DataSegmentType,
-    'Properties': cybox_core_binding.PropertiesType,
-    'Identity': stix_common_binding.IdentityType,
-    'Action_Reference': cybox_core_binding.ActionReferenceType,
-    'Language': cybox_common_binding.StringObjectPropertyType,
-    'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
-    'Block_Hash': cybox_common_binding.FuzzyHashBlockType,
-    'Dependency': cybox_common_binding.DependencyType,
-    'Related_Incident': stix_common_binding.RelatedIncidentType,
-    'Time': TimeType,
-    'Action': cybox_core_binding.ActionType,
-    'Threat_Actor': stix_common_binding.ThreatActorBaseType,
-    'Event_Pool': cybox_core_binding.EventPoolType,
-    'Trigger_Point': cybox_common_binding.HexBinaryObjectPropertyType,
-    'Environment_Variable': cybox_common_binding.EnvironmentVariableType,
-    'Byte_Run': cybox_common_binding.ByteRunType,
-    'Kill_Chain': stix_common_binding.KillChainType,
-    'Old_Object': cybox_core_binding.ObjectType,
-    'Tool_Configuration': cybox_common_binding.ToolConfigurationType,
-    'Object_Pool': cybox_core_binding.ObjectPoolType,
-    'Execution_Environment': cybox_common_binding.ExecutionEnvironmentType,
-    'Response_And_Recovery_Costs': stix_common_binding.ControlledVocabularyStringType,
-    'Frequency': cybox_core_binding.FrequencyType,
-    'References': stix_common_binding.ReferencesType,
-    'Keywords': cybox_core_binding.KeywordsType,
-    'Pattern_Fidelity': cybox_core_binding.PatternFidelityType,
-    'Location': stix_common_binding.AddressAbstractType,
-    'Block_Hash_Value': cybox_common_binding.HashValueType,
-    'Confidence': stix_common_binding.ConfidenceType,
-    'Non_Public_Data_Compromised': stix_common_binding.ControlledVocabularyStringType,
-    'Fuzzy_Hash_Structure': cybox_common_binding.FuzzyHashStructureType,
-    'Configuration_Setting': cybox_common_binding.ConfigurationSettingType,
-    'Libraries': cybox_common_binding.LibrariesType,
-    'SubDatum': cybox_common_binding.MetadataType,
-    'Related_Identities': stix_common_binding.RelatedIdentitiesType,
-    'Usage_Context_Assumptions': cybox_common_binding.UsageContextAssumptionsType,
-    'Leveraged_TTP': stix_common_binding.RelatedTTPType,
-    'Function': cybox_common_binding.StringObjectPropertyType,
-    'Impact_Qualification': stix_common_binding.ControlledVocabularyStringType,
-    'Description': stix_common_binding.StructuredTextType,
-    'Code_Snippet': cybox_common_binding.ObjectPropertiesType,
-    'Build_Configuration': cybox_common_binding.BuildConfigurationType,
-    'Discovery_Method': cybox_common_binding.MeasureSourceType,
-    'Action_Pertinent_Object_Properties': cybox_core_binding.ActionPertinentObjectPropertiesType,
-    'Observation_Method': cybox_common_binding.MeasureSourceType,
-    'Error': cybox_common_binding.ErrorType,
-    'Library': cybox_common_binding.LibraryType,
-    'Related_Indicator': stix_common_binding.RelatedIndicatorType,
-    'Related_Object': cybox_core_binding.RelatedObjectType,
-    'Security_Compromise': stix_common_binding.ControlledVocabularyStringType,
-    'Search_Within': cybox_common_binding.IntegerObjectPropertyType,
-    'Segment': cybox_common_binding.HashSegmentType,
-    'Compiler': cybox_common_binding.CompilerType,
-    'Handling': data_marking_binding.MarkingType,
-    'Name': cybox_common_binding.StringObjectPropertyType,
-    'Kill_Chain_Phase': stix_common_binding.KillChainPhaseReferenceType,
-    'Responder': stix_common_binding.InformationSourceType,
-    'Related_Identity': stix_common_binding.RelatedIdentityType,
-    'Values': cybox_core_binding.ValuesType,
-    'Observables': cybox_core_binding.ObservablesType,
-    'Block_Size': cybox_common_binding.IntegerObjectPropertyType,
-    'Simple_Hash_Value': cybox_common_binding.SimpleHashValueType,
-    'New_Object': cybox_core_binding.ObjectType,
-    'Source': stix_common_binding.ControlledVocabularyStringType,
-    'Tools': cybox_common_binding.ToolsInformationType,
-    'Fuzzy_Hash_Value': cybox_common_binding.FuzzyHashValueType,
-    'Actions': cybox_core_binding.ActionsType,
-    'Data_Size': cybox_common_binding.DataSizeType,
-    'Dependency_Description': stix_common_binding.StructuredTextType,
-    'Contributor': stix_common_binding.IdentityType,
-    'Action_Aliases': cybox_core_binding.ActionAliasesType,
-    'Argument_Name': stix_common_binding.ControlledVocabularyStringType,
-    'Custom_Properties': cybox_common_binding.CustomPropertiesType,
-}
+class NonPublicDataCompromisedType(stix_common_binding.ControlledVocabularyStringType):
+    """This type represents whether non-public data was compromised or
+    exposed and whether that data was encrypted or not.Indicates
+    whether the data that was compromised was encrypted or not."""
+    subclass = None
+    superclass = stix_common_binding.ControlledVocabularyStringType
+    def __init__(self, vocab_reference=None, vocab_name=None, data_encrypted=None):
+        super(NonPublicDataCompromisedType, self).__init__(vocab_reference=vocab_reference, vocab_name=vocab_name)
+        self.data_encrypted = _cast(bool, data_encrypted)
+        pass
+    def factory(*args_, **kwargs_):
+        if NonPublicDataCompromisedType.subclass:
+            return NonPublicDataCompromisedType.subclass(*args_, **kwargs_)
+        else:
+            return NonPublicDataCompromisedType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_data_encrypted(self): return self.data_encrypted
+    def set_data_encrypted(self, data_encrypted): self.data_encrypted = data_encrypted
+    def hasContent_(self):
+        if (
+            super(NonPublicDataCompromisedType, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='NonPublicDataCompromisedType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='NonPublicDataCompromisedType')
+        if self.hasContent_():
+            outfile.write('>')
+            outfile.write(unicode(self.valueOf_).encode(ExternalEncoding))
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='NonPublicDataCompromisedType'):
+        super(NonPublicDataCompromisedType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='NonPublicDataCompromisedType')
+        if self.data_encrypted is not None and 'data_encrypted' not in already_processed:
+            already_processed.add('data_encrypted')
+            outfile.write(' data_encrypted="%s"' % self.gds_format_boolean(self.data_encrypted, input_name='data_encrypted'))
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='NonPublicDataCompromisedType', fromsubclass_=False, pretty_print=True):
+        super(NonPublicDataCompromisedType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+        pass
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        value = find_attr_value_('data_encrypted', node)
+        if value is not None and 'data_encrypted' not in already_processed:
+            already_processed.add('data_encrypted')
+            if value in ('true', '1'):
+                self.data_encrypted = True
+            elif value in ('false', '0'):
+                self.data_encrypted = False
+            else:
+                raise_parse_error(node, 'Bad boolean attribute')
+        super(NonPublicDataCompromisedType, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        super(NonPublicDataCompromisedType, self).buildChildren(child_, node, nodeName_, True)
+        pass
+# end class NonPublicDataCompromisedType
+
+class ExternalIDType(GeneratedsSuper):
+    """The ExternalIDType provides a reference to an ID of an incident in a
+    remote system.Specifies the source of the External ID."""
+    subclass = None
+    superclass = None
+    def __init__(self, source=None, valueOf_=None):
+        self.source = _cast(None, source)
+        self.valueOf_ = valueOf_
+    def factory(*args_, **kwargs_):
+        if ExternalIDType.subclass:
+            return ExternalIDType.subclass(*args_, **kwargs_)
+        else:
+            return ExternalIDType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_source(self): return self.source
+    def set_source(self, source): self.source = source
+    def get_valueOf_(self): return self.valueOf_
+    def set_valueOf_(self, valueOf_): self.valueOf_ = valueOf_
+    def hasContent_(self):
+        if (
+            self.valueOf_
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='ExternalIDType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='ExternalIDType')
+        if self.hasContent_():
+            outfile.write('>')
+            outfile.write(unicode(self.valueOf_).encode(ExternalEncoding))
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='ExternalIDType'):
+        if self.source is not None and 'source' not in already_processed:
+            already_processed.add('source')
+            outfile.write(' source=%s' % (self.gds_format_string(quote_attrib(self.source).encode(ExternalEncoding), input_name='source'), ))
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ExternalIDType', fromsubclass_=False, pretty_print=True):
+        pass
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        self.valueOf_ = get_all_text_(node)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        value = find_attr_value_('source', node)
+        if value is not None and 'source' not in already_processed:
+            already_processed.add('source')
+            self.source = value
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        pass
+# end class ExternalIDType
+
+
+GDSClassesMapping = {}
 
 USAGE_TEXT = """
 Usage: python <Parser>.py [ -s ] <in_xml_file>
@@ -3968,25 +3253,6 @@ def parseString(inString):
     # sys.stdout.write('<?xml version="1.0" ?>\n')
     # rootObj.export(sys.stdout, 0, name_="Incident",
     #     namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'Incident'
-        rootClass = IncidentType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from incident import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import incident as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

@@ -5,7 +5,7 @@ import stix
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.stix_core as stix_core_binding
 from stix.common import InformationSource, StructuredText, VocabString
-from stix.common.handling import Handling
+from stix.data_marking import Marking
 
 
 class PackageIntent(VocabString):
@@ -16,9 +16,9 @@ class PackageIntent(VocabString):
 class STIXHeader(stix.Entity):
     _binding = stix_core_binding
     _namespace = 'http://stix.mitre.org/stix-1'
-    
-    def __init__(self, package_intent=None, description=None, handling=None, information_source=None, title=None):
-        self.package_intent = package_intent
+
+    def __init__(self, package_intents=None, description=None, handling=None, information_source=None, title=None):
+        self.package_intents = package_intents
         self.title = title
         self.description = description
         self.handling = handling
@@ -54,21 +54,34 @@ class STIXHeader(stix.Entity):
 
     @handling.setter
     def handling(self, value):
-        if value and not isinstance(value, Handling):
-            raise ValueError('value must be instance of Handling')
+        if value and not isinstance(value, Marking):
+            raise ValueError('value must be instance of Marking')
 
         self._handling = value
 
     @property
-    def package_intent(self):
-        return self._package_intent
+    def package_intents(self):
+        return self._package_intents
 
-    @package_intent.setter
-    def package_intent(self, value):
-        if value and not isinstance(value, PackageIntent):
-            value = PackageIntent(value)
+    @package_intents.setter
+    def package_intents(self, value):
+        self._package_intents = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_package_intent(v)
+        else:
+            self.add_package_intent(value)
 
-        self._package_intent = value
+    def add_package_intent(self, package_intent):
+        if not package_intent:
+            return
+        elif isinstance(package_intent, PackageIntent):
+            self.package_intents.append(package_intent)
+        else:
+            tmp_package_intent = PackageIntent(value=package_intent)
+            self.package_intents.append(tmp_package_intent)
 
     @property
     def information_source(self):
@@ -90,10 +103,12 @@ class STIXHeader(stix.Entity):
             return_obj = cls()
 
         return_obj.title = obj.get_Title()
-        return_obj.package_intent = PackageIntent.from_obj(obj.get_Package_Intent())
         return_obj.description = StructuredText.from_obj(obj.get_Description())
-        return_obj.handling = Handling.from_obj(obj.get_Handling())
+        return_obj.handling = Marking.from_obj(obj.get_Handling())
         return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
+
+        if obj.get_Package_Intent():
+            return_obj.package_intents = [PackageIntent.from_obj(x) for x in obj.get_Package_Intent()]
 
         return return_obj
 
@@ -103,16 +118,12 @@ class STIXHeader(stix.Entity):
 
         if self.title:
             return_obj.set_Title(self.title)
-
-        if self.package_intent:
-            return_obj.set_Package_Intent(self.package_intent.to_obj())
-
+        if self.package_intents:
+            return_obj.set_Package_Intent([x.to_obj() for x in self.package_intents])
         if self.description:
             return_obj.set_Description(self.description.to_obj())
-
         if self.handling:
             return_obj.set_Handling(self.handling.to_obj())
-
         if self.information_source:
             return_obj.set_Information_Source(self.information_source.to_obj())
 
@@ -127,16 +138,11 @@ class STIXHeader(stix.Entity):
             return_obj = cls()
 
         return_obj.title = dict_repr.get('title')
-        return_obj.package_intent = PackageIntent.from_dict(dict_repr.get('package_intent'))
-
-        desc_dict = dict_repr.get('description')
-        return_obj.description = StructuredText.from_dict(desc_dict)
-
-        handling_dict = dict_repr.get('handling')
-        return_obj.handling = Handling.from_dict(handling_dict)
-
-        info_dict = dict_repr.get('information_source', None)
-        return_obj.information_source = InformationSource.from_dict(info_dict)
+        return_obj.package_intents = PackageIntent.from_dict(dict_repr.get('package_intents'))
+        return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
+        return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
+        return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
+        return_obj.package_intents = [PackageIntent.from_dict(x) for x in dict_repr.get('package_intents')]
 
         return return_obj
 
@@ -146,16 +152,12 @@ class STIXHeader(stix.Entity):
 
         if self.title:
             return_dict['title'] = self.title
-
-        if self.package_intent:
-            return_dict['package_intent'] = self.package_intent.to_dict()
-
+        if self.package_intents:
+            return_dict['package_intents'] = [x.to_dict() for x in self.package_intents]
         if self.description:
             return_dict['description'] = self.description.to_dict()
-
         if self.handling:
             return_dict['handling'] = self.handling.to_dict()
-
         if self.information_source:
             return_dict['information_source'] = self.information_source.to_dict()
 

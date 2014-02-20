@@ -538,26 +538,6 @@ class MarkingType(GeneratedsSuper):
             eol_ = ''
         for Marking_ in self.Marking:
             Marking_.export(outfile, level, nsmap, namespace_, name_='Marking', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='MarkingType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Marking=[\n')
-        level += 1
-        for Marking_ in self.Marking:
-            outfile.write('model_.MarkingSpecificationType(\n')
-            Marking_.exportLiteral(outfile, level, name_='MarkingSpecificationType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -573,38 +553,61 @@ class MarkingType(GeneratedsSuper):
             self.Marking.append(obj_)
 # end class MarkingType
 
+
 class MarkingStructureType(GeneratedsSuper):
     """The MarkingStructureType contains the marking information to be
-    applied to a portion of XML content. This type is defined as
+    applied to a portion of XML content.This type is defined as
     abstract and is intended to be extended to enable the expression
-    of any structured or unstructured data marking mechanism. STIX
-    provides two options: Simple, and TLP.Additionally, those who
-    wish to use another format may do so by defining a new extension
-    to this type. The information for the STIX-provided extensions
-    is: 1. Simple: The Simple marking structures allows for the
+    of any structured or unstructured data marking mechanism. The
+    data marking structure is simply a mechanism for applying
+    existing marking systems to nodes. The data marking systems
+    themselves define the semantics of what the markings mean, how
+    multiple markings to the same node should be applied, and what
+    to do if a node is unmarked.It is valid per this specification
+    to mark a node with multiple markings from the same system or
+    mark a node across multiple marking systems. If a node is marked
+    multiple times using the same marking system, that system
+    specifies the semantic meaning of multiple markings and (if
+    necessary) how conflicts should be resolved. If a node is marked
+    across multiple marking systems, each system is considered
+    individually applicable. If there are conflicting markings
+    across marking systems the behavior is undefined, therefore
+    producers should make every effort to ensure documents are
+    marked consistently and correctly among all marking systems.STIX
+    provides two marking system extensions: Simple, and TLP. Those
+    who wish to use another format may do so by defining a new
+    extension to this type. The STIX-provided extensions are:1.
+    Simple: The Simple marking structures allows for the
     specification of unstructured statements through the use of a
     string field. The type is named SimpleMarkingStructureType and
     is in the http://data-
     marking.mitre.org/extensions/MarkingStructure#Simple-1
     namespace. The extension is defined in the file
     extensions/marking/simple_marking.xsd or at the URL http://stix.
-    mitre.org/XMLSchema/extensions/marking/simple_marking/1.0/simple
-    _marking.xsd. 2. TLP: The TLP marking structure allows for the
+    mitre.org/XMLSchema/extensions/marking/simple_marking/1.1/simple
+    _marking.xsd.2. TLP: The TLP marking structure allows for the
     expression of Traffic Light Protocol statements through the use
     of a simple enumeration. The type is named
     TLPMarkingStructureType and is in the http://data-
     marking.mitre.org/extensions/MarkingStructure#TLP-1 namespace.
-    The extension is defined in the file extensions/marking/tlp.xsd
-    or at the URL http://stix.mitre.org/XMLSchema/extensions/marking
-    /tlp/1.0/tlp.xsd. This field specifies the name of the marking
-    model to be applied within this Marking_Structure.This field
-    contains a reference to an authoritative source on the marking
-    model to be applied within this Marking_Structure."""
+    The extension is defined in the file
+    extensions/marking/tlp_marking.xsd or at the URL http://stix.mit
+    re.org/XMLSchema/extensions/marking/tlp/1.1/tlp_marking.xsd.This
+    field specifies the name of the marking model to be applied
+    within this Marking_Structure.This field contains a reference to
+    an authoritative source on the marking model to be applied
+    within this Marking_Structure.Specifies a unique ID for this
+    Marking_Structure.Specifies a reference to the ID of a
+    Marking_Structure defined elsewhere.When idref is specified, the
+    id attribute must not be specified, and any instance of this
+    Marking_Structure should not hold content."""
     subclass = None
     superclass = None
-    def __init__(self, marking_model_ref=None, marking_model_name=None):
+    def __init__(self, idref=None, id=None, marking_model_ref=None, marking_model_name=None):
+        self.idref = _cast(None, idref)
         self.marking_model_ref = _cast(None, marking_model_ref)
         self.marking_model_name = _cast(None, marking_model_name)
+        self.id = _cast(None, id)
         pass
     def factory(*args_, **kwargs_):
         if MarkingStructureType.subclass:
@@ -612,10 +615,14 @@ class MarkingStructureType(GeneratedsSuper):
         else:
             return MarkingStructureType(*args_, **kwargs_)
     factory = staticmethod(factory)
+    def get_idref(self): return self.idref
+    def set_idref(self, idref): self.idref = idref
     def get_marking_model_ref(self): return self.marking_model_ref
     def set_marking_model_ref(self, marking_model_ref): self.marking_model_ref = marking_model_ref
     def get_marking_model_name(self): return self.marking_model_name
     def set_marking_model_name(self, marking_model_name): self.marking_model_name = marking_model_name
+    def get_id(self): return self.id
+    def set_id(self, id): self.id = id
     def hasContent_(self):
         if (
 
@@ -639,30 +646,19 @@ class MarkingStructureType(GeneratedsSuper):
         else:
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='marking:', name_='MarkingStructureType'):
+        if self.idref is not None and 'idref' not in already_processed:
+            already_processed.add('idref')
+            outfile.write(' idref=%s' % (quote_attrib(self.idref), ))
         if self.marking_model_ref is not None and 'marking_model_ref' not in already_processed:
             already_processed.add('marking_model_ref')
             outfile.write(' marking_model_ref=%s' % (self.gds_format_string(quote_attrib(self.marking_model_ref).encode(ExternalEncoding), input_name='marking_model_ref'), ))
         if self.marking_model_name is not None and 'marking_model_name' not in already_processed:
             already_processed.add('marking_model_name')
             outfile.write(' marking_model_name=%s' % (quote_attrib(self.marking_model_name), ))
+        if self.id is not None and 'id' not in already_processed:
+            already_processed.add('id')
+            outfile.write(' id=%s' % (quote_attrib(self.id), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='MarkingStructureType', fromsubclass_=False, pretty_print=True):
-        pass
-    def exportLiteral(self, outfile, level, name_='MarkingStructureType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.marking_model_ref is not None and 'marking_model_ref' not in already_processed:
-            already_processed.add('marking_model_ref')
-            showIndent(outfile, level)
-            outfile.write('marking_model_ref = "%s",\n' % (self.marking_model_ref,))
-        if self.marking_model_name is not None and 'marking_model_name' not in already_processed:
-            already_processed.add('marking_model_name')
-            showIndent(outfile, level)
-            outfile.write('marking_model_name = %s,\n' % (self.marking_model_name,))
-    def exportLiteralChildren(self, outfile, level, name_):
         pass
     def build(self, node):
         already_processed = set()
@@ -671,6 +667,10 @@ class MarkingStructureType(GeneratedsSuper):
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
+        value = find_attr_value_('idref', node)
+        if value is not None and 'idref' not in already_processed:
+            already_processed.add('idref')
+            self.idref = value
         value = find_attr_value_('marking_model_ref', node)
         if value is not None and 'marking_model_ref' not in already_processed:
             already_processed.add('marking_model_ref')
@@ -679,9 +679,14 @@ class MarkingStructureType(GeneratedsSuper):
         if value is not None and 'marking_model_name' not in already_processed:
             already_processed.add('marking_model_name')
             self.marking_model_name = value
+        value = find_attr_value_('id', node)
+        if value is not None and 'id' not in already_processed:
+            already_processed.add('id')
+            self.id = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
 # end class MarkingStructureType
+
 
 class MarkingSpecificationType(GeneratedsSuper):
     """Specifies a unique ID for this Marking.Specifies a reference to the
@@ -766,44 +771,6 @@ class MarkingSpecificationType(GeneratedsSuper):
             Marking_Structure_.export(outfile, level, nsmap, namespace_, name_='Marking_Structure', pretty_print=pretty_print)
         if self.Information_Source is not None:
             self.Information_Source.export(outfile, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='MarkingSpecificationType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-        if self.version is not None and 'version' not in already_processed:
-            already_processed.add('version')
-            showIndent(outfile, level)
-            outfile.write('version = "%s",\n' % (self.version,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Controlled_Structure is not None:
-            showIndent(outfile, level)
-            outfile.write('Controlled_Structure=%s,\n' % quote_python(self.Controlled_Structure).encode(ExternalEncoding))
-        showIndent(outfile, level)
-        outfile.write('Marking_Structure=[\n')
-        level += 1
-        for Marking_Structure_ in self.Marking_Structure:
-            outfile.write('model_.MarkingStructureType(\n')
-            Marking_Structure_.exportLiteral(outfile, level, name_='MarkingStructureType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-        if self.Information_Source is not None:
-            outfile.write('Information_Source=model_.stix_common_binding.InformationSourceType(\n')
-            self.Information_Source.exportLiteral(outfile, level, name_='Information_Source')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -838,18 +805,21 @@ class MarkingSpecificationType(GeneratedsSuper):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-            
+
                 if type_name_ == "SimpleMarkingStructureType":
                     import stix.bindings.extensions.marking.simple_marking as simple_marking_binding
                     obj_ = simple_marking_binding.SimpleMarkingStructureType.factory()
                 elif type_name_ == "TLPMarkingStructureType":
                     import stix.bindings.extensions.marking.tlp as tlp_marking_binding
                     obj_ = tlp_marking_binding.TLPMarkingStructureType.factory()
+                elif type_name_ == "TermsOfUseMarkingStructureType":
+                    import stix.bindings.extensions.marking.terms_of_use_marking as tou_marking_binding
+                    obj_ = tou_marking_binding.TermsOfUseMarkingStructureType.factory()
                 else:
                     raise NotImplementedError('Marking structure type not implemented ' + type_name_)
             else:
                 raise NotImplementedError('Marking structure type not declared: no xsi_type found')
-            
+
             obj_.build(child_)
             self.Marking_Structure.append(obj_)
         elif nodeName_ == 'Information_Source':
@@ -858,38 +828,7 @@ class MarkingSpecificationType(GeneratedsSuper):
             self.set_Information_Source(obj_)
 # end class MarkingSpecificationType
 
-GDSClassesMapping = {
-    'Information_Source': stix_common_binding.InformationSourceType,
-    'Indicator': stix_common_binding.IndicatorBaseType,
-    'Exploit_Target': stix_common_binding.ExploitTargetBaseType,
-    'Incident': stix_common_binding.IncidentBaseType,
-    'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
-    'Confidence_Assertion': stix_common_binding.ConfidenceType,
-    'Campaign': stix_common_binding.CampaignBaseType,
-    'Encoding': stix_common_binding.ControlledVocabularyStringType,
-    'Source': stix_common_binding.ControlledVocabularyStringType,
-    'State': stix_common_binding.ControlledVocabularyStringType,
-    'Type': stix_common_binding.ControlledVocabularyStringType,
-    'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Relationship': stix_common_binding.ControlledVocabularyStringType,
-    'TTP': stix_common_binding.TTPBaseType,
-    'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
-    'Reference_Description': stix_common_binding.StructuredTextType,
-    'Association_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Related_Identities': stix_common_binding.RelatedIdentitiesType,
-    'Identity': stix_common_binding.IdentityType,
-    'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
-    'Threat_Actor': stix_common_binding.ThreatActorBaseType,
-    'Confidence': stix_common_binding.ConfidenceType,
-    'Kill_Chain': stix_common_binding.KillChainType,
-    'Description': stix_common_binding.StructuredTextType,
-    'Name': stix_common_binding.ControlledVocabularyStringType,
-    'Kill_Chain_Phase': stix_common_binding.KillChainPhaseReferenceType,
-    'Related_Identity': stix_common_binding.RelatedIdentityType,
-    'Argument_Name': stix_common_binding.ControlledVocabularyStringType,
-    'Dependency_Description': stix_common_binding.StructuredTextType,
-}
+GDSClassesMapping = {}
 
 USAGE_TEXT = """
 Usage: python <Parser>.py [ -s ] <in_xml_file>
@@ -956,25 +895,6 @@ def parseString(inString):
     # sys.stdout.write('<?xml version="1.0" ?>\n')
     # rootObj.export(sys.stdout, 0, name_="MarkingType",
     #     namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'MarkingType'
-        rootClass = MarkingType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from data_marking import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import data_marking as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

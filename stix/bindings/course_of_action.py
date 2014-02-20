@@ -12,8 +12,11 @@ import sys
 import getopt
 import re as re_
 
+import cybox.bindings.cybox_core as cybox_core_binding
+import cybox.bindings.cybox_common as cybox_common_binding
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
+
 import base64
 from datetime import datetime, tzinfo, timedelta
 
@@ -565,23 +568,6 @@ class StructuredCOAType(GeneratedsSuper):
             outfile.write(' id=%s' % (quote_attrib(self.id), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='StructuredCOAType', fromsubclass_=False, pretty_print=True):
         pass
-    def exportLiteral(self, outfile, level, name_='StructuredCOAType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.idref is not None and 'idref' not in already_processed:
-            already_processed.add('idref')
-            showIndent(outfile, level)
-            outfile.write('idref = %s,\n' % (self.idref,))
-        if self.id is not None and 'id' not in already_processed:
-            already_processed.add('id')
-            showIndent(outfile, level)
-            outfile.write('id = %s,\n' % (self.id,))
-    def exportLiteralChildren(self, outfile, level, name_):
-        pass
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -606,8 +592,9 @@ class ObjectiveType(GeneratedsSuper):
     CourseOfAction."""
     subclass = None
     superclass = None
-    def __init__(self, Description=None, Applicability_Confidence=None):
+    def __init__(self, Description=None, Short_Description=None, Applicability_Confidence=None):
         self.Description = Description
+        self.Short_Description = Short_Description
         self.Applicability_Confidence = Applicability_Confidence
     def factory(*args_, **kwargs_):
         if ObjectiveType.subclass:
@@ -617,6 +604,8 @@ class ObjectiveType(GeneratedsSuper):
     factory = staticmethod(factory)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def get_Short_Description(self): return self.Short_Description
+    def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Applicability_Confidence(self): return self.Applicability_Confidence
     def set_Applicability_Confidence(self, Applicability_Confidence): self.Applicability_Confidence = Applicability_Confidence
     def hasContent_(self):
@@ -652,25 +641,10 @@ class ObjectiveType(GeneratedsSuper):
             eol_ = ''
         if self.Description is not None:
             self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        if self.Short_Description is not None:
+            self.Short_Description.export(outfile, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         if self.Applicability_Confidence is not None:
             self.Applicability_Confidence.export(outfile, level, nsmap, namespace_, name_='Applicability_Confidence', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='ObjectiveType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        if self.Description is not None:
-            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
-            self.Description.exportLiteral(outfile, level, name_='Description')
-            outfile.write('),\n')
-        if self.Applicability_Confidence is not None:
-            outfile.write('Applicability_Confidence=model_.stix_common_binding.ConfidenceType(\n')
-            self.Applicability_Confidence.exportLiteral(outfile, level, name_='Applicability_Confidence')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -684,6 +658,10 @@ class ObjectiveType(GeneratedsSuper):
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
+        elif nodeName_ == 'Short_Description':
+            obj_ = stix_common_binding.StructuredTextType.factory()
+            obj_.build(child_)
+            self.set_Short_Description(obj_)
         elif nodeName_ == 'Applicability_Confidence':
             obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
@@ -698,19 +676,27 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     schema version for this content."""
     subclass = None
     superclass = stix_common_binding.CourseOfActionBaseType
-    def __init__(self, idref=None, id=None, version=None, Title=None, Stage=None, Type=None, Description=None, Objective=None, Structured_COA=None, Impact=None, Cost=None, Efficacy=None, Handling=None):
-        super(CourseOfActionType, self).__init__(idref, id, )
+    def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Stage=None, Type=None, Description=None, Short_Description=None, Objective=None, Parameter_Observables=None, Structured_COA=None, Impact=None, Cost=None, Efficacy=None, Information_Source=None, Handling=None, Related_COAs=None, Related_Packages=None):
+        super(CourseOfActionType, self).__init__(idref=idref, id=id, timestamp=timestamp)
+        self.xmlns          = "http://stix.mitre.org/CourseOfAction-1"
+        self.xmlns_prefix   = "coa"
+        self.xml_type       = "CourseOfActionType"
         self.version = _cast(None, version)
         self.Title = Title
         self.Stage = Stage
         self.Type = Type
         self.Description = Description
+        self.Short_Description = Short_Description
         self.Objective = Objective
+        self.Parameter_Observables = Parameter_Observables
         self.Structured_COA = Structured_COA
         self.Impact = Impact
         self.Cost = Cost
         self.Efficacy = Efficacy
+        self.Information_Source = Information_Source
         self.Handling = Handling
+        self.Related_COAs = Related_COAs
+        self.Related_Packages = Related_Packages
     def factory(*args_, **kwargs_):
         if CourseOfActionType.subclass:
             return CourseOfActionType.subclass(*args_, **kwargs_)
@@ -725,8 +711,12 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     def set_Type(self, Type): self.Type = Type
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def get_Short_Description(self): return self.Short_Description
+    def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Objective(self): return self.Objective
     def set_Objective(self, Objective): self.Objective = Objective
+    def get_Parameter_Observables(self): return self.Parameter_Observables
+    def set_Parameter_Observables(self, Parameter_Observables): self.Parameter_Observables = Parameter_Observables
     def get_Structured_COA(self): return self.Structured_COA
     def set_Structured_COA(self, Structured_COA): self.Structured_COA = Structured_COA
     def get_Impact(self): return self.Impact
@@ -735,8 +725,14 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     def set_Cost(self, Cost): self.Cost = Cost
     def get_Efficacy(self): return self.Efficacy
     def set_Efficacy(self, Efficacy): self.Efficacy = Efficacy
+    def get_Information_Source(self): return self.Information_Source
+    def set_Information_Source(self, Information_Source): self.Information_Source = Information_Source
     def get_Handling(self): return self.Handling
     def set_Handling(self, Handling): self.Handling = Handling
+    def get_Related_COAs(self): return self.Related_COAs
+    def set_Related_COAs(self, Related_COAs): self.Related_COAs = Related_COAs
+    def get_Related_Packages(self): return self.Related_Packages
+    def set_Related_Packages(self, Related_Packages): self.Related_Packages = Related_Packages
     def get_version(self): return self.version
     def set_version(self, version): self.version = version
     def hasContent_(self):
@@ -745,12 +741,17 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             self.Stage is not None or
             self.Type is not None or
             self.Description is not None or
+            self.Short_Description is not None or
             self.Objective is not None or
+            self.Parameter_Observables is not None or
             self.Structured_COA is not None or
             self.Impact is not None or
             self.Cost is not None or
             self.Efficacy is not None or
+            self.Information_Source is not None or
             self.Handling is not None or
+            self.Related_COAs is not None or
+            self.Related_Packages is not None or
             super(CourseOfActionType, self).hasContent_()
             ):
             return True
@@ -774,6 +775,14 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='coa:', name_='CourseOfActionType'):
         super(CourseOfActionType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='CourseOfActionType')
+        if 'xmlns' not in already_processed:
+            already_processed.add('xmlns')
+            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+            outfile.write(xmlns)   
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            outfile.write(xsi_type)
         if self.version is not None and 'version' not in already_processed:
             already_processed.add('version')
             outfile.write(' version=%s' % (quote_attrib(self.version), ))
@@ -792,8 +801,12 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             self.Type.export(outfile, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
         if self.Description is not None:
             self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        if self.Short_Description is not None:
+            self.Short_Description.export(outfile, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         if self.Objective is not None:
             self.Objective.export(outfile, level, nsmap, namespace_, name_='Objective', pretty_print=pretty_print)
+        if self.Parameter_Observables is not None:
+            self.Parameter_Observables.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Parameter_Observables', pretty_print=pretty_print)
         if self.Structured_COA is not None:
             self.Structured_COA.export(outfile, level, nsmap, namespace_, name_='Structured_COA', pretty_print=pretty_print)
         if self.Impact is not None:
@@ -802,63 +815,14 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             self.Cost.export(outfile, level, nsmap, namespace_, name_='Cost', pretty_print=pretty_print)
         if self.Efficacy is not None:
             self.Efficacy.export(outfile, level, nsmap, namespace_, name_='Efficacy', pretty_print=pretty_print)
+        if self.Information_Source is not None:
+            self.Information_Source.export(outfile, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
         if self.Handling is not None:
             self.Handling.export(outfile, level, nsmap, namespace_, name_='Handling', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='CourseOfActionType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.version is not None and 'version' not in already_processed:
-            already_processed.add('version')
-            showIndent(outfile, level)
-            outfile.write('version = %s,\n' % (self.version,))
-        super(CourseOfActionType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(CourseOfActionType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Title is not None:
-            showIndent(outfile, level)
-            outfile.write('Title=%s,\n' % quote_python(self.Title).encode(ExternalEncoding))
-        if self.Stage is not None:
-            outfile.write('Stage=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Stage.exportLiteral(outfile, level, name_='Stage')
-            outfile.write('),\n')
-        if self.Type is not None:
-            outfile.write('Type=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Type.exportLiteral(outfile, level, name_='Type')
-            outfile.write('),\n')
-        if self.Description is not None:
-            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
-            self.Description.exportLiteral(outfile, level, name_='Description')
-            outfile.write('),\n')
-        if self.Objective is not None:
-            outfile.write('Objective=model_.ObjectiveType(\n')
-            self.Objective.exportLiteral(outfile, level, name_='Objective')
-            outfile.write('),\n')
-        if self.StructuredCOAType is not None:
-            showIndent(outfile, level)
-            outfile.write('StructuredCOAType=model_.StructuredCOAType(\n')
-            self.StructuredCOAType.exportLiteral(outfile, level)
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        if self.Impact is not None:
-            outfile.write('Impact=model_.stix_common_binding.StatementType(\n')
-            self.Impact.exportLiteral(outfile, level, name_='Impact')
-            outfile.write('),\n')
-        if self.Cost is not None:
-            outfile.write('Cost=model_.stix_common_binding.StatementType(\n')
-            self.Cost.exportLiteral(outfile, level, name_='Cost')
-            outfile.write('),\n')
-        if self.Efficacy is not None:
-            outfile.write('Efficacy=model_.stix_common_binding.StatementType(\n')
-            self.Efficacy.exportLiteral(outfile, level, name_='Efficacy')
-            outfile.write('),\n')
-        if self.Handling is not None:
-            outfile.write('Handling=model_.data_marking_binding.MarkingType(\n')
-            self.Handling.exportLiteral(outfile, level, name_='Handling')
-            outfile.write('),\n')
+        if self.Related_COAs is not None:
+            self.Related_COAs.export(outfile, level, nsmap, namespace_, name_='Related_COAs', pretty_print=pretty_print)
+        if self.Related_Packages is not None:
+            self.Related_Packages.export(outfile, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -888,10 +852,18 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
             self.set_Description(obj_)
+        elif nodeName_ == 'Short_Description':
+            obj_ = stix_common_binding.StructuredTextType.factory()
+            obj_.build(child_)
+            self.set_Short_Description(obj_)
         elif nodeName_ == 'Objective':
             obj_ = ObjectiveType.factory()
             obj_.build(child_)
             self.set_Objective(obj_)
+        elif nodeName_ == "Parameter_Observables":
+            obj_ = cybox_core_binding.ObservablesType.factory()
+            obj_.build(child_)
+            self.set_Parameter_Observables(obj_)
         elif nodeName_ == 'Structured_COA':
             type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
             if type_name_ is None:
@@ -902,7 +874,7 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
                     type_name_ = type_names_[0]
                 else:
                     type_name_ = type_names_[1]
-                    
+
                 if type_name_ == "GenericStructuredCOAType":
                     import stix.bindings.extensions.structured_coa.generic as generic_coa_binding
                     obj_ = generic_coa_binding.GenericStructuredCOAType.factory()
@@ -910,7 +882,7 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
                     raise NotImplementedError('No implementation class for Structured_COA: ' + type_name_)
             else:
                 raise NotImplementedError('Structured_COA type not declared: missing xsi_type attribute') 
-            
+
             obj_.build(child_)
             self.set_Structured_COA(obj_)
         elif nodeName_ == 'Impact':
@@ -925,53 +897,96 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             obj_ = stix_common_binding.StatementType.factory()
             obj_.build(child_)
             self.set_Efficacy(obj_)
+        elif nodeName_ == 'Information_Source':
+            obj_ = stix_common_binding.InformationSourceType.factory()
+            obj_.build(child_)
+            self.set_Information_Source(obj_)
         elif nodeName_ == 'Handling':
             obj_ = data_marking_binding.MarkingType.factory()
             obj_.build(child_)
             self.set_Handling(obj_)
+        elif nodeName_ == 'Related_COAs':
+            obj_ = RelatedCOAsType.factory()
+            obj_.build(child_)
+            self.set_Related_COAs(obj_)
+        elif nodeName_ == 'Related_Packages':
+            obj_ = stix_common_binding.RelatedPackageRefsType.factory()
+            obj_.build(child_)
+            self.set_Related_Packages(obj_)
         super(CourseOfActionType, self).buildChildren(child_, node, nodeName_, True)
 # end class CourseOfActionType
 
-GDSClassesMapping = {
-    'Information_Source': stix_common_binding.InformationSourceType,
-    'Indicator': stix_common_binding.IndicatorBaseType,
-    'Exploit_Target': stix_common_binding.ExploitTargetBaseType,
-    'Incident': stix_common_binding.IncidentBaseType,
-    'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
-    'Confidence_Assertion': stix_common_binding.ConfidenceType,
-    'Campaign': stix_common_binding.CampaignBaseType,
-    'Encoding': stix_common_binding.ControlledVocabularyStringType,
-    'Impact': stix_common_binding.StatementType,
-    'Source': stix_common_binding.ControlledVocabularyStringType,
-    'State': stix_common_binding.ControlledVocabularyStringType,
-    'Marking_Structure': data_marking_binding.MarkingStructureType,
-    'Type': stix_common_binding.ControlledVocabularyStringType,
-    'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Relationship': stix_common_binding.ControlledVocabularyStringType,
-    'TTP': stix_common_binding.TTPBaseType,
-    'Stage': stix_common_binding.ControlledVocabularyStringType,
-    'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
-    'Reference_Description': stix_common_binding.StructuredTextType,
-    'Association_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Marking': data_marking_binding.MarkingSpecificationType,
-    'Related_Identities': stix_common_binding.RelatedIdentitiesType,
-    'Identity': stix_common_binding.IdentityType,
-    'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
-    'Threat_Actor': stix_common_binding.ThreatActorBaseType,
-    'Applicability_Confidence': stix_common_binding.ConfidenceType,
-    'Confidence': stix_common_binding.ConfidenceType,
-    'Kill_Chain': stix_common_binding.KillChainType,
-    'Description': stix_common_binding.StructuredTextType,
-    'Efficacy': stix_common_binding.StatementType,
-    'Handling': data_marking_binding.MarkingType,
-    'Name': stix_common_binding.ControlledVocabularyStringType,
-    'Kill_Chain_Phase': stix_common_binding.KillChainPhaseReferenceType,
-    'Related_Identity': stix_common_binding.RelatedIdentityType,
-    'Argument_Name': stix_common_binding.ControlledVocabularyStringType,
-    'Dependency_Description': stix_common_binding.StructuredTextType,
-    'Cost': stix_common_binding.StatementType,
-}
+
+class RelatedCOAsType(stix_common_binding.GenericRelationshipListType):
+    subclass = None
+    superclass = stix_common_binding.GenericRelationshipListType
+    def __init__(self, scope='exclusive', Related_COA=None):
+        super(RelatedCOAsType, self).__init__(scope=scope)
+        if Related_COA is None:
+            self.Related_COA = []
+        else:
+            self.Related_COA = Related_COA
+    def factory(*args_, **kwargs_):
+        if RelatedCOAsType.subclass:
+            return RelatedCOAsType.subclass(*args_, **kwargs_)
+        else:
+            return RelatedCOAsType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_Related_COA(self): return self.Related_COA
+    def set_Related_COA(self, Related_COA): self.Related_COA = Related_COA
+    def add_Related_COA(self, value): self.Related_COA.append(value)
+    def insert_Related_COA(self, index, value): self.Related_COA[index] = value
+    def hasContent_(self):
+        if (
+            self.Related_COA or
+            super(RelatedCOAsType, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedCOAsType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(outfile, level, pretty_print)
+        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedCOAsType')
+        if self.hasContent_():
+            outfile.write('>%s' % (eol_, ))
+            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(outfile, level, pretty_print)
+            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            outfile.write('/>%s' % (eol_, ))
+    def exportAttributes(self, outfile, level, already_processed, namespace_='coa:', name_='RelatedCOAsType'):
+        super(RelatedCOAsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedCOAsType')
+    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedCOAsType', fromsubclass_=False, pretty_print=True):
+        super(RelatedCOAsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for Related_COA_ in self.Related_COA:
+            Related_COA_.export(outfile, level, nsmap, namespace_, name_='Related_COA', pretty_print=pretty_print)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(RelatedCOAsType, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'Related_COA':
+            obj_ = stix_common_binding.RelatedCourseOfActionType.factory()
+            obj_.build(child_)
+            self.Related_COA.append(obj_)
+        super(RelatedCOAsType, self).buildChildren(child_, node, nodeName_, True)
+# end class RelatedCOAsType
+
+GDSClassesMapping = {}
 
 USAGE_TEXT = """
 Usage: python <Parser>.py [ -s ] <in_xml_file>
@@ -1038,25 +1053,6 @@ def parseString(inString):
     # sys.stdout.write('<?xml version="1.0" ?>\n')
     # rootObj.export(sys.stdout, 0, name_="Course_Of_Action",
     #     namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'Course_Of_Action'
-        rootClass = CourseOfActionType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from course_of_action import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import course_of_action as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

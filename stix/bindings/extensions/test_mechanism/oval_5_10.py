@@ -494,7 +494,7 @@ class OVAL5_10TestMechanismType(indicator_binding.TestMechanismType):
     subclass = None
     superclass = indicator_binding.TestMechanismType
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, oval_definitions=None, oval_variables=None):
-        super(OVAL5_10TestMechanismType, self).__init__(idref, id, Efficacy, Producer, )
+        super(OVAL5_10TestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
         self.xmlns          = "http://stix.mitre.org/extensions/TestMechanism#OVAL5.10-1"
         self.xmlns_prefix   = "ovalTM"
         self.xml_type       = "OVAL5.10TestMechanismType"
@@ -559,28 +559,6 @@ class OVAL5_10TestMechanismType(indicator_binding.TestMechanismType):
             showIndent(outfile, level, pretty_print)
             outfile.write(etree_.tostring(self.oval_variables, pretty_print=pretty_print))
             #self.oval_variables.export(outfile, level, nsmap, namespace_, name_='oval_variables', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='OVAL5.10TestMechanismType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(OVAL5_10TestMechanismType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(OVAL5_10TestMechanismType, self).exportLiteralChildren(outfile, level, name_)
-#        if self.oval_definitions is not None:
-#            showIndent(outfile, level)
-#            outfile.write('oval_definitions=model_.oval_definitions(\n')
-#            self.oval_definitions.exportLiteral(outfile, level)
-#            showIndent(outfile, level)
-#            outfile.write('),\n')
-#        if self.oval_variables is not None:
-#            showIndent(outfile, level)
-#            outfile.write('oval_variables=model_.oval_variables(\n')
-#            self.oval_variables.exportLiteral(outfile, level)
-#            showIndent(outfile, level)
-#            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -597,16 +575,7 @@ class OVAL5_10TestMechanismType(indicator_binding.TestMechanismType):
         super(OVAL5_10TestMechanismType, self).buildChildren(child_, node, nodeName_, True)
 # end class OVAL5_10TestMechanismType
 
-GDSClassesMapping = {
-    'Suggested_COAs': indicator_binding.SuggestedCOAsType,
-    'Related_Indicators': indicator_binding.RelatedIndicatorsType,
-    'Valid_Time_Position': indicator_binding.ValidTimeType,
-    'Test_Mechanisms': indicator_binding.TestMechanismsType,
-    'Sightings': indicator_binding.SightingsType,
-    'Test_Mechanism': indicator_binding.TestMechanismType,
-    'Sighting': indicator_binding.SightingType,
-    'Composite_Indicator_Expression': indicator_binding.CompositeIndicatorExpressionType,
-}
+GDSClassesMapping = {}
 
 USAGE_TEXT = """
 Usage: python <Parser>.py [ -s ] <in_xml_file>
@@ -673,25 +642,6 @@ def parseString(inString):
     sys.stdout.write('<?xml version="1.0" ?>\n')
     rootObj.export(sys.stdout, 0, name_="OVAL5.10TestMechanismType",
         namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'OVAL5.10TestMechanismType'
-        rootClass = OVAL5_10TestMechanismType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from oval_5.10 import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import oval_5.10 as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

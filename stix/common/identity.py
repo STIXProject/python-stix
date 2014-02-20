@@ -1,19 +1,22 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from __future__ import absolute_import
+
 import stix
-import stix.utils
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
+import stix.utils
 
-from stix.common.generic_relationship import GenericRelationship
+# import of GenericRelationship is below
+
 
 class Identity(stix.Entity):
     _binding = stix_common_binding
     _namespace = 'http://stix.mitre.org/common-1'
 
-    def __init__(self, id=None, idref=None, name=None, related_identities=None):
-        self.id_ = id if id else stix.utils.create_id()
+    def __init__(self, id_=None, idref=None, name=None, related_identities=None):
+        self.id_ = id_ or stix.utils.create_id("Identity")
         self.idref = idref
         self.name = name
         #self.related_identities = related_identities
@@ -24,12 +27,7 @@ class Identity(stix.Entity):
 
     @name.setter
     def name(self, value):
-        if value and not isinstance(value, basestring):
-            raise ValueError('value must be instance of basestring')
-
-        self._name = value
-
-
+        self._name = unicode(value) if value else None
 
 #    @property
 #    def related_identities(self):
@@ -128,14 +126,16 @@ class Identity(stix.Entity):
         return return_obj
 
 
+from .generic_relationship import GenericRelationship
+
+
 class RelatedIdentity(GenericRelationship):
     _binding = stix_common_binding
     _namespace = 'http://stix.mitre.org/common-1'
 
     def __init__(self, identity=None, relationship=None):
-        super(RelatedIdentity, self).__init__()
+        super(RelatedIdentity, self).__init__(relationship=relationship)
         self.identity = identity
-
 
     @property
     def identity(self):

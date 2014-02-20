@@ -496,7 +496,7 @@ class YaraTestMechanismType(indicator_binding.TestMechanismType):
     subclass = None
     superclass = indicator_binding.TestMechanismType
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, Version=None, Rule=None):
-        super(YaraTestMechanismType, self).__init__(idref, id, Efficacy, Producer, )
+        super(YaraTestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
         self.xmlns          = "http://stix.mitre.org/extensions/TestMechanism#Yara-1"
         self.xmlns_prefix   = "yaraTM"
         self.xml_type       = "YaraTestMechanismType"
@@ -558,23 +558,6 @@ class YaraTestMechanismType(indicator_binding.TestMechanismType):
             outfile.write('<%s:Version>%s</%s:Version>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Version).encode(ExternalEncoding), input_name='Version'), nsmap[namespace_], eol_))
         if self.Rule is not None:
             self.Rule.export(outfile, level, nsmap, namespace_, name_='Rule', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='YaraTestMechanismType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(YaraTestMechanismType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(YaraTestMechanismType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Version is not None:
-            showIndent(outfile, level)
-            outfile.write('Version=%s,\n' % quote_python(self.Version).encode(ExternalEncoding))
-        if self.Rule is not None:
-            outfile.write('Rule=model_.stix_common_binding.EncodedCDATAType(\n')
-            self.Rule.exportLiteral(outfile, level, name_='Rule')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -595,57 +578,7 @@ class YaraTestMechanismType(indicator_binding.TestMechanismType):
         super(YaraTestMechanismType, self).buildChildren(child_, node, nodeName_, True)
 # end class YaraTestMechanismType
 
-GDSClassesMapping = {
-    'Indicator': stix_common_binding.IndicatorBaseType,
-    'Exploit_Target': stix_common_binding.ExploitTargetBaseType,
-    'Suggested_COA': stix_common_binding.RelatedCourseOfActionType,
-    'Incident': stix_common_binding.IncidentBaseType,
-    'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
-    'Confidence_Assertion': stix_common_binding.ConfidenceType,
-    'Suggested_COAs': indicator_binding.SuggestedCOAsType,
-    'Value': stix_common_binding.ControlledVocabularyStringType,
-    'Information_Source': stix_common_binding.InformationSourceType,
-    'Producer': stix_common_binding.InformationSourceType,
-    'Encoding': stix_common_binding.ControlledVocabularyStringType,
-    'Kill_Chain_Phases': stix_common_binding.KillChainPhasesReferenceType,
-    'Source': stix_common_binding.ControlledVocabularyStringType,
-    'State': stix_common_binding.ControlledVocabularyStringType,
-    'Type': stix_common_binding.ControlledVocabularyStringType,
-    'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Relationship': stix_common_binding.ControlledVocabularyStringType,
-    'TTP': stix_common_binding.TTPBaseType,
-    'Indicated_TTP': stix_common_binding.RelatedTTPType,
-    'Related_Indicators': indicator_binding.RelatedIndicatorsType,
-    'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
-    'Valid_Time_Position': indicator_binding.ValidTimeType,
-    'Contributors': stix_common_binding.ContributorsType,
-    'Campaign': stix_common_binding.CampaignBaseType,
-    'Reference_Description': stix_common_binding.StructuredTextType,
-    'Association_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Confidence': stix_common_binding.ConfidenceType,
-    'Test_Mechanisms': indicator_binding.TestMechanismsType,
-    'Related_Identities': stix_common_binding.RelatedIdentitiesType,
-    'Sightings': indicator_binding.SightingsType,
-    'Likely_Impact': stix_common_binding.StatementType,
-    'Identity': stix_common_binding.IdentityType,
-    'Test_Mechanism': indicator_binding.TestMechanismType,
-    'Rule': stix_common_binding.EncodedCDATAType,
-    'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
-    'Sighting': indicator_binding.SightingType,
-    'Threat_Actor': stix_common_binding.ThreatActorBaseType,
-    'Kill_Chain': stix_common_binding.KillChainType,
-    'References': stix_common_binding.ReferencesType,
-    'Composite_Indicator_Expression': indicator_binding.CompositeIndicatorExpressionType,
-    'Description': stix_common_binding.StructuredTextType,
-    'Efficacy': stix_common_binding.StatementType,
-    'Related_Indicator': stix_common_binding.RelatedIndicatorType,
-    'Kill_Chain_Phase': stix_common_binding.KillChainPhaseReferenceType,
-    'Related_Identity': stix_common_binding.RelatedIdentityType,
-    'Argument_Name': stix_common_binding.ControlledVocabularyStringType,
-    'Dependency_Description': stix_common_binding.StructuredTextType,
-    'Contributor': stix_common_binding.IdentityType,
-}
+GDSClassesMapping = {}
 
 USAGE_TEXT = """
 Usage: python <Parser>.py [ -s ] <in_xml_file>
@@ -712,25 +645,6 @@ def parseString(inString):
     sys.stdout.write('<?xml version="1.0" ?>\n')
     rootObj.export(sys.stdout, 0, name_="YaraTestMechanismType",
         namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'YaraTestMechanismType'
-        rootClass = YaraTestMechanismType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from yara import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import yara as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

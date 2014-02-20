@@ -10,9 +10,9 @@ import stix.bindings.stix_common as stix_common_binding
 class VocabString(stix.Entity):
     _binding = stix_common_binding
     _namespace = 'http://stix.mitre.org/common-1'
-    
+
     # All subclasses should override this
-    _XSI_TYPE = "BAD_XSI_TYPE"
+    _XSI_TYPE = None
 
     def __init__(self, value=None):
         super(VocabString, self).__init__()
@@ -112,3 +112,9 @@ class VocabString(stix.Entity):
             vocab_str.vocab_reference = vocab_dict.get('vocab_reference')
 
         return vocab_str
+
+
+class HighMediumLow(VocabString):
+    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _XSI_TYPE = 'stixVocabs:HighMediumLowVocab-1.0'
+

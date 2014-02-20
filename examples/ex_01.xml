@@ -32,7 +32,7 @@
     http://stix.mitre.org/default_vocabularies-1 ../stix_default_vocabularies.xsd
     http://cybox.mitre.org/objects#AddressObject-2 ../cybox/objects/Address_Object.xsd"
     id="example:STIXPackage-33fe3b22-0201-47cf-85d0-97c02164528d"
-    version="1.0.1"
+    version="1.1"
     >
     <stix:STIX_Header>
         <stix:Title>Example watchlist that contains IP information.</stix:Title>

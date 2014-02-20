@@ -497,7 +497,7 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
     subclass = None
     superclass = data_marking_binding.MarkingStructureType
     def __init__(self, marking_model_ref=None, marking_model_name=None, color=None):
-        super(TLPMarkingStructureType, self).__init__(marking_model_ref, marking_model_name, )
+        super(TLPMarkingStructureType, self).__init__(marking_model_ref=marking_model_ref, marking_model_name=marking_model_name)
         self.xmlns          = "http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1"
         self.xmlns_prefix   = "tlpMarking"
         self.xml_type       = "TLPMarkingStructureType"
@@ -535,10 +535,10 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='tlpMarking:', name_='TLPMarkingStructureType'):
         super(TLPMarkingStructureType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='TLPMarkingStructureType')
-        if 'xmlns' not in already_processed:
-            already_processed.add('xmlns')
-            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
-            outfile.write(xmlns)   
+        # if 'xmlns' not in already_processed:
+        #     already_processed.add('xmlns')
+        #     xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+        #     outfile.write(xmlns)   
         if 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
             xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
@@ -548,21 +548,6 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
             outfile.write(' color=%s' % (quote_attrib(self.color), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='TLPMarkingStructureType', fromsubclass_=False, pretty_print=True):
         super(TLPMarkingStructureType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
-        pass
-    def exportLiteral(self, outfile, level, name_='TLPMarkingStructureType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.color is not None and 'color' not in already_processed:
-            already_processed.add('color')
-            showIndent(outfile, level)
-            outfile.write('color = %s,\n' % (self.color,))
-        super(TLPMarkingStructureType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(TLPMarkingStructureType, self).exportLiteralChildren(outfile, level, name_)
         pass
     def build(self, node):
         already_processed = set()
@@ -581,10 +566,7 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
         pass
 # end class TLPMarkingStructureType
 
-GDSClassesMapping = {
-    'Marking': data_marking_binding.MarkingSpecificationType,
-    'Marking_Structure': data_marking_binding.MarkingStructureType,
-}
+GDSClassesMapping = {}
 
 USAGE_TEXT = """
 Usage: python <Parser>.py [ -s ] <in_xml_file>
@@ -612,10 +594,10 @@ def parse(inFileName):
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
     doc = None
-    sys.stdout.write('<?xml version="1.0" ?>\n')
-    rootObj.export(sys.stdout, 0, name_=rootTag,
-        namespacedef_='',
-        pretty_print=True)
+    # sys.stdout.write('<?xml version="1.0" ?>\n')
+    # rootObj.export(sys.stdout, 0, name_=rootTag,
+    #     namespacedef_='',
+    #     pretty_print=True)
     return rootObj
 
 def parseEtree(inFileName):
@@ -648,28 +630,9 @@ def parseString(inString):
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
     doc = None
-    sys.stdout.write('<?xml version="1.0" ?>\n')
-    rootObj.export(sys.stdout, 0, name_="TLPMarkingStructureType",
-        namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'TLPMarkingStructureType'
-        rootClass = TLPMarkingStructureType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from tlp import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import tlp as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
+    # sys.stdout.write('<?xml version="1.0" ?>\n')
+    # rootObj.export(sys.stdout, 0, name_="TLPMarkingStructureType",
+    #     namespacedef_='')
     return rootObj
 
 def main():

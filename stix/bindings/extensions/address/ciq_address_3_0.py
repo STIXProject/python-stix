@@ -543,7 +543,7 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
             already_processed.add('xsi:type')
             xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
             outfile.write(xsi_type)
-    
+
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='CIQAddress3.0InstanceType', fromsubclass_=False, pretty_print=True):
         super(CIQAddress3_0InstanceType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
@@ -554,20 +554,6 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
             showIndent(outfile, level, pretty_print)
             outfile.write(etree_.tostring(self.Location, pretty_print=pretty_print))
             #self.Location.export(outfile, level, nsmap, namespace_, name_='Location', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='CIQAddress3.0InstanceType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(CIQAddress3_0InstanceType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(CIQAddress3_0InstanceType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Location is not None:
-            outfile.write('Location=model_.xal.AddressType(\n')
-            self.Location.exportLiteral(outfile, level, name_='Location')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -582,38 +568,7 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
         super(CIQAddress3_0InstanceType, self).buildChildren(child_, node, nodeName_, True)
 # end class CIQAddress3_0InstanceType
 
-GDSClassesMapping = {
-    'Information_Source': stix_common_binding.InformationSourceType,
-    'Indicator': stix_common_binding.IndicatorBaseType,
-    'Exploit_Target': stix_common_binding.ExploitTargetBaseType,
-    'Incident': stix_common_binding.IncidentBaseType,
-    'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
-    'Confidence_Assertion': stix_common_binding.ConfidenceType,
-    'Campaign': stix_common_binding.CampaignBaseType,
-    'Encoding': stix_common_binding.ControlledVocabularyStringType,
-    'Source': stix_common_binding.ControlledVocabularyStringType,
-    'State': stix_common_binding.ControlledVocabularyStringType,
-    'Type': stix_common_binding.ControlledVocabularyStringType,
-    'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Relationship': stix_common_binding.ControlledVocabularyStringType,
-    'TTP': stix_common_binding.TTPBaseType,
-    'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
-    'Reference_Description': stix_common_binding.StructuredTextType,
-    'Association_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Related_Identities': stix_common_binding.RelatedIdentitiesType,
-    'Identity': stix_common_binding.IdentityType,
-    'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
-    'Threat_Actor': stix_common_binding.ThreatActorBaseType,
-    'Confidence': stix_common_binding.ConfidenceType,
-    'Kill_Chain': stix_common_binding.KillChainType,
-    'Description': stix_common_binding.StructuredTextType,
-    'Name': stix_common_binding.ControlledVocabularyStringType,
-    'Kill_Chain_Phase': stix_common_binding.KillChainPhaseReferenceType,
-    'Related_Identity': stix_common_binding.RelatedIdentityType,
-    'Argument_Name': stix_common_binding.ControlledVocabularyStringType,
-    'Dependency_Description': stix_common_binding.StructuredTextType,
-}
+GDSClassesMapping = {}
 
 USAGE_TEXT = """
 Usage: python <Parser>.py [ -s ] <in_xml_file>
@@ -680,25 +635,6 @@ def parseString(inString):
     sys.stdout.write('<?xml version="1.0" ?>\n')
     rootObj.export(sys.stdout, 0, name_="CIQAddress3.0InstanceType",
         namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'CIQAddress3.0InstanceType'
-        rootClass = CIQAddress3_0InstanceType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from ciq_address_3.0 import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import ciq_address_3.0 as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

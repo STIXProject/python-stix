@@ -539,26 +539,6 @@ class NamesType(GeneratedsSuper):
             eol_ = ''
         for Name_ in self.Name:
             Name_.export(outfile, level, nsmap, namespace_, name_='Name', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='NamesType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        pass
-    def exportLiteralChildren(self, outfile, level, name_):
-        showIndent(outfile, level)
-        outfile.write('Name=[\n')
-        level += 1
-        for Name_ in self.Name:
-            outfile.write('model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            Name_.exportLiteral(outfile, level, name_='stix_common_binding.ControlledVocabularyStringType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -578,7 +558,7 @@ class AssociatedCampaignsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Associated_Campaign=None):
-        super(AssociatedCampaignsType, self).__init__(scope, )
+        super(AssociatedCampaignsType, self).__init__(scope=scope)
         if Associated_Campaign is None:
             self.Associated_Campaign = []
         else:
@@ -627,27 +607,6 @@ class AssociatedCampaignsType(stix_common_binding.GenericRelationshipListType):
             eol_ = ''
         for Associated_Campaign_ in self.Associated_Campaign:
             Associated_Campaign_.export(outfile, level, nsmap, namespace_, name_='Associated_Campaign', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='AssociatedCampaignsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(AssociatedCampaignsType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(AssociatedCampaignsType, self).exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('Associated_Campaign=[\n')
-        level += 1
-        for Associated_Campaign_ in self.Associated_Campaign:
-            outfile.write('model_.stix_common_binding.RelatedCampaignType(\n')
-            Associated_Campaign_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedCampaignType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -668,7 +627,7 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_Indicator=None):
-        super(RelatedIndicatorsType, self).__init__(scope, )
+        super(RelatedIndicatorsType, self).__init__(scope=scope)
         if Related_Indicator is None:
             self.Related_Indicator = []
         else:
@@ -717,27 +676,6 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
             eol_ = ''
         for Related_Indicator_ in self.Related_Indicator:
             Related_Indicator_.export(outfile, level, nsmap, namespace_, name_='Related_Indicator', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedIndicatorsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedIndicatorsType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedIndicatorsType, self).exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('Related_Indicator=[\n')
-        level += 1
-        for Related_Indicator_ in self.Related_Indicator:
-            outfile.write('model_.stix_common_binding.RelatedIndicatorType(\n')
-            Related_Indicator_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedIndicatorType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -758,7 +696,7 @@ class RelatedIncidentsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_Incident=None):
-        super(RelatedIncidentsType, self).__init__(scope, )
+        super(RelatedIncidentsType, self).__init__(scope=scope)
         if Related_Incident is None:
             self.Related_Incident = []
         else:
@@ -807,27 +745,6 @@ class RelatedIncidentsType(stix_common_binding.GenericRelationshipListType):
             eol_ = ''
         for Related_Incident_ in self.Related_Incident:
             Related_Incident_.export(outfile, level, nsmap, namespace_, name_='Related_Incident', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedIncidentsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedIncidentsType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedIncidentsType, self).exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('Related_Incident=[\n')
-        level += 1
-        for Related_Incident_ in self.Related_Incident:
-            outfile.write('model_.stix_common_binding.RelatedIncidentType(\n')
-            Related_Incident_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedIncidentType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -848,7 +765,7 @@ class RelatedTTPsType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Related_TTP=None):
-        super(RelatedTTPsType, self).__init__(scope, )
+        super(RelatedTTPsType, self).__init__(scope=scope)
         if Related_TTP is None:
             self.Related_TTP = []
         else:
@@ -897,27 +814,6 @@ class RelatedTTPsType(stix_common_binding.GenericRelationshipListType):
             eol_ = ''
         for Related_TTP_ in self.Related_TTP:
             Related_TTP_.export(outfile, level, nsmap, namespace_, name_='Related_TTP', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='RelatedTTPsType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(RelatedTTPsType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(RelatedTTPsType, self).exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('Related_TTP=[\n')
-        level += 1
-        for Related_TTP_ in self.Related_TTP:
-            outfile.write('model_.stix_common_binding.RelatedTTPType(\n')
-            Related_TTP_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedTTPType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -940,7 +836,7 @@ class AttributionType(stix_common_binding.GenericRelationshipListType):
     subclass = None
     superclass = stix_common_binding.GenericRelationshipListType
     def __init__(self, scope='exclusive', Attributed_Threat_Actor=None):
-        super(AttributionType, self).__init__(scope, )
+        super(AttributionType, self).__init__(scope=scope)
         if Attributed_Threat_Actor is None:
             self.Attributed_Threat_Actor = []
         else:
@@ -989,27 +885,6 @@ class AttributionType(stix_common_binding.GenericRelationshipListType):
             eol_ = ''
         for Attributed_Threat_Actor_ in self.Attributed_Threat_Actor:
             Attributed_Threat_Actor_.export(outfile, level, nsmap, namespace_, name_='Attributed_Threat_Actor', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='AttributionType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(AttributionType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(AttributionType, self).exportLiteralChildren(outfile, level, name_)
-        showIndent(outfile, level)
-        outfile.write('Attributed_Threat_Actor=[\n')
-        level += 1
-        for Attributed_Threat_Actor_ in self.Attributed_Threat_Actor:
-            outfile.write('model_.stix_common_binding.RelatedThreatActorType(\n')
-            Attributed_Threat_Actor_.exportLiteral(outfile, level, name_='stix_common_binding.RelatedThreatActorType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1032,13 +907,15 @@ class CampaignType(stix_common_binding.CampaignBaseType):
     this content."""
     subclass = None
     superclass = stix_common_binding.CampaignBaseType
-    def __init__(self, idref=None, id=None, version=None, Title=None, Names=None, Intended_Effect=None, Status=None, Related_TTPs=None, Related_Incidents=None, Related_Indicators=None, Attribution=None, Associated_Campaigns=None, Confidence=None, Activity=None, Information_Source=None, Handling=None):
-        super(CampaignType, self).__init__(idref, id, )
+    def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Description=None, Short_Description=None, Names=None, Intended_Effect=None, Status=None, Related_TTPs=None, Related_Incidents=None, Related_Indicators=None, Attribution=None, Associated_Campaigns=None, Confidence=None, Activity=None, Information_Source=None, Handling=None, Related_Packages=None):
+        super(CampaignType, self).__init__(idref=idref, id=id, timestamp=timestamp)
         self.xmlns          = "http://stix.mitre.org/Campaign-1"
         self.xmlns_prefix   = "campaign"
         self.xml_type       = "CampaignType"
         self.version = _cast(None, version)
         self.Title = Title
+        self.Description = Description
+        self.Short_Description = Short_Description
         self.Names = Names
         if Intended_Effect is None:
             self.Intended_Effect = []
@@ -1060,6 +937,7 @@ class CampaignType(stix_common_binding.CampaignBaseType):
             self.Activity = Activity
         self.Information_Source = Information_Source
         self.Handling = Handling
+        self.Related_Packages = Related_Packages
     def factory(*args_, **kwargs_):
         if CampaignType.subclass:
             return CampaignType.subclass(*args_, **kwargs_)
@@ -1068,6 +946,10 @@ class CampaignType(stix_common_binding.CampaignBaseType):
     factory = staticmethod(factory)
     def get_Title(self): return self.Title
     def set_Title(self, Title): self.Title = Title
+    def get_Description(self): return self.Description
+    def set_Description(self, Description): self.Description = Description
+    def get_Short_Description(self): return self.Short_Description
+    def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Names(self): return self.Names
     def set_Names(self, Names): self.Names = Names
     def get_Intended_Effect(self): return self.Intended_Effect
@@ -1098,11 +980,15 @@ class CampaignType(stix_common_binding.CampaignBaseType):
     def set_Information_Source(self, Information_Source): self.Information_Source = Information_Source
     def get_Handling(self): return self.Handling
     def set_Handling(self, Handling): self.Handling = Handling
+    def get_Related_Packages(self): return self.Related_Packages
+    def set_Related_Packages(self, Related_Packages): self.Related_Packages = Related_Packages
     def get_version(self): return self.version
     def set_version(self, version): self.version = version
     def hasContent_(self):
         if (
             self.Title is not None or
+            self.Description is not None or
+            self.Short_Description is not None or
             self.Names is not None or
             self.Intended_Effect or
             self.Status is not None or
@@ -1115,6 +1001,7 @@ class CampaignType(stix_common_binding.CampaignBaseType):
             self.Activity or
             self.Information_Source is not None or
             self.Handling is not None or
+            self.Related_Packages is not None or
             super(CampaignType, self).hasContent_()
             ):
             return True
@@ -1158,6 +1045,10 @@ class CampaignType(stix_common_binding.CampaignBaseType):
         if self.Title is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
+        if self.Description is not None:
+            self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        if self.Short_Description is not None:
+            self.Short_Description.export(outfile, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         if self.Names is not None:
             self.Names.export(outfile, level, nsmap, namespace_, name_='Names', pretty_print=pretty_print)
         for Intended_Effect_ in self.Intended_Effect:
@@ -1182,92 +1073,8 @@ class CampaignType(stix_common_binding.CampaignBaseType):
             self.Information_Source.export(outfile, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
         if self.Handling is not None:
             self.Handling.export(outfile, level, nsmap, namespace_, name_='Handling', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='CampaignType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.version is not None and 'version' not in already_processed:
-            already_processed.add('version')
-            showIndent(outfile, level)
-            outfile.write('version = %s,\n' % (self.version,))
-        super(CampaignType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(CampaignType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Title is not None:
-            showIndent(outfile, level)
-            outfile.write('Title=%s,\n' % quote_python(self.Title).encode(ExternalEncoding))
-        if self.Names is not None:
-            outfile.write('Names=model_.NamesType(\n')
-            self.Names.exportLiteral(outfile, level, name_='Names')
-            outfile.write('),\n')
-        showIndent(outfile, level)
-        outfile.write('Intended_Effect=[\n')
-        level += 1
-        for Intended_Effect_ in self.Intended_Effect:
-            outfile.write('model_.stix_common_binding.StatementType(\n')
-            Intended_Effect_.exportLiteral(outfile, level, name_='stix_common_binding.StatementType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-        if self.Status is not None:
-            outfile.write('Status=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Status.exportLiteral(outfile, level, name_='Status')
-            outfile.write('),\n')
-        if self.Related_TTPs is not None:
-            outfile.write('Related_TTPs=model_.RelatedTTPsType(\n')
-            self.Related_TTPs.exportLiteral(outfile, level, name_='Related_TTPs')
-            outfile.write('),\n')
-        if self.Related_Incidents is not None:
-            outfile.write('Related_Incidents=model_.RelatedIncidentsType(\n')
-            self.Related_Incidents.exportLiteral(outfile, level, name_='Related_Incidents')
-            outfile.write('),\n')
-        if self.Related_Indicators is not None:
-            outfile.write('Related_Indicators=model_.RelatedIndicatorsType(\n')
-            self.Related_Indicators.exportLiteral(outfile, level, name_='Related_Indicators')
-            outfile.write('),\n')
-        showIndent(outfile, level)
-        outfile.write('Attribution=[\n')
-        level += 1
-        for Attribution_ in self.Attribution:
-            outfile.write('model_.AttributionType(\n')
-            Attribution_.exportLiteral(outfile, level, name_='AttributionType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-        if self.Associated_Campaigns is not None:
-            outfile.write('Associated_Campaigns=model_.AssociatedCampaignsType(\n')
-            self.Associated_Campaigns.exportLiteral(outfile, level, name_='Associated_Campaigns')
-            outfile.write('),\n')
-        if self.Confidence is not None:
-            outfile.write('Confidence=model_.stix_common_binding.ConfidenceType(\n')
-            self.Confidence.exportLiteral(outfile, level, name_='Confidence')
-            outfile.write('),\n')
-        showIndent(outfile, level)
-        outfile.write('Activity=[\n')
-        level += 1
-        for Activity_ in self.Activity:
-            outfile.write('model_.stix_common_binding.ActivityType(\n')
-            Activity_.exportLiteral(outfile, level, name_='stix_common_binding.ActivityType')
-            showIndent(outfile, level)
-            outfile.write('),\n')
-        level -= 1
-        showIndent(outfile, level)
-        outfile.write('],\n')
-        if self.Information_Source is not None:
-            outfile.write('Information_Source=model_.stix_common_binding.InformationSourceType(\n')
-            self.Information_Source.exportLiteral(outfile, level, name_='Information_Source')
-            outfile.write('),\n')
-        if self.Handling is not None:
-            outfile.write('Handling=model_.data_marking_binding.MarkingType(\n')
-            self.Handling.exportLiteral(outfile, level, name_='Handling')
-            outfile.write('),\n')
+        if self.Related_Packages is not None:
+            self.Related_Packages.export(outfile, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1285,6 +1092,14 @@ class CampaignType(stix_common_binding.CampaignBaseType):
             Title_ = child_.text
             Title_ = self.gds_validate_string(Title_, node, 'Title')
             self.Title = Title_
+        elif nodeName_ == 'Description':
+            obj_ = stix_common_binding.StructuredTextType.factory()
+            obj_.build(child_)
+            self.set_sDescription(obj_)
+        elif nodeName_ == 'Short_Description':
+            obj_ = stix_common_binding.StructuredTextType.factory()
+            obj_.build(child_)
+            self.set_Short_Description(obj_)
         elif nodeName_ == 'Names':
             obj_ = NamesType.factory()
             obj_.build(child_)
@@ -1347,87 +1162,14 @@ class CampaignType(stix_common_binding.CampaignBaseType):
             obj_ = data_marking_binding.MarkingType.factory()
             obj_.build(child_)
             self.set_Handling(obj_)
+        elif nodeName_ == "Related_Packages":
+            obj_ = stix_common_binding.RelatedPackageRefsType.factory()
+            obj_.build(child_)
+            self.set_Related_Packages(obj_)
         super(CampaignType, self).buildChildren(child_, node, nodeName_, True)
 # end class CampaignType
 
-GDSClassesMapping = {
-    'Information_Source': stix_common_binding.InformationSourceType,
-    'Indicator': stix_common_binding.IndicatorBaseType,
-    'Defined_Effect': cybox_core_binding.DefinedEffectType,
-    'Action_Argument': cybox_core_binding.ActionArgumentType,
-    'Exploit_Target': stix_common_binding.ExploitTargetBaseType,
-    'Pools': cybox_core_binding.PoolsType,
-    'Attributed_Threat_Actor': stix_common_binding.RelatedThreatActorType,
-    'Object': cybox_core_binding.ObjectType,
-    'Incident': stix_common_binding.IncidentBaseType,
-    'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
-    'Observable': cybox_core_binding.ObservableType,
-    'Confidence_Assertion': stix_common_binding.ConfidenceType,
-    'Value': stix_common_binding.ControlledVocabularyStringType,
-    'Evasion_Techniques': cybox_core_binding.ObfuscationTechniquesType,
-    'Campaign': stix_common_binding.CampaignBaseType,
-    'Encoding': stix_common_binding.ControlledVocabularyStringType,
-    'Associated_Objects': cybox_core_binding.AssociatedObjectsType,
-    'Event': cybox_core_binding.EventType,
-    'Domain_Specific_Object_Properties': cybox_core_binding.DomainSpecificObjectPropertiesType,
-    'Intended_Effect': stix_common_binding.StatementType,
-    'State': stix_common_binding.ControlledVocabularyStringType,
-    'Marking_Structure': data_marking_binding.MarkingStructureType,
-    'Action_Arguments': cybox_core_binding.ActionArgumentsType,
-    'Type': stix_common_binding.ControlledVocabularyStringType,
-    'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Relationship': stix_common_binding.ControlledVocabularyStringType,
-    'TTP': stix_common_binding.TTPBaseType,
-    'Obfuscation_Technique': cybox_core_binding.ObfuscationTechniqueType,
-    'Observable_Composition': cybox_core_binding.ObservableCompositionType,
-    'Related_Identities': stix_common_binding.RelatedIdentitiesType,
-    'Action_Pool': cybox_core_binding.ActionPoolType,
-    'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
-    'Contributors': stix_common_binding.ContributorsType,
-    'Reference_Description': stix_common_binding.StructuredTextType,
-    'Association_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Marking': data_marking_binding.MarkingSpecificationType,
-    'Associated_Object': cybox_core_binding.AssociatedObjectType,
-    'Related_Objects': cybox_core_binding.RelatedObjectsType,
-    'Associated_Campaign': stix_common_binding.RelatedCampaignType,
-    'Status': stix_common_binding.ControlledVocabularyStringType,
-    'Property_Pool': cybox_core_binding.PropertyPoolType,
-    'Identity': stix_common_binding.IdentityType,
-    'Action_Reference': cybox_core_binding.ActionReferenceType,
-    'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
-    'Related_Incident': stix_common_binding.RelatedIncidentType,
-    'Action': cybox_core_binding.ActionType,
-    'Threat_Actor': stix_common_binding.ThreatActorBaseType,
-    'Event_Pool': cybox_core_binding.EventPoolType,
-    'Kill_Chain': stix_common_binding.KillChainType,
-    'Old_Object': cybox_core_binding.ObjectType,
-    'Object_Pool': cybox_core_binding.ObjectPoolType,
-    'Properties': cybox_core_binding.PropertiesType,
-    'Frequency': cybox_core_binding.FrequencyType,
-    'References': stix_common_binding.ReferencesType,
-    'Keywords': cybox_core_binding.KeywordsType,
-    'Pattern_Fidelity': cybox_core_binding.PatternFidelityType,
-    'Confidence': stix_common_binding.ConfidenceType,
-    'Description': stix_common_binding.StructuredTextType,
-    'Action_Pertinent_Object_Properties': cybox_core_binding.ActionPertinentObjectPropertiesType,
-    'Related_TTP': stix_common_binding.RelatedTTPType,
-    'Related_Indicator': stix_common_binding.RelatedIndicatorType,
-    'Related_Object': cybox_core_binding.RelatedObjectType,
-    'Handling': data_marking_binding.MarkingType,
-    'Kill_Chain_Phase': stix_common_binding.KillChainPhaseReferenceType,
-    'Related_Identity': stix_common_binding.RelatedIdentityType,
-    'Values': cybox_core_binding.ValuesType,
-    'Activity': stix_common_binding.ActivityType,
-    'Observables': cybox_core_binding.ObservablesType,
-    'New_Object': cybox_core_binding.ObjectType,
-    'Source': stix_common_binding.ControlledVocabularyStringType,
-    'Argument_Name': stix_common_binding.ControlledVocabularyStringType,
-    'Actions': cybox_core_binding.ActionsType,
-    'Dependency_Description': stix_common_binding.StructuredTextType,
-    'Contributor': stix_common_binding.IdentityType,
-    'Action_Aliases': cybox_core_binding.ActionAliasesType,
-}
+GDSClassesMapping = {}
 
 USAGE_TEXT = """
 Usage: python <Parser>.py [ -s ] <in_xml_file>
@@ -1494,25 +1236,6 @@ def parseString(inString):
     # sys.stdout.write('<?xml version="1.0" ?>\n')
     # rootObj.export(sys.stdout, 0, name_="Campaign",
     #     namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'Campaign'
-        rootClass = CampaignType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from campaign import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import campaign as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

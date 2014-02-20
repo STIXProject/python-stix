@@ -496,7 +496,7 @@ class OpenIOC2010TestMechanismType(indicator_binding.TestMechanismType):
     subclass = None
     superclass = indicator_binding.TestMechanismType
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, ioc=None):
-        super(OpenIOC2010TestMechanismType, self).__init__(idref, id, Efficacy, Producer, )
+        super(OpenIOC2010TestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
         self.xmlns          = "http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1"
         self.xmlns_prefix   = "openiocTM"
         self.xml_type       = "OpenIOC2010TestMechanismType"
@@ -553,20 +553,6 @@ class OpenIOC2010TestMechanismType(indicator_binding.TestMechanismType):
             showIndent(outfile, level, pretty_print)
             outfile.write(etree_.tostring(self.ioc, pretty_print=pretty_print))
             #self.ioc.export(outfile, level, nsmap, namespace_, name_='ioc', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='OpenIOC2010TestMechanismType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(OpenIOC2010TestMechanismType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(OpenIOC2010TestMechanismType, self).exportLiteralChildren(outfile, level, name_)
-#        if self.ioc is not None:
-#            outfile.write('ioc=model_.ioc.IndicatorOfCompromise(\n')
-#            self.ioc.exportLiteral(outfile, level, name_='ioc')
-#            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -581,16 +567,7 @@ class OpenIOC2010TestMechanismType(indicator_binding.TestMechanismType):
         super(OpenIOC2010TestMechanismType, self).buildChildren(child_, node, nodeName_, True)
 # end class OpenIOC2010TestMechanismType
 
-GDSClassesMapping = {
-    'Suggested_COAs': indicator_binding.SuggestedCOAsType,
-    'Related_Indicators': indicator_binding.RelatedIndicatorsType,
-    'Valid_Time_Position': indicator_binding.ValidTimeType,
-    'Test_Mechanisms': indicator_binding.TestMechanismsType,
-    'Sightings': indicator_binding.SightingsType,
-    'Test_Mechanism': indicator_binding.TestMechanismType,
-    'Sighting': indicator_binding.SightingType,
-    'Composite_Indicator_Expression': indicator_binding.CompositeIndicatorExpressionType,
-}
+GDSClassesMapping = {}
 
 USAGE_TEXT = """
 Usage: python <Parser>.py [ -s ] <in_xml_file>
@@ -657,25 +634,6 @@ def parseString(inString):
     sys.stdout.write('<?xml version="1.0" ?>\n')
     rootObj.export(sys.stdout, 0, name_="OpenIOC2010TestMechanismType",
         namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'OpenIOC2010TestMechanismType'
-        rootClass = OpenIOC2010TestMechanismType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from open_ioc_2010 import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import open_ioc_2010 as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():

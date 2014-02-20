@@ -494,7 +494,7 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
     subclass = None
     superclass = data_marking_binding.MarkingStructureType
     def __init__(self, marking_model_ref=None, marking_model_name=None, Statement=None):
-        super(SimpleMarkingStructureType, self).__init__(marking_model_ref, marking_model_name, )
+        super(SimpleMarkingStructureType, self).__init__(marking_model_ref=marking_model_ref, marking_model_name=marking_model_name)
         self.xmlns          = "http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1"
         self.xmlns_prefix   = "simpleMarking"
         self.xml_type       = "SimpleMarkingStructureType"
@@ -533,10 +533,10 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='simpleMarking:', name_='SimpleMarkingStructureType'):
         super(SimpleMarkingStructureType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='SimpleMarkingStructureType')
-        if 'xmlns' not in already_processed:
-            already_processed.add('xmlns')
-            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
-            outfile.write(xmlns)   
+        # if 'xmlns' not in already_processed:
+        #     already_processed.add('xmlns')
+        #     xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+        #     outfile.write(xmlns)   
         if 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
             xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
@@ -550,19 +550,6 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
         if self.Statement is not None:
             showIndent(outfile, level, pretty_print)
             outfile.write('<%s:Statement>%s</%s:Statement>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Statement).encode(ExternalEncoding), input_name='Statement'), nsmap[namespace_], eol_))
-    def exportLiteral(self, outfile, level, name_='SimpleMarkingStructureType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        super(SimpleMarkingStructureType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(SimpleMarkingStructureType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Statement is not None:
-            showIndent(outfile, level)
-            outfile.write('Statement=%s,\n' % quote_python(self.Statement).encode(ExternalEncoding))
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -579,10 +566,7 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
         super(SimpleMarkingStructureType, self).buildChildren(child_, node, nodeName_, True)
 # end class SimpleMarkingStructureType
 
-GDSClassesMapping = {
-    'Marking': data_marking_binding.MarkingSpecificationType,
-    'Marking_Structure': data_marking_binding.MarkingStructureType,
-}
+GDSClassesMapping = {}
 
 USAGE_TEXT = """
 Usage: python <Parser>.py [ -s ] <in_xml_file>
@@ -610,10 +594,10 @@ def parse(inFileName):
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
     doc = None
-    sys.stdout.write('<?xml version="1.0" ?>\n')
-    rootObj.export(sys.stdout, 0, name_=rootTag,
-        namespacedef_='',
-        pretty_print=True)
+    # sys.stdout.write('<?xml version="1.0" ?>\n')
+    # rootObj.export(sys.stdout, 0, name_=rootTag,
+    #     namespacedef_='',
+    #     pretty_print=True)
     return rootObj
 
 def parseEtree(inFileName):
@@ -646,28 +630,9 @@ def parseString(inString):
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
     doc = None
-    sys.stdout.write('<?xml version="1.0" ?>\n')
-    rootObj.export(sys.stdout, 0, name_="SimpleMarkingStructureType",
-        namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'SimpleMarkingStructureType'
-        rootClass = SimpleMarkingStructureType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from simple_marking import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import simple_marking as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
+    # sys.stdout.write('<?xml version="1.0" ?>\n')
+    # rootObj.export(sys.stdout, 0, name_="SimpleMarkingStructureType",
+    #     namespacedef_='')
     return rootObj
 
 def main():

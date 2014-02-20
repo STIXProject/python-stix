@@ -25,43 +25,11 @@ Verbose_import_ = False
     XMLParser_import_elementtree
     ) = range(3)
 XMLParser_import_library = None
-try:
-    # lxml
-    from lxml import etree as etree_
-    XMLParser_import_library = XMLParser_import_lxml
-    if Verbose_import_:
-        print("running with lxml.etree")
-except ImportError:
-    try:
-        # cElementTree from Python 2.5+
-        import xml.etree.cElementTree as etree_
-        XMLParser_import_library = XMLParser_import_elementtree
-        if Verbose_import_:
-            print("running with cElementTree on Python 2.5+")
-    except ImportError:
-        try:
-            # ElementTree from Python 2.5+
-            import xml.etree.ElementTree as etree_
-            XMLParser_import_library = XMLParser_import_elementtree
-            if Verbose_import_:
-                print("running with ElementTree on Python 2.5+")
-        except ImportError:
-            try:
-                # normal cElementTree install
-                import cElementTree as etree_
-                XMLParser_import_library = XMLParser_import_elementtree
-                if Verbose_import_:
-                    print("running with cElementTree")
-            except ImportError:
-                try:
-                    # normal ElementTree install
-                    import elementtree.ElementTree as etree_
-                    XMLParser_import_library = XMLParser_import_elementtree
-                    if Verbose_import_:
-                        print("running with ElementTree")
-                except ImportError:
-                    raise ImportError(
-                        "Failed to import ElementTree from any known place")
+# lxml
+from lxml import etree as etree_
+XMLParser_import_library = XMLParser_import_lxml
+if Verbose_import_:
+    print("running with lxml.etree")
 
 def parsexml_(*args, **kwargs):
     if (XMLParser_import_library == XMLParser_import_lxml and
@@ -71,7 +39,6 @@ def parsexml_(*args, **kwargs):
         kwargs['parser'] = etree_.ETCompatXMLParser(huge_tree=True)
     doc = etree_.parse(*args, **kwargs)
     return doc
-
 #
 # User methods
 #
@@ -527,7 +494,7 @@ class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
     subclass = None
     superclass = course_of_action_binding.StructuredCOAType
     def __init__(self, idref=None, id=None, reference_location=None, Description=None, Type=None, Specification=None):
-        super(GenericStructuredCOAType, self).__init__(idref, id, )
+        super(GenericStructuredCOAType, self).__init__(idref=idref, id=id)
         self.xmlns          = "http://stix.mitre.org/extensions/StructuredCOA#Generic-1"
         self.xmlns_prefix   = "genericStructuredCOA"
         self.xml_type       = "GenericStructuredCOAType"
@@ -600,32 +567,6 @@ class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
             self.Type.export(outfile, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
         if self.Specification is not None:
             self.Specification.export(outfile, level, nsmap, namespace_, name_='Specification', pretty_print=pretty_print)
-    def exportLiteral(self, outfile, level, name_='GenericStructuredCOAType'):
-        level += 1
-        already_processed = set()
-        self.exportLiteralAttributes(outfile, level, already_processed, name_)
-        if self.hasContent_():
-            self.exportLiteralChildren(outfile, level, name_)
-    def exportLiteralAttributes(self, outfile, level, already_processed, name_):
-        if self.reference_location is not None and 'reference_location' not in already_processed:
-            already_processed.add('reference_location')
-            showIndent(outfile, level)
-            outfile.write('reference_location = "%s",\n' % (self.reference_location,))
-        super(GenericStructuredCOAType, self).exportLiteralAttributes(outfile, level, already_processed, name_)
-    def exportLiteralChildren(self, outfile, level, name_):
-        super(GenericStructuredCOAType, self).exportLiteralChildren(outfile, level, name_)
-        if self.Description is not None:
-            outfile.write('Description=model_.stix_common_binding.StructuredTextType(\n')
-            self.Description.exportLiteral(outfile, level, name_='Description')
-            outfile.write('),\n')
-        if self.Type is not None:
-            outfile.write('Type=model_.stix_common_binding.ControlledVocabularyStringType(\n')
-            self.Type.exportLiteral(outfile, level, name_='Type')
-            outfile.write('),\n')
-        if self.Specification is not None:
-            outfile.write('Specification=model_.stix_common_binding.EncodedCDATAType(\n')
-            self.Specification.exportLiteral(outfile, level, name_='Specification')
-            outfile.write('),\n')
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -654,46 +595,7 @@ class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
         super(GenericStructuredCOAType, self).buildChildren(child_, node, nodeName_, True)
 # end class GenericStructuredCOAType
 
-GDSClassesMapping = {
-    'Information_Source': stix_common_binding.InformationSourceType,
-    'Indicator': stix_common_binding.IndicatorBaseType,
-    'Exploit_Target': stix_common_binding.ExploitTargetBaseType,
-    'Incident': stix_common_binding.IncidentBaseType,
-    'Information_Source_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Confidence_Assertion_Chain': stix_common_binding.ConfidenceAssertionChainType,
-    'Confidence_Assertion': stix_common_binding.ConfidenceType,
-    'Campaign': stix_common_binding.CampaignBaseType,
-    'Encoding': stix_common_binding.ControlledVocabularyStringType,
-    'Impact': stix_common_binding.StatementType,
-    'Specification': stix_common_binding.EncodedCDATAType,
-    'Source': stix_common_binding.ControlledVocabularyStringType,
-    'State': stix_common_binding.ControlledVocabularyStringType,
-    'Structured_COA': course_of_action_binding.StructuredCOAType,
-    'Type': stix_common_binding.ControlledVocabularyStringType,
-    'Tool_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Relationship': stix_common_binding.ControlledVocabularyStringType,
-    'TTP': stix_common_binding.TTPBaseType,
-    'Stage': stix_common_binding.ControlledVocabularyStringType,
-    'Course_Of_Action': stix_common_binding.CourseOfActionBaseType,
-    'Reference_Description': stix_common_binding.StructuredTextType,
-    'Association_Type': stix_common_binding.ControlledVocabularyStringType,
-    'Related_Identities': stix_common_binding.RelatedIdentitiesType,
-    'Identity': stix_common_binding.IdentityType,
-    'Usage_Context_Assumption': stix_common_binding.StructuredTextType,
-    'Threat_Actor': stix_common_binding.ThreatActorBaseType,
-    'Applicability_Confidence': stix_common_binding.ConfidenceType,
-    'Confidence': stix_common_binding.ConfidenceType,
-    'Kill_Chain': stix_common_binding.KillChainType,
-    'Objective': course_of_action_binding.ObjectiveType,
-    'Description': stix_common_binding.StructuredTextType,
-    'Efficacy': stix_common_binding.StatementType,
-    'Name': stix_common_binding.ControlledVocabularyStringType,
-    'Kill_Chain_Phase': stix_common_binding.KillChainPhaseReferenceType,
-    'Related_Identity': stix_common_binding.RelatedIdentityType,
-    'Argument_Name': stix_common_binding.ControlledVocabularyStringType,
-    'Dependency_Description': stix_common_binding.StructuredTextType,
-    'Cost': stix_common_binding.StatementType,
-}
+GDSClassesMapping = {}
 
 USAGE_TEXT = """
 Usage: python <Parser>.py [ -s ] <in_xml_file>
@@ -760,25 +662,6 @@ def parseString(inString):
     sys.stdout.write('<?xml version="1.0" ?>\n')
     rootObj.export(sys.stdout, 0, name_="GenericStructuredCOAType",
         namespacedef_='')
-    return rootObj
-
-def parseLiteral(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'GenericStructuredCOAType'
-        rootClass = GenericStructuredCOAType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    sys.stdout.write('#from generic import *\n\n')
-    sys.stdout.write('from datetime import datetime as datetime_\n\n')
-    sys.stdout.write('import generic as model_\n\n')
-    sys.stdout.write('rootObj = model_.rootTag(\n')
-    rootObj.exportLiteral(sys.stdout, 0, name_=rootTag)
-    sys.stdout.write(')\n')
     return rootObj
 
 def main():
