@@ -4,7 +4,7 @@
 import stix
 import stix.bindings.incident as incident_binding
 from stix.common.generic_relationship import GenericRelationshipList
-from stix.indicator import Indicator
+from stix.common.related import RelatedIndicator
 from cybox.core import Observable, Object
 
 class RelatedIndicators(GenericRelationshipList):
@@ -33,18 +33,8 @@ class RelatedIndicators(GenericRelationshipList):
     def add_indicator(self, indicator):
         if not indicator:
             return
-        if isinstance(indicator, Indicator):
+        if isinstance(indicator, RelatedIndicator):
             self.indicators.append(indicator)
-        elif isinstance(indicator, Object):
-            object_ = indicator
-            tmp_indicator = Indicator()
-            tmp_indicator.add_object(object_)
-            self.indicators.append(tmp_indicator)
-        elif isinstance(indicator, Observable):
-            obs = indicator
-            tmp_indicator = Indicator()
-            tmp_indicator.add_observable(obs)
-            self.indicators.append(tmp_indicator)
         else:
             raise ValueError("Cannot add %s to indicators list" % type(indicator))
 
@@ -67,7 +57,7 @@ class RelatedIndicators(GenericRelationshipList):
         super(RelatedIndicators, cls).from_obj(obj, return_obj)
 
         if obj.get_Related_Indicator():
-            return_obj.indicators = [Indicator.from_obj(x) for x in obj.get_Related_Indicator()]
+            return_obj.indicators = [RelatedIndicator.from_obj(x) for x in obj.get_Related_Indicator()]
 
         return return_obj
 
@@ -78,7 +68,7 @@ class RelatedIndicators(GenericRelationshipList):
         super(RelatedIndicators, self).to_dict(return_dict)
 
         if self.indicators:
-            return_dict['indicators'] = [x.to_dict() for x in self.indicators()]
+            return_dict['indicators'] = [x.to_dict() for x in self.indicators]
 
         return return_dict
 
@@ -91,5 +81,5 @@ class RelatedIndicators(GenericRelationshipList):
             return_obj = cls()
 
         super(RelatedIndicators, cls).from_dict(dict_repr, return_obj)
-        return_obj.indicators = [Indicator.from_dict(x) for x in dict_repr.get('indicators', [])]
+        return_obj.indicators = [RelatedIndicator.from_dict(x) for x in dict_repr.get('indicators', [])]
         return return_obj
