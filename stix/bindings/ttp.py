@@ -1985,7 +1985,7 @@ class ExploitTargetsType(stix_common_binding.GenericRelationshipListType):
         super(ExploitTargetsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_)
         pass
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ExploitTargetsType', fromsubclass_=False, pretty_print=True):
-        super(ExploitTargetsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, fromsubclass_=True, pretty_print)
+        super(ExploitTargetsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, fromsubclass_=True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
