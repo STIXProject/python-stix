@@ -21,7 +21,7 @@ class Indicator(stix.Entity):
     _version = "2.1"
     
     def __init__(self, id_=None, title=None, description=None, indicator_type=None, producer=None, observables=None):
-        self.id_ = id_ or stix.utils.create_id("Indicator")
+        self.id_ = id_ or stix.utils.create_id("indicator")
         self.version = self._version
         self.producer = producer
         self.observables = observables
