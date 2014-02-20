@@ -191,7 +191,7 @@ class Incident(stix.Entity):
             return_obj.victims = [Identity.from_obj(x) for x in obj.get_Victim()]
 
         if obj.get_Categories():
-            return_obj.categories = [IncidentCategory.from_obj(x) for x in obj.get_Categories.get_Category()]
+            return_obj.categories = [IncidentCategory.from_obj(x) for x in obj.get_Categories().get_Category()]
 
         return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.get_Attributed_Threat_Actors())
         return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
