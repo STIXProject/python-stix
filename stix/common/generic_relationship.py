@@ -4,6 +4,7 @@ import stix.bindings.stix_common as common_binding
 from .confidence import Confidence
 from .information_source import InformationSource
 from .vocabs import VocabString
+from stix.bindings import stix_common
 
 
 class Relationship(VocabString):
@@ -115,3 +116,53 @@ class GenericRelationship(stix.Entity):
             return_dict['relationship'] = self.relationship.to_dict()
             
         return return_dict
+    
+    
+    
+class GenericRelationshipList(stix.Entity):
+    _namespace = "http://stix.mitre.org/common-1"
+    _binding = common_binding
+    _binding_class = _binding.GenericRelationshipListType
+    
+    def __init__(self, scope):
+        self.scope = scope
+    
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = self._binding_class()
+            
+        return_obj.scope = self.scope
+        return return_obj
+    
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
+        if not obj:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+            
+        return_obj.scope = obj.get_scope()
+        return return_obj
+    
+    def to_dict(self, return_dict=None):
+        if not return_dict:
+            return_dict = {}
+            
+        if self.scope:
+            return_dict['scope'] = self.scope
+        
+        return return_dict
+    
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not dict_repr:
+            return None
+        
+        if not return_obj:
+            return_obj = cls()
+            
+        return_obj.scope = dict_repr.get('scope')
+        return return_obj
+    
+    
