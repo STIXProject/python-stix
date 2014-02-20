@@ -92,7 +92,7 @@ class RelatedIndicator(GenericRelationship):
         if value and not isinstance(value, Indicator):
             raise ValueError("value must be instance of Indicator")
 
-        self._value = value
+        self._indicator = value
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -139,3 +139,4 @@ class RelatedIndicator(GenericRelationship):
         if self.indicator:
             return_dict['indicator'] = self.indicator.to_dict()
 
+        return return_dict
