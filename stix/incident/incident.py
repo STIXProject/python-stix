@@ -101,11 +101,11 @@ class Incident(stix.Entity):
     @attributed_threat_actors.setter
     def attributed_threat_actors(self, value):
         if not value:
-            self.attributed_threat_actors = None
+            self._attributed_threat_actors = None
         elif isinstance(value, AttributedThreatActors):
-            self.attributed_threat_actors = value
+            self._attributed_threat_actors = value
         elif isinstance(value, ThreatActor):
-            self.attributed_threat_actors = AttributedThreatActors(threat_actors=value)
+            self._attributed_threat_actors = AttributedThreatActors(threat_actors=value)
         else:
             raise ValueError('Cannot cast value to type: AttributedThreatActors')
 
@@ -128,7 +128,7 @@ class Incident(stix.Entity):
 
     @categories.setter
     def categories(self, value):
-        self._catetories = []
+        self._categories = []
         if not value:
             return
         elif isinstance(value, list):
@@ -149,7 +149,7 @@ class Incident(stix.Entity):
         if not return_obj:
             return_obj = self._binding_class()
 
-        return_obj.set_id(self.id)
+        return_obj.set_id(self.id_)
         return_obj.set_version(self.version)
         return_obj.set_Title(self.title)
 
@@ -186,7 +186,7 @@ class Incident(stix.Entity):
         return_obj.title = obj.get_Title()
         return_obj.description = StructuredText.from_obj(obj.get_Description())
         return_obj.time = Time.from_obj(obj.get_Time())
-
+        
         if obj.get_Victim():
             return_obj.victims = [Identity.from_obj(x) for x in obj.get_Victim()]
 
@@ -195,6 +195,8 @@ class Incident(stix.Entity):
 
         return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.get_Attributed_Threat_Actors())
         return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
+        
+        return return_obj
 
     def to_dict(self, return_dict=None):
         if not return_dict:
