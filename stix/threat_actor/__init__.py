@@ -20,7 +20,7 @@ class ThreatActor(stix.Entity):
     _version = "1.1"
 
     def __init__(self):
-        self.id_ = stix.utils.create_id("Indicator")
+        self.id_ = stix.utils.create_id("threatactor")
         self.idref = None
         self.timestamp = None
         self.version = self._version
