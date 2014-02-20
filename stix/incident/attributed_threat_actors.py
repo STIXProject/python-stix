@@ -5,6 +5,7 @@ import stix
 import stix.bindings.incident as incident_binding
 from stix.common.generic_relationship import GenericRelationshipList
 from stix.threat_actor import ThreatActor
+from stix.common.related import RelatedThreatActor
 
 class AttributedThreatActors(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Incident-1"
@@ -32,10 +33,10 @@ class AttributedThreatActors(GenericRelationshipList):
     def add_threat_actor(self, threat_actor):
         if not threat_actor:
             return
-        elif isinstance(threat_actor, ThreatActor):
+        elif isinstance(threat_actor, RelatedThreatActor):
             self.threat_actors.append(threat_actor)
         else:
-            raise ValueError('value must be instance of ThreatActor')
+            raise ValueError('value must be instance of RelatedThreatActor')
 
     def to_obj(self, return_obj=None):
         if not return_obj:
@@ -56,7 +57,7 @@ class AttributedThreatActors(GenericRelationshipList):
         super(AttributedThreatActors, cls).from_obj(obj, return_obj)
 
         if obj.get_Threat_Actor():
-            return_obj.threat_actors = [ThreatActor.from_obj(x) for x in obj.get_Threat_Actor()]
+            return_obj.threat_actors = [RelatedThreatActor.from_obj(x) for x in obj.get_Threat_Actor()]
 
         return return_obj
 
@@ -67,7 +68,7 @@ class AttributedThreatActors(GenericRelationshipList):
         super(AttributedThreatActors, self).to_dict(return_dict)
 
         if self.threat_actors:
-            return_dict['threat_actors'] = [x.to_dict() for x in self.threat_actors()]
+            return_dict['threat_actors'] = [x.to_dict() for x in self.threat_actors]
 
         return return_dict
 
@@ -80,5 +81,5 @@ class AttributedThreatActors(GenericRelationshipList):
             return_obj = cls()
 
         super(AttributedThreatActors, cls).from_dict(dict_repr, return_obj)
-        return_obj.threat_actors = [ThreatActor.from_dict(x) for x in dict_repr.get('threat_actors', [])]
+        return_obj.threat_actors = [RelatedThreatActor.from_dict(x) for x in dict_repr.get('threat_actors', [])]
         return return_obj
