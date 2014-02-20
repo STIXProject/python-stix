@@ -72,7 +72,7 @@ class DateTimeWithPrecision(stix.Entity):
     def to_dict(self, return_dict=None):    
         if not return_dict:
             if self.precision == 'second':
-                return self.value
+                return serialize_value(self.value)
             else:
                 return_dict  = {}
 
