@@ -25,7 +25,7 @@ class RelatedThreatActor(GenericRelationship):
         if value and not isinstance(value, ThreatActor):
             raise ValueError("value must be instance of ThreatActor")
 
-        self._value = value
+        self._threat_actor = value
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -71,6 +71,8 @@ class RelatedThreatActor(GenericRelationship):
 
         if self.threat_actor:
             return_dict['threat_actor'] = self.threat_actor.to_dict()
+            
+        return return_dict
 
 class RelatedIndicator(GenericRelationship):
     _namespace = "http://stix.mitre.org/common-1"
