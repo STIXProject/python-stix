@@ -2,12 +2,8 @@
 import stix
 
 from stix.bindings.data_marking import MarkingSpecificationType, MarkingStructureType, MarkingType
-from stix.bindings.extensions.marking.tlp import TLPMarkingStructureType
-from stix.bindings.extensions.marking.simple_marking import SimpleMarkingStructureType
 from stix.common.structured_text import StructuredText
-
 import stix.bindings.data_marking as stix_data_marking_binding
-
 
 class Marking(stix.Entity):
     _binding = stix_data_marking_binding
@@ -183,6 +179,10 @@ class MarkingStructure(stix.Entity):
 
     @staticmethod
     def from_obj(obj, partial=None):
+        from stix.extensions.marking.tlp import TLPMarkingStructure
+        from stix.extensions.marking.simple_marking import SimpleMarkingStructure
+        from stix.extensions.marking.terms_of_use_marking import TermsOfUseMarkingStructure
+        
         if not obj:
             return None
 
@@ -199,6 +199,10 @@ class MarkingStructure(stix.Entity):
 
     @staticmethod
     def from_dict(marking_dict, partial=None):
+        from stix.extensions.marking.tlp import TLPMarkingStructure
+        from stix.extensions.marking.simple_marking import SimpleMarkingStructure
+        from stix.extensions.marking.terms_of_use_marking import TermsOfUseMarkingStructure
+        
         if not marking_dict:
             return None
 
