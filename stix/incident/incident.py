@@ -44,7 +44,7 @@ class Incident(stix.Entity):
 
     @title.setter
     def title(self, value):
-        self._title = unicode(value)
+        self._title = value
 
     @property
     def description(self):
