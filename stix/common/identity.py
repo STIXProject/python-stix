@@ -27,7 +27,7 @@ class Identity(stix.Entity):
 
     @name.setter
     def name(self, value):
-        self._name = unicode(value) if value else None
+        self._name = value if value else None
 
 #    @property
 #    def related_identities(self):
@@ -89,22 +89,20 @@ class Identity(stix.Entity):
 
         return return_obj 
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
+    def to_dict(self):
+        d = {}
         if self.name:
-            return_dict['name'] = self.name
+            d['name'] = self.name
         if self.id_:
-            return_dict['id'] = self.id_
+            d['id'] = self.id_
         if self.idref:
-            return_dict['idref'] = self.idref
+            d['idref'] = self.idref
 
 #        if self.related_identities:
 #            for identity in self.related_identities:
-#                return_dict.setdefault('related_identities', []).append(identity.to_dict())
+#                d.setdefault('related_identities', []).append(identity.to_dict())
 
-        return return_dict
+        return d
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
@@ -182,13 +180,10 @@ class RelatedIdentity(GenericRelationship):
 
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
-        super(RelatedIdentity, self).to_dict(return_dict)
-        return_dict['identity'] = self.identity.to_dict()
-        return return_dict
+    def to_dict(self):
+        d = super(RelatedIdentity, self).to_dict()
+        d['identity'] = self.identity.to_dict()
+        return d
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):

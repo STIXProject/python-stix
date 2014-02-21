@@ -77,7 +77,7 @@ class Entity(object):
     def to_json(self):
         return json.dumps(self.to_dict())
 
-    def to_dict(self, return_dict=None):
+    def to_dict(self):
         raise NotImplementedError()
 
     @classmethod
@@ -94,4 +94,4 @@ class Entity(object):
     def dict_from_object(cls, entity_obj):
         """Convert from object representation to dict representation."""
         return cls.from_obj(entity_obj).to_dict()
-\
+

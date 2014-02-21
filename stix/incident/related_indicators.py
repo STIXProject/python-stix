@@ -61,16 +61,12 @@ class RelatedIndicators(GenericRelationshipList):
 
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
-        super(RelatedIndicators, self).to_dict(return_dict)
-
+    def to_dict(self):
+        d = super(RelatedIndicators, self).to_dict()
         if self.indicators:
-            return_dict['indicators'] = [x.to_dict() for x in self.indicators]
+            d['indicators'] = [x.to_dict() for x in self.indicators]
 
-        return return_dict
+        return d
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):

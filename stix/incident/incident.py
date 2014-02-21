@@ -198,30 +198,28 @@ class Incident(stix.Entity):
         
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
+    def to_dict(self):
+        d = {}
         if self.id_:
-            return_dict['id'] = self.id_
+            d['id'] = self.id_
         if self.version:
-            return_dict['version'] = self.version or self._version
+            d['version'] = self.version or self._version
         if self.title:
-            return_dict['title'] = self.title
+            d['title'] = self.title
         if self.description:
-            return_dict['description'] = self.description.to_dict()
+            d['description'] = self.description.to_dict()
         if self.time:
-            return_dict['time'] = self.time.to_dict()
+            d['time'] = self.time.to_dict()
         if self.victims:
-            return_dict['victims'] = [x.to_dict() for x in self.victims]
+            d['victims'] = [x.to_dict() for x in self.victims]
         if self.categories:
-            return_dict['categories'] = [x.to_dict() for x in self.categories]
+            d['categories'] = [x.to_dict() for x in self.categories]
         if self.attributed_threat_actors:
-            return_dict['attributed_threat_actors'] = self.attributed_threat_actors.to_dict()
+            d['attributed_threat_actors'] = self.attributed_threat_actors.to_dict()
         if self.related_indicators:
-            return_dict['related_indicators'] = self.related_indicators.to_dict()
+            d['related_indicators'] = self.related_indicators.to_dict()
 
-        return return_dict
+        return d
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):

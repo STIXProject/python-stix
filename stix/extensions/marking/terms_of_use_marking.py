@@ -24,7 +24,6 @@ class TermsOfUseMarkingStructure(MarkingStructure):
 
     def to_dict(self):
         d = MarkingStructure.to_dict(self)
-
         if self.terms_of_use:
             d['terms_of_use'] = self.terms_of_use
 

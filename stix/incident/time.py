@@ -196,30 +196,28 @@ class Time(stix.Entity):
 
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
+    def to_dict(self):
+        d = {}
         if self.first_malicious_action:
-            return_dict['first_malicious_action'] = self.first_malicious_action.to_dict()
+            d['first_malicious_action'] = self.first_malicious_action.to_dict()
         if self.initial_compromise:
-            return_dict['initial_compromise'] = self.initial_compromise.to_dict()
+            d['initial_compromise'] = self.initial_compromise.to_dict()
         if self.first_data_exfiltration:
-            return_dict['first_data_exfiltration'] = self.first_data_exfiltration.to_dict()
+            d['first_data_exfiltration'] = self.first_data_exfiltration.to_dict()
         if self.incident_discovery:
-            return_dict['incident_discovery'] = self.incident_discovery.to_dict()
+            d['incident_discovery'] = self.incident_discovery.to_dict()
         if self.incident_opened:
-            return_dict['incident_opened'] = self.incident_opened.to_dict()
+            d['incident_opened'] = self.incident_opened.to_dict()
         if self.containment_achieved:
-            return_dict['containment_achieved'] = self.containment_achieved.to_dict()
+            d['containment_achieved'] = self.containment_achieved.to_dict()
         if self.restoration_achieved:
-            return_dict['restoration_achieved'] = self.restoration_achieved.to_dict()
+            d['restoration_achieved'] = self.restoration_achieved.to_dict()
         if self.incident_reported:
-            return_dict['incident_reported'] = self.incident_reported.to_dict()
+            d['incident_reported'] = self.incident_reported.to_dict()
         if self.incident_closed:
-            return_dict['incident_closed'] = self.incident_closed.to_dict()
+            d['incident_closed'] = self.incident_closed.to_dict()
 
-        return return_dict
+        return d
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):

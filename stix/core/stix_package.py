@@ -130,26 +130,24 @@ class STIXPackage(stix.Entity):
             
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
+    def to_dict(self, d=None):
+        d = {}
         if self.id_:
-            return_dict['id'] = self.id_
+            d['id'] = self.id_
         if self.version:    
-            return_dict['version'] = self.version
+            d['version'] = self.version
         if self.idref_:
-            return_dict['idref'] = self.idref_
+            d['idref'] = self.idref_
         if self.stix_header:
-            return_dict['stix_header'] = self.stix_header.to_dict()
+            d['stix_header'] = self.stix_header.to_dict()
         if self.indicators:
-            return_dict['indicators'] = [x.to_dict() for x in self.indicators]
+            d['indicators'] = [x.to_dict() for x in self.indicators]
         if self.observables:
-            return_dict['observables'] = self.observables.to_dict()
+            d['observables'] = self.observables.to_dict()
         if self.incidents:
-            return_dict['incidents'] = [x.to_dict() for x in self.incidents]
+            d['incidents'] = [x.to_dict() for x in self.incidents]
 
-        return return_dict
+        return d
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):

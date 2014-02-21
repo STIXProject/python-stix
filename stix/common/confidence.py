@@ -103,7 +103,6 @@ class Confidence(stix.Entity):
 
     def to_dict(self):
         d = {}
-
         if self.timestamp:
             d['timestamp'] = self.timestamp.isoformat()
         if self.timestamp_precision != 'second':
@@ -114,7 +113,7 @@ class Confidence(stix.Entity):
             d['description'] = self.description.to_dict()
         if self.source:
             d['source'] = self.source.to_dict()
-
+            
         return d
 
     @staticmethod
@@ -164,15 +163,15 @@ class ConfidenceAssertionChain(stix.Entity):
         if not return_obj:
             return_obj = self._binding.ConfidenceAssertionChainType()
 
-        pass
+        return None
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
-        pass
+        return None
 
-    def to_dict(self, return_dict=None):
-        pass
+    def to_dict(self):
+        return {}
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
-        pass
+        return None

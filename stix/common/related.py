@@ -63,16 +63,12 @@ class RelatedThreatActor(GenericRelationship):
 
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
-        super(RelatedThreatActor, self).to_dict(return_dict=return_dict)
-
+    def to_dict(self):
+        d = super(RelatedThreatActor, self).to_dict()
         if self.threat_actor:
-            return_dict['threat_actor'] = self.threat_actor.to_dict()
+            d['threat_actor'] = self.threat_actor.to_dict()
             
-        return return_dict
+        return d
 
 class RelatedIndicator(GenericRelationship):
     _namespace = "http://stix.mitre.org/common-1"
@@ -130,13 +126,9 @@ class RelatedIndicator(GenericRelationship):
 
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
-        super(RelatedIndicator, self).to_dict(return_dict=return_dict)
-
+    def to_dict(self, d=None):
+        d = super(RelatedIndicator, self).to_dict()
         if self.indicator:
-            return_dict['indicator'] = self.indicator.to_dict()
+            d['indicator'] = self.indicator.to_dict()
 
-        return return_dict
+        return d

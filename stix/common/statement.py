@@ -96,7 +96,6 @@ class Statement(stix.Entity):
 
     def to_dict(self):
         d = {}
-
         if self.timestamp:
             d['timestamp'] = self.timestamp.isoformat()
         if self.timestamp_precision != 'second':

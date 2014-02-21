@@ -119,45 +119,43 @@ class ThreatActor(stix.Entity):
 
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
+    def to_dict(self):
+        d = {}
         if self.id_:
-            return_dict['id'] = self.id_
+            d['id'] = self.id_
         if self.idref:
-            return_dict['idref'] = self.idref
+            d['idref'] = self.idref
         if self.timestamp:
-            return_dict['timestamp'] = self.timestamp.isoformat()
+            d['timestamp'] = self.timestamp.isoformat()
         if self.version:
-            return_dict['version'] = self.version
+            d['version'] = self.version
         if self.title:
-            return_dict['title'] = self.title
+            d['title'] = self.title
         if self.description:
-            return_dict['description'] = self.description.to_dict()
+            d['description'] = self.description.to_dict()
         if self.short_description:
-            return_dict['short_description'] = self.short_description.to_dict()
+            d['short_description'] = self.short_description.to_dict()
         if self.identity:
-            return_dict['identity'] = self.identity.to_dict()
+            d['identity'] = self.identity.to_dict()
         if self.type_:
-            return_dict['type'] = [x.to_dict() for x in self.type_]
+            d['type'] = [x.to_dict() for x in self.type_]
         if self.motivation:
-            return_dict['motivation'] = [x.to_dict() for x in self.motivation]
+            d['motivation'] = [x.to_dict() for x in self.motivation]
         if self.sophistication:
-            return_dict['sophistication'] = [x.to_dict() for x in self.sophistication]
+            d['sophistication'] = [x.to_dict() for x in self.sophistication]
         if self.intended_effect:
-            return_dict['intended_effect'] = [x.to_dict() for x in self.intended_effect]
+            d['intended_effect'] = [x.to_dict() for x in self.intended_effect]
         if self.planning_and_operational_support:
-            return_dict['planning_and_operational_support'] = [x.to_dict()
+            d['planning_and_operational_support'] = [x.to_dict()
                     for x in self.planning_and_operational_support]
         if self.handling:
-            return_dict['handling'] = self.handling.to_dict()
+            d['handling'] = self.handling.to_dict()
         if self.confidence:
-            return_dict['confidence'] = self.confidence.to_dict()
+            d['confidence'] = self.confidence.to_dict()
         if self.information_source:
-            return_dict['information_source'] = self.information_source.to_dict()
+            d['information_source'] = self.information_source.to_dict()
 
-        return return_dict
+        return d
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):

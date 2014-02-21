@@ -170,21 +170,16 @@ class InformationSource(stix.Entity):
 
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
+    def to_dict(self):
+        d = {}
         if self.description:
-            return_dict['description'] = self.description.to_dict()
-
+            d['description'] = self.description.to_dict()
         if self.identity:
-            return_dict['identity'] = self.identity.to_dict()
-
+            d['identity'] = self.identity.to_dict()
         if self.time:
-            return_dict['time']  = self.time.to_dict()
-
+            d['time']  = self.time.to_dict()
         if self.tools:
-            return_dict['tools'] = self.tools.to_list()
+            d['tools'] = self.tools.to_list()
 
-        return return_dict
+        return d
 

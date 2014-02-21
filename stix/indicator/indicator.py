@@ -225,36 +225,28 @@ class Indicator(stix.Entity):
 
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
+    def to_dict(self):
+        d = {}
         if self.id_:
-            return_dict['id'] = self.id_
-
+            d['id'] = self.id_
         if self.version:
-            return_dict['version'] = self.version
-
+            d['version'] = self.version
         if self.observables:
             if len(self.observables) == 1:
-                return_dict['observable'] = self.observables[0].to_dict()
+                d['observable'] = self.observables[0].to_dict()
             else:
                 composite_observable = self._merge_observables(self.observables)
-                return_dict['observable'] = composite_observable.to_dict()
-
+                d['observable'] = composite_observable.to_dict()
         if self.producer:
-            return_dict['producer'] = self.producer.to_dict()
-
+            d['producer'] = self.producer.to_dict()
         if self.title:
-            return_dict['title'] = self.title
-
+            d['title'] = self.title
         if self.description:
-            return_dict['description'] = self.description.to_dict()
-
+            d['description'] = self.description.to_dict()
         if self.indicator_types:
-            return_dict['indicator_types'] = [x.to_dict() for x in self.indicator_types]
+            d['indicator_types'] = [x.to_dict() for x in self.indicator_types]
 
-        return return_dict
+        return d
 
 
     @classmethod

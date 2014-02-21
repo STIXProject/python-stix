@@ -61,16 +61,12 @@ class AttributedThreatActors(GenericRelationshipList):
 
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
-        super(AttributedThreatActors, self).to_dict(return_dict)
-
+    def to_dict(self):
+        d = super(AttributedThreatActors, self).to_dict()
         if self.threat_actors:
-            return_dict['threat_actors'] = [x.to_dict() for x in self.threat_actors]
+            d['threat_actors'] = [x.to_dict() for x in self.threat_actors]
 
-        return return_dict
+        return d
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):

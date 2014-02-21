@@ -65,18 +65,17 @@ class VocabString(stix.Entity):
         if self.is_plain():
             return self.value
 
-        vocab_dict = {}
+        d = {}
         if self.value is not None:
-            vocab_dict['value'] = self.value
+            d['value'] = self.value
         if self.xsi_type is not None:
-            vocab_dict['xsi:type'] = self.xsi_type
-
+            d['xsi:type'] = self.xsi_type
         if self.vocab_name is not None:
-            vocab_dict['vocab_name'] = self.vocab_name
+            d['vocab_name'] = self.vocab_name
         if self.vocab_reference is not None:
-            vocab_dict['vocab_reference'] = self.vocab_reference
+            d['vocab_reference'] = self.vocab_reference
 
-        return vocab_dict
+        return d
 
     @classmethod
     def from_obj(cls, vocab_obj):

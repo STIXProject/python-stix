@@ -99,22 +99,15 @@ class CIQIdentity3_0Instance(Identity):
 
         return return_obj 
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
-        super(CIQIdentity3_0Instance, self).to_dict(return_dict)
-
+    def to_dict(self):
+        d = super(CIQIdentity3_0Instance, self).to_dict()
+        d['xsi:type'] = "%s:%s" % (CIQIdentity3_0Instance._XML_NS_PREFIX, CIQIdentity3_0Instance._XML_TYPE)
+        
         if self.roles:
-            for role in self.roles:
-                return_dict.setdefault('roles', []).append(role)
-
+            d['roles'] = [str(x) for x in self.roles]
         if self.specification:
-            return_dict['specification'] = self.specification.to_dict()
-
-        return_dict['xsi:type'] = "%s:%s" % (CIQIdentity3_0Instance._XML_NS_PREFIX, CIQIdentity3_0Instance._XML_TYPE)
-
-        return return_dict
+            d['specification'] = self.specification.to_dict()
+        return d
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
@@ -187,21 +180,19 @@ class STIXCIQIdentity3_0(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        super(STIXCIQIdentity3_0, cls).from_dict(dict_repr, return_obj)
         party_name_dict = dict_repr.get('party_name')
         return_obj.party_name = PartyName.from_dict(party_name_dict) if party_name_dict else None
 
         return return_obj
 
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
+    def to_dict(self):
+        d = {}
 
         if self.party_name:
-            return_dict['party_name'] = self.party_name.to_dict()
+            d['party_name'] = self.party_name.to_dict()
 
-        return return_dict
+        return d
 
 class PartyName(stix.Entity):
     _namespace = XML_NS_XPIL
@@ -292,23 +283,22 @@ class PartyName(stix.Entity):
 
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
+    def to_dict(self):
+        d = {}
 
         if self.name_lines:
             for name_line in self.name_lines:
-                return_dict.setdefault('name_lines', []).append(name_line.to_dict())
+                d.setdefault('name_lines', []).append(name_line.to_dict())
 
         if self.organisation_names:
             for on in self.organisation_names:
-                return_dict.setdefault('organisation_names', []).append(on.to_dict())
+                d.setdefault('organisation_names', []).append(on.to_dict())
 
         if self.person_names:
             for pn in self.person_names:
-                return_dict.setdefault('person_names', []).append(pn.to_dict())
+                d.setdefault('person_names', []).append(pn.to_dict())
 
-        return return_dict
+        return d
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
@@ -382,16 +372,14 @@ class NameLine(stix.Entity):
         return return_obj
 
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
-        return_dict['value'] = self.value
+    def to_dict(self):
+        d = {}
+        d['value'] = self.value
 
         if self.type:
-            return_dict['type'] = self.type
+            d['type'] = self.type
 
-        return return_dict
+        return d
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
@@ -452,15 +440,14 @@ class PersonName(stix.Entity):
 
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
+    def to_dict(self):
+        d = {}
 
         if self.name_elements:
             for ne in self.name_elements:
-                return_dict.setdefault('name_elements', []).append(ne.to_dict())
+                d.setdefault('name_elements', []).append(ne.to_dict())
 
-        return return_dict
+        return d
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
@@ -545,19 +532,16 @@ class OrganisationName(stix.Entity):
 
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
+    def to_dict(self):
+        d = {}
         if self.name_elements:
             for ne in self.name_elements:
-                return_dict.setdefault('name_elements', []).append(ne.to_dict())
-
+                d.setdefault('name_elements', []).append(ne.to_dict())
         if self.subdivision_names:
             for sn in self.subdivision_names:
-                return_dict.setdefault('subdivision_names', []).append(sn.to_dict())
+                d.setdefault('subdivision_names', []).append(sn.to_dict())
 
-        return return_dict
+        return d
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
@@ -608,9 +592,9 @@ class NameElement(stix.Entity):
         return_obj.value = dict_repr.get('value', None)
         return return_obj
 
-    def to_dict(self, return_dict):
-        return_dict['value'] = self.value
-        return return_dict
+    def to_dict(self, d):
+        d['value'] = self.value
+        return d
 
 class PersonNameElement(NameElement):
     _namespace = XML_NS_XNL
@@ -672,16 +656,14 @@ class PersonNameElement(NameElement):
 
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
-        return_dict['value'] = self.value
+    def to_dict(self):
+        d = {}
+        d['value'] = self.value
 
         if self.element_type:
-            return_dict['element_type'] = self.element_type
+            d['element_type'] = self.element_type
 
-        return return_dict
+        return d
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
@@ -708,6 +690,7 @@ class OrganisationNameElement(NameElement):
 
     def __init__(self, value=None, element_type=None):
         super(OrganisationNameElement, self).__init__(value)
+        self.value = value
         self.element_type = element_type
 
     @property
@@ -728,7 +711,7 @@ class OrganisationNameElement(NameElement):
             return_obj = et.Element(root_tag)
 
         if self.element_type:
-            return_obj.attrib = {'ElementType' : self.element_type}
+            return_obj.attrib['ElementType'] = self.element_type
 
         return_obj.text = self.value
         return return_obj
@@ -746,17 +729,14 @@ class OrganisationNameElement(NameElement):
 
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
+    def to_dict(self):
+        d = {}
         if self.element_type:
-            return_dict['element_type'] = self.element_type
-
+            d['element_type'] = self.element_type
         if self.value:
-            return_dict['value'] = self.value
+            d['value'] = self.value
 
-        return return_dict
+        return d
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
@@ -766,8 +746,8 @@ class OrganisationNameElement(NameElement):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.value = dict_repr.get('value', None)
-        return_obj.element_type = dict_repr.get('element_type', None)
+        return_obj.value = dict_repr.get('value')
+        return_obj.element_type = dict_repr.get('element_type')
 
         return return_obj
 
@@ -804,8 +784,8 @@ class SubDivisionName(stix.Entity):
             root_tag = SubDivisionName.XML_TAG
             return_obj = et.Element(root_tag)
 
-        if self.element_type:
-            return_obj.attrib = {'Type' : self.type}
+        if self.type:
+            return_obj.attrib['Type'] = self.type
 
         return_obj.text = self.value
         return return_obj
@@ -819,21 +799,18 @@ class SubDivisionName(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.element_type = obj.get('Type')    
+        return_obj.type= obj.get('Type')    
         return_obj.value = obj.text
 
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
-        return_dict['value'] = self.value
-
+    def to_dict(self):
+        d = {}
+        d['value'] = self.value
         if self.type:
-            return_dict['type'] = self.type
+            d['type'] = self.type
 
-        return return_dict
+        return d
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
@@ -843,6 +820,6 @@ class SubDivisionName(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.value = dict_repr.get('value', None)
-        return_obj.type = dict_repr.get('type', None)
+        return_obj.value = dict_repr.get('value')
+        return_obj.type = dict_repr.get('type')
         return return_obj

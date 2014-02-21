@@ -89,7 +89,6 @@ class MarkingSpecification(stix.Entity):
 
     def to_dict(self):
         d = {}
-
         if self.id_:
             d['id'] = self.id_
         if self.idref:
@@ -99,8 +98,7 @@ class MarkingSpecification(stix.Entity):
         if self.controlled_structure:
             d['controlled_structure'] = self.controlled_structure
         if self.marking_structure:
-            d['marking_structure'] = [x.to_dict() for x in
-                    self.marking_structure]
+            d['marking_structure'] = [x.to_dict() for x in self.marking_structure]
 
         return d
 
@@ -156,7 +154,6 @@ class MarkingStructure(stix.Entity):
 
     def to_dict(self):
         d = {}
-
         d['xsi:type'] = self._XSI_TYPE
         if self.marking_model_name:
             d['marking_model_name'] = self.marking_model_name

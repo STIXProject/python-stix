@@ -24,7 +24,6 @@ class SimpleMarkingStructure(MarkingStructure):
 
     def to_dict(self):
         d = MarkingStructure.to_dict(self)
-
         if self.statement:
             d['statement'] = self.statement
 

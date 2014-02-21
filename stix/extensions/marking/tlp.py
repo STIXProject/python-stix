@@ -24,7 +24,6 @@ class TLPMarkingStructure(MarkingStructure):
 
     def to_dict(self):
         d = MarkingStructure.to_dict(self)
-
         if self.color:
             d['color'] = self.color
 

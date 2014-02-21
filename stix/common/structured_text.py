@@ -26,11 +26,11 @@ class StructuredText(stix.Entity):
         if self.structuring_format is None:
             return self.value
 
-        text_dict = {}
-        text_dict['value'] = self.value
-        text_dict['structuring_format'] = self.structuring_format
+        d = {}
+        d['value'] = self.value
+        d['structuring_format'] = self.structuring_format
 
-        return text_dict
+        return d
 
     @classmethod
     def from_obj(cls, text_obj):

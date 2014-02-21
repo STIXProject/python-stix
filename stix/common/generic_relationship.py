@@ -102,20 +102,16 @@ class GenericRelationship(stix.Entity):
 
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
+    def to_dict(self,):
+        d = {}
         if self.confidence:
-            return_dict['confidence'] = self.confidence.to_dict()
-
+            d['confidence'] = self.confidence.to_dict()
         if self.information_source:
-            return_dict['information_source'] = self.information_source.to_dict()
-
+            d['information_source'] = self.information_source.to_dict()
         if self.relationship:
-            return_dict['relationship'] = self.relationship.to_dict()
+            d['relationship'] = self.relationship.to_dict()
 
-        return return_dict
+        return d
 
 
 
@@ -145,14 +141,12 @@ class GenericRelationshipList(stix.Entity):
         return_obj.scope = obj.get_scope()
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
+    def to_dict(self):
+        d = {}
         if self.scope:
-            return_dict['scope'] = self.scope
+            d['scope'] = self.scope
 
-        return return_dict
+        return d
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):

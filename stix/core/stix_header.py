@@ -146,19 +146,17 @@ class STIXHeader(stix.Entity):
 
         return return_obj
 
-    def to_dict(self, return_dict=None):
-        if not return_dict:
-            return_dict = {}
-
+    def to_dict(self):
+        d = {}
         if self.title:
-            return_dict['title'] = self.title
+            d['title'] = self.title
         if self.package_intents:
-            return_dict['package_intents'] = [x.to_dict() for x in self.package_intents]
+            d['package_intents'] = [x.to_dict() for x in self.package_intents]
         if self.description:
-            return_dict['description'] = self.description.to_dict()
+            d['description'] = self.description.to_dict()
         if self.handling:
-            return_dict['handling'] = self.handling.to_dict()
+            d['handling'] = self.handling.to_dict()
         if self.information_source:
-            return_dict['information_source'] = self.information_source.to_dict()
+            d['information_source'] = self.information_source.to_dict()
 
-        return return_dict
+        return d
