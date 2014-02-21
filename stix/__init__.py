@@ -49,9 +49,9 @@ class Entity(object):
 
         return all_ns_dict
 
-    def _get_schema_locations(self):
+    def _get_schema_locations(self, ns_dict=None):
         import stix.utils.nsparser as nsparser
-        schemaloc_dict = nsparser.NamespaceParser().get_namespace_schemalocation_dict(self)
+        schemaloc_dict = nsparser.NamespaceParser().get_namespace_schemalocation_dict(self, ns_dict=ns_dict)
         return schemaloc_dict
 
     def to_xml(self, include_namespaces=True, ns_dict=None, pretty=True):
@@ -63,7 +63,7 @@ class Entity(object):
         if include_namespaces:
             if not ns_dict: ns_dict = {}
             all_ns_dict = self._get_namespaces(ns_dict)
-            schemaloc_dict = self._get_schema_locations()
+            schemaloc_dict = self._get_schema_locations(all_ns_dict)
             namespace_def = nsparser.NamespaceParser().get_namespace_def_str(all_ns_dict, schemaloc_dict)
         else:
             all_ns_dict = dict(nsparser.DEFAULT_STIX_NS_TO_PREFIX.items() + nsparser.DEFAULT_EXT_TO_PREFIX.items())

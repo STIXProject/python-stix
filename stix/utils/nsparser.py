@@ -53,9 +53,13 @@ class NamespaceParser(object):
                     if isinstance(item, stix.Entity) or isinstance(item, Observable):
                         yield item
 
-    def get_namespace_schemalocation_dict(self, entity):
+    def get_namespace_schemalocation_dict(self, entity, ns_dict=None):
         d = {}
-        ns_set = self.get_namespaces(entity)
+        if ns_dict:
+            ns_set = ns_dict.iterkeys()
+        else:
+            ns_set = self.get_namespaces(entity)
+
         for ns in ns_set:
             if ns in XML_NAMESPACES:
                 continue
@@ -70,7 +74,7 @@ class NamespaceParser(object):
                     if cybox_ns_tup[0] == ns:
                         d[ns] = cybox_ns_tup[2]
             else:
-                print "! Cannot map %s to a schemalocation." % (ns)
+                continue
 
         return d
 
