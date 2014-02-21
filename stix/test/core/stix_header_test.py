@@ -23,7 +23,7 @@ class IdentityTests(EntityTestCase, unittest.TestCase):
 
     def test_duplicate_package_intent(self):
         # Recreate https://github.com/STIXProject/python-stix/issues/63
-        hdr = STIXHeader(package_intent=["Net Defense"])
+        hdr = STIXHeader(package_intents=["Net Defense"])
         self.assertEqual(1, len(hdr.package_intent))
 
 
