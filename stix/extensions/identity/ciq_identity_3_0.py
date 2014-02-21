@@ -350,7 +350,7 @@ class NameLine(stix.Entity):
 
     @value.setter
     def value(self, value):
-        if not (value and isinstance(value, basestring)):
+        if value and not isinstance(value, basestring):
             raise ValueError('value must be instance of basestring')
 
         self._value = value
