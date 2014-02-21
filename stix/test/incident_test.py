@@ -4,9 +4,10 @@
 from StringIO import StringIO
 import unittest
 
+from stix.incident import Incident
 import stix.bindings.incident as incident_binding
 from cybox.common import StructuredText
-
+from cybox.test import EntityTestCase
 
 INCIDENT_CATEGORIES = """<?xml version="1.0" encoding="UTF-8"?>
 <incident:Incident
@@ -21,8 +22,49 @@ INCIDENT_CATEGORIES = """<?xml version="1.0" encoding="UTF-8"?>
 """
 
 
-class IncidentTest(unittest.TestCase):
-
+class IncidentTest(EntityTestCase, unittest.TestCase):
+    klass = Incident
+    _full_dict = {  'attributed_threat_actors': {'scope': 'exclusive',
+                                                 'threat_actors': [{'threat_actor': {'description': 'A Threat Actor Description',
+                                                                                     'id': 'example:threatactor-1',
+                                                                                     'sophistication': [{'value': 'High'}],
+                                                                                     'title': 'A Threat Actor',
+                                                                                     'version': '1.1'}}]},
+                    'categories': ['Unauthorized Access', 'Improper Usage'],
+                    'description': 'The Datacenter was broken into.',
+                    'related_indicators': {'indicators': [{'indicator': {'description': 'An indicator containing a File observable with an associated hash',
+                                                                         'id': 'example:indicator-1ae45e9c-9b0b-11e3-ada0-28cfe912ced6',
+                                                                         'observable': {'id': 'example:Observable-fdaa7cec-f8be-494d-b83f-575f6f018666',
+                                                                                        'object': {'id': 'example:File-ec52e6bc-2d7e-44e2-911b-468bb775a5c6',
+                                                                                                   'properties': {'hashes': [{'simple_hash_value': '4EC0027BEF4D7E1786A04D021FA8A67F',
+                                                                                                                              'type': 'MD5'}],
+                                                                                                                  'xsi:type': 'FileObjectType'}}},
+                                                                         'producer': {'description': '',
+                                                                                      'identity': {'id': 'example:Identity-1ae603ab-9b0b-11e3-980e-28cfe912ced8',
+                                                                                                   'specification': {'party_name': {'name_lines': [{'value': 'Foo'},
+                                                                                                                                                   {'value': 'Bar'}],
+                                                                                                                                    'person_names': [{'name_elements': [{'value': 'John Smith'}]},
+                                                                                                                                                     {'name_elements': [{'value': 'Jill Smith'}]}]}},
+                                                                                                   'xsi:type': 'ciqIdentity:CIQIdentity3.0InstanceType'},
+                                                                                      'time': {'produced_time': '2014-02-21T10:16:14.947201'}},
+                                                                         'title': 'File Hash Example',
+                                                                         'version': '2.1'}}],
+                                           'scope': 'exclusive'},
+                    'time': {'containment_achieved': '2005-02-21T10:25:10.894398',
+                             'first_data_exfiltration': '2002-02-21T10:25:10.894398',
+                             'first_malicious_action': '2000-02-21T10:25:10.894398',
+                             'incident_closed': '2008-02-21T10:25:10.894398',
+                             'incident_discovery': '2003-02-21T10:25:10.894398',
+                             'incident_opened': '2004-02-21T10:25:10.894398',
+                             'incident_reported': '2007-02-21T10:25:10.894398',
+                             'initial_compromise': '2001-02-21T10:25:10.894398',
+                             'restoration_achieved': '2006-02-21T10:25:10.894398'},
+                    'title': 'Datacenter Compromise',
+                    'version': '1.1',
+                    'victims': [{'name': 'John Smith'},
+                                {'id': 'example:Identity-1ae603ab-9b0b-11e3-980e-28cfe912ced6'}]
+                  }
+    
     def test_parse_category(self):
         incident = incident_binding.parseString(INCIDENT_CATEGORIES)
         self.assertTrue(incident is not None)
@@ -49,7 +91,6 @@ class IncidentTest(unittest.TestCase):
         incident.export(s, 0, {'http://stix.mitre.org/Incident-1': 'incident'})
         xml = s.getvalue()
         self.assertTrue("A Description" in xml, "Description not exported")
-
 
 if __name__ == "__main__":
     unittest.main()
