@@ -68,11 +68,6 @@ class EntityParser(object):
         if check_root:
             self._check_root(tree)
 
-        if isinstance(xml_file, basestring):
-            f = open(xml_file, "rb")
-        else:
-            f = xml_file
-
         import stix.bindings.stix_core as stix_core_binding 
         stix_package_obj = stix_core_binding.STIXType().factory()
         stix_package_obj.build(tree.getroot())
