@@ -49,6 +49,16 @@ class EntityParser(object):
 
         return True
 
+    def _apply_input_namespaces(self, tree, entity):
+        try:
+            root = tree.getroot() # is tree an lxml.Element or lxml.ElementTree
+        except AttributeError:
+            root = tree
+        
+        entity.__input_namespaces__ = {}
+        for alias,ns in root.nsmap.iteritems():
+            entity.__input_namespaces__[ns] = alias
+
     def parse_xml_to_obj(self, xml_file, check_version=True, check_root=True):
         """Creates a STIX binding object from the supplied xml file.
 
@@ -83,8 +93,22 @@ class EntityParser(object):
         check_root -- Inspect the root element before parsing.
 
         """
+        tree = None
+        if check_version or check_root:
+            tree = etree.parse(xml_file)
+
+        if check_version:
+            self._check_version(tree)
+
+        if check_root:
+            self._check_root(tree)
+
+        import stix.bindings.stix_core as stix_core_binding 
+        stix_package_obj = stix_core_binding.STIXType().factory()
+        stix_package_obj.build(tree.getroot())
+        
         from stix.core import STIXPackage # resolve circular dependencies
-        stix_package_obj = self.parse_xml_to_obj(xml_file, check_version, check_root)
         stix_package = STIXPackage().from_obj(stix_package_obj)
+        self._apply_input_namespaces(tree, stix_package)
 
         return stix_package
