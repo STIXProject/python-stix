@@ -7,6 +7,7 @@ from stix.utils.parser import EntityParser
 from stix_header import STIXHeader
 from stix.indicator import Indicator
 from stix.incident import Incident
+from stix.threat_actor import ThreatActor
 from cybox.core import Observables
 
 import stix.bindings.stix_core as stix_core_binding
@@ -19,14 +20,15 @@ class STIXPackage(stix.Entity):
     _namespace = 'http://stix.mitre.org/stix-1'
     _version = "1.1"
 
-    def __init__(self, id_=None, idref_=None, stix_header=None, indicators=None, observables=None, incidents=None):
+    def __init__(self, id_=None, idref_=None, stix_header=None, indicators=None, observables=None, incidents=None, threat_actors=None):
         self.id_ = id_ or stix.utils.create_id("Package")
         self.idref_ = idref_
         self.version = self._version
-        self.indicators = indicators
-        self.observables = observables
-        self.incidents = incidents
         self.stix_header = stix_header
+        self.observables = observables
+        self.indicators = indicators
+        self.incidents = incidents
+        self.threat_actors = threat_actors
 
     @property
     def stix_header(self):
@@ -82,6 +84,30 @@ class STIXPackage(stix.Entity):
         else:
             self.add_incident(value)
     
+    @property
+    def threat_actors(self):
+        return self._threat_actors
+    
+    @threat_actors.setter
+    def threat_actors(self, value):
+        self._threat_actors = []
+        
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_threat_actor(v)
+        else:
+            self.add_threat_actor(value)
+
+    def add_threat_actor(self, threat_actor):
+        if not threat_actor:
+            return
+        elif isinstance(threat_actor, ThreatActor):
+            self._threat_actors.append(threat_actor)
+        else:
+            raise ValueError('Cannot add %s to threat actor list' % type(threat_actor))
+
     def add_incident(self, incident):
         if not incident:
             return
@@ -127,7 +153,12 @@ class STIXPackage(stix.Entity):
             incidents_obj = stix_core_binding.IncidentsType()
             incidents_obj.set_Incident([x.to_obj() for x in self.incidents])
             return_obj.set_Incidents(incidents_obj)
-            
+        
+        if self.threat_actors:
+            threat_actors_obj = stix_core_binding.ThreatActorsType()
+            threat_actors_obj.set_Threat_Actor([x.to_obj() for x in self.threat_actors])
+            return_obj.set_Threat_Actors(threat_actors_obj)
+        
         return return_obj
 
     def to_dict(self, d=None):
@@ -146,6 +177,8 @@ class STIXPackage(stix.Entity):
             d['observables'] = self.observables.to_dict()
         if self.incidents:
             d['incidents'] = [x.to_dict() for x in self.incidents]
+        if self.threat_actors:
+            d['threat_actors'] = [x.to_dict() for x in self.threat_actors]
 
         return d
 
@@ -166,7 +199,9 @@ class STIXPackage(stix.Entity):
             return_obj.observables = Observables.from_obj(obj.get_Observables())
         if obj.get_Incidents():
             return_obj.incidents = [Incident.from_obj(x) for x in obj.get_Incidents().get_Incident()]
-        
+        if obj.get_Threat_Actors():
+            return_obj.threat_actors = [ThreatActor.from_obj(x) for x in obj.get_Threat_Actors().get_Threat_Actor()]
+            
         return return_obj
 
     @classmethod
@@ -182,7 +217,8 @@ class STIXPackage(stix.Entity):
         return_obj.indicators = [Indicator.from_dict(x) for x in dict_repr.get('indicators', [])]
         return_obj.observables = Observables.from_dict(dict_repr.get('observables'))
         return_obj.incidents = [Incident.from_dict(x) for x in dict_repr.get('incidents', [])]
-
+        return_obj.threat_actors = [ThreatActor.from_dict(x) for x in dict_repr.get('threat_actors', [])]
+        
         return return_obj
 
     @classmethod
