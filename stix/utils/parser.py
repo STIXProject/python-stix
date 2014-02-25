@@ -68,9 +68,8 @@ class EntityParser(object):
         check_root -- Inspect the root element before parsing.
 
         """
-        tree = None
-        if check_version or check_root:
-            tree = etree.parse(xml_file)
+        parser = etree.ETCompatXMLParser(huge_tree=True)
+        tree = etree.parse(xml_file, parser=parser)
 
         if check_version:
             self._check_version(tree)
@@ -93,9 +92,8 @@ class EntityParser(object):
         check_root -- Inspect the root element before parsing.
 
         """
-        tree = None
-        if check_version or check_root:
-            tree = etree.parse(xml_file)
+        parser = etree.ETCompatXMLParser(huge_tree=True)
+        tree = etree.parse(xml_file, parser=parser)
 
         if check_version:
             self._check_version(tree)
