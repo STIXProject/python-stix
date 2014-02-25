@@ -1,6 +1,3 @@
-Version 1.1 Branch
-------------------
-
 Version 1.1.0.2
 2014-02-25
 - Fixed bug where exception would be thrown if parsing defaults were unset
@@ -35,8 +32,9 @@ Version 1.1.0.0
 - Added support for Incident list in STIXPackage
 - Various bugfixes
 
-Version 1.0 Branch
-------------------
+
+Version 1.0.1 Branch
+--------------------
 
 Version 1.0.1.1
 2014-02-12
@@ -53,8 +51,12 @@ Version 1.0.1.1
 Version 1.0.1.0
 2013-08-13
 - Initial support of STIX v1.0.1
+- Updated versioning policy
 - Fixed issue with CIQ Identity extension to_dict() call failing
 
+
+Version 1.0 Branch
+------------------
 
 Version 1.0.0a7
 2013-07-30
@@ -89,7 +91,6 @@ Version 1.0.0a2
 - Compatible with STIX 1.0 (final)
 - Added ability to map namespaces to user-defined namespace aliases/prefixes
 - Various bugfixes
-
 
 Version 1.0.0a1
 2013-04-22
