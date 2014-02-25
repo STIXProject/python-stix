@@ -1,0 +1,97 @@
+Version 1.1 Branch
+------------------
+
+Version 1.1.0.2
+2014-02-25
+- Fixed bug where exception would be thrown if parsing defaults were unset
+- Added ETCompatXMLParser support to fix parsing bugs when XML comments were encountered
+- Addded huge_tree support to EntityParser
+
+Version 1.1.0.1
+2014-02-22
+- Added fields to Incident class
+- Added test for CIQ Identity extension
+- Fixed several CIQ Identity extension bugs
+- Improved namespace parser performance
+- Updated Incident test
+- Added initial code for better support of non-standard id namespaces in input documents 
+
+Version 1.1.0.0
+2014-02-20
+- Compatible with STIX v1.1
+- Refactored Data Marking code
+- Added support for TLP Marking, Simple Marking, and Terms of Use Marking
+- Added Handling support to STIXPackage
+- Removed more unneeded code from bindings
+- Added support for concrete ControlledVocabularyStringType instances
+- Added initial implementation of Incident class
+- Added initial implementation of Threat Actor class
+- Fixed interface issues between python-stix and python-cybox
+- Added tests for InformationSource, Confidence, Statement, and Data Marking tests
+- Added GenericRelationship class
+- Added EntityParser class which performs version and root element conformance checks prior to full parse
+- Added support for DateTimeWithPrecision
+- Added  RelatedIndicator class
+- Added support for Incident list in STIXPackage
+- Various bugfixes
+
+Version 1.0 Branch
+------------------
+
+Version 1.0.1.1
+2014-02-12
+- Added more support for STIX v1.0.1
+- Added updated bindings for STIX v1.0.1
+- Updated extension bindings to leverage new STIX extension types and namespaces
+- Fixed bug in setup.py that caused invalid versions of python-cybox to be installed via pip
+- Accepted initial implementation of Data Markings pull request (thanks @zeroq!)
+- Accepted  bugfix pull requests (thanks @bgro!)
+- Major refactor to namespace parsing and generation code
+- Cleaned unused code from bindings
+- Refactored stix.utility module into package with idgen, nsparser modules
+
+Version 1.0.1.0
+2013-08-13
+- Initial support of STIX v1.0.1
+- Fixed issue with CIQ Identity extension to_dict() call failing
+
+
+Version 1.0.0a7
+2013-07-30
+- Various bug fixes
+
+Version 1.0.0a6
+2013-07-29
+- Added support for IndicatorType controlled vocabulary
+- Added support for huge_tree in bindings parser
+
+Version 1.0.0a5
+2013-06-27
+- Improved README documentation
+- Fixed interface issues between python-stix and python-cybox classes
+- Added support for additional namespaces to be added to STIXPackage.to_xml() 
+- Fixed installation issues with pip and setup.py
+
+Version 1.0.0a4
+2013-06-17
+- Added support for Observables under STIX_Packages
+- Fixed binding issues with Time element under Incident
+
+Version 1.0.0a3
+2013-05-122
+- Added support for Travis CI continuous integration service (thanks @2xyo!)
+- Fixed bugs that caused issues with Python 2.6
+- Added fields to STIXHeader
+- Added VocabString class
+
+Version 1.0.0a2
+2013-05-08
+- Compatible with STIX 1.0 (final)
+- Added ability to map namespaces to user-defined namespace aliases/prefixes
+- Various bugfixes
+
+
+Version 1.0.0a1
+2013-04-22
+- First (alpha) release on PyPI
+- Compatible with STIX 1.0 Draft 2
