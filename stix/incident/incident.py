@@ -9,8 +9,7 @@ from .attributed_threat_actors import AttributedThreatActors
 from .related_indicators import RelatedIndicators
 from stix.threat_actor import ThreatActor
 from stix.indicator import Indicator
-from stix.common import StructuredText
-from stix.common import Identity
+from stix.common import StructuredText, Identity, Statement
 from cybox.core import Observable, Object
 from stix.common import VocabString
 
@@ -33,11 +32,10 @@ class Incident(stix.Entity):
         self.victims = None
         self.attributed_threat_actors = None
         self.related_indicators = None
-        self.categories = []
+        self.categories = None
+        self.intended_effects = None
         #self.leveraged_ttps = []
-        #self.incident_reported = None
-        #self.intended_effect = None
-
+        
     @property
     def title(self):
         return self._title
@@ -70,6 +68,29 @@ class Incident(stix.Entity):
             raise ValueError("value must be instance of stix.incident.time.Time")
 
         self._time = value
+
+    @property
+    def intended_effects(self):
+        return self._intended_effects
+    
+    @intended_effects.setter
+    def intended_effects(self, value):
+        self._intended_effects = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_intended_effect(v)
+        else:
+            self.add_intended_effect(value)
+            
+    def add_intended_effect(self, intended_effect):
+        if not intended_effect:
+            return
+        elif isinstance(intended_effect, Statement):
+            self._intended_effects.append(intended_effect)
+        else:
+            self._intended_effects.append(Statement(value=str(intended_effect)))
 
     @property
     def victims(self):
@@ -171,6 +192,9 @@ class Incident(stix.Entity):
         if self.categories:
             return_obj.set_Categories(self._binding.CategoriesType(Category=[x.to_obj() for x in self.categories]))
 
+        if self.intended_effects:
+            return_obj.set_Intended_Effect([x.to_obj() for x in self.intended_effects])
+
         return return_obj
 
     @classmethod
@@ -193,6 +217,9 @@ class Incident(stix.Entity):
         if obj.get_Categories():
             return_obj.categories = [IncidentCategory.from_obj(x) for x in obj.get_Categories().get_Category()]
 
+        if obj.get_Intended_Effect():
+            return_obj.intended_effects = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
+            
         return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.get_Attributed_Threat_Actors())
         return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
         
@@ -218,7 +245,9 @@ class Incident(stix.Entity):
             d['attributed_threat_actors'] = self.attributed_threat_actors.to_dict()
         if self.related_indicators:
             d['related_indicators'] = self.related_indicators.to_dict()
-
+        if self.intended_effects:
+            d['intended_effects'] = [x.to_dict() for x in self.intended_effects]
+        
         return d
 
     @classmethod
@@ -238,5 +267,6 @@ class Incident(stix.Entity):
         return_obj.categories = [IncidentCategory.from_dict(x) for x in dict_repr.get('categories', [])]
         return_obj.attributed_threat_actors = AttributedThreatActors.from_dict(dict_repr.get('attributed_threat_actors'))
         return_obj.related_indicators = RelatedIndicators.from_dict(dict_repr.get('related_indicators'))
-
+        return_obj.intended_effects = [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
+        
         return return_obj
