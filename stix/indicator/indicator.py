@@ -3,7 +3,7 @@
 
 import stix
 import stix.utils
-from stix.common import Identity, InformationSource, StructuredText, VocabString
+from stix.common import Identity, InformationSource, StructuredText, VocabString, Confidence
 import stix.extensions.identity as ext_identity
 import stix.bindings.indicator as indicator_binding
 from cybox.core import Observable, ObservableComposition
@@ -28,6 +28,7 @@ class Indicator(stix.Entity):
         self.title = title
         self.description = description
         self.indicator_types = indicator_types
+        self.confidence = None
        
     @property
     def description(self):
@@ -80,6 +81,19 @@ class Indicator(stix.Entity):
                 self.add_indicator_type(v)
         else:
             self.add_indicator_type(value)
+
+    @property
+    def confidence(self):
+        return self._confidence
+    
+    @confidence.setter
+    def confidence(self, value):
+        if not value:
+            self._confidence = None
+        elif isinstance(value, Confidence):
+            self._confidence = value
+        else:
+            self._confidence(Confidence(value=value))
 
     def add_indicator_type(self, value):
         if not value:
@@ -178,6 +192,9 @@ class Indicator(stix.Entity):
         if self.description:
             return_obj.set_Description(self.description.to_obj())
 
+        if self.confidence:
+            return_obj.set_Confidence(self.confidence.to_obj())
+
         if self.indicator_types:
             for indicator_type in self.indicator_types:
                 tmp_indicator_type = indicator_type.to_obj()
@@ -210,7 +227,8 @@ class Indicator(stix.Entity):
         return_obj.title            = obj.get_Title()
         return_obj.description      = StructuredText.from_obj(obj.get_Description())
         return_obj.producer         = InformationSource.from_obj(obj.get_Producer())
-
+        return_obj.confidence       = Confidence.from_obj(obj.get_Confidence())
+        
         if obj.get_version():
             return_obj.version = obj.get_version()
 
@@ -245,6 +263,8 @@ class Indicator(stix.Entity):
             d['description'] = self.description.to_dict()
         if self.indicator_types:
             d['indicator_types'] = [x.to_dict() for x in self.indicator_types]
+        if self.confidence:
+            d['confidence'] = self.confidence.to_dict()
 
         return d
 
@@ -264,6 +284,7 @@ class Indicator(stix.Entity):
         producer_dict       = dict_repr.get('producer')
         description_dict    = dict_repr.get('description')
         indicator_type_list = dict_repr.get('indicator_types')
+        confidence_dict     = dict_repr.get('confidence')
 
         if observable_dict:
             return_obj.add_observable(Observable.from_dict(observable_dict))
@@ -277,7 +298,10 @@ class Indicator(stix.Entity):
         if indicator_type_list:
             for indicator_type_dict in indicator_type_list:
                 return_obj.add_indicator_type(IndicatorType.from_dict(indicator_type_dict))
-
+        
+        if confidence_dict:
+            return_obj.confidence = Confidence.from_dict(confidence_dict)
+        
         return return_obj
 
 
