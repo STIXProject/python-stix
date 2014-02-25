@@ -1820,10 +1820,10 @@ class TTPType(stix_common_binding.TTPBaseType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='ttp:', name_='TTPType'):
         super(TTPType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='TTPType')
-        if 'xmlns' not in already_processed:
-            already_processed.add('xmlns')
-            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
-            outfile.write(xmlns)   
+        #if 'xmlns' not in already_processed:
+        #    already_processed.add('xmlns')
+        #    xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+        #    outfile.write(xmlns)   
         if 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
             xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
