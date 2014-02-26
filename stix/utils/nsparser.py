@@ -18,7 +18,7 @@ class NamespaceParser(object):
         namespaces.append('http://cybox.mitre.org/default_vocabularies-2')
         return namespaces
 
-    def get_namespaces(self, entity):
+    def _get_namespace_set(self, entity):
         all_namespaces = set()
 
         if not isinstance(entity, (stix.Entity, cybox.Entity)):
@@ -29,18 +29,51 @@ class NamespaceParser(object):
             all_namespaces.update(self._get_observable_namespaces(entity))
         elif isinstance(entity, Observables):
             for child in self._get_children(entity):
-                all_namespaces.update(self.get_namespaces(child))
+                all_namespaces.update(self._get_namespace_set(child))
         elif hasattr(entity, "_namespace"):
             all_namespaces.add(entity._namespace)
 
             for child in self._get_children(entity):
                 if not hasattr(child, "nsparser_touched"):
                     if hasattr(child, "_namespace") or isinstance(child, Observable):
-                        all_namespaces.update(self.get_namespaces(child))
+                        all_namespaces.update(self._get_namespace_set(child))
 
         del entity.nsparser_touched
         return all_namespaces
 
+    def get_namespaces(self, entity, ns_dict=None):
+        """Returns a dictionary of namespace=>alias for all namespaces
+        used within the supplied entity.
+        
+        Arguments:
+        entity -- A python-stix Entity instance
+        ns_dict -- Additional namespaces to add to the returned dictionary
+        """
+        import stix.utils.idgen as idgen
+        
+        if not ns_dict: ns_dict = {}
+        all_ns_dict = {'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
+                       'http://stix.mitre.org/stix-1': 'stix',
+                       'http://stix.mitre.org/common-1': 'stixCommon',
+                       'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
+                       idgen.get_id_namespace() : idgen.get_id_namespace_alias()}
+        
+        default_cybox_namespaces = {ns:alias for ns,alias,schemaloc in cybox_nsparser.NS_LIST}            
+        default_stix_namespaces = dict(default_cybox_namespaces.items() + XML_NAMESPACES.items() + DEFAULT_STIX_NS_TO_PREFIX.items() + DEFAULT_STIX_NS_TO_PREFIX.items())
+        
+        ns_set = self._get_namespace_set(entity)
+        for ns in ns_set:
+            all_ns_dict[ns] = default_stix_namespaces[ns]
+        
+        # add additional @ns_dict and parsed, input namespaces 
+        all_ns_dict.update(ns_dict)
+        if hasattr(entity, "__input_namespaces__"):
+            for ns,alias in entity.__input_namespaces__.iteritems():
+                if ns not in (default_stix_namespaces):
+                    all_ns_dict[ns] = alias
+        
+        return all_ns_dict
+        
     def _get_children(self, entity):
         for (name, obj) in inspect.getmembers(entity):
             if isinstance(obj, Observables):
@@ -58,21 +91,15 @@ class NamespaceParser(object):
         if ns_dict:
             ns_set = ns_dict.iterkeys()
         else:
-            ns_set = self.get_namespaces(entity)
+            ns_set = self.get_namespaces(entity).iterkeys()
+
+        default_cybox_schemaloc_dict = {ns:schemaloc for ns,alias,schemaloc in cybox_nsparser.NS_LIST}
+        default_stix_schemaloc_dict = dict(STIX_NS_TO_SCHEMALOCATION.items() + EXT_NS_TO_SCHEMALOCATION.items() + default_cybox_schemaloc_dict.items()) 
 
         for ns in ns_set:
-            if ns in XML_NAMESPACES:
-                continue
-            elif ns in STIX_NS_TO_SCHEMALOCATION:
-                schemalocation = STIX_NS_TO_SCHEMALOCATION[ns]
+            if ns in default_stix_schemaloc_dict:
+                schemalocation = default_stix_schemaloc_dict[ns]
                 d[ns] = schemalocation
-            elif ns in EXT_NS_TO_SCHEMALOCATION:
-                schemalocation = EXT_NS_TO_SCHEMALOCATION[ns]
-                d[ns] = schemalocation
-            elif ns.startswith("http://cybox.mitre.org"):
-                for cybox_ns_tup in cybox_nsparser.NS_LIST:
-                    if cybox_ns_tup[0] == ns:
-                        d[ns] = cybox_ns_tup[2]
             else:
                 continue
 

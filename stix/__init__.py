@@ -6,7 +6,6 @@ __version__ = "1.1.0.2"
 import json
 from StringIO import StringIO
 
-
 class Entity(object):
     """Base class for all classes in the STIX API."""
 
@@ -21,32 +20,8 @@ class Entity(object):
 
     def _get_namespaces(self, ns_dict):
         import stix.utils.nsparser as nsparser
-        import cybox.utils.nsparser as cybox_nsparser
-        import stix.utils.idgen as idgen
-
-        if not ns_dict: ns_dict = {}
-        xml_ns_dict = {'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
-                       'http://stix.mitre.org/stix-1': 'stix',
-                       'http://stix.mitre.org/common-1': 'stixCommon',
-                       'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
-                       idgen.get_id_namespace() : idgen.get_id_namespace_alias()}
-
         namespace_parser = nsparser.NamespaceParser()
-        all_ns_dict = dict(xml_ns_dict)
-        ns_set = namespace_parser.get_namespaces(self)
-
-        for ns in ns_set:
-            if ns in ns_dict:
-                all_ns_dict[ns] = ns_dict[ns]
-            elif ns.startswith("http://cybox.mitre.org"):
-                for cybox_ns_tup in cybox_nsparser.NS_LIST:
-                    if ns == cybox_ns_tup[0]:
-                        all_ns_dict[ns] = cybox_ns_tup[1]
-            elif ns in nsparser.DEFAULT_EXT_TO_PREFIX:
-                all_ns_dict[ns] = nsparser.DEFAULT_EXT_TO_PREFIX[ns]
-            else:
-                all_ns_dict[ns] = nsparser.DEFAULT_STIX_NS_TO_PREFIX[ns]
-
+        all_ns_dict = namespace_parser.get_namespaces(self, ns_dict=ns_dict)        
         return all_ns_dict
 
     def _get_schema_locations(self, ns_dict=None):

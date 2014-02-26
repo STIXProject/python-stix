@@ -108,5 +108,5 @@ class EntityParser(object):
         from stix.core import STIXPackage # resolve circular dependencies
         stix_package = STIXPackage().from_obj(stix_package_obj)
         self._apply_input_namespaces(tree, stix_package)
-
+        
         return stix_package
