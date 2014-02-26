@@ -161,7 +161,7 @@ class STIXPackage(stix.Entity):
         
         return return_obj
 
-    def to_dict(self, d=None):
+    def to_dict(self):
         d = {}
         if self.id_:
             d['id'] = self.id_
