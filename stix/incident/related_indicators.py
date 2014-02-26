@@ -5,6 +5,7 @@ import stix
 import stix.bindings.incident as incident_binding
 from stix.common.generic_relationship import GenericRelationshipList
 from stix.common.related import RelatedIndicator
+from stix.indicator import Indicator
 from cybox.core import Observable, Object
 
 class RelatedIndicators(GenericRelationshipList):
@@ -35,6 +36,8 @@ class RelatedIndicators(GenericRelationshipList):
             return
         if isinstance(indicator, RelatedIndicator):
             self.indicators.append(indicator)
+        elif isinstance(indicator, Indicator):
+            self.indicators.append(RelatedIndicator(indicator=indicator))
         else:
             raise ValueError("Cannot add %s to indicators list" % type(indicator))
 

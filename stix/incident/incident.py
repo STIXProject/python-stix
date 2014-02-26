@@ -8,10 +8,11 @@ from .time import Time
 from .attributed_threat_actors import AttributedThreatActors
 from .related_indicators import RelatedIndicators
 from stix.threat_actor import ThreatActor
+from stix.ttp import TTP
 from stix.indicator import Indicator
 from stix.common import StructuredText, Identity, Statement
-from cybox.core import Observable, Object
 from stix.common import VocabString
+from stix.incident.leveraged_ttps import LeveragedTTPs
 
 class IncidentCategory(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
@@ -34,7 +35,7 @@ class Incident(stix.Entity):
         self.related_indicators = None
         self.categories = None
         self.intended_effects = None
-        #self.leveraged_ttps = []
+        self.leveraged_ttps = None
         
     @property
     def title(self):
@@ -93,6 +94,21 @@ class Incident(stix.Entity):
             self._intended_effects.append(Statement(value=str(intended_effect)))
 
     @property
+    def leveraged_ttps(self):
+        return self._leveraged_ttps
+    
+    @leveraged_ttps.setter
+    def leveraged_ttps(self, value):
+        if not value:
+            self._leveraged_ttps = None
+        elif isinstance(value, LeveragedTTPs):
+            self._leverage_ttps = value
+        elif isinstance(value, TTP):
+            self._leveraged_ttps = LeveragedTTPs(leveraged_ttps=value)
+        else:
+            raise ValueError('Cannot cast value to type: %s' % type(LeveragedTTPs))
+
+    @property
     def victims(self):
         return self._victims
 
@@ -140,6 +156,8 @@ class Incident(stix.Entity):
             self._related_indicators = None
         elif isinstance(value, RelatedIndicators):
             self._related_indicators = value
+        elif isinstance(value, Indicator):
+            self._related_indicators = RelatedIndicators(indicators=value)
         else:
             raise ValueError("Unable to set related_indcators to instance of %s" % type(value))
 
@@ -176,24 +194,20 @@ class Incident(stix.Entity):
 
         if self.description:
             return_obj.set_Description(self.description.to_obj())
-
         if self.time:
             return_obj.set_Time(self.time.to_obj())
-
         if self.victims:
             return_obj.set_Victim([x.to_obj() for x in self.victims])
-
         if self.attributed_threat_actors:
             return_obj.set_Attributed_Threat_Actors(self.attributed_threat_actors.to_obj())
-
         if self.related_indicators:
             return_obj.set_Related_Indicators(self.related_indicators.to_obj())
-
         if self.categories:
             return_obj.set_Categories(self._binding.CategoriesType(Category=[x.to_obj() for x in self.categories]))
-
         if self.intended_effects:
             return_obj.set_Intended_Effect([x.to_obj() for x in self.intended_effects])
+        if self.leveraged_ttps:
+            return_obj.set_Leveraged_TTPs(self.leveraged_ttps.to_obj())
 
         return return_obj
 
@@ -222,6 +236,7 @@ class Incident(stix.Entity):
             
         return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.get_Attributed_Threat_Actors())
         return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
+        return_obj.leveraged_ttps = LeveragedTTPs.from_obj(obj.get_Leveraged_TTPs())
         
         return return_obj
 
@@ -247,6 +262,8 @@ class Incident(stix.Entity):
             d['related_indicators'] = self.related_indicators.to_dict()
         if self.intended_effects:
             d['intended_effects'] = [x.to_dict() for x in self.intended_effects]
+        if self.leveraged_ttps:
+            d['leveraged_ttps'] = self.leveraged_ttps.to_dict()
         
         return d
 
@@ -268,5 +285,6 @@ class Incident(stix.Entity):
         return_obj.attributed_threat_actors = AttributedThreatActors.from_dict(dict_repr.get('attributed_threat_actors'))
         return_obj.related_indicators = RelatedIndicators.from_dict(dict_repr.get('related_indicators'))
         return_obj.intended_effects = [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
+        return_obj.leveraged_ttps = LeveragedTTPs.from_dict(dict_repr.get('leveraged_ttps'))
         
         return return_obj

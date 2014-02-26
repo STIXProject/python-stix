@@ -4,6 +4,7 @@
 import stix
 from stix.threat_actor import ThreatActor
 from stix.indicator import Indicator
+from stix.ttp import TTP
 from . import GenericRelationship
 import stix.bindings.stix_common as common_binding
 
@@ -126,9 +127,72 @@ class RelatedIndicator(GenericRelationship):
 
         return return_obj
 
-    def to_dict(self, d=None):
+    def to_dict(self):
         d = super(RelatedIndicator, self).to_dict()
         if self.indicator:
             d['indicator'] = self.indicator.to_dict()
+
+        return d
+
+class RelatedTTP(GenericRelationship):
+    _namespace = "http://stix.mitre.org/common-1"
+    _binding = common_binding
+    _binding_class = _binding.RelatedTTPType
+
+    def __init__(self, confidence=None, information_source=None, relationship=None, ttp=None ):
+        super(RelatedTTP, self).__init__(confidence=confidence, information_source=information_source, relationship=relationship)
+        self.ttp = ttp
+
+    @property
+    def ttp(self):
+        return self._ttp
+
+    @ttp.setter
+    def ttp(self, value):
+        if value and not isinstance(value, TTP):
+            raise ValueError("value must be instance of TTP")
+
+        self._ttp = value
+
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
+        if not obj:
+            return None
+
+        if not return_obj:
+            return_obj = cls()
+
+        super(RelatedTTP, cls).from_obj(obj, return_obj)
+        return_obj.ttp = TTP.from_obj(obj=obj.get_TTP())
+        return return_obj
+
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = self._binding_class()
+
+        super(RelatedTTP, self).to_obj(return_obj=return_obj)
+
+        if self.ttp:
+            return_obj.set_TTP(self.ttp.to_obj())
+
+        return return_obj
+
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not dict_repr:
+            return None
+
+        if not return_obj:
+            return_obj = cls()
+
+        super(RelatedTTP, cls).from_dict(dict_repr, return_obj=return_obj)
+        return_obj.ttp = TTP.from_dict(dict_repr.get('ttp'))
+
+        return return_obj
+
+    def to_dict(self):
+        d = super(RelatedTTP, self).to_dict()
+        if self.ttp:
+            d['ttp'] = self.ttp.to_dict()
 
         return d

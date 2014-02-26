@@ -35,6 +35,8 @@ class AttributedThreatActors(GenericRelationshipList):
             return
         elif isinstance(threat_actor, RelatedThreatActor):
             self.threat_actors.append(threat_actor)
+        elif isinstance(threat_actor, ThreatActor):
+            self.threat_actors.append(RelatedThreatActor(threat_actor=threat_actor))
         else:
             raise ValueError('value must be instance of RelatedThreatActor')
 

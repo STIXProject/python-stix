@@ -20,6 +20,14 @@ class TTP(stix.Entity):
         self.description = description
         self.short_description = short_description
         
+        self.behavior = None
+        self.exploit_targets = None
+        self.intended_effect = None
+        self.related_ttps = None
+        self.resources = None
+        self.victim_targeting = None
+        self.information_source = None
+        
     @property
     def title(self):
         return self._title
