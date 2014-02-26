@@ -59,7 +59,7 @@ class NamespaceParser(object):
                        idgen.get_id_namespace() : idgen.get_id_namespace_alias()}
         
         default_cybox_namespaces = {ns:alias for ns,alias,schemaloc in cybox_nsparser.NS_LIST}            
-        default_stix_namespaces = dict(default_cybox_namespaces.items() + XML_NAMESPACES.items() + DEFAULT_STIX_NS_TO_PREFIX.items() + DEFAULT_STIX_NS_TO_PREFIX.items())
+        default_stix_namespaces = dict(default_cybox_namespaces.items() + XML_NAMESPACES.items() + DEFAULT_STIX_NS_TO_PREFIX.items() + DEFAULT_EXT_TO_PREFIX.items())
         
         ns_set = self._get_namespace_set(entity)
         for ns in ns_set:
