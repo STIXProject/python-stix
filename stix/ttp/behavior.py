@@ -119,7 +119,6 @@ class Behavior(stix.Entity):
             return_obj.exploits = [Exploit.from_obj(x) for x in obj.get_Exploits().get_Exploit()]
         if obj.get_Attack_Patterns():
             return_obj.attack_patterns = [AttackPattern.from_obj(x) for x in obj.get_Attack_Patterns().get_Attack_Pattern()]
-        
         return return_obj
     
     def to_dict(self):
