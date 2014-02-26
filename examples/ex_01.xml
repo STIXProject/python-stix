@@ -1,7 +1,7 @@
 <!--
 	STIX IP Watchlist Example
 	
-	Copyright (c) 2013, The MITRE Corporation. All rights reserved. 
+	Copyright (c) 2014, The MITRE Corporation. All rights reserved. 
     The contents of this file are subject to the terms of the STIX License located at http://stix.mitre.org/about/termsofuse.html.
     
 	This example demonstrates a simple usage of STIX to represent a list of IP address indicators (watchlist of IP addresses). Cyber operations and malware analysis centers often share a list of suspected malicious IP addresses with information about what those IPs might indicate. This STIX package represents a list of three IP addresses with a short dummy description of what they represent.
@@ -26,14 +26,13 @@
     xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
     xmlns:example="http://example.com/"
     xsi:schemaLocation="
-    http://stix.mitre.org/stix-1 ../stix_core.xsd
-    http://stix.mitre.org/Indicator-2 ../indicator.xsd
-    http://cybox.mitre.org/default_vocabularies-2 ../cybox/cybox_default_vocabularies.xsd
-    http://stix.mitre.org/default_vocabularies-1 ../stix_default_vocabularies.xsd
-    http://cybox.mitre.org/objects#AddressObject-2 ../cybox/objects/Address_Object.xsd"
+    http://stix.mitre.org/stix-1 http://stix.mitre.org/XMLSchema/core/1.1/stix_core.xsd
+    http://stix.mitre.org/Indicator-2 http://stix.mitre.org/XMLSchema/indicator/2.1/indicator.xsd
+    http://cybox.mitre.org/default_vocabularies-2 http://cybox.mitre.org/XMLSchema/default_vocabularies/2.1/cybox_default_vocabularies.xsd
+    http://stix.mitre.org/default_vocabularies-1 http://stix.mitre.org/XMLSchema/default_vocabularies/1.1.0/stix_default_vocabularies.xsd
+    http://cybox.mitre.org/objects#AddressObject-2 http://cybox.mitre.org/XMLSchema/objects/Address/2.1/Address_Object.xsd"
     id="example:STIXPackage-33fe3b22-0201-47cf-85d0-97c02164528d"
-    version="1.1"
-    >
+    version="1.1">
     <stix:STIX_Header>
         <stix:Title>Example watchlist that contains IP information.</stix:Title>
         <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Indicators - Watchlist</stix:Package_Intent>
