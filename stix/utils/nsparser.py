@@ -58,7 +58,7 @@ class NamespaceParser(object):
                        'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
                        idgen.get_id_namespace() : idgen.get_id_namespace_alias()}
         
-        default_cybox_namespaces = {ns:alias for ns,alias,schemaloc in cybox_nsparser.NS_LIST}            
+        default_cybox_namespaces = dict((ns,alias) for (ns,alias,schemaloc) in cybox_nsparser.NS_LIST)            
         default_stix_namespaces = dict(default_cybox_namespaces.items() + XML_NAMESPACES.items() + DEFAULT_STIX_NS_TO_PREFIX.items() + DEFAULT_EXT_TO_PREFIX.items())
         
         ns_set = self._get_namespace_set(entity)
@@ -93,7 +93,7 @@ class NamespaceParser(object):
         else:
             ns_set = self.get_namespaces(entity).iterkeys()
 
-        default_cybox_schemaloc_dict = {ns:schemaloc for ns,alias,schemaloc in cybox_nsparser.NS_LIST}
+        default_cybox_schemaloc_dict = dict((ns,schemaloc) for (ns,alias,schemaloc) in cybox_nsparser.NS_LIST)
         default_stix_schemaloc_dict = dict(STIX_NS_TO_SCHEMALOCATION.items() + EXT_NS_TO_SCHEMALOCATION.items() + default_cybox_schemaloc_dict.items()) 
 
         for ns in ns_set:
@@ -106,7 +106,7 @@ class NamespaceParser(object):
         return d
 
     def _get_xmlns_str(self, ns_dict):
-        return "\n\t".join(['xmlns:%s="%s"' % (alias,ns) for ns,alias in sorted(ns_dict.iteritems())])
+        return "\n\t".join(['xmlns:%s="%s"' % (alias,ns) for (ns,alias) in sorted(ns_dict.iteritems())])
 
     def _get_schemaloc_str(self, schemaloc_dict):
         schemaloc_str_start = 'xsi:schemaLocation="\n\t'
