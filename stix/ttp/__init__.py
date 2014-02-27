@@ -4,7 +4,7 @@
 import stix
 import stix.utils
 import stix.bindings.ttp as ttp_binding
-from stix.common import StructuredText, VocabString
+from stix.common import StructuredText, VocabString, InformationSource
 from .behavior import Behavior
 
 class TTP(stix.Entity):
@@ -21,12 +21,13 @@ class TTP(stix.Entity):
         self.short_description = short_description
         self.behavior = None
         self.related_ttps = None
+        self.information_source = None
         
         self.exploit_targets = None
         self.intended_effect = None
         self.resources = None
         self.victim_targeting = None
-        self.information_source = None
+        
         
     @property
     def title(self):
@@ -92,6 +93,19 @@ class TTP(stix.Entity):
         else:
             raise ValueError("value must be RelatedTTPs instance")
 
+    @property
+    def information_source(self):
+        return self._information_source
+    
+    @information_source.setter
+    def information_source(self, value):
+        if not value:
+            self._information_source = None
+        elif isinstance(value, InformationSource):
+            self._information_source = value
+        else:
+            raise ValueError('value must be instance of InformationSource')
+
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -108,6 +122,8 @@ class TTP(stix.Entity):
             return_obj.set_Behavior(self.behavior.to_obj())
         if self.related_ttps:
             return_obj.set_Related_TTPs(self.related_ttps.to_obj())
+        if self.information_source:
+            return_obj.set_Information_Source(self.information_source.to_obj())
         
         return return_obj
 
@@ -126,6 +142,7 @@ class TTP(stix.Entity):
         return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
         return_obj.behavior = Behavior.from_obj(obj.get_Behavior())
         return_obj.related_ttps = RelatedTTPs.from_obj(obj.get_Related_TTPs())
+        return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
         
         return return_obj
 
@@ -145,6 +162,8 @@ class TTP(stix.Entity):
             d['behavior'] = self.behavior.to_dict()
         if self.related_ttps:
             d['related_ttps'] = self.related_ttps.to_dict()
+        if self.information_source:
+            d['information_source'] = self.information_source.to_dict()
         
         return d
 
@@ -163,5 +182,6 @@ class TTP(stix.Entity):
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
         return_obj.behavior = Behavior.from_dict(dict_repr.get('behavior'))
         return_obj.related_ttps = RelatedTTPs.from_dict(dict_repr.get('related_ttps'))
+        return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
         
         return return_obj
