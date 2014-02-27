@@ -4,8 +4,8 @@
 import stix
 import stix.utils
 import stix.bindings.ttp as ttp_binding
-from stix.common import StructuredText
-from stix.common import VocabString
+from stix.common import StructuredText, VocabString
+from .behavior import Behavior
 
 class TTP(stix.Entity):
     _binding = ttp_binding
@@ -19,11 +19,11 @@ class TTP(stix.Entity):
         self.title = title
         self.description = description
         self.short_description = short_description
-        
         self.behavior = None
+        self.related_ttps = None
+        
         self.exploit_targets = None
         self.intended_effect = None
-        self.related_ttps = None
         self.resources = None
         self.victim_targeting = None
         self.information_source = None
@@ -64,6 +64,34 @@ class TTP(stix.Entity):
         else:
             self._short_description = None
 
+    @property
+    def behavior(self):
+        return self._behavior
+    
+    @behavior.setter
+    def behavior(self, value):
+        if not value:
+            self._behavior = None
+        elif isinstance(value, Behavior):
+            self._behavior = value
+        else:
+            raise ValueError('Value must be a Behavior instance')
+
+    @property
+    def related_ttps(self):
+        return self._related_ttps
+    
+    @related_ttps.setter
+    def related_ttps(self, value):
+        from .related_ttps import RelatedTTPs # avoid circular imports
+        
+        if not value:
+            self._related_ttps = None
+        elif isinstance(value, RelatedTTPs):
+            self._related_ttps = value
+        else:
+            raise ValueError("value must be RelatedTTPs instance")
+
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -74,25 +102,30 @@ class TTP(stix.Entity):
 
         if self.description:
             return_obj.set_Description(self.description.to_obj())
-
         if self.short_description:
             return_obj.set_Short_Description(self.short_description.to_obj())
-
+        if self.behavior:
+            return_obj.set_Behavior(self.behavior.to_obj())
+        if self.related_ttps:
+            return_obj.set_Related_TTPs(self.related_ttps.to_obj())
+        
         return return_obj
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
-
         if not return_obj:
             return_obj = cls()
-
+        
+        from .related_ttps import RelatedTTPs # avoid circular imports
         return_obj.id_ = obj.get_id()
         return_obj.version = obj.get_version() or cls._version
         return_obj.title = obj.get_Title()
         return_obj.description = StructuredText.from_obj(obj.get_Description())
         return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
+        return_obj.behavior = Behavior.from_obj(obj.get_Behavior())
+        return_obj.related_ttps = RelatedTTPs.from_obj(obj.get_Related_TTPs())
         
         return return_obj
 
@@ -108,21 +141,27 @@ class TTP(stix.Entity):
             d['description'] = self.description.to_dict()
         if self.short_description:
             d['short_description'] = self.short_description.to_dict()
-       
+        if self.behavior:
+            d['behavior'] = self.behavior.to_dict()
+        if self.related_ttps:
+            d['related_ttps'] = self.related_ttps.to_dict()
+        
         return d
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
         if not dict_repr:
             return None
-
         if not return_obj:
             return_obj = cls()
-
+        
+        from .related_ttps import RelatedTTPs
         return_obj.id_ = dict_repr.get('id')
         return_obj.version = dict_repr.get('version', cls._version)
         return_obj.title = dict_repr.get('title')
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
+        return_obj.behavior = Behavior.from_dict(dict_repr.get('behavior'))
+        return_obj.related_ttps = RelatedTTPs.from_dict(dict_repr.get('related_ttps'))
         
         return return_obj
