@@ -10,5 +10,6 @@ from .confidence import Confidence
 from .identity import Identity, RelatedIdentity
 from .information_source import InformationSource
 from .statement import Statement
+from .tools import ToolInformation
 
 from .generic_relationship import GenericRelationship
