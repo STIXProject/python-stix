@@ -6,6 +6,7 @@ import stix.utils
 import stix.bindings.ttp as ttp_binding
 from stix.common import StructuredText, VocabString, InformationSource, Statement
 from .behavior import Behavior
+from .resource import Resource
 
 class TTP(stix.Entity):
     _binding = ttp_binding
@@ -23,11 +24,10 @@ class TTP(stix.Entity):
         self.related_ttps = None
         self.information_source = None
         self.intended_effects = None
+        self.resources = None
         
         self.exploit_targets = None
-        self.resources = None
         self.victim_targeting = None
-        
         
     @property
     def title(self):
@@ -130,6 +130,19 @@ class TTP(stix.Entity):
         else:
             self.intended_effects.append(Statement(value=intended_effect))
 
+    @property
+    def resources(self):
+        return self._resources
+    
+    @resources.setter
+    def resources(self, value):
+        if not value:
+            self._resources = None
+        elif isinstance(value, Resource):
+            self._resources = value
+        else:
+            raise ValueError('value must be instance of Resource')
+
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -150,6 +163,8 @@ class TTP(stix.Entity):
             return_obj.set_Information_Source(self.information_source.to_obj())
         if self.intended_effects:
             return_obj.set_Intended_Effect([x.to_obj() for x in self.intended_effects])
+        if self.resources:
+            return_obj.set_Resources(self.resources.to_obj())
         
         return return_obj
 
@@ -169,6 +184,7 @@ class TTP(stix.Entity):
         return_obj.behavior = Behavior.from_obj(obj.get_Behavior())
         return_obj.related_ttps = RelatedTTPs.from_obj(obj.get_Related_TTPs())
         return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
+        return_obj.resources = Resource.from_obj(obj.get_Resources())
         
         if obj.get_Intended_Effect():
             return_obj.intended_effects = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
@@ -195,6 +211,8 @@ class TTP(stix.Entity):
             d['information_source'] = self.information_source.to_dict()
         if self.intended_effects:
             d['intended_effects'] = [x.to_dict() for x in self.intended_effects]
+        if self.resources:
+            d['resources'] = self.resources.to_dict()
             
         return d
 
@@ -215,5 +233,6 @@ class TTP(stix.Entity):
         return_obj.related_ttps = RelatedTTPs.from_dict(dict_repr.get('related_ttps'))
         return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
         return_obj.intended_effects = [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
+        return_obj.resources = Resource.from_dict(dict_repr.get('resources'))
         
         return return_obj
