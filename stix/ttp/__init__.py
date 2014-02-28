@@ -7,6 +7,7 @@ import stix.bindings.ttp as ttp_binding
 from stix.common import StructuredText, VocabString, InformationSource, Statement
 from .behavior import Behavior
 from .resource import Resource
+from .victim_targeting import VictimTargeting
 
 class TTP(stix.Entity):
     _binding = ttp_binding
@@ -25,9 +26,9 @@ class TTP(stix.Entity):
         self.information_source = None
         self.intended_effects = None
         self.resources = None
+        self.victim_targeting = None
         
         self.exploit_targets = None
-        self.victim_targeting = None
         
     @property
     def title(self):
@@ -143,6 +144,19 @@ class TTP(stix.Entity):
         else:
             raise ValueError('value must be instance of Resource')
 
+    @property
+    def victim_targeting(self):
+        return self._victim_targeting
+    
+    @victim_targeting.setter
+    def victim_targeting(self, value):
+        if not value:
+            self._victim_targeting = None
+        elif isinstance(value, VictimTargeting):
+            self._victim_targeting = value
+        else:
+            raise ValueError('value must be instance of VictimTargeting')
+
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -165,6 +179,8 @@ class TTP(stix.Entity):
             return_obj.set_Intended_Effect([x.to_obj() for x in self.intended_effects])
         if self.resources:
             return_obj.set_Resources(self.resources.to_obj())
+        if self.victim_targeting:
+            return_obj.set_Victim_Targeting(self.victim_targeting.to_obj())
         
         return return_obj
 
@@ -185,6 +201,7 @@ class TTP(stix.Entity):
         return_obj.related_ttps = RelatedTTPs.from_obj(obj.get_Related_TTPs())
         return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
         return_obj.resources = Resource.from_obj(obj.get_Resources())
+        return_obj.victim_targeting = VictimTargeting.from_obj(obj.get_Victim_Targeting())
         
         if obj.get_Intended_Effect():
             return_obj.intended_effects = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
@@ -213,7 +230,9 @@ class TTP(stix.Entity):
             d['intended_effects'] = [x.to_dict() for x in self.intended_effects]
         if self.resources:
             d['resources'] = self.resources.to_dict()
-            
+        if self.victim_targeting:
+            d['victim_targeting'] = self.victim_targeting.to_dict()
+        
         return d
 
     @classmethod
@@ -234,5 +253,6 @@ class TTP(stix.Entity):
         return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
         return_obj.intended_effects = [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
         return_obj.resources = Resource.from_dict(dict_repr.get('resources'))
+        return_obj.victim_targeting = VictimTargeting.from_dict(dict_repr.get('victim_targeting'))
         
         return return_obj
