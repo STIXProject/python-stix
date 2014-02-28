@@ -28,7 +28,7 @@ class TTP(stix.Entity):
         self.resources = None
         self.victim_targeting = None
         
-        self.exploit_targets = None
+        self.exploit_targets = None # TODO: stix.ExploitTarget not implemented yet
         
     @property
     def title(self):

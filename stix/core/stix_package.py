@@ -8,6 +8,8 @@ from stix_header import STIXHeader
 from stix.indicator import Indicator
 from stix.incident import Incident
 from stix.threat_actor import ThreatActor
+from stix.ttp import TTP
+from .ttps import TTPs
 from cybox.core import Observables
 
 import stix.bindings.stix_core as stix_core_binding
@@ -17,10 +19,11 @@ from StringIO import StringIO
 
 class STIXPackage(stix.Entity):
     _binding = stix_core_binding
+    _binding_class = _binding.STIXType
     _namespace = 'http://stix.mitre.org/stix-1'
     _version = "1.1"
 
-    def __init__(self, id_=None, idref_=None, stix_header=None, indicators=None, observables=None, incidents=None, threat_actors=None):
+    def __init__(self, id_=None, idref_=None, stix_header=None, indicators=None, observables=None, incidents=None, threat_actors=None, ttps=None):
         self.id_ = id_ or stix.utils.create_id("Package")
         self.idref_ = idref_
         self.version = self._version
@@ -29,6 +32,7 @@ class STIXPackage(stix.Entity):
         self.indicators = indicators
         self.incidents = incidents
         self.threat_actors = threat_actors
+        self.ttps = ttps
 
     @property
     def stix_header(self):
@@ -57,6 +61,14 @@ class STIXPackage(stix.Entity):
         else:
             self.add_indicator(value)
 
+    def add_indicator(self, indicator):
+        if not indicator:
+            return
+        elif isinstance(indicator, Indicator):
+            self.indicators.append(indicator)
+        else:
+            raise ValueError('indicator must be instance of stix.indicator.Indicator')
+
     @property
     def observables(self):
         return self._observables
@@ -67,6 +79,13 @@ class STIXPackage(stix.Entity):
             raise ValueError('value must be instance of cybox.core.Observables')
 
         self._observables = value
+
+    def add_observable(self, observable):
+        if not self.observables:
+            self.observables = Observables(observables=observable)
+        else:
+            self.observables.add(observable)
+
 
     @property
     def incidents(self):
@@ -84,6 +103,14 @@ class STIXPackage(stix.Entity):
         else:
             self.add_incident(value)
     
+    def add_incident(self, incident):
+        if not incident:
+            return
+        elif isinstance(incident, Incident):
+            self.incidents.append(incident)
+        else:
+            raise ValueError('Cannot add %s to incident list' % type(incident))
+
     @property
     def threat_actors(self):
         return self._threat_actors
@@ -108,31 +135,34 @@ class STIXPackage(stix.Entity):
         else:
             raise ValueError('Cannot add %s to threat actor list' % type(threat_actor))
 
-    def add_incident(self, incident):
-        if not incident:
-            return
-        elif isinstance(incident, Incident):
-            self.incidents.append(incident)
+    @property
+    def ttps(self):
+        return self._ttps
+    
+    @ttps.setter
+    def ttps(self, value):
+        if not value:
+            self._ttps = None
+        elif isinstance(value, TTPs):
+            self._ttps = value
+        elif isinstance(value, list):
+            for v in value:
+                self.add_ttp(v)
         else:
-            raise ValueError('Cannot add %s to incident list' % type(incident))
-
-    def add_indicator(self, indicator):
-        if not indicator:
-            return
-        elif isinstance(indicator, Indicator):
-            self.indicators.append(indicator)
-        else:
-            raise ValueError('indicator must be instance of stix.indicator.Indicator')
-
-    def add_observable(self, observable):
-        if not self.observables:
-            self.observables = Observables(observable)
-        else:
-            self.observables.add(observable)
+            self.add_ttp(value)
+    
+    def add_ttp(self, ttp):
+        if not ttp:
+            return 
+        if not self.ttps:
+            self.ttps = TTPs()
+        
+        self.ttps.add_ttp(ttp)
+   
 
     def to_obj(self, return_obj=None):
         if not return_obj:
-            return_obj = self._binding.STIXType()
+            return_obj = self._binding_class()
 
         return_obj.set_id(self.id_)
         return_obj.set_idref(self.idref_)
@@ -142,7 +172,7 @@ class STIXPackage(stix.Entity):
             return_obj.set_STIX_Header(self.stix_header.to_obj())
 
         if self.indicators:
-            indicators_obj = stix_core_binding.IndicatorsType()
+            indicators_obj = self._binding.IndicatorsType()
             indicators_obj.set_Indicator([x.to_obj() for x in self.indicators])
             return_obj.set_Indicators(indicators_obj)
 
@@ -150,15 +180,17 @@ class STIXPackage(stix.Entity):
             return_obj.set_Observables(self.observables.to_obj())
 
         if self.incidents:
-            incidents_obj = stix_core_binding.IncidentsType()
+            incidents_obj = self._binding.IncidentsType()
             incidents_obj.set_Incident([x.to_obj() for x in self.incidents])
             return_obj.set_Incidents(incidents_obj)
-        
         if self.threat_actors:
-            threat_actors_obj = stix_core_binding.ThreatActorsType()
+            threat_actors_obj = self._binding.ThreatActorsType()
             threat_actors_obj.set_Threat_Actor([x.to_obj() for x in self.threat_actors])
             return_obj.set_Threat_Actors(threat_actors_obj)
         
+        if self.ttps:
+            return_obj.set_TTPs(self.ttps.to_obj())
+            
         return return_obj
 
     def to_dict(self):
@@ -179,6 +211,8 @@ class STIXPackage(stix.Entity):
             d['incidents'] = [x.to_dict() for x in self.incidents]
         if self.threat_actors:
             d['threat_actors'] = [x.to_dict() for x in self.threat_actors]
+        if self.ttps:
+            d['ttps'] = self.ttps.to_dict()
 
         return d
 
@@ -201,7 +235,9 @@ class STIXPackage(stix.Entity):
             return_obj.incidents = [Incident.from_obj(x) for x in obj.get_Incidents().get_Incident()]
         if obj.get_Threat_Actors():
             return_obj.threat_actors = [ThreatActor.from_obj(x) for x in obj.get_Threat_Actors().get_Threat_Actor()]
-            
+        if obj.get_TTPs():
+            return_obj.ttps = TTPs.from_obj(obj.get_TTPs())
+        
         return return_obj
 
     @classmethod
@@ -218,6 +254,7 @@ class STIXPackage(stix.Entity):
         return_obj.observables = Observables.from_dict(dict_repr.get('observables'))
         return_obj.incidents = [Incident.from_dict(x) for x in dict_repr.get('incidents', [])]
         return_obj.threat_actors = [ThreatActor.from_dict(x) for x in dict_repr.get('threat_actors', [])]
+        return_obj.ttps = TTPs.from_dict(dict_repr.get('ttps'))
         
         return return_obj
 

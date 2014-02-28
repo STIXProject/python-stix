@@ -47,7 +47,6 @@ class TTPs(stix.Entity):
         
         return return_obj
     
-    
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:
