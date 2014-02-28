@@ -2,7 +2,8 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-from stix.common import ToolInformation
+from stix.common import ToolInformation, Identity
+from .infrastructure import Infrastructure
 import stix.bindings.ttp as ttp_binding
 
 class Resource(stix.Entity):
@@ -54,7 +55,22 @@ class Resource(stix.Entity):
     @personas.setter
     def personas(self, value):
         self._personas = []
-        return
+        
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_persona(v)
+        else:
+            self.add_persona(value)
+            
+    def add_persona(self, persona):
+        if not persona:
+            return
+        elif isinstance(persona, Identity):
+            self._personas.append(persona)
+        else:
+            self._personas.append(Identity(name=persona))
     
     def to_obj(self, return_obj=None):
         if not return_obj:
@@ -63,6 +79,11 @@ class Resource(stix.Entity):
         if self.tools:
             tools_obj = self._binding.ToolsType(Tool=[x.to_obj() for x in self.tools])
             return_obj.set_Tools(tools_obj)
+        if self.infrastructure:
+            return_obj.set_Infrastructure(self.infrastructure.to_obj())
+        if self.personas:
+            personas_obj = self._binding.PersonasType(Persona=[x.to_obj() for x in self.personas])
+            return_obj.set_Personas(personas_obj)
         
         return return_obj
         
@@ -72,10 +93,14 @@ class Resource(stix.Entity):
             return None
         if not return_obj:
             return_obj = cls()
-            
+        
+        return_obj.infrastructure = Infrastructure.from_obj(obj.get_Infrastructure())
+        
         if obj.get_Tools():
             return_obj.tools = [ToolInformation.from_obj(x) for x in obj.get_Tools().get_Tool()]
-    
+        if obj.get_Personas():
+            return_obj.personas = [Identity.from_obj(x) for x in obj.get_Personas().get_Persona()]
+        
         return return_obj
             
     def to_dict(self):
@@ -83,6 +108,10 @@ class Resource(stix.Entity):
         
         if self.tools:
             d['tools'] = [x.to_dict() for x in self.tools]
+        if self.infrastructure:
+            d['infrastructure'] = self.infrastructure.to_dict()
+        if self.personas:
+            d['personas'] = [x.to_dict() for x in self.personas]
             
         return d
     
@@ -94,6 +123,8 @@ class Resource(stix.Entity):
             return_obj = cls()
             
         return_obj.tools = [ToolInformation.from_dict(x) for x in dict_repr.get('tools', [])] 
+        return_obj.infrastructure = Infrastructure.from_dict(dict_repr.get('infrastructure'))
+        return_obj.personas = [Identity.from_dict(x) for x in dict_repr.get('personas', [])]
         
         return return_obj
         
