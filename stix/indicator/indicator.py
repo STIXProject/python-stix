@@ -17,6 +17,7 @@ class IndicatorType(VocabString):
 
 class Indicator(stix.Entity):
     _binding = indicator_binding
+    _binding_class = indicator_binding.IndicatorType
     _namespace = 'http://stix.mitre.org/Indicator-2'
     _version = "2.1"
 
@@ -181,7 +182,7 @@ class Indicator(stix.Entity):
 
     def to_obj(self, return_obj=None):
         if not return_obj:
-            return_obj = self._binding.IndicatorType()
+            return_obj = self._binding_class()
 
         if self.id_:
             return_obj.set_id(self.id_)
