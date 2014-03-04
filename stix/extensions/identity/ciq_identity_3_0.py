@@ -212,7 +212,7 @@ class PartyName(stix.Entity):
                 self.add_person_name(value)
 
         if organisation_names:
-            for value in self.organisation_names:
+            for value in organisation_names:
                 self.add_organisation_name(value)
 
     def add_name_line(self, value):
@@ -351,7 +351,7 @@ class NameLine(stix.Entity):
             return_obj = et.Element(root_tag)
 
         if self.type:
-            return_obj.attrib = {'Type' : self.type}
+            return_obj.attrib['Type'] = self.type
 
         if self.value: 
             return_obj.text = self.value
@@ -638,7 +638,7 @@ class PersonNameElement(NameElement):
             return_obj = et.Element(root_tag)
 
         if self.element_type:
-            return_obj.attrib = {'ElementType' : self.element_type}
+            return_obj.attrib['ElementType'] = self.element_type
 
         return_obj.text = self.value
         return return_obj
