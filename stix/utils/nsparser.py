@@ -93,7 +93,10 @@ class NamespaceParser(object):
         else:
             ns_set = self.get_namespaces(entity).iterkeys()
 
-        default_cybox_schemaloc_dict = dict((ns,schemaloc) for (ns,alias,schemaloc) in cybox_nsparser.NS_LIST)
+        default_cybox_schemaloc_dict = {}
+        for (ns,alias,schemaloc) in cybox_nsparser.NS_LIST:
+            if schemaloc: default_cybox_schemaloc_dict[ns] = schemaloc
+        
         default_stix_schemaloc_dict = dict(STIX_NS_TO_SCHEMALOCATION.items() + EXT_NS_TO_SCHEMALOCATION.items() + default_cybox_schemaloc_dict.items()) 
 
         for ns in ns_set:
