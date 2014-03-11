@@ -58,7 +58,7 @@ class RelatedTTPs(GenericRelationshipList):
 
         super(RelatedTTPs, cls).from_obj(obj, return_obj)
 
-        if obj.get_Leveraged_TTP():
+        if obj.get_Related_TTP():
             return_obj.related_ttps = [RelatedTTP.from_obj(x) for x in obj.get_Related_TTP()]
 
         return return_obj
