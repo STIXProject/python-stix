@@ -15,8 +15,9 @@ class TTP(stix.Entity):
     _namespace = "http://stix.mitre.org/TTP-1"
     _version = "1.1"
 
-    def __init__(self, id_=None, title=None, description=None, short_description=None):
+    def __init__(self, id_=None, idref=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("ttp")
+        self.idref = idref
         self.version = self._version
         self.title = title
         self.description = description
@@ -162,9 +163,10 @@ class TTP(stix.Entity):
             return_obj = self._binding_class()
 
         return_obj.set_id(self.id_)
+        return_obj.set_idref(self.idref)
         return_obj.set_version(self.version)
         return_obj.set_Title(self.title)
-
+        
         if self.description:
             return_obj.set_Description(self.description.to_obj())
         if self.short_description:
@@ -191,20 +193,24 @@ class TTP(stix.Entity):
         if not return_obj:
             return_obj = cls()
         
-        from .related_ttps import RelatedTTPs # avoid circular imports
         return_obj.id_ = obj.get_id()
-        return_obj.version = obj.get_version() or cls._version
-        return_obj.title = obj.get_Title()
-        return_obj.description = StructuredText.from_obj(obj.get_Description())
-        return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
-        return_obj.behavior = Behavior.from_obj(obj.get_Behavior())
-        return_obj.related_ttps = RelatedTTPs.from_obj(obj.get_Related_TTPs())
-        return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
-        return_obj.resources = Resource.from_obj(obj.get_Resources())
-        return_obj.victim_targeting = VictimTargeting.from_obj(obj.get_Victim_Targeting())
+        return_obj.idref = obj.get_idref()
+        #return_obj.timestamp = obj.get_timestamp() # not yet implemented
         
-        if obj.get_Intended_Effect():
-            return_obj.intended_effects = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
+        if isinstance(obj, cls._binding_class): # TTPType properties
+            from .related_ttps import RelatedTTPs # avoid circular imports
+            return_obj.version = obj.get_version() or cls._version
+            return_obj.title = obj.get_Title()
+            return_obj.description = StructuredText.from_obj(obj.get_Description())
+            return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
+            return_obj.behavior = Behavior.from_obj(obj.get_Behavior())
+            return_obj.related_ttps = RelatedTTPs.from_obj(obj.get_Related_TTPs())
+            return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
+            return_obj.resources = Resource.from_obj(obj.get_Resources())
+            return_obj.victim_targeting = VictimTargeting.from_obj(obj.get_Victim_Targeting())
+            
+            if obj.get_Intended_Effect():
+                return_obj.intended_effects = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
         
         return return_obj
 
@@ -212,6 +218,8 @@ class TTP(stix.Entity):
         d = {}
         if self.id_:
             d['id'] = self.id_
+        if self.idref:
+            d['idref'] = self.idref
         if self.version:
             d['version'] = self.version or self._version
         if self.title:
@@ -244,6 +252,7 @@ class TTP(stix.Entity):
         
         from .related_ttps import RelatedTTPs
         return_obj.id_ = dict_repr.get('id')
+        return_obj.idref = dict_repr.get('idref')
         return_obj.version = dict_repr.get('version', cls._version)
         return_obj.title = dict_repr.get('title')
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
