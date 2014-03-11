@@ -13,7 +13,7 @@ class RelatedThreatActor(GenericRelationship):
     _binding = common_binding
     _binding_class = _binding.RelatedThreatActorType
 
-    def __init__(self, confidence=None, information_source=None, relationship=None, threat_actor=None ):
+    def __init__(self, threat_actor=None, confidence=None, information_source=None, relationship=None):
         super(RelatedThreatActor, self).__init__(confidence=confidence, information_source=information_source, relationship=relationship)
         self.threat_actor = threat_actor
 
@@ -76,7 +76,7 @@ class RelatedIndicator(GenericRelationship):
     _binding = common_binding
     _binding_class = _binding.RelatedIndicatorType
 
-    def __init__(self, confidence=None, information_source=None, relationship=None, indicator=None ):
+    def __init__(self, indicator=None, confidence=None, information_source=None, relationship=None):
         super(RelatedIndicator, self).__init__(confidence=confidence, information_source=information_source, relationship=relationship)
         self.indicator = indicator
 
@@ -139,7 +139,7 @@ class RelatedTTP(GenericRelationship):
     _binding = common_binding
     _binding_class = _binding.RelatedTTPType
 
-    def __init__(self, confidence=None, information_source=None, relationship=None, ttp=None ):
+    def __init__(self, ttp=None, confidence=None, information_source=None, relationship=None):
         super(RelatedTTP, self).__init__(confidence=confidence, information_source=information_source, relationship=relationship)
         self.ttp = ttp
 

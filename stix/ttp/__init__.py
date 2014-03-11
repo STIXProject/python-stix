@@ -89,7 +89,7 @@ class TTP(stix.Entity):
         from .related_ttps import RelatedTTPs # avoid circular imports
         
         if not value:
-            self._related_ttps = None
+            self._related_ttps = RelatedTTPs()
         elif isinstance(value, RelatedTTPs):
             self._related_ttps = value
         else:

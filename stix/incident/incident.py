@@ -100,7 +100,7 @@ class Incident(stix.Entity):
     @leveraged_ttps.setter
     def leveraged_ttps(self, value):
         if not value:
-            self._leveraged_ttps = None
+            self._leveraged_ttps = LeveragedTTPs()
         elif isinstance(value, LeveragedTTPs):
             self._leverage_ttps = value
         elif isinstance(value, TTP):
@@ -138,7 +138,7 @@ class Incident(stix.Entity):
     @attributed_threat_actors.setter
     def attributed_threat_actors(self, value):
         if not value:
-            self._attributed_threat_actors = None
+            self._attributed_threat_actors = AttributedThreatActors()
         elif isinstance(value, AttributedThreatActors):
             self._attributed_threat_actors = value
         elif isinstance(value, ThreatActor):
@@ -153,7 +153,7 @@ class Incident(stix.Entity):
     @related_indicators.setter
     def related_indicators(self, value):
         if not value:
-            self._related_indicators = None
+            self._related_indicators = RelatedIndicators()
         elif isinstance(value, RelatedIndicators):
             self._related_indicators = value
         elif isinstance(value, Indicator):
