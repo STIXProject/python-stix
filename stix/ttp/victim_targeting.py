@@ -27,7 +27,7 @@ class VictimTargeting(stix.Entity):
     
     @property
     def targeted_systems(self):
-        return self._type
+        return self._targeted_systems
     
     @targeted_systems.setter
     def targeted_systems(self, value):
@@ -50,7 +50,7 @@ class VictimTargeting(stix.Entity):
     
     @property
     def targeted_information(self):
-        return self._type
+        return self._targeted_information
     
     @targeted_information.setter
     def targeted_information(self, value):
