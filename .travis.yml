@@ -4,8 +4,7 @@ python:
    - "2.7"
 
 install:
-   - pip install -e git+https://github.com/CybOXProject/python-cybox.git#egg=python-cybox
-   - pip install . --use-mirrors
+   - pip install .
 
 script:
    - nosetests
