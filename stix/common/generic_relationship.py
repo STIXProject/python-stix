@@ -133,6 +133,9 @@ class GenericRelationshipList(collections.MutableSequence, stix.Entity):
             else:
                 self.append(arg)
 
+    def __nonzero__(self):
+        return bool(self._inner) or bool(self.scope)
+
     def __getitem__(self, key):
         return self._inner.__getitem__(key)
 
@@ -190,7 +193,8 @@ class GenericRelationshipList(collections.MutableSequence, stix.Entity):
     def to_dict(self):
         d = {}
 
-        d[self._inner_name] = [h.to_dict() for h in self]
+        if self._inner:
+            d[self._inner_name] = [h.to_dict() for h in self]
         if self.scope:
             d['scope'] = self.scope
 

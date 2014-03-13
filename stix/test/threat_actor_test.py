@@ -35,6 +35,24 @@ class ThreatActorTests(EntityTestCase, unittest.TestCase):
         'planning_and_operational_support': [
             {'value': "Financial Resources"},
         ],
+        'observed_ttps': {
+            'scope': "exclusive",
+            'ttps': [
+                {
+                    'confidence': {'value': "High"},
+                    'ttp': {'title': "A TTP", 'version': "1.1"},
+                }
+            ],
+        },
+        'associated_actors': {
+            'scope': "inclusive",
+            'threat_actors': [
+                {
+                    'confidence': {'value': "Low"},
+                    'threat_actor': {'title': "Related Bad Guy!", 'version': "1.1"},
+                }
+            ],
+        },
         'handling': [
             {
                 'marking_structure': [{

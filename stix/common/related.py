@@ -2,9 +2,6 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-from stix.threat_actor import ThreatActor
-from stix.indicator import Indicator
-from stix.ttp import TTP
 from . import GenericRelationship
 import stix.bindings.stix_common as common_binding
 
@@ -196,3 +193,7 @@ class RelatedTTP(GenericRelationship):
             d['ttp'] = self.ttp.to_dict()
 
         return d
+
+from stix.threat_actor import ThreatActor
+from stix.indicator import Indicator
+from stix.ttp import TTP

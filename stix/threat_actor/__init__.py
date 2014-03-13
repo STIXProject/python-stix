@@ -9,8 +9,38 @@ import dateutil
 import stix
 import stix.bindings.threat_actor as threat_actor_binding
 from stix.common import Confidence, Identity, InformationSource, Statement, StructuredText, VocabString
+from stix.common.generic_relationship import GenericRelationshipList
+from stix.common.related import RelatedTTP, RelatedThreatActor
 from stix.data_marking import Marking
 import stix.utils
+
+
+class ObservedTTPs(GenericRelationshipList):
+    _namespace = 'http://stix.mitre.org/ThreatActor-1'
+    _binding = threat_actor_binding
+    _binding_class = threat_actor_binding.ObservedTTPsType
+    _binding_var = "Observed_TTP"
+    _contained_type = RelatedTTP
+    _inner_name = "ttps"
+
+    def __init__(self, ttps=None, scope=None):
+        if ttps is None:
+            ttps = []
+        super(ObservedTTPs, self).__init__(*ttps, scope=scope)
+
+
+class AssociatedActors(GenericRelationshipList):
+    _namespace = 'http://stix.mitre.org/ThreatActor-1'
+    _binding = threat_actor_binding
+    _binding_class = threat_actor_binding.AssociatedActorsType
+    _binding_var = "Associated_Actor"
+    _contained_type = RelatedThreatActor
+    _inner_name = "threat_actors"
+
+    def __init__(self, threat_actors=None, scope=None):
+        if threat_actors is None:
+            threat_actors = []
+        super(AssociatedActors, self).__init__(*threat_actors, scope=scope)
 
 
 class ThreatActor(stix.Entity):
@@ -36,10 +66,10 @@ class ThreatActor(stix.Entity):
         self.handling = None
         self.confidence = None
         self.information_source = None
+        self.observed_ttps = ObservedTTPs()
         # TODO: implement
-        # - Observed_TTPs
         # - Associated_Campaigns
-        # - Associated_Actors
+        self.associated_actors = AssociatedActors()
         # - Related_Packages
 
     @property
@@ -51,7 +81,7 @@ class ThreatActor(stix.Entity):
         if not value:
             self._timestamp = None
         elif isinstance(value, datetime):
-            self._timestamp =  value
+            self._timestamp = value
         else:
             self._timestamp = dateutil.parser.parse(value)
 
@@ -62,7 +92,7 @@ class ThreatActor(stix.Entity):
         return_obj.set_id(self.id_)
         return_obj.set_idref(self.idref)
         if self.timestamp:
-           return_obj.set_timestamp(self.timestamp.isoformat())
+            return_obj.set_timestamp(self.timestamp.isoformat())
         return_obj.set_version(self.version)
         return_obj.set_Title(self.title)
         if self.description:
@@ -82,6 +112,10 @@ class ThreatActor(stix.Entity):
         if self.planning_and_operational_support:
             return_obj.set_Planning_And_Operational_Support([x.to_obj()
                     for x in self.planning_and_operational_support])
+        if self.observed_ttps:
+            return_obj.set_Observed_TTPs(self.observed_ttps.to_obj())
+        if self.associated_actors:
+            return_obj.set_Associated_Actors(self.associated_actors.to_obj())
         if self.handling:
             return_obj.set_Handling(self.handling.to_obj())
         if self.confidence:
@@ -113,6 +147,8 @@ class ThreatActor(stix.Entity):
         return_obj.intended_effect = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
         return_obj.planning_and_operational_support = [Statement.from_obj(x)
                 for x in obj.get_Planning_And_Operational_Support()]
+        return_obj.observed_ttps = ObservedTTPs.from_obj(obj.get_Observed_TTPs())
+        return_obj.associated_actors = AssociatedActors.from_obj(obj.get_Associated_Actors())
         return_obj.handling = Marking.from_obj(obj.get_Handling())
         return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
         return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
@@ -148,6 +184,10 @@ class ThreatActor(stix.Entity):
         if self.planning_and_operational_support:
             d['planning_and_operational_support'] = [x.to_dict()
                     for x in self.planning_and_operational_support]
+        if self.observed_ttps:
+            d['observed_ttps'] = self.observed_ttps.to_dict()
+        if self.associated_actors:
+            d['associated_actors'] = self.associated_actors.to_dict()
         if self.handling:
             d['handling'] = self.handling.to_dict()
         if self.confidence:
@@ -179,6 +219,8 @@ class ThreatActor(stix.Entity):
         return_obj.intended_effect = [Statement.from_dict(x) for x in dict_repr.get('intended_effect', [])]
         return_obj.planning_and_operational_support = [Statement.from_dict(x)
                 for x in dict_repr.get('planning_and_operational_support', [])]
+        return_obj.observed_ttps = ObservedTTPs.from_dict(dict_repr.get('observed_ttps'))
+        return_obj.associated_actors = AssociatedActors.from_dict(dict_repr.get('associated_actors'))
         return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
         return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
         return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
