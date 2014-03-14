@@ -4,19 +4,20 @@
 import stix
 import stix.utils
 import stix.bindings.incident as incident_binding
-from .time import Time
-from .attributed_threat_actors import AttributedThreatActors
-from .related_indicators import RelatedIndicators
 from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
 from stix.indicator import Indicator
 from stix.common import StructuredText, Identity, Statement
 from stix.common import VocabString
-from stix.incident.leveraged_ttps import LeveragedTTPs
+from stix.common.related import (GenericRelationshipList, RelatedIndicator, RelatedThreatActor, RelatedTTP)
+
+from .time import Time
+
 
 class IncidentCategory(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:IncidentCategoryVocab-1.0'
+
 
 class Incident(stix.Entity):
     _binding = incident_binding
@@ -273,3 +274,46 @@ class Incident(stix.Entity):
         return_obj.leveraged_ttps = LeveragedTTPs.from_dict(dict_repr.get('leveraged_ttps'))
         
         return return_obj
+
+
+class AttributedThreatActors(GenericRelationshipList):
+    _namespace = "http://stix.mitre.org/Incident-1"
+    _binding = incident_binding
+    _binding_class = incident_binding.AttributedThreatActorsType
+    _binding_var = "Threat_Actor"
+    _contained_type = RelatedThreatActor
+    _inner_name = "threat_actors"
+
+    def __init__(self, threat_actors=None, scope=None):
+        if threat_actors is None:
+            threat_actors = []
+        super(AttributedThreatActors, self).__init__(*threat_actors, scope=scope)
+
+
+class RelatedIndicators(GenericRelationshipList):
+    _namespace = "http://stix.mitre.org/Incident-1"
+    _binding = incident_binding
+    _binding_class = incident_binding.RelatedIndicatorsType
+    _binding_var = "Related_Indicator"
+    _contained_type = RelatedIndicator
+    _inner_name = "indicators"
+
+    def __init__(self, indicators=None, scope=None):
+        if indicators is None:
+            indicators = []
+        super(RelatedIndicators, self).__init__(*indicators, scope=scope)
+
+
+class LeveragedTTPs(GenericRelationshipList):
+    _namespace = "http://stix.mitre.org/Incident-1"
+    _binding = incident_binding
+    _binding_class = incident_binding.LeveragedTTPsType
+    _binding_var = "Leveraged_TTP"
+    _contained_type = RelatedTTP
+    _inner_name = "ttps"
+
+    def __init__(self, leveraged_ttps=None, scope=None):
+        if leveraged_ttps is None:
+            leveraged_ttps = []
+        super(LeveragedTTPs, self).__init__(*leveraged_ttps, scope=scope)
+
