@@ -2,14 +2,14 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils
 import stix.bindings.incident as incident_binding
+from stix.common import Identity, Statement, StructuredText, VocabString
+from stix.common.related import (GenericRelationshipList, RelatedIndicator,
+        RelatedThreatActor, RelatedTTP)
+from stix.indicator import Indicator
 from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
-from stix.indicator import Indicator
-from stix.common import StructuredText, Identity, Statement
-from stix.common import VocabString
-from stix.common.related import (GenericRelationshipList, RelatedIndicator, RelatedThreatActor, RelatedTTP)
+import stix.utils
 
 from .time import Time
 
@@ -32,8 +32,8 @@ class Incident(stix.Entity):
         self.title = title
         self.time = None
         self.victims = None
-        self.attributed_threat_actors = None
-        self.related_indicators = None
+        self.attributed_threat_actors = AttributedThreatActors()
+        self.related_indicators = RelatedIndicators()
         self.categories = None
         self.intended_effects = None
         self.leveraged_ttps = LeveragedTTPs()
@@ -116,36 +116,6 @@ class Incident(stix.Entity):
             self.victims.append(victim)
         else:
             self.victims.append(Identity(name=victim))
-
-    @property
-    def attributed_threat_actors(self):
-        return self._attributed_threat_actors
-
-    @attributed_threat_actors.setter
-    def attributed_threat_actors(self, value):
-        if not value:
-            self._attributed_threat_actors = AttributedThreatActors()
-        elif isinstance(value, AttributedThreatActors):
-            self._attributed_threat_actors = value
-        elif isinstance(value, ThreatActor):
-            self._attributed_threat_actors = AttributedThreatActors(threat_actors=value)
-        else:
-            raise ValueError('Cannot cast value to type: AttributedThreatActors')
-
-    @property
-    def related_indicators(self):
-        return self._related_indicators
-
-    @related_indicators.setter
-    def related_indicators(self, value):
-        if not value:
-            self._related_indicators = RelatedIndicators()
-        elif isinstance(value, RelatedIndicators):
-            self._related_indicators = value
-        elif isinstance(value, Indicator):
-            self._related_indicators = RelatedIndicators(indicators=value)
-        else:
-            raise ValueError("Unable to set related_indcators to instance of %s" % type(value))
 
     @property
     def categories(self):
