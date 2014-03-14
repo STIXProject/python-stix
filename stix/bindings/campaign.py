@@ -1025,10 +1025,10 @@ class CampaignType(stix_common_binding.CampaignBaseType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='campaign:', name_='CampaignType'):
         super(CampaignType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='CampaignType')
-        if 'xmlns' not in already_processed:
-            already_processed.add('xmlns')
-            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
-            outfile.write(xmlns)   
+        # if 'xmlns' not in already_processed:
+        #     already_processed.add('xmlns')
+        #     xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+        #     outfile.write(xmlns)   
         if 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
             xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
@@ -1095,7 +1095,7 @@ class CampaignType(stix_common_binding.CampaignBaseType):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_sDescription(obj_)
+            self.set_Description(obj_)
         elif nodeName_ == 'Short_Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
