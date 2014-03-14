@@ -21,6 +21,7 @@ class Relationship(VocabString):
 class GenericRelationship(stix.Entity):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
+    _binding_class = common_binding.GenericRelationshipType
 
     def __init__(self, confidence=None, information_source=None, relationship=None):
         self.confidence = confidence
@@ -82,14 +83,12 @@ class GenericRelationship(stix.Entity):
 
     def to_obj(self, return_obj=None):
         if not return_obj:
-            return_obj = self._binding.GenericRelationshipType()
+            return_obj = self._binding_class()
 
-        if self.confidence:    
+        if self.confidence:
             return_obj.set_Confidence(self.confidence.to_obj())
-
         if self.information_source:
             return_obj.set_Information_Source(self.information_source.to_obj())
-
         if self.relationship:
             return_obj.set_Relationship(self.relationship.to_obj())
 
@@ -119,6 +118,63 @@ class GenericRelationship(stix.Entity):
             d['relationship'] = self.relationship.to_dict()
 
         return d
+
+
+class RelatedPackageRef(GenericRelationship):
+    _namespace = "http://stix.mitre.org/common-1"
+    _binding = common_binding
+    _binding_class = common_binding.RelatedPackageRefType
+
+    def __init__(self, **kwargs):
+        super(RelatedPackageRef, self).__init__(**kwargs)
+        self.idref = None
+        self.timestamp = None
+
+    def to_obj(self):
+        return_obj = super(RelatedPackageRef, self).to_obj()
+
+        if self.idref:
+            return_obj.set_idref(self.idref)
+        if self.timestamp:
+            return_obj.set_timestamp(self.timestamp)
+
+        return return_obj
+
+    def to_dict(self):
+        d = super(RelatedPackageRef, self).to_dict()
+
+        if self.idref:
+            d['idref'] = self.idref
+        if self.timestamp:
+            d['timestamp'] = self.timestamp
+
+        return d
+
+    @classmethod
+    def from_obj(cls, obj):
+        return_obj = cls()
+
+        super(RelatedPackageRef, cls).from_obj(obj, return_obj)
+
+        return_obj.idref = obj.get_idref()
+        return_obj.timestamp = obj.get_timestamp()
+
+        return return_obj
+
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not dict_repr:
+            return None
+
+        if not return_obj:
+            return_obj = cls()
+
+        super(RelatedPackageRef, cls).from_dict(dict_repr, return_obj)
+
+        return_obj.idref = dict_repr.get("idref")
+        return_obj.timestamp = dict_repr.get("timestamp")
+
+        return return_obj
 
 
 class GenericRelationshipList(collections.MutableSequence, stix.Entity):
@@ -239,6 +295,19 @@ class GenericRelationshipList(collections.MutableSequence, stix.Entity):
         return_obj.scope = dict_repr.get('scope')
 
         return return_obj
+
+
+# TODO: This is sort of a hack, since RelatedPackageRefs is not actually a
+# subclass of GenericRelationshipList. As long as you don't try to set the
+# 'scope' variable, things should go fine.
+
+class RelatedPackageRefs(GenericRelationshipList):
+    _namespace = 'http://stix.mitre.org/common-1'
+    _binding = common_binding
+    _binding_class = common_binding.RelatedPackageRefsType
+    _binding_var = "Package_Reference"
+    _contained_type = RelatedPackageRef
+    _inner_name = "packages"
 
 
 class _BaseRelated(GenericRelationship):

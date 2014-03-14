@@ -1,15 +1,16 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-
 from datetime import datetime
 
 import dateutil
 
 import stix
 import stix.bindings.threat_actor as threat_actor_binding
-from stix.common import Confidence, Identity, InformationSource, Statement, StructuredText, VocabString
-from stix.common.related import GenericRelationshipList, RelatedCampaign, RelatedTTP, RelatedThreatActor
+from stix.common import (Confidence, Identity, InformationSource, Statement,
+        StructuredText, VocabString)
+from stix.common.related import (GenericRelationshipList, RelatedCampaign,
+        RelatedPackageRefs, RelatedTTP, RelatedThreatActor)
 from stix.data_marking import Marking
 import stix.utils
 
@@ -82,8 +83,7 @@ class ThreatActor(stix.Entity):
         self.observed_ttps = ObservedTTPs()
         self.associated_campaigns = AssociatedCampaigns()
         self.associated_actors = AssociatedActors()
-        # TODO: implement
-        # - Related_Packages
+        self.related_packages = RelatedPackageRefs()
 
     @property
     def timestamp(self):
@@ -137,6 +137,8 @@ class ThreatActor(stix.Entity):
             return_obj.set_Confidence(self.confidence.to_obj())
         if self.information_source:
             return_obj.set_Information_Source(self.information_source.to_obj())
+        if self.related_packages:
+            return_obj.set_Related_Packages(self.related_packages.to_obj())
 
         return return_obj
 
@@ -168,6 +170,7 @@ class ThreatActor(stix.Entity):
         return_obj.handling = Marking.from_obj(obj.get_Handling())
         return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
         return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
+        return_obj.related_packages = RelatedPackageRefs.from_obj(obj.get_Related_Packages())
 
         return return_obj
 
@@ -212,6 +215,8 @@ class ThreatActor(stix.Entity):
             d['confidence'] = self.confidence.to_dict()
         if self.information_source:
             d['information_source'] = self.information_source.to_dict()
+        if self.related_packages:
+            d['related_packages'] = self.related_packages.to_dict()
 
         return d
 
@@ -243,5 +248,6 @@ class ThreatActor(stix.Entity):
         return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
         return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
         return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
+        return_obj.related_packages = RelatedPackageRefs.from_dict(dict_repr.get('related_packages'))
 
         return return_obj

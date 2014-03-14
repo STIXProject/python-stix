@@ -78,6 +78,12 @@ class ThreatActorTests(EntityTestCase, unittest.TestCase):
                 'name': "Ms. Good",
             },
         },
+        'related_packages': {
+            'packages': [
+                {'idref': "example:Package-1234", 'relationship': "Parent"},
+                {'idref': "example:Package-1235", 'relationship': "Child"}
+            ]
+        }
     }
 
 
