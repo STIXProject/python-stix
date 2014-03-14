@@ -2,7 +2,7 @@
 import stix
 
 from stix.bindings.data_marking import MarkingSpecificationType, MarkingStructureType, MarkingType
-from stix.common.structured_text import StructuredText
+from stix.common import StructuredText
 import stix.bindings.data_marking as stix_data_marking_binding
 
 class Marking(stix.Entity):
