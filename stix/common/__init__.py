@@ -12,16 +12,17 @@ from .information_source import InformationSource
 from .statement import Statement
 from .tools import ToolInformation
 
-from .related import (GenericRelationshipList, RelatedIdentity, RelatedThreatActor,
-        RelatedIndicator, RelatedTTP)
+from .related import (GenericRelationshipList, RelatedCampaign,
+        RelatedIdentity, RelatedIndicator, RelatedThreatActor, RelatedTTP)
 
-
-# Patch in related types here
-from stix.threat_actor import ThreatActor
+# Patch in base types of Related* types
+from stix.campaign import Campaign
 from stix.indicator import Indicator
+from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
 
+RelatedCampaign._base_type = Campaign
 RelatedIdentity._base_type = Identity
-RelatedThreatActor._base_type = ThreatActor
 RelatedIndicator._base_type = Indicator
+RelatedThreatActor._base_type = ThreatActor
 RelatedTTP._base_type = TTP

@@ -1,6 +1,8 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from __future__ import absolute_import
+
 import collections
 
 import stix
@@ -316,12 +318,20 @@ class _BaseRelated(GenericRelationship):
         return return_obj
 
 
-class RelatedThreatActor(_BaseRelated):
+class RelatedCampaign(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
-    _binding_class = common_binding.RelatedThreatActorType
+    _binding_class = common_binding.RelatedCampaignType
     # _base_type is set in common/__init__.py
-    _inner_var = "Threat_Actor"
+    _inner_var = "Campaign"
+
+
+class RelatedIdentity(_BaseRelated):
+    _namespace = 'http://stix.mitre.org/common-1'
+    _binding = common_binding
+    _binding_class = common_binding.RelatedIdentityType
+    # _base_type is set in common/__init__.py
+    _inner_var = "Identity"
 
 
 class RelatedIndicator(_BaseRelated):
@@ -332,18 +342,17 @@ class RelatedIndicator(_BaseRelated):
     _inner_var = "Indicator"
 
 
+class RelatedThreatActor(_BaseRelated):
+    _namespace = "http://stix.mitre.org/common-1"
+    _binding = common_binding
+    _binding_class = common_binding.RelatedThreatActorType
+    # _base_type is set in common/__init__.py
+    _inner_var = "Threat_Actor"
+
+
 class RelatedTTP(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedTTPType
     # _base_type is set in common/__init__.py
     _inner_var = "TTP"
-
-
-class RelatedIdentity(_BaseRelated):
-    _namespace = 'http://stix.mitre.org/common-1'
-    _binding = common_binding
-    _binding_class = common_binding.RelatedIdentityType
-    # _base_type is set in common/__init__.py
-    _inner_var = "Identity"
-
