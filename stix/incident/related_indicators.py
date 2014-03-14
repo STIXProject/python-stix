@@ -2,8 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import stix.bindings.incident as incident_binding
-from stix.common.generic_relationship import GenericRelationshipList
-from stix.common.related import RelatedIndicator
+from stix.common.related import GenericRelationshipList, RelatedIndicator
 
 
 class RelatedIndicators(GenericRelationshipList):

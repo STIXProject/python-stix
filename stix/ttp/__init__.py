@@ -86,7 +86,6 @@ class TTP(stix.Entity):
     
     @related_ttps.setter
     def related_ttps(self, value):
-        from .related_ttps import RelatedTTPs # avoid circular imports
         
         if not value:
             self._related_ttps = RelatedTTPs()
@@ -198,7 +197,6 @@ class TTP(stix.Entity):
         #return_obj.timestamp = obj.get_timestamp() # not yet implemented
         
         if isinstance(obj, cls._binding_class): # TTPType properties
-            from .related_ttps import RelatedTTPs # avoid circular imports
             return_obj.version = obj.get_version() or cls._version
             return_obj.title = obj.get_Title()
             return_obj.description = StructuredText.from_obj(obj.get_Description())
@@ -250,7 +248,6 @@ class TTP(stix.Entity):
         if not return_obj:
             return_obj = cls()
         
-        from .related_ttps import RelatedTTPs
         return_obj.id_ = dict_repr.get('id')
         return_obj.idref = dict_repr.get('idref')
         return_obj.version = dict_repr.get('version', cls._version)
@@ -265,3 +262,6 @@ class TTP(stix.Entity):
         return_obj.victim_targeting = VictimTargeting.from_dict(dict_repr.get('victim_targeting'))
         
         return return_obj
+
+# Avoid circular imports
+from .related_ttps import RelatedTTPs

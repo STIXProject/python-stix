@@ -9,8 +9,7 @@ import dateutil
 import stix
 import stix.bindings.threat_actor as threat_actor_binding
 from stix.common import Confidence, Identity, InformationSource, Statement, StructuredText, VocabString
-from stix.common.generic_relationship import GenericRelationshipList
-from stix.common.related import RelatedTTP, RelatedThreatActor
+from stix.common.related import GenericRelationshipList, RelatedTTP, RelatedThreatActor
 from stix.data_marking import Marking
 import stix.utils
 

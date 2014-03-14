@@ -2,8 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import stix.bindings.ttp as ttp_binding
-from stix.common.generic_relationship import GenericRelationshipList
-from stix.common.related import RelatedTTP
+from stix.common.related import GenericRelationshipList, RelatedTTP
 
 
 class RelatedTTPs(GenericRelationshipList):
