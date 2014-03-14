@@ -35,8 +35,8 @@ class Incident(stix.Entity):
         self.related_indicators = None
         self.categories = None
         self.intended_effects = None
-        self.leveraged_ttps = None
-        
+        self.leveraged_ttps = LeveragedTTPs()
+
     @property
     def title(self):
         return self._title
@@ -92,21 +92,6 @@ class Incident(stix.Entity):
             self._intended_effects.append(intended_effect)
         else:
             self._intended_effects.append(Statement(value=str(intended_effect)))
-
-    @property
-    def leveraged_ttps(self):
-        return self._leveraged_ttps
-    
-    @leveraged_ttps.setter
-    def leveraged_ttps(self, value):
-        if not value:
-            self._leveraged_ttps = LeveragedTTPs()
-        elif isinstance(value, LeveragedTTPs):
-            self._leverage_ttps = value
-        elif isinstance(value, TTP):
-            self._leveraged_ttps = LeveragedTTPs(leveraged_ttps=value)
-        else:
-            raise ValueError('Cannot cast value to type: %s' % type(LeveragedTTPs))
 
     @property
     def victims(self):

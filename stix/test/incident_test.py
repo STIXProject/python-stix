@@ -53,8 +53,8 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
                             'properties': {
                                 'hashes': [
                                     {
-                                        'simple_hash_value': '4EC0027BEF4D7E1786A04D021FA8A67F',
-                                        'type': 'MD5'
+                                        'simple_hash_value': u'4EC0027BEF4D7E1786A04D021FA8A67F',
+                                        'type': u'MD5'
                                     }
                                 ],
                                 'xsi:type': 'FileObjectType'
@@ -86,6 +86,16 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
                 }
             }],
             'scope': 'exclusive'
+        },
+        'leveraged_ttps': {
+            'scope': "inclusive",
+            'ttps': [
+                {
+                    'confidence': {'value': "High"},
+                    'ttp': {'id': "example:TTP-1",
+                            'version': "1.1"},
+                }
+            ],
         },
         'time': {
             'containment_achieved': '2005-02-21T10:25:10.894398',
