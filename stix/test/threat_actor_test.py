@@ -44,6 +44,15 @@ class ThreatActorTests(EntityTestCase, unittest.TestCase):
                 }
             ],
         },
+        'associated_campaigns': {
+            'scope': "inclusive",
+            'campaigns': [
+                {
+                    'information_source': {'description': "Mailing List"},
+                    'campaign': {'title': "Campaign1", 'version': "1.1"},
+                }
+            ],
+        },
         'associated_actors': {
             'scope': "inclusive",
             'threat_actors': [

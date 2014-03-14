@@ -9,7 +9,7 @@ import dateutil
 import stix
 import stix.bindings.threat_actor as threat_actor_binding
 from stix.common import Confidence, Identity, InformationSource, Statement, StructuredText, VocabString
-from stix.common.related import GenericRelationshipList, RelatedTTP, RelatedThreatActor
+from stix.common.related import GenericRelationshipList, RelatedCampaign, RelatedTTP, RelatedThreatActor
 from stix.data_marking import Marking
 import stix.utils
 
@@ -42,6 +42,20 @@ class AssociatedActors(GenericRelationshipList):
         super(AssociatedActors, self).__init__(*threat_actors, scope=scope)
 
 
+class AssociatedCampaigns(GenericRelationshipList):
+    _namespace = 'http://stix.mitre.org/ThreatActor-1'
+    _binding = threat_actor_binding
+    _binding_class = threat_actor_binding.AssociatedCampaignsType
+    _binding_var = "Associated_Campaign"
+    _contained_type = RelatedCampaign
+    _inner_name = "campaigns"
+
+    def __init__(self, campaigns=None, scope=None):
+        if campaigns is None:
+            campaigns = []
+        super(AssociatedCampaigns, self).__init__(*campaigns, scope=scope)
+
+
 class ThreatActor(stix.Entity):
     _binding = threat_actor_binding
     _binding_class = threat_actor_binding.ThreatActorType
@@ -66,9 +80,9 @@ class ThreatActor(stix.Entity):
         self.confidence = None
         self.information_source = None
         self.observed_ttps = ObservedTTPs()
-        # TODO: implement
-        # - Associated_Campaigns
+        self.associated_campaigns = AssociatedCampaigns()
         self.associated_actors = AssociatedActors()
+        # TODO: implement
         # - Related_Packages
 
     @property
@@ -113,6 +127,8 @@ class ThreatActor(stix.Entity):
                     for x in self.planning_and_operational_support])
         if self.observed_ttps:
             return_obj.set_Observed_TTPs(self.observed_ttps.to_obj())
+        if self.associated_campaigns:
+            return_obj.set_Associated_Campaigns(self.associated_campaigns.to_obj())
         if self.associated_actors:
             return_obj.set_Associated_Actors(self.associated_actors.to_obj())
         if self.handling:
@@ -147,6 +163,7 @@ class ThreatActor(stix.Entity):
         return_obj.planning_and_operational_support = [Statement.from_obj(x)
                 for x in obj.get_Planning_And_Operational_Support()]
         return_obj.observed_ttps = ObservedTTPs.from_obj(obj.get_Observed_TTPs())
+        return_obj.associated_campaigns = AssociatedCampaigns.from_obj(obj.get_Associated_Campaigns())
         return_obj.associated_actors = AssociatedActors.from_obj(obj.get_Associated_Actors())
         return_obj.handling = Marking.from_obj(obj.get_Handling())
         return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
@@ -185,6 +202,8 @@ class ThreatActor(stix.Entity):
                     for x in self.planning_and_operational_support]
         if self.observed_ttps:
             d['observed_ttps'] = self.observed_ttps.to_dict()
+        if self.associated_campaigns:
+            d['associated_campaigns'] = self.associated_campaigns.to_dict()
         if self.associated_actors:
             d['associated_actors'] = self.associated_actors.to_dict()
         if self.handling:
@@ -219,6 +238,7 @@ class ThreatActor(stix.Entity):
         return_obj.planning_and_operational_support = [Statement.from_dict(x)
                 for x in dict_repr.get('planning_and_operational_support', [])]
         return_obj.observed_ttps = ObservedTTPs.from_dict(dict_repr.get('observed_ttps'))
+        return_obj.associated_campaigns = AssociatedCampaigns.from_dict(dict_repr.get('associated_campaigns'))
         return_obj.associated_actors = AssociatedActors.from_dict(dict_repr.get('associated_actors'))
         return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
         return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
