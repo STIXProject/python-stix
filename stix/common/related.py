@@ -2,198 +2,119 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-from . import GenericRelationship
 import stix.bindings.stix_common as common_binding
 
-class RelatedThreatActor(GenericRelationship):
+from .generic_relationship import GenericRelationship
+# Additional imports below to avoid circular imports
+
+
+class _BaseRelated(GenericRelationship):
+    """A base class for related types.
+
+    This class is not a real STIX type and should not be directly instantiated.
+    """
+    # Subclasses should define
+    # - _base_type
+    # - _inner_var (This is the name of the contained XML element, and the
+    #               lowercase version is used for the key name in the
+    #               dictionary representation).
+
+    def __init__(self, item=None, confidence=None,
+                       information_source=None, relationship=None):
+        super(_BaseRelated, self).__init__(confidence, information_source,
+                                           relationship)
+        self.item = item
+
+    @property
+    def item(self):
+        return self._item
+
+    @item.setter
+    def item(self, value):
+        if value and not isinstance(value, self._base_type):
+            raise ValueError("Value must be instance of %s" %
+                             self._base_type.__name__)
+
+        self._item = value
+
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = self._binding_class()
+
+        super(_BaseRelated, self).to_obj(return_obj=return_obj)
+
+        if self.item:
+            setattr(return_obj, self._inner_var, self.item.to_obj())
+
+        return return_obj
+
+    def to_dict(self):
+        d = super(_BaseRelated, self).to_dict()
+        if self.item:
+            d[self._inner_var.lower()] = self.item.to_dict()
+        return d
+
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
+        if not obj:
+            return None
+
+        if not return_obj:
+            return_obj = cls()
+
+        super(_BaseRelated, cls).from_obj(obj, return_obj)
+
+        contained_item = getattr(obj, cls._inner_var)
+        return_obj.item = cls._base_type.from_obj(contained_item)
+
+        return return_obj
+
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not dict_repr:
+            return None
+
+        if not return_obj:
+            return_obj = cls()
+
+        super(_BaseRelated, cls).from_dict(dict_repr, return_obj)
+
+        contained_item = dict_repr.get(cls._inner_var.lower())
+        return_obj.item = cls._base_type.from_dict(contained_item)
+
+        return return_obj
+
+
+class RelatedThreatActor(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = _binding.RelatedThreatActorType
+    # _base_type is set below
+    _inner_var = "Threat_Actor"
 
-    def __init__(self, threat_actor=None, confidence=None, information_source=None, relationship=None):
-        super(RelatedThreatActor, self).__init__(confidence=confidence, information_source=information_source, relationship=relationship)
-        self.threat_actor = threat_actor
 
-    @property
-    def threat_actor(self):
-        return self._threat_actor
-
-    @threat_actor.setter
-    def threat_actor(self, value):
-        if value and not isinstance(value, ThreatActor):
-            raise ValueError("value must be instance of ThreatActor")
-
-        self._threat_actor = value
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if not obj:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        super(RelatedThreatActor, cls).from_obj(obj, return_obj)
-        return_obj.threat_actor = ThreatActor.from_obj(obj=obj.get_Threat_Actor())
-        return return_obj
-
-    def to_obj(self, return_obj=None):
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        super(RelatedThreatActor, self).to_obj(return_obj=return_obj)
-
-        if self.threat_actor:
-            return_obj.set_Threat_Actor(self.threat_actor.to_obj())
-
-        return return_obj
-
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        if not dict_repr:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        super(RelatedThreatActor, cls).from_dict(dict_repr, return_obj=return_obj)
-        return_obj.threat_actor = ThreatActor.from_dict(dict_repr.get('threat_actor'))
-
-        return return_obj
-
-    def to_dict(self):
-        d = super(RelatedThreatActor, self).to_dict()
-        if self.threat_actor:
-            d['threat_actor'] = self.threat_actor.to_dict()
-            
-        return d
-
-class RelatedIndicator(GenericRelationship):
+class RelatedIndicator(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = _binding.RelatedIndicatorType
+    # _base_type is set below
+    _inner_var = "Indicator"
 
-    def __init__(self, indicator=None, confidence=None, information_source=None, relationship=None):
-        super(RelatedIndicator, self).__init__(confidence=confidence, information_source=information_source, relationship=relationship)
-        self.indicator = indicator
 
-    @property
-    def indicator(self):
-        return self._indicator
-
-    @indicator.setter
-    def indicator(self, value):
-        if value and not isinstance(value, Indicator):
-            raise ValueError("value must be instance of Indicator")
-
-        self._indicator = value
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if not obj:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        super(RelatedIndicator, cls).from_obj(obj, return_obj)
-        return_obj.indicator = Indicator.from_obj(obj=obj.get_Indicator())
-        return return_obj
-
-    def to_obj(self, return_obj=None):
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        super(RelatedIndicator, self).to_obj(return_obj=return_obj)
-
-        if self.indicator:
-            return_obj.set_Indicator(self.indicator.to_obj())
-
-        return return_obj
-
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        if not dict_repr:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        super(RelatedIndicator, cls).from_dict(dict_repr, return_obj=return_obj)
-        return_obj.indicator = Indicator.from_dict(dict_repr.get('indicator'))
-
-        return return_obj
-
-    def to_dict(self):
-        d = super(RelatedIndicator, self).to_dict()
-        if self.indicator:
-            d['indicator'] = self.indicator.to_dict()
-
-        return d
-
-class RelatedTTP(GenericRelationship):
+class RelatedTTP(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = _binding.RelatedTTPType
+    # _base_type is set below
+    _inner_var = "TTP"
 
-    def __init__(self, ttp=None, confidence=None, information_source=None, relationship=None):
-        super(RelatedTTP, self).__init__(confidence=confidence, information_source=information_source, relationship=relationship)
-        self.ttp = ttp
 
-    @property
-    def ttp(self):
-        return self._ttp
-
-    @ttp.setter
-    def ttp(self, value):
-        if value and not isinstance(value, TTP):
-            raise ValueError("value must be instance of TTP")
-
-        self._ttp = value
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if not obj:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        super(RelatedTTP, cls).from_obj(obj, return_obj)
-        return_obj.ttp = TTP.from_obj(obj=obj.get_TTP())
-        return return_obj
-
-    def to_obj(self, return_obj=None):
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        super(RelatedTTP, self).to_obj(return_obj=return_obj)
-
-        if self.ttp:
-            return_obj.set_TTP(self.ttp.to_obj())
-
-        return return_obj
-
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        if not dict_repr:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        super(RelatedTTP, cls).from_dict(dict_repr, return_obj=return_obj)
-        return_obj.ttp = TTP.from_dict(dict_repr.get('ttp'))
-
-        return return_obj
-
-    def to_dict(self):
-        d = super(RelatedTTP, self).to_dict()
-        if self.ttp:
-            d['ttp'] = self.ttp.to_dict()
-
-        return d
-
+# Avoid circular imports
 from stix.threat_actor import ThreatActor
 from stix.indicator import Indicator
 from stix.ttp import TTP
+
+# Patch the above types with the correct _bsae_types
+RelatedThreatActor._base_type = ThreatActor
+RelatedIndicator._base_type = Indicator
+RelatedTTP._base_type = TTP
