@@ -1,10 +1,6 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-from datetime import datetime
-
-import dateutil
-
 import stix
 import stix.bindings.threat_actor as threat_actor_binding
 from stix.common import (Confidence, Identity, InformationSource, Statement,
@@ -13,6 +9,7 @@ from stix.common.related import (GenericRelationshipList, RelatedCampaign,
         RelatedPackageRefs, RelatedTTP, RelatedThreatActor)
 from stix.data_marking import Marking
 import stix.utils
+from stix.utils import dates
 
 
 class ObservedTTPs(GenericRelationshipList):
@@ -91,12 +88,7 @@ class ThreatActor(stix.Entity):
 
     @timestamp.setter
     def timestamp(self, value):
-        if not value:
-            self._timestamp = None
-        elif isinstance(value, datetime):
-            self._timestamp = value
-        else:
-            self._timestamp = dateutil.parser.parse(value)
+        self._timestamp = dates.parse_value(value)
 
     def to_obj(self, return_obj=None):
         if not return_obj:
@@ -105,7 +97,7 @@ class ThreatActor(stix.Entity):
         return_obj.set_id(self.id_)
         return_obj.set_idref(self.idref)
         if self.timestamp:
-            return_obj.set_timestamp(self.timestamp.isoformat())
+            return_obj.set_timestamp(dates.serialize_value(self.timestamp))
         return_obj.set_version(self.version)
         return_obj.set_Title(self.title)
         if self.description:
@@ -146,7 +138,6 @@ class ThreatActor(stix.Entity):
     def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
-
         if not return_obj:
             return_obj = cls()
 
@@ -181,7 +172,7 @@ class ThreatActor(stix.Entity):
         if self.idref:
             d['idref'] = self.idref
         if self.timestamp:
-            d['timestamp'] = self.timestamp.isoformat()
+            d['timestamp'] = dates.serialize_value(self.timestamp)
         if self.version:
             d['version'] = self.version
         if self.title:

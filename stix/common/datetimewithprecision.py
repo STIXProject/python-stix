@@ -4,23 +4,11 @@
 import stix
 import stix.bindings.stix_common as common_binding
 import dateutil
-from datetime import datetime
+from stix.utils.dates import parse_value, serialize_value
 
 DATE_PRECISION_VALUES = ("year", "month", "day")
 TIME_PRECISION_VALUES = ("hour", "minute", "second")
 DATETIME_PRECISION_VALUES = DATE_PRECISION_VALUES + TIME_PRECISION_VALUES
-
-def parse_value(value):
-    if not value:
-        return None
-    elif isinstance(value, datetime):
-        return value
-    return dateutil.parser.parse(value)
-
-def serialize_value(value):
-    if not value:
-        return None
-    return value.isoformat()
 
 class DateTimeWithPrecision(stix.Entity):
     _binding = common_binding

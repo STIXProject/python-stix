@@ -3,6 +3,7 @@
 
 import stix
 import stix.utils
+from stix.utils import dates
 import stix.bindings.ttp as ttp_binding
 from stix.common import StructuredText, VocabString, InformationSource, Statement
 from .behavior import Behavior
@@ -15,9 +16,10 @@ class TTP(stix.Entity):
     _namespace = "http://stix.mitre.org/TTP-1"
     _version = "1.1"
 
-    def __init__(self, id_=None, idref=None, title=None, description=None, short_description=None):
+    def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("ttp")
         self.idref = idref
+        self.timestamp = timestamp
         self.version = self._version
         self.title = title
         self.description = description
@@ -30,6 +32,14 @@ class TTP(stix.Entity):
         self.victim_targeting = None
         
         self.exploit_targets = None # TODO: stix.ExploitTarget not implemented yet
+    
+    @property
+    def timestamp(self):
+        return self._timestamp
+
+    @timestamp.setter
+    def timestamp(self, value):
+        self._timestamp = dates.parse_value(value)
         
     @property
     def title(self):
@@ -163,6 +173,7 @@ class TTP(stix.Entity):
 
         return_obj.set_id(self.id_)
         return_obj.set_idref(self.idref)
+        return_obj.set_timestamp(dates.serialize_value(self.timestamp))
         return_obj.set_version(self.version)
         return_obj.set_Title(self.title)
         
@@ -194,7 +205,7 @@ class TTP(stix.Entity):
         
         return_obj.id_ = obj.get_id()
         return_obj.idref = obj.get_idref()
-        #return_obj.timestamp = obj.get_timestamp() # not yet implemented
+        return_obj.timestamp = obj.get_timestamp() # not yet implemented
         
         if isinstance(obj, cls._binding_class): # TTPType properties
             return_obj.version = obj.get_version() or cls._version
@@ -218,6 +229,8 @@ class TTP(stix.Entity):
             d['id'] = self.id_
         if self.idref:
             d['idref'] = self.idref
+        if self.timestamp:
+            d['timestamp'] = dates.serialize_value(self.timestamp)
         if self.version:
             d['version'] = self.version or self._version
         if self.title:
@@ -250,6 +263,7 @@ class TTP(stix.Entity):
         
         return_obj.id_ = dict_repr.get('id')
         return_obj.idref = dict_repr.get('idref')
+        return_obj.timestamp = dict_repr.get('timestamp')
         return_obj.version = dict_repr.get('version', cls._version)
         return_obj.title = dict_repr.get('title')
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
