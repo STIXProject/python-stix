@@ -1,6 +1,9 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from datetime import datetime
+import dateutil
+
 import stix
 import stix.utils
 import stix.bindings.course_of_action as coa_binding
@@ -23,6 +26,7 @@ class CourseOfAction(stix.Entity):
     def __init__(self, id_=None, idref=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("coa")
         self.idref = idref
+        self.timestamp = None
         self.version = self._version
         self.title = title
         self.description = description
@@ -40,7 +44,20 @@ class CourseOfAction(stix.Entity):
         # self.handling = None
         # self.related_coas = None
         # self.related_packages = None
-        
+
+    @property
+    def timestamp(self):
+        return self._timestamp
+
+    @timestamp.setter
+    def timestamp(self, value):
+        if not value:
+            self._timestamp = None
+        elif isinstance(value, datetime):
+            self._timestamp = value
+        else:
+            self._timestamp = dateutil.parser.parse(value)
+            
     @property
     def title(self):
         return self._title
@@ -180,6 +197,8 @@ class CourseOfAction(stix.Entity):
             return_obj.set_Impact(self.impact.to_obj())
         if self.type_:
             return_obj.set_Type(self.type_.to_obj())
+        if self.timestamp:
+            return_obj.set_timestamp(self.timestamp.isoformat())
         
         return return_obj
 
@@ -204,6 +223,7 @@ class CourseOfAction(stix.Entity):
             return_obj.efficacy = Statement.from_obj(obj.get_Efficacy())
             return_obj.impact = Statement.from_obj(obj.get_Impact())
             return_obj.type_ = CourseOfActionType.from_obj(obj.get_Type())
+            return_obj.timestamp = obj.get_timestamp()
         
         return return_obj
 
@@ -213,6 +233,8 @@ class CourseOfAction(stix.Entity):
             d['id'] = self.id_
         if self.idref:
             d['idref'] = self.idref
+        if self.timestamp:
+            d['timestamp'] = self.timestamp.isoformat()
         if self.version:
             d['version'] = self.version or self._version
         if self.title:
@@ -245,6 +267,7 @@ class CourseOfAction(stix.Entity):
         
         return_obj.id_ = dict_repr.get('id')
         return_obj.idref = dict_repr.get('idref')
+        return_obj.timestamp = dict_repr.get('timestamp')
         return_obj.version = dict_repr.get('version', cls._version)
         return_obj.title = dict_repr.get('title')
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
