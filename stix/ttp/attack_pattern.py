@@ -10,14 +10,14 @@ class AttackPattern(stix.Entity):
     _binding = ttp_binding
     _binding_class = _binding.AttackPatternType
     _namespace = "http://stix.mitre.org/TTP-1"
-    
+
     def __init__(self, id_=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("attackpattern")
         self.capec_id = None
         self.title = title
         self.description = description
         self.short_description = short_description
-        
+
     @property
     def title(self):
         return self._title
@@ -81,7 +81,7 @@ class AttackPattern(stix.Entity):
         return_obj.title = obj.get_Title()
         return_obj.description = StructuredText.from_obj(obj.get_Description())
         return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
-        
+
         return return_obj
 
     def to_dict(self):
@@ -96,7 +96,7 @@ class AttackPattern(stix.Entity):
             d['description'] = self.description.to_dict()
         if self.short_description:
             d['short_description'] = self.short_description.to_dict()
-       
+
         return d
 
     @classmethod
@@ -111,5 +111,5 @@ class AttackPattern(stix.Entity):
         return_obj.title = dict_repr.get('title')
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
-        
+
         return return_obj

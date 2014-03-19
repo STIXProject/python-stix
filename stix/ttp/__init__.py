@@ -30,9 +30,9 @@ class TTP(stix.Entity):
         self.intended_effects = None
         self.resources = None
         self.victim_targeting = None
-        
+
         self.exploit_targets = None # TODO: stix.ExploitTarget not implemented yet
-    
+
     @property
     def timestamp(self):
         return self._timestamp
@@ -40,7 +40,7 @@ class TTP(stix.Entity):
     @timestamp.setter
     def timestamp(self, value):
         self._timestamp = dates.parse_value(value)
-        
+
     @property
     def title(self):
         return self._title
@@ -80,7 +80,7 @@ class TTP(stix.Entity):
     @property
     def behavior(self):
         return self._behavior
-    
+
     @behavior.setter
     def behavior(self, value):
         if not value:
@@ -93,10 +93,10 @@ class TTP(stix.Entity):
     @property
     def related_ttps(self):
         return self._related_ttps
-    
+
     @related_ttps.setter
     def related_ttps(self, value):
-        
+
         if not value:
             self._related_ttps = RelatedTTPs()
         elif isinstance(value, RelatedTTPs):
@@ -107,7 +107,7 @@ class TTP(stix.Entity):
     @property
     def information_source(self):
         return self._information_source
-    
+
     @information_source.setter
     def information_source(self, value):
         if not value:
@@ -120,11 +120,11 @@ class TTP(stix.Entity):
     @property
     def intended_effects(self):
         return self._intended_effects
-    
+
     @intended_effects.setter
     def intended_effects(self, value):
         self._intended_effects = []
-        
+
         if not value:
             return
         elif isinstance(value, list):
@@ -132,7 +132,7 @@ class TTP(stix.Entity):
                 self.add_intended_effect(v)
         else:
             self.add_intended_effect(value)
-            
+
     def add_intended_effect(self, intended_effect):
         if not intended_effect:
             return
@@ -144,7 +144,7 @@ class TTP(stix.Entity):
     @property
     def resources(self):
         return self._resources
-    
+
     @resources.setter
     def resources(self, value):
         if not value:
@@ -157,7 +157,7 @@ class TTP(stix.Entity):
     @property
     def victim_targeting(self):
         return self._victim_targeting
-    
+
     @victim_targeting.setter
     def victim_targeting(self, value):
         if not value:
@@ -176,7 +176,7 @@ class TTP(stix.Entity):
         return_obj.set_timestamp(dates.serialize_value(self.timestamp))
         return_obj.set_version(self.version)
         return_obj.set_Title(self.title)
-        
+
         if self.description:
             return_obj.set_Description(self.description.to_obj())
         if self.short_description:
@@ -193,7 +193,7 @@ class TTP(stix.Entity):
             return_obj.set_Resources(self.resources.to_obj())
         if self.victim_targeting:
             return_obj.set_Victim_Targeting(self.victim_targeting.to_obj())
-        
+
         return return_obj
 
     @classmethod
@@ -202,11 +202,11 @@ class TTP(stix.Entity):
             return None
         if not return_obj:
             return_obj = cls()
-        
+
         return_obj.id_ = obj.get_id()
         return_obj.idref = obj.get_idref()
         return_obj.timestamp = obj.get_timestamp() # not yet implemented
-        
+
         if isinstance(obj, cls._binding_class): # TTPType properties
             return_obj.version = obj.get_version() or cls._version
             return_obj.title = obj.get_Title()
@@ -217,10 +217,10 @@ class TTP(stix.Entity):
             return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
             return_obj.resources = Resource.from_obj(obj.get_Resources())
             return_obj.victim_targeting = VictimTargeting.from_obj(obj.get_Victim_Targeting())
-            
+
             if obj.get_Intended_Effect():
                 return_obj.intended_effects = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
-        
+
         return return_obj
 
     def to_dict(self):
@@ -251,7 +251,7 @@ class TTP(stix.Entity):
             d['resources'] = self.resources.to_dict()
         if self.victim_targeting:
             d['victim_targeting'] = self.victim_targeting.to_dict()
-        
+
         return d
 
     @classmethod
@@ -260,7 +260,7 @@ class TTP(stix.Entity):
             return None
         if not return_obj:
             return_obj = cls()
-        
+
         return_obj.id_ = dict_repr.get('id')
         return_obj.idref = dict_repr.get('idref')
         return_obj.timestamp = dict_repr.get('timestamp')
@@ -274,7 +274,7 @@ class TTP(stix.Entity):
         return_obj.intended_effects = [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
         return_obj.resources = Resource.from_dict(dict_repr.get('resources'))
         return_obj.victim_targeting = VictimTargeting.from_dict(dict_repr.get('victim_targeting'))
-        
+
         return return_obj
 
 # Avoid circular imports

@@ -18,17 +18,17 @@ class VictimTargeting(stix.Entity):
     _binding = ttp_binding
     _binding_class = _binding.VictimTargetingType
     _namespace = "http://stix.mitre.org/TTP-1"
-    
+
     def __init__(self):
         self.identity = None
         self.targeted_systems = None
         self.targeted_information = None
         self.targeted_technical_details = None
-    
+
     @property
     def targeted_systems(self):
         return self._targeted_systems
-    
+
     @targeted_systems.setter
     def targeted_systems(self, value):
         self._targeted_systems = []
@@ -39,7 +39,7 @@ class VictimTargeting(stix.Entity):
                 self.add_targeted_system(v)
         else:
             self.add_targeted_system(value)
-            
+
     def add_targeted_system(self, system):
         if not system:
             return
@@ -47,11 +47,11 @@ class VictimTargeting(stix.Entity):
             self._targeted_systems.append(system)
         else:
             self._targeted_systems.append(SystemType(value=system))
-    
+
     @property
     def targeted_information(self):
         return self._targeted_information
-    
+
     @targeted_information.setter
     def targeted_information(self, value):
         self._targeted_information = []
@@ -62,7 +62,7 @@ class VictimTargeting(stix.Entity):
                 self.add_targeted_information(v)
         else:
             self.add_targeted_information(value)
-            
+
     def add_targeted_information(self, targeted_information):
         if not targeted_information:
             return
@@ -74,7 +74,7 @@ class VictimTargeting(stix.Entity):
     @property
     def targeted_technical_details(self):
         return self._targeted_technical_details
-    
+
     @targeted_technical_details.setter
     def targeted_technical_details(self, value):
         if not value:
@@ -108,12 +108,12 @@ class VictimTargeting(stix.Entity):
 
         return_obj.identity = Identity.from_obj(obj.get_Identity())
         return_obj.targeted_technical_details = Observables.from_obj(obj.get_Targeted_Technical_Details())
-        
+
         if obj.get_Targeted_Systems():
             return_obj.targeted_systems = [SystemType.from_obj(x) for x in obj.get_Targeted_Systems()]
         if obj.get_Targeted_Information():
             return_obj.targeted_information = [InformationType.from_obj(x) for x in obj.get_Targeted_Information()]
-        
+
         return return_obj
 
     def to_dict(self):
@@ -126,7 +126,7 @@ class VictimTargeting(stix.Entity):
             d['targeted_information'] = [x.to_dict() for x in self.targeted_information]
         if self.targeted_technical_details:
             d['targeted_technical_details'] = self.targeted_technical_details.to_dict()
-            
+
         return d
 
     @classmethod
@@ -135,10 +135,10 @@ class VictimTargeting(stix.Entity):
             return None
         if not return_obj:
             return_obj = cls()
-            
+
         return_obj.identity = Identity.from_dict(dict_repr.get('identity'))
         return_obj.targeted_systems = [SystemType.from_dict(x) for x in dict_repr.get('targeted_systems', [])]
         return_obj.targeted_information = [InformationType.from_dict(x) for x in dict_repr.get('targeted_information', [])]
         return_obj.targeted_technical_details = Observables.from_dict(dict_repr.get('targeted_technical_details'))
-        
+
         return return_obj
