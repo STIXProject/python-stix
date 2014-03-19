@@ -15,12 +15,10 @@ from cybox.common import Hash
 from cybox.objects.file_object import File
 
 def main():
-    shv = Hash()
-    shv.simple_hash_value = "4EC0027BEF4D7E1786A04D021FA8A67F"
-
     f = File()
-    h = Hash(shv, Hash.TYPE_MD5)
-    f.add_hash(h)
+
+    # This automatically detects that it's an MD5 hash based on the length
+    f.add_hash("4EC0027BEF4D7E1786A04D021FA8A67F")
 
     indicator = Indicator()
     indicator.title = "File Hash Example"
