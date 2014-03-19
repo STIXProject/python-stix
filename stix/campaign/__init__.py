@@ -8,7 +8,8 @@ import dateutil
 import stix
 import stix.bindings.campaign as campaign_binding
 from stix.common import Confidence, InformationSource, StructuredText
-from stix.common.related import GenericRelationshipList, RelatedCampaign, RelatedPackageRefs
+from stix.common.related import (GenericRelationshipList, RelatedCampaign,
+        RelatedIncident, RelatedIndicator, RelatedTTP, RelatedPackageRefs)
 from stix.data_marking import Marking
 import stix.utils
 
@@ -20,6 +21,33 @@ class AssociatedCampaigns(GenericRelationshipList):
     _binding_var = "Associated_Campaign"
     _contained_type = RelatedCampaign
     _inner_name = "campaigns"
+
+
+class RelatedIncidents(GenericRelationshipList):
+    _namespace = "http://stix.mitre.org/Campaign-1"
+    _binding = campaign_binding
+    _binding_class = campaign_binding.RelatedIncidentsType
+    _binding_var = "Related_Incident"
+    _contained_type = RelatedIncident
+    _inner_name = "incidents"
+
+
+class RelatedIndicators(GenericRelationshipList):
+    _namespace = "http://stix.mitre.org/Campaign-1"
+    _binding = campaign_binding
+    _binding_class = campaign_binding.RelatedIndicatorsType
+    _binding_var = "Related_Indicator"
+    _contained_type = RelatedIndicator
+    _inner_name = "indicators"
+
+
+class RelatedTTPs(GenericRelationshipList):
+    _namespace = "http://stix.mitre.org/Campaign-1"
+    _binding = campaign_binding
+    _binding_class = campaign_binding.RelatedTTPsType
+    _binding_var = "Related_TTP"
+    _contained_type = RelatedTTP
+    _inner_name = "ttps"
 
 
 class Campaign(stix.Entity):
@@ -39,9 +67,9 @@ class Campaign(stix.Entity):
         # self.names = None
         # self.intended_effect = None
         # self.status = none
-        # self.related_ttps = None
-        # self.related_incidents = None
-        # self.related_indicators = None
+        self.related_ttps = RelatedTTPs()
+        self.related_incidents = RelatedIncidents()
+        self.related_indicators = RelatedIndicators()
         # self.attribution = None
         self.associated_campaigns = AssociatedCampaigns()
         self.confidence = None
@@ -92,6 +120,13 @@ class Campaign(stix.Entity):
         if self.short_description:
             return_obj.set_Short_Description(self.short_description.to_obj())
 
+        if self.related_ttps:
+            return_obj.set_Related_TTPs(self.related_ttps.to_obj())
+        if self.related_incidents:
+            return_obj.set_Related_Incidents(self.related_incidents.to_obj())
+        if self.related_indicators:
+            return_obj.set_Related_Indicators(self.related_indicators.to_obj())
+
         if self.associated_campaigns:
             return_obj.set_Associated_Campaigns(self.associated_campaigns.to_obj())
         if self.confidence:
@@ -123,6 +158,12 @@ class Campaign(stix.Entity):
         return_obj.short_description = \
                 StructuredText.from_obj(obj.get_Short_Description())
 
+        return_obj.related_ttps = RelatedTTPs.from_obj(obj.get_Related_TTPs())
+        return_obj.related_incidents = \
+                RelatedIncidents.from_obj(obj.get_Related_Incidents())
+        return_obj.related_indicators = \
+                RelatedIndicators.from_obj(obj.get_Related_Indicators())
+
         return_obj.associated_campaigns = \
                 AssociatedCampaigns.from_obj(obj.get_Associated_Campaigns())
         return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
@@ -151,6 +192,13 @@ class Campaign(stix.Entity):
             d['description'] = self.description.to_dict()
         if self.short_description:
             d['short_description'] = self.short_description.to_dict()
+
+        if self.related_ttps:
+            d['related_ttps'] = self.related_ttps.to_dict()
+        if self.related_incidents:
+            d['related_incidents'] = self.related_incidents.to_dict()
+        if self.related_indicators:
+            d['related_indicators'] = self.related_indicators.to_dict()
 
         if self.associated_campaigns:
             d['associated_campaigns'] = self.associated_campaigns.to_dict()
@@ -183,6 +231,13 @@ class Campaign(stix.Entity):
                 StructuredText.from_dict(dict_repr.get('description'))
         return_obj.short_description = \
                 StructuredText.from_dict(dict_repr.get('short_description'))
+
+        return_obj.related_ttps = \
+                RelatedTTPs.from_dict(dict_repr.get('related_ttps'))
+        return_obj.related_incidents = \
+                RelatedIncidents.from_dict(dict_repr.get('related_incidents'))
+        return_obj.related_indicators = \
+                RelatedIndicators.from_dict(dict_repr.get('related_indicators'))
 
         return_obj.associated_campaigns = \
                 AssociatedCampaigns.from_dict(dict_repr.get('associated_campaigns'))

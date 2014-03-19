@@ -13,10 +13,39 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
         'id': "example:Campaign-341",
         'idref': 'example:Campaign-344',
         'timestamp': "2014-01-31T06:14:46",
+        'version': '1.1',
         'title': 'Purple Elephant',
         'description': 'A pretty novice set of actors.',
         'short_description': 'novices',
-        'version': '1.1',
+        'related_ttps': {
+            'scope': "exclusive",
+            'ttps': [
+                {
+                    'confidence': {'value': "High"},
+                    'ttp': {'title': "Stealth", 'version': "1.1"},
+                }
+            ]
+        },
+        'related_incidents': {
+            'scope': "inclusive",
+            'incidents': [
+                {
+                    'confidence': {'value': "Low"},
+                    'incident': {'idref': "example:Incident-2",
+                                 'version': "1.1"},
+                }
+            ]
+        },
+        'related_indicators': {
+            'scope': "inclusive",
+            'indicators': [
+                {
+                    'confidence': {'value': "Low"},
+                    'indicator': {'idref': "example:Indicator-77",
+                                  'version': "2.1"},
+                }
+            ]
+        },
         'associated_campaigns': {
             'scope': "inclusive",
             'campaigns': [
