@@ -46,7 +46,7 @@ class Resource(stix.Entity):
     
     @infrastructure.setter
     def infrastructure(self, value):
-        self._infrastructure = None
+        self._infrastructure = value
         
     @property
     def personas(self):

@@ -62,7 +62,7 @@ class Infrastructure(stix.Entity):
 
     @property
     def types(self):
-        return self._type
+        return self._types
     
     @types.setter
     def types(self, value):

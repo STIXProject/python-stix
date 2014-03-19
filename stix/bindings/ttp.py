@@ -1046,7 +1046,7 @@ class ToolsType(GeneratedsSuper):
         else:
             eol_ = ''
         for Tool_ in self.Tool:
-            Tool_.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Tool', pretty_print=pretty_print)
+            Tool_.export(outfile, level, nsmap, namespace_, name_='Tool', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
