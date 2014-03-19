@@ -5,14 +5,15 @@
 '''
 File: ex_02.py
 
-Description: Build a STIX Indicator document containing a File observable with an associated hash.
+Description: Build a STIX Indicator document containing a File observable with
+an associated hash.
 '''
 
 from datetime import datetime
 from stix.indicator import Indicator
 from stix.core import STIXPackage, STIXHeader
-from cybox.common import Hash
 from cybox.objects.file_object import File
+
 
 def main():
     f = File()
@@ -34,6 +35,7 @@ def main():
     stix_package.add_indicator(indicator)
 
     print(stix_package.to_xml())
+
 
 if __name__ == '__main__':
     main()
