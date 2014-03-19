@@ -8,6 +8,7 @@ import stix
 import stix.utils
 import stix.bindings.course_of_action as coa_binding
 from stix.common import StructuredText, VocabString, InformationSource, Statement
+from stix.data_marking import Marking
 
 class Stage(VocabString):
     # placeholder until Stage has vocabulary
@@ -37,11 +38,11 @@ class CourseOfAction(stix.Entity):
         self.efficacy = None
         self.information_source = None
         self.type_ = None
+        self.handling = None
         
         # self.objective = None
         # self.parameter_observables = None
         # self.structured_coa = None
-        # self.handling = None
         # self.related_coas = None
         # self.related_packages = None
 
@@ -172,6 +173,17 @@ class CourseOfAction(stix.Entity):
         else:
             self._type_ = CourseOfActionType(value=value)
 
+    @property
+    def handling(self):
+        return self._handling
+
+    @handling.setter
+    def handling(self, value):
+        if value and not isinstance(value, Marking):
+            raise ValueError('value must be instance of Marking')
+
+        self._handling = value
+
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -199,6 +211,8 @@ class CourseOfAction(stix.Entity):
             return_obj.set_Type(self.type_.to_obj())
         if self.timestamp:
             return_obj.set_timestamp(self.timestamp.isoformat())
+        if self.handling:
+            return_obj.set_Handling(self.handling.to_obj())
         
         return return_obj
 
@@ -224,6 +238,7 @@ class CourseOfAction(stix.Entity):
             return_obj.impact = Statement.from_obj(obj.get_Impact())
             return_obj.type_ = CourseOfActionType.from_obj(obj.get_Type())
             return_obj.timestamp = obj.get_timestamp()
+            return_obj.handling = Marking.from_obj(obj.get_Handling())
         
         return return_obj
 
@@ -255,6 +270,8 @@ class CourseOfAction(stix.Entity):
             d['impact'] = self.impact.to_dict()
         if self.type_:
             d['type'] = self.type_.to_dict()
+        if self.handling:
+            d['handling'] = self.handling.to_dict()
         
         return d
 
@@ -278,6 +295,7 @@ class CourseOfAction(stix.Entity):
         return_obj.efficacy = Statement.from_dict(dict_repr.get('efficacy'))
         return_obj.impact = Statement.from_dict(dict_repr.get('impact'))
         return_obj.type_ = CourseOfActionType.from_dict(dict_repr.get('type'))
+        return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
         
         return return_obj
 
