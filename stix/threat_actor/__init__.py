@@ -144,24 +144,24 @@ class ThreatActor(stix.Entity):
         return_obj.id_ = obj.get_id()
         return_obj.idref = obj.get_idref()
         return_obj.timestamp = obj.get_timestamp()
-        return_obj.version = obj.get_version() if obj.get_version() else cls._version
-        return_obj.title = obj.get_Title()
-        return_obj.description = StructuredText.from_obj(obj.get_Description())
-        return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
-        return_obj.identity = Identity.from_obj(obj.get_Identity())
-        return_obj.type_ = [Statement.from_obj(x) for x in obj.get_Type()]
-        return_obj.motivation = [Statement.from_obj(x) for x in obj.get_Motivation()]
-        return_obj.sophistication = [Statement.from_obj(x) for x in obj.get_Sophistication()]
-        return_obj.intended_effect = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
-        return_obj.planning_and_operational_support = [Statement.from_obj(x)
-                for x in obj.get_Planning_And_Operational_Support()]
-        return_obj.observed_ttps = ObservedTTPs.from_obj(obj.get_Observed_TTPs())
-        return_obj.associated_campaigns = AssociatedCampaigns.from_obj(obj.get_Associated_Campaigns())
-        return_obj.associated_actors = AssociatedActors.from_obj(obj.get_Associated_Actors())
-        return_obj.handling = Marking.from_obj(obj.get_Handling())
-        return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
-        return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
-        return_obj.related_packages = RelatedPackageRefs.from_obj(obj.get_Related_Packages())
+        if isinstance(obj, cls._binding_class): # ThreatActorType properties
+            return_obj.version = obj.get_version() if obj.get_version() else cls._version
+            return_obj.title = obj.get_Title()
+            return_obj.description = StructuredText.from_obj(obj.get_Description())
+            return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
+            return_obj.identity = Identity.from_obj(obj.get_Identity())
+            return_obj.type_ = [Statement.from_obj(x) for x in obj.get_Type()]
+            return_obj.motivation = [Statement.from_obj(x) for x in obj.get_Motivation()]
+            return_obj.sophistication = [Statement.from_obj(x) for x in obj.get_Sophistication()]
+            return_obj.intended_effect = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
+            return_obj.planning_and_operational_support = [Statement.from_obj(x) for x in obj.get_Planning_And_Operational_Support()]
+            return_obj.observed_ttps = ObservedTTPs.from_obj(obj.get_Observed_TTPs())
+            return_obj.associated_campaigns = AssociatedCampaigns.from_obj(obj.get_Associated_Campaigns())
+            return_obj.associated_actors = AssociatedActors.from_obj(obj.get_Associated_Actors())
+            return_obj.handling = Marking.from_obj(obj.get_Handling())
+            return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
+            return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
+            return_obj.related_packages = RelatedPackageRefs.from_obj(obj.get_Related_Packages())
 
         return return_obj
 
