@@ -3,6 +3,7 @@
 
 import stix
 import stix.utils
+from stix.utils import dates
 from stix.utils.parser import EntityParser
 from stix_header import STIXHeader
 from stix.indicator import Indicator
@@ -23,9 +24,10 @@ class STIXPackage(stix.Entity):
     _namespace = 'http://stix.mitre.org/stix-1'
     _version = "1.1"
 
-    def __init__(self, id_=None, idref_=None, stix_header=None, indicators=None, observables=None, incidents=None, threat_actors=None, ttps=None):
+    def __init__(self, id_=None, idref_=None, timestamp=None, stix_header=None, indicators=None, observables=None, incidents=None, threat_actors=None, ttps=None):
         self.id_ = id_ or stix.utils.create_id("Package")
         self.idref_ = idref_
+        self.timestamp = timestamp
         self.version = self._version
         self.stix_header = stix_header
         self.observables = observables
@@ -33,6 +35,14 @@ class STIXPackage(stix.Entity):
         self.incidents = incidents
         self.threat_actors = threat_actors
         self.ttps = ttps
+
+    @property
+    def timestamp(self):
+        return self._timestamp
+
+    @timestamp.setter
+    def timestamp(self, value):
+        self._timestamp = dates.parse_value(value)
 
     @property
     def stix_header(self):
@@ -167,6 +177,7 @@ class STIXPackage(stix.Entity):
         return_obj.set_id(self.id_)
         return_obj.set_idref(self.idref_)
         return_obj.set_version(self.version)
+        return_obj.set_timestamp(dates.serialize_value(self.timestamp))
 
         if self.stix_header:
             return_obj.set_STIX_Header(self.stix_header.to_obj())
@@ -197,10 +208,12 @@ class STIXPackage(stix.Entity):
         d = {}
         if self.id_:
             d['id'] = self.id_
-        if self.version:    
+        if self.version:
             d['version'] = self.version
         if self.idref_:
             d['idref'] = self.idref_
+        if self.timestamp:
+            d['timestamp'] = dates.serialize_value(self.timestamp)
         if self.stix_header:
             d['stix_header'] = self.stix_header.to_dict()
         if self.indicators:
@@ -223,6 +236,7 @@ class STIXPackage(stix.Entity):
 
         return_obj.id_ = obj.get_id()
         return_obj.idref_ = obj.get_idref()
+        return_obj.timestamp = obj.get_timestamp()
         return_obj.stix_header = STIXHeader.from_obj(obj.get_STIX_Header())
 
         if obj.get_version():
@@ -247,6 +261,7 @@ class STIXPackage(stix.Entity):
 
         return_obj.id_ = dict_repr.get('id', None)
         return_obj.idref_ = dict_repr.get('idref', None)
+        return_obj.timestamp = dict_repr.get('timestamp')
         return_obj.version = dict_repr.get('version', cls._version)
         header_dict = dict_repr.get('stix_header', None)
         return_obj.stix_header = STIXHeader.from_dict(header_dict)

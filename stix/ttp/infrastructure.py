@@ -15,7 +15,7 @@ class Infrastructure(stix.Entity):
     _binding = ttp_binding
     _binding_class = _binding.InfrastructureType
     _namespace = "http://stix.mitre.org/TTP-1"
-    
+
     def __init__(self, id_=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("infrastructure")
         self.title = title
@@ -23,7 +23,7 @@ class Infrastructure(stix.Entity):
         self.short_description = short_description
         self.types = None
         self.observable_characterization = None
-        
+
     @property
     def title(self):
         return self._title
@@ -62,8 +62,8 @@ class Infrastructure(stix.Entity):
 
     @property
     def types(self):
-        return self._type
-    
+        return self._types
+
     @types.setter
     def types(self, value):
         self._types = []
@@ -74,7 +74,7 @@ class Infrastructure(stix.Entity):
                 self.add_type(v)
         else:
             self.add_type(value)
-            
+
     def add_type(self, type_):
         if not type_:
             return
@@ -86,7 +86,7 @@ class Infrastructure(stix.Entity):
     @property
     def observable_characterization(self):
         return self._observable_characterization
-    
+
     @observable_characterization.setter
     def observable_characterization(self, value):
         if not value:
@@ -126,10 +126,10 @@ class Infrastructure(stix.Entity):
         return_obj.description = StructuredText.from_obj(obj.get_Description())
         return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
         return_obj.observable_characterization = Observables.from_obj(obj.get_Observable_Characterization())
-        
+
         if obj.get_Type():
             return_obj.types = [AttackerInfrastructureType.from_obj(x) for x in obj.get_Type()]
-        
+
         return return_obj
 
     def to_dict(self):
@@ -146,7 +146,7 @@ class Infrastructure(stix.Entity):
             d['types'] = [x.to_dict() for x in self.types]
         if self.observable_characterization:
             d['observable_characterization'] = self.observable_characterization.to_dict()
-            
+
         return d
 
     @classmethod
@@ -162,5 +162,5 @@ class Infrastructure(stix.Entity):
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
         return_obj.types = [AttackerInfrastructureType.from_dict(x) for x in dict_repr.get('types', [])]
         return_obj.observable_characterization = Observables.from_dict(dict_repr.get('observable_characterization'))
-        
+
         return return_obj

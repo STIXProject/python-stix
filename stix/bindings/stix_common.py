@@ -903,7 +903,7 @@ class ToolInformationType(cybox_common_binding.ToolInformationType):
     def set_ShortDescription(self, Short_Description): self.Short_Description = Short_Description
     def hasContent_(self):
         if (
-            super(ToolInformationType, self).hasContent() or
+            super(ToolInformationType, self).hasContent_() or
             self.Title is not None or
             self.Short_Description is not None
             ):
@@ -927,7 +927,7 @@ class ToolInformationType(cybox_common_binding.ToolInformationType):
         else:
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='stixCommon:', name_='ToolInformationType'):
-        super(ToolInformationType, self).exportAttributes(outfile, level, already_processed, namespace="cyboxCommon:", name_=name_)
+        super(ToolInformationType, self).exportAttributes(outfile, level, already_processed, namespace_="cyboxCommon:", name_=name_)
         if self.extensiontype_ is not None and 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
             outfile.write(' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')

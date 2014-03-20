@@ -1,10 +1,6 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-from datetime import datetime
-
-import dateutil
-
 import stix
 import stix.bindings.threat_actor as threat_actor_binding
 from stix.common import (Confidence, Identity, InformationSource, Statement,
@@ -13,6 +9,7 @@ from stix.common.related import (GenericRelationshipList, RelatedCampaign,
         RelatedPackageRefs, RelatedTTP, RelatedThreatActor)
 from stix.data_marking import Marking
 import stix.utils
+from stix.utils import dates
 
 
 class ObservedTTPs(GenericRelationshipList):
@@ -91,12 +88,7 @@ class ThreatActor(stix.Entity):
 
     @timestamp.setter
     def timestamp(self, value):
-        if not value:
-            self._timestamp = None
-        elif isinstance(value, datetime):
-            self._timestamp = value
-        else:
-            self._timestamp = dateutil.parser.parse(value)
+        self._timestamp = dates.parse_value(value)
 
     def to_obj(self, return_obj=None):
         if not return_obj:
@@ -105,7 +97,7 @@ class ThreatActor(stix.Entity):
         return_obj.set_id(self.id_)
         return_obj.set_idref(self.idref)
         if self.timestamp:
-            return_obj.set_timestamp(self.timestamp.isoformat())
+            return_obj.set_timestamp(dates.serialize_value(self.timestamp))
         return_obj.set_version(self.version)
         return_obj.set_Title(self.title)
         if self.description:
@@ -146,31 +138,30 @@ class ThreatActor(stix.Entity):
     def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
-
         if not return_obj:
             return_obj = cls()
 
         return_obj.id_ = obj.get_id()
         return_obj.idref = obj.get_idref()
         return_obj.timestamp = obj.get_timestamp()
-        return_obj.version = obj.get_version() if obj.get_version() else cls._version
-        return_obj.title = obj.get_Title()
-        return_obj.description = StructuredText.from_obj(obj.get_Description())
-        return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
-        return_obj.identity = Identity.from_obj(obj.get_Identity())
-        return_obj.type_ = [Statement.from_obj(x) for x in obj.get_Type()]
-        return_obj.motivation = [Statement.from_obj(x) for x in obj.get_Motivation()]
-        return_obj.sophistication = [Statement.from_obj(x) for x in obj.get_Sophistication()]
-        return_obj.intended_effect = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
-        return_obj.planning_and_operational_support = [Statement.from_obj(x)
-                for x in obj.get_Planning_And_Operational_Support()]
-        return_obj.observed_ttps = ObservedTTPs.from_obj(obj.get_Observed_TTPs())
-        return_obj.associated_campaigns = AssociatedCampaigns.from_obj(obj.get_Associated_Campaigns())
-        return_obj.associated_actors = AssociatedActors.from_obj(obj.get_Associated_Actors())
-        return_obj.handling = Marking.from_obj(obj.get_Handling())
-        return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
-        return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
-        return_obj.related_packages = RelatedPackageRefs.from_obj(obj.get_Related_Packages())
+        if isinstance(obj, cls._binding_class): # ThreatActorType properties
+            return_obj.version = obj.get_version() if obj.get_version() else cls._version
+            return_obj.title = obj.get_Title()
+            return_obj.description = StructuredText.from_obj(obj.get_Description())
+            return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
+            return_obj.identity = Identity.from_obj(obj.get_Identity())
+            return_obj.type_ = [Statement.from_obj(x) for x in obj.get_Type()]
+            return_obj.motivation = [Statement.from_obj(x) for x in obj.get_Motivation()]
+            return_obj.sophistication = [Statement.from_obj(x) for x in obj.get_Sophistication()]
+            return_obj.intended_effect = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
+            return_obj.planning_and_operational_support = [Statement.from_obj(x) for x in obj.get_Planning_And_Operational_Support()]
+            return_obj.observed_ttps = ObservedTTPs.from_obj(obj.get_Observed_TTPs())
+            return_obj.associated_campaigns = AssociatedCampaigns.from_obj(obj.get_Associated_Campaigns())
+            return_obj.associated_actors = AssociatedActors.from_obj(obj.get_Associated_Actors())
+            return_obj.handling = Marking.from_obj(obj.get_Handling())
+            return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
+            return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
+            return_obj.related_packages = RelatedPackageRefs.from_obj(obj.get_Related_Packages())
 
         return return_obj
 
@@ -181,7 +172,7 @@ class ThreatActor(stix.Entity):
         if self.idref:
             d['idref'] = self.idref
         if self.timestamp:
-            d['timestamp'] = self.timestamp.isoformat()
+            d['timestamp'] = dates.serialize_value(self.timestamp)
         if self.version:
             d['version'] = self.version
         if self.title:

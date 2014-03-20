@@ -3,17 +3,16 @@
 
 import stix
 import stix.utils
+from stix.utils import dates
 from stix.common import Identity, InformationSource, StructuredText, VocabString, Confidence
 import stix.extensions.identity as ext_identity
 import stix.bindings.indicator as indicator_binding
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
 
-
 class IndicatorType(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:IndicatorTypeVocab-1.0'
-
 
 class Indicator(stix.Entity):
     _binding = indicator_binding
@@ -21,8 +20,10 @@ class Indicator(stix.Entity):
     _namespace = 'http://stix.mitre.org/Indicator-2'
     _version = "2.1"
 
-    def __init__(self, id_=None, title=None, description=None, indicator_types=None, producer=None, observables=None):
+    def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, indicator_types=None, producer=None, observables=None):
         self.id_ = id_ or stix.utils.create_id("indicator")
+        self.idref = idref
+        self.timestamp = timestamp
         self.version = self._version
         self.producer = producer
         self.observables = observables
@@ -30,7 +31,15 @@ class Indicator(stix.Entity):
         self.description = description
         self.indicator_types = indicator_types
         self.confidence = None
-       
+    
+    @property
+    def timestamp(self):
+        return self._timestamp
+
+    @timestamp.setter
+    def timestamp(self, value):
+        self._timestamp = dates.parse_value(value)
+
     @property
     def description(self):
         return self._description
@@ -184,33 +193,30 @@ class Indicator(stix.Entity):
         if not return_obj:
             return_obj = self._binding_class()
 
-        if self.id_:
-            return_obj.set_id(self.id_)
-
+        return_obj.set_id(self.id_)
+        return_obj.set_idref(self.idref)
+        return_obj.set_timestamp(dates.serialize_value(self.timestamp))
+        return_obj.set_Title(self.title)
+        
         if self.version:
             return_obj.set_version(self._version)
-
         if self.description:
             return_obj.set_Description(self.description.to_obj())
-
         if self.confidence:
             return_obj.set_Confidence(self.confidence.to_obj())
-
         if self.indicator_types:
             for indicator_type in self.indicator_types:
                 tmp_indicator_type = indicator_type.to_obj()
                 return_obj.add_Type(tmp_indicator_type)
 
-        return_obj.set_Title(self.title)
+        
 
         if self.observables:
             if len(self.observables) > 1:
                 root_observable = self._merge_observables(self.observables)
             else:
                 root_observable = self.observables[0]
-
             return_obj.set_Observable(root_observable.to_obj())
-
         if self.producer:
             return_obj.set_Producer(self.producer.to_obj())
 
@@ -220,11 +226,12 @@ class Indicator(stix.Entity):
     def from_obj(cls, obj, return_obj=None):        
         if not obj:
             return None
-
         if not return_obj:
             return_obj = cls()
 
         return_obj.id_              = obj.get_id()
+        return_obj.idref            = obj.get_idref()
+        return_obj.timestamp        = obj.get_timestamp()
         return_obj.title            = obj.get_Title()
         return_obj.description      = StructuredText.from_obj(obj.get_Description())
         return_obj.producer         = InformationSource.from_obj(obj.get_Producer())
@@ -232,11 +239,9 @@ class Indicator(stix.Entity):
         
         if obj.get_version():
             return_obj.version = obj.get_version()
-
         if obj.get_Type():
             for indicator_type in obj.get_Type():
                 return_obj.add_indicator_type(IndicatorType.from_obj(indicator_type)) 
-
         if obj.get_Observable():
             observable_obj = obj.get_Observable()
             observable = Observable.from_obj(observable_obj)
@@ -248,6 +253,10 @@ class Indicator(stix.Entity):
         d = {}
         if self.id_:
             d['id'] = self.id_
+        if self.idref:
+            d['idref'] = self.idref
+        if self.timestamp:
+            d['timestamp'] = dates.serialize_value(self.timestamp)
         if self.version:
             d['version'] = self.version
         if self.observables:
@@ -269,42 +278,34 @@ class Indicator(stix.Entity):
 
         return d
 
-
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
         if not dict_repr:
             return None
-
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_      = dict_repr.get('id')
-        return_obj.title    = dict_repr.get('title')
-        return_obj.version  = dict_repr.get('version', cls._version)
-        observable_dict     = dict_repr.get('observable')
-        producer_dict       = dict_repr.get('producer')
-        description_dict    = dict_repr.get('description')
-        indicator_type_list = dict_repr.get('indicator_types')
-        confidence_dict     = dict_repr.get('confidence')
+        return_obj.id_       = dict_repr.get('id')
+        return_obj.idref     = dict_repr.get('idref')
+        return_obj.timestamp = dict_repr.get('timestamp')
+        return_obj.title     = dict_repr.get('title')
+        return_obj.version   = dict_repr.get('version', cls._version)
+        observable_dict      = dict_repr.get('observable')
+        producer_dict        = dict_repr.get('producer')
+        description_dict     = dict_repr.get('description')
+        indicator_type_list  = dict_repr.get('indicator_types')
+        confidence_dict      = dict_repr.get('confidence')
 
         if observable_dict:
             return_obj.add_observable(Observable.from_dict(observable_dict))
-
         if producer_dict:
             return_obj.producer = InformationSource.from_dict(producer_dict)
-
         if description_dict:
             return_obj.description = StructuredText.from_dict(description_dict)
-
         if indicator_type_list:
             for indicator_type_dict in indicator_type_list:
                 return_obj.add_indicator_type(IndicatorType.from_dict(indicator_type_dict))
-        
         if confidence_dict:
             return_obj.confidence = Confidence.from_dict(confidence_dict)
         
         return return_obj
-
-
-
-

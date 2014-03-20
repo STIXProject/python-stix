@@ -12,20 +12,20 @@ class Behavior(stix.Entity):
     _binding = ttp_binding
     _binding_class = _binding.BehaviorType
     _namespace = "http://stix.mitre.org/TTP-1"
-    
+
     def __init__(self, malware_instances=None, attack_patterns=None, exploits=None):
         self.malware_instances = malware_instances
         self.attack_patterns = attack_patterns
         self.exploits = exploits
-        
+
     @property
     def malware_instances(self):
         return self._malware_instances
-    
+
     @malware_instances.setter
     def malware_instances(self, value):
         self._malware_instances = []
-        
+
         if not value:
             return
         elif isinstance(value, list):
@@ -33,7 +33,7 @@ class Behavior(stix.Entity):
                 self.add_malware_instance(v)
         else:
             self.add_malware_instance(value)
-    
+
     def add_malware_instance(self, malware):
         if not malware:
             return
@@ -41,15 +41,15 @@ class Behavior(stix.Entity):
             self._malware_instances.append(malware)
         else:
             raise ValueError("Unable to add item to malware instance list: %s" % type(malware))
-    
+
     @property
     def attack_patterns(self):
         return self._attack_patterns
-    
+
     @attack_patterns.setter
     def attack_patterns(self, value):
         self._attack_patterns = []
-        
+
         if not value:
             return
         elif isinstance(value, list):
@@ -57,7 +57,7 @@ class Behavior(stix.Entity):
                 self.add_attack_pattern(v)
         else:
             self.add_attack_pattern(value)
-    
+
     def add_attack_pattern(self, attack_pattern):
         if not attack_pattern:
             return
@@ -65,15 +65,15 @@ class Behavior(stix.Entity):
             self._attack_patterns.append(attack_pattern)
         else:
             raise ValueError("Unable to add item to attack pattern list: %s" % type(attack_pattern))
-    
+
     @property
     def exploits(self):
         return self._exploits
-    
+
     @exploits.setter
     def exploits(self, value):
         self._exploits = []
-    
+
         if not value:
             return
         elif isinstance(value, list):
@@ -81,7 +81,7 @@ class Behavior(stix.Entity):
                 self.add_exploit(v)
         else:
             self.add_exploit(value)
-            
+
     def add_exploit(self, exploit):
         if not exploit:
             return
@@ -89,11 +89,11 @@ class Behavior(stix.Entity):
             self._exploits.append(exploit)
         else:
             raise ValueError("Unable to add item to exploit list: %s" % type(exploit))
-    
+
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = self._binding_class()
-        
+
         if self.malware_instances:
             malware_obj = self._binding.MalwareType(Malware_Instance=[x.to_obj() for x in self.malware_instances])
             return_obj.set_Malware(malware_obj)
@@ -103,16 +103,16 @@ class Behavior(stix.Entity):
         if self.attack_patterns:
             attack_patterns_obj = self._binding.AttackPatternsType(Attack_Pattern=[x.to_obj() for x in self.exploits])
             return_obj.set_Attack_Patterns(attack_patterns_obj)
-            
+
         return return_obj
-    
+
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
         if not return_obj:
             return_obj = cls()
-            
+
         if obj.get_Malware():
             return_obj.malware_instances = [MalwareInstance.from_obj(x) for x in obj.get_Malware().get_Malware_Instance()]
         if obj.get_Exploits():
@@ -120,7 +120,7 @@ class Behavior(stix.Entity):
         if obj.get_Attack_Patterns():
             return_obj.attack_patterns = [AttackPattern.from_obj(x) for x in obj.get_Attack_Patterns().get_Attack_Pattern()]
         return return_obj
-    
+
     def to_dict(self):
         d = {}
         if self.malware_instances:
@@ -130,14 +130,14 @@ class Behavior(stix.Entity):
         if self.attack_patterns:
             d['attack_patterns'] = [x.to_dict() for x in self.attack_patterns]
         return d
-    
+
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
         if not dict_repr:
             return None
         if not return_obj:
             return_obj = cls()
-        
+
         return_obj.malware_instances = [MalwareInstance.from_dict(x) for x in dict_repr.get('malware_instances', [])]
         return_obj.exploits = [Exploit.from_dict(x) for x in dict_repr.get('exploits', [])]
         return_obj.attack_patterns = [AttackPattern.from_dict(x) for x in dict_repr.get('attack_patterns', [])]

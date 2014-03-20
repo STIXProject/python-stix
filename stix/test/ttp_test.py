@@ -10,6 +10,12 @@ class TTPTests(EntityTestCase, unittest.TestCase):
         'title': "TTP1",
         'description': "This is a long description about a ttp",
         'short_description': "a TTP",
+        'resources': {
+            'tools': [
+                {'title': "Tool"}
+            ],
+            'infrastructure': {'title': "Infrastructure"},
+        }
     }
 
 if __name__ == "__main__":

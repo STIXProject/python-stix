@@ -1,6 +1,7 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+
 import stix
 import stix.bindings.incident as incident_binding
 from stix.common import Identity, Statement, StructuredText, VocabString
@@ -10,6 +11,7 @@ from stix.indicator import Indicator
 from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
 import stix.utils
+from stix.utils import dates
 
 from .time import Time
 
@@ -25,8 +27,10 @@ class Incident(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
     _version = "1.1"
 
-    def __init__(self, id_=None, title=None, description=None):
+    def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None):
         self.id_ = id_ or stix.utils.create_id("incident")
+        self.idref = idref
+        self.timestamp = timestamp
         self.version = self._version
         self.description = description
         self.title = title
@@ -37,6 +41,14 @@ class Incident(stix.Entity):
         self.categories = None
         self.intended_effects = None
         self.leveraged_ttps = LeveragedTTPs()
+
+    @property
+    def timestamp(self):
+        return self._timestamp
+    
+    @timestamp.setter
+    def timestamp(self, value):
+        self._timestamp = dates.parse_value(value)
 
     @property
     def title(self):
@@ -145,9 +157,11 @@ class Incident(stix.Entity):
             return_obj = self._binding_class()
 
         return_obj.set_id(self.id_)
+        return_obj.set_idref(self.idref)
+        return_obj.set_timestamp(dates.serialize_value(self.timestamp))
         return_obj.set_version(self.version)
         return_obj.set_Title(self.title)
-
+        
         if self.description:
             return_obj.set_Description(self.description.to_obj())
         if self.time:
@@ -176,6 +190,8 @@ class Incident(stix.Entity):
             return_obj = cls()
 
         return_obj.id_ = obj.get_id()
+        return_obj.idref = obj.get_idref()
+        return_obj.timestamp = obj.get_timestamp()
         return_obj.version = obj.get_version() or cls._version
         return_obj.title = obj.get_Title()
         return_obj.description = StructuredText.from_obj(obj.get_Description())
@@ -200,6 +216,10 @@ class Incident(stix.Entity):
         d = {}
         if self.id_:
             d['id'] = self.id_
+        if self.idref:
+            d['idref'] = self.idref
+        if self.timestamp:
+            d['timestamp'] = dates.serialize_value(self.timestamp)
         if self.version:
             d['version'] = self.version or self._version
         if self.title:
@@ -232,6 +252,8 @@ class Incident(stix.Entity):
             return_obj = cls()
 
         return_obj.id_ = dict_repr.get('id')
+        return_obj.idref = dict_repr.get('idref')
+        return_obj.timestamp = dict_repr.get('timestamp')
         return_obj.version = dict_repr.get('version', cls._version)
         return_obj.title = dict_repr.get('title')
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
