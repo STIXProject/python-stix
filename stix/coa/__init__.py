@@ -14,13 +14,13 @@ class Stage(VocabString):
     # placeholder until Stage has vocabulary
     pass
 
-class CourseOfActionType(VocabString):
+class COAType(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:CourseOfActionTypeVocab-1.0'
     
 class CourseOfAction(stix.Entity):
     _binding = coa_binding
-    _binding_class = _binding.CourseOfActionType
+    _binding_class = coa_binding.CourseOfActionType
     _namespace = "http://stix.mitre.org/CourseOfAction-1"
     _version = "1.1"
 
@@ -155,7 +155,7 @@ class CourseOfAction(stix.Entity):
     def efficacy(self, efficacy):
         if not efficacy:
             return
-        elif isinstance(impact, Statement):
+        elif isinstance(efficacy, Statement):
             self._efficacy = efficacy
         else:
             self._efficacy = Statement(value=efficacy)
@@ -168,10 +168,10 @@ class CourseOfAction(stix.Entity):
     def type_(self, value):
         if not value:
             return
-        elif isinstance(value, CourseOfActionType):
+        elif isinstance(value, COAType):
             self._type_ = value
         else:
-            self._type_ = CourseOfActionType(value=value)
+            self._type_ = COAType(value=value)
 
     @property
     def handling(self):
@@ -231,12 +231,12 @@ class CourseOfAction(stix.Entity):
             return_obj.title = obj.get_Title()
             return_obj.description = StructuredText.from_obj(obj.get_Description())
             return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
-            return_obj.stage = VocabString.from_obj(obj.get_Stage())
+            return_obj.stage = Stage.from_obj(obj.get_Stage())
             return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
             return_obj.cost = Statement.from_obj(obj.get_Cost())
             return_obj.efficacy = Statement.from_obj(obj.get_Efficacy())
             return_obj.impact = Statement.from_obj(obj.get_Impact())
-            return_obj.type_ = CourseOfActionType.from_obj(obj.get_Type())
+            return_obj.type_ = COAType.from_obj(obj.get_Type())
             return_obj.timestamp = obj.get_timestamp()
             return_obj.handling = Marking.from_obj(obj.get_Handling())
         
@@ -289,15 +289,13 @@ class CourseOfAction(stix.Entity):
         return_obj.title = dict_repr.get('title')
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
-        return_obj.stage = VocabString.from_dict(dict_repr.get('stage'))
+        return_obj.stage = Stage.from_dict(dict_repr.get('stage'))
         return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
         return_obj.cost = Statement.from_dict(dict_repr.get('cost'))
         return_obj.efficacy = Statement.from_dict(dict_repr.get('efficacy'))
         return_obj.impact = Statement.from_dict(dict_repr.get('impact'))
-        return_obj.type_ = CourseOfActionType.from_dict(dict_repr.get('type'))
+        return_obj.type_ = COAType.from_dict(dict_repr.get('type'))
         return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
         
         return return_obj
 
-# Avoid circular imports
-# from .related_ttps import RelatedTTPs
