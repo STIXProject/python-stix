@@ -411,6 +411,14 @@ class RelatedIndicator(_BaseRelated):
     _inner_var = "Indicator"
 
 
+class RelatedObservable(_BaseRelated):
+    _namespace = "http://stix.mitre.org/common-1"
+    _binding = common_binding
+    _binding_class = common_binding.RelatedObservableType
+    # _base_type is set in common/__init__.py
+    _inner_var = "Observable"
+
+
 class RelatedThreatActor(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding

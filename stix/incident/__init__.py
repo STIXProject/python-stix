@@ -6,7 +6,7 @@ import stix
 import stix.bindings.incident as incident_binding
 from stix.common import Identity, Statement, StructuredText, VocabString
 from stix.common.related import (GenericRelationshipList, RelatedIndicator,
-        RelatedThreatActor, RelatedTTP)
+        RelatedThreatActor, RelatedTTP, RelatedObservable)
 from stix.indicator import Indicator
 from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
@@ -14,7 +14,6 @@ import stix.utils
 from stix.utils import dates
 
 from .time import Time
-
 
 class IncidentCategory(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
@@ -38,6 +37,7 @@ class Incident(stix.Entity):
         self.victims = None
         self.attributed_threat_actors = AttributedThreatActors()
         self.related_indicators = RelatedIndicators()
+        self.related_observables = RelatedObservables()
         self.categories = None
         self.intended_effects = None
         self.leveraged_ttps = LeveragedTTPs()
@@ -172,6 +172,8 @@ class Incident(stix.Entity):
             return_obj.set_Attributed_Threat_Actors(self.attributed_threat_actors.to_obj())
         if self.related_indicators:
             return_obj.set_Related_Indicators(self.related_indicators.to_obj())
+        if self.related_observables:
+            return_obj.set_Related_Observables(self.related_observables.to_obj())
         if self.categories:
             return_obj.set_Categories(self._binding.CategoriesType(Category=[x.to_obj() for x in self.categories]))
         if self.intended_effects:
@@ -208,6 +210,7 @@ class Incident(stix.Entity):
 
         return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.get_Attributed_Threat_Actors())
         return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
+        return_obj.related_observables = RelatedObservable.from_obj(obj.get_Related_Observables())
         return_obj.leveraged_ttps = LeveragedTTPs.from_obj(obj.get_Leveraged_TTPs())
 
         return return_obj
@@ -236,6 +239,8 @@ class Incident(stix.Entity):
             d['attributed_threat_actors'] = self.attributed_threat_actors.to_dict()
         if self.related_indicators:
             d['related_indicators'] = self.related_indicators.to_dict()
+        if self.related_observables:
+            d['related_observables'] = self.related_observables.to_dict()
         if self.intended_effects:
             d['intended_effects'] = [x.to_dict() for x in self.intended_effects]
         if self.leveraged_ttps:
@@ -262,6 +267,7 @@ class Incident(stix.Entity):
         return_obj.categories = [IncidentCategory.from_dict(x) for x in dict_repr.get('categories', [])]
         return_obj.attributed_threat_actors = AttributedThreatActors.from_dict(dict_repr.get('attributed_threat_actors'))
         return_obj.related_indicators = RelatedIndicators.from_dict(dict_repr.get('related_indicators'))
+        return_obj.related_observables = RelatedObservables.from_dict(dict_repr.get('related_observables'))
         return_obj.intended_effects = [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
         return_obj.leveraged_ttps = LeveragedTTPs.from_dict(dict_repr.get('leveraged_ttps'))
 
@@ -295,6 +301,18 @@ class RelatedIndicators(GenericRelationshipList):
             indicators = []
         super(RelatedIndicators, self).__init__(*indicators, scope=scope)
 
+class RelatedObservables(GenericRelationshipList):
+    _namespace = "http://stix.mitre.org/Incident-1"
+    _binding = incident_binding
+    _binding_class = incident_binding.RelatedObservablesType
+    _binding_var = "Related_Observable"
+    _contained_type = RelatedObservable
+    _inner_name = "observables"
+
+    def __init__(self, observables=None, scope=None):
+        if observables is None:
+            observables = []
+        super(RelatedObservables, self).__init__(*observables, scope=scope)
 
 class LeveragedTTPs(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Incident-1"
