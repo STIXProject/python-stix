@@ -58,4 +58,9 @@ class StructuredText(stix.Entity):
             text.structuring_format = text_dict.get('structuring_format')
 
         return text
+    
+    def __str__(self):
+        return self.__unicode__().encode("utf-8")
 
+    def __unicode__(self):
+        return unicode(self.value)
