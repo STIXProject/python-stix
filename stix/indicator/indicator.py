@@ -66,6 +66,18 @@ class Indicator(stix.Entity):
         self._producer = value
 
     @property
+    def observable(self):
+        if self.observables:
+            return self.observables[0]
+        else:
+            return None
+    
+    @observable.setter
+    def observable(self, observable):
+        self._observables = []
+        self.add_observable(observable)
+
+    @property
     def observables(self):
         return self._observables
 
