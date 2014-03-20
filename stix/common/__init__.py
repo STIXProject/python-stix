@@ -13,7 +13,9 @@ from .statement import Statement
 from .tools import ToolInformation
 
 from .related import (GenericRelationshipList, RelatedCampaign,
-        RelatedIdentity, RelatedIndicator, RelatedThreatActor, RelatedTTP)
+        RelatedIdentity, RelatedIndicator, RelatedThreatActor, RelatedTTP, RelatedObservable)
+
+from cybox.core import Observable
 
 # Patch in base types of Related* types
 from stix.campaign import Campaign
@@ -26,3 +28,4 @@ RelatedIdentity._base_type = Identity
 RelatedIndicator._base_type = Indicator
 RelatedThreatActor._base_type = ThreatActor
 RelatedTTP._base_type = TTP
+RelatedObservable._base_type = Observable
