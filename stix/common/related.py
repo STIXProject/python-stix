@@ -3,8 +3,6 @@
 
 from __future__ import absolute_import
 
-import collections
-
 import stix
 import stix.bindings.stix_common as common_binding
 
@@ -177,90 +175,28 @@ class RelatedPackageRef(GenericRelationship):
         return return_obj
 
 
-class GenericRelationshipList(collections.MutableSequence, stix.Entity):
+class GenericRelationshipList(stix.EntityList):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = _binding.GenericRelationshipListType
 
     def __init__(self, scope=None, *args):
         super(GenericRelationshipList, self).__init__()
-        self._inner = []
         self.scope = scope
 
-        for arg in args:
-            if isinstance(arg, list):
-                self.extend(arg)
-            else:
-                self.append(arg)
-
     def __nonzero__(self):
-        return bool(self._inner) or bool(self.scope)
-
-    def __getitem__(self, key):
-        return self._inner.__getitem__(key)
-
-    def __setitem__(self, key, value):
-        if not self._is_valid(value):
-            value = self._fix_value(value)
-        self._inner.__setitem__(key, value)
-
-    def __delitem__(self, key):
-        self._inner.__delitem__(key)
-
-    def __len__(self):
-        return len(self._inner)
-
-    def insert(self, idx, value):
-        if not self._is_valid(value):
-            value = self._fix_value(value)
-        self._inner.insert(idx, value)
-
-    def _is_valid(self, value):
-        """Check if this is a valid object to add to the list."""
-        # Subclasses can override this function, but if it becomes common, it's
-        # probably better to use self._contained_type.istypeof(value)
-        return isinstance(value, self._contained_type)
-
-    def _fix_value(self, value):
-        """Attempt to coerce value into the correct type.
-
-        Subclasses can override this function.
-        """
-        try:
-            new_value = self._contained_type(value)
-        except:
-            raise ValueError("Can't put '%s' (%s) into a %s" %
-                (value, type(value), self.__class__))
-        return new_value
-
-    # The next four functions can be overridden, but otherwise define the
-    # default behavior for EntityList subclasses which define the following
-    # class-level members:
-    # - _binding_class
-    # - _binding_var
-    # - _contained_type
-    # - _inner_name
+        return super(GenericRelationshipList, self).__nonzero__() \
+                or bool(self.scope)
 
     def to_obj(self):
-        list_obj = self._binding_class()
-
-        setattr(list_obj, self._binding_var, [x.to_obj() for x in self])
-        if self.scope:
-            # Set directly rather than using set_scope() because of
-            # RelatedIdentities, which doesn't actually derive from
-            # GenericRelationshipList
-            list_obj.scope = self.scope
-
+        list_obj = super(GenericRelationshipList, self).to_obj()
+        list_obj.set_scope(self.scope)
         return list_obj
 
     def to_dict(self):
-        d = {}
-
-        if self._inner:
-            d[self._inner_name] = [h.to_dict() for h in self]
+        d = super(GenericRelationshipList, self).to_dict()
         if self.scope:
             d['scope'] = self.scope
-
         return d
 
     @classmethod
@@ -268,16 +204,15 @@ class GenericRelationshipList(collections.MutableSequence, stix.Entity):
         if not obj:
             return None
 
-        if not return_obj:
+        if return_obj is None:
             return_obj = cls()
 
-        for item in getattr(obj, cls._binding_var):
-            return_obj.append(cls._contained_type.from_obj(item))
+        super(GenericRelationshipList, cls).from_obj(obj,
+                return_obj=return_obj,
+                contained_type=cls._contained_type,
+                binding_var=cls._binding_var)
 
-        # Get directly rather than using get_scope() because of
-        # RelatedIdentities, which doesn't actually derive from
-        # GenericRelationshipList
-        return_obj.scope = getattr(obj, 'scope', None)
+        return_obj.scope = obj.get_scope()
 
         return return_obj
 
@@ -286,22 +221,20 @@ class GenericRelationshipList(collections.MutableSequence, stix.Entity):
         if not isinstance(dict_repr, dict):
             return None
 
-        if not return_obj:
+        if return_obj is None:
             return_obj = cls()
 
-        for item in dict_repr.get(cls._inner_name, []):
-            return_obj.append(cls._contained_type.from_dict(item))
+        super(GenericRelationshipList, cls).from_dict(dict_repr,
+                return_obj=return_obj,
+                contained_type=cls._contained_type,
+                inner_name=cls._inner_name)
 
         return_obj.scope = dict_repr.get('scope')
 
         return return_obj
 
 
-# TODO: This is sort of a hack, since RelatedPackageRefs is not actually a
-# subclass of GenericRelationshipList. As long as you don't try to set the
-# 'scope' variable, things should go fine.
-
-class RelatedPackageRefs(GenericRelationshipList):
+class RelatedPackageRefs(stix.EntityList):
     _namespace = 'http://stix.mitre.org/common-1'
     _binding = common_binding
     _binding_class = common_binding.RelatedPackageRefsType

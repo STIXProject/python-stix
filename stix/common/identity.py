@@ -8,7 +8,7 @@ import stix.bindings.stix_common as common_binding
 import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
 import stix.utils
 
-# import of GenericRelationshipList and RelatedIdentity is below
+# import of RelatedIdentity is below
 
 
 class Identity(stix.Entity):
@@ -89,21 +89,14 @@ class Identity(stix.Entity):
         return return_obj
 
 
-from stix.common.related import GenericRelationshipList, RelatedIdentity
+# We can't import RelatedIdentity until we have defined the Identity class.
+from stix.common.related import RelatedIdentity
 
-# TODO: This is sort of a hack, since RelatedIdentities is not actually a
-# subclass of GenericRelationshipList. As long as you don't try to set the
-# 'scope' variable, things should go fine.
 
-class RelatedIdentities(GenericRelationshipList):
+class RelatedIdentities(stix.EntityList):
     _namespace = 'http://stix.mitre.org/common-1'
     _binding = common_binding
     _binding_class = common_binding.RelatedIdentitiesType
     _binding_var = "Related_Identity"
     _contained_type = RelatedIdentity
     _inner_name = "identities"
-
-    def __init__(self, identities=None, scope=None):
-        if identities is None:
-            identities = []
-        super(RelatedIdentities, self).__init__(*identities, scope=scope)

@@ -1,8 +1,10 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+import collections
 import json
 from StringIO import StringIO
+
 
 class Entity(object):
     """Base class for all classes in the STIX API."""
@@ -76,3 +78,114 @@ class Entity(object):
         """Convert from object representation to dict representation."""
         return cls.from_obj(entity_obj).to_dict()
 
+
+class EntityList(collections.MutableSequence, Entity):
+
+    def __init__(self, *args):
+        super(EntityList, self).__init__()
+        self._inner = []
+
+        for arg in args:
+            if isinstance(arg, list):
+                self.extend(arg)
+            else:
+                self.append(arg)
+
+    def __nonzero__(self):
+        return bool(self._inner)
+
+    def __getitem__(self, key):
+        return self._inner.__getitem__(key)
+
+    def __setitem__(self, key, value):
+        if not self._is_valid(value):
+            value = self._fix_value(value)
+        self._inner.__setitem__(key, value)
+
+    def __delitem__(self, key):
+        self._inner.__delitem__(key)
+
+    def __len__(self):
+        return len(self._inner)
+
+    def insert(self, idx, value):
+        if not self._is_valid(value):
+            value = self._fix_value(value)
+        self._inner.insert(idx, value)
+
+    def _is_valid(self, value):
+        """Check if this is a valid object to add to the list."""
+        # Subclasses can override this function, but if it becomes common, it's
+        # probably better to use self._contained_type.istypeof(value)
+        return isinstance(value, self._contained_type)
+
+    def _fix_value(self, value):
+        """Attempt to coerce value into the correct type.
+
+        Subclasses can override this function.
+        """
+        try:
+            new_value = self._contained_type(value)
+        except:
+            raise ValueError("Can't put '%s' (%s) into a %s" %
+                (value, type(value), self.__class__))
+        return new_value
+
+    # The next four functions can be overridden, but otherwise define the
+    # default behavior for EntityList subclasses which define the following
+    # class-level members:
+    # - _binding_class
+    # - _binding_var
+    # - _contained_type
+    # - _inner_name
+
+    def to_obj(self):
+        list_obj = self._binding_class()
+
+        setattr(list_obj, self._binding_var, [x.to_obj() for x in self])
+
+        return list_obj
+
+    def to_dict(self):
+        d = {}
+
+        if self._inner:
+            d[self._inner_name] = [h.to_dict() for h in self]
+
+        return d
+
+    @classmethod
+    def from_obj(cls, obj, return_obj=None, contained_type=None,
+                 binding_var=None):
+        if not obj:
+            return None
+
+        if return_obj is None:
+            return_obj = cls()
+        if not contained_type:
+            contained_type = cls._contained_type
+        if not binding_var:
+            binding_var = cls._binding_var
+
+        for item in getattr(obj, binding_var):
+            return_obj.append(contained_type.from_obj(item))
+
+        return return_obj
+
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None, contained_type=None,
+                  inner_name=None):
+        if not isinstance(dict_repr, dict):
+            return None
+
+        if return_obj is None:
+            return_obj = cls()
+        if not contained_type:
+            contained_type = cls._contained_type
+        if not inner_name:
+            inner_name = cls._inner_name
+
+        for item in dict_repr.get(inner_name, []):
+            return_obj.append(contained_type.from_dict(item))
+
+        return return_obj
