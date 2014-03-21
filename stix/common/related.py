@@ -394,6 +394,12 @@ class RelatedCampaign(_BaseRelated):
     # _base_type is set in common/__init__.py
     _inner_var = "Campaign"
 
+class RelatedCOA(_BaseRelated):
+    _namespace = "http://stix.mitre.org/common-1"
+    _binding = common_binding
+    _binding_class = common_binding.RelatedCourseOfActionType
+    # _base_type is set in common/__init__.py
+    _inner_var = "Course_Of_Action"
 
 class RelatedIdentity(_BaseRelated):
     _namespace = 'http://stix.mitre.org/common-1'
