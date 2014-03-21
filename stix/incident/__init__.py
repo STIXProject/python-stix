@@ -28,12 +28,13 @@ class Incident(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
     _version = "1.1"
 
-    def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None):
+    def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("incident")
         self.idref = idref
         self.timestamp = timestamp
         self.version = self._version
         self.description = description
+        self.short_description = short_description
         self.title = title
         self.time = None
         self.victims = None
@@ -74,6 +75,20 @@ class Incident(stix.Entity):
                 self._description = StructuredText(value=value)
         else:
             self._description = None
+
+    @property
+    def short_description(self):
+        return self._short_description
+
+    @short_description.setter
+    def short_description(self, value):
+        if value:
+            if isinstance(value, StructuredText):
+                self._short_description = value
+            else:
+                self._short_description = StructuredText(value=value)
+        else:
+            self._short_description = None
 
     @property
     def time(self):
@@ -189,6 +204,8 @@ class Incident(stix.Entity):
         
         if self.description:
             return_obj.set_Description(self.description.to_obj())
+        if self.short_description:
+            return_obj.set_Short_Description(self.short_description.to_obj())
         if self.time:
             return_obj.set_Time(self.time.to_obj())
         if self.victims:
@@ -225,6 +242,7 @@ class Incident(stix.Entity):
         return_obj.version = obj.get_version() or cls._version
         return_obj.title = obj.get_Title()
         return_obj.description = StructuredText.from_obj(obj.get_Description())
+        return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
         return_obj.time = Time.from_obj(obj.get_Time())
 
         if obj.get_Victim():
@@ -257,6 +275,8 @@ class Incident(stix.Entity):
             d['title'] = self.title
         if self.description:
             d['description'] = self.description.to_dict()
+        if self.short_description:
+            d['short_description'] = self.short_description.to_dict()
         if self.time:
             d['time'] = self.time.to_dict()
         if self.victims:
@@ -290,6 +310,7 @@ class Incident(stix.Entity):
         return_obj.version = dict_repr.get('version', cls._version)
         return_obj.title = dict_repr.get('title')
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
+        return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
         return_obj.time = Time.from_dict(dict_repr.get('time'))
         return_obj.victims = [Identity.from_dict(x) for x in dict_repr.get('victims', [])]
         return_obj.categories = [IncidentCategory.from_dict(x) for x in dict_repr.get('categories', [])]

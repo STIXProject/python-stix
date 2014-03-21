@@ -4,7 +4,8 @@
 import stix
 import stix.utils
 from stix.utils import dates
-from stix.common import Identity, InformationSource, StructuredText, VocabString, Confidence
+from stix.common import (Identity, InformationSource, StructuredText, VocabString, 
+                         Confidence, RelatedTTP)
 import stix.extensions.identity as ext_identity
 import stix.bindings.indicator as indicator_binding
 from cybox.core import Observable, ObservableComposition
@@ -20,17 +21,19 @@ class Indicator(stix.Entity):
     _namespace = 'http://stix.mitre.org/Indicator-2'
     _version = "2.1"
 
-    def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, indicator_types=None, producer=None, observables=None):
+    def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("indicator")
         self.idref = idref
         self.timestamp = timestamp
         self.version = self._version
-        self.producer = producer
-        self.observables = observables
+        self.producer = None
+        self.observables = None
         self.title = title
         self.description = description
-        self.indicator_types = indicator_types
+        self.short_description = short_description
+        self.indicator_types = None
         self.confidence = None
+        self.indicated_ttps = None
     
     @property
     def timestamp(self):
@@ -53,6 +56,20 @@ class Indicator(stix.Entity):
                 self._description = StructuredText(value=value)
         else:
             self._description = None
+
+    @property
+    def short_description(self):
+        return self._short_description
+
+    @short_description.setter
+    def short_description(self, value):
+        if value:
+            if isinstance(value, StructuredText):
+                self._short_description = value
+            else:
+                self._short_description = StructuredText(value=value)
+        else:
+            self._short_description = None
 
     @property
     def producer(self):
@@ -126,6 +143,29 @@ class Indicator(stix.Entity):
             tmp_indicator_type = IndicatorType(value=value)
             self.indicator_types.append(tmp_indicator_type)
 
+    @property
+    def indicated_ttps(self):
+        return self._indicated_ttps
+    
+    @indicated_ttps.setter
+    def indicated_ttps(self, value):
+        self._indicated_ttps = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_indicated_ttp(v)
+        else:
+            self.add_indicated_ttp(value)
+            
+    def add_indicated_ttp(self, v):
+        if not v:
+            return
+        elif isinstance(v, RelatedTTP):
+            self.indicated_ttps.append(v)
+        else:
+            self.indicated_ttps.append(RelatedTTP(v))
+        
     def set_producer_identity(self, identity):
         '''
         Sets the name of the producer of this indicator.
@@ -177,10 +217,11 @@ class Indicator(stix.Entity):
             composition, with an logical operator of 'OR'. If this is not ideal, an separate indicator
             should be made for each observable'''
 
-        if not isinstance(observable, Observable):
-            raise ValueError('observable must be instance of Observable')
-
-        self.observables.append(observable)
+        if isinstance(observable, Observable):
+            self.observables.append(observable)
+        else:
+            # try to cast it to an Observable type
+            self.observables.append(Observable(observable))
 
     def _merge_observables(self, observables, operator='AND'):
         observable_composition = ObservableComposition()
@@ -214,15 +255,16 @@ class Indicator(stix.Entity):
             return_obj.set_version(self._version)
         if self.description:
             return_obj.set_Description(self.description.to_obj())
+        if self.short_description:
+            return_obj.set_Short_Description(self.short_description.to_obj())
         if self.confidence:
             return_obj.set_Confidence(self.confidence.to_obj())
         if self.indicator_types:
             for indicator_type in self.indicator_types:
                 tmp_indicator_type = indicator_type.to_obj()
                 return_obj.add_Type(tmp_indicator_type)
-
-        
-
+        if self.indicated_ttps:
+            return_obj.set_Indicated_TTP([x.to_obj() for x in self.indicated_ttps])
         if self.observables:
             if len(self.observables) > 1:
                 root_observable = self._merge_observables(self.observables)
@@ -246,6 +288,7 @@ class Indicator(stix.Entity):
         return_obj.timestamp        = obj.get_timestamp()
         return_obj.title            = obj.get_Title()
         return_obj.description      = StructuredText.from_obj(obj.get_Description())
+        return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
         return_obj.producer         = InformationSource.from_obj(obj.get_Producer())
         return_obj.confidence       = Confidence.from_obj(obj.get_Confidence())
         
@@ -258,6 +301,8 @@ class Indicator(stix.Entity):
             observable_obj = obj.get_Observable()
             observable = Observable.from_obj(observable_obj)
             return_obj.observables.append(observable)
+        if obj.get_Indicated_TTP():
+            return_obj.indicated_ttps = [RelatedTTP.from_obj(x) for x in obj.get_Indicated_TTP()]
 
         return return_obj
 
@@ -283,10 +328,14 @@ class Indicator(stix.Entity):
             d['title'] = self.title
         if self.description:
             d['description'] = self.description.to_dict()
+        if self.short_description:
+            d['short_description'] = self.short_description.to_dict()
         if self.indicator_types:
             d['indicator_types'] = [x.to_dict() for x in self.indicator_types]
         if self.confidence:
             d['confidence'] = self.confidence.to_dict()
+        if self.indicated_ttps:
+            d['indicated_ttps'] = [x.to_dict() for x in self.indicated_ttps]
 
         return d
 
@@ -308,6 +357,9 @@ class Indicator(stix.Entity):
         indicator_type_list  = dict_repr.get('indicator_types')
         confidence_dict      = dict_repr.get('confidence')
 
+        return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
+        return_obj.indicated_ttps = [RelatedTTP.from_dict(x) for x in dict_repr.get('indicated_ttps', [])]
+        
         if observable_dict:
             return_obj.add_observable(Observable.from_dict(observable_dict))
         if producer_dict:
