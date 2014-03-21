@@ -6,6 +6,7 @@ from __future__ import absolute_import
 from .structured_text import StructuredText
 from .vocabs import VocabString, HighMediumLow
 from .datetimewithprecision import DateTimeWithPrecision
+from .activity import Activity
 from .confidence import Confidence
 from .identity import Identity
 from .information_source import InformationSource
