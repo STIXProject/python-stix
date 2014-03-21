@@ -20,11 +20,6 @@ class ObservedTTPs(GenericRelationshipList):
     _contained_type = RelatedTTP
     _inner_name = "ttps"
 
-    def __init__(self, ttps=None, scope=None):
-        if ttps is None:
-            ttps = []
-        super(ObservedTTPs, self).__init__(*ttps, scope=scope)
-
 
 class AssociatedActors(GenericRelationshipList):
     _namespace = 'http://stix.mitre.org/ThreatActor-1'
@@ -34,11 +29,6 @@ class AssociatedActors(GenericRelationshipList):
     _contained_type = RelatedThreatActor
     _inner_name = "threat_actors"
 
-    def __init__(self, threat_actors=None, scope=None):
-        if threat_actors is None:
-            threat_actors = []
-        super(AssociatedActors, self).__init__(*threat_actors, scope=scope)
-
 
 class AssociatedCampaigns(GenericRelationshipList):
     _namespace = 'http://stix.mitre.org/ThreatActor-1'
@@ -47,11 +37,6 @@ class AssociatedCampaigns(GenericRelationshipList):
     _binding_var = "Associated_Campaign"
     _contained_type = RelatedCampaign
     _inner_name = "campaigns"
-
-    def __init__(self, campaigns=None, scope=None):
-        if campaigns is None:
-            campaigns = []
-        super(AssociatedCampaigns, self).__init__(*campaigns, scope=scope)
 
 
 class ThreatActor(stix.Entity):

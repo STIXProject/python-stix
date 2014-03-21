@@ -331,11 +331,6 @@ class AttributedThreatActors(GenericRelationshipList):
     _contained_type = RelatedThreatActor
     _inner_name = "threat_actors"
 
-    def __init__(self, threat_actors=None, scope=None):
-        if threat_actors is None:
-            threat_actors = []
-        super(AttributedThreatActors, self).__init__(*threat_actors, scope=scope)
-
 
 class RelatedIndicators(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Incident-1"
@@ -345,10 +340,6 @@ class RelatedIndicators(GenericRelationshipList):
     _contained_type = RelatedIndicator
     _inner_name = "indicators"
 
-    def __init__(self, indicators=None, scope=None):
-        if indicators is None:
-            indicators = []
-        super(RelatedIndicators, self).__init__(*indicators, scope=scope)
 
 class RelatedObservables(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Incident-1"
@@ -358,10 +349,6 @@ class RelatedObservables(GenericRelationshipList):
     _contained_type = RelatedObservable
     _inner_name = "observables"
 
-    def __init__(self, observables=None, scope=None):
-        if observables is None:
-            observables = []
-        super(RelatedObservables, self).__init__(*observables, scope=scope)
 
 class LeveragedTTPs(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Incident-1"
@@ -370,9 +357,3 @@ class LeveragedTTPs(GenericRelationshipList):
     _binding_var = "Leveraged_TTP"
     _contained_type = RelatedTTP
     _inner_name = "ttps"
-
-    def __init__(self, leveraged_ttps=None, scope=None):
-        if leveraged_ttps is None:
-            leveraged_ttps = []
-        super(LeveragedTTPs, self).__init__(*leveraged_ttps, scope=scope)
-
