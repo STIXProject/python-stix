@@ -10,7 +10,7 @@ def get_version():
     with open(INIT_FILE) as f:
         for line in f.readlines():
             if line.startswith("__version__"):
-                version = line.split()[-1]
+                version = line.split()[-1].strip('"')
                 return version
         raise AttributeError("Package does not have a __version__")
 
