@@ -9,7 +9,8 @@ import stix
 import stix.bindings.campaign as campaign_binding
 from stix.common import Confidence, InformationSource, StructuredText
 from stix.common.related import (GenericRelationshipList, RelatedCampaign,
-        RelatedIncident, RelatedIndicator, RelatedTTP, RelatedPackageRefs)
+        RelatedIncident, RelatedIndicator, RelatedPackageRefs,
+        RelatedThreatActor, RelatedTTP)
 from stix.data_marking import Marking
 import stix.utils
 
@@ -21,6 +22,15 @@ class AssociatedCampaigns(GenericRelationshipList):
     _binding_var = "Associated_Campaign"
     _contained_type = RelatedCampaign
     _inner_name = "campaigns"
+
+
+class Attribution(GenericRelationshipList):
+    _namespace = "http://stix.mitre.org/Campaign-1"
+    _binding = campaign_binding
+    _binding_class = campaign_binding.AttributionType
+    _binding_var = "Attributed_Threat_Actor"
+    _contained_type = RelatedThreatActor
+    _inner_name = "threat_actors"
 
 
 class RelatedIncidents(GenericRelationshipList):
@@ -70,7 +80,7 @@ class Campaign(stix.Entity):
         self.related_ttps = RelatedTTPs()
         self.related_incidents = RelatedIncidents()
         self.related_indicators = RelatedIndicators()
-        # self.attribution = None
+        self.attribution = []
         self.associated_campaigns = AssociatedCampaigns()
         self.confidence = None
         # self.activity = None
@@ -126,7 +136,8 @@ class Campaign(stix.Entity):
             return_obj.set_Related_Incidents(self.related_incidents.to_obj())
         if self.related_indicators:
             return_obj.set_Related_Indicators(self.related_indicators.to_obj())
-
+        if self.attribution:
+            return_obj.set_Attribution([x.to_obj() for x in self.attribution])
         if self.associated_campaigns:
             return_obj.set_Associated_Campaigns(self.associated_campaigns.to_obj())
         if self.confidence:
@@ -163,7 +174,8 @@ class Campaign(stix.Entity):
                 RelatedIncidents.from_obj(obj.get_Related_Incidents())
         return_obj.related_indicators = \
                 RelatedIndicators.from_obj(obj.get_Related_Indicators())
-
+        return_obj.attribution = \
+                [Attribution.from_obj(x) for x in obj.get_Attribution()]
         return_obj.associated_campaigns = \
                 AssociatedCampaigns.from_obj(obj.get_Associated_Campaigns())
         return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
@@ -199,7 +211,8 @@ class Campaign(stix.Entity):
             d['related_incidents'] = self.related_incidents.to_dict()
         if self.related_indicators:
             d['related_indicators'] = self.related_indicators.to_dict()
-
+        if self.attribution:
+            d['attribution'] = [x.to_dict() for x in self.attribution]
         if self.associated_campaigns:
             d['associated_campaigns'] = self.associated_campaigns.to_dict()
         if self.confidence:
@@ -238,7 +251,9 @@ class Campaign(stix.Entity):
                 RelatedIncidents.from_dict(dict_repr.get('related_incidents'))
         return_obj.related_indicators = \
                 RelatedIndicators.from_dict(dict_repr.get('related_indicators'))
-
+        return_obj.attribution = \
+                [Attribution.from_dict(x) for x in
+                        dict_repr.get('attribution', [])]
         return_obj.associated_campaigns = \
                 AssociatedCampaigns.from_dict(dict_repr.get('associated_campaigns'))
         return_obj.confidence = \

@@ -46,6 +46,20 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
                 }
             ]
         },
+        'attribution': [{
+            'scope': "inclusive",
+            'threat_actors': [
+                {
+                    'confidence': {'value': "Low"},
+                    'threat_actor': {'title': "Campaign Actor #1",
+                                     'version': "1.1"},
+                },
+                {
+                    'threat_actor': {'idref': "example:ThreatActor-111",
+                                     'version': "1.1"},
+                },
+            ],
+        }],
         'associated_campaigns': {
             'scope': "inclusive",
             'campaigns': [
