@@ -70,18 +70,18 @@ class PropertyAffected(stix.Entity):
     _binding_class = incident_binding.PropertyAffectedType
     
     def __init__(self):
-        self.property = None
+        self.property_ = None
         self.description_of_effect = None
         self.type_of_availability_loss = None
         self.duration_of_availability_loss = None
         self.non_public_data_compromised = None
         
     @property
-    def property(self):
+    def property_(self):
         return self._property
     
-    @property.setter
-    def property(self, value):
+    @property_.setter
+    def property_(self, value):
         if not value:
             self._property = None
         elif isinstance(value, LossProperty):
@@ -104,7 +104,7 @@ class PropertyAffected(stix.Entity):
 
     @property
     def type_of_availability_loss(self):
-        return self._type_of_availablity_loss
+        return self._type_of_availability_loss
     
     @type_of_availability_loss.setter
     def type_of_availability_loss(self, value):
@@ -148,7 +148,7 @@ class PropertyAffected(stix.Entity):
         if not return_obj:
             return_obj = cls()
             
-        return_obj.property = LossProperty.from_obj(obj.get_Property())
+        return_obj.property_ = LossProperty.from_obj(obj.get_Property())
         return_obj.description_of_effect = StructuredText.from_obj(obj.get_Description_Of_Effect())
         return_obj.type_of_availability_loss = AvailabilityLoss.from_obj(obj.get_Type_Of_Availability_Loss())
         return_obj.duration_of_availability_loss = LossDuration.from_obj(obj.get_Duration_Of_Availability_Loss())
@@ -159,8 +159,8 @@ class PropertyAffected(stix.Entity):
         if not return_obj:
             return_obj = self._binding_class()
             
-        if self.property:
-            return_obj.set_Property(self.property.to_obj())
+        if self.property_:
+            return_obj.set_Property(self.property_.to_obj())
         if self.description_of_effect:
             return_obj.set_Description_Of_Effect(self.description_of_effect.to_obj())
         if self.type_of_availability_loss:
@@ -179,7 +179,7 @@ class PropertyAffected(stix.Entity):
         if not return_obj:
             return_obj = cls()
             
-        return_obj.property = LossProperty.from_dict(d.get(('property')))
+        return_obj.property_ = LossProperty.from_dict(d.get(('property')))
         return_obj.description_of_effect = StructuredText.from_dict(d.get('description_of_effect'))
         return_obj.type_of_availability_loss = AvailabilityLoss.from_dict(d.get('type_of_availability_loss'))
         return_obj.duration_of_availability_loss = LossDuration.from_dict(d.get('duration_of_availability_loss'))
@@ -189,8 +189,8 @@ class PropertyAffected(stix.Entity):
     
     def to_dict(self):
         d = {}
-        if self.property:
-            d['property'] = self.property.to_dict()
+        if self.property_:
+            d['property'] = self.property_.to_dict()
         if self.description_of_effect:
             d['description_of_effect'] = self.description_of_effect.to_dict()
         if self.type_of_availability_loss:

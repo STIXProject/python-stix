@@ -13,6 +13,7 @@ from stix.ttp import TTP
 import stix.utils
 from stix.utils import dates
 from .affected_asset import AffectedAsset
+from .property_affected import PropertyAffected
 
 from .time import Time
 

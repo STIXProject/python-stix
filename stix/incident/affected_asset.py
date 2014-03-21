@@ -242,8 +242,8 @@ class AssetType(VocabString):
     _binding  = incident_binding
     _binding_class = incident_binding.AssetTypeType
     
-    def __init__(self, value=None, count_effected=None):
-        self.count_effected = count_effected
+    def __init__(self, value=None, count_affected=None):
+        self.count_affected = count_affected
         super(AssetType, self).__init__(value)
     
     @classmethod
@@ -254,7 +254,7 @@ class AssetType(VocabString):
             return_obj = cls()
         
         super(AssetType, cls).from_obj(obj, return_obj=return_obj)
-        return_obj.count_effected = obj.get_count_effected()
+        return_obj.count_affected = obj.get_count_affected()
         return return_obj
     
     def to_obj(self, return_obj=None):
@@ -262,7 +262,7 @@ class AssetType(VocabString):
             return_obj = self._binding_class()
         
         super(AssetType, self).to_obj(return_obj=return_obj)
-        return_obj.set_count_effected(self.count_effected)
+        return_obj.set_count_affected(self.count_affected)
         return return_obj
     
     @classmethod
@@ -273,13 +273,13 @@ class AssetType(VocabString):
             return_obj = cls()
             
         super(AssetType, cls).from_dict(d, return_obj=return_obj)
-        return_obj.count_effected = d.get('count_effected')
+        return_obj.count_affected = d.get('count_affected')
         return return_obj
     
     def to_dict(self):
         d = super(AssetType, self).to_dict()
-        if self.count_effected:
-            d['count_effected'] = self.count_effected
+        if self.count_affected:
+            d['count_affected'] = self.count_affected
         return d
         
         
