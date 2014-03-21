@@ -12,6 +12,7 @@ from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
 import stix.utils
 from stix.utils import dates
+from .affected_asset import AffectedAsset
 
 from .time import Time
 
@@ -38,6 +39,7 @@ class Incident(stix.Entity):
         self.attributed_threat_actors = AttributedThreatActors()
         self.related_indicators = RelatedIndicators()
         self.related_observables = RelatedObservables()
+        self.affected_assets = None
         self.categories = None
         self.intended_effects = None
         self.leveraged_ttps = LeveragedTTPs()
@@ -151,6 +153,28 @@ class Incident(stix.Entity):
             cv_item = IncidentCategory(value=category)
             self.categories.append(cv_item)
 
+    @property
+    def affected_assets(self):
+        return self._affected_assets
+    
+    @affected_assets.setter
+    def affected_assets(self, value):
+        self._affected_assets = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_affected_asset(v)
+        else:
+            self.add_affected_asset(value)
+    
+    def add_affected_asset(self, v):
+        if not v:
+            return
+        elif isinstance(v, AffectedAsset):
+            self.affected_assets.append(v)
+        else:
+            raise ValueError('Cannot add type %s to affected asset list' % type(v))
 
     def to_obj(self, return_obj=None):
         if not return_obj:
@@ -180,6 +204,9 @@ class Incident(stix.Entity):
             return_obj.set_Intended_Effect([x.to_obj() for x in self.intended_effects])
         if self.leveraged_ttps:
             return_obj.set_Leveraged_TTPs(self.leveraged_ttps.to_obj())
+        if self.affected_assets:
+            a = self._binding.AffectedAssetsType(Affected_Asset=[x.to_obj() for x in self.affected_assets])
+            return_obj.set_Affected_Assets(a)
 
         return return_obj
 
@@ -201,12 +228,12 @@ class Incident(stix.Entity):
 
         if obj.get_Victim():
             return_obj.victims = [Identity.from_obj(x) for x in obj.get_Victim()]
-
         if obj.get_Categories():
             return_obj.categories = [IncidentCategory.from_obj(x) for x in obj.get_Categories().get_Category()]
-
         if obj.get_Intended_Effect():
             return_obj.intended_effects = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
+        if obj.get_Affected_Assets():
+            return_obj.affected_assets = [AffectedAsset.from_obj(x) for x in obj.get_Affected_Assets().get_Affected_Asset()]
 
         return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.get_Attributed_Threat_Actors())
         return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
@@ -245,14 +272,14 @@ class Incident(stix.Entity):
             d['intended_effects'] = [x.to_dict() for x in self.intended_effects]
         if self.leveraged_ttps:
             d['leveraged_ttps'] = self.leveraged_ttps.to_dict()
-
+        if self.affected_assets:
+            d['affected_assets'] = [x.to_dict() for x in self.affected_assets]
         return d
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
         if not dict_repr:
             return None
-
         if not return_obj:
             return_obj = cls()
 
@@ -270,7 +297,7 @@ class Incident(stix.Entity):
         return_obj.related_observables = RelatedObservables.from_dict(dict_repr.get('related_observables'))
         return_obj.intended_effects = [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
         return_obj.leveraged_ttps = LeveragedTTPs.from_dict(dict_repr.get('leveraged_ttps'))
-
+        return_obj.affected_assets = [AffectedAsset.from_dict(x) for x in dict_repr.get('affected_assets')]
         return return_obj
 
 
