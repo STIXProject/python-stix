@@ -7,7 +7,8 @@ import dateutil
 
 import stix
 import stix.bindings.campaign as campaign_binding
-from stix.common import Confidence, InformationSource, StructuredText
+from stix.common import (Confidence, InformationSource, StructuredText,
+        VocabString)
 from stix.common.related import (GenericRelationshipList, RelatedCampaign,
         RelatedIncident, RelatedIndicator, RelatedPackageRefs,
         RelatedThreatActor, RelatedTTP)
@@ -60,6 +61,19 @@ class RelatedTTPs(GenericRelationshipList):
     _inner_name = "ttps"
 
 
+class Name(VocabString):
+    pass
+
+
+class Names(stix.EntityList):
+    _namespace = "http://stix.mitre.org/Campaign-1"
+    _binding = campaign_binding
+    _binding_class = campaign_binding.NamesType
+    _binding_var = "Name"
+    _contained_type = Name
+    _inner_name = "names"
+
+
 class Campaign(stix.Entity):
     _binding = campaign_binding
     _binding_class = _binding.CampaignType
@@ -74,7 +88,7 @@ class Campaign(stix.Entity):
         self.title = title
         self.description = description
         self.short_description = None
-        # self.names = None
+        self.names = None
         # self.intended_effect = None
         # self.status = none
         self.related_ttps = RelatedTTPs()
@@ -129,6 +143,8 @@ class Campaign(stix.Entity):
             return_obj.set_Description(self.description.to_obj())
         if self.short_description:
             return_obj.set_Short_Description(self.short_description.to_obj())
+        if self.names:
+            return_obj.set_Names(self.names.to_obj())
 
         if self.related_ttps:
             return_obj.set_Related_TTPs(self.related_ttps.to_obj())
@@ -168,6 +184,7 @@ class Campaign(stix.Entity):
         return_obj.description = StructuredText.from_obj(obj.get_Description())
         return_obj.short_description = \
                 StructuredText.from_obj(obj.get_Short_Description())
+        return_obj.names = Names.from_obj(obj.get_Names())
 
         return_obj.related_ttps = RelatedTTPs.from_obj(obj.get_Related_TTPs())
         return_obj.related_incidents = \
@@ -204,6 +221,8 @@ class Campaign(stix.Entity):
             d['description'] = self.description.to_dict()
         if self.short_description:
             d['short_description'] = self.short_description.to_dict()
+        if self.names:
+            d['names'] = self.names.to_dict()
 
         if self.related_ttps:
             d['related_ttps'] = self.related_ttps.to_dict()
@@ -244,6 +263,7 @@ class Campaign(stix.Entity):
                 StructuredText.from_dict(dict_repr.get('description'))
         return_obj.short_description = \
                 StructuredText.from_dict(dict_repr.get('short_description'))
+        return_obj.names = Names.from_dict(dict_repr.get('names'))
 
         return_obj.related_ttps = \
                 RelatedTTPs.from_dict(dict_repr.get('related_ttps'))

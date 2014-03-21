@@ -17,6 +17,9 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
         'title': 'Purple Elephant',
         'description': 'A pretty novice set of actors.',
         'short_description': 'novices',
+        'names': {
+            'names': ["Dancing Hippos", "Crazy Squirrels"],
+        },
         'related_ttps': {
             'scope': "exclusive",
             'ttps': [
