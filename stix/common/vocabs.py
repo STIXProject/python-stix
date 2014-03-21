@@ -9,6 +9,7 @@ import stix.bindings.stix_common as stix_common_binding
 
 class VocabString(stix.Entity):
     _binding = stix_common_binding
+    _binding_class = stix_common_binding.ControlledVocabularyStringType
     _namespace = 'http://stix.mitre.org/common-1'
 
     # All subclasses should override this
@@ -46,20 +47,21 @@ class VocabString(stix.Entity):
             self.vocab_reference is None
         )
 
-    def to_obj(self):
-        vocab_obj = self._binding.ControlledVocabularyStringType()
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = self._binding_class()
 
         #TODO: handle normalization
         #vocab_obj.set_valueOf_(normalize_to_xml(self.value))
-        vocab_obj.set_valueOf_(self.value)
-        vocab_obj.set_xsi_type(self.xsi_type)
+        return_obj.set_valueOf_(self.value)
+        return_obj.set_xsi_type(self.xsi_type)
 
         if self.vocab_name is not None:
-            vocab_obj.set_vocab_name(self.vocab_name)
+            return_obj.set_vocab_name(self.vocab_name)
         if self.vocab_reference is not None:
-            vocab_obj.set_vocab_reference(self.vocab_reference)
+            return_obj.set_vocab_reference(self.vocab_reference)
 
-        return vocab_obj
+        return return_obj
 
     def to_dict(self):
         if self.is_plain():
@@ -78,39 +80,41 @@ class VocabString(stix.Entity):
         return d
 
     @classmethod
-    def from_obj(cls, vocab_obj):
+    def from_obj(cls, vocab_obj, return_obj=None):
         if not vocab_obj:
             return None
-
-        vocab_str = cls()
+        
+        if not return_obj:
+            return_obj = cls()
         # xsi_type should be set automatically by the class's constructor.
 
         #TODO: handle denormalization
         #vocab_str.value = denormalize_from_xml(vocab_obj.get_valueOf_())
-        vocab_str.value = vocab_obj.get_valueOf_()
-        vocab_str.vocab_name = vocab_obj.get_vocab_name()
-        vocab_str.vocab_reference = vocab_obj.get_vocab_reference()
+        return_obj.value = vocab_obj.get_valueOf_()
+        return_obj.vocab_name = vocab_obj.get_vocab_name()
+        return_obj.vocab_reference = vocab_obj.get_vocab_reference()
 
-        return vocab_str
+        return return_obj
 
     @classmethod
-    def from_dict(cls, vocab_dict):
+    def from_dict(cls, vocab_dict, return_obj=None):
         if not vocab_dict:
             return None
-
-        vocab_str = cls()
+        if not return_obj:
+            return_obj = cls()
+            
         # xsi_type should be set automatically by the class's constructor.
 
         # In case this is a "plain" string, just set it.
         if not isinstance(vocab_dict, dict):
-            vocab_str.value = vocab_dict
+            return_obj.value = vocab_dict
         else:
-            vocab_str.xsi_type = vocab_dict.get('xsi:type')
-            vocab_str.value = vocab_dict.get('value')
-            vocab_str.vocab_name = vocab_dict.get('vocab_name')
-            vocab_str.vocab_reference = vocab_dict.get('vocab_reference')
+            return_obj.xsi_type = vocab_dict.get('xsi:type')
+            return_obj.value = vocab_dict.get('value')
+            return_obj.vocab_name = vocab_dict.get('vocab_name')
+            return_obj.vocab_reference = vocab_dict.get('vocab_reference')
 
-        return vocab_str
+        return return_obj
 
 
 class HighMediumLow(VocabString):
