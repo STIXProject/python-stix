@@ -20,6 +20,17 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
         'names': {
             'names': ["Dancing Hippos", "Crazy Squirrels"],
         },
+        'intended_effect': [
+            {
+                'timestamp': "2014-03-11T06:24:26",
+                'value': "Doing bad stuff",
+            },
+            {
+                'timestamp': "2014-03-21T06:24:26",
+                'value': "Doing really bad stuff",
+            }
+        ],
+        'status': "Ongoing",
         'related_ttps': {
             'scope': "exclusive",
             'ttps': [

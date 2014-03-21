@@ -7,8 +7,8 @@ import dateutil
 
 import stix
 import stix.bindings.campaign as campaign_binding
-from stix.common import (Confidence, InformationSource, StructuredText,
-        VocabString)
+from stix.common import (Confidence, InformationSource, Statement,
+        StructuredText, VocabString)
 from stix.common.related import (GenericRelationshipList, RelatedCampaign,
         RelatedIncident, RelatedIndicator, RelatedPackageRefs,
         RelatedThreatActor, RelatedTTP)
@@ -89,8 +89,8 @@ class Campaign(stix.Entity):
         self.description = description
         self.short_description = None
         self.names = None
-        # self.intended_effect = None
-        # self.status = none
+        self.intended_effect = []
+        self.status = None
         self.related_ttps = RelatedTTPs()
         self.related_incidents = RelatedIncidents()
         self.related_indicators = RelatedIndicators()
@@ -145,7 +145,10 @@ class Campaign(stix.Entity):
             return_obj.set_Short_Description(self.short_description.to_obj())
         if self.names:
             return_obj.set_Names(self.names.to_obj())
-
+        if self.intended_effect:
+            return_obj.set_Intended_Effect([x.to_obj() for x in self.intended_effect])
+        if self.status:
+            return_obj.set_Status(self.status.to_obj())
         if self.related_ttps:
             return_obj.set_Related_TTPs(self.related_ttps.to_obj())
         if self.related_incidents:
@@ -185,7 +188,9 @@ class Campaign(stix.Entity):
         return_obj.short_description = \
                 StructuredText.from_obj(obj.get_Short_Description())
         return_obj.names = Names.from_obj(obj.get_Names())
-
+        return_obj.intended_effect = \
+                [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
+        return_obj.status = VocabString.from_obj(obj.get_Status())
         return_obj.related_ttps = RelatedTTPs.from_obj(obj.get_Related_TTPs())
         return_obj.related_incidents = \
                 RelatedIncidents.from_obj(obj.get_Related_Incidents())
@@ -223,7 +228,10 @@ class Campaign(stix.Entity):
             d['short_description'] = self.short_description.to_dict()
         if self.names:
             d['names'] = self.names.to_dict()
-
+        if self.intended_effect:
+            d['intended_effect'] = [x.to_dict() for x in self.intended_effect]
+        if self.status:
+            d['status'] = self.status.to_dict()
         if self.related_ttps:
             d['related_ttps'] = self.related_ttps.to_dict()
         if self.related_incidents:
@@ -264,7 +272,9 @@ class Campaign(stix.Entity):
         return_obj.short_description = \
                 StructuredText.from_dict(dict_repr.get('short_description'))
         return_obj.names = Names.from_dict(dict_repr.get('names'))
-
+        return_obj.intended_effect = \
+                [Statement.from_dict(x) for x in dict_repr.get('intended_effect', [])]
+        return_obj.status = VocabString.from_dict(dict_repr.get('status'))
         return_obj.related_ttps = \
                 RelatedTTPs.from_dict(dict_repr.get('related_ttps'))
         return_obj.related_incidents = \
