@@ -298,7 +298,7 @@ class Incident(stix.Entity):
         return_obj.related_observables = RelatedObservables.from_dict(dict_repr.get('related_observables'))
         return_obj.intended_effects = [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
         return_obj.leveraged_ttps = LeveragedTTPs.from_dict(dict_repr.get('leveraged_ttps'))
-        return_obj.affected_assets = [AffectedAsset.from_dict(x) for x in dict_repr.get('affected_assets')]
+        return_obj.affected_assets = [AffectedAsset.from_dict(x) for x in dict_repr.get('affected_assets', [])]
         return return_obj
 
 
