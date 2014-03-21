@@ -7,7 +7,7 @@ import dateutil
 
 import stix
 import stix.bindings.campaign as campaign_binding
-from stix.common import (Confidence, InformationSource, Statement,
+from stix.common import (Activity, Confidence, InformationSource, Statement,
         StructuredText, VocabString)
 from stix.common.related import (GenericRelationshipList, RelatedCampaign,
         RelatedIncident, RelatedIndicator, RelatedPackageRefs,
@@ -97,7 +97,7 @@ class Campaign(stix.Entity):
         self.attribution = []
         self.associated_campaigns = AssociatedCampaigns()
         self.confidence = None
-        # self.activity = None
+        self.activity = []
         self.information_source = None
         self.handling = None
         self.related_packages = RelatedPackageRefs()
@@ -161,7 +161,8 @@ class Campaign(stix.Entity):
             return_obj.set_Associated_Campaigns(self.associated_campaigns.to_obj())
         if self.confidence:
             return_obj.set_Confidence(self.confidence.to_obj())
-
+        if self.activity:
+            return_obj.set_Activity([x.to_obj() for x in self.activity])
         if self.information_source:
             return_obj.set_Information_Source(self.information_source.to_obj())
         if self.handling:
@@ -201,7 +202,8 @@ class Campaign(stix.Entity):
         return_obj.associated_campaigns = \
                 AssociatedCampaigns.from_obj(obj.get_Associated_Campaigns())
         return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
-
+        return_obj.activity = \
+                [Activity.from_obj(x) for x in obj.get_Activity()]
         return_obj.information_source = \
                 InformationSource.from_obj(obj.get_Information_Source())
         return_obj.handling = Marking.from_obj(obj.get_Handling())
@@ -244,7 +246,8 @@ class Campaign(stix.Entity):
             d['associated_campaigns'] = self.associated_campaigns.to_dict()
         if self.confidence:
             d['confidence'] = self.confidence.to_dict()
-
+        if self.activity:
+            d['activity'] = [x.to_dict() for x in self.activity]
         if self.information_source:
             d['information_source'] = self.information_source.to_dict()
         if self.handling:
@@ -288,7 +291,8 @@ class Campaign(stix.Entity):
                 AssociatedCampaigns.from_dict(dict_repr.get('associated_campaigns'))
         return_obj.confidence = \
                 Confidence.from_dict(dict_repr.get('confidence'))
-
+        return_obj.activity = \
+                [Activity.from_dict(x) for x in dict_repr.get('activity', [])]
         return_obj.information_source = \
                 InformationSource.from_dict(dict_repr.get('information_source'))
         return_obj.handling = Marking.from_dict(dict_repr.get('handling'))

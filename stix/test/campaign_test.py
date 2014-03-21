@@ -85,6 +85,16 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
             ],
         },
         'confidence': {"value": "Low"},
+        'activity': [
+                {
+                    'date_time': "2012-01-01T08:45:31",
+                    'description': "The first bad thing"
+                },
+                {
+                    'date_time': "2012-01-02T08:45:31",
+                    'description': "Another bad thing"
+                },
+        ],
         'information_source': {
             'description': "A former member of the campaign.",
             'identity': {

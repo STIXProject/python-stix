@@ -1137,22 +1137,8 @@ class CampaignType(stix_common_binding.CampaignBaseType):
             obj_.build(child_)
             self.set_Confidence(obj_)
         elif nodeName_ == 'Activity':
-            type_name_ = child_.attrib.get(
-                '{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-                class_ = globals()[type_name_]
-                obj_ = class_.factory()
-                obj_.build(child_)
-            else:
-                raise NotImplementedError(
-                    'Class not implemented for <Activity> element')
+            obj_ = stix_common_binding.ActivityType.factory()
+            obj_.build(child_)
             self.Activity.append(obj_)
         elif nodeName_ == 'Information_Source':
             obj_ = stix_common_binding.InformationSourceType.factory()
