@@ -9,6 +9,7 @@ from stix.common import (Identity, InformationSource, StructuredText, VocabStrin
 import stix.extensions.identity as ext_identity
 import stix.bindings.indicator as indicator_binding
 from .test_mechanism import _BaseTestMechanism
+from stix.common.related import GenericRelationshipList, RelatedCOA
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
 
@@ -36,6 +37,7 @@ class Indicator(stix.Entity):
         self.confidence = None
         self.indicated_ttps = None
         self.test_mechanisms = None
+        self.suggested_coas = SuggestedCOAs()
     
     @property
     def timestamp(self):
@@ -302,6 +304,8 @@ class Indicator(stix.Entity):
             tms_obj = self._binding.TestMechanismsType()
             tms_obj.set_Test_Mechanism([x.to_obj() for x in self.test_mechanisms])
             return_obj.set_Test_Mechanisms(tms_obj)
+        if self.suggested_coas:
+            return_obj.set_Suggested_COAs(self.suggested_coas.to_obj())
 
         return return_obj
 
@@ -334,7 +338,9 @@ class Indicator(stix.Entity):
             return_obj.indicated_ttps = [RelatedTTP.from_obj(x) for x in obj.get_Indicated_TTP()]
         if obj.get_Test_Mechanisms():
             return_obj.test_mechanisms = [_BaseTestMechanism.from_obj(x) for x in obj.get_Test_Mechanisms().get_Test_Mechanism()]
-    
+        if obj.get_Suggested_COAs():
+            return_obj.suggested_coas = SuggestedCOAs.from_obj(obj.get_Suggested_COAs())
+            
         return return_obj
 
     def to_dict(self):
@@ -369,7 +375,9 @@ class Indicator(stix.Entity):
             d['indicated_ttps'] = [x.to_dict() for x in self.indicated_ttps]
         if self.test_mechanisms:
             d['test_mechanisms'] = [x.to_dict() for x in self.test_mechanisms]
-
+        if self.suggested_coas:
+            d['suggested_coas'] = self.suggested_coas.to_dict()
+        
         return d
 
     @classmethod
@@ -393,6 +401,7 @@ class Indicator(stix.Entity):
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
         return_obj.indicated_ttps = [RelatedTTP.from_dict(x) for x in dict_repr.get('indicated_ttps', [])]
         return_obj.test_mechanisms = [_BaseTestMechanism.from_dict(x) for x in dict_repr.get('test_mechanisms', [])]
+        return_obj.suggested_coas = SuggestedCOAs.from_dict(dict_repr.get('suggested_coas'))
         
         if observable_dict:
             return_obj.add_observable(Observable.from_dict(observable_dict))
@@ -408,3 +417,16 @@ class Indicator(stix.Entity):
         
         
         return return_obj
+    
+class SuggestedCOAs(GenericRelationshipList):
+    _namespace = "http://stix.mitre.org/Indicator-2"
+    _binding = indicator_binding
+    _binding_class = indicator_binding.SuggestedCOAsType
+    _binding_var = "Suggested_COA"
+    _contained_type = RelatedCOA
+    _inner_name = "suggested_coas"
+
+    def __init__(self, suggested_coas=None, scope=None):
+        if suggested_coas is None:
+            suggested_coas = []
+        super(SuggestedCOAs, self).__init__(*suggested_coas, scope=scope)
