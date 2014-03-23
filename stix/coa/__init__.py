@@ -9,6 +9,7 @@ import stix.utils
 import stix.bindings.course_of_action as coa_binding
 from stix.common import StructuredText, VocabString, InformationSource, Statement
 from stix.data_marking import Marking
+from .objective import Objective
 
 class Stage(VocabString):
     # placeholder until Stage has vocabulary
@@ -39,8 +40,7 @@ class CourseOfAction(stix.Entity):
         self.information_source = None
         self.type_ = None
         self.handling = None
-        
-        # self.objective = None
+        self.objective = None
         # self.parameter_observables = None
         # self.structured_coa = None
         # self.related_coas = None
@@ -184,6 +184,19 @@ class CourseOfAction(stix.Entity):
 
         self._handling = value
 
+    @property
+    def objective(self):
+        return self._objective
+    
+    @objective.setter
+    def objective(self, value):
+        if not value:
+            self._objective = None
+        elif isinstance(value, Objective):
+            self._objective = value
+        else:
+            raise ValueError('Cannot set objective to type %s' % type(value))
+
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -213,6 +226,8 @@ class CourseOfAction(stix.Entity):
             return_obj.set_timestamp(self.timestamp.isoformat())
         if self.handling:
             return_obj.set_Handling(self.handling.to_obj())
+        if self.objective:
+            return_obj.set_Objective(self.objective.to_obj())
         
         return return_obj
 
@@ -239,7 +254,8 @@ class CourseOfAction(stix.Entity):
             return_obj.type_ = COAType.from_obj(obj.get_Type())
             return_obj.timestamp = obj.get_timestamp()
             return_obj.handling = Marking.from_obj(obj.get_Handling())
-        
+            return_obj.objective = Objective.from_obj(obj.get_Objective())
+            
         return return_obj
 
     def to_dict(self):
@@ -272,6 +288,8 @@ class CourseOfAction(stix.Entity):
             d['type'] = self.type_.to_dict()
         if self.handling:
             d['handling'] = self.handling.to_dict()
+        if self.objective:
+            d['objective'] = self.objective.to_dict()
         
         return d
 
@@ -296,6 +314,7 @@ class CourseOfAction(stix.Entity):
         return_obj.impact = Statement.from_dict(dict_repr.get('impact'))
         return_obj.type_ = COAType.from_dict(dict_repr.get('type'))
         return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
+        return_obj.objective = Objective.from_dict(dict_repr.get('objective'))
         
         return return_obj
 
