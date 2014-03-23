@@ -8,6 +8,7 @@ from stix.common import (Identity, InformationSource, StructuredText, VocabStrin
                          Confidence, RelatedTTP)
 import stix.extensions.identity as ext_identity
 import stix.bindings.indicator as indicator_binding
+from .test_mechanism import _BaseTestMechanism
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
 
@@ -34,6 +35,7 @@ class Indicator(stix.Entity):
         self.indicator_types = None
         self.confidence = None
         self.indicated_ttps = None
+        self.test_mechanisms = None
     
     @property
     def timestamp(self):
@@ -166,6 +168,29 @@ class Indicator(stix.Entity):
         else:
             self.indicated_ttps.append(RelatedTTP(v))
         
+    @property
+    def test_mechanisms(self):
+        return self._test_mechanisms
+    
+    @test_mechanisms.setter
+    def test_mechanisms(self, value):
+        self._test_mechanisms = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_test_mechanism(v)
+        else:
+            self.add_test_mechanism(value)
+            
+    def add_test_mechanism(self, tm):
+        if not tm:
+            return
+        elif isinstance(tm, _BaseTestMechanism):
+            self.test_mechanisms.append(tm)
+        else:
+            raise ValueError('Cannot add type %s to test_mechanisms list' % type(tm))
+
     def set_producer_identity(self, identity):
         '''
         Sets the name of the producer of this indicator.
@@ -273,6 +298,10 @@ class Indicator(stix.Entity):
             return_obj.set_Observable(root_observable.to_obj())
         if self.producer:
             return_obj.set_Producer(self.producer.to_obj())
+        if self.test_mechanisms:
+            tms_obj = self._binding.TestMechanismsType()
+            tms_obj.set_Test_Mechanism([x.to_obj() for x in self.test_mechanisms])
+            return_obj.set_Test_Mechanisms(tms_obj)
 
         return return_obj
 
@@ -303,7 +332,9 @@ class Indicator(stix.Entity):
             return_obj.observables.append(observable)
         if obj.get_Indicated_TTP():
             return_obj.indicated_ttps = [RelatedTTP.from_obj(x) for x in obj.get_Indicated_TTP()]
-
+        if obj.get_Test_Mechanisms():
+            return_obj.test_mechanisms = [_BaseTestMechanism.from_obj(x) for x in obj.get_Test_Mechanisms().get_Test_Mechanism()]
+    
         return return_obj
 
     def to_dict(self):
@@ -336,6 +367,8 @@ class Indicator(stix.Entity):
             d['confidence'] = self.confidence.to_dict()
         if self.indicated_ttps:
             d['indicated_ttps'] = [x.to_dict() for x in self.indicated_ttps]
+        if self.test_mechanisms:
+            d['test_mechanisms'] = [x.to_dict() for x in self.test_mechanisms]
 
         return d
 
@@ -359,6 +392,7 @@ class Indicator(stix.Entity):
 
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
         return_obj.indicated_ttps = [RelatedTTP.from_dict(x) for x in dict_repr.get('indicated_ttps', [])]
+        return_obj.test_mechanisms = [_BaseTestMechanism.from_dict(x) for x in dict_repr.get('test_mechanisms', [])]
         
         if observable_dict:
             return_obj.add_observable(Observable.from_dict(observable_dict))
@@ -371,5 +405,6 @@ class Indicator(stix.Entity):
                 return_obj.add_indicator_type(IndicatorType.from_dict(indicator_type_dict))
         if confidence_dict:
             return_obj.confidence = Confidence.from_dict(confidence_dict)
+        
         
         return return_obj
