@@ -61,13 +61,33 @@ class Entity(object):
         return self.from_dict(d)
 
     def to_dict(self):
-        raise NotImplementedError()
+        d = {}
+        for raw_key in self.__dict__.keys():
+            raw_value = self.__dict__[raw_key]
+            
+            if raw_value:
+                if isinstance(raw_value, Entity):
+                    value = raw_value.to_dict()
+                elif isinstance(raw_value, list):
+                    value = [x.to_dict() for x in raw_value]
+                else:
+                    value = raw_value
+                
+                if raw_key.startswith("_"):
+                    key = raw_key[1:]
+                elif raw_key.endswith("_"):
+                    key = raw_key[:-1]
+                else:
+                    key = raw_key
+            
+                d[key] = value
+        return d
 
     @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
+    def from_dict(cls, d, return_obj=None):
         """Convert from dict representation to object representation. This should be overriden by a subclass"""
         raise NotImplementedError()
-
+            
     @classmethod
     def object_from_dict(cls, entity_dict):
         """Convert from dict representation to object representation."""
