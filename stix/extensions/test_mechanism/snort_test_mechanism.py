@@ -7,7 +7,6 @@ import stix.indicator.test_mechanism
 from stix.common import EncodedCDATA
 from stix.indicator.test_mechanism import _BaseTestMechanism
 import stix.bindings.extensions.test_mechanism.snort as snort_tm_binding
-from stix.bindings.extensions.test_mechanism import snort
 
 class SnortTestMechanism(_BaseTestMechanism):
     _namespace = "http://stix.mitre.org/extensions/TestMechanism#Snort-1"
@@ -16,7 +15,7 @@ class SnortTestMechanism(_BaseTestMechanism):
     _XSI_TYPE = "snortTM:SnortTestMechanismType"
     
     def __init__(self, id_=None, idref=None):
-        super(SnortTestMechanism, self).__init__()
+        super(SnortTestMechanism, self).__init__(id_=id_, idref=idref)
         self.product_name = None
         self.version = None
         self.rules = None

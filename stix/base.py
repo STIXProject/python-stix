@@ -3,6 +3,7 @@
 
 import collections
 import json
+from lxml import etree
 from StringIO import StringIO
 
 
@@ -70,6 +71,8 @@ class Entity(object):
                     value = raw_value.to_dict()
                 elif isinstance(raw_value, list):
                     value = [x.to_dict() for x in raw_value]
+                elif isinstance(raw_value, etree._ElementTree):
+                    value = etree.tostring(raw_value)
                 else:
                     value = raw_value
                 
