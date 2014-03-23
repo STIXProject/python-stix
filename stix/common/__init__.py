@@ -34,3 +34,51 @@ RelatedIndicator._base_type = Indicator
 RelatedThreatActor._base_type = ThreatActor
 RelatedTTP._base_type = TTP
 RelatedObservable._base_type = Observable
+
+import stix
+import stix.bindings.stix_common as common_binding
+class EncodedCDATA(stix.Entity):
+    _namespace = "http://stix.mitre.org/common-1"
+    _binding = common_binding
+    _binding_class = _binding.EncodedCDATAType
+    
+    def __init__(self, value=None, encoded=None):
+        self.value = value
+        self.encoded = encoded
+    
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
+        if not obj:
+            return None
+        if not return_obj:
+            return_obj = cls()
+        
+        return_obj.value =  obj.get_valueOf_()
+        return_obj.encoded = obj.get_encoded()
+        return return_obj
+    
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = self._binding_class()
+            
+        return_obj.set_valueOf_(self.value)
+        return_obj.set_encoded(self.encoded)
+        return return_obj
+    
+    @classmethod
+    def from_dict(cls, d, return_obj=None):
+        if not d:
+            return None
+        if not return_obj:
+            return_obj = cls()
+            
+        return_obj.value = d.get('value')
+        return_obj.encoded = bool(d.get('encoded') )
+        return return_obj
+    
+    def __str__(self):
+        return self.__unicode__().encode("utf-8")
+
+    def __unicode__(self):
+        return unicode(self.value)
+
