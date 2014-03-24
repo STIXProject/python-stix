@@ -1,3 +1,19 @@
+Version 1.1.0.3
+2014-02-24
+- Added TTP structure (stix.ttp.TTP)
+- Added COA structure (stix.coa.CourseOfAction)
+- Added Campaign structure (stix.campaign.Campaign)
+- Added Exploit Target structure (stix.exploit_target.ExploitTarget)
+- Fixed bugs in CIQ extension classes
+- Fixed bugs in namespace/schemalocation generation code
+- Added *experimental* from_json() to base Entity class
+- Added EntityList class for managing lists of STIX constructs in a more-pythonic manner
+- Refactor of GenericRelationship and GenericRelationshipList classes
+- Refactor of imports to reduce the amount of in-line, function scoped imports
+- Added initial support for Snort Test Mechanism extension (stix.extensions.test_mechanism.snort_test_mechanism.SnortTestMechanism)
+- Added initial support for OpenIOC 2010 Test Mechanism (stix.extensions.test_mechanism.openioc_2010_test_mechanism.OpenIOCTestMechanism)
+- Updates to Indicator and Incident classes
+
 Version 1.1.0.2
 2014-02-25
 - Fixed bug where exception would be thrown if parsing defaults were unset
