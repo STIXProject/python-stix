@@ -102,7 +102,7 @@ class CourseOfAction(stix.Entity):
     @stage.setter
     def stage(self, value):
         if not value:
-            return
+            self._stage = None
         elif isinstance(value, Stage):
             self._stage = value
         else:
@@ -128,7 +128,7 @@ class CourseOfAction(stix.Entity):
     @impact.setter
     def impact(self, impact):
         if not impact:
-            return
+            self._impact = None
         elif isinstance(impact, Statement):
             self._impact = impact
         else:
@@ -141,7 +141,7 @@ class CourseOfAction(stix.Entity):
     @cost.setter
     def cost(self, cost):
         if not cost:
-            return
+            self._cost = None
         elif isinstance(cost, Statement):
             self._cost = cost
         else:
@@ -154,7 +154,7 @@ class CourseOfAction(stix.Entity):
     @efficacy.setter
     def efficacy(self, efficacy):
         if not efficacy:
-            return
+            self._efficacy = None
         elif isinstance(efficacy, Statement):
             self._efficacy = efficacy
         else:
@@ -167,7 +167,7 @@ class CourseOfAction(stix.Entity):
     @type_.setter
     def type_(self, value):
         if not value:
-            return
+            self._type_ = None
         elif isinstance(value, COAType):
             self._type_ = value
         else:
