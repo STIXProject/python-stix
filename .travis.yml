@@ -8,3 +8,7 @@ install:
 
 script:
    - nosetests
+
+notifications:
+    email:
+        - stix-commits-list@lists.mitre.org

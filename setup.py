@@ -14,18 +14,22 @@ def get_version():
                 return version
         raise AttributeError("Package does not have a __version__")
 
+with open('README.rst') as f:
+    readme = f.read()
+
 setup(
     name="stix",
     version=get_version(),
     author="STIX Project, MITRE Corporation",
     author_email="stix@mitre.org",
     description="An API for parsing and generating STIX content.",
+    long_description=readme,
     url="http://stix.mitre.org",
     packages=find_packages(),
     install_requires=['lxml>=2.3', 'python-dateutil', 'cybox>=2.1.0.2,<2.1.1.0'],
     classifiers=[
         "Programming Language :: Python",
-        "Development Status :: 2 - Pre-Alpha",
+        "Development Status :: 4 - Beta",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: BSD License",
         "Operating System :: OS Independent",
