@@ -60,10 +60,14 @@ The python-stix package layout is as follows:
 * ``stix/bindings/`` : generateDS generated xml-to-python bindings (leveraged for
   parsing and output of STIX XML content)
 
+* ``stix/coa/`` : APIs for STIX Course Of Action constructs
+
 * ``stix/core/`` : APIs for core STIX constructs (e.g., STIX Header, STIX Package)
 
 * ``stix/common/`` : APIs for common STIX constructs (e.g., Structured Text,
   Information Source)
+
+* ``stix/coa/`` : APIs for STIX Exploit Target constructs
 
 * ``stix/incident/`` : APIs for common Incident constructs
 
