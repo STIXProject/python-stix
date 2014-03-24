@@ -26,13 +26,29 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
     def ioc(self, value):
         if not value:
             self._ioc = None
+            return
         elif isinstance(value, etree._ElementTree):
-            self._ioc = value
+            tree = value
         elif isinstance(value, etree._Element):
-            self._ioc = etree.ElementTree(value)
+            tree = etree.ElementTree(value)
         else:
-            raise ValueError('ioc must be instance of lxml.etree._Element or lxml.etree._ElementTree')
-    
+            raise ValueError('ioc must be instance of lxml.etree._Element '
+                             'or lxml.etree._ElementTree')
+        
+        root = tree.getroot()
+        expected_node_tag = "{%s}ioc" % (self._namespace)
+        if root.tag != expected_node_tag:
+            ns_ioc = "http://schemas.mandiant.com/2010/ioc"
+            node_ns = root.tag[1:].split("}")[0] if root.tag.startswith("{") else None
+            if node_ns == ns_ioc:
+                # attempt to cast
+                root.tag = expected_node_tag
+            else:
+                raise ValueError("Cannot set ioc property. Expected tag %s found %s" 
+                                 % (expected_node_tag, root.tag))
+        
+        self._ioc = tree
+        
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:
