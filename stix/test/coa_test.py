@@ -37,7 +37,13 @@ class COATests(EntityTestCase, unittest.TestCase):
                     'xsi:type': "tlpMarking:TLPMarkingStructureType",
                 }]
             }
-        ]
+        ],
+        'related_packages': {
+            'packages': [
+                {'idref': "example:Package-AB", 'relationship': "Parent"},
+                {'idref': "example:Package-CD", 'relationship': "Child"}
+            ]
+        }
     }
 
 if __name__ == "__main__":

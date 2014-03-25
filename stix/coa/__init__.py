@@ -7,6 +7,7 @@ import dateutil
 import stix
 import stix.utils
 import stix.bindings.course_of_action as coa_binding
+from stix.common.related import (GenericRelationshipList, RelatedPackageRefs)
 from stix.common import StructuredText, VocabString, InformationSource, Statement
 from stix.data_marking import Marking
 from .objective import Objective
@@ -41,10 +42,10 @@ class CourseOfAction(stix.Entity):
         self.type_ = None
         self.handling = None
         self.objective = None
+        self.related_packages = RelatedPackageRefs()
         # self.parameter_observables = None
         # self.structured_coa = None
         # self.related_coas = None
-        # self.related_packages = None
 
     @property
     def timestamp(self):
@@ -228,6 +229,8 @@ class CourseOfAction(stix.Entity):
             return_obj.set_Handling(self.handling.to_obj())
         if self.objective:
             return_obj.set_Objective(self.objective.to_obj())
+        if self.related_packages:
+            return_obj.set_Related_Packages(self.related_packages.to_obj())
         
         return return_obj
 
@@ -255,6 +258,7 @@ class CourseOfAction(stix.Entity):
             return_obj.timestamp = obj.get_timestamp()
             return_obj.handling = Marking.from_obj(obj.get_Handling())
             return_obj.objective = Objective.from_obj(obj.get_Objective())
+            return_obj.related_packages = RelatedPackageRefs.from_obj(obj.get_Related_Packages())
             
         return return_obj
 
@@ -290,6 +294,8 @@ class CourseOfAction(stix.Entity):
             d['handling'] = self.handling.to_dict()
         if self.objective:
             d['objective'] = self.objective.to_dict()
+        if self.related_packages:
+            d['related_packages'] = self.related_packages.to_dict()
         
         return d
 
@@ -315,6 +321,7 @@ class CourseOfAction(stix.Entity):
         return_obj.type_ = COAType.from_dict(dict_repr.get('type'))
         return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
         return_obj.objective = Objective.from_dict(dict_repr.get('objective'))
+        return_obj.related_packages = RelatedPackageRefs.from_dict(dict_repr.get('related_packages'))
         
         return return_obj
 
