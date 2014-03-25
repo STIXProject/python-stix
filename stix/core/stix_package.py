@@ -6,6 +6,7 @@ import stix.utils
 from stix.utils import dates
 from stix.utils.parser import EntityParser
 from stix_header import STIXHeader
+from stix.campaign import Campaign
 from stix.coa import CourseOfAction
 from stix.exploit_target import ExploitTarget
 from stix.indicator import Indicator
@@ -27,12 +28,13 @@ class STIXPackage(stix.Entity):
     _namespace = 'http://stix.mitre.org/stix-1'
     _version = "1.1"
 
-    def __init__(self, id_=None, idref_=None, timestamp=None, stix_header=None, courses_of_action=None, exploit_targets=None, indicators=None, observables=None, incidents=None, threat_actors=None, ttps=None):
+    def __init__(self, id_=None, idref_=None, timestamp=None, stix_header=None, courses_of_action=None, exploit_targets=None, indicators=None, observables=None, incidents=None, threat_actors=None, ttps=None, campaigns=None):
         self.id_ = id_ or stix.utils.create_id("Package")
         self.idref_ = idref_
         self.timestamp = timestamp
         self.version = self._version
         self.stix_header = stix_header
+        self.campaigns = campaigns
         self.courses_of_action = courses_of_action
         self.exploit_targets = exploit_targets
         self.observables = observables
@@ -83,6 +85,30 @@ class STIXPackage(stix.Entity):
             self.indicators.append(indicator)
         else:
             raise ValueError('indicator must be instance of stix.indicator.Indicator')
+
+    @property
+    def campaigns(self):
+        return self._campaigns
+
+    @campaigns.setter
+    def campaigns(self, value):
+        self._campaigns = []
+
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_campaign(v)
+        else:
+            self.add_campaign(value)
+
+    def add_campaign(self, campaign):
+        if not campaign:
+            return
+        elif isinstance(campaign, Campaign):
+            self.campaigns.append(campaign)
+        else:
+            raise ValueError('indicator must be instance of stix.campaign.Campaign')
 
     @property
     def observables(self):
@@ -235,6 +261,11 @@ class STIXPackage(stix.Entity):
         if self.stix_header:
             return_obj.set_STIX_Header(self.stix_header.to_obj())
         
+        if self.campaigns:
+            coas_obj = self._binding.CampaignsType()
+            coas_obj.set_Campaign([x.to_obj() for x in self.campaigns])
+            return_obj.set_Campaigns(coas_obj)
+            
         if self.courses_of_action:
             coas_obj = self._binding.CoursesOfActionType()
             coas_obj.set_Course_Of_Action([x.to_obj() for x in self.courses_of_action])
@@ -279,6 +310,8 @@ class STIXPackage(stix.Entity):
             d['timestamp'] = dates.serialize_value(self.timestamp)
         if self.stix_header:
             d['stix_header'] = self.stix_header.to_dict()
+        if self.campaigns:
+            d['campaigns'] = [x.to_dict() for x in self.campaigns]
         if self.courses_of_action:
             d['courses_of_action'] = [x.to_dict() for x in self.courses_of_action]
         if self.exploit_targets:
@@ -308,6 +341,8 @@ class STIXPackage(stix.Entity):
 
         if obj.get_version():
             return_obj.version = obj.get_version()
+        if obj.get_Campaigns():
+            return_obj.campaigns = [Campaign.from_obj(x) for x in obj.get_Campaigns().get_Campaign()]
         if obj.get_Courses_Of_Action():
             return_obj.courses_of_action = [CourseOfAction.from_obj(x) for x in obj.get_Courses_Of_Action().get_Course_Of_Action()]
         if obj.get_Exploit_Targets():
@@ -336,6 +371,7 @@ class STIXPackage(stix.Entity):
         return_obj.version = dict_repr.get('version', cls._version)
         header_dict = dict_repr.get('stix_header', None)
         return_obj.stix_header = STIXHeader.from_dict(header_dict)
+        return_obj.campaigns = [Campaign.from_dict(x) for x in dict_repr.get('campaigns', [])]
         return_obj.courses_of_action = [CourseOfAction.from_dict(x) for x in dict_repr.get('courses_of_action', [])]
         return_obj.exploit_targets = [ExploitTarget.from_dict(x) for x in dict_repr.get('exploit_targets', [])]
         return_obj.indicators = [Indicator.from_dict(x) for x in dict_repr.get('indicators', [])]
