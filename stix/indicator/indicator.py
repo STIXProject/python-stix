@@ -423,7 +423,6 @@ class Indicator(stix.Entity):
         if confidence_dict:
             return_obj.confidence = Confidence.from_dict(confidence_dict)
         
-        
         return return_obj
     
 class SuggestedCOAs(GenericRelationshipList):

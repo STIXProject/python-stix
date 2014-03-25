@@ -149,7 +149,7 @@ class Sightings(stix.EntityList):
     
     def __init__(self, sightings_count=None, *args):
         super(Sightings, self).__init__(*args)
-        sightings_count = sightings_count
+        self.sightings_count = sightings_count
 
     def __nonzero__(self):
         return super(Sightings, self).__nonzero__() or bool(self.sightings_count)
