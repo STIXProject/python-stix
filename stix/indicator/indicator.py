@@ -37,6 +37,7 @@ class Indicator(stix.Entity):
         self.confidence = None
         self.indicated_ttps = None
         self.test_mechanisms = None
+        self.alternative_id = None
         self.suggested_coas = SuggestedCOAs()
     
     @property
@@ -111,6 +112,27 @@ class Indicator(stix.Entity):
                 self.add_observable(value)
 
     @property
+    def alternative_id(self):
+        return self._alternative_id
+
+    @alternative_id.setter
+    def alternative_id(self, value):
+        self._alternative_id = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_alternative_id(v)
+        else:
+            self.add_alternative_id(value)
+
+    def add_alternative_id(self, value):
+        if not value:
+            return
+        else:
+            self.alternative_id.append(value)
+
+    @property
     def indicator_types(self):
         return self._indicator_types
 
@@ -125,6 +147,15 @@ class Indicator(stix.Entity):
         else:
             self.add_indicator_type(value)
 
+    def add_indicator_type(self, value):
+        if not value:
+            return
+        elif isinstance(value, IndicatorType):
+            self.indicator_types.append(value)
+        else:
+            tmp_indicator_type = IndicatorType(value=value)
+            self.indicator_types.append(tmp_indicator_type)
+            
     @property
     def confidence(self):
         return self._confidence
@@ -137,15 +168,6 @@ class Indicator(stix.Entity):
             self._confidence = value
         else:
             self._confidence(Confidence(value=value))
-
-    def add_indicator_type(self, value):
-        if not value:
-            return
-        elif isinstance(value, IndicatorType):
-            self.indicator_types.append(value)
-        else:
-            tmp_indicator_type = IndicatorType(value=value)
-            self.indicator_types.append(tmp_indicator_type)
 
     @property
     def indicated_ttps(self):
@@ -304,6 +326,8 @@ class Indicator(stix.Entity):
             tms_obj = self._binding.TestMechanismsType()
             tms_obj.set_Test_Mechanism([x.to_obj() for x in self.test_mechanisms])
             return_obj.set_Test_Mechanisms(tms_obj)
+        if self.alternative_id:
+            return_obj.set_Alternative_ID(self.alternative_id)
         if self.suggested_coas:
             return_obj.set_Suggested_COAs(self.suggested_coas.to_obj())
 
@@ -338,6 +362,8 @@ class Indicator(stix.Entity):
             return_obj.indicated_ttps = [RelatedTTP.from_obj(x) for x in obj.get_Indicated_TTP()]
         if obj.get_Test_Mechanisms():
             return_obj.test_mechanisms = [_BaseTestMechanism.from_obj(x) for x in obj.get_Test_Mechanisms().get_Test_Mechanism()]
+        if obj.get_Alternative_ID():
+            return_obj.alternative_id = obj.get_Alternative_ID()
         if obj.get_Suggested_COAs():
             return_obj.suggested_coas = SuggestedCOAs.from_obj(obj.get_Suggested_COAs())
             
@@ -375,6 +401,8 @@ class Indicator(stix.Entity):
             d['indicated_ttps'] = [x.to_dict() for x in self.indicated_ttps]
         if self.test_mechanisms:
             d['test_mechanisms'] = [x.to_dict() for x in self.test_mechanisms]
+        if self.alternative_id:
+            d['alternative_id'] = self.alternative_id
         if self.suggested_coas:
             d['suggested_coas'] = self.suggested_coas.to_dict()
         
@@ -397,6 +425,7 @@ class Indicator(stix.Entity):
         description_dict     = dict_repr.get('description')
         indicator_type_list  = dict_repr.get('indicator_types')
         confidence_dict      = dict_repr.get('confidence')
+        alternative_id_dict  = dict_repr.get('alternative_id')
 
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
         return_obj.indicated_ttps = [RelatedTTP.from_dict(x) for x in dict_repr.get('indicated_ttps', [])]
@@ -414,6 +443,8 @@ class Indicator(stix.Entity):
                 return_obj.add_indicator_type(IndicatorType.from_dict(indicator_type_dict))
         if confidence_dict:
             return_obj.confidence = Confidence.from_dict(confidence_dict)
+        if alternative_id_dict:
+            return_obj.alternative_id = alternative_id_dict
         
         
         return return_obj
