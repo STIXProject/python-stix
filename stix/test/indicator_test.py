@@ -1,0 +1,63 @@
+# Copyright (c) 2014, The MITRE Corporation. All rights reserved.
+# See LICENSE.txt for complete terms.
+
+from StringIO import StringIO
+import unittest
+
+from stix.indicator import Indicator
+import stix.bindings.indicator as indicator_binding
+from cybox.common import StructuredText
+from cybox.test import EntityTestCase
+
+
+
+class IndicatorTest(EntityTestCase, unittest.TestCase):
+    klass = Indicator
+    _full_dict = {
+        'alternative_id': [
+            "test 1",
+            "not a test 2"
+        ],
+        'description': 'An indicator containing a File observable with an associated hash',
+        'id': 'example:indicator-1ae45e9c-9b0b-11e3-ada0-28cfe912ced6',
+        'observable': {
+            'id': 'example:Observable-fdaa7cec-f8be-494d-b83f-575f6f018666',
+            'object': {
+                'id': 'example:File-ec52e6bc-2d7e-44e2-911b-468bb775a5c6',
+                'properties': {
+                    'hashes': [
+                    {
+                        'simple_hash_value': u'4EC0027BEF4D7E1786A04D021FA8A67F',
+                        'type': u'MD5'
+                    }
+                    ],
+                    'xsi:type': 'FileObjectType'
+                }
+            }
+        },
+        'producer': {
+            'description': '',
+            'identity': {
+                'id': 'example:Identity-1ae603ab-9b0b-11e3-980e-28cfe912ced8',
+                'specification': {
+                    'party_name': {
+                        'name_lines': [
+                        {'value': 'Foo'},
+                        {'value': 'Bar'}
+                        ],
+                        'person_names': [
+                        {'name_elements': [{'value': 'John Smith'}]},
+                        {'name_elements': [{'value': 'Jill Smith'}]}
+                        ]
+                    }
+                },
+                'xsi:type': 'ciqIdentity:CIQIdentity3.0InstanceType'
+            },
+            'time': {'produced_time': '2014-02-21T10:16:14.947201'}
+        },
+        'title': 'File Hash Example',
+        'version': '2.1'
+    }
+
+if __name__ == "__main__":
+    unittest.main()

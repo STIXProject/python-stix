@@ -1456,10 +1456,10 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
             outfile.write('/>%s' % (eol_, ))
     def exportAttributes(self, outfile, level, already_processed, namespace_='indicator:', name_='IndicatorType'):
         super(IndicatorType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='IndicatorType')
-        if 'xmlns' not in already_processed:
-            already_processed.add('xmlns')
-            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
-            outfile.write(xmlns)   
+        #if 'xmlns' not in already_processed:
+        #    already_processed.add('xmlns')
+        #    xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+        #    outfile.write(xmlns)   
         if 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
             xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
