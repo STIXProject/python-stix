@@ -503,7 +503,7 @@ class STIXType(GeneratedsSuper):
     version for this content."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, timestamp=None, version=None, STIX_Header=None, Observables=None, Indicators=None, TTPs=None, Exploit_Targets=None, Incidents=None, Courses_Of_Action=None, Campaigns=None, Threat_Actors=None):
+    def __init__(self, idref=None, id=None, timestamp=None, version=None, STIX_Header=None, Observables=None, Indicators=None, TTPs=None, Exploit_Targets=None, Incidents=None, Courses_Of_Action=None, Campaigns=None, Threat_Actors=None, Related_Packages=None):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
         self.timestamp = _cast(None, timestamp)
@@ -517,6 +517,7 @@ class STIXType(GeneratedsSuper):
         self.Courses_Of_Action = Courses_Of_Action
         self.Campaigns = Campaigns
         self.Threat_Actors = Threat_Actors
+        self.Related_Packages = Related_Packages
         self.nsmap = {}
     def factory(*args_, **kwargs_):
         if STIXType.subclass:
@@ -542,6 +543,8 @@ class STIXType(GeneratedsSuper):
     def set_Campaigns(self, Campaigns): self.Campaigns = Campaigns
     def get_Threat_Actors(self): return self.Threat_Actors
     def set_Threat_Actors(self, Threat_Actors): self.Threat_Actors = Threat_Actors
+    def get_Related_Packages(self): return self.Related_Packages
+    def set_Related_Packages(self, value): self.Related_Packages = value
     def get_idref(self): return self.idref
     def set_idref(self, idref): self.idref = idref
     def get_id(self): return self.id
@@ -560,7 +563,8 @@ class STIXType(GeneratedsSuper):
             self.Incidents is not None or
             self.Courses_Of_Action is not None or
             self.Campaigns is not None or
-            self.Threat_Actors is not None
+            self.Threat_Actors is not None or
+            self.Related_Packages is not None
             ):
             return True
         else:
@@ -621,6 +625,9 @@ class STIXType(GeneratedsSuper):
             self.Campaigns.export(outfile, level, nsmap, namespace_, name_='Campaigns', pretty_print=pretty_print)
         if self.Threat_Actors is not None:
             self.Threat_Actors.export(outfile, level, nsmap, namespace_, name_='Threat_Actors', pretty_print=pretty_print)
+        if self.Related_Packages is not None:
+            self.Related_Packages.export(outfile, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
+            
     def build(self, node):
         already_processed = set()
         self.nsmap = node.nsmap
@@ -685,6 +692,10 @@ class STIXType(GeneratedsSuper):
             obj_ = ThreatActorsType.factory()
             obj_.build(child_)
             self.set_Threat_Actors(obj_)
+        elif nodeName_ == 'Related_Packages':
+            obj_ = RelatedPackagesType.factory()
+            obj_.build(child_)
+            self.set_Related_Packages(obj_)
 # end class STIXType
 
 

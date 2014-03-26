@@ -13,6 +13,7 @@ from stix.indicator import Indicator
 from stix.incident import Incident
 from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
+from stix.common.related import GenericRelationshipList
 from .ttps import TTPs
 from cybox.core import Observables
 
@@ -42,6 +43,7 @@ class STIXPackage(stix.Entity):
         self.incidents = incidents
         self.threat_actors = threat_actors
         self.ttps = ttps
+        self.related_packages = RelatedPackages()
     
     @property
     def id_(self):
@@ -319,7 +321,10 @@ class STIXPackage(stix.Entity):
         
         if self.ttps:
             return_obj.set_TTPs(self.ttps.to_obj())
-            
+           
+        if self.related_packages:
+            return_obj.set_Related_Packages(self.related_packages.to_obj())
+             
         return return_obj
 
     def to_dict(self):
@@ -352,6 +357,8 @@ class STIXPackage(stix.Entity):
             d['threat_actors'] = [x.to_dict() for x in self.threat_actors]
         if self.ttps:
             d['ttps'] = self.ttps.to_dict()
+        if self.related_packages:
+            d['related_packages'] = self.related_packages.to_dict()
 
         return d
 
@@ -364,6 +371,7 @@ class STIXPackage(stix.Entity):
         return_obj.idref_ = obj.get_idref()
         return_obj.timestamp = obj.get_timestamp()
         return_obj.stix_header = STIXHeader.from_obj(obj.get_STIX_Header())
+        return_obj.related_packages = RelatedPackages.from_obj(obj.get_Related_Packages())
 
         if obj.get_version():
             return_obj.version = obj.get_version()
@@ -383,7 +391,7 @@ class STIXPackage(stix.Entity):
             return_obj.threat_actors = [ThreatActor.from_obj(x) for x in obj.get_Threat_Actors().get_Threat_Actor()]
         if obj.get_TTPs():
             return_obj.ttps = TTPs.from_obj(obj.get_TTPs())
-        
+            
         return return_obj
 
     @classmethod
@@ -405,6 +413,7 @@ class STIXPackage(stix.Entity):
         return_obj.incidents = [Incident.from_dict(x) for x in dict_repr.get('incidents', [])]
         return_obj.threat_actors = [ThreatActor.from_dict(x) for x in dict_repr.get('threat_actors', [])]
         return_obj.ttps = TTPs.from_dict(dict_repr.get('ttps'))
+        return_obj.related_packages = RelatedPackages.from_dict(dict_repr.get('related_packages'))
         
         return return_obj
 
@@ -413,5 +422,13 @@ class STIXPackage(stix.Entity):
         parser = EntityParser()
         return parser.parse_xml(xml_file)
 
+
+class RelatedPackages(GenericRelationshipList):
+    _namespace = 'http://stix.mitre.org/stix-1'
+    _binding = stix_core_binding
+    _binding_class = stix_core_binding.RelatedPackagesType
+    _binding_var = "Related_Package"
+    _contained_type = STIXPackage
+    _inner_name = "related_packages"
 
 
