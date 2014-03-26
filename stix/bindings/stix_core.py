@@ -751,7 +751,7 @@ class RelatedPackagesType(stix_common_binding.GenericRelationshipListType):
         else:
             eol_ = ''
         for Related_Package_ in self.Related_Package:
-            Related_Package_.export(outfile, level, namespace_, name_='Related_Package', pretty_print=pretty_print)
+            Related_Package_.export(outfile, level, nsmap, namespace_, name_='Related_Package', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
