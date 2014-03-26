@@ -19,7 +19,7 @@ class Stage(VocabString):
 class COAType(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:CourseOfActionTypeVocab-1.0'
-    
+
 class CourseOfAction(stix.Entity):
     _binding = coa_binding
     _binding_class = coa_binding.CourseOfActionType
@@ -59,7 +59,7 @@ class CourseOfAction(stix.Entity):
             self._timestamp = value
         else:
             self._timestamp = dateutil.parser.parse(value)
-            
+
     @property
     def title(self):
         return self._title
@@ -95,7 +95,7 @@ class CourseOfAction(stix.Entity):
                 self._short_description = StructuredText(value=value)
         else:
             self._short_description = None
-            
+
     @property
     def stage(self):
         return self._stage
@@ -108,11 +108,11 @@ class CourseOfAction(stix.Entity):
             self._stage = value
         else:
             self._stage = Stage(value=value)
-            
+
     @property
     def information_source(self):
         return self._information_source
-    
+
     @information_source.setter
     def information_source(self, value):
         if not value:
@@ -125,7 +125,7 @@ class CourseOfAction(stix.Entity):
     @property
     def impact(self):
         return self._impact
-    
+
     @impact.setter
     def impact(self, impact):
         if not impact:
@@ -134,11 +134,11 @@ class CourseOfAction(stix.Entity):
             self._impact = impact
         else:
             self._impact = Statement(value=impact)
-            
+
     @property
     def cost(self):
         return self._cost
-    
+
     @cost.setter
     def cost(self, cost):
         if not cost:
@@ -147,11 +147,11 @@ class CourseOfAction(stix.Entity):
             self._cost = cost
         else:
             self._cost = Statement(value=cost)
-            
+
     @property
     def efficacy(self):
         return self._efficacy
-    
+
     @efficacy.setter
     def efficacy(self, efficacy):
         if not efficacy:
@@ -188,7 +188,7 @@ class CourseOfAction(stix.Entity):
     @property
     def objective(self):
         return self._objective
-    
+
     @objective.setter
     def objective(self, value):
         if not value:
@@ -206,7 +206,7 @@ class CourseOfAction(stix.Entity):
         return_obj.set_idref(self.idref)
         return_obj.set_version(self.version)
         return_obj.set_Title(self.title)
-        
+
         if self.description:
             return_obj.set_Description(self.description.to_obj())
         if self.short_description:
@@ -233,7 +233,7 @@ class CourseOfAction(stix.Entity):
             return_obj.set_Related_Packages(self.related_packages.to_obj())
         if self.related_coas:
             return_obj.set_Related_COAs(self.related_coas.to_obj())
-        
+
         return return_obj
 
     @classmethod
@@ -242,10 +242,10 @@ class CourseOfAction(stix.Entity):
             return None
         if not return_obj:
             return_obj = cls()
-        
+
         return_obj.id_ = obj.get_id()
         return_obj.idref = obj.get_idref()
-        
+
         if isinstance(obj, cls._binding_class): # CourseOfActionType properties
             return_obj.version = obj.get_version() or cls._version
             return_obj.title = obj.get_Title()
@@ -262,7 +262,7 @@ class CourseOfAction(stix.Entity):
             return_obj.objective = Objective.from_obj(obj.get_Objective())
             return_obj.related_packages = RelatedPackageRefs.from_obj(obj.get_Related_Packages())
             return_obj.related_coas = RelatedCOAs.from_obj(obj.get_Related_COAs())
-            
+
         return return_obj
 
     def to_dict(self):
@@ -301,7 +301,7 @@ class CourseOfAction(stix.Entity):
             d['related_packages'] = self.related_packages.to_dict()
         if self.related_coas:
             d['related_coas'] = self.related_coas.to_dict()
-        
+
         return d
 
     @classmethod
@@ -310,7 +310,7 @@ class CourseOfAction(stix.Entity):
             return None
         if not return_obj:
             return_obj = cls()
-        
+
         return_obj.id_ = dict_repr.get('id')
         return_obj.idref = dict_repr.get('idref')
         return_obj.timestamp = dict_repr.get('timestamp')
@@ -328,7 +328,7 @@ class CourseOfAction(stix.Entity):
         return_obj.objective = Objective.from_dict(dict_repr.get('objective'))
         return_obj.related_packages = RelatedPackageRefs.from_dict(dict_repr.get('related_packages'))
         return_obj.related_coas = RelatedCOAs.from_dict(dict_repr.get('related_coas'))
-        
+
         return return_obj
 
 
