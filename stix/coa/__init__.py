@@ -34,19 +34,20 @@ class CourseOfAction(stix.Entity):
         self.timestamp = None
         self.version = self._version
         self.title = title
+        self.stage = None
+        self.type_ = None
         self.description = description
         self.short_description = short_description
-        self.stage = None
+        self.objective = None
+        # self.parameter_observables = None
+        # self.structured_coa = None
         self.impact = None
         self.cost = None
         self.efficacy = None
         self.information_source = None
-        self.type_ = None
         self.handling = None
         self.objective = None
         self.related_packages = RelatedPackageRefs()
-        # self.parameter_observables = None
-        # self.structured_coa = None
         self.related_coas = RelatedCOAs()
 
     @property
@@ -69,6 +70,32 @@ class CourseOfAction(stix.Entity):
     @title.setter
     def title(self, value):
         self._title = value
+
+    @property
+    def stage(self):
+        return self._stage
+
+    @stage.setter
+    def stage(self, value):
+        if not value:
+            self._stage = None
+        elif isinstance(value, Stage):
+            self._stage = value
+        else:
+            self._stage = Stage(value=value)
+
+    @property
+    def type_(self):
+        return self._type_
+
+    @type_.setter
+    def type_(self, value):
+        if not value:
+            self._type_ = None
+        elif isinstance(value, COAType):
+            self._type_ = value
+        else:
+            self._type_ = COAType(value=value)
 
     @property
     def description(self):
@@ -99,30 +126,17 @@ class CourseOfAction(stix.Entity):
             self._short_description = None
 
     @property
-    def stage(self):
-        return self._stage
+    def objective(self):
+        return self._objective
 
-    @stage.setter
-    def stage(self, value):
+    @objective.setter
+    def objective(self, value):
         if not value:
-            self._stage = None
-        elif isinstance(value, Stage):
-            self._stage = value
+            self._objective = None
+        elif isinstance(value, Objective):
+            self._objective = value
         else:
-            self._stage = Stage(value=value)
-
-    @property
-    def information_source(self):
-        return self._information_source
-
-    @information_source.setter
-    def information_source(self, value):
-        if not value:
-            self._information_source = None
-        elif isinstance(value, InformationSource):
-            self._information_source = value
-        else:
-            raise ValueError('value must be instance of InformationSource')
+            raise ValueError('Cannot set objective to type %s' % type(value))
 
     @property
     def impact(self):
@@ -164,17 +178,17 @@ class CourseOfAction(stix.Entity):
             self._efficacy = Statement(value=efficacy)
 
     @property
-    def type_(self):
-        return self._type_
+    def information_source(self):
+        return self._information_source
 
-    @type_.setter
-    def type_(self, value):
+    @information_source.setter
+    def information_source(self, value):
         if not value:
-            self._type_ = None
-        elif isinstance(value, COAType):
-            self._type_ = value
+            self._information_source = None
+        elif isinstance(value, InformationSource):
+            self._information_source = value
         else:
-            self._type_ = COAType(value=value)
+            raise ValueError('value must be instance of InformationSource')
 
     @property
     def handling(self):
@@ -187,50 +201,36 @@ class CourseOfAction(stix.Entity):
 
         self._handling = value
 
-    @property
-    def objective(self):
-        return self._objective
-
-    @objective.setter
-    def objective(self, value):
-        if not value:
-            self._objective = None
-        elif isinstance(value, Objective):
-            self._objective = value
-        else:
-            raise ValueError('Cannot set objective to type %s' % type(value))
-
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = self._binding_class()
 
         return_obj.set_id(self.id_)
         return_obj.set_idref(self.idref)
+        if self.timestamp:
+            return_obj.set_timestamp(self.timestamp.isoformat())
         return_obj.set_version(self.version)
         return_obj.set_Title(self.title)
-
+        if self.stage:
+            return_obj.set_Stage(self.stage.to_obj())
+        if self.type_:
+            return_obj.set_Type(self.type_.to_obj())
         if self.description:
             return_obj.set_Description(self.description.to_obj())
         if self.short_description:
             return_obj.set_Short_Description(self.short_description.to_obj())
-        if self.stage:
-            return_obj.set_Stage(self.stage.to_obj())
-        if self.information_source:
-            return_obj.set_Information_Source(self.information_source.to_obj())
+        if self.objective:
+            return_obj.set_Objective(self.objective.to_obj())
+        if self.impact:
+            return_obj.set_Impact(self.impact.to_obj())
         if self.cost:
             return_obj.set_Cost(self.cost.to_obj())
         if self.efficacy:
             return_obj.set_Efficacy(self.efficacy.to_obj())
-        if self.impact:
-            return_obj.set_Impact(self.impact.to_obj())
-        if self.type_:
-            return_obj.set_Type(self.type_.to_obj())
-        if self.timestamp:
-            return_obj.set_timestamp(self.timestamp.isoformat())
+        if self.information_source:
+            return_obj.set_Information_Source(self.information_source.to_obj())
         if self.handling:
             return_obj.set_Handling(self.handling.to_obj())
-        if self.objective:
-            return_obj.set_Objective(self.objective.to_obj())
         if self.related_packages:
             return_obj.set_Related_Packages(self.related_packages.to_obj())
         if self.related_coas:
@@ -247,21 +247,21 @@ class CourseOfAction(stix.Entity):
 
         return_obj.id_ = obj.get_id()
         return_obj.idref = obj.get_idref()
+        return_obj.timestamp = obj.get_timestamp()
 
         if isinstance(obj, cls._binding_class): # CourseOfActionType properties
             return_obj.version = obj.get_version() or cls._version
             return_obj.title = obj.get_Title()
+            return_obj.stage = Stage.from_obj(obj.get_Stage())
+            return_obj.type_ = COAType.from_obj(obj.get_Type())
             return_obj.description = StructuredText.from_obj(obj.get_Description())
             return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
-            return_obj.stage = Stage.from_obj(obj.get_Stage())
-            return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
+            return_obj.objective = Objective.from_obj(obj.get_Objective())
+            return_obj.impact = Statement.from_obj(obj.get_Impact())
             return_obj.cost = Statement.from_obj(obj.get_Cost())
             return_obj.efficacy = Statement.from_obj(obj.get_Efficacy())
-            return_obj.impact = Statement.from_obj(obj.get_Impact())
-            return_obj.type_ = COAType.from_obj(obj.get_Type())
-            return_obj.timestamp = obj.get_timestamp()
+            return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
             return_obj.handling = Marking.from_obj(obj.get_Handling())
-            return_obj.objective = Objective.from_obj(obj.get_Objective())
             return_obj.related_packages = RelatedPackageRefs.from_obj(obj.get_Related_Packages())
             return_obj.related_coas = RelatedCOAs.from_obj(obj.get_Related_COAs())
 
@@ -279,26 +279,28 @@ class CourseOfAction(stix.Entity):
             d['version'] = self.version or self._version
         if self.title:
             d['title'] = self.title
+        if self.stage:
+            d['stage'] = self.stage.to_dict()
+        if self.type_:
+            d['type'] = self.type_.to_dict()
         if self.description:
             d['description'] = self.description.to_dict()
         if self.short_description:
             d['short_description'] = self.short_description.to_dict()
-        if self.stage:
-            d['stage'] = self.stage.to_dict()
-        if self.information_source:
-            d['information_source'] = self.information_source.to_dict()
+        if self.objective:
+            d['objective'] = self.objective.to_dict()
+        if self.impact:
+            d['impact'] = self.impact.to_dict()
         if self.cost:
             d['cost'] = self.cost.to_dict()
         if self.efficacy:
             d['efficacy'] = self.efficacy.to_dict()
-        if self.impact:
-            d['impact'] = self.impact.to_dict()
         if self.type_:
             d['type'] = self.type_.to_dict()
+        if self.information_source:
+            d['information_source'] = self.information_source.to_dict()
         if self.handling:
             d['handling'] = self.handling.to_dict()
-        if self.objective:
-            d['objective'] = self.objective.to_dict()
         if self.related_packages:
             d['related_packages'] = self.related_packages.to_dict()
         if self.related_coas:
@@ -318,16 +320,16 @@ class CourseOfAction(stix.Entity):
         return_obj.timestamp = dict_repr.get('timestamp')
         return_obj.version = dict_repr.get('version', cls._version)
         return_obj.title = dict_repr.get('title')
+        return_obj.stage = Stage.from_dict(dict_repr.get('stage'))
+        return_obj.type_ = COAType.from_dict(dict_repr.get('type'))
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
-        return_obj.stage = Stage.from_dict(dict_repr.get('stage'))
-        return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
+        return_obj.objective = Objective.from_dict(dict_repr.get('objective'))
+        return_obj.impact = Statement.from_dict(dict_repr.get('impact'))
         return_obj.cost = Statement.from_dict(dict_repr.get('cost'))
         return_obj.efficacy = Statement.from_dict(dict_repr.get('efficacy'))
-        return_obj.impact = Statement.from_dict(dict_repr.get('impact'))
-        return_obj.type_ = COAType.from_dict(dict_repr.get('type'))
+        return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
         return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
-        return_obj.objective = Objective.from_dict(dict_repr.get('objective'))
         return_obj.related_packages = RelatedPackageRefs.from_dict(dict_repr.get('related_packages'))
         return_obj.related_coas = RelatedCOAs.from_dict(dict_repr.get('related_coas'))
 

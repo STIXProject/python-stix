@@ -7,21 +7,28 @@ class COATests(EntityTestCase, unittest.TestCase):
     _full_dict = {
         'id': 'example:coa-1',
         'idref': 'example:coa-2',
-        'version': '1.1',
         'timestamp': "2014-03-20T04:35:12",
+        'version': '1.1',
         'title': "COA1",
-        'description': "This is a long description about a course of action",
-        'short_description': "a COA",
         'stage': "Remedy",
         'type': "Redirection",
+        'description': "This is a long description about a course of action",
+        'short_description': "a COA",
+        'objective': {
+            'description': "This is why we're taking this action",
+            'short_description': "Stop the bad stuff",
+            'applicability_confidence': {
+                'value': "Medium"
+            },
+        },
+        'impact': {
+            'value': "Large"
+        },
         'cost': {
             'value': "100"
         },
         'efficacy': {
             'value': "Half"
-        },
-        'impact': {
-            'value': "Large"
         },
         'information_source': {
             'description': "Mr. Evil's enemy",
