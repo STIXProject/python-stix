@@ -49,7 +49,9 @@ class Statement(stix.Entity):
         if isinstance(value, VocabString):
             self._value = value
         else:
-            self._value = VocabString(value=value)
+            # HighMediumLow is the default vocab to use for the Value
+            # field.
+            self._value = HighMediumLow(value=value)
 
     @property
     def source(self):
