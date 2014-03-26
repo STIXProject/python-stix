@@ -1168,7 +1168,7 @@ class ConfidenceType(GeneratedsSuper):
         if self.timestamp is not None and 'timestamp' not in already_processed:
             already_processed.add('timestamp')
             outfile.write(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
-        if self.timestamp_precision is not None and 'timestamp_precision' not in already_processed:
+        if self.timestamp_precision not in (None, 'second') and 'timestamp_precision' not in already_processed:
             already_processed.add('timestamp_precision')
             outfile.write(' timestamp_precision=%s' % (quote_attrib(self.timestamp_precision), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ConfidenceType', fromsubclass_=False, pretty_print=True):
@@ -3991,7 +3991,7 @@ class StatementType(GeneratedsSuper):
         if self.timestamp is not None and 'timestamp' not in already_processed:
             already_processed.add('timestamp')
             outfile.write(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
-        if self.timestamp_precision is not None and 'timestamp_precision' not in already_processed:
+        if self.timestamp_precision not in (None, 'second') and 'timestamp_precision' not in already_processed:
             already_processed.add('timestamp_precision')
             outfile.write(' timestamp_precision=%s' % (quote_attrib(self.timestamp_precision), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='StatementType', fromsubclass_=False, pretty_print=True):
