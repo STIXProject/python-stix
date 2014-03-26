@@ -10,6 +10,7 @@ class LossProperty(VocabString):
     _namespace = "http://stix.mitre.org/default_vocabularies-1"
     _XSI_TYPE = "stixVocabs:LossPropertyVocab-1.0"
 
+
 class AvailabilityLoss(VocabString):
     _namespace = "http://stix.mitre.org/default_vocabularies-1"
     _XSI_TYPE = "stixVocabs:LossPropertyVocab-1.0"
@@ -18,6 +19,7 @@ class AvailabilityLoss(VocabString):
 class LossDuration(VocabString):
     _namespace = "http://stix.mitre.org/default_vocabularies-1"
     _XSI_TYPE = "stixVocabs:LossDurationVocab-1.0"
+
 
 class NonPublicDataCompromised(VocabString):
     _namespace = "http://stix.mitre.org/Incident-1"
@@ -84,7 +86,7 @@ class PropertyAffected(stix.Entity):
     def property_(self, value):
         if not value:
             self._property = None
-        elif isinstance(value, LossProperty):
+        elif isinstance(value, VocabString):
             self._property = value
         else:
             self._property = LossProperty(value)
@@ -110,7 +112,7 @@ class PropertyAffected(stix.Entity):
     def type_of_availability_loss(self, value):
         if not value:
             self._type_of_availability_loss = None
-        elif isinstance(value, AvailabilityLoss):
+        elif isinstance(value, VocabString):
             self._type_of_availability_loss = value
         else:
             self._type_of_availability_loss = AvailabilityLoss(value)
@@ -123,7 +125,7 @@ class PropertyAffected(stix.Entity):
     def duration_of_availability_loss(self, value):
         if not value:
             self._duration_of_availability_loss = None
-        elif isinstance(value, LossDuration):
+        elif isinstance(value, VocabString):
             self._duration_of_availability_loss = value
         else:
             self._duration_of_availability_loss = LossDuration(value)
@@ -136,7 +138,7 @@ class PropertyAffected(stix.Entity):
     def non_public_data_compromised(self, value):
         if not value:
             self._non_public_data_compromised = None
-        elif isinstance(value, NonPublicDataCompromised):
+        elif isinstance(value, VocabString):
             self._non_public_data_compromised = value
         else:
             self._non_public_data_compromised = NonPublicDataCompromised(value)

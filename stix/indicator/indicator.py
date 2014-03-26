@@ -178,7 +178,7 @@ class Indicator(stix.Entity):
     def add_indicator_type(self, value):
         if not value:
             return
-        elif isinstance(value, IndicatorType):
+        elif isinstance(value, VocabString):
             self.indicator_types.append(value)
         else:
             tmp_indicator_type = IndicatorType(value=value)

@@ -32,7 +32,7 @@ class AffectedAsset(stix.Entity):
     def type_(self, value):
         if not value:
             self._type = None
-        elif isinstance(value, AssetType):
+        elif isinstance(value, VocabString):
             self._type = value
         else:
             self._type = AssetType(value=value)
@@ -71,7 +71,7 @@ class AffectedAsset(stix.Entity):
     def ownership_class(self, value):
         if not value:
             self._ownership_class = None
-        elif isinstance(value, OwnershipClass):
+        elif isinstance(value, VocabString):
             self._ownership_class = value
         else:
             self._ownership_class = OwnershipClass(value)
@@ -84,7 +84,7 @@ class AffectedAsset(stix.Entity):
     def management_class(self, value):
         if not value:
             self._management_class = None
-        elif isinstance(value, ManagementClass):
+        elif isinstance(value, VocabString):
             self._management_class = value
         else:
             self._management_class = ManagementClass(value)
@@ -97,7 +97,7 @@ class AffectedAsset(stix.Entity):
     def location_class(self, value):
         if not value:
             self._location_class = None
-        elif isinstance(value, LocationClass):
+        elif isinstance(value, VocabString):
             self._location_class = value
         else:
             self._location_class = LocationClass(value)

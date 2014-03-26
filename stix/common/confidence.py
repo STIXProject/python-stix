@@ -46,7 +46,7 @@ class Confidence(stix.Entity):
     def value(self, value):
         if value is None:
             self._value = None
-        if isinstance(value, HighMediumLow):
+        if isinstance(value, VocabString):
             self._value = value
         else:
             self._value = HighMediumLow(value=value)

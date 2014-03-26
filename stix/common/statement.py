@@ -64,6 +64,8 @@ class Statement(stix.Entity):
         elif isinstance(value, VocabString):
             self._source = value
         else:
+            #TODO: What should be default Vocabulary type if just a string is
+            # provided?
             self._source = VocabString(value=value)
 
     @property

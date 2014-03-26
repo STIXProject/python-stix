@@ -58,7 +58,7 @@ class GenericRelationship(stix.Entity):
     @relationship.setter
     def relationship(self, value):
         if value:
-            if isinstance(value, Relationship):
+            if isinstance(value, VocabString):
                 self._relationship = value
             else:
                 self._relationship = Relationship(value=value)
