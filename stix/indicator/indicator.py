@@ -54,7 +54,19 @@ class Indicator(stix.Entity):
         self.suggested_coas = SuggestedCOAs()
         self.sightings = Sightings()
         self.composite_indicator_expression = None
-        
+    
+    @property
+    def idref(self):
+        return self._idref
+    
+    @idref.setter
+    def idref(self, value):
+        if not value:
+            self._idref = None
+        else:
+            self._idref = value
+            self.id_ = None # unset id_ if idref is present
+    
     @property
     def timestamp(self):
         return self._timestamp
@@ -152,7 +164,7 @@ class Indicator(stix.Entity):
         elif isinstance(value, Confidence):
             self._confidence = value
         else:
-            self._confidence(Confidence(value=value))
+            self._confidence = Confidence(value=value)
 
     def add_indicator_type(self, value):
         if not value:
