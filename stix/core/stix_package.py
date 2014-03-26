@@ -6,6 +6,9 @@ import stix.utils
 from stix.utils import dates
 from stix.utils.parser import EntityParser
 from stix_header import STIXHeader
+from stix.campaign import Campaign
+from stix.coa import CourseOfAction
+from stix.exploit_target import ExploitTarget
 from stix.indicator import Indicator
 from stix.incident import Incident
 from stix.threat_actor import ThreatActor
@@ -13,6 +16,7 @@ from stix.ttp import TTP
 from .ttps import TTPs
 from cybox.core import Observables
 
+import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.stix_core as stix_core_binding
 import cybox.bindings.cybox_core as cybox_core_binding
 
@@ -24,12 +28,15 @@ class STIXPackage(stix.Entity):
     _namespace = 'http://stix.mitre.org/stix-1'
     _version = "1.1"
 
-    def __init__(self, id_=None, idref_=None, timestamp=None, stix_header=None, indicators=None, observables=None, incidents=None, threat_actors=None, ttps=None):
+    def __init__(self, id_=None, idref_=None, timestamp=None, stix_header=None, courses_of_action=None, exploit_targets=None, indicators=None, observables=None, incidents=None, threat_actors=None, ttps=None, campaigns=None):
         self.id_ = id_ or stix.utils.create_id("Package")
         self.idref_ = idref_
         self.timestamp = timestamp
         self.version = self._version
         self.stix_header = stix_header
+        self.campaigns = campaigns
+        self.courses_of_action = courses_of_action
+        self.exploit_targets = exploit_targets
         self.observables = observables
         self.indicators = indicators
         self.incidents = incidents
@@ -78,6 +85,30 @@ class STIXPackage(stix.Entity):
             self.indicators.append(indicator)
         else:
             raise ValueError('indicator must be instance of stix.indicator.Indicator')
+
+    @property
+    def campaigns(self):
+        return self._campaigns
+
+    @campaigns.setter
+    def campaigns(self, value):
+        self._campaigns = []
+
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_campaign(v)
+        else:
+            self.add_campaign(value)
+
+    def add_campaign(self, campaign):
+        if not campaign:
+            return
+        elif isinstance(campaign, Campaign):
+            self.campaigns.append(campaign)
+        else:
+            raise ValueError('indicator must be instance of stix.campaign.Campaign')
 
     @property
     def observables(self):
@@ -146,6 +177,54 @@ class STIXPackage(stix.Entity):
             raise ValueError('Cannot add %s to threat actor list' % type(threat_actor))
 
     @property
+    def courses_of_action(self):
+        return self._courses_of_action
+    
+    @courses_of_action.setter
+    def courses_of_action(self, value):
+        self._courses_of_action = []
+        
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_course_of_action(v)
+        else:
+            self.add_course_of_action(value)
+
+    def add_course_of_action(self, course_of_action):
+        if not course_of_action:
+            return
+        elif isinstance(course_of_action, CourseOfAction):
+            self._courses_of_action.append(course_of_action)
+        else:
+            raise ValueError('Cannot add %s to course of action list' % type(course_of_action))
+
+    @property
+    def exploit_targets(self):
+        return self._exploit_targets
+    
+    @exploit_targets.setter
+    def exploit_targets(self, value):
+        self._exploit_targets = []
+        
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_exploit_target(v)
+        else:
+            self.add_exploit_target(value)
+
+    def add_exploit_target(self, exploit_target):
+        if not exploit_target:
+            return
+        elif isinstance(exploit_target, ExploitTarget):
+            self._exploit_targets.append(exploit_target)
+        else:
+            raise ValueError('Cannot add %s to exploit target list' % type(exploit_target))
+
+    @property
     def ttps(self):
         return self._ttps
     
@@ -181,7 +260,22 @@ class STIXPackage(stix.Entity):
 
         if self.stix_header:
             return_obj.set_STIX_Header(self.stix_header.to_obj())
-
+        
+        if self.campaigns:
+            coas_obj = self._binding.CampaignsType()
+            coas_obj.set_Campaign([x.to_obj() for x in self.campaigns])
+            return_obj.set_Campaigns(coas_obj)
+            
+        if self.courses_of_action:
+            coas_obj = self._binding.CoursesOfActionType()
+            coas_obj.set_Course_Of_Action([x.to_obj() for x in self.courses_of_action])
+            return_obj.set_Courses_Of_Action(coas_obj)
+        
+        if self.exploit_targets:
+            et_obj = stix_common_binding.ExploitTargetsType()
+            et_obj.set_Exploit_Target([x.to_obj() for x in self.exploit_targets])
+            return_obj.set_Exploit_Targets(et_obj)
+            
         if self.indicators:
             indicators_obj = self._binding.IndicatorsType()
             indicators_obj.set_Indicator([x.to_obj() for x in self.indicators])
@@ -216,6 +310,12 @@ class STIXPackage(stix.Entity):
             d['timestamp'] = dates.serialize_value(self.timestamp)
         if self.stix_header:
             d['stix_header'] = self.stix_header.to_dict()
+        if self.campaigns:
+            d['campaigns'] = [x.to_dict() for x in self.campaigns]
+        if self.courses_of_action:
+            d['courses_of_action'] = [x.to_dict() for x in self.courses_of_action]
+        if self.exploit_targets:
+            d['exploit_targets'] = [x.to_dict() for x in self.exploit_targets]
         if self.indicators:
             d['indicators'] = [x.to_dict() for x in self.indicators]
         if self.observables:
@@ -241,6 +341,12 @@ class STIXPackage(stix.Entity):
 
         if obj.get_version():
             return_obj.version = obj.get_version()
+        if obj.get_Campaigns():
+            return_obj.campaigns = [Campaign.from_obj(x) for x in obj.get_Campaigns().get_Campaign()]
+        if obj.get_Courses_Of_Action():
+            return_obj.courses_of_action = [CourseOfAction.from_obj(x) for x in obj.get_Courses_Of_Action().get_Course_Of_Action()]
+        if obj.get_Exploit_Targets():
+            return_obj.exploit_targets = [ExploitTarget.from_obj(x) for x in obj.get_Exploit_Targets().get_Exploit_Target()]
         if obj.get_Indicators():
             return_obj.indicators = [Indicator.from_obj(x) for x in obj.get_Indicators().get_Indicator()]
         if obj.get_Observables():
@@ -265,6 +371,9 @@ class STIXPackage(stix.Entity):
         return_obj.version = dict_repr.get('version', cls._version)
         header_dict = dict_repr.get('stix_header', None)
         return_obj.stix_header = STIXHeader.from_dict(header_dict)
+        return_obj.campaigns = [Campaign.from_dict(x) for x in dict_repr.get('campaigns', [])]
+        return_obj.courses_of_action = [CourseOfAction.from_dict(x) for x in dict_repr.get('courses_of_action', [])]
+        return_obj.exploit_targets = [ExploitTarget.from_dict(x) for x in dict_repr.get('exploit_targets', [])]
         return_obj.indicators = [Indicator.from_dict(x) for x in dict_repr.get('indicators', [])]
         return_obj.observables = Observables.from_dict(dict_repr.get('observables'))
         return_obj.incidents = [Incident.from_dict(x) for x in dict_repr.get('incidents', [])]

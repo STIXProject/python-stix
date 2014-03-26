@@ -7,6 +7,7 @@ import dateutil
 import stix
 import stix.utils
 import stix.bindings.course_of_action as coa_binding
+from stix.common.related import (GenericRelationshipList, RelatedCOA, RelatedPackageRefs)
 from stix.common import StructuredText, VocabString, InformationSource, Statement
 from stix.data_marking import Marking
 from .objective import Objective
@@ -41,10 +42,10 @@ class CourseOfAction(stix.Entity):
         self.type_ = None
         self.handling = None
         self.objective = None
+        self.related_packages = RelatedPackageRefs()
         # self.parameter_observables = None
         # self.structured_coa = None
-        # self.related_coas = None
-        # self.related_packages = None
+        self.related_coas = RelatedCOAs()
 
     @property
     def timestamp(self):
@@ -102,7 +103,7 @@ class CourseOfAction(stix.Entity):
     @stage.setter
     def stage(self, value):
         if not value:
-            return
+            self._stage = None
         elif isinstance(value, Stage):
             self._stage = value
         else:
@@ -128,7 +129,7 @@ class CourseOfAction(stix.Entity):
     @impact.setter
     def impact(self, impact):
         if not impact:
-            return
+            self._impact = None
         elif isinstance(impact, Statement):
             self._impact = impact
         else:
@@ -141,7 +142,7 @@ class CourseOfAction(stix.Entity):
     @cost.setter
     def cost(self, cost):
         if not cost:
-            return
+            self._cost = None
         elif isinstance(cost, Statement):
             self._cost = cost
         else:
@@ -154,7 +155,7 @@ class CourseOfAction(stix.Entity):
     @efficacy.setter
     def efficacy(self, efficacy):
         if not efficacy:
-            return
+            self._efficacy = None
         elif isinstance(efficacy, Statement):
             self._efficacy = efficacy
         else:
@@ -167,7 +168,7 @@ class CourseOfAction(stix.Entity):
     @type_.setter
     def type_(self, value):
         if not value:
-            return
+            self._type_ = None
         elif isinstance(value, COAType):
             self._type_ = value
         else:
@@ -228,6 +229,10 @@ class CourseOfAction(stix.Entity):
             return_obj.set_Handling(self.handling.to_obj())
         if self.objective:
             return_obj.set_Objective(self.objective.to_obj())
+        if self.related_packages:
+            return_obj.set_Related_Packages(self.related_packages.to_obj())
+        if self.related_coas:
+            return_obj.set_Related_COAs(self.related_coas.to_obj())
         
         return return_obj
 
@@ -255,6 +260,8 @@ class CourseOfAction(stix.Entity):
             return_obj.timestamp = obj.get_timestamp()
             return_obj.handling = Marking.from_obj(obj.get_Handling())
             return_obj.objective = Objective.from_obj(obj.get_Objective())
+            return_obj.related_packages = RelatedPackageRefs.from_obj(obj.get_Related_Packages())
+            return_obj.related_coas = RelatedCOAs.from_obj(obj.get_Related_COAs())
             
         return return_obj
 
@@ -290,6 +297,10 @@ class CourseOfAction(stix.Entity):
             d['handling'] = self.handling.to_dict()
         if self.objective:
             d['objective'] = self.objective.to_dict()
+        if self.related_packages:
+            d['related_packages'] = self.related_packages.to_dict()
+        if self.related_coas:
+            d['related_coas'] = self.related_coas.to_dict()
         
         return d
 
@@ -315,6 +326,21 @@ class CourseOfAction(stix.Entity):
         return_obj.type_ = COAType.from_dict(dict_repr.get('type'))
         return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
         return_obj.objective = Objective.from_dict(dict_repr.get('objective'))
+        return_obj.related_packages = RelatedPackageRefs.from_dict(dict_repr.get('related_packages'))
+        return_obj.related_coas = RelatedCOAs.from_dict(dict_repr.get('related_coas'))
         
         return return_obj
 
+
+class RelatedCOAs(GenericRelationshipList):
+    _namespace = "http://stix.mitre.org/ExploitTarget-1"
+    _binding = coa_binding
+    _binding_class = coa_binding.RelatedCOAsType
+    _binding_var = "Related_COA"
+    _contained_type = RelatedCOA
+    _inner_name = "coas"
+
+    def __init__(self, coas=None, scope=None):
+        if coas is None:
+            coas = []
+        super(RelatedCOAs, self).__init__(*coas, scope=scope)
