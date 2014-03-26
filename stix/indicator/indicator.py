@@ -18,6 +18,19 @@ class IndicatorType(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:IndicatorTypeVocab-1.0'
 
+class SuggestedCOAs(GenericRelationshipList):
+    _namespace = "http://stix.mitre.org/Indicator-2"
+    _binding = indicator_binding
+    _binding_class = indicator_binding.SuggestedCOAsType
+    _binding_var = "Suggested_COA"
+    _contained_type = RelatedCOA
+    _inner_name = "suggested_coas"
+
+    def __init__(self, suggested_coas=None, scope=None):
+        if suggested_coas is None:
+            suggested_coas = []
+        super(SuggestedCOAs, self).__init__(*suggested_coas, scope=scope)
+
 class Indicator(stix.Entity):
     _binding = indicator_binding
     _binding_class = indicator_binding.IndicatorType
@@ -40,7 +53,8 @@ class Indicator(stix.Entity):
         self.test_mechanisms = None
         self.suggested_coas = SuggestedCOAs()
         self.sightings = Sightings()
-    
+        self.composite_indicator_expression = None
+        
     @property
     def timestamp(self):
         return self._timestamp
@@ -111,7 +125,7 @@ class Indicator(stix.Entity):
         if valuelist:
             for value in valuelist:
                 self.add_observable(value)
-
+                
     @property
     def indicator_types(self):
         return self._indicator_types
@@ -310,6 +324,8 @@ class Indicator(stix.Entity):
             return_obj.set_Suggested_COAs(self.suggested_coas.to_obj())
         if self.sightings:
             return_obj.set_Sightings(self.sightings.to_obj())
+        if self.composite_indicator_expression:
+            return_obj.set_Composite_Indicator_Expression(self.composite_indicator_expression.to_obj())
 
         return return_obj
 
@@ -323,28 +339,31 @@ class Indicator(stix.Entity):
         return_obj.id_              = obj.get_id()
         return_obj.idref            = obj.get_idref()
         return_obj.timestamp        = obj.get_timestamp()
-        return_obj.title            = obj.get_Title()
-        return_obj.description      = StructuredText.from_obj(obj.get_Description())
-        return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
-        return_obj.producer         = InformationSource.from_obj(obj.get_Producer())
-        return_obj.confidence       = Confidence.from_obj(obj.get_Confidence())
-        return_obj.sightings        = Sightings.from_obj(obj.get_Sightings())
         
-        if obj.get_version():
-            return_obj.version = obj.get_version()
-        if obj.get_Type():
-            for indicator_type in obj.get_Type():
-                return_obj.add_indicator_type(IndicatorType.from_obj(indicator_type)) 
-        if obj.get_Observable():
-            observable_obj = obj.get_Observable()
-            observable = Observable.from_obj(observable_obj)
-            return_obj.observables.append(observable)
-        if obj.get_Indicated_TTP():
-            return_obj.indicated_ttps = [RelatedTTP.from_obj(x) for x in obj.get_Indicated_TTP()]
-        if obj.get_Test_Mechanisms():
-            return_obj.test_mechanisms = [_BaseTestMechanism.from_obj(x) for x in obj.get_Test_Mechanisms().get_Test_Mechanism()]
-        if obj.get_Suggested_COAs():
-            return_obj.suggested_coas = SuggestedCOAs.from_obj(obj.get_Suggested_COAs())
+        if isinstance(obj, cls._binding_class):
+            return_obj.title            = obj.get_Title()
+            return_obj.description      = StructuredText.from_obj(obj.get_Description())
+            return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
+            return_obj.producer         = InformationSource.from_obj(obj.get_Producer())
+            return_obj.confidence       = Confidence.from_obj(obj.get_Confidence())
+            return_obj.sightings        = Sightings.from_obj(obj.get_Sightings())
+            return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_obj(obj.get_Composite_Indicator_Expression())
+            
+            if obj.get_version():
+                return_obj.version = obj.get_version()
+            if obj.get_Type():
+                for indicator_type in obj.get_Type():
+                    return_obj.add_indicator_type(IndicatorType.from_obj(indicator_type)) 
+            if obj.get_Observable():
+                observable_obj = obj.get_Observable()
+                observable = Observable.from_obj(observable_obj)
+                return_obj.observables.append(observable)
+            if obj.get_Indicated_TTP():
+                return_obj.indicated_ttps = [RelatedTTP.from_obj(x) for x in obj.get_Indicated_TTP()]
+            if obj.get_Test_Mechanisms():
+                return_obj.test_mechanisms = [_BaseTestMechanism.from_obj(x) for x in obj.get_Test_Mechanisms().get_Test_Mechanism()]
+            if obj.get_Suggested_COAs():
+                return_obj.suggested_coas = SuggestedCOAs.from_obj(obj.get_Suggested_COAs())
         
         return return_obj
 
@@ -384,6 +403,8 @@ class Indicator(stix.Entity):
             d['suggested_coas'] = self.suggested_coas.to_dict()
         if self.sightings:
             d['sightings'] = self.sightings.to_dict()
+        if self.composite_indicator_expression:
+            d['composite_indicator_expression'] = self.composite_indicator_expression.to_dict()
         
         return d
 
@@ -410,6 +431,7 @@ class Indicator(stix.Entity):
         return_obj.test_mechanisms = [_BaseTestMechanism.from_dict(x) for x in dict_repr.get('test_mechanisms', [])]
         return_obj.suggested_coas = SuggestedCOAs.from_dict(dict_repr.get('suggested_coas'))
         return_obj.sightings = Sightings.from_dict(dict_repr.get('sightings'))
+        return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_dict(dict_repr.get('composite_indicator_expression'))
         
         if observable_dict:
             return_obj.add_observable(Observable.from_dict(observable_dict))
@@ -424,16 +446,69 @@ class Indicator(stix.Entity):
             return_obj.confidence = Confidence.from_dict(confidence_dict)
         
         return return_obj
-    
-class SuggestedCOAs(GenericRelationshipList):
-    _namespace = "http://stix.mitre.org/Indicator-2"
-    _binding = indicator_binding
-    _binding_class = indicator_binding.SuggestedCOAsType
-    _binding_var = "Suggested_COA"
-    _contained_type = RelatedCOA
-    _inner_name = "suggested_coas"
 
-    def __init__(self, suggested_coas=None, scope=None):
-        if suggested_coas is None:
-            suggested_coas = []
-        super(SuggestedCOAs, self).__init__(*suggested_coas, scope=scope)
+class CompositeIndicatorExpression(stix.EntityList):
+    _binding = indicator_binding
+    _binding_class = indicator_binding.CompositeIndicatorExpressionType
+    _namespace = 'http://stix.mitre.org/Indicator-2'
+    _contained_type = Indicator
+    _binding_var = "Indicator"
+    _inner_name = "indicators"
+    
+    OP_AND = "AND"
+    OP_OR = "OR"
+    OPERATORS = (OP_AND, OP_OR)
+    
+    def __init__(self, operator="OR", *args):
+        super(CompositeIndicatorExpression, self).__init__(*args)
+        self.operator = operator
+
+    @property
+    def operator(self):
+        return self._operator
+    
+    @operator.setter
+    def operator(self, value):
+        if not value:
+            raise ValueError("operator must not be None or empty")
+        elif value not in self.OPERATORS:
+            raise ValueError("operator must be one of: %s" % ",".join(self.OPERATORS))
+        else:
+            self._operator = value
+            
+    def __nonzero__(self):
+        return super(CompositeIndicatorExpression, self).__nonzero__()
+
+    def to_obj(self):
+        list_obj = super(CompositeIndicatorExpression, self).to_obj()
+        list_obj.set_operator(self.operator)
+        return list_obj
+
+    def to_dict(self):
+        d = super(CompositeIndicatorExpression, self).to_dict()
+        if self.operator:
+            d['operator'] = self.operator
+        return d
+
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
+        if not obj:
+            return None
+        if return_obj is None:
+            return_obj = cls()
+
+        super(CompositeIndicatorExpression, cls).from_obj(obj, return_obj=return_obj)
+        return_obj.operator = obj.get_operator()
+        return return_obj
+
+    @classmethod
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not dict_repr:
+            return None
+        if return_obj is None:
+            return_obj = cls()
+
+        super(CompositeIndicatorExpression, cls).from_dict(dict_repr, return_obj=return_obj)
+        return_obj.operator = dict_repr.get('operator')
+        return return_obj
+    
