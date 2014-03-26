@@ -21,6 +21,16 @@ class COATests(EntityTestCase, unittest.TestCase):
                 'value': "Medium"
             },
         },
+        'parameter_observables': {
+            'major_version': 2,
+            'minor_version': 1,
+            'update_version': 0,
+            'observables': [
+                {
+                    'idref': "example:Observable-1"
+                }
+            ]
+        },
         'impact': {
             'value': "Large"
         },
@@ -45,53 +55,22 @@ class COATests(EntityTestCase, unittest.TestCase):
                 }]
             }
         ],
+        'related_coas': {
+            'scope': "exclusive",
+            'coas': [
+                {
+                    'confidence': {'value': "Medium"},
+                    'course_of_action': {'idref': "example:COA-52",
+                                         'version': "2.1"},
+                }
+            ]
+        },
         'related_packages': {
             'packages': [
                 {'idref': "example:Package-AB", 'relationship': "Parent"},
                 {'idref': "example:Package-CD", 'relationship': "Child"}
             ]
         },
-        'related_coas': {
-            'scope': 'inclusive',
-            'coas': [
-                { 'course_of_action': {
-                    'id': 'example:coa-5',
-                    'idref': 'example:coa-6',
-                    'version': '1.1',
-                    'timestamp': "2014-03-25T09:35:12",
-                    'title': "COA Related",
-                    'description': "This is a long description about a course of action that is related",
-                    'short_description': "a COA",
-                    'stage': "Remedy",
-                    'type': "Redirection",
-                    'cost': {
-                        'value': "50"
-                    },
-                    'efficacy': {
-                        'value': "Half"
-                    },
-                    'impact': {
-                        'value': "Large"
-                    },
-                    'information_source': {
-                        'description': "Mr. Evil's enemy",
-                        'identity': {
-                            'name': "Ms. Good",
-                        },
-                    },
-                    'handling': [
-                    {
-                        'marking_structure': [{
-                            'marking_model_name': 'TLP',
-                            'color': "GREEN",
-                            'xsi:type': "tlpMarking:TLPMarkingStructureType",
-                        }]
-                    }
-                    ]
-                }
-            }
-            ]
-        }
     }
 
 if __name__ == "__main__":

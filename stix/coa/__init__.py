@@ -2,15 +2,28 @@
 # See LICENSE.txt for complete terms.
 
 from datetime import datetime
+
+from cybox.core import Observables
 import dateutil
 
 import stix
 import stix.utils
 import stix.bindings.course_of_action as coa_binding
-from stix.common.related import (GenericRelationshipList, RelatedCOA, RelatedPackageRefs)
 from stix.common import StructuredText, VocabString, InformationSource, Statement
+from stix.common.related import (GenericRelationshipList, RelatedCOA,
+        RelatedPackageRefs)
 from stix.data_marking import Marking
 from .objective import Objective
+
+
+class RelatedCOAs(GenericRelationshipList):
+    _namespace = "http://stix.mitre.org/CourseOfAction-1"
+    _binding = coa_binding
+    _binding_class = coa_binding.RelatedCOAsType
+    _binding_var = "Related_COA"
+    _contained_type = RelatedCOA
+    _inner_name = "coas"
+
 
 class Stage(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
@@ -39,16 +52,15 @@ class CourseOfAction(stix.Entity):
         self.description = description
         self.short_description = short_description
         self.objective = None
-        # self.parameter_observables = None
+        self.parameter_observables = None
         # self.structured_coa = None
         self.impact = None
         self.cost = None
         self.efficacy = None
         self.information_source = None
         self.handling = None
-        self.objective = None
-        self.related_packages = RelatedPackageRefs()
         self.related_coas = RelatedCOAs()
+        self.related_packages = RelatedPackageRefs()
 
     @property
     def timestamp(self):
@@ -221,6 +233,8 @@ class CourseOfAction(stix.Entity):
             return_obj.set_Short_Description(self.short_description.to_obj())
         if self.objective:
             return_obj.set_Objective(self.objective.to_obj())
+        if self.parameter_observables:
+            return_obj.set_Parameter_Observables(self.parameter_observables.to_obj())
         if self.impact:
             return_obj.set_Impact(self.impact.to_obj())
         if self.cost:
@@ -231,10 +245,10 @@ class CourseOfAction(stix.Entity):
             return_obj.set_Information_Source(self.information_source.to_obj())
         if self.handling:
             return_obj.set_Handling(self.handling.to_obj())
-        if self.related_packages:
-            return_obj.set_Related_Packages(self.related_packages.to_obj())
         if self.related_coas:
             return_obj.set_Related_COAs(self.related_coas.to_obj())
+        if self.related_packages:
+            return_obj.set_Related_Packages(self.related_packages.to_obj())
 
         return return_obj
 
@@ -257,13 +271,17 @@ class CourseOfAction(stix.Entity):
             return_obj.description = StructuredText.from_obj(obj.get_Description())
             return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
             return_obj.objective = Objective.from_obj(obj.get_Objective())
+            return_obj.parameter_observables = \
+                    Observables.from_obj(obj.get_Parameter_Observables())
             return_obj.impact = Statement.from_obj(obj.get_Impact())
             return_obj.cost = Statement.from_obj(obj.get_Cost())
             return_obj.efficacy = Statement.from_obj(obj.get_Efficacy())
             return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
             return_obj.handling = Marking.from_obj(obj.get_Handling())
-            return_obj.related_packages = RelatedPackageRefs.from_obj(obj.get_Related_Packages())
-            return_obj.related_coas = RelatedCOAs.from_obj(obj.get_Related_COAs())
+            return_obj.related_coas = \
+                    RelatedCOAs.from_obj(obj.get_Related_COAs())
+            return_obj.related_packages = \
+                    RelatedPackageRefs.from_obj(obj.get_Related_Packages())
 
         return return_obj
 
@@ -289,6 +307,8 @@ class CourseOfAction(stix.Entity):
             d['short_description'] = self.short_description.to_dict()
         if self.objective:
             d['objective'] = self.objective.to_dict()
+        if self.parameter_observables:
+            d['parameter_observables'] = self.parameter_observables.to_dict()
         if self.impact:
             d['impact'] = self.impact.to_dict()
         if self.cost:
@@ -301,10 +321,10 @@ class CourseOfAction(stix.Entity):
             d['information_source'] = self.information_source.to_dict()
         if self.handling:
             d['handling'] = self.handling.to_dict()
-        if self.related_packages:
-            d['related_packages'] = self.related_packages.to_dict()
         if self.related_coas:
             d['related_coas'] = self.related_coas.to_dict()
+        if self.related_packages:
+            d['related_packages'] = self.related_packages.to_dict()
 
         return d
 
@@ -325,26 +345,16 @@ class CourseOfAction(stix.Entity):
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
         return_obj.objective = Objective.from_dict(dict_repr.get('objective'))
+        return_obj.parameter_observables = \
+                Observables.from_dict(dict_repr.get('parameter_observables'))
         return_obj.impact = Statement.from_dict(dict_repr.get('impact'))
         return_obj.cost = Statement.from_dict(dict_repr.get('cost'))
         return_obj.efficacy = Statement.from_dict(dict_repr.get('efficacy'))
         return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
         return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
-        return_obj.related_packages = RelatedPackageRefs.from_dict(dict_repr.get('related_packages'))
-        return_obj.related_coas = RelatedCOAs.from_dict(dict_repr.get('related_coas'))
+        return_obj.related_coas = \
+                RelatedCOAs.from_dict(dict_repr.get('related_coas'))
+        return_obj.related_packages = \
+                RelatedPackageRefs.from_dict(dict_repr.get('related_packages'))
 
         return return_obj
-
-
-class RelatedCOAs(GenericRelationshipList):
-    _namespace = "http://stix.mitre.org/ExploitTarget-1"
-    _binding = coa_binding
-    _binding_class = coa_binding.RelatedCOAsType
-    _binding_var = "Related_COA"
-    _contained_type = RelatedCOA
-    _inner_name = "coas"
-
-    def __init__(self, coas=None, scope=None):
-        if coas is None:
-            coas = []
-        super(RelatedCOAs, self).__init__(*coas, scope=scope)
