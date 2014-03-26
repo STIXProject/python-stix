@@ -57,6 +57,18 @@ class Indicator(stix.Entity):
         self.composite_indicator_expression = None
     
     @property
+    def id_(self):
+        return self._id
+    
+    @id_.setter
+    def id_(self, value):
+        if not value:
+            self._id = None
+        else:
+            self._id = value
+            self.idref = None
+    
+    @property
     def idref(self):
         return self._idref
     
@@ -401,7 +413,7 @@ class Indicator(stix.Entity):
             if obj.get_Suggested_COAs():
                 return_obj.suggested_coas = SuggestedCOAs.from_obj(obj.get_Suggested_COAs())
             if obj.get_Alternative_ID():
-              return_obj.alternative_id = obj.get_Alternative_ID()
+                return_obj.alternative_id = obj.get_Alternative_ID()
 
         
         return return_obj

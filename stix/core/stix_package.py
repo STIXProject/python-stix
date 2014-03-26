@@ -42,7 +42,31 @@ class STIXPackage(stix.Entity):
         self.incidents = incidents
         self.threat_actors = threat_actors
         self.ttps = ttps
-
+    
+    @property
+    def id_(self):
+        return self._id
+    
+    @id_.setter
+    def id_(self, value):
+        if not value:
+            self._id = None
+        else:
+            self._id = value
+            self.idref = None
+    
+    @property
+    def idref(self):
+        return self._idref
+    
+    @idref.setter
+    def idref(self, value):
+        if not value:
+            self._idref = None
+        else:
+            self._idref = value
+            self.id_ = None # unset id_ if idref is present
+    
     @property
     def timestamp(self):
         return self._timestamp
