@@ -103,6 +103,30 @@ class Campaign(stix.Entity):
         self.related_packages = RelatedPackageRefs()
 
     @property
+    def id_(self):
+        return self._id
+    
+    @id_.setter
+    def id_(self, value):
+        if not value:
+            self._id = None
+        else:
+            self._id = value
+            self.idref = None
+    
+    @property
+    def idref(self):
+        return self._idref
+    
+    @idref.setter
+    def idref(self, value):
+        if not value:
+            self._idref = None
+        else:
+            self._idref = value
+            self.id_ = None # unset id_ if idref is present
+
+    @property
     def timestamp(self):
         return self._timestamp
 
@@ -176,39 +200,40 @@ class Campaign(stix.Entity):
     def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
-
         if not return_obj:
             return_obj = cls()
 
         return_obj.id_ = obj.get_id()
         return_obj.idref = obj.get_idref()
         return_obj.timestamp = obj.get_timestamp()
-        return_obj.version = obj.get_version() or cls._version
-        return_obj.title = obj.get_Title()
-        return_obj.description = StructuredText.from_obj(obj.get_Description())
-        return_obj.short_description = \
-                StructuredText.from_obj(obj.get_Short_Description())
-        return_obj.names = Names.from_obj(obj.get_Names())
-        return_obj.intended_effect = \
-                [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
-        return_obj.status = VocabString.from_obj(obj.get_Status())
-        return_obj.related_ttps = RelatedTTPs.from_obj(obj.get_Related_TTPs())
-        return_obj.related_incidents = \
-                RelatedIncidents.from_obj(obj.get_Related_Incidents())
-        return_obj.related_indicators = \
-                RelatedIndicators.from_obj(obj.get_Related_Indicators())
-        return_obj.attribution = \
-                [Attribution.from_obj(x) for x in obj.get_Attribution()]
-        return_obj.associated_campaigns = \
-                AssociatedCampaigns.from_obj(obj.get_Associated_Campaigns())
-        return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
-        return_obj.activity = \
-                [Activity.from_obj(x) for x in obj.get_Activity()]
-        return_obj.information_source = \
-                InformationSource.from_obj(obj.get_Information_Source())
-        return_obj.handling = Marking.from_obj(obj.get_Handling())
-        return_obj.related_packages = \
-                RelatedPackageRefs.from_obj(obj.get_Related_Packages())
+        
+        if isinstance(obj, cls._binding_class):
+            return_obj.version = obj.get_version() or cls._version
+            return_obj.title = obj.get_Title()
+            return_obj.description = StructuredText.from_obj(obj.get_Description())
+            return_obj.short_description = \
+                    StructuredText.from_obj(obj.get_Short_Description())
+            return_obj.names = Names.from_obj(obj.get_Names())
+            return_obj.intended_effect = \
+                    [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
+            return_obj.status = VocabString.from_obj(obj.get_Status())
+            return_obj.related_ttps = RelatedTTPs.from_obj(obj.get_Related_TTPs())
+            return_obj.related_incidents = \
+                    RelatedIncidents.from_obj(obj.get_Related_Incidents())
+            return_obj.related_indicators = \
+                    RelatedIndicators.from_obj(obj.get_Related_Indicators())
+            return_obj.attribution = \
+                    [Attribution.from_obj(x) for x in obj.get_Attribution()]
+            return_obj.associated_campaigns = \
+                    AssociatedCampaigns.from_obj(obj.get_Associated_Campaigns())
+            return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
+            return_obj.activity = \
+                    [Activity.from_obj(x) for x in obj.get_Activity()]
+            return_obj.information_source = \
+                    InformationSource.from_obj(obj.get_Information_Source())
+            return_obj.handling = Marking.from_obj(obj.get_Handling())
+            return_obj.related_packages = \
+                    RelatedPackageRefs.from_obj(obj.get_Related_Packages())
 
         return return_obj
 

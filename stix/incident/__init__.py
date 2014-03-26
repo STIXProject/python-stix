@@ -45,7 +45,31 @@ class Incident(stix.Entity):
         self.categories = None
         self.intended_effects = None
         self.leveraged_ttps = LeveragedTTPs()
-
+    
+    @property
+    def id_(self):
+        return self._id
+    
+    @id_.setter
+    def id_(self, value):
+        if not value:
+            self._id = None
+        else:
+            self._id = value
+            self.idref = None
+    
+    @property
+    def idref(self):
+        return self._idref
+    
+    @idref.setter
+    def idref(self, value):
+        if not value:
+            self._idref = None
+        else:
+            self._idref = value
+            self.id_ = None # unset id_ if idref is present
+    
     @property
     def timestamp(self):
         return self._timestamp
@@ -232,32 +256,33 @@ class Incident(stix.Entity):
     def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
-
         if not return_obj:
             return_obj = cls()
 
         return_obj.id_ = obj.get_id()
         return_obj.idref = obj.get_idref()
         return_obj.timestamp = obj.get_timestamp()
-        return_obj.version = obj.get_version() or cls._version
-        return_obj.title = obj.get_Title()
-        return_obj.description = StructuredText.from_obj(obj.get_Description())
-        return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
-        return_obj.time = Time.from_obj(obj.get_Time())
-
-        if obj.get_Victim():
-            return_obj.victims = [Identity.from_obj(x) for x in obj.get_Victim()]
-        if obj.get_Categories():
-            return_obj.categories = [IncidentCategory.from_obj(x) for x in obj.get_Categories().get_Category()]
-        if obj.get_Intended_Effect():
-            return_obj.intended_effects = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
-        if obj.get_Affected_Assets():
-            return_obj.affected_assets = [AffectedAsset.from_obj(x) for x in obj.get_Affected_Assets().get_Affected_Asset()]
-
-        return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.get_Attributed_Threat_Actors())
-        return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
-        return_obj.related_observables = RelatedObservable.from_obj(obj.get_Related_Observables())
-        return_obj.leveraged_ttps = LeveragedTTPs.from_obj(obj.get_Leveraged_TTPs())
+        
+        if isinstance(obj, cls._binding_class):
+            return_obj.version = obj.get_version() or cls._version
+            return_obj.title = obj.get_Title()
+            return_obj.description = StructuredText.from_obj(obj.get_Description())
+            return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
+            return_obj.time = Time.from_obj(obj.get_Time())
+    
+            if obj.get_Victim():
+                return_obj.victims = [Identity.from_obj(x) for x in obj.get_Victim()]
+            if obj.get_Categories():
+                return_obj.categories = [IncidentCategory.from_obj(x) for x in obj.get_Categories().get_Category()]
+            if obj.get_Intended_Effect():
+                return_obj.intended_effects = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
+            if obj.get_Affected_Assets():
+                return_obj.affected_assets = [AffectedAsset.from_obj(x) for x in obj.get_Affected_Assets().get_Affected_Asset()]
+    
+            return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.get_Attributed_Threat_Actors())
+            return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
+            return_obj.related_observables = RelatedObservable.from_obj(obj.get_Related_Observables())
+            return_obj.leveraged_ttps = LeveragedTTPs.from_obj(obj.get_Leveraged_TTPs())
 
         return return_obj
 
