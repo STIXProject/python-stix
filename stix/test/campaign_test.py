@@ -11,7 +11,6 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
     klass = Campaign
     _full_dict = {
         'id': "example:Campaign-341",
-        'idref': 'example:Campaign-344',
         'timestamp': "2014-01-31T06:14:46",
         'version': '1.1',
         'title': 'Purple Elephant',

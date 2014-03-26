@@ -6,7 +6,6 @@ class COATests(EntityTestCase, unittest.TestCase):
     klass = CourseOfAction
     _full_dict = {
         'id': 'example:coa-1',
-        'idref': 'example:coa-2',
         'timestamp': "2014-03-20T04:35:12",
         'version': '1.1',
         'title': "COA1",

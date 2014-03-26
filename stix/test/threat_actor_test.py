@@ -9,7 +9,6 @@ class ThreatActorTests(EntityTestCase, unittest.TestCase):
     klass = ThreatActor
     _full_dict = {
         'id': 'example:ThreatActor-1',
-        'idref': 'example:ThreatActor-2',
         'timestamp': "2014-01-31T06:14:46",
         'version': '1.1',
         'title': "BadGuy1",

@@ -47,7 +47,6 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
         'campaigns': [
             {
                     'id': "example:Campaign-341",
-                    'idref': 'example:Campaign-344',
                     'timestamp': "2014-01-31T06:14:46",
                     'version': '1.1',
                     'title': 'Purple Elephant',
@@ -157,7 +156,6 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
         'courses_of_action': [
         {
             'id': 'example:coa-1',
-            'idref': 'example:coa-2',
             'version': '1.1',
             'timestamp': "2014-03-20T04:35:12",
             'title': "COA1",
