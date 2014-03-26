@@ -13,12 +13,14 @@ from stix.data_marking import Marking
 from .objective import Objective
 
 class Stage(VocabString):
-    # placeholder until Stage has vocabulary
-    pass
+    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _XSI_TYPE = 'stixVocabs:COAStageVocab-1.0'
+
 
 class COAType(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:CourseOfActionTypeVocab-1.0'
+
 
 class CourseOfAction(stix.Entity):
     _binding = coa_binding
