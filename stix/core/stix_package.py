@@ -326,6 +326,8 @@ class STIXPackage(stix.Entity):
         d = {}
         if self.id_:
             d['id'] = self.id_
+        if self.idref:
+            d['idref'] = self.idref
         if self.version:
             d['version'] = self.version
         if self.idref_:
