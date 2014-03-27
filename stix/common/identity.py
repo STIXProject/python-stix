@@ -43,19 +43,36 @@ class Identity(stix.Entity):
 
         return return_obj
 
+    @staticmethod
+    def lookup_class(xsi_type):
+        if not xsi_type:
+            raise ValueError("xsi:type is required")
+        for (k, v) in _EXTENSION_MAP.iteritems():
+            # TODO: for now we ignore the prefix and just check for
+            # a partial match
+            if xsi_type in k:
+                return v
+
+        raise ValueError("Unregistered xsi:type %s" % xsi_type)
+
     @classmethod
     def from_obj(cls, obj, return_obj=None):
+        import stix.extensions.identity.ciq_identity_3_0
+        
         if not obj:
             return None
 
         if not return_obj:
-            return_obj = cls()
-
-        return_obj.id_ = obj.get_id()
-        return_obj.idref = obj.get_idref()
-        return_obj.name = obj.get_Name()
-        return_obj.related_identities = \
-                RelatedIdentities.from_obj(obj.get_Related_Identities())
+            try:
+                klass = Identity.lookup_class(obj.xml_type)
+                return_obj = klass.from_obj(obj)
+            except AttributeError:
+                return_obj = Identity.from_obj(obj, cls())
+        else:
+            return_obj.id_ = obj.get_id()
+            return_obj.idref = obj.get_idref()
+            return_obj.name = obj.get_Name()
+            return_obj.related_identities = RelatedIdentities.from_obj(obj.get_Related_Identities())
 
         return return_obj
 
@@ -78,13 +95,17 @@ class Identity(stix.Entity):
             return None
 
         if not return_obj:
-            return_obj = cls()
-
-        return_obj.name = dict_repr.get('name')
-        return_obj.id_ = dict_repr.get('id')
-        return_obj.idref = dict_repr.get('idref')
-        return_obj.related_identities = \
-                RelatedIdentities.from_dict(dict_repr.get('related_identities'))
+            xsi_type = dict_repr.get('xsi:type')
+            if xsi_type:
+                klass = Identity.lookup_class(dict_repr.get('xsi:type'))
+                return_obj = klass.from_dict(dict_repr)
+            else:
+                return_obj = Identity.from_dict(dict_repr, cls())
+        else:
+            return_obj.name = dict_repr.get('name')
+            return_obj.id_ = dict_repr.get('id')
+            return_obj.idref = dict_repr.get('idref')
+            return_obj.related_identities = RelatedIdentities.from_dict(dict_repr.get('related_identities'))
 
         return return_obj
 
@@ -100,3 +121,9 @@ class RelatedIdentities(stix.EntityList):
     _binding_var = "Related_Identity"
     _contained_type = RelatedIdentity
     _inner_name = "identities"
+
+
+_EXTENSION_MAP = {}
+def add_extension(cls):
+    _EXTENSION_MAP[cls._XSI_TYPE] = cls
+

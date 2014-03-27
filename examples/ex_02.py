@@ -36,6 +36,5 @@ def main():
 
     print(stix_package.to_xml())
 
-
 if __name__ == '__main__':
     main()

@@ -105,25 +105,13 @@ class InformationSource(stix.Entity):
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
-        # To resolve circular dependency
-        # TODO: Improve how this extension is handled.
-        import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
-        from stix.extensions.identity import CIQIdentity3_0Instance
-
         if not obj:
             return None
-
         if not return_obj:
             return_obj = cls()
 
         return_obj.description = StructuredText.from_obj(obj.get_Description())
-
-        if obj.get_Identity():
-            identity_obj = obj.get_Identity()
-            if isinstance(identity_obj, ciq_identity_binding.CIQIdentity3_0InstanceType):
-                return_obj.identity = CIQIdentity3_0Instance.from_obj(identity_obj)
-            elif type(identity_obj) == stix_common_binding.IdentityType:
-                return_obj.identity = Identity.from_obj(identity_obj)
+        return_obj.identity = Identity.from_obj(obj.get_Identity())
 
         if obj.get_Time():
             return_obj.time = cybox.common.Time.from_obj(obj.get_Time())
@@ -137,7 +125,6 @@ class InformationSource(stix.Entity):
     def from_dict(cls, dict_repr, return_obj=None):
         # To resolve circular dependency
         # TODO: Improve how this extension is handled.
-        from stix.extensions.identity import CIQIdentity3_0Instance
 
         if not dict_repr:
             return None
@@ -150,21 +137,11 @@ class InformationSource(stix.Entity):
         identity_dict   = dict_repr.get('identity')
         time_dict       = dict_repr.get('time')
         tools_list      = dict_repr.get('tools')
-
-        if identity_dict:
-            xsi_type = identity_dict.get('xsi:type')
-            if xsi_type:
-                type_name = xsi_type.split(":")[1]
-                if  type_name == CIQIdentity3_0Instance._XML_TYPE:
-                    return_obj.identity = CIQIdentity3_0Instance.from_dict(identity_dict)
-                else:
-                    raise TypeError('No known class for xsi:type: %s' % (xsi_type))
-            else:
-                return_obj.identity = Identity.from_dict(identity_dict)
+        
+        return_obj.identity = Identity.from_dict(identity_dict)
 
         if time_dict:
             return_obj.time = cybox.common.Time.from_dict(time_dict)
-
         if tools_list:
             return_obj.tools = cybox.common.ToolInformationList.from_list(tools_list)
 

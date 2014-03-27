@@ -196,6 +196,6 @@ DEFAULT_EXT_TO_PREFIX = {
     'http://schemas.mandiant.com/2010/ioc' : 'ioc',
     'http://schemas.mandiant.com/2010/ioc/TR/' : 'ioc-tr',
     'http://www.icasi.org/CVRF/schema/cvrf/1.1' : 'cvrf',
-    'urn:oasis:names:tc:ciq:xal:3' : 'xa',
+    'urn:oasis:names:tc:ciq:xal:3' : 'xal',
     'urn:oasis:names:tc:ciq:xpil:3' : 'xpil',
     'urn:oasis:names:tc:ciq:xnl:3' : 'xnl'}
