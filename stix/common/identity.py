@@ -91,6 +91,8 @@ class Identity(stix.Entity):
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
+        import stix.extensions.identity.ciq_identity_3_0
+        
         if not dict_repr:
             return None
 
