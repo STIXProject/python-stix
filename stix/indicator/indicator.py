@@ -11,6 +11,7 @@ import stix.bindings.indicator as indicator_binding
 from .test_mechanism import _BaseTestMechanism
 from .sightings import Sightings
 from stix.common.related import GenericRelationshipList, RelatedCOA
+from stix.data_marking import Marking
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
 
@@ -55,7 +56,8 @@ class Indicator(stix.Entity):
         self.suggested_coas = SuggestedCOAs()
         self.sightings = Sightings()
         self.composite_indicator_expression = None
-    
+        self.handling = None
+        
     @property
     def id_(self):
         return self._id
@@ -255,6 +257,19 @@ class Indicator(stix.Entity):
         else:
             raise ValueError('Cannot add type %s to test_mechanisms list' % type(tm))
 
+    @property
+    def handling(self):
+        return self._handling
+    
+    @handling.setter
+    def handling(self, value):
+        if not value:
+            self._handling = None
+        elif isinstance(value, Marking):
+            self._handling = value
+        else:
+            raise ValueError('unable to set handling to type %s' % type(value))
+
     def set_producer_identity(self, identity):
         '''
         Sets the name of the producer of this indicator.
@@ -374,6 +389,8 @@ class Indicator(stix.Entity):
             return_obj.set_Sightings(self.sightings.to_obj())
         if self.composite_indicator_expression:
             return_obj.set_Composite_Indicator_Expression(self.composite_indicator_expression.to_obj())
+        if self.handling:
+            return_obj.set_Handling(self.handling.to_obj())
 
         return return_obj
 
@@ -396,6 +413,7 @@ class Indicator(stix.Entity):
             return_obj.confidence       = Confidence.from_obj(obj.get_Confidence())
             return_obj.sightings        = Sightings.from_obj(obj.get_Sightings())
             return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_obj(obj.get_Composite_Indicator_Expression())
+            return_obj.handling = Marking.from_obj(obj.get_Handling())
             
             if obj.get_version():
                 return_obj.version = obj.get_version()
@@ -414,8 +432,7 @@ class Indicator(stix.Entity):
                 return_obj.suggested_coas = SuggestedCOAs.from_obj(obj.get_Suggested_COAs())
             if obj.get_Alternative_ID():
                 return_obj.alternative_id = obj.get_Alternative_ID()
-
-        
+                
         return return_obj
 
     def to_dict(self):
@@ -458,6 +475,8 @@ class Indicator(stix.Entity):
             d['sightings'] = self.sightings.to_dict()
         if self.composite_indicator_expression:
             d['composite_indicator_expression'] = self.composite_indicator_expression.to_dict()
+        if self.handling:
+            d['handling'] = self.handling.to_dict()
         
         return d
 
@@ -486,6 +505,7 @@ class Indicator(stix.Entity):
         return_obj.suggested_coas = SuggestedCOAs.from_dict(dict_repr.get('suggested_coas'))
         return_obj.sightings = Sightings.from_dict(dict_repr.get('sightings'))
         return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_dict(dict_repr.get('composite_indicator_expression'))
+        return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
         
         if observable_dict:
             return_obj.add_observable(Observable.from_dict(observable_dict))
