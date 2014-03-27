@@ -14,6 +14,7 @@ from stix.common.related import (GenericRelationshipList, RelatedCampaign,
         RelatedThreatActor, RelatedTTP)
 from stix.data_marking import Marking
 import stix.utils
+from stix.utils import dates
 
 
 class AssociatedCampaigns(GenericRelationshipList):
@@ -80,14 +81,14 @@ class Campaign(stix.Entity):
     _namespace = "http://stix.mitre.org/Campaign-1"
     _version = "1.1"
 
-    def __init__(self, id_=None, title=None, description=None):
+    def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("Campaign")
-        self.idref = None
-        self.timestamp = None
+        self.idref = idref
+        self.timestamp = timestamp
         self.version = self._version
         self.title = title
         self.description = description
-        self.short_description = None
+        self.short_description = short_description
         self.names = None
         self.intended_effect = []
         self.status = None
@@ -125,19 +126,22 @@ class Campaign(stix.Entity):
         else:
             self._idref = value
             self.id_ = None # unset id_ if idref is present
-
+    
     @property
     def timestamp(self):
         return self._timestamp
 
     @timestamp.setter
     def timestamp(self, value):
-        if not value:
-            self._timestamp = None
-        elif isinstance(value, datetime):
-            self._timestamp = value
-        else:
-            self._timestamp = dateutil.parser.parse(value)
+        self._timestamp = dates.parse_value(value)
+
+    @property
+    def title(self):
+        return self._title
+
+    @title.setter
+    def title(self, value):
+        self._title = value
 
     @property
     def description(self):
@@ -152,6 +156,21 @@ class Campaign(stix.Entity):
                 self._description = StructuredText(value=value)
         else:
             self._description = None
+
+    @property
+    def short_description(self):
+        return self._short_description
+
+    @short_description.setter
+    def short_description(self, value):
+        if value:
+            if isinstance(value, StructuredText):
+                self._short_description = value
+            else:
+                self._short_description = StructuredText(value=value)
+        else:
+            self._short_description = None
+
 
     def to_obj(self, return_obj=None):
         if not return_obj:

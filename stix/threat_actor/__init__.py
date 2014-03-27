@@ -45,14 +45,14 @@ class ThreatActor(stix.Entity):
     _namespace = 'http://stix.mitre.org/ThreatActor-1'
     _version = "1.1"
 
-    def __init__(self):
-        self.id_ = stix.utils.create_id("threatactor")
-        self.idref = None
-        self.timestamp = None
+    def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
+        self.id_ = id_ or stix.utils.create_id("threatactor")
+        self.idref = idref
+        self.timestamp = timestamp
         self.version = self._version
-        self.title = None
-        self.description = None
-        self.short_description = None
+        self.title = title
+        self.description = description
+        self.short_description = short_description
         self.identity = None
         self.type_ = []
         self.motivation = []
@@ -98,6 +98,43 @@ class ThreatActor(stix.Entity):
     @timestamp.setter
     def timestamp(self, value):
         self._timestamp = dates.parse_value(value)
+
+    @property
+    def title(self):
+        return self._title
+
+    @title.setter
+    def title(self, value):
+        self._title = value
+
+    @property
+    def description(self):
+        return self._description
+
+    @description.setter
+    def description(self, value):
+        if value:
+            if isinstance(value, StructuredText):
+                self._description = value
+            else:
+                self._description = StructuredText(value=value)
+        else:
+            self._description = None
+
+    @property
+    def short_description(self):
+        return self._short_description
+
+    @short_description.setter
+    def short_description(self, value):
+        if value:
+            if isinstance(value, StructuredText):
+                self._short_description = value
+            else:
+                self._short_description = StructuredText(value=value)
+        else:
+            self._short_description = None
+
 
     def to_obj(self, return_obj=None):
         if not return_obj:
