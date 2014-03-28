@@ -9,6 +9,7 @@ from stix.common import StructuredText, VocabString, InformationSource, Statemen
 from .behavior import Behavior
 from .resource import Resource
 from .victim_targeting import VictimTargeting
+from datetime import datetime
 
 class TTP(stix.Entity):
     _binding = ttp_binding
@@ -19,7 +20,7 @@ class TTP(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("ttp")
         self.idref = idref
-        self.timestamp = timestamp
+        self.timestamp = timestamp or datetime.now()
         self.version = self._version
         self.title = title
         self.description = description

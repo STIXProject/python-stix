@@ -17,8 +17,8 @@ class Statement(stix.Entity):
     _binding = common_binding
     _binding_class = common_binding.StatementType
 
-    def __init__(self, value=None, description=None, source=None):
-        self.timestamp = None
+    def __init__(self, value=None, timestamp=None, description=None, source=None):
+        self.timestamp = timestamp or datetime.now()
         self.timestamp_precision = "second"
         self.value = value
         self.description = description

@@ -22,6 +22,7 @@ import stix.bindings.stix_core as stix_core_binding
 import cybox.bindings.cybox_core as cybox_core_binding
 
 from StringIO import StringIO
+from datetime import datetime
 
 class STIXPackage(stix.Entity):
     _binding = stix_core_binding
@@ -32,7 +33,7 @@ class STIXPackage(stix.Entity):
     def __init__(self, id_=None, idref_=None, timestamp=None, stix_header=None, courses_of_action=None, exploit_targets=None, indicators=None, observables=None, incidents=None, threat_actors=None, ttps=None, campaigns=None):
         self.id_ = id_ or stix.utils.create_id("Package")
         self.idref_ = idref_
-        self.timestamp = timestamp
+        self.timestamp = timestamp or datetime.now()
         self.version = self._version
         self.stix_header = stix_header
         self.campaigns = campaigns

@@ -10,7 +10,7 @@ from stix.common.related import (GenericRelationshipList, RelatedCampaign,
 from stix.data_marking import Marking
 import stix.utils
 from stix.utils import dates
-
+from datetime import datetime
 
 class ObservedTTPs(GenericRelationshipList):
     _namespace = 'http://stix.mitre.org/ThreatActor-1'
@@ -48,7 +48,7 @@ class ThreatActor(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("threatactor")
         self.idref = idref
-        self.timestamp = timestamp
+        self.timestamp = timestamp or datetime.now()
         self.version = self._version
         self.title = title
         self.description = description

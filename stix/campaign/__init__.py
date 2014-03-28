@@ -4,6 +4,7 @@
 from datetime import datetime
 
 import dateutil
+from datetime import datetime
 
 import stix
 import stix.bindings.campaign as campaign_binding
@@ -84,7 +85,7 @@ class Campaign(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("Campaign")
         self.idref = idref
-        self.timestamp = timestamp
+        self.timestamp = timestamp or datetime.now()
         self.version = self._version
         self.title = title
         self.description = description

@@ -14,8 +14,9 @@ import stix.utils
 from stix.utils import dates
 from .affected_asset import AffectedAsset
 from .property_affected import PropertyAffected
-
 from .time import Time
+
+from datetime import datetime
 
 class IncidentCategory(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
@@ -31,7 +32,7 @@ class Incident(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("incident")
         self.idref = idref
-        self.timestamp = timestamp
+        self.timestamp = timestamp or datetime.now()
         self.version = self._version
         self.description = description
         self.short_description = short_description
