@@ -7,6 +7,7 @@ import stix.indicator.test_mechanism
 from stix.indicator.test_mechanism import _BaseTestMechanism
 import stix.bindings.extensions.test_mechanism.open_ioc_2010 as open_ioc_tm_binding
 from lxml import etree
+from itertools import izip
 
 class OpenIOCTestMechanism(_BaseTestMechanism):
     _namespace = "http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1"
@@ -46,6 +47,16 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
             else:
                 raise ValueError("Cannot set ioc property. Expected tag %s found %s" 
                                  % (expected_node_tag, root.tag))
+        
+        self.__input_namespaces__ = {}
+        for alias,ns in root.nsmap.iteritems():
+            self.__input_namespaces__[ns] = alias
+            
+        self.__input_schemalocations__ = {}
+        schemaloc_str = root.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}schemaLocation')
+        if schemaloc_str:
+            pairs = izip(*[iter(schemaloc_str.split())]*2)
+            self.__input_schemalocations__ = dict(pairs)
         
         self._ioc = tree
         
