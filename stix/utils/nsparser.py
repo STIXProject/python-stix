@@ -86,6 +86,22 @@ class NamespaceParser(object):
                     if isinstance(item, stix.Entity) or isinstance(item, Observable):
                         yield item
 
+    def _get_input_schemalocations(self, entity):
+        all_schemalocations = {}
+        if not isinstance(entity, stix.Entity):
+            return all_schemalocations
+
+        entity.nsparser_touched = True
+        if hasattr(entity, "__input_schemalocations__"):
+            all_schemalocations.update(entity.__input_schemalocations__)
+
+        for child in self._get_children(entity):
+            if not hasattr(child, "nsparser_touched"):
+                all_schemalocations.update(self._get_input_schemalocations(child))
+        
+        del entity.nsparser_touched
+        return all_schemalocations
+
     def get_namespace_schemalocation_dict(self, entity, ns_dict=None):
         d = {}
         if ns_dict:
@@ -93,6 +109,9 @@ class NamespaceParser(object):
         else:
             ns_set = self.get_namespaces(entity).iterkeys()
 
+        input_schemalocations = self._get_input_schemalocations(entity)
+        d.update(input_schemalocations)
+        
         default_cybox_schemaloc_dict = {}
         for (ns,alias,schemaloc) in cybox_nsparser.NS_LIST:
             if schemaloc: default_cybox_schemaloc_dict[ns] = schemaloc
