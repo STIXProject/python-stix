@@ -29,7 +29,7 @@ def main():
     party_name = PartyName(name_lines=["Foo", "Bar"], person_names=["John Smith", "Jill Smith"], organisation_names=["Foo Inc.", "Bar Corp."])
     ident_spec = STIXCIQIdentity3_0(party_name=party_name)
     identity = CIQIdentity3_0Instance(specification=ident_spec)
-    #indicator.set_producer_identity(identity)
+    indicator.set_producer_identity(identity)
     
     stix_package = STIXPackage()
     stix_header = STIXHeader()

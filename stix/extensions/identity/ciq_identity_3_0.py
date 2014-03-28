@@ -137,10 +137,11 @@ class STIXCIQIdentity3_0(stix.Entity):
     _namespace      = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
     XML_TAG = "{%s}Specification" % _namespace
 
-    def __init__(self, party_name=None, languages=None, addresses=None):
-        self.party_name = party_name if party_name else PartyName()
+    def __init__(self, party_name=None, languages=None, addresses=None, organisation_info=None):
+        self.party_name = party_name
         self.languages = languages
         self.addresses = addresses
+        self.organisation_info = organisation_info
         
     @property
     def addresses(self):
@@ -194,10 +195,12 @@ class STIXCIQIdentity3_0(stix.Entity):
 
     @party_name.setter
     def party_name(self, value):
-        if value and not isinstance(value, PartyName):
+        if not value:
+            self._party_name = None
+        elif isinstance(value, PartyName):
+            self._party_name = value
+        else:
             raise ValueError('party_name must be instance of PartyName')
-
-        self._party_name = value
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -218,6 +221,10 @@ class STIXCIQIdentity3_0(stix.Entity):
         addresses = obj.findall("{%s}Addresses" % XML_NS_XPIL)
         if addresses is not None and len(addresses) > 0:
             return_obj.addresses = [Address.from_obj(x) for x in addresses[0]]
+        
+        organisation_info = obj.findall(OrganisationInfo.XML_TAG)
+        if organisation_info is not None and len(organisation_info) > 0:
+            return_obj.organisation_info = OrganisationInfo.from_obj(organisation_info[0])
             
         return return_obj
 
@@ -241,28 +248,32 @@ class STIXCIQIdentity3_0(stix.Entity):
             for language in self.languages:
                 languages_root.append(language.to_obj())
 
+        if self.organisation_info:
+            return_obj.append(self.organisation_info.to_obj())
+
         return return_obj
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
         if not dict_repr:
             return None
-
         if not return_obj:
             return_obj = cls()
 
-        party_name_dict = dict_repr.get('party_name')
-        return_obj.party_name = PartyName.from_dict(party_name_dict) if party_name_dict else None
+        return_obj.party_name = PartyName.from_dict(dict_repr.get('party_name'))
+        return_obj.languages = [Language.from_dict(x) for x in dict_repr.get('languages', [])]
+        return_obj.addresses = [Address.from_dict(x) for x in dict_repr.get('addresses', [])]
 
         return return_obj
 
-
     def to_dict(self):
         d = {}
-
         if self.party_name:
             d['party_name'] = self.party_name.to_dict()
-
+        if self.languages:
+            d['languages'] = [x.to_dict() for x in self.languages]
+        if self.addresses:
+            d['addresses'] = [x.to_dict() for x in self.addresses]
         return d
 
 class Address(stix.Entity):
@@ -1209,6 +1220,44 @@ class Language(stix.Entity):
         
         return_obj = cls()
         return_obj.value = d.get('value')
+        return return_obj
+
+class OrganisationInfo(stix.Entity):
+    _namespace = XML_NS_XPIL
+    XML_TAG = "{%s}OrganisationInfo" % _namespace
+
+    def __init__(self, industry_type=None):
+        self.industry_type = industry_type
+        
+    def to_obj(self):
+        return_obj = et.Element(self.XML_TAG)
+        if self.industry_type:
+            return_obj.attrib['{%s}IndustryType' % self._namespace] = self.industry_type
+            
+        return return_obj
+    
+    @classmethod
+    def from_obj(cls, obj):
+        if obj is None:
+            return None
+        
+        return_obj = cls()
+        return_obj.industry_type = obj.get('{%s}IndustryType' % cls._namespace)
+        return return_obj
+
+    def to_dict(self):
+        d = {}
+        if self.industry_type:
+            d['industry_type'] = self.industry_type
+        return d
+    
+    @classmethod
+    def from_dict(cls, d):
+        if not d:
+            return None
+        
+        return_obj = cls()
+        return_obj.industry_type = d.get('industry_type')
         return return_obj
 
 stix.common.identity.add_extension(CIQIdentity3_0Instance)
