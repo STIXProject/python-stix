@@ -62,7 +62,7 @@ class Behavior(stix.Entity):
         if not attack_pattern:
             return
         elif isinstance(attack_pattern, AttackPattern):
-            self._attack_patterns.append(attack_pattern)
+            self.attack_patterns.append(attack_pattern)
         else:
             raise ValueError("Unable to add item to attack pattern list: %s" % type(attack_pattern))
 
@@ -101,7 +101,7 @@ class Behavior(stix.Entity):
             exploits_obj = self._binding.ExploitsType(Exploit=[x.to_obj() for x in self.exploits])
             return_obj.set_Exploits(exploits_obj)
         if self.attack_patterns:
-            attack_patterns_obj = self._binding.AttackPatternsType(Attack_Pattern=[x.to_obj() for x in self.exploits])
+            attack_patterns_obj = self._binding.AttackPatternsType(Attack_Pattern=[x.to_obj() for x in self.attack_patterns])
             return_obj.set_Attack_Patterns(attack_patterns_obj)
 
         return return_obj
