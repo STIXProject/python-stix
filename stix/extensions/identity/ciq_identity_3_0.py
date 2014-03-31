@@ -271,20 +271,20 @@ class STIXCIQIdentity3_0(stix.Entity):
             for address in self.addresses:
                 addresses_root.append(address.to_obj())
         
-        if self.languages:
-            languages_root = et.Element("{%s}Languages" % XML_NS_XPIL)
-            return_obj.append(languages_root)
-            for language in self.languages:
-                languages_root.append(language.to_obj())
-
-        if self.organisation_info:
-            return_obj.append(self.organisation_info.to_obj())
-
         if self.electronic_address_identifiers:
             eai_root = et.Element("{%s}ElectronicAddressIdentifiers" % XML_NS_XPIL)
             return_obj.append(eai_root)
             for eai in self.electronic_address_identifiers:
                 eai_root.append(eai.to_obj())
+        
+        if self.organisation_info:
+            return_obj.append(self.organisation_info.to_obj())
+        
+        if self.languages:
+            languages_root = et.Element("{%s}Languages" % XML_NS_XPIL)
+            return_obj.append(languages_root)
+            for language in self.languages:
+                languages_root.append(language.to_obj())
         
         return return_obj
 
