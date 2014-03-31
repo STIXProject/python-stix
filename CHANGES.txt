@@ -1,3 +1,18 @@
+Version 1.1.0.4
+2014-02-31
+- Added COAs, Exploit Targets, Campaigns, and Related Packages to STIXPackage class
+- Updated behavior of id, idref, and timestamp on core STIX constructs to align with best practices
+- Added MAEC malware extension 
+- Improved Identity extension mechanism
+- Added Sightings to Indicator
+- Updates to OpenIOC test mechanism extension
+- Extensions now record input schemalocations on parse
+- Added Alternative_ID support to Indicator
+- Added support for Composite Indicator Expressions
+- Added Handling support to Indicator
+- Added several fields to COA and Exploit Target
+- Bug fixes
+ 
 Version 1.1.0.3
 2014-02-24
 - Added TTP structure (stix.ttp.TTP)
