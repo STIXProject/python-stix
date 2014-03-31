@@ -10,6 +10,7 @@ import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_bindin
 # xml element tree creation
 #from xml.etree import cElementTree as et
 import lxml.etree as et
+from stix.bindings.extensions.identity.ciq_identity_3_0 import XML_NS_XNL
 
 XML_NS_XPIL     = "urn:oasis:names:tc:ciq:xpil:3"
 XML_NS_XNL      = "urn:oasis:names:tc:ciq:xnl:3"
@@ -137,11 +138,12 @@ class STIXCIQIdentity3_0(stix.Entity):
     _namespace      = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
     XML_TAG = "{%s}Specification" % _namespace
 
-    def __init__(self, party_name=None, languages=None, addresses=None, organisation_info=None):
+    def __init__(self, party_name=None, languages=None, addresses=None, organisation_info=None, electronic_address_identifiers=None):
         self.party_name = party_name
         self.languages = languages
         self.addresses = addresses
         self.organisation_info = organisation_info
+        self.electronic_address_identifiers = electronic_address_identifiers
         
     @property
     def addresses(self):
@@ -202,11 +204,34 @@ class STIXCIQIdentity3_0(stix.Entity):
         else:
             raise ValueError('party_name must be instance of PartyName')
 
+    @property
+    def electronic_address_identifiers(self):
+        return self._electronic_address_identifiers 
+    
+    @electronic_address_identifiers.setter
+    def electronic_address_identifiers(self, value):
+        self._electronic_address_identifiers = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_electronic_address_identifier(v)
+        else:
+            self.add_electronic_address_identifier(value)
+            
+    def add_electronic_address_identifier(self, value):
+        if not value:
+            return
+        elif isinstance(value, ElectronicAddressIdentifier):
+            self.electronic_address_identifiers.append(value)
+        else:
+            self.electronic_address_identifiers.append(ElectronicAddressIdentifier(value))
+
+
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if obj is None:
             return None
-
         if not return_obj:
             return_obj = cls()
 
@@ -225,7 +250,11 @@ class STIXCIQIdentity3_0(stix.Entity):
         organisation_info = obj.findall(OrganisationInfo.XML_TAG)
         if organisation_info is not None and len(organisation_info) > 0:
             return_obj.organisation_info = OrganisationInfo.from_obj(organisation_info[0])
-            
+        
+        electronic_address_identifiers = obj.findall("{%s}ElectronicAddressIdentifiers")
+        if electronic_address_identifiers is not None and len(electronic_address_identifiers) > 0:
+            return_obj.electronic_address_identifiers = [ElectronicAddressIdentifier.from_obj(x) for x in electronic_address_identifiers[0]]
+        
         return return_obj
 
     def to_obj(self, return_obj=None):
@@ -251,6 +280,12 @@ class STIXCIQIdentity3_0(stix.Entity):
         if self.organisation_info:
             return_obj.append(self.organisation_info.to_obj())
 
+        if self.electronic_address_identifiers:
+            eai_root = et.Element("{%s}ElectronicAddressIdentifiers" % XML_NS_XPIL)
+            return_obj.append(eai_root)
+            for eai in self.electronic_address_identifiers:
+                eai_root.append(eai.to_obj())
+        
         return return_obj
 
     @classmethod
@@ -263,7 +298,8 @@ class STIXCIQIdentity3_0(stix.Entity):
         return_obj.party_name = PartyName.from_dict(dict_repr.get('party_name'))
         return_obj.languages = [Language.from_dict(x) for x in dict_repr.get('languages', [])]
         return_obj.addresses = [Address.from_dict(x) for x in dict_repr.get('addresses', [])]
-
+        return_obj.electronic_address_identifiers = [ElectronicAddressIdentifier.from_dict(x) for x in dict_repr.get('electronic_address_identifiers', [])]
+        
         return return_obj
 
     def to_dict(self):
@@ -274,6 +310,8 @@ class STIXCIQIdentity3_0(stix.Entity):
             d['languages'] = [x.to_dict() for x in self.languages]
         if self.addresses:
             d['addresses'] = [x.to_dict() for x in self.addresses]
+        if self.electronic_address_identifiers:
+            d['electronic_address_identifiers'] = [x.to_dict() for x in self.electronic_address_identifiers]
         return d
 
 class Address(stix.Entity):
@@ -830,18 +868,25 @@ class OrganisationName(stix.Entity):
     _namespace = XML_NS_XNL
     XML_TAG = "{%s}OrganisationName" % _namespace
 
-    def __init__(self, name_elements=None, sub_division_names=None):
-        self.name_elements = []
-        self.subdivision_names = []
+    def __init__(self, name_elements=None, subdivision_names=None, type_=None):
+        self.type_ = type_
+        self.name_elements = name_elements
+        self.subdivision_names = subdivision_names
 
-        if name_elements:
-            for name_element in name_elements:
-                self.add_organisation_name_element(name_element)
+    @property
+    def name_elements(self):
+        return self._name_elements
 
-        if sub_division_names:
-            for name in sub_division_names:
-                self.add_subdivision_name(name)
-
+    @name_elements.setter
+    def name_elements(self, value):
+        self._name_elements = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_organisation_name_element(v)
+        else:
+            self.add_organisation_name_element(value)
 
     def add_organisation_name_element(self, value):
         if isinstance(value, basestring):
@@ -851,6 +896,20 @@ class OrganisationName(stix.Entity):
         else:
             raise ValueError('value must be instance of OrganisationNameElement')
 
+    @property
+    def subdivision_names(self):
+        return self._subdivision_names
+    
+    @subdivision_names.setter
+    def subdivision_names(self, value):
+        self._subdivision_names = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_subdivision_name(v)
+        else:
+            self.add_subdivision_name(value)
 
     def add_subdivision_name(self, value):
         if not isinstance(value, SubDivisionName):
@@ -864,9 +923,10 @@ class OrganisationName(stix.Entity):
             root_tag = OrganisationName.XML_TAG
             return_obj = et.Element(root_tag)
 
+        if self.type_:
+            return_obj.attrib['{%s}Type' % XML_NS_XNL] = self.type_
         for name_element in self.name_elements:
             return_obj.append(name_element.to_obj())
-
         for subdivision_name in self.subdivision_names:
             return_obj.append(subdivision_name.to_obj())
 
@@ -876,10 +936,11 @@ class OrganisationName(stix.Entity):
     def from_obj(cls, obj, return_obj=None):
         if obj is None:
             return None
-
         if not return_obj:
             return_obj = cls()
 
+        return_obj.type_ = obj.attrib.get('{%s}Type' % XML_NS_XNL)
+        
         name_elements = obj.findall(OrganisationNameElement.XML_TAG)
         if name_elements:
             for name_element_obj in name_elements:
@@ -896,6 +957,9 @@ class OrganisationName(stix.Entity):
 
     def to_dict(self):
         d = {}
+        
+        if self.type_:
+            d['type'] = self.type_
         if self.name_elements:
             for ne in self.name_elements:
                 d.setdefault('name_elements', []).append(ne.to_dict())
@@ -909,20 +973,21 @@ class OrganisationName(stix.Entity):
     def from_dict(cls, dict_repr, return_obj=None):
         if not dict_repr:
             return None
-
         if not return_obj:
             return_obj = cls()
 
         ne_dicts = dict_repr.get('name_elements', [])
         sn_dicts = dict_repr.get('subdivision_names', [])
 
+
+        return_obj.type_ = dict_repr.get('type')
         for ne_dict in ne_dicts:
             return_obj.add_organisation_name_element(OrganisationNameElement.from_dict(ne_dict))
-
         for sn_dict in sn_dicts:
             return_obj.add_subdivision_name(SubDivisionName.from_dict(sn_dict))
 
         return return_obj
+    
 
 class _BaseNameElement(stix.Entity):
     '''Do not instantiate directly: use PersonNameElement or OrganisationNameElement'''
@@ -1220,6 +1285,51 @@ class Language(stix.Entity):
         
         return_obj = cls()
         return_obj.value = d.get('value')
+        return return_obj
+    
+class ElectronicAddressIdentifier(stix.Entity):
+    _namespace = XML_NS_XPIL
+    XML_TAG = "{%s}ElectronicAddressIdentifier" % _namespace
+    
+    def __init__(self, value=None, type_=None):
+        self.type_ = type_
+        self.value = value
+        
+    def to_obj(self):
+        return_obj = et.Element(self.XML_TAG)
+        return_obj.text = self.value
+        
+        if self.type_:
+            return_obj.attrib['Type'] = self.type_
+        
+        return return_obj
+    
+    @classmethod
+    def from_obj(cls, obj):
+        if obj is None:
+            return None
+        
+        return_obj = cls()
+        return_obj.type_ = obj.attrib.get('Type')
+        return_obj.value = obj.text
+        return return_obj
+    
+    def to_dict(self):
+        d = {}
+        if self.value:
+            d['value'] = self.value
+        if self.type_:
+            d['type'] = self.type_
+        return d
+    
+    @classmethod
+    def from_dict(cls, d):
+        if not d:
+            return None
+        
+        return_obj = cls()
+        return_obj.value = d.get('value')
+        return_obj.type_ = d.get('type')
         return return_obj
 
 class OrganisationInfo(stix.Entity):
