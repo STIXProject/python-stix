@@ -33,7 +33,7 @@ class AffectedAsset(stix.Entity):
     def type_(self, value):
         if not value:
             self._type = None
-        elif isinstance(value, VocabString):
+        elif isinstance(value, AssetType):
             self._type = value
         else:
             self._type = AssetType(value=value)

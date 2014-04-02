@@ -73,7 +73,7 @@ class STIXHeader(stix.Entity):
     def add_package_intent(self, package_intent):
         if not package_intent:
             return
-        elif isinstance(package_intent, PackageIntent):
+        elif isinstance(package_intent, VocabString):
             self.package_intents.append(package_intent)
         else:
             tmp_package_intent = PackageIntent(value=package_intent)

@@ -126,7 +126,7 @@ class PropertyAffected(stix.Entity):
     def non_public_data_compromised(self, value):
         if not value:
             self._non_public_data_compromised = None
-        elif isinstance(value, VocabString):
+        elif isinstance(value, NonPublicDataCompromised):
             self._non_public_data_compromised = value
         else:
             self._non_public_data_compromised = NonPublicDataCompromised(value)

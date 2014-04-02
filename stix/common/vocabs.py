@@ -14,7 +14,7 @@ class VocabString(stix.Entity):
 
     # All subclasses should override these
     _XSI_TYPE = None
-    _ALLOWED_VALUES = []
+    _ALLOWED_VALUES = None
 
     def __init__(self, value=None):
         super(VocabString, self).__init__()

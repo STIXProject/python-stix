@@ -107,7 +107,7 @@ class CourseOfAction(stix.Entity):
     def stage(self, value):
         if not value:
             self._stage = None
-        elif isinstance(value, Stage):
+        elif isinstance(value, VocabString):
             self._stage = value
         else:
             self._stage = Stage(value=value)
@@ -120,7 +120,7 @@ class CourseOfAction(stix.Entity):
     def type_(self, value):
         if not value:
             self._type_ = None
-        elif isinstance(value, COAType):
+        elif isinstance(value, VocabString):
             self._type_ = value
         else:
             self._type_ = COAType(value=value)

@@ -36,7 +36,7 @@ class VictimTargeting(stix.Entity):
     def add_targeted_system(self, system):
         if not system:
             return
-        elif isinstance(system, SystemType):
+        elif isinstance(system, VocabString):
             self._targeted_systems.append(system)
         else:
             self._targeted_systems.append(SystemType(value=system))
@@ -59,7 +59,7 @@ class VictimTargeting(stix.Entity):
     def add_targeted_information(self, targeted_information):
         if not targeted_information:
             return
-        elif isinstance(targeted_information, InformationType):
+        elif isinstance(targeted_information, VocabString):
             self._targeted_information.append(targeted_information)
         else:
             self._targeted_information.append(InformationType(value=targeted_information))

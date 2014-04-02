@@ -75,7 +75,7 @@ class Infrastructure(stix.Entity):
     def add_type(self, type_):
         if not type_:
             return
-        elif isinstance(type_, AttackerInfrastructureType):
+        elif isinstance(type_, VocabString):
             self._types.append(type_)
         else:
             self._types.append(AttackerInfrastructureType(value=type_))
