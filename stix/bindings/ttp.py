@@ -1802,7 +1802,7 @@ class TTPType(stix_common_binding.TTPBaseType):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='TTPType', namespacedef_='', pretty_print=True):
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='TTP', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -1810,7 +1810,7 @@ class TTPType(stix_common_binding.TTPBaseType):
         showIndent(outfile, level, pretty_print)
         outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='TTPType')
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='TTP')
         if self.hasContent_():
             outfile.write('>%s' % (eol_, ))
             self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
@@ -1818,8 +1818,8 @@ class TTPType(stix_common_binding.TTPBaseType):
             outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='ttp:', name_='TTPType'):
-        super(TTPType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='TTPType')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='ttp:', name_='TTP'):
+        super(TTPType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='TTP')
         #if 'xmlns' not in already_processed:
         #    already_processed.add('xmlns')
         #    xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)

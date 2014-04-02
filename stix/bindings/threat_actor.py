@@ -812,7 +812,7 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='ThreatActorType', namespacedef_='', pretty_print=True):
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='Threat_Actor', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -820,7 +820,7 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
         showIndent(outfile, level, pretty_print)
         outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='ThreatActorType')
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Threat_Actor')
         if self.hasContent_():
             outfile.write('>%s' % (eol_, ))
             self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
@@ -828,8 +828,8 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
             outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='ta:', name_='ThreatActorType'):
-        super(ThreatActorType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='ThreatActorType')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='ta:', name_='Threat_Actor'):
+        super(ThreatActorType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Threat_Actor')
         # if 'xmlns' not in already_processed:
         #     already_processed.add('xmlns')
         #     xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)

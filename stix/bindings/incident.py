@@ -2805,7 +2805,7 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='IncidentType', namespacedef_='', pretty_print=True):
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='Incident', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -2813,7 +2813,7 @@ class IncidentType(stix_common_binding.IncidentBaseType):
         showIndent(outfile, level, pretty_print)
         outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='IncidentType')
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Incident')
         if self.hasContent_():
             outfile.write('>%s' % (eol_, ))
             self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
@@ -2821,8 +2821,8 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='IncidentType'):
-        super(IncidentType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='IncidentType')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='Incident'):
+        super(IncidentType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Incident')
 #         if 'xmlns' not in already_processed:
 #             already_processed.add('xmlns')
 #             xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)

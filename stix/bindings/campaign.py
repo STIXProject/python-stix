@@ -1007,7 +1007,7 @@ class CampaignType(stix_common_binding.CampaignBaseType):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='CampaignType', namespacedef_='', pretty_print=True):
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='Campaign', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -1015,7 +1015,7 @@ class CampaignType(stix_common_binding.CampaignBaseType):
         showIndent(outfile, level, pretty_print)
         outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='CampaignType')
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Campaign')
         if self.hasContent_():
             outfile.write('>%s' % (eol_, ))
             self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
@@ -1023,8 +1023,8 @@ class CampaignType(stix_common_binding.CampaignBaseType):
             outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='campaign:', name_='CampaignType'):
-        super(CampaignType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='CampaignType')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='campaign:', name_='Campaign'):
+        super(CampaignType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Campaign')
         # if 'xmlns' not in already_processed:
         #     already_processed.add('xmlns')
         #     xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)

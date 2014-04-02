@@ -757,7 +757,7 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='CourseOfActionType', namespacedef_='', pretty_print=True):
+    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='Course_Of_Action', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
@@ -765,7 +765,7 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
         showIndent(outfile, level, pretty_print)
         outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='CourseOfActionType')
+        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Course_Of_Action')
         if self.hasContent_():
             outfile.write('>%s' % (eol_, ))
             self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
@@ -773,8 +773,8 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='coa:', name_='CourseOfActionType'):
-        super(CourseOfActionType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='CourseOfActionType')
+    def exportAttributes(self, outfile, level, already_processed, namespace_='coa:', name_='Course_Of_Action'):
+        super(CourseOfActionType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Course_Of_Action')
         #if 'xmlns' not in already_processed:
         #    already_processed.add('xmlns')
         #    xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
