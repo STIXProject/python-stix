@@ -15,10 +15,7 @@ from stix.data_marking import Marking
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
 from datetime import datetime
-
-class IndicatorType(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
-    _XSI_TYPE = 'stixVocabs:IndicatorTypeVocab-1.0'
+from stix.common.vocabs import IndicatorType
 
 class SuggestedCOAs(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Indicator-2"

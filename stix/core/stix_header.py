@@ -7,11 +7,7 @@ import stix.bindings.stix_core as stix_core_binding
 from stix.common import InformationSource, StructuredText, VocabString
 from stix.data_marking import Marking
 
-
-class PackageIntent(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
-    _XSI_TYPE = 'stixVocabs:PackageIntentVocab-1.0'
-
+from stix.common.vocabs import PackageIntent
 
 class STIXHeader(stix.Entity):
     _binding = stix_core_binding

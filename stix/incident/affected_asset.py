@@ -7,6 +7,7 @@ from stix.common import VocabString, StructuredText
 import stix.bindings.incident as incident_binding
 from .property_affected import PropertyAffected
 from cybox.core import Observables
+from stix.common.vocabs import OwnershipClass, ManagementClass, LocationClass
 
 class AffectedAsset(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
@@ -225,19 +226,9 @@ class AffectedAsset(stix.Entity):
             d['structured_description'] = self.structured_description.to_dict()
         return d
     
-class OwnershipClass(VocabString):
-    _namespace = "http://stix.mitre.org/default_vocabularies-1"
-    _XSI_TYPE = "stixVocabs:OwnershipClassVocab-1.0"
+from stix.common.vocabs import AssetType as DefaultAssetType
 
-class ManagementClass(VocabString):
-    _namespace = "http://stix.mitre.org/default_vocabularies-1"
-    _XSI_TYPE = "stixVocabs:ManagementClassVocab-1.0"
-
-class LocationClass(VocabString):
-    _namespace = "http://stix.mitre.org/default_vocabularies-1"
-    _XSI_TYPE = "stixVocabs:LocationClassVocab-1.0"
-
-class AssetType(VocabString):
+class AssetType(DefaultAssetType):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding  = incident_binding
     _binding_class = incident_binding.AssetTypeType

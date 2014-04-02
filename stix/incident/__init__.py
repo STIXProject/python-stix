@@ -15,13 +15,9 @@ from stix.utils import dates
 from .affected_asset import AffectedAsset
 from .property_affected import PropertyAffected
 from .time import Time
+from stix.common.vocabs import IncidentCategory
 
 from datetime import datetime
-
-class IncidentCategory(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
-    _XSI_TYPE = 'stixVocabs:IncidentCategoryVocab-1.0'
-
 
 class Incident(stix.Entity):
     _binding = incident_binding

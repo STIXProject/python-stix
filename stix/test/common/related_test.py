@@ -11,7 +11,7 @@ class StatementTests(EntityTestCase, unittest.TestCase):
         'idref': "example:Campaign-133",
         'timestamp': "2014-01-31T06:14:46",
         'confidence': {
-            'value': "low",
+            'value': "Low",
         },
         'information_source': {
             'description': "Source of the relationship",

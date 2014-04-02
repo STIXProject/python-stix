@@ -5,14 +5,7 @@ import stix
 from stix.common import VocabString, Identity
 from cybox.core import Observables
 import stix.bindings.ttp as ttp_binding
-
-class SystemType(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
-    _XSI_TYPE = 'stixVocabs:SystemTypeVocab-1.0'
-
-class InformationType(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
-    _XSI_TYPE = 'stixVocabs:InformationTypeVocab-1.0'
+from stix.common.vocabs import SystemType, InformationType
 
 class VictimTargeting(stix.Entity):
     _binding = ttp_binding

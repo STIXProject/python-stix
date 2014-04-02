@@ -5,20 +5,8 @@
 import stix
 from stix.common import VocabString, StructuredText
 import stix.bindings.incident as incident_binding
-
-class LossProperty(VocabString):
-    _namespace = "http://stix.mitre.org/default_vocabularies-1"
-    _XSI_TYPE = "stixVocabs:LossPropertyVocab-1.0"
-
-
-class AvailabilityLoss(VocabString):
-    _namespace = "http://stix.mitre.org/default_vocabularies-1"
-    _XSI_TYPE = "stixVocabs:LossPropertyVocab-1.0"
-
-
-class LossDuration(VocabString):
-    _namespace = "http://stix.mitre.org/default_vocabularies-1"
-    _XSI_TYPE = "stixVocabs:LossDurationVocab-1.0"
+from stix.common.vocabs import LossProperty, LossDuration
+from stix.common.vocabs import AvailabilityLossType as AvailabilityLoss
 
 
 class NonPublicDataCompromised(VocabString):

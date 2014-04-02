@@ -6,10 +6,7 @@ import stix.utils
 from stix.common import StructuredText, VocabString
 from cybox.core import Observables, Observable, Object
 import stix.bindings.ttp as ttp_binding
-
-class AttackerInfrastructureType(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
-    _XSI_TYPE = 'stixVocabs:AttackerInfrastructureTypeVocab-1.0'
+from stix.common.vocabs import AttackerInfrastructureType
 
 class Infrastructure(stix.Entity):
     _binding = ttp_binding

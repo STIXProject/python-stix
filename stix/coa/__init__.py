@@ -15,6 +15,8 @@ from stix.common.related import (GenericRelationshipList, RelatedCOA,
 from stix.data_marking import Marking
 from .objective import Objective
 
+from stix.common.vocabs import COAStage as Stage
+from stix.common.vocabs import CourseOfActionType as COAType
 
 class RelatedCOAs(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/CourseOfAction-1"
@@ -23,16 +25,6 @@ class RelatedCOAs(GenericRelationshipList):
     _binding_var = "Related_COA"
     _contained_type = RelatedCOA
     _inner_name = "coas"
-
-
-class Stage(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
-    _XSI_TYPE = 'stixVocabs:COAStageVocab-1.0'
-
-
-class COAType(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
-    _XSI_TYPE = 'stixVocabs:CourseOfActionTypeVocab-1.0'
 
 
 class CourseOfAction(stix.Entity):
