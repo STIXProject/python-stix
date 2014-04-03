@@ -35,6 +35,13 @@ instructions.
 -  `python-cybox <https://github.com/CybOXProject/python-cybox>`_
 -  `lxml <http://lxml.de/>`_
 
+Installing Dependencies on Ubuntu
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+::
+
+    $ sudo apt-get install python-dev python-pip libxml2-dev libxslt-dev
+    $ sudo pip install stix
 
 Versioning
 ----------
