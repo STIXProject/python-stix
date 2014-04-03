@@ -75,13 +75,15 @@ class Infrastructure(stix.Entity):
         else:
             self.add_type(value)
 
-    def add_type(self, type_):
+    def add_type(self, type_, vocab_type=AttackerInfrastructureType):
         if not type_:
             return
-        elif isinstance(type_, AttackerInfrastructureType):
+        elif vocab_type is None:
+            self._types.append(VocabString(value=type_))    
+        elif isinstance(type_, vocab_type):
             self._types.append(type_)
         else:
-            self._types.append(AttackerInfrastructureType(value=type_))
+            self._types.append(vocab_type(value=type_))
 
     @property
     def observable_characterization(self):
