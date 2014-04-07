@@ -16,6 +16,7 @@ from stix.common.related import (GenericRelationshipList, RelatedCampaign,
 from stix.data_marking import Marking
 import stix.utils
 from stix.utils import dates
+from stix.common.vocabs import CampaignStatus
 
 
 class AssociatedCampaigns(GenericRelationshipList):
@@ -74,8 +75,6 @@ class Names(stix.EntityList):
     _binding_var = "Name"
     _contained_type = Name
     _inner_name = "names"
-
-
 
 
 class Campaign(stix.Entity):
@@ -196,6 +195,19 @@ class Campaign(stix.Entity):
             self.intended_effects.append(value)
         else:
             self.intended_effects.append(Statement(value=value))
+
+    @property
+    def status(self):
+        return self._status
+    
+    @status.setter
+    def status(self, value):
+        if not value:
+            self._status = None
+        elif isinstance(value, VocabString):
+            self._status = value
+        else:
+            self._status = CampaignStatus(value)
 
     def to_obj(self, return_obj=None):
         if not return_obj:
