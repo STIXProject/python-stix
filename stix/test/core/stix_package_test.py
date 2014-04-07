@@ -55,7 +55,7 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
                     'names': {
                         'names': ["Dancing Hippos", "Crazy Squirrels"],
                     },
-                    'intended_effect': [
+                    'intended_effects': [
                         {
                             'timestamp': "2014-03-11T06:24:26",
                             'value': "Doing bad stuff",

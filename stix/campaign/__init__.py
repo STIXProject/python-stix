@@ -76,6 +76,8 @@ class Names(stix.EntityList):
     _inner_name = "names"
 
 
+
+
 class Campaign(stix.Entity):
     _binding = campaign_binding
     _binding_class = _binding.CampaignType
@@ -91,12 +93,12 @@ class Campaign(stix.Entity):
         self.description = description
         self.short_description = short_description
         self.names = None
-        self.intended_effect = []
+        self.intended_effects = None
         self.status = None
         self.related_ttps = RelatedTTPs()
         self.related_incidents = RelatedIncidents()
         self.related_indicators = RelatedIndicators()
-        self.attribution = []
+        self.attribution = Attribution()
         self.associated_campaigns = AssociatedCampaigns()
         self.confidence = None
         self.activity = []
@@ -172,6 +174,28 @@ class Campaign(stix.Entity):
         else:
             self._short_description = None
 
+    @property
+    def intended_effects(self):
+        return self._intended_effects
+    
+    @intended_effects.setter
+    def intended_effects(self, value):
+        self._intended_effects = None
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_intended_effect(v)
+        else:
+            self.add_intended_effect(value)
+    
+    def add_intended_effect(self, value):
+        if not value:
+            return
+        elif isinstance(value, Statement):
+            self.intended_effects.append(value)
+        else:
+            self.intended_effects.append(Statement(value=value))
 
     def to_obj(self, return_obj=None):
         if not return_obj:
@@ -276,7 +300,7 @@ class Campaign(stix.Entity):
         if self.names:
             d['names'] = self.names.to_dict()
         if self.intended_effect:
-            d['intended_effect'] = [x.to_dict() for x in self.intended_effect]
+            d['intended_effects'] = [x.to_dict() for x in self.intended_effect]
         if self.status:
             d['status'] = self.status.to_dict()
         if self.related_ttps:
@@ -321,7 +345,7 @@ class Campaign(stix.Entity):
                 StructuredText.from_dict(dict_repr.get('short_description'))
         return_obj.names = Names.from_dict(dict_repr.get('names'))
         return_obj.intended_effect = \
-                [Statement.from_dict(x) for x in dict_repr.get('intended_effect', [])]
+                [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
         return_obj.status = VocabString.from_dict(dict_repr.get('status'))
         return_obj.related_ttps = \
                 RelatedTTPs.from_dict(dict_repr.get('related_ttps'))
