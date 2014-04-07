@@ -31,7 +31,7 @@ class TTP(stix.Entity):
         self.intended_effects = None
         self.resources = None
         self.victim_targeting = VictimTargeting()
-        self.exploit_targets = None
+        self.exploit_targets = ExploitTargets()
 
     @property
     def id_(self):
