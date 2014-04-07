@@ -55,7 +55,7 @@ class ThreatActor(stix.Entity):
         self.short_description = short_description
         self.identity = None
         self.type_ = []
-        self.motivation = []
+        self.motivations = []
         self.sophistication = []
         self.intended_effect = []
         self.planning_and_operational_support = []
@@ -135,6 +135,41 @@ class ThreatActor(stix.Entity):
         else:
             self._short_description = None
 
+    @property
+    def identity(self):
+        return self._identity
+    
+    @identity.setter
+    def identity(self, value):
+        if not value:
+            self._identity = None
+        elif isinstance(value, Identity):
+            self._identity = value
+        else:
+            raise ValueError("identity must be instance of stix.common.Identity")
+
+    @property
+    def motivations(self):
+        return self._motivations
+    
+    @motivations.setter
+    def motivations(self, value):
+        self._motivations = None
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_motivation(v)
+        else:
+            self.add_motivation(value)
+            
+    def add_motivation(self, value):
+        if not value:
+            return
+        elif isinstance(value, Statement):
+            self.motivations.append(value)
+        else:
+            self.motivations.append(Statement(value=value))
 
     def to_obj(self, return_obj=None):
         if not return_obj:
