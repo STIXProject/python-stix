@@ -22,7 +22,28 @@ class InformationSource(stix.Entity):
         #self.contributors = []
         self.time = time
         self.tools = tools
-        #self.references = []
+        self.references = None
+        
+    @property
+    def references(self):
+        return self._references
+    
+    @references.setter
+    def references(self, value):
+        self._references = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_reference(v)
+        else:
+            self.add_reference(value)
+    
+    def add_reference(self, value):
+        if not value:
+            return
+        # TODO: Check if it's a valid URI?
+        self.references.append(value)
 
     @property
     def description(self):
@@ -72,9 +93,11 @@ class InformationSource(stix.Entity):
     def to_obj(self, return_obj=None):
         if return_obj == None:
             return_obj = self._binding.InformationSourceType()
-
         if self.description is not None:
             return_obj.set_Description(self.description.to_obj())
+        if self.references:
+            references_obj = stix_common_binding.ReferencesType(Reference=self.references)
+            return_obj.set_References(references_obj)
 
         identity_obj    = self.identity.to_obj() if self.identity else None
         time_obj        = self.time.to_obj() if self.time else None
@@ -112,10 +135,12 @@ class InformationSource(stix.Entity):
 
         return_obj.description = StructuredText.from_obj(obj.get_Description())
         return_obj.identity = Identity.from_obj(obj.get_Identity())
-
+        
+        
+        if obj.get_References():
+            return_obj.references = obj.get_References().get_Reference()
         if obj.get_Time():
             return_obj.time = cybox.common.Time.from_obj(obj.get_Time())
-
         if obj.get_Tools():
             return_obj.tools = cybox.common.ToolInformationList.from_obj(obj.get_Tools())
 
@@ -133,7 +158,8 @@ class InformationSource(stix.Entity):
             return_obj = cls()
 
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
-
+        return_obj.references = dict_repr.get('references')
+        
         identity_dict   = dict_repr.get('identity')
         time_dict       = dict_repr.get('time')
         tools_list      = dict_repr.get('tools')
@@ -157,6 +183,8 @@ class InformationSource(stix.Entity):
             d['time']  = self.time.to_dict()
         if self.tools:
             d['tools'] = self.tools.to_list()
+        if self.references:
+            d['references'] = self.references
 
         return d
 

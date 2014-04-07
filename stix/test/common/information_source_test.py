@@ -12,6 +12,7 @@ class InformationSourceTests(EntityTestCase, unittest.TestCase):
         'identity': {
             'name': "Spiderman",
         },
+        'references' : ['http://example.com'],
         'time': {
             'start_time': "2010-11-12T01:02:03",
             'end_time': "2013-12-11T03:02:01",
