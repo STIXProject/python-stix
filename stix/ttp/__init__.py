@@ -31,8 +31,7 @@ class TTP(stix.Entity):
         self.intended_effects = None
         self.resources = None
         self.victim_targeting = VictimTargeting()
-
-        self.exploit_targets = None # TODO: stix.ExploitTarget not implemented yet
+        self.exploit_targets = None
 
     @property
     def id_(self):
@@ -130,6 +129,19 @@ class TTP(stix.Entity):
             raise ValueError("value must be RelatedTTPs instance")
 
     @property
+    def exploit_targets(self):
+        return self._exploit_targets
+
+    @exploit_targets.setter
+    def exploit_targets(self, value):
+        if not value:
+            self._exploit_targets = ExploitTargets()
+        elif isinstance(value, ExploitTargets):
+            self._exploit_targets = value
+        else:
+            raise ValueError("value must be ExploitTargets instance")
+
+    @property
     def information_source(self):
         return self._information_source
 
@@ -210,6 +222,8 @@ class TTP(stix.Entity):
             return_obj.set_Behavior(self.behavior.to_obj())
         if self.related_ttps:
             return_obj.set_Related_TTPs(self.related_ttps.to_obj())
+        if self.exploit_targets:
+            return_obj.set_Exploit_Targets(self.exploit_targets.to_obj())
         if self.information_source:
             return_obj.set_Information_Source(self.information_source.to_obj())
         if self.intended_effects:
@@ -239,6 +253,7 @@ class TTP(stix.Entity):
             return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
             return_obj.behavior = Behavior.from_obj(obj.get_Behavior())
             return_obj.related_ttps = RelatedTTPs.from_obj(obj.get_Related_TTPs())
+            return_obj.exploit_targets = ExploitTargets.from_obj(obj.get_Exploit_Targets())
             return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
             return_obj.resources = Resource.from_obj(obj.get_Resources())
             return_obj.victim_targeting = VictimTargeting.from_obj(obj.get_Victim_Targeting())
@@ -268,6 +283,8 @@ class TTP(stix.Entity):
             d['behavior'] = self.behavior.to_dict()
         if self.related_ttps:
             d['related_ttps'] = self.related_ttps.to_dict()
+        if self.exploit_targets:
+            d['exploit_targets'] = self.exploit_targets.to_dict()
         if self.information_source:
             d['information_source'] = self.information_source.to_dict()
         if self.intended_effects:
@@ -295,6 +312,7 @@ class TTP(stix.Entity):
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
         return_obj.behavior = Behavior.from_dict(dict_repr.get('behavior'))
         return_obj.related_ttps = RelatedTTPs.from_dict(dict_repr.get('related_ttps'))
+        return_obj.exploit_targets = ExploitTargets.from_dict(dict_repr.get('exploit_targets'))
         return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
         return_obj.intended_effects = [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
         return_obj.resources = Resource.from_dict(dict_repr.get('resources'))
@@ -304,3 +322,4 @@ class TTP(stix.Entity):
 
 # Avoid circular imports
 from .related_ttps import RelatedTTPs
+from .exploit_targets import ExploitTargets

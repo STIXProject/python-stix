@@ -15,6 +15,33 @@ class TTPTests(EntityTestCase, unittest.TestCase):
                 {'title': "Tool"}
             ],
             'infrastructure': {'title': "Infrastructure"},
+        },
+        'exploit_targets': {
+            'scope': "exclusive",
+            'exploit_targets': [
+                {
+                    'exploit_target': {'id': 'example:ExploitTarget-1',
+                    'version': '1.1',
+                    'title': "ExploitTarget1",
+                    'description': "This is a long description about an ExploitTarget",
+                    'short_description': "an ExploitTarget",
+                    'information_source': {
+                        'description': "Mr. Evil's enemy",
+                        'identity': {
+                            'name': "Ms. Good",
+                        },
+                    },
+                    'handling': [
+                    {
+                        'marking_structure': [{
+                            'marking_model_name': 'TLP',
+                            'color': "RED",
+                            'xsi:type': "tlpMarking:TLPMarkingStructureType",
+                        }]
+                    }
+                    ]}
+                },
+            ]
         }
     }
 
