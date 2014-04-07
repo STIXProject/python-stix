@@ -74,7 +74,7 @@ The python-stix package layout is as follows:
 * ``stix/common/`` : APIs for common STIX constructs (e.g., Structured Text,
   Information Source)
 
-* ``stix/coa/`` : APIs for STIX Exploit Target constructs
+* ``stix/exploit_target/`` : APIs for STIX Exploit Target constructs
 
 * ``stix/incident/`` : APIs for common Incident constructs
 
