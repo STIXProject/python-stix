@@ -32,7 +32,7 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
                     'threat_actor': {
                         'description': 'A Threat Actor Description',
                         'id': 'example:threatactor-1',
-                        'sophistication': [{'value': 'High'}],
+                        'sophistications': [{'value': 'High'}],
                         'title': 'A Threat Actor',
                         'version': '1.1'
                     }

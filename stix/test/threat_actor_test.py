@@ -17,21 +17,21 @@ class ThreatActorTests(EntityTestCase, unittest.TestCase):
         'identity': {
             'name': "Mr. Evil",
         },
-        'type': [
+        'types': [
             {'value': "Hacker"},
         ],
-        'motivation': [
+        'motivations': [
             {'value': "Ego"},
             {'value': "Opportunistic"},
         ],
-        'sophistication': [
+        'sophistications': [
             {'value': "Novice"},
         ],
-        'intended_effect': [
+        'intended_effects': [
             {'value': "Account Takeover"},
             {'value': "Extortion"},
         ],
-        'planning_and_operational_support': [
+        'planning_and_operational_supports': [
             {'value': "Financial Resources"},
         ],
         'observed_ttps': {

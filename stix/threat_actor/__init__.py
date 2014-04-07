@@ -54,11 +54,11 @@ class ThreatActor(stix.Entity):
         self.description = description
         self.short_description = short_description
         self.identity = None
-        self.type_ = []
-        self.motivations = []
-        self.sophistication = []
-        self.intended_effect = []
-        self.planning_and_operational_support = []
+        self.types = None
+        self.motivations = None
+        self.sophistications = None
+        self.intended_effects = None
+        self.planning_and_operational_supports = None
         self.handling = None
         self.confidence = None
         self.information_source = None
@@ -149,12 +149,35 @@ class ThreatActor(stix.Entity):
             raise ValueError("identity must be instance of stix.common.Identity")
 
     @property
+    def types(self):
+        return self._types
+    
+    @types.setter
+    def types(self, value):
+        self._types = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_type(v)
+        else:
+            self.add_type(value)
+            
+    def add_type(self, value):
+        if not value:
+            return
+        elif isinstance(value, Statement):
+            self.types.append(value)
+        else:
+            self.types.append(Statement(value=value))
+
+    @property
     def motivations(self):
         return self._motivations
     
     @motivations.setter
     def motivations(self, value):
-        self._motivations = None
+        self._motivations = []
         if not value:
             return
         elif isinstance(value, list):
@@ -170,6 +193,75 @@ class ThreatActor(stix.Entity):
             self.motivations.append(value)
         else:
             self.motivations.append(Statement(value=value))
+
+    @property
+    def sophistications(self):
+        return self._sophistications
+    
+    @sophistications.setter
+    def sophistications(self, value):
+        self._sophistications = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_sophistication(v)
+        else:
+            self.add_sophistication(value)
+            
+    def add_sophistication(self, value):
+        if not value:
+            return
+        elif isinstance(value, Statement):
+            self.sophistications.append(value)
+        else:
+            self.sophistications.append(Statement(value=value))
+
+    @property
+    def intended_effects(self):
+        return self._intended_effects
+    
+    @intended_effects.setter
+    def intended_effects(self, value):
+        self._intended_effects = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_intended_effect(v)
+        else:
+            self.add_intended_effect(value)
+            
+    def add_intended_effect(self, value):
+        if not value:
+            return
+        elif isinstance(value, Statement):
+            self.intended_effects.append(value)
+        else:
+            self.intended_effects.append(Statement(value=value))
+
+    @property
+    def planning_and_operational_supports(self):
+        return self._planning_and_operational_supports
+    
+    @planning_and_operational_supports.setter
+    def planning_and_operational_supports(self, value):
+        self._planning_and_operational_supports = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_planning_and_operational_support(v)
+        else:
+            self.add_planning_and_operational_support(value)
+            
+    def add_planning_and_operational_support(self, value):
+        if not value:
+            return
+        elif isinstance(value, Statement):
+            self.planning_and_operational_supports.append(value)
+        else:
+            self.planning_and_operational_supports.append(Statement(value=value))
 
     def to_obj(self, return_obj=None):
         if not return_obj:
@@ -187,17 +279,17 @@ class ThreatActor(stix.Entity):
             return_obj.set_Short_Description(self.short_description.to_obj())
         if self.identity:
             return_obj.set_Identity(self.identity.to_obj())
-        if self.type_:
-            return_obj.set_Type([x.to_obj() for x in self.type_])
-        if self.motivation:
-            return_obj.set_Motivation([x.to_obj() for x in self.motivation])
-        if self.sophistication:
-            return_obj.set_Sophistication([x.to_obj() for x in self.sophistication])
-        if self.intended_effect:
-            return_obj.set_Intended_Effect([x.to_obj() for x in self.intended_effect])
-        if self.planning_and_operational_support:
+        if self.types:
+            return_obj.set_Type([x.to_obj() for x in self.types])
+        if self.motivations:
+            return_obj.set_Motivation([x.to_obj() for x in self.motivations])
+        if self.sophistications:
+            return_obj.set_Sophistication([x.to_obj() for x in self.sophistications])
+        if self.intended_effects:
+            return_obj.set_Intended_Effect([x.to_obj() for x in self.intended_effects])
+        if self.planning_and_operational_supports:
             return_obj.set_Planning_And_Operational_Support([x.to_obj()
-                    for x in self.planning_and_operational_support])
+                    for x in self.planning_and_operational_supports])
         if self.observed_ttps:
             return_obj.set_Observed_TTPs(self.observed_ttps.to_obj())
         if self.associated_campaigns:
@@ -231,11 +323,11 @@ class ThreatActor(stix.Entity):
             return_obj.description = StructuredText.from_obj(obj.get_Description())
             return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
             return_obj.identity = Identity.from_obj(obj.get_Identity())
-            return_obj.type_ = [Statement.from_obj(x) for x in obj.get_Type()]
-            return_obj.motivation = [Statement.from_obj(x) for x in obj.get_Motivation()]
-            return_obj.sophistication = [Statement.from_obj(x) for x in obj.get_Sophistication()]
-            return_obj.intended_effect = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
-            return_obj.planning_and_operational_support = [Statement.from_obj(x) for x in obj.get_Planning_And_Operational_Support()]
+            return_obj.types = [Statement.from_obj(x) for x in obj.get_Type()]
+            return_obj.motivations = [Statement.from_obj(x) for x in obj.get_Motivation()]
+            return_obj.sophistications = [Statement.from_obj(x) for x in obj.get_Sophistication()]
+            return_obj.intended_effects = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
+            return_obj.planning_and_operational_supports = [Statement.from_obj(x) for x in obj.get_Planning_And_Operational_Support()]
             return_obj.observed_ttps = ObservedTTPs.from_obj(obj.get_Observed_TTPs())
             return_obj.associated_campaigns = AssociatedCampaigns.from_obj(obj.get_Associated_Campaigns())
             return_obj.associated_actors = AssociatedActors.from_obj(obj.get_Associated_Actors())
@@ -264,17 +356,17 @@ class ThreatActor(stix.Entity):
             d['short_description'] = self.short_description.to_dict()
         if self.identity:
             d['identity'] = self.identity.to_dict()
-        if self.type_:
-            d['type'] = [x.to_dict() for x in self.type_]
-        if self.motivation:
-            d['motivation'] = [x.to_dict() for x in self.motivation]
-        if self.sophistication:
-            d['sophistication'] = [x.to_dict() for x in self.sophistication]
-        if self.intended_effect:
-            d['intended_effect'] = [x.to_dict() for x in self.intended_effect]
-        if self.planning_and_operational_support:
-            d['planning_and_operational_support'] = [x.to_dict()
-                    for x in self.planning_and_operational_support]
+        if self.types:
+            d['types'] = [x.to_dict() for x in self.types]
+        if self.motivations:
+            d['motivations'] = [x.to_dict() for x in self.motivations]
+        if self.sophistications:
+            d['sophistications'] = [x.to_dict() for x in self.sophistications]
+        if self.intended_effects:
+            d['intended_effects'] = [x.to_dict() for x in self.intended_effects]
+        if self.planning_and_operational_supports:
+            d['planning_and_operational_supports'] = [x.to_dict()
+                    for x in self.planning_and_operational_supports]
         if self.observed_ttps:
             d['observed_ttps'] = self.observed_ttps.to_dict()
         if self.associated_campaigns:
@@ -308,12 +400,12 @@ class ThreatActor(stix.Entity):
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
         return_obj.identity = Identity.from_dict(dict_repr.get('identity'))
-        return_obj.type_ = [Statement.from_dict(x) for x in dict_repr.get('type', [])]
-        return_obj.motivation = [Statement.from_dict(x) for x in dict_repr.get('motivation', [])]
-        return_obj.sophistication = [Statement.from_dict(x) for x in dict_repr.get('sophistication', [])]
-        return_obj.intended_effect = [Statement.from_dict(x) for x in dict_repr.get('intended_effect', [])]
-        return_obj.planning_and_operational_support = [Statement.from_dict(x)
-                for x in dict_repr.get('planning_and_operational_support', [])]
+        return_obj.types = [Statement.from_dict(x) for x in dict_repr.get('types', [])]
+        return_obj.motivations = [Statement.from_dict(x) for x in dict_repr.get('motivations', [])]
+        return_obj.sophistications = [Statement.from_dict(x) for x in dict_repr.get('sophistications', [])]
+        return_obj.intended_effects = [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
+        return_obj.planning_and_operational_supports = [Statement.from_dict(x)
+                for x in dict_repr.get('planning_and_operational_supports', [])]
         return_obj.observed_ttps = ObservedTTPs.from_dict(dict_repr.get('observed_ttps'))
         return_obj.associated_campaigns = AssociatedCampaigns.from_dict(dict_repr.get('associated_campaigns'))
         return_obj.associated_actors = AssociatedActors.from_dict(dict_repr.get('associated_actors'))
