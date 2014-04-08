@@ -11,6 +11,8 @@ from stix.data_marking import Marking
 import stix.utils
 from stix.utils import dates
 from datetime import datetime
+from stix.common.vocabs import (ThreatActorType, Motivation, ThreatActorSophistication,
+                                IntendedEffect, PlanningAndOperationalSupport)
 
 class ObservedTTPs(GenericRelationshipList):
     _namespace = 'http://stix.mitre.org/ThreatActor-1'
@@ -169,7 +171,8 @@ class ThreatActor(stix.Entity):
         elif isinstance(value, Statement):
             self.types.append(value)
         else:
-            self.types.append(Statement(value=value))
+            type_ = ThreatActorType(value)
+            self.types.append(Statement(value=type_))
 
     @property
     def motivations(self):
@@ -192,7 +195,8 @@ class ThreatActor(stix.Entity):
         elif isinstance(value, Statement):
             self.motivations.append(value)
         else:
-            self.motivations.append(Statement(value=value))
+            motivation = Motivation(value)
+            self.motivations.append(Statement(value=motivation))
 
     @property
     def sophistications(self):
@@ -215,7 +219,8 @@ class ThreatActor(stix.Entity):
         elif isinstance(value, Statement):
             self.sophistications.append(value)
         else:
-            self.sophistications.append(Statement(value=value))
+            sophistication = ThreatActorSophistication(value)
+            self.sophistications.append(Statement(value=sophistication))
 
     @property
     def intended_effects(self):
@@ -238,7 +243,8 @@ class ThreatActor(stix.Entity):
         elif isinstance(value, Statement):
             self.intended_effects.append(value)
         else:
-            self.intended_effects.append(Statement(value=value))
+            intended_effect = IntendedEffect(value)
+            self.intended_effects.append(Statement(value=intended_effect))
 
     @property
     def planning_and_operational_supports(self):
@@ -261,7 +267,8 @@ class ThreatActor(stix.Entity):
         elif isinstance(value, Statement):
             self.planning_and_operational_supports.append(value)
         else:
-            self.planning_and_operational_supports.append(Statement(value=value))
+            pos = PlanningAndOperationalSupport(value)
+            self.planning_and_operational_supports.append(Statement(value=pos))
 
     def to_obj(self, return_obj=None):
         if not return_obj:
