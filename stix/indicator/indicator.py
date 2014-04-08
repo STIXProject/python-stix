@@ -16,6 +16,7 @@ from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
 from datetime import datetime
 from stix.common.vocabs import IndicatorType
+from stix.common.kill_chains import KillChainPhasesReference
 
 class SuggestedCOAs(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Indicator-2"
@@ -55,6 +56,7 @@ class Indicator(stix.Entity):
         self.sightings = Sightings()
         self.composite_indicator_expression = None
         self.handling = None
+        self.kill_chain_phases = KillChainPhasesReference()
         
     @property
     def id_(self):
@@ -389,6 +391,8 @@ class Indicator(stix.Entity):
             return_obj.set_Composite_Indicator_Expression(self.composite_indicator_expression.to_obj())
         if self.handling:
             return_obj.set_Handling(self.handling.to_obj())
+        if self.kill_chain_phases:
+            return_obj.set_Kill_Chain_Phases(self.kill_chain_phases.to_obj())
 
         return return_obj
 
@@ -412,6 +416,7 @@ class Indicator(stix.Entity):
             return_obj.sightings        = Sightings.from_obj(obj.get_Sightings())
             return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_obj(obj.get_Composite_Indicator_Expression())
             return_obj.handling = Marking.from_obj(obj.get_Handling())
+            return_obj.kill_chain_phases = KillChainPhasesReference.from_obj(obj.get_Kill_Chain_Phases())
             
             if obj.get_version():
                 return_obj.version = obj.get_version()
@@ -475,6 +480,8 @@ class Indicator(stix.Entity):
             d['composite_indicator_expression'] = self.composite_indicator_expression.to_dict()
         if self.handling:
             d['handling'] = self.handling.to_dict()
+        if self.kill_chain_phases:
+            d['kill_chain_phases'] = self.kill_chain_phases.to_dict()
         
         return d
 
@@ -504,6 +511,7 @@ class Indicator(stix.Entity):
         return_obj.sightings = Sightings.from_dict(dict_repr.get('sightings'))
         return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_dict(dict_repr.get('composite_indicator_expression'))
         return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
+        return_obj.kill_chain_phases = KillChainPhasesReference.from_dict(dict_repr.get('kill_chain_phases'))
         
         if observable_dict:
             return_obj.add_observable(Observable.from_dict(observable_dict))
