@@ -5,15 +5,16 @@ import stix
 from stix.ttp import TTP
 
 import stix.bindings.stix_core as core_binding
+from stix.common.kill_chains import KillChains
 
 class TTPs(stix.Entity):
     _binding = core_binding
     _binding_class = _binding.TTPsType
     _namespace = 'http://stix.mitre.org/stix-1'
     
-    def __init__(self, ttps=None, kill_chain=None):
+    def __init__(self, ttps=None):
         self.ttps = ttps
-        #self.kill_chain = kill_chain
+        self.kill_chains = KillChains()
         
     @property
     def ttps(self):
@@ -44,6 +45,8 @@ class TTPs(stix.Entity):
         
         if self.ttps:
             return_obj.set_TTP([x.to_obj() for x in self.ttps])
+        if self.kill_chains:
+            return_obj.set_Kill_Chains(self.kill_chains.to_obj())
         
         return return_obj
     
@@ -54,15 +57,19 @@ class TTPs(stix.Entity):
         if not return_obj:
             return_obj = cls()
         
+        return_obj.kill_chains = KillChains.from_obj(obj.get_Kill_Chains())
+        
         if obj.get_TTP():
             return_obj.ttps = [TTP.from_obj(x) for x in obj.get_TTP()]
-
+        
         return return_obj
     
     def to_dict(self):
         d = {}
         if self.ttps:
             d['ttps'] = [x.to_dict() for x in self.ttps]
+        if self.kill_chains:
+            d['kill_chains'] = self.kill_chains.to_dict()
         
         return d
     
@@ -74,4 +81,5 @@ class TTPs(stix.Entity):
             return_obj = cls()
         
         return_obj.ttps = [TTP.from_dict(x) for x in dict_repr.get('ttps', [])]
+        return_obj.kill_chains = KillChains.from_dict(dict_repr.get('kill_chains'))
         return return_obj
