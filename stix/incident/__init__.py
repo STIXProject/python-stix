@@ -15,7 +15,7 @@ from stix.utils import dates
 from .affected_asset import AffectedAsset
 from .property_affected import PropertyAffected
 from .time import Time
-from stix.common.vocabs import IncidentCategory
+from stix.common.vocabs import IncidentCategory, IntendedEffect
 
 from datetime import datetime
 
@@ -137,13 +137,14 @@ class Incident(stix.Entity):
         else:
             self.add_intended_effect(value)
 
-    def add_intended_effect(self, intended_effect):
-        if not intended_effect:
+    def add_intended_effect(self, value):
+        if not value:
             return
-        elif isinstance(intended_effect, Statement):
-            self._intended_effects.append(intended_effect)
+        elif isinstance(value, Statement):
+            self._intended_effects.append(value)
         else:
-            self._intended_effects.append(Statement(value=str(intended_effect)))
+            intended_effect = IntendedEffect(value)
+            self._intended_effects.append(Statement(value=intended_effect))
 
     @property
     def victims(self):

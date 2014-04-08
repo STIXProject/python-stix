@@ -6,6 +6,7 @@ import stix.utils
 from stix.utils import dates
 import stix.bindings.ttp as ttp_binding
 from stix.common import StructuredText, VocabString, InformationSource, Statement
+from stix.common.vocabs import IntendedEffect
 from .behavior import Behavior
 from .resource import Resource
 from .victim_targeting import VictimTargeting
@@ -170,12 +171,13 @@ class TTP(stix.Entity):
         else:
             self.add_intended_effect(value)
 
-    def add_intended_effect(self, intended_effect):
-        if not intended_effect:
+    def add_intended_effect(self, value):
+        if not value:
             return
-        elif isinstance(intended_effect, Statement):
-            self.intended_effects.append(intended_effect)
+        elif isinstance(value, Statement):
+            self.intended_effects.append(value)
         else:
+            intended_effect = IntendedEffect(value)
             self.intended_effects.append(Statement(value=intended_effect))
 
     @property
