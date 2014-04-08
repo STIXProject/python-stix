@@ -8,8 +8,7 @@ from stix.common import Identity
 class IdentityTests(EntityTestCase, unittest.TestCase):
     klass = Identity
     _full_dict = {
-        'id': "foo",
-        'idref': "foo_ref",
+        'id': "foo",       
         'name': "Me",
         'related_identities': {
             #'scope': 'inclusive',
