@@ -28,6 +28,8 @@ def main():
     
     party_name = PartyName(name_lines=["Foo", "Bar"], person_names=["John Smith", "Jill Smith"], organisation_names=["Foo Inc.", "Bar Corp."])
     ident_spec = STIXCIQIdentity3_0(party_name=party_name)
+    ident_spec.add_electronic_address_identifier("jsmith@example.com")
+    ident_spec.add_free_text_line("Demonstrating Free Text!")
     identity = CIQIdentity3_0Instance(specification=ident_spec)
     indicator.set_producer_identity(identity)
     
@@ -37,7 +39,8 @@ def main():
     stix_package.stix_header = stix_header
     stix_package.add_indicator(indicator)
     
-    print(stix_package.to_xml())
+    xml = stix_package.to_xml() 
+    print(xml)
 
 if __name__ == '__main__':
     main()

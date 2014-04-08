@@ -138,12 +138,15 @@ class STIXCIQIdentity3_0(stix.Entity):
     _namespace      = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
     XML_TAG = "{%s}Specification" % _namespace
 
-    def __init__(self, party_name=None, languages=None, addresses=None, organisation_info=None, electronic_address_identifiers=None):
+    def __init__(self, party_name=None, languages=None, addresses=None, 
+                 organisation_info=None, electronic_address_identifiers=None,
+                 free_text_lines=None):
         self.party_name = party_name
         self.languages = languages
         self.addresses = addresses
         self.organisation_info = organisation_info
         self.electronic_address_identifiers = electronic_address_identifiers
+        self.free_text_lines = free_text_lines
         
     @property
     def addresses(self):
@@ -228,6 +231,29 @@ class STIXCIQIdentity3_0(stix.Entity):
             self.electronic_address_identifiers.append(ElectronicAddressIdentifier(value))
 
 
+    @property
+    def free_text_lines(self):
+        return self._free_text_lines
+
+    @free_text_lines.setter
+    def free_text_lines(self, value):
+        self._free_text_lines = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_free_text_line(v)
+        else:
+            self.add_free_text_line(value)
+    
+    def add_free_text_line(self, value):
+        if not value:
+            return
+        elif isinstance(value, FreeTextLine):
+            self.free_text_lines.append(value)
+        else:
+            self.free_text_lines.append(FreeTextLine(value))
+
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if obj is None:
@@ -251,9 +277,13 @@ class STIXCIQIdentity3_0(stix.Entity):
         if organisation_info is not None and len(organisation_info) > 0:
             return_obj.organisation_info = OrganisationInfo.from_obj(organisation_info[0])
         
-        electronic_address_identifiers = obj.findall("{%s}ElectronicAddressIdentifiers")
+        electronic_address_identifiers = obj.findall("{%s}ElectronicAddressIdentifiers" % XML_NS_XPIL)
         if electronic_address_identifiers is not None and len(electronic_address_identifiers) > 0:
             return_obj.electronic_address_identifiers = [ElectronicAddressIdentifier.from_obj(x) for x in electronic_address_identifiers[0]]
+        
+        free_text_lines = obj.findall("{%s}FreeTextLines" % XML_NS_XPIL)
+        if free_text_lines is not None and len(free_text_lines) > 0:
+            return_obj.free_text_lines = [FreeTextLine.from_obj(x) for x in free_text_lines[0]]
         
         return return_obj
 
@@ -262,6 +292,12 @@ class STIXCIQIdentity3_0(stix.Entity):
             root_tag = STIXCIQIdentity3_0.XML_TAG
             return_obj = et.Element(root_tag)
 
+        if self.free_text_lines:
+            ftl_root = et.Element("{%s}FreeTextLines" % XML_NS_XPIL)
+            return_obj.append(ftl_root)
+            for ftl in self.free_text_lines:
+                ftl_root.append(ftl.to_obj())
+        
         if self.party_name:
             return_obj.append(self.party_name.to_obj())
 
@@ -299,6 +335,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         return_obj.languages = [Language.from_dict(x) for x in dict_repr.get('languages', [])]
         return_obj.addresses = [Address.from_dict(x) for x in dict_repr.get('addresses', [])]
         return_obj.electronic_address_identifiers = [ElectronicAddressIdentifier.from_dict(x) for x in dict_repr.get('electronic_address_identifiers', [])]
+        return_obj.free_text_lines = [FreeTextLine.from_dict(x) for x in dict_repr.get('free_text_lines', [])]
         
         return return_obj
 
@@ -312,6 +349,8 @@ class STIXCIQIdentity3_0(stix.Entity):
             d['addresses'] = [x.to_dict() for x in self.addresses]
         if self.electronic_address_identifiers:
             d['electronic_address_identifiers'] = [x.to_dict() for x in self.electronic_address_identifiers]
+        if self.free_text_lines:
+            d['free_text_lines'] = [x.to_dict() for x in self.free_text_lines]
         return d
 
 class Address(stix.Entity):
@@ -1369,5 +1408,52 @@ class OrganisationInfo(stix.Entity):
         return_obj = cls()
         return_obj.industry_type = d.get('industry_type')
         return return_obj
+
+
+class FreeTextLine(stix.Entity):
+    _namespace = XML_NS_XPIL
+    XML_TAG = "{%s}FreeTextLine" % _namespace
+    
+    def __init__(self, value=None, type_=None):
+        self.value = value
+        self.type_ = type_
+        
+    def to_obj(self):
+        return_obj = et.Element(self.XML_TAG)
+        if self.type_:
+            return_obj.attrib['{%s}Type' % self._namespace] = self.type_
+        if self.value:
+            return_obj.text = self.value
+        
+        return return_obj
+    
+    @classmethod
+    def from_obj(cls, obj):
+        if obj is None:
+            return None
+        
+        return_obj = cls()
+        return_obj.type_ = obj.get('{%s}Type' % cls._namespace)
+        return_obj.value = obj.text
+        return return_obj
+
+    def to_dict(self):
+        d = {}
+        if self.type_:
+            d['type'] = self.type_
+        if self.value:
+            d['value'] = self.value
+        return d
+    
+    @classmethod
+    def from_dict(cls, d):
+        if not d:
+            return None
+        
+        return_obj = cls()
+        return_obj.type_ = d.get('type')
+        return_obj.value = d.get('value')
+        return return_obj
+
 
 stix.common.identity.add_extension(CIQIdentity3_0Instance)
