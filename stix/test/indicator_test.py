@@ -18,6 +18,12 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
             "test 1",
             "not a test 2"
         ],
+        'valid_time_position': [
+            {
+                'start_time': {'value': '2013-08-22T01:23:45', 'precision':'minute'},
+                'end_time': {'value': '2013-09-22T01:34:56', 'precision':'minute'}
+            }
+        ],
         'description': 'An indicator containing a File observable with an associated hash',
         'id': 'example:indicator-1ae45e9c-9b0b-11e3-ada0-28cfe912ced6',
         'observable': {

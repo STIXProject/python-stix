@@ -10,6 +10,7 @@ import stix.extensions.identity as ext_identity
 import stix.bindings.indicator as indicator_binding
 from .test_mechanism import _BaseTestMechanism
 from .sightings import Sightings
+from .valid_time_type import ValidTimeType
 from stix.common.related import GenericRelationshipList, RelatedCOA
 from stix.data_marking import Marking
 from cybox.core import Observable, ObservableComposition
@@ -57,6 +58,7 @@ class Indicator(stix.Entity):
         self.composite_indicator_expression = None
         self.handling = None
         self.kill_chain_phases = KillChainPhasesReference()
+        self.valid_time_position = None
         
     @property
     def id_(self):
@@ -173,6 +175,27 @@ class Indicator(stix.Entity):
             return
         else:
             self.alternative_id.append(value)
+                
+    @property
+    def valid_time_position(self):
+        return self._valid_time_position
+
+    @valid_time_position.setter
+    def valid_time_position(self, value):
+        self._valid_time_position = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_valid_time_position(v)
+        else:
+            self.add_valid_time_position(value)
+
+    def add_valid_time_position(self, value):
+        if not value:
+            return
+        else:
+            self.valid_time_position.append(value)
 
     @property
     def indicator_types(self):
@@ -383,6 +406,8 @@ class Indicator(stix.Entity):
             return_obj.set_Test_Mechanisms(tms_obj)
         if self.alternative_id:
             return_obj.set_Alternative_ID(self.alternative_id)
+        if self.valid_time_position:
+            return_obj.set_Valid_Time_Position([x.to_obj() for x in self.valid_time_position])
         if self.suggested_coas:
             return_obj.set_Suggested_COAs(self.suggested_coas.to_obj())
         if self.sightings:
@@ -435,6 +460,8 @@ class Indicator(stix.Entity):
                 return_obj.suggested_coas = SuggestedCOAs.from_obj(obj.get_Suggested_COAs())
             if obj.get_Alternative_ID():
                 return_obj.alternative_id = obj.get_Alternative_ID()
+            if obj.get_Valid_Time_Position():
+                return_obj.valid_time_position = [ValidTimeType.from_obj(x) for x in obj.get_Valid_Time_Position()]
                 
         return return_obj
 
@@ -472,6 +499,8 @@ class Indicator(stix.Entity):
             d['test_mechanisms'] = [x.to_dict() for x in self.test_mechanisms]
         if self.alternative_id:
             d['alternative_id'] = self.alternative_id
+        if self.valid_time_position:
+            d['valid_time_position'] = [x.to_dict() for x in self.valid_time_position]
         if self.suggested_coas:
             d['suggested_coas'] = self.suggested_coas.to_dict()
         if self.sightings:
@@ -503,6 +532,7 @@ class Indicator(stix.Entity):
         indicator_type_list  = dict_repr.get('indicator_types')
         confidence_dict      = dict_repr.get('confidence')
         alternative_id_dict  = dict_repr.get('alternative_id')
+        valid_time_position_dict  = dict_repr.get('valid_time_position')
 
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
         return_obj.indicated_ttps = [RelatedTTP.from_dict(x) for x in dict_repr.get('indicated_ttps', [])]
@@ -526,6 +556,9 @@ class Indicator(stix.Entity):
             return_obj.confidence = Confidence.from_dict(confidence_dict)
         if alternative_id_dict:
             return_obj.alternative_id = alternative_id_dict
+        if valid_time_position_dict:
+            for valid_time__position_type_dict in valid_time_position_dict:
+                return_obj.add_valid_time_position(ValidTimeType.from_dict(valid_time__position_type_dict))
         
         return return_obj
 
