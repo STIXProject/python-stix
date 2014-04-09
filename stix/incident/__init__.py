@@ -15,7 +15,7 @@ from stix.utils import dates
 from .affected_asset import AffectedAsset
 from .property_affected import PropertyAffected
 from .time import Time
-from stix.common.vocabs import IncidentCategory, IntendedEffect
+from stix.common.vocabs import IncidentCategory, IntendedEffect, DiscoveryMethod
 
 from datetime import datetime
 
@@ -42,6 +42,7 @@ class Incident(stix.Entity):
         self.categories = None
         self.intended_effects = None
         self.leveraged_ttps = LeveragedTTPs()
+        self.discovery_methods = None
     
     @property
     def id_(self):
@@ -214,6 +215,29 @@ class Incident(stix.Entity):
         else:
             raise ValueError('Cannot add type %s to affected asset list' % type(v))
 
+    @property
+    def discovery_methods(self):
+        return self._discovery_methods
+
+    @discovery_methods.setter
+    def discovery_methods(self, value):
+        self._discovery_methods = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_discovery_method(v)
+        else:
+            self.add_discovery_method(value)
+
+    def add_discovery_method(self, value):
+        if not value:
+            return
+        elif isinstance(value, VocabString):
+            self.discovery_methods.append(value)
+        else:
+            self.discovery_methods.append(DiscoveryMethod(value))
+
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -247,6 +271,8 @@ class Incident(stix.Entity):
         if self.affected_assets:
             a = self._binding.AffectedAssetsType(Affected_Asset=[x.to_obj() for x in self.affected_assets])
             return_obj.set_Affected_Assets(a)
+        if self.discovery_methods:
+            return_obj.set_Discovery_Method([x.to_obj() for x in self.discovery_methods])
 
         return return_obj
 
@@ -276,7 +302,9 @@ class Incident(stix.Entity):
                 return_obj.intended_effects = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
             if obj.get_Affected_Assets():
                 return_obj.affected_assets = [AffectedAsset.from_obj(x) for x in obj.get_Affected_Assets().get_Affected_Asset()]
-    
+            if obj.get_Discovery_Method():
+                return_obj.discovery_methods = [DiscoveryMethod.from_obj(x) for x in obj.get_Discovery_Method()]
+            
             return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.get_Attributed_Threat_Actors())
             return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
             return_obj.related_observables = RelatedObservable.from_obj(obj.get_Related_Observables())
@@ -318,6 +346,8 @@ class Incident(stix.Entity):
             d['leveraged_ttps'] = self.leveraged_ttps.to_dict()
         if self.affected_assets:
             d['affected_assets'] = [x.to_dict() for x in self.affected_assets]
+        if self.discovery_methods:
+            d['discovery_methods'] = [x.to_dict() for x in self.discovery_methods]
         return d
 
     @classmethod
@@ -343,6 +373,7 @@ class Incident(stix.Entity):
         return_obj.intended_effects = [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
         return_obj.leveraged_ttps = LeveragedTTPs.from_dict(dict_repr.get('leveraged_ttps'))
         return_obj.affected_assets = [AffectedAsset.from_dict(x) for x in dict_repr.get('affected_assets', [])]
+        return_obj.discovery_methdos = [DiscoveryMethod.from_dict(x) for x in dict_repr.get('discovery_methods', [])]
         return return_obj
 
 
