@@ -30,6 +30,8 @@ def main():
     ident_spec = STIXCIQIdentity3_0(party_name=party_name)
     ident_spec.add_electronic_address_identifier("jsmith@example.com")
     ident_spec.add_free_text_line("Demonstrating Free Text!")
+    ident_spec.add_contact_number("555-555-5555")
+    ident_spec.add_contact_number("555-555-5556")
     identity = CIQIdentity3_0Instance(specification=ident_spec)
     indicator.set_producer_identity(identity)
     

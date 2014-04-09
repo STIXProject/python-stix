@@ -140,13 +140,14 @@ class STIXCIQIdentity3_0(stix.Entity):
 
     def __init__(self, party_name=None, languages=None, addresses=None, 
                  organisation_info=None, electronic_address_identifiers=None,
-                 free_text_lines=None):
+                 free_text_lines=None, contact_numbers=None):
         self.party_name = party_name
         self.languages = languages
         self.addresses = addresses
         self.organisation_info = organisation_info
         self.electronic_address_identifiers = electronic_address_identifiers
         self.free_text_lines = free_text_lines
+        self.contact_numbers = contact_numbers
         
     @property
     def addresses(self):
@@ -254,6 +255,30 @@ class STIXCIQIdentity3_0(stix.Entity):
         else:
             self.free_text_lines.append(FreeTextLine(value))
 
+    @property
+    def contact_numbers(self):
+        return self._contact_numbers
+
+    @contact_numbers.setter
+    def contact_numbers(self, value):
+        self._contact_numbers = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_contact_number(v)
+        else:
+            self.add_contact_number(value)
+    
+    def add_contact_number(self, value):
+        if not value:
+            return
+        elif isinstance(value, ContactNumber):
+            self.contact_numbers.append(value)
+        else:
+            self.contact_numbers.append(ContactNumber(value))
+
+
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if obj is None:
@@ -285,6 +310,10 @@ class STIXCIQIdentity3_0(stix.Entity):
         if free_text_lines is not None and len(free_text_lines) > 0:
             return_obj.free_text_lines = [FreeTextLine.from_obj(x) for x in free_text_lines[0]]
         
+        contact_numbers = obj.findall("{%s}ContactNumbers" % XML_NS_XPIL)
+        if contact_numbers is not None and len(contact_numbers) > 0:
+            return_obj.contact_numbers = [ContactNumber.from_obj(x) for x in contact_numbers[0]]
+        
         return return_obj
 
     def to_obj(self, return_obj=None):
@@ -306,6 +335,12 @@ class STIXCIQIdentity3_0(stix.Entity):
             return_obj.append(addresses_root)
             for address in self.addresses:
                 addresses_root.append(address.to_obj())
+        
+        if self.contact_numbers:
+            contact_numbers_root = et.Element("{%s}ContactNumbers" % XML_NS_XPIL)
+            return_obj.append(contact_numbers_root)
+            for contact_number in self.contact_numbers:
+                contact_numbers_root.append(contact_number.to_obj())
         
         if self.electronic_address_identifiers:
             eai_root = et.Element("{%s}ElectronicAddressIdentifiers" % XML_NS_XPIL)
@@ -336,6 +371,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         return_obj.addresses = [Address.from_dict(x) for x in dict_repr.get('addresses', [])]
         return_obj.electronic_address_identifiers = [ElectronicAddressIdentifier.from_dict(x) for x in dict_repr.get('electronic_address_identifiers', [])]
         return_obj.free_text_lines = [FreeTextLine.from_dict(x) for x in dict_repr.get('free_text_lines', [])]
+        return_obj.contact_numbers = [ContactNumber.from_dict(x) for x in dict_repr.get('contact_numbers', [])]
         
         return return_obj
 
@@ -351,6 +387,8 @@ class STIXCIQIdentity3_0(stix.Entity):
             d['electronic_address_identifiers'] = [x.to_dict() for x in self.electronic_address_identifiers]
         if self.free_text_lines:
             d['free_text_lines'] = [x.to_dict() for x in self.free_text_lines]
+        if self.contact_numbers:
+            d['contact_numbers'] = [x.to_dict() for x in self.contact_numbers]
         return d
 
 class Address(stix.Entity):
@@ -1455,5 +1493,172 @@ class FreeTextLine(stix.Entity):
         return_obj.value = d.get('value')
         return return_obj
 
+class ContactNumber(stix.Entity):
+    _namespace = XML_NS_XPIL
+    XML_TAG = "{%s}ContactNumber" % _namespace
+    
+    COM_MEDIA_TYPE_CELLPHONE = "Cellphone"
+    COM_MEDIA_TYPE_FAX = "Fax"
+    COM_MEDIA_TYPE_PAGER = "Pager"
+    COM_MEDIA_TYPE_TELEPHONE = "Telephone"
+    COM_MEDIA_TYPE_VOIP = "VOIP"
+    
+    ALLOWED_COM_MEDIA_TYPES = (COM_MEDIA_TYPE_CELLPHONE, COM_MEDIA_TYPE_FAX, COM_MEDIA_TYPE_PAGER,
+                               COM_MEDIA_TYPE_TELEPHONE, COM_MEDIA_TYPE_VOIP)
+    
+    def __init__(self, contact_number_elements=None, communication_media_type=None):
+        self.communication_media_type = communication_media_type
+        self.contact_number_elements = contact_number_elements
+    
+    @property
+    def contact_number_elements(self):
+        return self._contact_number_elements
+    
+    @contact_number_elements.setter
+    def contact_number_elements(self, value):
+        self._contact_number_elements = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_contact_number_element(v)
+        else:
+            self.add_contact_number_element(value)
+    
+    def add_contact_number_element(self, value):
+        if not value:
+            return
+        elif isinstance(value, ContactNumberElement):
+            self.contact_number_elements.append(value)
+        else:
+            self.contact_number_elements.append(ContactNumberElement(value))
+    
+    @property
+    def communication_media_type(self):
+        return self._communication_media_type
+    
+    @communication_media_type.setter
+    def communication_media_type(self, value):
+        if not value:
+            self._communication_media_type = None
+        elif value not in self.ALLOWED_COM_MEDIA_TYPES:
+            raise ValueError('value must be one of [%s]' % (", ".join(self.ALLOWED_COM_MEDIA_TYPES)))
+        else:
+            self._communication_media_type = value
+        
+    def to_obj(self):
+        return_obj = et.Element(self.XML_TAG)
+        if self.communication_media_type:
+            return_obj.attrib['{%s}CommunicationMediaType' % self._namespace] = self.communication_media_type
+        if self.contact_number_elements:
+            for contact_number_element in self.contact_number_elements:
+                return_obj.append(contact_number_element.to_obj())
+        
+        return return_obj
+    
+    @classmethod
+    def from_obj(cls, obj):
+        if obj is None:
+            return None
+        
+        return_obj = cls()
+        return_obj.communication_media_type = obj.get('{%s}CommunicationMediaType' % cls._namespace)
+        
+        contact_number_elements = obj.findall("{%s}ContactNumberElement" % XML_NS_XPIL)
+        if contact_number_elements is not None and len(contact_number_elements) > 0:
+            return_obj.contact_number_elements = [ContactNumberElement.from_obj(x) for x in contact_number_elements]
+        
+        return return_obj
+
+    def to_dict(self):
+        d = {}
+        if self.communication_media_type:
+            d['communication_media_type'] = self.communication_media_type
+        if self.contact_number_elements:
+            d['contact_number_elements'] = [x.to_dict() for x in self.contact_number_elements]
+      
+        return d
+    
+    @classmethod
+    def from_dict(cls, d):
+        if not d:
+            return None
+        
+        return_obj = cls()
+        return_obj.communication_media_type = d.get('communication_media_type')
+        return_obj.contact_number_elements = [ContactNumberElement.from_dict(x) for x in d.get('contact_number_elements', [])]
+       
+        return return_obj
+    
+class ContactNumberElement(stix.Entity):
+    _namespace = XML_NS_XPIL
+    XML_TAG = "{%s}ContactNumberElement" % _namespace
+    
+    TYPE_COUNTRY_CODE = "CountryCode"
+    TYPE_AREA_CODE = "AreaCode"
+    TYPE_LOCAL_NUMBER = "LocalNumber"
+    TYPE_EXTENSION = "Extension"
+    TYPE_PIN = "Pin"
+    TYPE_SEPARATOR = "Separator"
+    TYPE_NATIONAL_NUMBER = "NationalNumber"
+    TYPE_INTERNATIONAL_NUMBER = "InternationalNumber"
+    
+    ALLOWED_TYPES = (TYPE_AREA_CODE, TYPE_COUNTRY_CODE, TYPE_EXTENSION, TYPE_INTERNATIONAL_NUMBER,
+                     TYPE_LOCAL_NUMBER, TYPE_NATIONAL_NUMBER, TYPE_SEPARATOR)
+    
+    def __init__(self, value=None, type_=None):
+        self.value = value
+        self.type_ = type_
+    
+    @property
+    def type_(self):
+        return self._type_
+    
+    @type_.setter
+    def type_(self, value):
+        if not value:
+            self._type_ = None
+        elif value not in self.ALLOWED_TYPES:
+            raise ValueError('value must be one of [%s]' % (", ".join(self.ALLOWED_TYPES)))
+        else:
+            self._type_ = value
+        
+    def to_obj(self):
+        return_obj = et.Element(self.XML_TAG)
+        if self.type_:
+            return_obj.attrib['{%s}Type' % self._namespace] = self.type_
+        if self.value:
+            return_obj.text = self.value
+        
+        return return_obj
+    
+    @classmethod
+    def from_obj(cls, obj):
+        if obj is None:
+            return None
+        
+        return_obj = cls()
+        return_obj.type_ = obj.get('{%s}Type' % cls._namespace)
+        return_obj.value = obj.text
+        return return_obj
+
+    def to_dict(self):
+        d = {}
+        if self.type_:
+            d['type'] = self.type_
+        if self.value:
+            d['value'] = self.value
+        return d
+    
+    @classmethod
+    def from_dict(cls, d):
+        if not d:
+            return None
+        
+        return_obj = cls()
+        return_obj.type_ = d.get('type')
+        return_obj.value = d.get('value')
+        return return_obj
+    
 
 stix.common.identity.add_extension(CIQIdentity3_0Instance)
