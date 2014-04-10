@@ -8,7 +8,7 @@ from stix.common import DateTimeWithPrecision
 import stix.bindings.indicator as indicator_binding
 from datetime import datetime
 
-class ValidTimeType(stix.Entity):
+class ValidTime(stix.Entity):
     _namespace = "http://stix.mitre.org/Indicator-2"
     _binding = indicator_binding
     _binding_class = _binding.ValidTimeType
