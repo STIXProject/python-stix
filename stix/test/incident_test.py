@@ -132,6 +132,12 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
                 'name': "Ms. Coordinator",
             },
         }],
+        'external_ids': [
+            {
+                'value' : '478392-feb3ca-98a9ef-984392742',
+                'source' : "some source"
+            }
+        ]
     }
 
     def test_parse_category(self):

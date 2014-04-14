@@ -15,6 +15,7 @@ from stix.utils import dates
 from .affected_asset import AffectedAsset
 from .property_affected import PropertyAffected
 from .time import Time
+from .external_id import ExternalID
 from stix.common.vocabs import IncidentCategory, IntendedEffect, DiscoveryMethod
 
 from datetime import datetime
@@ -44,8 +45,9 @@ class Incident(stix.Entity):
         self.leveraged_ttps = LeveragedTTPs()
         self.discovery_methods = None
         self.reporter = None
-        self.responder = None
-        self.coordinator = None
+        self.responders = None
+        self.coordinators = None
+        self.external_ids = None
     
     @property
     def id_(self):
@@ -256,11 +258,11 @@ class Incident(stix.Entity):
 
     @property
     def responder(self):
-        return self._responder
+        return self._responders
 
     @responder.setter
     def responder(self, value):
-        self._responder = []
+        self._responders = []
         if not value:
             return
         elif isinstance(value, list):
@@ -273,17 +275,17 @@ class Incident(stix.Entity):
         if not value:
             return
         elif isinstance(value, InformationSource):
-            self.responder.append(value)
+            self.responders.append(value)
         else:
             raise ValueError('value must be instance of InformationSource')
 
     @property
     def coordinator(self):
-        return self._coordinator
+        return self._coordinators
 
     @coordinator.setter
     def coordinator(self, value):
-        self._coordinator = []
+        self._coordinators = []
         if not value:
             return
         elif isinstance(value, list):
@@ -296,9 +298,32 @@ class Incident(stix.Entity):
         if not value:
             return
         elif isinstance(value, InformationSource):
-            self.coordinator.append(value)
+            self.coordinators.append(value)
         else:
             raise ValueError('value must be instance of InformationSource')
+
+    @property
+    def external_ids(self):
+        return self._external_ids
+
+    @external_ids.setter
+    def external_ids(self, value):
+        self._external_ids = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_external_id(v)
+        else:
+            self.add_external_id(value)
+
+    def add_external_id(self, value):
+        if not value:
+            return
+        elif isinstance(value, ExternalID):
+            self.external_ids.append(value)
+        else:
+            raise ValueError('value must be instance of ExternalID')
 
     def to_obj(self, return_obj=None):
         if not return_obj:
@@ -341,6 +366,8 @@ class Incident(stix.Entity):
             return_obj.set_Responder([x.to_obj() for x in self.responders])
         if self.coordinators:
             return_obj.set_Coordinator([x.to_obj() for x in self.coordinators])
+        if self.external_ids:
+            return_obj.set_External_ID([x.to_obj() for x in self.external_ids])
 
         return return_obj
 
@@ -378,6 +405,8 @@ class Incident(stix.Entity):
                 return_obj.responders = [InformationSource.from_obj(x) for x in obj.get_Responder()]
             if obj.get_Coordinator():
                 return_obj.coordinators = [InformationSource.from_obj(x) for x in obj.get_Coordinator()]
+            if obj.get_External_ID():
+                return_obj.external_ids = [ExternalID.from_obj(x) for x in obj.get_External_ID()]
             
             return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.get_Attributed_Threat_Actors())
             return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
@@ -428,6 +457,8 @@ class Incident(stix.Entity):
             d['responders'] = [x.to_dict() for x in self.responders]
         if self.coordinators:
             d['coordinators'] = [x.to_dict() for x in self.coordinators]
+        if self.external_ids:
+            d['external_ids'] = [x.to_dict() for x in self.external_ids]
         return d
 
     @classmethod
@@ -457,6 +488,7 @@ class Incident(stix.Entity):
         return_obj.reporter = InformationSource.from_dict(dict_repr.get('reporter'))
         return_obj.responders = [InformationSource.from_dict(x) for x in dict_repr.get('responders')]
         return_obj.coordinators = [InformationSource.from_dict(x) for x in dict_repr.get('coordinators')]
+        return_obj.external_ids = [ExternalID.from_dict(x) for x in dict_repr.get('external_ids')]
         return return_obj
 
 
