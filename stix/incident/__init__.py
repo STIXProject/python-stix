@@ -4,7 +4,7 @@
 
 import stix
 import stix.bindings.incident as incident_binding
-from stix.common import Identity, Statement, StructuredText, VocabString
+from stix.common import Identity, Statement, StructuredText, VocabString, InformationSource
 from stix.common.related import (GenericRelationshipList, RelatedIndicator,
         RelatedThreatActor, RelatedTTP, RelatedObservable)
 from stix.indicator import Indicator
@@ -43,6 +43,9 @@ class Incident(stix.Entity):
         self.intended_effects = None
         self.leveraged_ttps = LeveragedTTPs()
         self.discovery_methods = None
+        self.reporter = None
+        self.responder = None
+        self.coordinator = None
     
     @property
     def id_(self):
@@ -238,6 +241,65 @@ class Incident(stix.Entity):
         else:
             self.discovery_methods.append(DiscoveryMethod(value))
 
+    @property
+    def reporter(self):
+        return self._reporter
+
+    @reporter.setter
+    def reporter(self, value):
+        if not value:
+            self._reporter = None
+        elif isinstance(value, InformationSource):
+            self._reporter = value
+        else:
+            raise ValueError('value must be instance of InformationSource')
+
+    @property
+    def responder(self):
+        return self._responder
+
+    @responder.setter
+    def responder(self, value):
+        self._responder = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_responder(v)
+        else:
+            self.add_responder(value)
+
+    def add_responder(self, value):
+        if not value:
+            return
+        elif isinstance(value, InformationSource):
+            self.responder.append(value)
+        else:
+            raise ValueError('value must be instance of InformationSource')
+
+    @property
+    def coordinator(self):
+        return self._coordinator
+
+    @coordinator.setter
+    def coordinator(self, value):
+        self._coordinator = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_coordinator(v)
+        else:
+            self.add_coordinator(value)
+
+    def add_coordinator(self, value):
+        if not value:
+            return
+        elif isinstance(value, InformationSource):
+            self.coordinator.append(value)
+        else:
+            raise ValueError('value must be instance of InformationSource')
+
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -273,6 +335,12 @@ class Incident(stix.Entity):
             return_obj.set_Affected_Assets(a)
         if self.discovery_methods:
             return_obj.set_Discovery_Method([x.to_obj() for x in self.discovery_methods])
+        if self.reporter:
+            return_obj.set_Reporter(self.reporter.to_obj())
+        if self.responders:
+            return_obj.set_Responder([x.to_obj() for x in self.responders])
+        if self.coordinators:
+            return_obj.set_Coordinator([x.to_obj() for x in self.coordinators])
 
         return return_obj
 
@@ -304,6 +372,12 @@ class Incident(stix.Entity):
                 return_obj.affected_assets = [AffectedAsset.from_obj(x) for x in obj.get_Affected_Assets().get_Affected_Asset()]
             if obj.get_Discovery_Method():
                 return_obj.discovery_methods = [DiscoveryMethod.from_obj(x) for x in obj.get_Discovery_Method()]
+            if obj.get_Reporter():
+                return_obj.reporter = InformationSource.from_obj(obj.get_Reporter())
+            if obj.get_Responder():
+                return_obj.responders = [InformationSource.from_obj(x) for x in obj.get_Responder()]
+            if obj.get_Coordinator():
+                return_obj.coordinators = [InformationSource.from_obj(x) for x in obj.get_Coordinator()]
             
             return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.get_Attributed_Threat_Actors())
             return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
@@ -348,6 +422,12 @@ class Incident(stix.Entity):
             d['affected_assets'] = [x.to_dict() for x in self.affected_assets]
         if self.discovery_methods:
             d['discovery_methods'] = [x.to_dict() for x in self.discovery_methods]
+        if self.reporter:
+            d['reporter'] = self.reporter.to_dict()
+        if self.responders:
+            d['responders'] = [x.to_dict() for x in self.responders]
+        if self.coordinators:
+            d['coordinators'] = [x.to_dict() for x in self.coordinators]
         return d
 
     @classmethod
@@ -374,6 +454,9 @@ class Incident(stix.Entity):
         return_obj.leveraged_ttps = LeveragedTTPs.from_dict(dict_repr.get('leveraged_ttps'))
         return_obj.affected_assets = [AffectedAsset.from_dict(x) for x in dict_repr.get('affected_assets', [])]
         return_obj.discovery_methdos = [DiscoveryMethod.from_dict(x) for x in dict_repr.get('discovery_methods', [])]
+        return_obj.reporter = InformationSource.from_dict(dict_repr.get('reporter'))
+        return_obj.responders = [InformationSource.from_dict(x) for x in dict_repr.get('responders')]
+        return_obj.coordinators = [InformationSource.from_dict(x) for x in dict_repr.get('coordinators')]
         return return_obj
 
 

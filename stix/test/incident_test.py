@@ -113,7 +113,25 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
         'victims': [
             {'name': 'John Smith'},
             {'id': 'example:Identity-1ae603ab-9b0b-11e3-980e-28cfe912ced6'}
-        ]
+        ],
+        'reporter': {
+            'description': "Mr. Evil's enemy",
+            'identity': {
+                'name': "Ms. Good",
+            },
+        },
+        'responders': [{
+            'description': "Mr. Evil's enemy",
+            'identity': {
+                'name': "Ms. Responder",
+            },
+        }],
+        'coordinators': [{
+            'description': "Mr. Evil's enemy",
+            'identity': {
+                'name': "Ms. Coordinator",
+            },
+        }],
     }
 
     def test_parse_category(self):
