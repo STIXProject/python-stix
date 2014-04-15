@@ -14,16 +14,40 @@ from .structured_text import StructuredText
 
 class InformationSource(stix.Entity):
     _binding = stix_common_binding
+    _binding_class = stix_common_binding.InformationSourceType
     _namespace = 'http://stix.mitre.org/common-1'
 
-    def __init__(self, identity=None, time=None, tools=None):
-        self.description = None
+    def __init__(self, description=None, identity=None, time=None, tools=None, contributing_sources=None, references=None):
+        self.description = description
         self.identity = identity
-        #self.contributors = []
+        self.contributing_sources = contributing_sources
         self.time = time
         self.tools = tools
-        self.references = None
-        
+        self.references = references
+    
+    @property
+    def contributing_sources(self):
+        return self._contributing_sources
+    
+    @contributing_sources.setter
+    def contributing_sources(self, value):
+        self._contributing_sources = ContributingSources()
+        if not value:
+            return
+        elif isinstance(value, ContributingSources):
+            self._contributing_sources = value
+        elif isinstance(value, list):
+            for v in value:
+                self.add_contributing_source(v)
+        else:
+            self.add_contributing_source(value)
+    
+    def add_contributing_source(self, value):
+        if not value:
+            return
+        else:
+            self.contributing_sources.append(value) # input checks performed by stix.EntityList
+    
     @property
     def references(self):
         return self._references
@@ -89,41 +113,23 @@ class InformationSource(stix.Entity):
 
         self._tools = value
 
-
     def to_obj(self, return_obj=None):
-        if return_obj == None:
-            return_obj = self._binding.InformationSourceType()
+        if not return_obj:
+            return_obj = self._binding_class()
+            
         if self.description is not None:
             return_obj.set_Description(self.description.to_obj())
         if self.references:
             references_obj = stix_common_binding.ReferencesType(Reference=self.references)
             return_obj.set_References(references_obj)
-
-        identity_obj    = self.identity.to_obj() if self.identity else None
-        time_obj        = self.time.to_obj() if self.time else None
-        tools_obj       = self.tools.to_obj() if self.tools else None
-
-        #=======================================================================
-        # contributors_obj = stix_common_binding.ContributorsType() if self.contributors else None
-        # for contributor in self.contributors:
-        #    contributor_obj = contributor.to_obj()
-        #    contributors_obj.add_Contributor(contributor_obj)
-        # 
-        # 
-        #    
-        # references_obj = stix_common_binding.ReferencesType() if self.references else None
-        # for reference in self.references:
-        #    reference_obj = reference.to_obj()
-        #    references_obj.add_Reference(reference_obj)
-        #=======================================================================
-
-
-        return_obj.set_Identity(identity_obj)
-        return_obj.set_Time(time_obj)
-        return_obj.set_Tools(tools_obj)
-        #return_obj.set_Contributors(contributors_obj)
-        #return_obj.set_References(references_obj)
-
+        if self.contributing_sources:
+            return_obj.set_Contributing_Sources(self.contributing_sources.to_obj())
+        if self.identity:
+            return_obj.set_Identity(self.identity.to_obj())
+        if self.time:
+            return_obj.set_Time(self.time.to_obj())
+        if self.tools:
+            return_obj.set_Tools(self.tools.to_obj())
         return return_obj
 
     @classmethod
@@ -135,7 +141,7 @@ class InformationSource(stix.Entity):
 
         return_obj.description = StructuredText.from_obj(obj.get_Description())
         return_obj.identity = Identity.from_obj(obj.get_Identity())
-        
+        return_obj.contributing_sources = ContributingSources.from_obj(obj.get_Contributing_Sources())
         
         if obj.get_References():
             return_obj.references = obj.get_References().get_Reference()
@@ -143,7 +149,7 @@ class InformationSource(stix.Entity):
             return_obj.time = cybox.common.Time.from_obj(obj.get_Time())
         if obj.get_Tools():
             return_obj.tools = cybox.common.ToolInformationList.from_obj(obj.get_Tools())
-
+        
         return return_obj
 
     @classmethod
@@ -153,23 +159,15 @@ class InformationSource(stix.Entity):
 
         if not dict_repr:
             return None
-
         if not return_obj:
             return_obj = cls()
 
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
         return_obj.references = dict_repr.get('references')
-        
-        identity_dict   = dict_repr.get('identity')
-        time_dict       = dict_repr.get('time')
-        tools_list      = dict_repr.get('tools')
-        
-        return_obj.identity = Identity.from_dict(identity_dict)
-
-        if time_dict:
-            return_obj.time = cybox.common.Time.from_dict(time_dict)
-        if tools_list:
-            return_obj.tools = cybox.common.ToolInformationList.from_list(tools_list)
+        return_obj.contributing_sources = ContributingSources.from_dict(dict_repr.get('contributing_sources'))
+        return_obj.identity = Identity.from_dict(dict_repr.get('identity'))
+        return_obj.time = cybox.common.Time.from_dict(dict_repr.get('time'))
+        return_obj.tools = cybox.common.ToolInformationList.from_list(dict_repr.get('tools'))
 
         return return_obj
 
@@ -185,6 +183,15 @@ class InformationSource(stix.Entity):
             d['tools'] = self.tools.to_list()
         if self.references:
             d['references'] = self.references
-
+        if self.contributing_sources:
+            d['contributing_sources'] = self.contributing_sources.to_dict()
         return d
+
+class ContributingSources(stix.EntityList):
+    _namespace = "http://stix.mitre.org/common-1"
+    _binding = stix_common_binding
+    _binding_class = stix_common_binding.ContributingSourcesType
+    _binding_var = "Source"
+    _contained_type = InformationSource
+    _inner_name = "sources"
 
