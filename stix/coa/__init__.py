@@ -2,10 +2,9 @@
 # See LICENSE.txt for complete terms.
 
 from datetime import datetime
-
+from stix.utils import dates
+from dateutil.tz import tzutc
 from cybox.core import Observables
-import dateutil
-
 import stix
 import stix.utils
 import stix.bindings.course_of_action as coa_binding
@@ -36,7 +35,7 @@ class CourseOfAction(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("coa")
         self.idref = idref
-        self.timestamp = timestamp or datetime.now()
+        self.timestamp = timestamp or datetime.now(tzutc())
         self.version = self._version
         self.title = title
         self.stage = None
@@ -84,12 +83,7 @@ class CourseOfAction(stix.Entity):
 
     @timestamp.setter
     def timestamp(self, value):
-        if not value:
-            self._timestamp = None
-        elif isinstance(value, datetime):
-            self._timestamp = value
-        else:
-            self._timestamp = dateutil.parser.parse(value)
+        self._timestamp = dates.parse_value(value)
 
     @property
     def title(self):

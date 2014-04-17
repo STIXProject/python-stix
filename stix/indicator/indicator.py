@@ -16,6 +16,7 @@ from stix.data_marking import Marking
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
 from datetime import datetime
+from dateutil.tz import tzutc
 from stix.common.vocabs import IndicatorType
 from stix.common.kill_chains import KillChainPhasesReference
 
@@ -41,7 +42,7 @@ class Indicator(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("indicator")
         self.idref = idref
-        self.timestamp = timestamp or datetime.now()
+        self.timestamp = timestamp or datetime.now(tzutc())
         self.version = self._version
         self.producer = None
         self.observables = None

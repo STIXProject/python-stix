@@ -10,6 +10,7 @@ an associated hash.
 '''
 
 from datetime import datetime
+from dateutil.tz import tzutc
 from stix.indicator import Indicator
 from stix.core import STIXPackage, STIXHeader
 from cybox.objects.file_object import File
@@ -25,7 +26,7 @@ def main():
     indicator.title = "File Hash Example"
     indicator.description = "An indicator containing a File observable with an associated hash"
     indicator.set_producer_identity("The MITRE Corporation")
-    indicator.set_produced_time(datetime.now())
+    indicator.set_produced_time(datetime.now(tzutc()))
     indicator.add_object(f)
 
     stix_package = STIXPackage()

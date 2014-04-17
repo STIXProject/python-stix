@@ -8,6 +8,7 @@ from stix.common import (GenericRelationshipList, RelatedObservable, StructuredT
                          Confidence)
 import stix.bindings.indicator as indicator_binding
 from datetime import datetime
+from dateutil.tz import tzutc
 
 class Sighting(stix.Entity):
     _namespace = "http://stix.mitre.org/Indicator-2"
@@ -15,7 +16,7 @@ class Sighting(stix.Entity):
     _binding_class = _binding.SightingType
     
     def __init__(self, timestamp=None, timestamp_precision=None, description=None):
-        self.timestamp = timestamp or datetime.now()
+        self.timestamp = timestamp or datetime.now(tzutc())
         self.timestamp_precision = timestamp_precision
         self.description = description
         self.source = None

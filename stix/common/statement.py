@@ -3,6 +3,7 @@
 
 from datetime import datetime
 import dateutil
+from dateutil.tz import tzutc
 
 import stix
 import stix.bindings.stix_common as common_binding
@@ -18,7 +19,7 @@ class Statement(stix.Entity):
     _binding_class = common_binding.StatementType
 
     def __init__(self, value=None, timestamp=None, description=None, source=None):
-        self.timestamp = timestamp or datetime.now()
+        self.timestamp = timestamp or datetime.now(tzutc())
         self.timestamp_precision = "second"
         self.value = value
         self.description = description

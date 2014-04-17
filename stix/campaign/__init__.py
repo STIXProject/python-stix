@@ -4,6 +4,7 @@
 from datetime import datetime
 
 import dateutil
+from dateutil.tz import tzutc
 from datetime import datetime
 
 import stix
@@ -86,7 +87,7 @@ class Campaign(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("Campaign")
         self.idref = idref
-        self.timestamp = timestamp or datetime.now()
+        self.timestamp = timestamp or datetime.now(tzutc())
         self.version = self._version
         self.title = title
         self.description = description
@@ -179,7 +180,7 @@ class Campaign(stix.Entity):
     
     @intended_effects.setter
     def intended_effects(self, value):
-        self._intended_effects = None
+        self._intended_effects = []
         if not value:
             return
         elif isinstance(value, list):
@@ -226,8 +227,8 @@ class Campaign(stix.Entity):
             return_obj.set_Short_Description(self.short_description.to_obj())
         if self.names:
             return_obj.set_Names(self.names.to_obj())
-        if self.intended_effect:
-            return_obj.set_Intended_Effect([x.to_obj() for x in self.intended_effect])
+        if self.intended_effects:
+            return_obj.set_Intended_Effect([x.to_obj() for x in self.intended_effects])
         if self.status:
             return_obj.set_Status(self.status.to_obj())
         if self.related_ttps:
@@ -271,7 +272,7 @@ class Campaign(stix.Entity):
             return_obj.short_description = \
                     StructuredText.from_obj(obj.get_Short_Description())
             return_obj.names = Names.from_obj(obj.get_Names())
-            return_obj.intended_effect = \
+            return_obj.intended_effects = \
                     [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
             return_obj.status = VocabString.from_obj(obj.get_Status())
             return_obj.related_ttps = RelatedTTPs.from_obj(obj.get_Related_TTPs())
@@ -312,8 +313,8 @@ class Campaign(stix.Entity):
             d['short_description'] = self.short_description.to_dict()
         if self.names:
             d['names'] = self.names.to_dict()
-        if self.intended_effect:
-            d['intended_effects'] = [x.to_dict() for x in self.intended_effect]
+        if self.intended_effects:
+            d['intended_effects'] = [x.to_dict() for x in self.intended_effects]
         if self.status:
             d['status'] = self.status.to_dict()
         if self.related_ttps:
@@ -357,7 +358,7 @@ class Campaign(stix.Entity):
         return_obj.short_description = \
                 StructuredText.from_dict(dict_repr.get('short_description'))
         return_obj.names = Names.from_dict(dict_repr.get('names'))
-        return_obj.intended_effect = \
+        return_obj.intended_effects = \
                 [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
         return_obj.status = VocabString.from_dict(dict_repr.get('status'))
         return_obj.related_ttps = \

@@ -11,6 +11,7 @@ from .behavior import Behavior
 from .resource import Resource
 from .victim_targeting import VictimTargeting
 from datetime import datetime
+from dateutil.tz import tzutc
 
 class TTP(stix.Entity):
     _binding = ttp_binding
@@ -21,7 +22,7 @@ class TTP(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("ttp")
         self.idref = idref
-        self.timestamp = timestamp or datetime.now()
+        self.timestamp = timestamp or datetime.now(tzutc())
         self.version = self._version
         self.title = title
         self.description = description
@@ -246,7 +247,7 @@ class TTP(stix.Entity):
 
         return_obj.id_ = obj.get_id()
         return_obj.idref = obj.get_idref()
-        return_obj.timestamp = obj.get_timestamp() # not yet implemented
+        return_obj.timestamp = obj.get_timestamp()
 
         if isinstance(obj, cls._binding_class): # TTPType properties
             return_obj.version = obj.get_version() or cls._version

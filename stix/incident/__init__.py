@@ -18,6 +18,7 @@ from .time import Time
 from stix.common.vocabs import IncidentCategory, IntendedEffect, DiscoveryMethod
 
 from datetime import datetime
+from dateutil.tz import tzutc
 
 class Incident(stix.Entity):
     _binding = incident_binding
@@ -28,7 +29,7 @@ class Incident(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("incident")
         self.idref = idref
-        self.timestamp = timestamp or datetime.now()
+        self.timestamp = timestamp or datetime.now(tzutc())
         self.version = self._version
         self.description = description
         self.short_description = short_description

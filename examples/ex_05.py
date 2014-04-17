@@ -9,6 +9,7 @@ Description: An example of how to add CIQ Identity information to a STIX Indicat
 '''
 
 from datetime import datetime
+from dateutil.tz import tzutc
 from stix.indicator import Indicator
 from stix.extensions.identity.ciq_identity_3_0 import CIQIdentity3_0Instance, STIXCIQIdentity3_0, PartyName, PersonName
 from stix.core import STIXPackage, STIXHeader
@@ -23,7 +24,7 @@ def main():
     indicator.title = "File Hash Example"
     indicator.description = "An indicator containing a File observable with an associated hash"
     indicator.set_producer_identity("The MITRE Corporation")
-    indicator.set_produced_time(datetime.now())
+    indicator.set_produced_time(datetime.now(tzutc()))
     indicator.add_object(f)
     
     party_name = PartyName(name_lines=["Foo", "Bar"], person_names=["John Smith", "Jill Smith"], organisation_names=["Foo Inc.", "Bar Corp."])
