@@ -148,7 +148,7 @@ class AffectedAsset(stix.Entity):
             
         return_obj.type_ = AssetType.from_obj(obj.get_Type())
         return_obj.description = StructuredText.from_obj(obj.get_Description())
-        return_obj.business_function_or_role = StructuredText.from_obj(obj.get_Business_Role_Or_Function())
+        return_obj.business_function_or_role = StructuredText.from_obj(obj.get_Business_Function_Or_Role())
         return_obj.owernship_class = OwnershipClass.from_obj(obj.get_Ownership_Class())
         return_obj.management_class = ManagementClass.from_obj(obj.get_Management_Class())
         return_obj.location_class = LocationClass.from_obj(obj.get_Location_Class())
@@ -226,9 +226,9 @@ class AffectedAsset(stix.Entity):
             d['structured_description'] = self.structured_description.to_dict()
         return d
     
-from stix.common.vocabs import AssetType as DefaultAssetType
+#from stix.common.vocabs import AssetType as DefaultAssetType
 
-class AssetType(DefaultAssetType):
+class AssetType(VocabString):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding  = incident_binding
     _binding_class = incident_binding.AssetTypeType
@@ -236,6 +236,10 @@ class AssetType(DefaultAssetType):
     def __init__(self, value=None, count_affected=None):
         self.count_affected = count_affected
         super(AssetType, self).__init__(value)
+    
+    def is_plain(self):
+        '''Override VocabString.is_plain()'''
+        return False
     
     @classmethod
     def from_obj(cls, obj, return_obj=None):
