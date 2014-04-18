@@ -11,7 +11,7 @@ import stix.bindings.indicator as indicator_binding
 from .test_mechanism import _BaseTestMechanism
 from .sightings import Sightings
 from .valid_time import ValidTime
-from stix.common.related import GenericRelationshipList, RelatedCOA
+from stix.common.related import GenericRelationshipList, RelatedCOA, RelatedIndicator
 from stix.data_marking import Marking
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
@@ -32,6 +32,14 @@ class SuggestedCOAs(GenericRelationshipList):
         if suggested_coas is None:
             suggested_coas = []
         super(SuggestedCOAs, self).__init__(*suggested_coas, scope=scope)
+
+class RelatedIndicators(GenericRelationshipList):
+    _namespace = "http://stix.mitre.org/Incident-1"
+    _binding = indicator_binding
+    _binding_class = indicator_binding.RelatedIndicatorsType
+    _binding_var = "Related_Indicator"
+    _contained_type = RelatedIndicator
+    _inner_name = "related_indicators"
 
 class Indicator(stix.Entity):
     _binding = indicator_binding
@@ -60,6 +68,7 @@ class Indicator(stix.Entity):
         self.handling = None
         self.kill_chain_phases = KillChainPhasesReference()
         self.valid_time_positions = None
+        self.related_indicators = None
         
     @property
     def id_(self):
@@ -223,7 +232,7 @@ class Indicator(stix.Entity):
         else:
             tmp_indicator_type = IndicatorType(value=value)
             self.indicator_types.append(tmp_indicator_type)
-            
+    
     @property
     def confidence(self):
         return self._confidence
@@ -295,6 +304,32 @@ class Indicator(stix.Entity):
             self._handling = value
         else:
             raise ValueError('unable to set handling to type %s' % type(value))
+
+    @property
+    def related_indicators(self):
+        return self._related_indicators
+
+    @related_indicators.setter
+    def related_indicators(self, value):
+        self._related_indicators = RelatedIndicators()
+        
+        if not value:
+            return
+        elif isinstance(value, RelatedIndicators):
+            self._related_indicators = value
+        elif isinstance(value, list):
+            for v in value:
+                self.add_related_indicator(v)
+        else:
+            self.add_related_indicator(value)
+    
+    def add_related_indicator(self, indicator):
+        if not indicator:
+            return
+        elif isinstance(indicator, RelatedIndicator):
+            self.related_indicators.append(indicator)
+        else:
+            self.related_indicators.append(RelatedIndicator(indicator))
 
     def set_producer_identity(self, identity):
         '''
@@ -421,6 +456,8 @@ class Indicator(stix.Entity):
             return_obj.set_Handling(self.handling.to_obj())
         if self.kill_chain_phases:
             return_obj.set_Kill_Chain_Phases(self.kill_chain_phases.to_obj())
+        if self.related_indicators:
+            return_obj.set_Related_Indicators(self.related_indicators.to_obj())
 
         return return_obj
 
@@ -445,6 +482,7 @@ class Indicator(stix.Entity):
             return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_obj(obj.get_Composite_Indicator_Expression())
             return_obj.handling = Marking.from_obj(obj.get_Handling())
             return_obj.kill_chain_phases = KillChainPhasesReference.from_obj(obj.get_Kill_Chain_Phases())
+            return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
             
             if obj.get_version():
                 return_obj.version = obj.get_version()
@@ -464,8 +502,8 @@ class Indicator(stix.Entity):
             if obj.get_Alternative_ID():
                 return_obj.alternative_id = obj.get_Alternative_ID()
             if obj.get_Valid_Time_Position():
-                return_obj.valid_time_positions = [ValidTime.from_obj(x) for x in obj.get_Valid_Time_Position()]
-                
+                return_obj.valid_time_positions = [ValidTime.from_obj(x) for x in obj.get_Valid_Time_Position()]    
+            
         return return_obj
 
     def to_dict(self):
@@ -514,6 +552,8 @@ class Indicator(stix.Entity):
             d['handling'] = self.handling.to_dict()
         if self.kill_chain_phases:
             d['kill_chain_phases'] = self.kill_chain_phases.to_dict()
+        if self.related_indicators:
+            d['related_indicators'] = self.related_indicators.to_dict()
         
         return d
 
@@ -545,6 +585,7 @@ class Indicator(stix.Entity):
         return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_dict(dict_repr.get('composite_indicator_expression'))
         return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
         return_obj.kill_chain_phases = KillChainPhasesReference.from_dict(dict_repr.get('kill_chain_phases'))
+        return_obj.related_indicators = RelatedIndicators.from_dict(dict_repr.get('related_indicators'))
         
         if observable_dict:
             return_obj.add_observable(Observable.from_dict(observable_dict))
