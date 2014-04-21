@@ -49,15 +49,9 @@ class VocabString(stix.Entity):
         return other == self.value
 
     def is_plain(self):
-        """Whether the VocabString can be represented as a single value.
-
-        If `xsi:type` and `value` are the only non-None properties, the
-        VocabString can be represented by a single value rather than a
-        dictionary. This makes the JSON representation simpler without losing
-        any data fidelity.
-        """
+        """Whether the VocabString can be represented as a single value."""
         return (
-            # ignore value and xsi_type
+            self._XSI_TYPE is None and
             self.vocab_name is None and
             self.vocab_reference is None
         )
