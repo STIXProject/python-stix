@@ -507,9 +507,9 @@ class Incident(stix.Entity):
         return_obj.affected_assets = [AffectedAsset.from_dict(x) for x in dict_repr.get('affected_assets', [])]
         return_obj.discovery_methdos = [DiscoveryMethod.from_dict(x) for x in dict_repr.get('discovery_methods', [])]
         return_obj.reporter = InformationSource.from_dict(dict_repr.get('reporter'))
-        return_obj.responders = [InformationSource.from_dict(x) for x in dict_repr.get('responders')]
-        return_obj.coordinators = [InformationSource.from_dict(x) for x in dict_repr.get('coordinators')]
-        return_obj.external_ids = [ExternalID.from_dict(x) for x in dict_repr.get('external_ids')]
+        return_obj.responders = [InformationSource.from_dict(x) for x in dict_repr.get('responders', [])]
+        return_obj.coordinators = [InformationSource.from_dict(x) for x in dict_repr.get('coordinators', [])]
+        return_obj.external_ids = [ExternalID.from_dict(x) for x in dict_repr.get('external_ids', [])]
         return_obj.impact_assessment = ImpactAssessment.from_dict(dict_repr.get('impact_assessment'))
         return return_obj
 
