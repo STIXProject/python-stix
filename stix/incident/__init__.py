@@ -16,6 +16,7 @@ from .affected_asset import AffectedAsset
 from .property_affected import PropertyAffected
 from .time import Time
 from .external_id import ExternalID
+from .impact_assessment import ImpactAssessment
 from stix.common.vocabs import IncidentCategory, IntendedEffect, DiscoveryMethod
 
 from datetime import datetime
@@ -48,6 +49,7 @@ class Incident(stix.Entity):
         self.responders = None
         self.coordinators = None
         self.external_ids = None
+        self.impact_assessment = None
     
     @property
     def id_(self):
@@ -325,6 +327,19 @@ class Incident(stix.Entity):
         else:
             raise ValueError('value must be instance of ExternalID')
 
+    @property
+    def impact_assessment(self):
+        return self._impact_assessment
+
+    @impact_assessment.setter
+    def impact_assessment(self, value):
+        if not value:
+            self._impact_assessment = None
+        elif isinstance(value, ImpactAssessment):
+            self._impact_assessment = value
+        else:
+            raise ValueError('value must be instance of ImpactAssessment')
+
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -368,6 +383,8 @@ class Incident(stix.Entity):
             return_obj.set_Coordinator([x.to_obj() for x in self.coordinators])
         if self.external_ids:
             return_obj.set_External_ID([x.to_obj() for x in self.external_ids])
+        if self.impact_assessment:
+            return_obj.set_Impact_Assessment(self.impact_assessment.to_obj())
 
         return return_obj
 
@@ -407,6 +424,8 @@ class Incident(stix.Entity):
                 return_obj.coordinators = [InformationSource.from_obj(x) for x in obj.get_Coordinator()]
             if obj.get_External_ID():
                 return_obj.external_ids = [ExternalID.from_obj(x) for x in obj.get_External_ID()]
+            if obj.get_Impact_Assessment():
+                return_obj.impact_assessment = ImpactAssessment.from_obj(obj.get_Impact_Assessment())
             
             return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.get_Attributed_Threat_Actors())
             return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
@@ -459,6 +478,8 @@ class Incident(stix.Entity):
             d['coordinators'] = [x.to_dict() for x in self.coordinators]
         if self.external_ids:
             d['external_ids'] = [x.to_dict() for x in self.external_ids]
+        if self.impact_assessment:
+            d['impact_assessment'] = self.impact_assessment.to_dict()
         return d
 
     @classmethod
@@ -489,6 +510,7 @@ class Incident(stix.Entity):
         return_obj.responders = [InformationSource.from_dict(x) for x in dict_repr.get('responders')]
         return_obj.coordinators = [InformationSource.from_dict(x) for x in dict_repr.get('coordinators')]
         return_obj.external_ids = [ExternalID.from_dict(x) for x in dict_repr.get('external_ids')]
+        return_obj.impact_assessment = ImpactAssessment.from_dict(dict_repr.get('impact_assessment'))
         return return_obj
 
 
