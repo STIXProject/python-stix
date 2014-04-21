@@ -4,7 +4,7 @@
 
 import stix
 import stix.bindings.incident as incident_binding
-from stix.common import Identity, Statement, StructuredText, VocabString
+from stix.common import Identity, Statement, StructuredText, VocabString, InformationSource
 from stix.common.related import (GenericRelationshipList, RelatedIndicator,
         RelatedThreatActor, RelatedTTP, RelatedObservable)
 from stix.indicator import Indicator
@@ -15,6 +15,8 @@ from stix.utils import dates
 from .affected_asset import AffectedAsset
 from .property_affected import PropertyAffected
 from .time import Time
+from .external_id import ExternalID
+from .impact_assessment import ImpactAssessment
 from stix.common.vocabs import IncidentCategory, IntendedEffect, DiscoveryMethod
 
 from datetime import datetime
@@ -44,6 +46,11 @@ class Incident(stix.Entity):
         self.intended_effects = None
         self.leveraged_ttps = LeveragedTTPs()
         self.discovery_methods = None
+        self.reporter = None
+        self.responders = None
+        self.coordinators = None
+        self.external_ids = None
+        self.impact_assessment = None
     
     @property
     def id_(self):
@@ -239,6 +246,101 @@ class Incident(stix.Entity):
         else:
             self.discovery_methods.append(DiscoveryMethod(value))
 
+    @property
+    def reporter(self):
+        return self._reporter
+
+    @reporter.setter
+    def reporter(self, value):
+        if not value:
+            self._reporter = None
+        elif isinstance(value, InformationSource):
+            self._reporter = value
+        else:
+            raise ValueError('value must be instance of InformationSource')
+
+    @property
+    def responder(self):
+        return self._responders
+
+    @responder.setter
+    def responder(self, value):
+        self._responders = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_responder(v)
+        else:
+            self.add_responder(value)
+
+    def add_responder(self, value):
+        if not value:
+            return
+        elif isinstance(value, InformationSource):
+            self.responders.append(value)
+        else:
+            raise ValueError('value must be instance of InformationSource')
+
+    @property
+    def coordinator(self):
+        return self._coordinators
+
+    @coordinator.setter
+    def coordinator(self, value):
+        self._coordinators = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_coordinator(v)
+        else:
+            self.add_coordinator(value)
+
+    def add_coordinator(self, value):
+        if not value:
+            return
+        elif isinstance(value, InformationSource):
+            self.coordinators.append(value)
+        else:
+            raise ValueError('value must be instance of InformationSource')
+
+    @property
+    def external_ids(self):
+        return self._external_ids
+
+    @external_ids.setter
+    def external_ids(self, value):
+        self._external_ids = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_external_id(v)
+        else:
+            self.add_external_id(value)
+
+    def add_external_id(self, value):
+        if not value:
+            return
+        elif isinstance(value, ExternalID):
+            self.external_ids.append(value)
+        else:
+            raise ValueError('value must be instance of ExternalID')
+
+    @property
+    def impact_assessment(self):
+        return self._impact_assessment
+
+    @impact_assessment.setter
+    def impact_assessment(self, value):
+        if not value:
+            self._impact_assessment = None
+        elif isinstance(value, ImpactAssessment):
+            self._impact_assessment = value
+        else:
+            raise ValueError('value must be instance of ImpactAssessment')
+
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -274,6 +376,16 @@ class Incident(stix.Entity):
             return_obj.set_Affected_Assets(a)
         if self.discovery_methods:
             return_obj.set_Discovery_Method([x.to_obj() for x in self.discovery_methods])
+        if self.reporter:
+            return_obj.set_Reporter(self.reporter.to_obj())
+        if self.responders:
+            return_obj.set_Responder([x.to_obj() for x in self.responders])
+        if self.coordinators:
+            return_obj.set_Coordinator([x.to_obj() for x in self.coordinators])
+        if self.external_ids:
+            return_obj.set_External_ID([x.to_obj() for x in self.external_ids])
+        if self.impact_assessment:
+            return_obj.set_Impact_Assessment(self.impact_assessment.to_obj())
 
         return return_obj
 
@@ -305,6 +417,16 @@ class Incident(stix.Entity):
                 return_obj.affected_assets = [AffectedAsset.from_obj(x) for x in obj.get_Affected_Assets().get_Affected_Asset()]
             if obj.get_Discovery_Method():
                 return_obj.discovery_methods = [DiscoveryMethod.from_obj(x) for x in obj.get_Discovery_Method()]
+            if obj.get_Reporter():
+                return_obj.reporter = InformationSource.from_obj(obj.get_Reporter())
+            if obj.get_Responder():
+                return_obj.responders = [InformationSource.from_obj(x) for x in obj.get_Responder()]
+            if obj.get_Coordinator():
+                return_obj.coordinators = [InformationSource.from_obj(x) for x in obj.get_Coordinator()]
+            if obj.get_External_ID():
+                return_obj.external_ids = [ExternalID.from_obj(x) for x in obj.get_External_ID()]
+            if obj.get_Impact_Assessment():
+                return_obj.impact_assessment = ImpactAssessment.from_obj(obj.get_Impact_Assessment())
             
             return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.get_Attributed_Threat_Actors())
             return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
@@ -349,6 +471,16 @@ class Incident(stix.Entity):
             d['affected_assets'] = [x.to_dict() for x in self.affected_assets]
         if self.discovery_methods:
             d['discovery_methods'] = [x.to_dict() for x in self.discovery_methods]
+        if self.reporter:
+            d['reporter'] = self.reporter.to_dict()
+        if self.responders:
+            d['responders'] = [x.to_dict() for x in self.responders]
+        if self.coordinators:
+            d['coordinators'] = [x.to_dict() for x in self.coordinators]
+        if self.external_ids:
+            d['external_ids'] = [x.to_dict() for x in self.external_ids]
+        if self.impact_assessment:
+            d['impact_assessment'] = self.impact_assessment.to_dict()
         return d
 
     @classmethod
@@ -375,6 +507,11 @@ class Incident(stix.Entity):
         return_obj.leveraged_ttps = LeveragedTTPs.from_dict(dict_repr.get('leveraged_ttps'))
         return_obj.affected_assets = [AffectedAsset.from_dict(x) for x in dict_repr.get('affected_assets', [])]
         return_obj.discovery_methdos = [DiscoveryMethod.from_dict(x) for x in dict_repr.get('discovery_methods', [])]
+        return_obj.reporter = InformationSource.from_dict(dict_repr.get('reporter'))
+        return_obj.responders = [InformationSource.from_dict(x) for x in dict_repr.get('responders', [])]
+        return_obj.coordinators = [InformationSource.from_dict(x) for x in dict_repr.get('coordinators', [])]
+        return_obj.external_ids = [ExternalID.from_dict(x) for x in dict_repr.get('external_ids', [])]
+        return_obj.impact_assessment = ImpactAssessment.from_dict(dict_repr.get('impact_assessment'))
         return return_obj
 
 

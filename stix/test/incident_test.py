@@ -39,6 +39,36 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
                 }
             ]
         },
+        'impact_assessment': {
+            'direct_impact_summary': {
+                'asset_losses' : "Minor",
+                'business_mission_disruption' : "Major",
+                'response_and_recovery_costs' : "Moderate"
+            },
+            'indirect_impact_summary': {
+                'loss_of_competitive_advantage' : "Yes",
+                'brand_and_market_damage' : "No",
+                'increased_operating_costs' : "No",
+                'legal_and_regulatory_costs' : "Unknown" 
+            },
+            'total_loss_estimation': {
+                'initial_reported_total_loss_estimation' : {
+                    'iso_currency_code' : "USD",
+                    'amount' : "99.99"
+                },
+                'actual_total_loss_estimation' : {
+                    'iso_currency_code' : "USD",
+                    'amount' : "50.45"
+                }
+            },
+            'impact_qualification': "Catastrophic",
+            'effects': {
+                'effects' : [
+                    "User Data Loss",
+                    "Data Breach or Compromise"
+                    ]
+            }
+        },
         'categories': ['Unauthorized Access', 'Improper Usage'],
         'description': 'The Datacenter was broken into.',
         'related_indicators': {
@@ -113,6 +143,30 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
         'victims': [
             {'name': 'John Smith'},
             {'id': 'example:Identity-1ae603ab-9b0b-11e3-980e-28cfe912ced6'}
+        ],
+        'reporter': {
+            'description': "Mr. Evil's enemy",
+            'identity': {
+                'name': "Ms. Good",
+            },
+        },
+        'responders': [{
+            'description': "Mr. Evil's enemy",
+            'identity': {
+                'name': "Ms. Responder",
+            },
+        }],
+        'coordinators': [{
+            'description': "Mr. Evil's enemy",
+            'identity': {
+                'name': "Ms. Coordinator",
+            },
+        }],
+        'external_ids': [
+            {
+                'value' : '478392-feb3ca-98a9ef-984392742',
+                'source' : "some source"
+            }
         ]
     }
 
