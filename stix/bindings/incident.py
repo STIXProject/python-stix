@@ -2186,7 +2186,7 @@ class EffectsType(GeneratedsSuper):
         if nodeName_ == 'Effect':
             obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)
-            self.set_Effect(obj_)
+            self.Effect.append(obj_)
 # end class EffectsType
 
 class AttributedThreatActorsType(stix_common_binding.GenericRelationshipListType):
