@@ -167,7 +167,14 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
                 'value' : '478392-feb3ca-98a9ef-984392742',
                 'source' : "some source"
             }
-        ]
+        ],
+        'information_source': {
+            'description': "Mr. Evil's enemy",
+            'identity': {
+                'name': "Ms. Good",
+            },
+        },
+        'security_compromise': "Suspected"
     }
 
     def test_parse_category(self):
