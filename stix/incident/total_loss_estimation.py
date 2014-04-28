@@ -43,8 +43,10 @@ class TotalLossEstimation(stix.Entity):
 
     def to_obj(self):
         obj = self._binding_class()
-        obj.set_Initial_Reported_Total_Loss_Estimation(self.initial_reported_total_loss_estimation.to_obj())
-        obj.set_Actual_Total_Loss_Estimation(self.actual_total_loss_estimation.to_obj())
+        if self.initial_reported_total_loss_estimation:
+            obj.set_Initial_Reported_Total_Loss_Estimation(self.initial_reported_total_loss_estimation.to_obj())
+        if self.actual_total_loss_estimation:
+            obj.set_Actual_Total_Loss_Estimation(self.actual_total_loss_estimation.to_obj())
         return obj
 
     @classmethod

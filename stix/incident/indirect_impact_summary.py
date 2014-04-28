@@ -72,10 +72,14 @@ class IndirectImpactSummary(stix.Entity):
             
     def to_obj(self):
         obj = self._binding_class()
-        obj.set_Loss_Of_Competitive_Advantage(self.loss_of_competitive_advantage.to_obj())
-        obj.set_Brand_And_Market_Damage(self.brand_and_market_damage.to_obj())
-        obj.set_Increased_Operating_Costs(self.increased_operating_costs.to_obj())
-        obj.set_Legal_And_Regulatory_Costs(self.legal_and_regulatory_costs.to_obj())
+        if self.loss_of_competitive_advantage:
+            obj.set_Loss_Of_Competitive_Advantage(self.loss_of_competitive_advantage.to_obj())
+        if self.brand_and_market_damage:
+            obj.set_Brand_And_Market_Damage(self.brand_and_market_damage.to_obj())
+        if self.increased_operating_costs:
+            obj.set_Increased_Operating_Costs(self.increased_operating_costs.to_obj())
+        if self.legal_and_regulatory_costs:
+            obj.set_Legal_And_Regulatory_Costs(self.legal_and_regulatory_costs.to_obj())
         return obj
 
     @classmethod

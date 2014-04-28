@@ -79,10 +79,14 @@ class ImpactAssessment(stix.Entity):
 
     def to_obj(self):
         obj = self._binding_class()
-        obj.set_Direct_Impact_Summary(self.direct_impact_summary.to_obj())
-        obj.set_Indirect_Impact_Summary(self.indirect_impact_summary.to_obj())
-        obj.set_Total_Loss_Estimation(self.total_loss_estimation.to_obj())
-        obj.set_Impact_Qualification(self.impact_qualification.to_obj())
+        if self.direct_impact_summary:
+            obj.set_Direct_Impact_Summary(self.direct_impact_summary.to_obj())
+        if self.indirect_impact_summary:
+            obj.set_Indirect_Impact_Summary(self.indirect_impact_summary.to_obj())
+        if self.total_loss_estimation:
+            obj.set_Total_Loss_Estimation(self.total_loss_estimation.to_obj())
+        if self.impact_qualification:
+            obj.set_Impact_Qualification(self.impact_qualification.to_obj())
         if self.effects:
             obj.set_Effects(self.effects.to_obj())
         return obj
@@ -91,7 +95,6 @@ class ImpactAssessment(stix.Entity):
     def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
-
         if not return_obj:
             return_obj = cls()
 
@@ -99,6 +102,7 @@ class ImpactAssessment(stix.Entity):
         return_obj.indirect_impact_summary = IndirectImpactSummary.from_obj(obj.get_Indirect_Impact_Summary())
         return_obj.total_loss_estimation = TotalLossEstimation.from_obj(obj.get_Total_Loss_Estimation())
         return_obj.impact_qualification = ImpactQualification.from_obj(obj.get_Impact_Qualification())
+        
         if obj.get_Effects():
             return_obj.effects = Effects.from_obj(obj.get_Effects())
         return return_obj
