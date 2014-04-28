@@ -102,7 +102,14 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
  'title': 'Datacenter Compromise',
  'version': '1.1',
  'victims': [{'name': 'John Smith'},
-             {'id': 'example:Identity-1ae603ab-9b0b-11e3-980e-28cfe912ced6'}]}
+             {'id': 'example:Identity-1ae603ab-9b0b-11e3-980e-28cfe912ced6'}],
+ 'information_source': {
+              'description': "Mr. Evil's enemy",
+              'identity': {
+                  'name': "Ms. Good",
+              },
+          },
+'security_compromise': {"value": "Suspected", "xsi:type":"stixVocabs:SecurityCompromiseVocab-1.0"}}
 
 
     def test_parse_category(self):

@@ -17,7 +17,7 @@ from .property_affected import PropertyAffected
 from .time import Time
 from .external_id import ExternalID
 from .impact_assessment import ImpactAssessment
-from stix.common.vocabs import IncidentCategory, IntendedEffect, DiscoveryMethod
+from stix.common.vocabs import IncidentCategory, IntendedEffect, DiscoveryMethod, SecurityCompromise
 
 from datetime import datetime
 from dateutil.tz import tzutc
@@ -51,6 +51,8 @@ class Incident(stix.Entity):
         self.coordinators = None
         self.external_ids = None
         self.impact_assessment = None
+        self.information_source = None
+        self.security_compromise = None
     
     @property
     def id_(self):
@@ -341,6 +343,32 @@ class Incident(stix.Entity):
         else:
             raise ValueError('value must be instance of ImpactAssessment')
 
+    @property
+    def information_source(self):
+        return self._information_source
+
+    @information_source.setter
+    def information_source(self, value):
+        if not value:
+            self._information_source = None
+        elif isinstance(value, InformationSource):
+            self._information_source = value
+        else:
+            raise ValueError('value must be instance of InformationSource')
+
+    @property
+    def security_compromise(self):
+        return self._security_compromise
+
+    @security_compromise.setter
+    def security_compromise(self, value):
+        if not value:
+            self._security_compromise = None
+        elif isinstance(value, VocabString):
+            self._security_compromise = value
+        else:
+            self._security_compromise = SecurityCompromise(value=value)
+
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -386,6 +414,10 @@ class Incident(stix.Entity):
             return_obj.set_External_ID([x.to_obj() for x in self.external_ids])
         if self.impact_assessment:
             return_obj.set_Impact_Assessment(self.impact_assessment.to_obj())
+        if self.information_source:
+            return_obj.set_Information_Source(self.information_source.to_obj())
+        if self.security_compromise:
+            return_obj.set_Security_Compromise(self.security_compromise.to_obj())
 
         return return_obj
 
@@ -427,6 +459,10 @@ class Incident(stix.Entity):
                 return_obj.external_ids = [ExternalID.from_obj(x) for x in obj.get_External_ID()]
             if obj.get_Impact_Assessment():
                 return_obj.impact_assessment = ImpactAssessment.from_obj(obj.get_Impact_Assessment())
+            if obj.get_Information_Source():
+                return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
+            if obj.get_Security_Compromise():
+                return_obj.security_compromise = SecurityCompromise.from_obj(obj.get_Security_Compromise())
             
             return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.get_Attributed_Threat_Actors())
             return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
@@ -481,6 +517,10 @@ class Incident(stix.Entity):
             d['external_ids'] = [x.to_dict() for x in self.external_ids]
         if self.impact_assessment:
             d['impact_assessment'] = self.impact_assessment.to_dict()
+        if self.information_source:
+            d['information_source'] = self.information_source.to_dict()
+        if self.security_compromise:
+            d['security_compromise'] = self.security_compromise.to_dict()
         return d
 
     @classmethod
@@ -512,6 +552,8 @@ class Incident(stix.Entity):
         return_obj.coordinators = [InformationSource.from_dict(x) for x in dict_repr.get('coordinators', [])]
         return_obj.external_ids = [ExternalID.from_dict(x) for x in dict_repr.get('external_ids', [])]
         return_obj.impact_assessment = ImpactAssessment.from_dict(dict_repr.get('impact_assessment'))
+        return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
+        return_obj.security_compromise = SecurityCompromise.from_dict(dict_repr.get('security_compromise'))
         return return_obj
 
 
