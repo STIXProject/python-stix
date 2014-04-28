@@ -14,7 +14,7 @@ class StatementTests(EntityTestCase, unittest.TestCase):
         'description': "An amazing source",
         'source': "a source",
         'confidence': {
-            'value': "Low",
+            'value': {'value': "Low", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'},
         },
     }
 

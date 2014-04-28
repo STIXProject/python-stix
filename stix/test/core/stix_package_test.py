@@ -70,7 +70,7 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
                         'scope': "exclusive",
                         'ttps': [
                             {
-                                'confidence': {'value': "High"},
+                                'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
                                 'ttp': {'title': "Stealth", 'version': "1.1"},
                             }
                         ]
@@ -79,7 +79,7 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
                         'scope': "inclusive",
                         'incidents': [
                             {
-                                'confidence': {'value': "Low"},
+                                'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
                                 'incident': {'idref': "example:Incident-2",
                                              'version': "1.1"},
                             }
@@ -89,7 +89,7 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
                         'scope': "inclusive",
                         'indicators': [
                             {
-                                'confidence': {'value': "Low"},
+                                'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
                                 'indicator': {'idref': "example:Indicator-77",
                                               'version': "2.1"},
                             }
@@ -99,7 +99,7 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
                         'scope': "inclusive",
                         'threat_actors': [
                             {
-                                'confidence': {'value': "Low"},
+                                'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
                                 'threat_actor': {'title': "Campaign Actor #1",
                                                  'version': "1.1"},
                             },
@@ -113,13 +113,13 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
                         'scope': "inclusive",
                         'campaigns': [
                             {
-                                'confidence': {'value': "High"},
+                                'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
                                 'information_source': {'description': "Threat Feed"},
                                 'campaign': {'title': "Baby Elephant", 'version': "1.1"},
                             }
                         ],
                     },
-                    'confidence': {"value": "Low"},
+                    'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
                     'activity': [
                             {
                                 'date_time': "2012-01-01T08:45:31",
@@ -161,8 +161,8 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
             'title': "COA1",
             'description': "This is a long description about a course of action",
             'short_description': "a COA",
-            'stage': "Remedy",
-            'type': "Redirection",
+            'stage': {"value" : "Remedy", "xsi:type" : "stixVocabs:COAStageVocab-1.0"},
+            'type': {'value': 'Redirection','xsi:type': 'stixVocabs:CourseOfActionTypeVocab-1.0'},
             'cost': {
                 'value': "100"
             },

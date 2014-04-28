@@ -10,7 +10,7 @@ class ConfidenceTests(EntityTestCase, unittest.TestCase):
     _full_dict = {
         'timestamp': "2014-01-31T06:14:46",
         'timestamp_precision': 'day',
-        'value': "High",
+        'value': {'value': "High", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'},
         'description': "An amazing source",
         'source': "a source",
     }

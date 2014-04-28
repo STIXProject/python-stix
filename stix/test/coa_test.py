@@ -9,16 +9,16 @@ class COATests(EntityTestCase, unittest.TestCase):
         'timestamp': "2014-03-20T04:35:12",
         'version': '1.1',
         'title': "COA1",
-        'stage': "Remedy",
-        'type': "Redirection",
+        'stage':  {'value': 'Remedy', 'xsi:type': 'stixVocabs:COAStageVocab-1.0'},
+        'type': {'value': 'Redirection', 'xsi:type': 'stixVocabs:CourseOfActionTypeVocab-1.0'},
         'description': "This is a long description about a course of action",
         'short_description': "a COA",
         'objective': {
             'description': "This is why we're taking this action",
             'short_description': "Stop the bad stuff",
-            'applicability_confidence': {
-                'value': "Medium"
-            },
+            'applicability_confidence': {'value': {'value': 'Medium', 
+                                                   'xsi:type': 'stixVocabs:HighMediumLowVocab-1.0'}},
+
         },
         'parameter_observables': {
             'major_version': 2,
@@ -58,7 +58,7 @@ class COATests(EntityTestCase, unittest.TestCase):
             'scope': "exclusive",
             'coas': [
                 {
-                    'confidence': {'value': "Medium"},
+                    'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
                     'course_of_action': {'idref': "example:COA-52",
                                          'version': "2.1"},
                 }
