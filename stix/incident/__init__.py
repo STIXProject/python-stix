@@ -262,11 +262,11 @@ class Incident(stix.Entity):
             raise ValueError('value must be instance of InformationSource')
 
     @property
-    def responder(self):
+    def responders(self):
         return self._responders
 
-    @responder.setter
-    def responder(self, value):
+    @responders.setter
+    def responders(self, value):
         self._responders = []
         if not value:
             return
