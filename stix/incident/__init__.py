@@ -285,11 +285,11 @@ class Incident(stix.Entity):
             raise ValueError('value must be instance of InformationSource')
 
     @property
-    def coordinator(self):
+    def coordinators(self):
         return self._coordinators
 
-    @coordinator.setter
-    def coordinator(self, value):
+    @coordinators.setter
+    def coordinators(self, value):
         self._coordinators = []
         if not value:
             return
