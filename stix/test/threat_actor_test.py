@@ -38,7 +38,7 @@ class ThreatActorTests(EntityTestCase, unittest.TestCase):
             'scope': "exclusive",
             'ttps': [
                 {
-                    'confidence': {'value': "High"},
+                    'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
                     'ttp': {'title': "A TTP", 'version': "1.1"},
                 }
             ],
@@ -56,7 +56,7 @@ class ThreatActorTests(EntityTestCase, unittest.TestCase):
             'scope': "inclusive",
             'threat_actors': [
                 {
-                    'confidence': {'value': "Low"},
+                    'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
                     'threat_actor': {'title': "Related Bad Guy!", 'version': "1.1"},
                 }
             ],
@@ -70,7 +70,7 @@ class ThreatActorTests(EntityTestCase, unittest.TestCase):
                 }]
             }
         ],
-        'confidence': {"value": "High"},
+        'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
         'information_source': {
             'description': "Mr. Evil's enemy",
             'identity': {

@@ -10,9 +10,7 @@ class StatementTests(EntityTestCase, unittest.TestCase):
     _full_dict = {
         'idref': "example:Campaign-133",
         'timestamp': "2014-01-31T06:14:46",
-        'confidence': {
-            'value': "Low",
-        },
+        'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
         'information_source': {
             'description': "Source of the relationship",
         },
