@@ -56,6 +56,18 @@ class VocabString(stix.Entity):
             self.vocab_reference is None
         )
 
+    @staticmethod
+    def lookup_class(xsi_type):
+        if not xsi_type:
+            raise ValueError("xsi:type is required")
+        for (k, v) in _VOCAB_MAP.iteritems():
+            # TODO: for now we ignore the prefix and just check for
+            # a partial match
+            if xsi_type in k:
+                return v
+
+        raise ValueError("Unregistered xsi:type %s" % xsi_type)
+
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -124,7 +136,6 @@ class VocabString(stix.Entity):
             return_obj.vocab_reference = vocab_dict.get('vocab_reference')
 
         return return_obj
-
 
 
 class AvailabilityLossType(VocabString):
@@ -777,4 +788,38 @@ class InformationSourceRole(VocabString):
     TERM_AGGREGATOR = "Aggregator"
     TERM_TRANSFORMERORTRANSLATOR = "Transformer/Translator"
 
+_VOCAB_MAP = {}
+def add_vocab(cls):
+    _VOCAB_MAP[cls._XSI_TYPE] = cls
 
+add_vocab(AvailabilityLossType)
+add_vocab(ThreatActorType)
+add_vocab(AttackerInfrastructureType)
+add_vocab(DiscoveryMethod)
+add_vocab(AttackerToolType)
+add_vocab(IndicatorType)
+add_vocab(SystemType)
+add_vocab(CampaignStatus)
+add_vocab(IncidentStatus)
+add_vocab(ManagementClass)
+add_vocab(Motivation)
+add_vocab(IncidentCategory)
+add_vocab(ImpactQualification)
+add_vocab(PlanningAndOperationalSupport)
+add_vocab(CourseOfActionType)
+add_vocab(SecurityCompromise)
+add_vocab(ImpactRating)
+add_vocab(AssetType)
+add_vocab(COAStage)
+add_vocab(LocationClass)
+add_vocab(InformationType)
+add_vocab(ThreatActorSophistication)
+add_vocab(HighMediumLow)
+add_vocab(LossProperty)
+add_vocab(IntendedEffect)
+add_vocab(PackageIntent)
+add_vocab(LossDuration)
+add_vocab(OwnershipClass)
+add_vocab(MalwareType)
+add_vocab(IncidentEffect)
+add_vocab(InformationSourceRole)
