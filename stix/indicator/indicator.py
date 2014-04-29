@@ -69,7 +69,8 @@ class Indicator(stix.Entity):
         self.kill_chain_phases = KillChainPhasesReference()
         self.valid_time_positions = None
         self.related_indicators = None
-        
+        self.observable_composition_operator = "AND"
+    
     @property
     def id_(self):
         return self._id
@@ -331,6 +332,17 @@ class Indicator(stix.Entity):
         else:
             self.related_indicators.append(RelatedIndicator(indicator))
 
+    @property
+    def observable_composition_operator(self):
+        return self._observable_composition_operator
+
+    @observable_composition_operator.setter
+    def observable_composition_operator(self, value):
+        if value not in ("AND", "OR"):
+            raise ValueError("observable_composition_operator must be 'AND' or 'OR'")
+        
+        self._observable_composition_operator = value
+
     def set_producer_identity(self, identity):
         '''
         Sets the name of the producer of this indicator.
@@ -388,9 +400,9 @@ class Indicator(stix.Entity):
             # try to cast it to an Observable type
             self.observables.append(Observable(observable))
 
-    def _merge_observables(self, observables, operator='AND'):
+    def _merge_observables(self, observables):
         observable_composition = ObservableComposition()
-        observable_composition.operator = operator
+        observable_composition.operator = self.observable_composition_operator
 
         for observable_ in observables:
             observable_composition.add(observable_)
