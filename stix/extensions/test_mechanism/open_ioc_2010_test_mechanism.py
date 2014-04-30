@@ -13,7 +13,9 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
     _namespace = "http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1"
     _binding = open_ioc_tm_binding
     _binding_class = _binding.OpenIOC2010TestMechanismType
+    _xml_ns_prefix = "stix-openioc"
     _XSI_TYPE = "stix-openioc:OpenIOC2010TestMechanismType"
+    
     
     def __init__(self, id_=None, idref=None):
         super(OpenIOCTestMechanism, self).__init__(id_=id_, idref=idref)
@@ -25,7 +27,7 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
     
     @ioc.setter
     def ioc(self, value):
-        if not value:
+        if value is None:
             self._ioc = None
             return
         elif isinstance(value, etree._ElementTree):
@@ -43,6 +45,7 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
             node_ns = root.tag[1:].split("}")[0] if root.tag.startswith("{") else None
             if node_ns == ns_ioc:
                 # attempt to cast
+                etree.register_namespace(self._xml_ns_prefix, self._namespace)
                 root.tag = expected_node_tag
             else:
                 raise ValueError("Cannot set ioc property. Expected tag %s found %s" 
