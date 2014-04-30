@@ -792,6 +792,8 @@ _VOCAB_MAP = {}
 def add_vocab(cls):
     _VOCAB_MAP[cls._XSI_TYPE] = cls
 
+
+# Register the vocabs
 add_vocab(AvailabilityLossType)
 add_vocab(ThreatActorType)
 add_vocab(AttackerInfrastructureType)
