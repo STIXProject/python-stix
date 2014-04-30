@@ -8,7 +8,6 @@ from stix.common.vocabs import ImpactQualification, IncidentEffect
 from .direct_impact_summary import DirectImpactSummary
 from .indirect_impact_summary import IndirectImpactSummary
 from .total_loss_estimation import TotalLossEstimation
-from .effects import Effects
 
 class ImpactAssessment(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
@@ -23,6 +22,30 @@ class ImpactAssessment(stix.Entity):
         self.impact_qualification = None
         self.effects = None
         #self.external_impact_assessment_model = None
+
+    @property
+    def effects(self):
+        return self._effects
+    
+    @effects.setter
+    def effects(self, value):
+        self._effects = []
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_effect(v)
+        else:
+            self.add_effect(value)
+    
+    def add_effect(self, value):
+        if not value:
+            return
+        elif isinstance(value, VocabString):
+            self.effects.append(value)
+        else:
+            effect = IncidentEffect(value)
+            self.effects.append(effect)
 
     @property
     def direct_impact_summary(self):
@@ -88,7 +111,8 @@ class ImpactAssessment(stix.Entity):
         if self.impact_qualification:
             obj.set_Impact_Qualification(self.impact_qualification.to_obj())
         if self.effects:
-            obj.set_Effects(self.effects.to_obj())
+            effects_obj = self._binding.EffectsType(Effect=[x.to_obj() for x in self.effects])
+            obj.set_Effects(effects_obj)
         return obj
 
     @classmethod
@@ -104,7 +128,7 @@ class ImpactAssessment(stix.Entity):
         return_obj.impact_qualification = ImpactQualification.from_obj(obj.get_Impact_Qualification())
         
         if obj.get_Effects():
-            return_obj.effects = Effects.from_obj(obj.get_Effects())
+            return_obj.effects = [VocabString.from_obj(x) for x in obj.get_Effects().get_Effect()]
         return return_obj
 
     def to_dict(self):    
@@ -118,7 +142,7 @@ class ImpactAssessment(stix.Entity):
         if self.impact_qualification:
             d['impact_qualification'] = self.impact_qualification.to_dict()
         if self.effects:
-            d['effects'] = self.effects.to_dict()
+            d['effects'] = [x.to_dict() for x in self.effects]
         return d
 
     @classmethod
@@ -133,6 +157,6 @@ class ImpactAssessment(stix.Entity):
         return_obj.indirect_impact_summary = IndirectImpactSummary.from_dict(dict_.get('indirect_impact_summary'))
         return_obj.total_loss_estimation = TotalLossEstimation.from_dict(dict_.get('total_loss_estimation'))
         return_obj.impact_qualification = ImpactQualification.from_dict(dict_.get('impact_qualification'))
-        return_obj.effects = Effects.from_dict(dict_.get('effects'))
+        return_obj.effects = [VocabString.from_dict(x) for x in dict_.get('effects', [])]
 
         return return_obj

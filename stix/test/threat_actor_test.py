@@ -18,21 +18,28 @@ class ThreatActorTests(EntityTestCase, unittest.TestCase):
             'name': "Mr. Evil",
         },
         'types': [
-            {'value': "Hacker"},
+            {'value': {"value" : "Hacker", 
+                       "xsi:type" : "stixVocabs:ThreatActorTypeVocab-1.0"}},
         ],
         'motivations': [
-            {'value': "Ego"},
-            {'value': "Opportunistic"},
+            {'value': {"value" : "Ego", 
+                       "xsi:type" : "stixVocabs:MotivationVocab-1.1"}},
+            {'value': {"value" : "Opportunistic", 
+                       "xsi:type" : "stixVocabs:MotivationVocab-1.1"}},
         ],
         'sophistications': [
-            {'value': "Novice"},
+            {'value': {"value" : "Novice", 
+                       "xsi:type" : "stixVocabs:ThreatActorSophisticationVocab-1.0"}},
         ],
         'intended_effects': [
-            {'value': "Account Takeover"},
-            {'value': "Extortion"},
+            {'value': {"value" : "Destruction", 
+                       "xsi:type" : "stixVocabs:IntendedEffectVocab-1.0"}},
+            {'value': {"value" : "Disruption", 
+                       "xsi:type" : "stixVocabs:IntendedEffectVocab-1.0"}},
         ],
         'planning_and_operational_supports': [
-            {'value': "Financial Resources"},
+            {'value': {"value" : "Data Exploitation", 
+                       "xsi:type" : 'stixVocabs:PlanningAndOperationalSupportVocab-1.0.1'}},
         ],
         'observed_ttps': {
             'scope': "exclusive",

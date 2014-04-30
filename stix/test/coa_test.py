@@ -30,15 +30,12 @@ class COATests(EntityTestCase, unittest.TestCase):
                 }
             ]
         },
-        'impact': {
-            'value': "Large"
-        },
-        'cost': {
-            'value': "100"
-        },
-        'efficacy': {
-            'value': "Half"
-        },
+        'impact': {'value': {'value': 'Medium', 
+                             'xsi:type': 'stixVocabs:HighMediumLowVocab-1.0'}},
+        'cost': {'value': {'value': 'Medium', 
+                           'xsi:type': 'stixVocabs:HighMediumLowVocab-1.0'}},
+        'efficacy': {'value': {'value': 'Medium', 
+                               'xsi:type': 'stixVocabs:HighMediumLowVocab-1.0'}},
         'information_source': {
             'description': "Mr. Evil's enemy",
             'identity': {

@@ -10,12 +10,6 @@ from .confidence import Confidence
 from .information_source import InformationSource
 from .vocabs import VocabString
 
-
-class Relationship(VocabString):
-    _namespace = "http://stix.mitre.org/common-1"
-    _binding = common_binding
-
-
 class GenericRelationship(stix.Entity):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
@@ -61,7 +55,7 @@ class GenericRelationship(stix.Entity):
             if isinstance(value, VocabString):
                 self._relationship = value
             else:
-                self._relationship = Relationship(value=value)
+                self._relationship = VocabString(value=value)
         else:
             self._relationship = None
 
@@ -75,7 +69,7 @@ class GenericRelationship(stix.Entity):
 
         return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
         return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
-        return_obj.relationship = Relationship.from_obj(obj.get_Relationship())
+        return_obj.relationship = VocabString.from_obj(obj.get_Relationship())
 
         return return_obj
 
@@ -102,7 +96,7 @@ class GenericRelationship(stix.Entity):
 
         return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
         return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
-        return_obj.relationship = Relationship.from_dict(dict_repr.get('relationship'))
+        return_obj.relationship = VocabString.from_dict(dict_repr.get('relationship'))
 
         return return_obj
 

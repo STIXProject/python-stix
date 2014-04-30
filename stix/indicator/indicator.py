@@ -387,7 +387,6 @@ class Indicator(stix.Entity):
         else:
             return None
 
-
     def add_observable(self, observable):
         ''' Adds an observable to the Indicator. If the number of observables associated with this indicator 
             is greater than one, the indicator will nest all of its observables under a parent observable
@@ -500,7 +499,7 @@ class Indicator(stix.Entity):
                 return_obj.version = obj.get_version()
             if obj.get_Type():
                 for indicator_type in obj.get_Type():
-                    return_obj.add_indicator_type(IndicatorType.from_obj(indicator_type)) 
+                    return_obj.add_indicator_type(VocabString.from_obj(indicator_type)) 
             if obj.get_Observable():
                 observable_obj = obj.get_Observable()
                 observable = Observable.from_obj(observable_obj)
@@ -584,7 +583,7 @@ class Indicator(stix.Entity):
         observable_dict      = dict_repr.get('observable')
         producer_dict        = dict_repr.get('producer')
         description_dict     = dict_repr.get('description')
-        indicator_type_list  = dict_repr.get('indicator_types')
+        indicator_type_list  = dict_repr.get('indicator_types', [])
         confidence_dict      = dict_repr.get('confidence')
         alternative_id_dict  = dict_repr.get('alternative_id')
         valid_time_position_dict  = dict_repr.get('valid_time_positions')
@@ -605,9 +604,8 @@ class Indicator(stix.Entity):
             return_obj.producer = InformationSource.from_dict(producer_dict)
         if description_dict:
             return_obj.description = StructuredText.from_dict(description_dict)
-        if indicator_type_list:
-            for indicator_type_dict in indicator_type_list:
-                return_obj.add_indicator_type(IndicatorType.from_dict(indicator_type_dict))
+        for indicator_type_dict in indicator_type_list:
+                return_obj.add_indicator_type(VocabString.from_dict(indicator_type_dict))
         if confidence_dict:
             return_obj.confidence = Confidence.from_dict(confidence_dict)
         if alternative_id_dict:

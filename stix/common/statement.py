@@ -118,11 +118,11 @@ class Statement(stix.Entity):
 
         return d
 
-    @staticmethod
-    def from_obj(obj):
+    @classmethod
+    def from_obj(cls, obj):
         if not obj:
             return None
-        s = Statement()
+        s = cls()
 
         s.timestamp = obj.get_timestamp()
         s.timestamp_precision = obj.get_timestamp_precision()
@@ -133,11 +133,11 @@ class Statement(stix.Entity):
 
         return s
 
-    @staticmethod
-    def from_dict(dict_):
+    @classmethod
+    def from_dict(cls, dict_):
         if dict_ is None:
             return None
-        s = Statement()
+        s = cls()
 
         s.timestamp = dict_.get('timestamp')
         s.timestamp_precision = dict_.get('timestamp_precision', 'second')

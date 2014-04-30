@@ -103,9 +103,9 @@ class VictimTargeting(stix.Entity):
         return_obj.targeted_technical_details = Observables.from_obj(obj.get_Targeted_Technical_Details())
 
         if obj.get_Targeted_Systems():
-            return_obj.targeted_systems = [SystemType.from_obj(x) for x in obj.get_Targeted_Systems()]
+            return_obj.targeted_systems = [VocabString.from_obj(x) for x in obj.get_Targeted_Systems()]
         if obj.get_Targeted_Information():
-            return_obj.targeted_information = [InformationType.from_obj(x) for x in obj.get_Targeted_Information()]
+            return_obj.targeted_information = [VocabString.from_obj(x) for x in obj.get_Targeted_Information()]
 
         return return_obj
 
@@ -130,8 +130,8 @@ class VictimTargeting(stix.Entity):
             return_obj = cls()
 
         return_obj.identity = Identity.from_dict(dict_repr.get('identity'))
-        return_obj.targeted_systems = [SystemType.from_dict(x) for x in dict_repr.get('targeted_systems', [])]
-        return_obj.targeted_information = [InformationType.from_dict(x) for x in dict_repr.get('targeted_information', [])]
+        return_obj.targeted_systems = [VocabString.from_dict(x) for x in dict_repr.get('targeted_systems', [])]
+        return_obj.targeted_information = [VocabString.from_dict(x) for x in dict_repr.get('targeted_information', [])]
         return_obj.targeted_technical_details = Observables.from_dict(dict_repr.get('targeted_technical_details'))
 
         return return_obj

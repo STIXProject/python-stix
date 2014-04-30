@@ -125,7 +125,7 @@ class Confidence(stix.Entity):
 
         c.timestamp = obj.get_timestamp()
         c.timestamp_precision = obj.get_timestamp_precision()
-        c.value = HighMediumLow.from_obj(obj.get_Value())
+        c.value = VocabString.from_obj(obj.get_Value())
         c.description = StructuredText.from_obj(obj.get_Description())
         c.source = VocabString.from_obj(obj.get_Source())
 
@@ -139,7 +139,7 @@ class Confidence(stix.Entity):
 
         c.timestamp = dict_.get('timestamp')
         c.timestamp_precision = dict_.get('timestamp_precision', 'second')
-        c.value = HighMediumLow.from_dict(dict_.get('value'))
+        c.value = VocabString.from_dict(dict_.get('value'))
         c.description = StructuredText.from_dict(dict_.get('description'))
         c.source = VocabString.from_dict(dict_.get('source'))
 
