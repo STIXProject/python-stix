@@ -25,7 +25,6 @@ class RelatedCOAs(GenericRelationshipList):
     _contained_type = RelatedCOA
     _inner_name = "coas"
 
-
 class CourseOfAction(stix.Entity):
     _binding = coa_binding
     _binding_class = coa_binding.CourseOfActionType
@@ -276,8 +275,8 @@ class CourseOfAction(stix.Entity):
         if isinstance(obj, cls._binding_class): # CourseOfActionType properties
             return_obj.version = obj.get_version() or cls._version
             return_obj.title = obj.get_Title()
-            return_obj.stage = Stage.from_obj(obj.get_Stage())
-            return_obj.type_ = COAType.from_obj(obj.get_Type())
+            return_obj.stage = VocabString.from_obj(obj.get_Stage())
+            return_obj.type_ = VocabString.from_obj(obj.get_Type())
             return_obj.description = StructuredText.from_obj(obj.get_Description())
             return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
             return_obj.objective = Objective.from_obj(obj.get_Objective())
@@ -350,8 +349,8 @@ class CourseOfAction(stix.Entity):
         return_obj.timestamp = dict_repr.get('timestamp')
         return_obj.version = dict_repr.get('version', cls._version)
         return_obj.title = dict_repr.get('title')
-        return_obj.stage = Stage.from_dict(dict_repr.get('stage'))
-        return_obj.type_ = COAType.from_dict(dict_repr.get('type'))
+        return_obj.stage = VocabString.from_dict(dict_repr.get('stage'))
+        return_obj.type_ = VocabString.from_dict(dict_repr.get('type'))
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
         return_obj.objective = Objective.from_dict(dict_repr.get('objective'))

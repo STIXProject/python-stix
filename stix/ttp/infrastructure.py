@@ -125,7 +125,7 @@ class Infrastructure(stix.Entity):
         return_obj.observable_characterization = Observables.from_obj(obj.get_Observable_Characterization())
 
         if obj.get_Type():
-            return_obj.types = [AttackerInfrastructureType.from_obj(x) for x in obj.get_Type()]
+            return_obj.types = [VocabString.from_obj(x) for x in obj.get_Type()]
 
         return return_obj
 
@@ -157,7 +157,7 @@ class Infrastructure(stix.Entity):
         return_obj.title = dict_repr.get('title')
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
-        return_obj.types = [AttackerInfrastructureType.from_dict(x) for x in dict_repr.get('types', [])]
+        return_obj.types = [VocabString.from_dict(x) for x in dict_repr.get('types', [])]
         return_obj.observable_characterization = Observables.from_dict(dict_repr.get('observable_characterization'))
 
         return return_obj

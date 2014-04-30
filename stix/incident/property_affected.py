@@ -138,10 +138,10 @@ class PropertyAffected(stix.Entity):
         if not return_obj:
             return_obj = cls()
             
-        return_obj.property_ = LossProperty.from_obj(obj.get_Property())
+        return_obj.property_ = VocabString.from_obj(obj.get_Property())
         return_obj.description_of_effect = StructuredText.from_obj(obj.get_Description_Of_Effect())
-        return_obj.type_of_availability_loss = AvailabilityLoss.from_obj(obj.get_Type_Of_Availability_Loss())
-        return_obj.duration_of_availability_loss = LossDuration.from_obj(obj.get_Duration_Of_Availability_Loss())
+        return_obj.type_of_availability_loss = VocabString.from_obj(obj.get_Type_Of_Availability_Loss())
+        return_obj.duration_of_availability_loss = VocabString.from_obj(obj.get_Duration_Of_Availability_Loss())
         return_obj.non_public_data_compromised = NonPublicDataCompromised.from_obj(obj.get_Non_Public_Data_Compromised())
         return return_obj
     
@@ -169,10 +169,10 @@ class PropertyAffected(stix.Entity):
         if not return_obj:
             return_obj = cls()
             
-        return_obj.property_ = LossProperty.from_dict(d.get(('property')))
+        return_obj.property_ = VocabString.from_dict(d.get(('property')))
         return_obj.description_of_effect = StructuredText.from_dict(d.get('description_of_effect'))
-        return_obj.type_of_availability_loss = AvailabilityLoss.from_dict(d.get('type_of_availability_loss'))
-        return_obj.duration_of_availability_loss = LossDuration.from_dict(d.get('duration_of_availability_loss'))
+        return_obj.type_of_availability_loss = VocabString.from_dict(d.get('type_of_availability_loss'))
+        return_obj.duration_of_availability_loss = VocabString.from_dict(d.get('duration_of_availability_loss'))
         return_obj.non_public_data_compromised = NonPublicDataCompromised.from_dict(d.get('non_public_data_compromised'))
         
         return return_obj

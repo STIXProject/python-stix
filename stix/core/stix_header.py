@@ -104,7 +104,7 @@ class STIXHeader(stix.Entity):
         return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
 
         if obj.get_Package_Intent():
-            return_obj.package_intents = [PackageIntent.from_obj(x) for x in obj.get_Package_Intent()]
+            return_obj.package_intents = [VocabString.from_obj(x) for x in obj.get_Package_Intent()]
 
         return return_obj
 
@@ -134,7 +134,7 @@ class STIXHeader(stix.Entity):
             return_obj = cls()
 
         return_obj.title = dict_repr.get('title')
-        return_obj.package_intents = [PackageIntent.from_dict(x) for x in dict_repr.get('package_intents', [])]
+        return_obj.package_intents = [VocabString.from_dict(x) for x in dict_repr.get('package_intents', [])]
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
         return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
         return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))

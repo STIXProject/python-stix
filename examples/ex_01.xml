@@ -39,7 +39,7 @@
     </stix:STIX_Header>
     <stix:Indicators>
         <stix:Indicator xsi:type="indicator:IndicatorType" id="example:Indicator-33fe3b22-0201-47cf-85d0-97c02164528d">
-            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.0">IP Watchlist</indicator:Type>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
             <indicator:Description>Sample IP Address Indicator for this watchlist. This contains one indicator with a set of three IP addresses in the watchlist.</indicator:Description>
             <indicator:Observable  id="example:Observable-1c798262-a4cd-434d-a958-884d6980c459">
                 <cybox:Object id="example:Object-1980ce43-8e03-490b-863a-ea404d12242e">

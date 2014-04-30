@@ -74,9 +74,9 @@ class DirectImpactSummary(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.asset_losses = ImpactRating.from_obj(obj.get_Asset_Losses())
-        return_obj.business_mission_disruption = ImpactRating.from_obj(obj.get_Business_Mission_Disruption())
-        return_obj.response_and_recovery_costs = ImpactRating.from_obj(obj.get_Response_And_Recovery_Costs())
+        return_obj.asset_losses = VocabString.from_obj(obj.get_Asset_Losses())
+        return_obj.business_mission_disruption = VocabString.from_obj(obj.get_Business_Mission_Disruption())
+        return_obj.response_and_recovery_costs = VocabString.from_obj(obj.get_Response_And_Recovery_Costs())
         return return_obj
 
     def to_dict(self):    
@@ -97,8 +97,8 @@ class DirectImpactSummary(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.asset_losses = ImpactRating.from_dict(dict_.get('asset_losses'))
-        return_obj.business_mission_disruption = ImpactRating.from_dict(dict_.get('business_mission_disruption'))
-        return_obj.response_and_recovery_costs = ImpactRating.from_dict(dict_.get('response_and_recovery_costs'))
+        return_obj.asset_losses = VocabString.from_dict(dict_.get('asset_losses'))
+        return_obj.business_mission_disruption = VocabString.from_dict(dict_.get('business_mission_disruption'))
+        return_obj.response_and_recovery_costs = VocabString.from_dict(dict_.get('response_and_recovery_costs'))
 
         return return_obj

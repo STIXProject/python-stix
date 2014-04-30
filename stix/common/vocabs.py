@@ -56,6 +56,19 @@ class VocabString(stix.Entity):
             self.vocab_reference is None
         )
 
+    @staticmethod
+    def lookup_class(xsi_type):
+        if not xsi_type:
+            return VocabString
+        
+        for (k, v) in _VOCAB_MAP.iteritems():
+            # TODO: for now we ignore the prefix and just check for
+            # a partial match
+            if xsi_type in k:
+                return v
+
+        raise ValueError("Unregistered xsi:type %s" % xsi_type)
+
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -94,9 +107,11 @@ class VocabString(stix.Entity):
             return None
         
         if not return_obj:
-            return_obj = cls()
+            klass = VocabString.lookup_class(vocab_obj.xsi_type)
+            return klass.from_obj(vocab_obj, klass())
+           
         # xsi_type should be set automatically by the class's constructor.
-
+        
         #TODO: handle denormalization
         #vocab_str.value = denormalize_from_xml(vocab_obj.get_valueOf_())
         return_obj.value = vocab_obj.get_valueOf_()
@@ -109,8 +124,13 @@ class VocabString(stix.Entity):
     def from_dict(cls, vocab_dict, return_obj=None):
         if not vocab_dict:
             return None
+        
         if not return_obj:
-            return_obj = cls()
+            if isinstance(vocab_dict, dict):
+                klass = VocabString.lookup_class(vocab_dict.get('xsi:type'))
+                return klass.from_dict(vocab_dict, klass())
+            else:
+                return_obj = cls()
             
         # xsi_type should be set automatically by the class's constructor.
 
@@ -118,13 +138,11 @@ class VocabString(stix.Entity):
         if not isinstance(vocab_dict, dict):
             return_obj.value = vocab_dict
         else:
-            return_obj.xsi_type = vocab_dict.get('xsi:type')
             return_obj.value = vocab_dict.get('value')
             return_obj.vocab_name = vocab_dict.get('vocab_name')
             return_obj.vocab_reference = vocab_dict.get('vocab_reference')
 
         return return_obj
-
 
 
 class AvailabilityLossType(VocabString):
@@ -777,4 +795,40 @@ class InformationSourceRole(VocabString):
     TERM_AGGREGATOR = "Aggregator"
     TERM_TRANSFORMERORTRANSLATOR = "Transformer/Translator"
 
+_VOCAB_MAP = {}
+def add_vocab(cls):
+    _VOCAB_MAP[cls._XSI_TYPE] = cls
 
+
+# Register the vocabs
+add_vocab(AvailabilityLossType)
+add_vocab(ThreatActorType)
+add_vocab(AttackerInfrastructureType)
+add_vocab(DiscoveryMethod)
+add_vocab(AttackerToolType)
+add_vocab(IndicatorType)
+add_vocab(SystemType)
+add_vocab(CampaignStatus)
+add_vocab(IncidentStatus)
+add_vocab(ManagementClass)
+add_vocab(Motivation)
+add_vocab(IncidentCategory)
+add_vocab(ImpactQualification)
+add_vocab(PlanningAndOperationalSupport)
+add_vocab(CourseOfActionType)
+add_vocab(SecurityCompromise)
+add_vocab(ImpactRating)
+add_vocab(AssetType)
+add_vocab(COAStage)
+add_vocab(LocationClass)
+add_vocab(InformationType)
+add_vocab(ThreatActorSophistication)
+add_vocab(HighMediumLow)
+add_vocab(LossProperty)
+add_vocab(IntendedEffect)
+add_vocab(PackageIntent)
+add_vocab(LossDuration)
+add_vocab(OwnershipClass)
+add_vocab(MalwareType)
+add_vocab(IncidentEffect)
+add_vocab(InformationSourceRole)
