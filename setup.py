@@ -17,6 +17,12 @@ def get_version():
 with open('README.rst') as f:
     readme = f.read()
 
+extras_require = {
+    'docs': [
+        'Sphinx==1.2.1',
+    ],
+}
+
 setup(
     name="stix",
     version=get_version(),
@@ -27,6 +33,7 @@ setup(
     url="http://stix.mitre.org",
     packages=find_packages(),
     install_requires=['lxml>=2.3', 'python-dateutil', 'cybox>=2.1.0.2,<2.1.1.0'],
+    extras_require=extras_require,
     classifiers=[
         "Programming Language :: Python",
         "Development Status :: 4 - Beta",
