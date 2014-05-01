@@ -53,7 +53,7 @@ class IDGenerator(object):
         `method` is `METHOD_INT`.
         """
         if self.method == IDGenerator.METHOD_UUID:
-            id_ = str(uuid.uuid1())
+            id_ = str(uuid.uuid4())
         elif self.method == IDGenerator.METHOD_INT:
             id_ = self.next_int
             self.next_int += 1
