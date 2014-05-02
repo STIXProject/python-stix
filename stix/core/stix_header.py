@@ -130,7 +130,8 @@ class STIXHeader(stix.Entity):
         if self.information_source:
             return_obj.set_Information_Source(self.information_source.to_obj())
         if self.profiles:
-            return_obj.set_Profiles(Profile=self.profiles)
+            profiles_obj = stix_common_binding.ProfilesType(Profile=self.profiles)
+            return_obj.set_Profiles(profiles_obj)
 
         return return_obj
 
