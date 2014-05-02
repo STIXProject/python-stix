@@ -75,10 +75,23 @@ class InformationSource(stix.Entity):
 
     @description.setter
     def description(self, value):
-        if isinstance(value, StructuredText):
+        '''Sets the value of the description property.
+
+        If the value is an instance of basestring, it will be coerced into an
+        instance of StructuredText, with its 'text' property set to the input
+        value.
+        '''
+
+        if value and isinstance(value, basestring):
+            st = StructuredText()
+            st.value = value
+            self._description = st
+        elif isinstance(value, StructuredText):
             self._description = value
+        elif not value:
+            self._description = None
         else:
-            self._description = StructuredText(value=value)
+            raise ValueError('value must be instance of StructuredText or basestring')
 
     @property
     def identity(self):
