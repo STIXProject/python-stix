@@ -18,6 +18,7 @@ from .property_affected import PropertyAffected
 from .time import Time
 from .external_id import ExternalID
 from .impact_assessment import ImpactAssessment
+from .coa import COATaken, COATime
 from stix.common.vocabs import IncidentCategory, IntendedEffect, DiscoveryMethod, SecurityCompromise
 
 from datetime import datetime
@@ -55,6 +56,7 @@ class Incident(stix.Entity):
         self.information_source = None
         self.security_compromise = None
         self.confidence = None
+        self.coa_taken = None
     
     @property
     def id_(self):
@@ -384,6 +386,19 @@ class Incident(stix.Entity):
         else:
             self._confidence = Confidence(value)
 
+    @property
+    def coa_taken(self):
+        return self._coa_taken
+    
+    @coa_taken.setter
+    def coa_taken(self, value):
+        if not value:
+            self._coa_taken = None
+        elif isinstance(value, COATaken):
+            self._coa_taken = value
+        else:
+            raise ValueError("Cannot set coa_taken to type %s" % type(value))
+
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -435,6 +450,8 @@ class Incident(stix.Entity):
             return_obj.set_Security_Compromise(self.security_compromise.to_obj())
         if self.confidence:
             return_obj.set_Confidence(self.confidence.to_obj())
+        if self.coa_taken:
+            return_obj.set_COA_Taken(self.coa_taken.to_obj())
 
         return return_obj
 
@@ -481,6 +498,7 @@ class Incident(stix.Entity):
             if obj.get_Security_Compromise():
                 return_obj.security_compromise = SecurityCompromise.from_obj(obj.get_Security_Compromise())
             
+            return_obj.coa_taken = COATaken.from_obj(obj.get_COA_Taken())
             return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
             return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.get_Attributed_Threat_Actors())
             return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
@@ -541,6 +559,8 @@ class Incident(stix.Entity):
             d['security_compromise'] = self.security_compromise.to_dict()
         if self.confidence:
             d['confidence'] = self.confidence.to_dict()
+        if self.coa_taken:
+            d['coa_taken'] = self.coa_taken.to_dict()
         return d
 
     @classmethod
@@ -575,6 +595,8 @@ class Incident(stix.Entity):
         return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
         return_obj.security_compromise = SecurityCompromise.from_dict(dict_repr.get('security_compromise'))
         return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
+        return_obj.coa_taken = COATaken.from_dict(dict_repr.get('coa_taken'))
+        
         return return_obj
 
 
