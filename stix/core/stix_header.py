@@ -19,6 +19,7 @@ class STIXHeader(stix.Entity):
         self.description = description
         self.handling = handling
         self.information_source = information_source
+        self.profiles = []
 
     @property
     def description(self):
@@ -90,6 +91,10 @@ class STIXHeader(stix.Entity):
 
         self._information_source = value
 
+    def add_profile(self, profile):
+        """Adds a profile to the STIX Header. A Profile is represented by a string URI"""
+        self.profiles.append(profile)
+
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:
@@ -105,6 +110,8 @@ class STIXHeader(stix.Entity):
 
         if obj.get_Package_Intent():
             return_obj.package_intents = [VocabString.from_obj(x) for x in obj.get_Package_Intent()]
+        if obj.get_Profiles():
+            return_obj.profiles = obj.get_Profiles().get_Profile()
 
         return return_obj
 
@@ -122,6 +129,8 @@ class STIXHeader(stix.Entity):
             return_obj.set_Handling(self.handling.to_obj())
         if self.information_source:
             return_obj.set_Information_Source(self.information_source.to_obj())
+        if self.profiles:
+            return_obj.set_Profiles(Profile=self.profiles)
 
         return return_obj
 
@@ -139,6 +148,7 @@ class STIXHeader(stix.Entity):
         return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
         return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
         return_obj.package_intents = [PackageIntent.from_dict(x) for x in dict_repr.get('package_intents', [])]
+        return_obj.profiles = dict_repr.get('profiles')
 
         return return_obj
 
@@ -154,5 +164,7 @@ class STIXHeader(stix.Entity):
             d['handling'] = self.handling.to_dict()
         if self.information_source:
             d['information_source'] = self.information_source.to_dict()
+        if self.profiles:
+            d['profiles'] = self.profiles
 
         return d
