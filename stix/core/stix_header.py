@@ -33,7 +33,7 @@ class STIXHeader(stix.Entity):
         value.
         '''
 
-        if isinstance(value, basestring):
+        if value and isinstance(value, basestring):
             st = StructuredText()
             st.value = value
             self._description = st
