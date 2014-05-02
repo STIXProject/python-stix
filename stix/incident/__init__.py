@@ -4,7 +4,8 @@
 
 import stix
 import stix.bindings.incident as incident_binding
-from stix.common import Identity, Statement, StructuredText, VocabString, InformationSource
+from stix.common import (Identity, Statement, StructuredText, VocabString, InformationSource,
+                         Confidence)
 from stix.common.related import (GenericRelationshipList, RelatedIndicator,
         RelatedThreatActor, RelatedTTP, RelatedObservable)
 from stix.indicator import Indicator
@@ -53,6 +54,7 @@ class Incident(stix.Entity):
         self.impact_assessment = None
         self.information_source = None
         self.security_compromise = None
+        self.confidence = None
     
     @property
     def id_(self):
@@ -369,6 +371,19 @@ class Incident(stix.Entity):
         else:
             self._security_compromise = SecurityCompromise(value=value)
 
+    @property
+    def confidence(self):
+        return self._confidence
+    
+    @confidence.setter
+    def confidence(self, value):
+        if not value:
+            self._confidence = None
+        elif isinstance(value, Confidence):
+            self._confidence = value
+        else:
+            self._confidence = Confidence(value)
+
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -418,6 +433,8 @@ class Incident(stix.Entity):
             return_obj.set_Information_Source(self.information_source.to_obj())
         if self.security_compromise:
             return_obj.set_Security_Compromise(self.security_compromise.to_obj())
+        if self.confidence:
+            return_obj.set_Confidence(self.confidence.to_obj())
 
         return return_obj
 
@@ -464,6 +481,7 @@ class Incident(stix.Entity):
             if obj.get_Security_Compromise():
                 return_obj.security_compromise = SecurityCompromise.from_obj(obj.get_Security_Compromise())
             
+            return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
             return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.get_Attributed_Threat_Actors())
             return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
             return_obj.related_observables = RelatedObservable.from_obj(obj.get_Related_Observables())
@@ -521,6 +539,8 @@ class Incident(stix.Entity):
             d['information_source'] = self.information_source.to_dict()
         if self.security_compromise:
             d['security_compromise'] = self.security_compromise.to_dict()
+        if self.confidence:
+            d['confidence'] = self.confidence.to_dict()
         return d
 
     @classmethod
@@ -554,6 +574,7 @@ class Incident(stix.Entity):
         return_obj.impact_assessment = ImpactAssessment.from_dict(dict_repr.get('impact_assessment'))
         return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
         return_obj.security_compromise = SecurityCompromise.from_dict(dict_repr.get('security_compromise'))
+        return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
         return return_obj
 
 
