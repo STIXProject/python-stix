@@ -1,6 +1,7 @@
 include CHANGES.txt
 include LICENSE.txt
 include README.rst
+include requirements.txt
 recursive-include docs *
 recursive-exclude docs *.pyc
 recursive-exclude docs *.pyo
