@@ -32,7 +32,7 @@ class TTP(stix.Entity):
         self.information_source = None
         self.intended_effects = None
         self.resources = None
-        self.victim_targeting = VictimTargeting()
+        self.victim_targeting = None
         self.exploit_targets = ExploitTargets()
 
     @property
