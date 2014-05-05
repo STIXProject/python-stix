@@ -900,7 +900,7 @@ class ToolInformationType(cybox_common_binding.ToolInformationType):
     def get_Title(self): return self.Title
     def set_Title(self, Title): self.Title = Title
     def get_Short_Description(self): return self.Short_Description
-    def set_ShortDescription(self, Short_Description): self.Short_Description = Short_Description
+    def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def hasContent_(self):
         if (
             super(ToolInformationType, self).hasContent_() or
