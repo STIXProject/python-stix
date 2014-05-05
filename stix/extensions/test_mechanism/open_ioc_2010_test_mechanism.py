@@ -8,6 +8,7 @@ from stix.indicator.test_mechanism import _BaseTestMechanism
 import stix.bindings.extensions.test_mechanism.open_ioc_2010 as open_ioc_tm_binding
 from lxml import etree
 from itertools import izip
+from StringIO import StringIO
 
 class OpenIOCTestMechanism(_BaseTestMechanism):
     _namespace = "http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1"
@@ -92,7 +93,7 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
         super(OpenIOCTestMechanism, cls).from_dict(d, return_obj)
         if 'ioc' in d:
             parser = etree.ETCompatXMLParser(huge_tree=True)
-            return_obj.ioc = etree.parse(d['ioc'], parser=parser)
+            return_obj.ioc = etree.parse(StringIO(d['ioc']), parser=parser)
         
         return return_obj
     
