@@ -519,7 +519,7 @@ class Incident(stix.Entity):
             return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
             return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.get_Attributed_Threat_Actors())
             return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
-            return_obj.related_observables = RelatedObservable.from_obj(obj.get_Related_Observables())
+            return_obj.related_observables = RelatedObservables.from_obj(obj.get_Related_Observables())
             return_obj.leveraged_ttps = LeveragedTTPs.from_obj(obj.get_Leveraged_TTPs())
             return_obj.related_incidents = RelatedIncidents.from_obj(obj.get_Related_Incidents())
 
