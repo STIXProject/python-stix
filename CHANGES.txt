@@ -1,3 +1,22 @@
+Version 1.1.0.5
+2014-05-05
+- Controlled Vocabulary (stix.common.vocabs.VocabString) overhaul
+- All default STIX CV's have a corresponding VocabString derivation in stix.common.vocabs
+- Each VocabString implementation performs input validation
+- Each VocabString has static TERM_FOO values for each vocabulary term
+- CV fields can now accept user-defined VocabString implementations
+- Accepted Ubuntu installation documentation from @mgoldsborough, thanks!
+- Pluralized list fields where the naming makes sense
+- Adjusted many CV fields to promote plain strings to default CV type in property setter
+- Added exploit_targets, kill_chains to TTP
+- Added status to Campaign
+- Added motivations and identity to ThreatActor
+- Added kill_chain_phases, related_indicators to Indicator
+- Added FreeTextLine, ContactNumber to CIQ Identity extension
+- Added discovery_methods, security_compromise, information_source, related_incidents, coa_taken to Incident
+- Added profiles to STIXHeader
+- Initial cut at Sphinx documentation
+
 Version 1.1.0.4
 2014-02-31
 - Added COAs, Exploit Targets, Campaigns, and Related Packages to STIXPackage class
