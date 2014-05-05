@@ -39,7 +39,7 @@ setup(
     long_description=readme,
     url="http://stix.mitre.org",
     packages=find_packages(),
-    install_requires=['lxml>=2.3', 'python-dateutil', 'cybox>=2.1.0.2,<2.1.1.0'],
+    install_requires=['lxml>=2.3', 'python-dateutil', 'cybox>=2.1.0.4,<2.1.1.0'],
     extras_require=extras_require,
     classifiers=[
         "Programming Language :: Python",
