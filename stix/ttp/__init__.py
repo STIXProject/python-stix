@@ -22,7 +22,6 @@ class TTP(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("ttp")
         self.idref = idref
-        self.timestamp = timestamp or datetime.now(tzutc())
         self.version = self._version
         self.title = title
         self.description = description
@@ -34,6 +33,11 @@ class TTP(stix.Entity):
         self.resources = None
         self.victim_targeting = None
         self.exploit_targets = ExploitTargets()
+
+        if timestamp:
+            self.timestamp = timestamp
+        else:
+            self.timestamp = datetime.now(tzutc()) if not idref else None
 
     @property
     def id_(self):

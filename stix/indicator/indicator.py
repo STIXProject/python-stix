@@ -50,7 +50,6 @@ class Indicator(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("indicator")
         self.idref = idref
-        self.timestamp = timestamp or datetime.now(tzutc())
         self.version = self._version
         self.producer = None
         self.observables = None
@@ -70,6 +69,11 @@ class Indicator(stix.Entity):
         self.valid_time_positions = None
         self.related_indicators = None
         self.observable_composition_operator = "AND"
+    
+        if timestamp:
+            self.timestamp = timestamp
+        else:
+            self.timestamp = datetime.now(tzutc()) if not idref else None
     
     @property
     def id_(self):

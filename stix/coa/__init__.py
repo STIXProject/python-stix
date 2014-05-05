@@ -34,7 +34,6 @@ class CourseOfAction(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("coa")
         self.idref = idref
-        self.timestamp = timestamp or datetime.now(tzutc())
         self.version = self._version
         self.title = title
         self.stage = None
@@ -51,6 +50,11 @@ class CourseOfAction(stix.Entity):
         self.handling = None
         self.related_coas = RelatedCOAs()
         self.related_packages = RelatedPackageRefs()
+
+        if timestamp:
+            self.timestamp = timestamp
+        else:
+            self.timestamp = datetime.now(tzutc()) if not idref else None
 
     @property
     def id_(self):

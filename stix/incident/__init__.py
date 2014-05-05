@@ -33,7 +33,6 @@ class Incident(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("incident")
         self.idref = idref
-        self.timestamp = timestamp or datetime.now(tzutc())
         self.version = self._version
         self.description = description
         self.short_description = short_description
@@ -58,6 +57,11 @@ class Incident(stix.Entity):
         self.security_compromise = None
         self.confidence = None
         self.coa_taken = None
+    
+        if timestamp:
+            self.timestamp = timestamp
+        else:
+            self.timestamp = datetime.now(tzutc()) if not idref else None
     
     @property
     def id_(self):
