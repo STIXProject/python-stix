@@ -10,16 +10,16 @@ class Marking(stix.Entity):
     _binding_class = stix_data_marking_binding.MarkingType
     _namespace = 'http://data-marking.mitre.org/Marking-1'
 
-    def __init__(self, marking=None):
-        self.marking = marking
+    def __init__(self, markings=None):
+        self.markings = markings
 
     @property
-    def marking(self):
-        return self._marking
+    def markings(self):
+        return self._markings
 
-    @marking.setter
-    def marking(self, value):
-        self._marking = []
+    @markings.setter
+    def markings(self, value):
+        self._markings = []
 
         if value is None:
             return
@@ -32,16 +32,16 @@ class Marking(stix.Entity):
     def add_marking(self, value):
         if not isinstance(value, MarkingSpecification):
             raise ValueError('value must be instance of MarkingSpecification')
-        self._marking.append(value)
+        self._markings.append(value)
 
     def to_obj(self):
         obj = self._binding_class()
 
-        obj.set_Marking([x.to_obj() for x in self.marking])
+        obj.set_Marking([x.to_obj() for x in self.markings])
         return obj
 
     def to_list(self):
-        return [x.to_dict() for x in self.marking]
+        return [x.to_dict() for x in self.markings]
 
     @staticmethod
     def from_obj(obj):
@@ -52,11 +52,11 @@ class Marking(stix.Entity):
         return Marking(mlist)
 
     @staticmethod
-    def from_list(marking_list):
-        if not marking_list:
+    def from_list(markings_list):
+        if not markings_list:
             return None
 
-        mlist = [MarkingSpecification.from_dict(x) for x in marking_list]
+        mlist = [MarkingSpecification.from_dict(x) for x in markings_list]
         return Marking(mlist)
 
     to_dict = to_list
