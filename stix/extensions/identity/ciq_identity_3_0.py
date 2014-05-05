@@ -413,6 +413,16 @@ class Address(stix.Entity):
 
         return return_obj
 
+    def to_dict(self):
+        d = {}
+        if self.free_text_address:
+            d['free_text_address'] = self.free_text_address.to_dict()
+        if self.country:
+            d['country'] = self.country.to_dict()
+        if self.administrative_area:
+            d['administrative_area'] = self.administrative_area.to_dict()
+        return d
+
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if obj is None:
@@ -432,6 +442,18 @@ class Address(stix.Entity):
         if len(administrative_area) > 0:
             return_obj.administrative_area = AdministrativeArea.from_obj(administrative_area[0])
         
+        return return_obj
+    
+    @classmethod
+    def from_dict(cls, d, return_obj=None):
+        if not d:
+            return None
+        if not return_obj:
+            return_obj = cls()
+            
+        return_obj.free_text_address = FreeTextAddress.from_dict(d.get('free_text_address'))
+        return_obj.country = Country.from_dict(d.get('country'))
+        return_obj.administrative_area = AdministrativeArea.from_dict(d.get('administrative_area'))
         return return_obj
             
 class AdministrativeArea(stix.Entity):
@@ -466,7 +488,7 @@ class AdministrativeArea(stix.Entity):
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
-        if not obj:
+        if obj is None:
             return None
         if not return_obj:
             return_obj = cls()
@@ -535,7 +557,7 @@ class Country(stix.Entity):
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
-        if not obj:
+        if obj is None:
             return None
         if not return_obj:
             return_obj = cls()
