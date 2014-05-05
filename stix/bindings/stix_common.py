@@ -1198,6 +1198,8 @@ class ConfidenceType(GeneratedsSuper):
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
             except ValueError, exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
+        
+        value = find_attr_value_('timestamp_precision', node)
         if value is not None and 'timestamp_precision' not in already_processed:
             already_processed.add('timestamp_precision')
             self.timestamp_precision = value
@@ -1631,7 +1633,7 @@ class KillChainPhasesReferenceType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Kill_Chain_Phase':
-            obj_ = KillChainPhaseType.factory()
+            obj_ = KillChainPhaseReferenceType.factory()
             obj_.build(child_)
             self.Kill_Chain_Phase.append(obj_)
 # end class KillChainPhasesReferenceType
