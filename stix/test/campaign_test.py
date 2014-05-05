@@ -102,7 +102,7 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
         },
         'handling': [
             {
-                'marking_structure': [{
+                'marking_structures': [{
                     'marking_model_name': 'TLP',
                     'color': "RED",
                     'xsi:type': "tlpMarking:TLPMarkingStructureType",

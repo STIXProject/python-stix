@@ -12,7 +12,7 @@ class IdentityTests(EntityTestCase, unittest.TestCase):
         'description': "A really, really long description",
         'handling': [
             {
-                'marking_structure': [{
+                'marking_structures': [{
                     'marking_model_name': 'TLP',
                     'color': "WHITE",
                     'xsi:type': "tlpMarking:TLPMarkingStructureType",

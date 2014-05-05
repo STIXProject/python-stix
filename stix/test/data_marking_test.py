@@ -25,7 +25,7 @@ class MarkingSpecificationTests(EntityTestCase, unittest.TestCase):
         'idref': "foo_ref",
         'version': "1234",
         'controlled_structure': "some xpath",
-        'marking_structure': [
+        'marking_structures': [
             {
                 'marking_model_name': 'TLP',
                 'xsi:type': "tlpMarking:TLPMarkingStructureType",

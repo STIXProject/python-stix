@@ -73,7 +73,7 @@ class MarkingSpecification(stix.Entity):
         self.idref = None
         self.version = None
         self.controlled_structure = None
-        self.marking_structure = []
+        self.marking_structures = []
         # TODO: add Information_Source
 
     def to_obj(self):
@@ -83,7 +83,7 @@ class MarkingSpecification(stix.Entity):
         obj.set_idref(self.idref)
         obj.set_version(self.version)
         obj.set_Controlled_Structure(self.controlled_structure)
-        obj.set_Marking_Structure([x.to_obj() for x in self.marking_structure])
+        obj.set_Marking_Structure([x.to_obj() for x in self.marking_structures])
 
         return obj
 
@@ -97,8 +97,8 @@ class MarkingSpecification(stix.Entity):
             d['version'] = self.version
         if self.controlled_structure:
             d['controlled_structure'] = self.controlled_structure
-        if self.marking_structure:
-            d['marking_structure'] = [x.to_dict() for x in self.marking_structure]
+        if self.marking_structures:
+            d['marking_structures'] = [x.to_dict() for x in self.marking_structures]
 
         return d
 
@@ -113,7 +113,7 @@ class MarkingSpecification(stix.Entity):
         m.idref = obj.get_idref()
         m.version = obj.get_version()
         m.controlled_structure = obj.get_Controlled_Structure()
-        m.marking_structure = [MarkingStructure.from_obj(x) for x in obj.get_Marking_Structure()]
+        m.marking_structures = [MarkingStructure.from_obj(x) for x in obj.get_Marking_Structure()]
 
         return m
 
@@ -128,8 +128,8 @@ class MarkingSpecification(stix.Entity):
         m.idref = marking_dict.get('idref')
         m.version = marking_dict.get('version')
         m.controlled_structure = marking_dict.get('controlled_structure')
-        m.marking_structure = [MarkingStructure.from_dict(x) for x in
-                marking_dict.get('marking_structure', [])]
+        m.marking_structures = [MarkingStructure.from_dict(x) for x in
+                marking_dict.get('marking_structures', [])]
 
         return m
 

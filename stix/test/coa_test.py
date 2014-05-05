@@ -44,7 +44,7 @@ class COATests(EntityTestCase, unittest.TestCase):
         },
         'handling': [
             {
-                'marking_structure': [{
+                'marking_structures': [{
                     'marking_model_name': 'TLP',
                     'color': "GREEN",
                     'xsi:type': "tlpMarking:TLPMarkingStructureType",
