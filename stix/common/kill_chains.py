@@ -106,7 +106,7 @@ class KillChainPhase(stix.Entity):
     _binding_class = _binding.KillChainPhaseType
     
     def __init__(self, phase_id=None, name=None, ordinality=None):
-        self.id_ = phase_id or stix.utils.create_id("killchainphase")
+        self.phase_id = phase_id or stix.utils.create_id("killchainphase")
         self.name = name
         self.ordinality = ordinality
     
@@ -125,7 +125,7 @@ class KillChainPhase(stix.Entity):
         if not return_obj:
             return_obj = self._binding_class()
     
-        return_obj.set_id(self.id_)
+        return_obj.set_phase_id(self.phase_id)
         return_obj.set_name(self.name)
         return_obj.set_ordinality(self.ordinality)
     
@@ -138,7 +138,7 @@ class KillChainPhase(stix.Entity):
         if not return_obj:
             return_obj = cls()
     
-        return_obj.id_ = obj.get_id()
+        return_obj.phase_id = obj.get_phase_id()
         return_obj.name = obj.get_name()
         return_obj.ordinality = obj.get_ordinality()
         
@@ -151,7 +151,7 @@ class KillChainPhase(stix.Entity):
         if not return_obj:
             return_obj = cls()
     
-        return_obj.id_ = d.get('id')
+        return_obj.phase_id = d.get('phase_id')
         return_obj.name = d.get('name')
         return_obj.ordinality = d.get('ordinality')
         
@@ -169,7 +169,7 @@ class KillChainPhaseReference(KillChainPhase):
 
     def to_obj(self, return_obj=None):
         if not return_obj:
-            return_obj = cls()
+            return_obj = self._binding_class()
     
         super(KillChainPhaseReference, self).to_obj(return_obj=return_obj)
         return_obj.set_kill_chain_id(self.kill_chain_id)
