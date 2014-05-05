@@ -13,10 +13,11 @@ class COATaken(stix.Entity):
     _binding = incident_binding
     _binding_class = _binding.COATakenType
     
-    def __init__(self):
+    def __init__(self, course_of_action=None):
         self.time = None
+        self.course_of_action = course_of_action
         self.contributors = Contributors()
-        self.course_of_action = None
+        
         
     
     def add_contributor(self, value):

@@ -18,7 +18,7 @@ from .property_affected import PropertyAffected
 from .time import Time
 from .external_id import ExternalID
 from .impact_assessment import ImpactAssessment
-from .coa import COATaken, COATime
+from .coa import COATaken, COATime, CourseOfAction
 from stix.common.vocabs import IncidentCategory, IntendedEffect, DiscoveryMethod, SecurityCompromise
 
 from datetime import datetime
@@ -401,6 +401,8 @@ class Incident(stix.Entity):
             self._coa_taken = None
         elif isinstance(value, COATaken):
             self._coa_taken = value
+        elif isinstance(value, CourseOfAction):
+            self._coa_taken = COATaken(course_of_action=value)
         else:
             raise ValueError("Cannot set coa_taken to type %s" % type(value))
 
