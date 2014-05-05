@@ -66,6 +66,8 @@ The python-stix package layout is as follows:
 
 * ``stix/bindings/`` : generateDS generated xml-to-python bindings (leveraged for
   parsing and output of STIX XML content)
+  
+* ``stix/campaign/`` : APIs for STIX Campaign constructs
 
 * ``stix/coa/`` : APIs for STIX Course Of Action constructs
 
@@ -81,6 +83,10 @@ The python-stix package layout is as follows:
 * ``stix/indicator/`` : APIs for STIX Indicator constructs
 
 * ``stix/extensions/`` : APIs for STIX extensions (e.g., CIQ Identity)
+
+* ``stix/threat_actor/`` : APIs for STIX Threat Actor constructs
+
+* ``stix/ttp/`` : APIs for STIX TTP constructs
 
 Please refer to examples for concrete examples of how to interact with the
 python-stix library
