@@ -286,7 +286,7 @@ class STIXPackage(stix.Entity):
             return_obj = self._binding_class()
 
         return_obj.set_id(self.id_)
-        return_obj.set_idref(self.idref_)
+        return_obj.set_idref(self.idref)
         return_obj.set_version(self.version)
         return_obj.set_timestamp(dates.serialize_value(self.timestamp))
 
@@ -341,8 +341,8 @@ class STIXPackage(stix.Entity):
             d['idref'] = self.idref
         if self.version:
             d['version'] = self.version
-        if self.idref_:
-            d['idref'] = self.idref_
+        if self.idref:
+            d['idref'] = self.idref
         if self.timestamp:
             d['timestamp'] = dates.serialize_value(self.timestamp)
         if self.stix_header:
@@ -374,7 +374,7 @@ class STIXPackage(stix.Entity):
             return_obj = cls()
 
         return_obj.id_ = obj.get_id()
-        return_obj.idref_ = obj.get_idref()
+        return_obj.idref = obj.get_idref()
         return_obj.timestamp = obj.get_timestamp()
         return_obj.stix_header = STIXHeader.from_obj(obj.get_STIX_Header())
         return_obj.related_packages = RelatedPackages.from_obj(obj.get_Related_Packages())
@@ -406,7 +406,7 @@ class STIXPackage(stix.Entity):
             return_obj = cls()
 
         return_obj.id_ = dict_repr.get('id', None)
-        return_obj.idref_ = dict_repr.get('idref', None)
+        return_obj.idref = dict_repr.get('idref', None)
         return_obj.timestamp = dict_repr.get('timestamp')
         return_obj.version = dict_repr.get('version', cls._version)
         header_dict = dict_repr.get('stix_header', None)
