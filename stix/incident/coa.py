@@ -18,8 +18,6 @@ class COATaken(stix.Entity):
         self.course_of_action = course_of_action
         self.contributors = Contributors()
         
-        
-    
     def add_contributor(self, value):
         if not value:
             return
