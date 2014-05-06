@@ -1,3 +1,8 @@
+Version 1.1.0.6
+2014-05-06
+- Fixed issues with parsing Related Observables within an Incident
+- Adjusted names of data marking properties to align with list naming conventions
+
 Version 1.1.0.5
 2014-05-05
 - Controlled Vocabulary (stix.common.vocabs.VocabString) overhaul
