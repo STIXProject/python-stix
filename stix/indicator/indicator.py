@@ -45,7 +45,7 @@ class Indicator(stix.Entity):
     _binding = indicator_binding
     _binding_class = indicator_binding.IndicatorType
     _namespace = 'http://stix.mitre.org/Indicator-2'
-    _version = "2.1"
+    _version = "2.1.1"
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("indicator")

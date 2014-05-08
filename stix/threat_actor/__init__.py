@@ -46,7 +46,7 @@ class ThreatActor(stix.Entity):
     _binding = threat_actor_binding
     _binding_class = threat_actor_binding.ThreatActorType
     _namespace = 'http://stix.mitre.org/ThreatActor-1'
-    _version = "1.1"
+    _version = "1.1.1"
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("threatactor")

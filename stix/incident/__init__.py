@@ -28,7 +28,7 @@ class Incident(stix.Entity):
     _binding = incident_binding
     _binding_class = _binding.IncidentType
     _namespace = "http://stix.mitre.org/Incident-1"
-    _version = "1.1"
+    _version = "1.1.1"
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("incident")

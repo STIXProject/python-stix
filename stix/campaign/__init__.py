@@ -82,7 +82,7 @@ class Campaign(stix.Entity):
     _binding = campaign_binding
     _binding_class = _binding.CampaignType
     _namespace = "http://stix.mitre.org/Campaign-1"
-    _version = "1.1"
+    _version = "1.1.1"
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("Campaign")
