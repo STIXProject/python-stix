@@ -1262,7 +1262,7 @@ class ContributorsType(GeneratedsSuper):
         else:
             eol_ = ''
         for Contributor_ in self.Contributor:
-            Contributor_.export(outfile, level, nsmap, namespace_, name_='Contributor', pretty_print=pretty_print)
+            Contributor_.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Contributor', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
