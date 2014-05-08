@@ -1217,7 +1217,10 @@ class ContributorsType(GeneratedsSuper):
     subclass = None
     superclass = None
     def __init__(self, Contributor=None):
-        self.Contributor = Contributor
+        if Contributor is None:
+            self.Contributor = []
+        else:
+            self.Contributor = Contributor
     def factory(*args_, **kwargs_):
         if ContributorsType.subclass:
             return ContributorsType.subclass(*args_, **kwargs_)
@@ -1226,9 +1229,11 @@ class ContributorsType(GeneratedsSuper):
     factory = staticmethod(factory)
     def get_Contributor(self): return self.Contributor
     def set_Contributor(self, Contributor): self.Contributor = Contributor
+    def add_Contributor(self, value): self.Contributor.append(value)
+    def insert_Contributor(self, index, value): self.Contributor[index] = value
     def hasContent_(self):
         if (
-            self.Contributor is not None
+            self.Contributor
             ):
             return True
         else:
@@ -1256,8 +1261,8 @@ class ContributorsType(GeneratedsSuper):
             eol_ = '\n'
         else:
             eol_ = ''
-        if self.Contributor is not None:
-            self.Contributor.export(outfile, level, nsmap, namespace_, name_='Contributor', pretty_print=pretty_print)
+        for Contributor_ in self.Contributor:
+            Contributor_.export(outfile, level, nsmap, namespace_, name_='Contributor', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1270,7 +1275,7 @@ class ContributorsType(GeneratedsSuper):
         if nodeName_ == 'Contributor':
             obj_ = cybox_common_binding.ContributorType.factory()
             obj_.build(child_)
-            self.set_Contributor(obj_)
+            self.Contributor.append(obj_)
 # end class ContributorsType
 
 class COATimeType(GeneratedsSuper):
