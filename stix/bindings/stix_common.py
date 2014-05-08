@@ -1213,7 +1213,7 @@ class ConfidenceType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Source':
-            obj_ = ControlledVocabularyStringType.factory()
+            obj_ = InformationSourceType.factory()
             obj_.build(child_)
             self.set_Source(obj_)
         elif nodeName_ == 'Confidence_Assertion_Chain':
@@ -4037,7 +4037,7 @@ class StatementType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Description(obj_)
         elif nodeName_ == 'Source':
-            obj_ = ControlledVocabularyStringType.factory()
+            obj_ = InformationSourceType.factory()
             obj_.build(child_)
             self.set_Source(obj_)
         elif nodeName_ == 'Confidence':
