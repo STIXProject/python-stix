@@ -147,17 +147,16 @@ class VocabString(stix.Entity):
 
 class AvailabilityLossType(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
-    _XSI_TYPE = 'stixVocabs:AvailabilityLossTypeVocab-1.0'
-    _ALLOWED_VALUES = ('Destruction', 'Loss', 'Interruption', 'Degredation', 'Acceleration', 'Obscuration', 'Unknown')
+    _XSI_TYPE = 'stixVocabs:AvailabilityLossTypeVocab-1.1.1'
+    _ALLOWED_VALUES = ('Destruction', 'Loss', 'Interruption', 'Degradation', 'Acceleration', 'Obscuration', 'Unknown')
     
     TERM_DESTRUCTION = "Destruction"
     TERM_LOSS = "Loss"
     TERM_INTERRUPTION = "Interruption"
-    TERM_DEGREDATION = "Degredation"
+    TERM_DEGRADATION = "Degradation"
     TERM_ACCELERATION = "Acceleration"
     TERM_OBSCURATION = "Obscuration"
     TERM_UNKNOWN = "Unknown"
-
 
 
 class ThreatActorType(VocabString):

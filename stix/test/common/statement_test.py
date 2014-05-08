@@ -12,7 +12,9 @@ class StatementTests(EntityTestCase, unittest.TestCase):
         'timestamp_precision': 'day',
         'value': "Something strange is going on",
         'description': "An amazing source",
-        'source': "a source",
+        'source': { 'description': "An amazing source",
+                    'identity': {'name': "Spiderman",}
+                   },
         'confidence': {
             'value': {'value': "Low", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'},
         },
