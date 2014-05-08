@@ -87,7 +87,7 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
                                                                                 'xsi:type': 'ciqIdentity:CIQIdentity3.0InstanceType'},
                                                                    'time': {'produced_time': '2014-02-21T10:16:14.947201'}},
                                                       'title': 'File Hash Example',
-                                                      'version': '2.1'}}],
+                                                      'version': '2.1.1'}}],
                         'scope': 'exclusive'},
  'reporter': {'description': "Mr. Evil's enemy",
               'identity': {'name': 'Ms. Good'}},

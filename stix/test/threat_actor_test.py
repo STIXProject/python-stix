@@ -46,7 +46,7 @@ class ThreatActorTests(EntityTestCase, unittest.TestCase):
             'ttps': [
                 {
                     'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
-                    'ttp': {'title': "A TTP", 'version': "1.1"},
+                    'ttp': {'title': "A TTP", 'version': '1.1'},
                 }
             ],
         },
@@ -55,7 +55,7 @@ class ThreatActorTests(EntityTestCase, unittest.TestCase):
             'campaigns': [
                 {
                     'information_source': {'description': "Mailing List"},
-                    'campaign': {'title': "Campaign1", 'version': "1.1"},
+                    'campaign': {'title': "Campaign1", 'version': '1.1'},
                 }
             ],
         },
@@ -64,7 +64,7 @@ class ThreatActorTests(EntityTestCase, unittest.TestCase):
             'threat_actors': [
                 {
                     'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
-                    'threat_actor': {'title': "Related Bad Guy!", 'version': "1.1"},
+                    'threat_actor': {'title': "Related Bad Guy!", 'version': '1.1'},
                 }
             ],
         },
