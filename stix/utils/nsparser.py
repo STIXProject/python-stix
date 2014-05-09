@@ -28,12 +28,12 @@ class NamespaceParser(object):
         if isinstance(entity, Observable):
             all_namespaces.update(self._get_observable_namespaces(entity))
         elif isinstance(entity, Observables):
-            for child in self._get_children(entity):
+            for child in entity._get_children():
                 all_namespaces.update(self._get_namespace_set(child))
         elif hasattr(entity, "_namespace"):
             all_namespaces.add(entity._namespace)
 
-            for child in self._get_children(entity):
+            for child in entity._get_children():
                 if not hasattr(child, "nsparser_touched"):
                     if hasattr(child, "_namespace") or isinstance(child, Observable):
                         all_namespaces.update(self._get_namespace_set(child))
@@ -74,18 +74,6 @@ class NamespaceParser(object):
         
         return all_ns_dict
         
-    def _get_children(self, entity):
-        for (name, obj) in inspect.getmembers(entity):
-            if isinstance(obj, Observables):
-                for obs in obj.observables:
-                    yield obs
-            elif isinstance(obj, (stix.Entity, cybox.Entity)):
-                yield obj
-            elif isinstance(obj, list):
-                for item in obj:
-                    if isinstance(item, stix.Entity) or isinstance(item, Observable) or isinstance(item, cybox.Entity):
-                        yield item
-
     def _get_input_schemalocations(self, entity):
         all_schemalocations = {}
         if not isinstance(entity, stix.Entity):
@@ -95,7 +83,7 @@ class NamespaceParser(object):
         if hasattr(entity, "__input_schemalocations__"):
             all_schemalocations.update(entity.__input_schemalocations__)
 
-        for child in self._get_children(entity):
+        for child in entity._get_children():
             if not hasattr(child, "nsparser_touched"):
                 all_schemalocations.update(self._get_input_schemalocations(child))
         
