@@ -1,3 +1,12 @@
+Version 1.1.1.0
+2014-05-09
+- Support for STIX v1.1.1
+- Updated all schemalocations to reference new STIX v1.1.1 schemas
+- Changed Confidence.source to be of type InformationSource
+- Changed Statement.source to be of type InformationSource
+- Changed Sighting.source to be of type InformationSource
+- Updated AvailabilityLossType CV to align with STIX v1.1.1
+
 Version 1.1.0.6
 2014-05-06
 - Fixed issues with parsing Related Observables within an Incident
