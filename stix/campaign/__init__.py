@@ -64,17 +64,12 @@ class RelatedTTPs(GenericRelationshipList):
     _contained_type = RelatedTTP
     _inner_name = "ttps"
 
-
-class Name(VocabString):
-    pass
-
-
 class Names(stix.EntityList):
     _namespace = "http://stix.mitre.org/Campaign-1"
     _binding = campaign_binding
     _binding_class = campaign_binding.NamesType
     _binding_var = "Name"
-    _contained_type = Name
+    _contained_type = VocabString
     _inner_name = "names"
 
 
