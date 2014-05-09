@@ -5,7 +5,7 @@ import stix
 import stix.utils
 import stix.bindings.incident as incident_binding
 from stix.common import DateTimeWithPrecision
-from .contributors import Contributors
+from .contributors import Contributors, Contributor
 from stix.coa import CourseOfAction
 
 class COATaken(stix.Entity):
@@ -21,7 +21,7 @@ class COATaken(stix.Entity):
     def add_contributor(self, value):
         if not value:
             return
-        elif isinstance(value, Contributors):
+        elif isinstance(value, Contributor):
             self.contributors.append(value)
         else:
             raise ValueError("Cannot add type %s to contributors" % type(value))
