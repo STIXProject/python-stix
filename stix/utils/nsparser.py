@@ -83,7 +83,7 @@ class NamespaceParser(object):
                 yield obj
             elif isinstance(obj, list):
                 for item in obj:
-                    if isinstance(item, stix.Entity) or isinstance(item, Observable):
+                    if isinstance(item, stix.Entity) or isinstance(item, Observable) or isinstance(item, cybox.Entity):
                         yield item
 
     def _get_input_schemalocations(self, entity):
