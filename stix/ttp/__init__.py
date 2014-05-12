@@ -17,7 +17,7 @@ class TTP(stix.Entity):
     _binding = ttp_binding
     _binding_class = _binding.TTPType
     _namespace = "http://stix.mitre.org/TTP-1"
-    _version = "1.1"
+    _version = "1.1.1"
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("ttp")

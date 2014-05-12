@@ -57,7 +57,7 @@ class COATests(EntityTestCase, unittest.TestCase):
                 {
                     'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
                     'course_of_action': {'idref': "example:COA-52",
-                                         'version': "2.1"},
+                                         'version': '2.1'},
                 }
             ]
         },

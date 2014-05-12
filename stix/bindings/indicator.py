@@ -979,7 +979,7 @@ class SightingType(GeneratedsSuper):
             self.timestamp_precision = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Source':
-            obj_ = stix_common_binding.StructuredTextType.factory()
+            obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.set_Source(obj_)
         elif nodeName_ == 'Reference':
@@ -1688,7 +1688,7 @@ class RelatedCampaignReferencesType(stix_common_binding.GenericRelationshipListT
         super(RelatedCampaignReferencesType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Related_Campaign':
-            obj_ = stix_common_binding.CampaignReferenceType.factory()
+            obj_ = stix_common_binding.RelatedCampaignReferenceType.factory()
             obj_.build(child_)
             self.Related_Campaign.append(obj_)
         super(RelatedCampaignReferencesType, self).buildChildren(child_, node, nodeName_, True)

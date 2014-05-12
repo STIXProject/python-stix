@@ -1,6 +1,8 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from __future__ import absolute_import
+
 from datetime import datetime
 import dateutil
 from dateutil.tz import tzutc
@@ -10,7 +12,6 @@ import stix.bindings.stix_common as common_binding
 
 from .structured_text import StructuredText
 from .vocabs import VocabString, HighMediumLow
-
 
 class Confidence(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
@@ -58,12 +59,14 @@ class Confidence(stix.Entity):
 
     @source.setter
     def source(self, value):
+        from .information_source import InformationSource
+        
         if value is None:
             self._source = None
-        elif isinstance(value, VocabString):
+        elif isinstance(value, InformationSource):
             self._source = value
         else:
-            self._source = VocabString(value=value)
+            raise ValueError("source must be of type InformationSource")
 
     @property
     def description(self):
@@ -119,6 +122,8 @@ class Confidence(stix.Entity):
 
     @staticmethod
     def from_obj(obj):
+        from .information_source import InformationSource
+        
         if not obj:
             return None
         c = Confidence()
@@ -127,12 +132,14 @@ class Confidence(stix.Entity):
         c.timestamp_precision = obj.get_timestamp_precision()
         c.value = VocabString.from_obj(obj.get_Value())
         c.description = StructuredText.from_obj(obj.get_Description())
-        c.source = VocabString.from_obj(obj.get_Source())
+        c.source = InformationSource.from_obj(obj.get_Source())
 
         return c
 
     @staticmethod
     def from_dict(dict_):
+        from .information_source import InformationSource
+        
         if dict_ is None:
             return None
         c = Confidence()
@@ -141,10 +148,9 @@ class Confidence(stix.Entity):
         c.timestamp_precision = dict_.get('timestamp_precision', 'second')
         c.value = VocabString.from_dict(dict_.get('value'))
         c.description = StructuredText.from_dict(dict_.get('description'))
-        c.source = VocabString.from_dict(dict_.get('source'))
+        c.source = InformationSource.from_dict(dict_.get('source'))
 
         return c
-
 
 class ConfidenceAssertionChain(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-2'
@@ -176,3 +182,4 @@ class ConfidenceAssertionChain(stix.Entity):
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
         return None
+

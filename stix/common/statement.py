@@ -1,6 +1,8 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from __future__ import absolute_import
+
 from datetime import datetime
 import dateutil
 from dateutil.tz import tzutc
@@ -60,15 +62,15 @@ class Statement(stix.Entity):
 
     @source.setter
     def source(self, value):
+        from .information_source import InformationSource
+        
         if value is None:
             self._source = None
-        elif isinstance(value, VocabString):
+        elif isinstance(value, InformationSource):
             self._source = value
         else:
-            #TODO: What should be default Vocabulary type if just a string is
-            # provided?
-            self._source = VocabString(value=value)
-
+            raise ValueError("source must be of type InformationSource")
+          
     @property
     def description(self):
         return self._description
@@ -120,6 +122,8 @@ class Statement(stix.Entity):
 
     @classmethod
     def from_obj(cls, obj):
+        from .information_source import InformationSource
+        
         if not obj:
             return None
         s = cls()
@@ -128,13 +132,15 @@ class Statement(stix.Entity):
         s.timestamp_precision = obj.get_timestamp_precision()
         s.value = VocabString.from_obj(obj.get_Value())
         s.description = StructuredText.from_obj(obj.get_Description())
-        s.source = VocabString.from_obj(obj.get_Source())
+        s.source = InformationSource.from_obj(obj.get_Source())
         s.confidence = Confidence.from_obj(obj.get_Confidence())
 
         return s
 
     @classmethod
     def from_dict(cls, dict_):
+        from .information_source import InformationSource
+        
         if dict_ is None:
             return None
         s = cls()
@@ -143,7 +149,7 @@ class Statement(stix.Entity):
         s.timestamp_precision = dict_.get('timestamp_precision', 'second')
         s.value = VocabString.from_dict(dict_.get('value'))
         s.description = StructuredText.from_dict(dict_.get('description'))
-        s.source = VocabString.from_dict(dict_.get('source'))
+        s.source = InformationSource.from_dict(dict_.get('source'))
         s.confidence = Confidence.from_dict(dict_.get('confidence'))
 
         return s

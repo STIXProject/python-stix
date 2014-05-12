@@ -2,10 +2,13 @@
 # See LICENSE.txt for complete terms.
 
 import collections
+import inspect
 import json
-from lxml import etree
 from StringIO import StringIO
 
+import cybox
+from cybox.core import Observable, Observables
+from lxml import etree
 
 class Entity(object):
     """Base class for all classes in the STIX API."""
@@ -49,6 +52,18 @@ class Entity(object):
 
         self.to_obj().export(s, 0, all_ns_dict, pretty_print=pretty, namespacedef_=namespace_def)
         return s.getvalue()
+
+    def _get_children(self):
+        for (name, obj) in inspect.getmembers(self):
+            if isinstance(obj, Observables):
+                for obs in obj.observables:
+                    yield obs
+            elif isinstance(obj, (Entity, cybox.Entity)):
+                yield obj
+            elif isinstance(obj, list):
+                for item in obj:
+                    if isinstance(item, Entity) or isinstance(item, Observable) or isinstance(item, cybox.Entity):
+                        yield item
 
     def to_json(self):
         return json.dumps(self.to_dict())

@@ -5,7 +5,7 @@ import stix
 import stix.utils
 from stix.utils import dates
 from stix.common import (GenericRelationshipList, RelatedObservable, StructuredText,
-                         Confidence)
+                         Confidence, InformationSource)
 import stix.bindings.indicator as indicator_binding
 from datetime import datetime
 from dateutil.tz import tzutc
@@ -51,12 +51,13 @@ class Sighting(stix.Entity):
     
     @source.setter
     def source(self, value):
-        if not value:
+        if value is None:
             self._source = None
-        elif isinstance(value, StructuredText):
+        elif isinstance(value, InformationSource):
             self._source = value
         else:
-            self._source = StructuredText(value)
+            raise ValueError("source must be of type InformationSource")
+          
     
     @property
     def confidence(self):
@@ -118,7 +119,7 @@ class Sighting(stix.Entity):
         
         return_obj.timestamp = obj.get_timestamp()
         return_obj.timestamp_precision = obj.get_timestamp_precision()
-        return_obj.source = StructuredText.from_obj(obj.get_Source())
+        return_obj.source = InformationSource.from_obj(obj.get_Source())
         return_obj.refernce = obj.get_Reference()
         return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
         return_obj.description = StructuredText.from_obj(obj.get_Description())
@@ -134,7 +135,7 @@ class Sighting(stix.Entity):
 
         return_obj.timestamp = d.get('timestamp')
         return_obj.timestamp_precision = d.get('timestamp_precision')
-        return_obj.source = StructuredText.from_dict(d.get('source'))
+        return_obj.source = InformationSource.from_dict(d.get('source'))
         return_obj.reference = d.get('reference')
         return_obj.confidence = Confidence.from_dict(d.get('confidence'))
         return_obj.description = StructuredText.from_dict(d.get('description'))

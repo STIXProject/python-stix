@@ -5,10 +5,9 @@ from __future__ import absolute_import
 
 import stix
 import stix.bindings.stix_common as common_binding
-
-from .confidence import Confidence
-from .information_source import InformationSource
 from .vocabs import VocabString
+from .information_source import InformationSource
+from .confidence import Confidence
 
 class GenericRelationship(stix.Entity):
     _namespace = "http://stix.mitre.org/common-1"
@@ -16,6 +15,7 @@ class GenericRelationship(stix.Entity):
     _binding_class = common_binding.GenericRelationshipType
 
     def __init__(self, confidence=None, information_source=None, relationship=None):
+        
         self.confidence = confidence
         self.information_source = information_source
         self.relationship = relationship

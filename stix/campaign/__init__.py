@@ -64,17 +64,12 @@ class RelatedTTPs(GenericRelationshipList):
     _contained_type = RelatedTTP
     _inner_name = "ttps"
 
-
-class Name(VocabString):
-    pass
-
-
 class Names(stix.EntityList):
     _namespace = "http://stix.mitre.org/Campaign-1"
     _binding = campaign_binding
     _binding_class = campaign_binding.NamesType
     _binding_var = "Name"
-    _contained_type = Name
+    _contained_type = VocabString
     _inner_name = "names"
 
 
@@ -82,7 +77,7 @@ class Campaign(stix.Entity):
     _binding = campaign_binding
     _binding_class = _binding.CampaignType
     _namespace = "http://stix.mitre.org/Campaign-1"
-    _version = "1.1"
+    _version = "1.1.1"
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("Campaign")
