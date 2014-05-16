@@ -118,7 +118,6 @@ class Entity(object):
 
 
 class EntityList(collections.MutableSequence, Entity):
-
     def __init__(self, *args):
         super(EntityList, self).__init__()
         self._inner = []
@@ -147,6 +146,8 @@ class EntityList(collections.MutableSequence, Entity):
         return len(self._inner)
 
     def insert(self, idx, value):
+        if not value:
+            return
         if not self._is_valid(value):
             value = self._fix_value(value)
         self._inner.insert(idx, value)
@@ -177,12 +178,13 @@ class EntityList(collections.MutableSequence, Entity):
     # - _contained_type
     # - _inner_name
 
-    def to_obj(self):
-        list_obj = self._binding_class()
+    def to_obj(self, return_obj=None):
+        if not return_obj:
+            return_obj = self._binding_class()
 
-        setattr(list_obj, self._binding_var, [x.to_obj() for x in self])
+        setattr(return_obj, self._binding_var, [x.to_obj() for x in self])
 
-        return list_obj
+        return return_obj
 
     def to_dict(self):
         d = {}
