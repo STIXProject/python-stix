@@ -263,7 +263,7 @@ class STIXPackage(stix.Entity):
     @ttps.setter
     def ttps(self, value):
         if not value:
-            self._ttps = None
+            self._ttps = TTPs()
         elif isinstance(value, TTPs):
             self._ttps = value
         elif isinstance(value, list):
@@ -278,7 +278,7 @@ class STIXPackage(stix.Entity):
         if not self.ttps:
             self.ttps = TTPs()
         
-        self.ttps.add_ttp(ttp)
+        self.ttps.append(ttp)
    
 
     def to_obj(self, return_obj=None):
