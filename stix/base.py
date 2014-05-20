@@ -68,13 +68,14 @@ class Entity(object):
     def to_json(self):
         return json.dumps(self.to_dict())
 
-    def from_json(self, json_doc):
+    @classmethod
+    def from_json(cls, json_doc):
         try:
             d = json.load(json_doc)
         except AttributeError: # catch the read() error
             d = json.loads(json_doc)
 
-        return self.from_dict(d)
+        return cls.from_dict(d)
 
     def to_dict(self):
         d = {}
