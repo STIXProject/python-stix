@@ -21,7 +21,7 @@ class Sighting(stix.Entity):
         self.description = description
         self.source = None
         self.reference = None
-        self.confidece = None
+        self.confidence = None
         self.related_observables = RelatedObservables()
         
     @property
