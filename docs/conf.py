@@ -33,7 +33,7 @@ exclude_patterns = ['_build']
 pygments_style = 'sphinx'
 
 html_theme = 'default'
-html_style = '/default.css'
+html_style = 'stix_doc.css'
 html_static_path = ['_static']
 htmlhelp_basename = 'python-stixdoc'
 
