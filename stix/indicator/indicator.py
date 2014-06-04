@@ -5,7 +5,7 @@ import stix
 import stix.utils
 from stix.utils import dates
 from stix.common import (Identity, InformationSource, StructuredText, VocabString, 
-                         Confidence, RelatedTTP)
+                         Confidence, RelatedTTP, Statement)
 import stix.extensions.identity as ext_identity
 import stix.bindings.indicator as indicator_binding
 from .test_mechanism import _BaseTestMechanism
@@ -69,6 +69,7 @@ class Indicator(stix.Entity):
         self.valid_time_positions = None
         self.related_indicators = None
         self.observable_composition_operator = "AND"
+        self.likely_impact = None
     
         if timestamp:
             self.timestamp = timestamp
@@ -346,7 +347,20 @@ class Indicator(stix.Entity):
             raise ValueError("observable_composition_operator must be 'AND' or 'OR'")
         
         self._observable_composition_operator = value
-
+    
+    @property
+    def likely_impact(self):
+        return self._likely_impact
+    
+    @likely_impact.setter
+    def likely_impact(self, value):
+        if not value:
+            self._likely_impact = None
+        elif isinstance(value, Statement):
+            self._likely_impact = value
+        else:
+            self._likely_impact = Statement(value=value)
+    
     def set_producer_identity(self, identity):
         '''
         Sets the name of the producer of this indicator.
@@ -457,6 +471,8 @@ class Indicator(stix.Entity):
             tms_obj = self._binding.TestMechanismsType()
             tms_obj.set_Test_Mechanism([x.to_obj() for x in self.test_mechanisms])
             return_obj.set_Test_Mechanisms(tms_obj)
+        if self.likely_impact:
+            return_obj.set_Likely_Impact(self.likely_impact.to_obj())
         if self.alternative_id:
             return_obj.set_Alternative_ID(self.alternative_id)
         if self.valid_time_positions:
@@ -498,6 +514,7 @@ class Indicator(stix.Entity):
             return_obj.handling = Marking.from_obj(obj.get_Handling())
             return_obj.kill_chain_phases = KillChainPhasesReference.from_obj(obj.get_Kill_Chain_Phases())
             return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
+            return_obj.likely_impact = Statement.from_obj(obj.get_Likely_Impact())
             
             if obj.get_version():
                 return_obj.version = obj.get_version()
@@ -553,6 +570,8 @@ class Indicator(stix.Entity):
             d['indicated_ttps'] = [x.to_dict() for x in self.indicated_ttps]
         if self.test_mechanisms:
             d['test_mechanisms'] = [x.to_dict() for x in self.test_mechanisms]
+        if self.likely_impact:
+            d['likely_impact'] = self.likely_impact.to_dict()
         if self.alternative_id:
             d['alternative_id'] = self.alternative_id
         if self.valid_time_positions:
@@ -601,6 +620,7 @@ class Indicator(stix.Entity):
         return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
         return_obj.kill_chain_phases = KillChainPhasesReference.from_dict(dict_repr.get('kill_chain_phases'))
         return_obj.related_indicators = RelatedIndicators.from_dict(dict_repr.get('related_indicators'))
+        return_obj.likely_impact = Statement.from_dict(dict_repr.get('likely_impact'))
         
         if observable_dict:
             return_obj.add_observable(Observable.from_dict(observable_dict))
