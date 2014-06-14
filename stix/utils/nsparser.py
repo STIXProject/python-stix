@@ -14,8 +14,8 @@ class NamespaceParser(object):
     def _get_observable_namespaces(self, obs):
         '''Returns namespaces used within a CybOX Observable'''
         obs_namespaces = obs._get_namespaces()
-        namespaces = [x.name for x in obs_namespaces]
-        namespaces.append('http://cybox.mitre.org/default_vocabularies-2')
+        namespaces = [(x.name,x.prefix) for x in obs_namespaces]
+        namespaces.append(('http://cybox.mitre.org/default_vocabularies-2','cyboxVocabs'))
         return namespaces
 
     def _get_namespace_set(self, entity):
@@ -31,7 +31,11 @@ class NamespaceParser(object):
             for child in entity._get_children():
                 all_namespaces.update(self._get_namespace_set(child))
         elif hasattr(entity, "_namespace"):
-            all_namespaces.add(entity._namespace)
+            if hasattr(entity, "_XSI_TYPE") and entity._XSI_TYPE:
+                ns_alias = entity._XSI_TYPE.split(":")[0]
+                all_namespaces.add((entity._namespace, ns_alias))
+            else:
+                all_namespaces.add((entity._namespace, None))
 
             for child in entity._get_children():
                 if not hasattr(child, "nsparser_touched"):
@@ -42,7 +46,7 @@ class NamespaceParser(object):
         return all_namespaces
 
     def get_namespaces(self, entity, ns_dict=None):
-        """Returns a dictionary of namespace=>alias for all namespaces
+        """Returns a set of namespace for all namespaces
         used within the supplied entity.
         
         Arguments:
@@ -52,11 +56,12 @@ class NamespaceParser(object):
         import stix.utils.idgen as idgen
         
         if not ns_dict: ns_dict = {}
-        entity_ns_dict = {'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
-                       'http://stix.mitre.org/stix-1': 'stix',
-                       'http://stix.mitre.org/common-1': 'stixCommon',
-                       'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
-                       idgen.get_id_namespace() : idgen.get_id_namespace_alias()}
+        entity_namespaces = \
+            set([('http://www.w3.org/2001/XMLSchema-instance', 'xsi'),
+                 ('http://stix.mitre.org/stix-1', 'stix'),
+                 ('http://stix.mitre.org/common-1', 'stixCommon'),
+                 ('http://stix.mitre.org/default_vocabularies-1', 'stixVocabs'),
+                 (idgen.get_id_namespace(), idgen.get_id_namespace_alias())])
         
         default_cybox_namespaces = dict((ns,alias) for (ns,alias,schemaloc) in cybox_nsparser.NS_LIST)            
         default_stix_namespaces = dict(default_cybox_namespaces.items() + XML_NAMESPACES.items() + DEFAULT_STIX_NS_TO_PREFIX.items() + DEFAULT_EXT_TO_PREFIX.items())
@@ -64,18 +69,19 @@ class NamespaceParser(object):
         if hasattr(entity, "__input_namespaces__"):
             for ns,alias in entity.__input_namespaces__.iteritems():
                 if ns not in (default_stix_namespaces):
-                    entity_ns_dict[ns] = alias
+                    entity_namespaces.add((ns,alias))
 
-        entity_ns_set = self._get_namespace_set(entity)
-        for ns in entity_ns_set:
-            if ns not in entity_ns_dict:
-                entity_ns_dict[ns] = default_stix_namespaces[ns]
+        entity_ns_tuples = self._get_namespace_set(entity)
+        for ns,alias in entity_ns_tuples:
+            if alias:
+                entity_namespaces.add((ns, alias))
+            elif ns not in entity_namespaces:
+                default_alias = default_stix_namespaces[ns]
+                entity_namespaces.add((ns, default_alias))
         
         # add additional @ns_dict and parsed
-        entity_ns_dict.update(ns_dict)
-
-        
-        return entity_ns_dict
+        entity_namespaces.update(ns_dict.items())
+        return entity_namespaces
         
     def _get_input_schemalocations(self, entity):
         all_schemalocations = {}
@@ -93,18 +99,19 @@ class NamespaceParser(object):
         del entity.nsparser_touched
         return all_schemalocations
 
-    def get_namespace_schemalocation_dict(self, entity, ns_dict=None):
+    def get_namespace_schemalocation_dict(self, entity, namespaces=None):
         d = {}
-        if ns_dict:
-            ns_set = ns_dict.iterkeys()
+        if namespaces:
+            ns_set = set(namespaces)
         else:
-            ns_set = self.get_namespaces(entity).iterkeys()
+            namespaces = self.get_namespaces(entity) # returns a [(ns,alias)*]
+            ns_set = set(ns for ns,_ in namespaces)
 
         input_schemalocations = self._get_input_schemalocations(entity)
         d.update(input_schemalocations)
         
         default_cybox_schemaloc_dict = {}
-        for (ns,alias,schemaloc) in cybox_nsparser.NS_LIST:
+        for (ns,_,schemaloc) in cybox_nsparser.NS_LIST:
             if schemaloc: default_cybox_schemaloc_dict[ns] = schemaloc
         
         default_stix_schemaloc_dict = dict(STIX_NS_TO_SCHEMALOCATION.items() + EXT_NS_TO_SCHEMALOCATION.items() + default_cybox_schemaloc_dict.items()) 
@@ -118,8 +125,8 @@ class NamespaceParser(object):
 
         return d
 
-    def _get_xmlns_str(self, ns_dict):
-        return "\n\t".join(['xmlns:%s="%s"' % (alias,ns) for (ns,alias) in sorted(ns_dict.iteritems())])
+    def _get_xmlns_str(self, namespaces):
+        return "\n\t".join(['xmlns:%s="%s"' % (alias,ns) for ns,alias in sorted(namespaces)])
 
     def _get_schemaloc_str(self, schemaloc_dict):
         schemaloc_str_start = 'xsi:schemaLocation="\n\t'
@@ -127,8 +134,8 @@ class NamespaceParser(object):
         schemaloc_str_content = "\n\t".join(["%s %s" % (ns, loc) for ns,loc in sorted(schemaloc_dict.iteritems())])
         return schemaloc_str_start + schemaloc_str_content + schemaloc_str_end
 
-    def get_namespace_def_str(self, ns_dict, schemaloc_dict):
-        return "\n\t" + self._get_xmlns_str(ns_dict) + "\n\t" + self._get_schemaloc_str(schemaloc_dict)
+    def get_namespace_def_str(self, namespaces, schemaloc_dict):
+        return "\n\t" + self._get_xmlns_str(namespaces) + "\n\t" + self._get_schemaloc_str(schemaloc_dict)
 
 XML_NAMESPACES = {'http://www.w3.org/2001/XMLSchema-instance' : 'xsi', 
                   'http://www.w3.org/2001/XMLSchema' : 'xs',
