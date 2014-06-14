@@ -52,7 +52,7 @@ class NamespaceParser(object):
         import stix.utils.idgen as idgen
         
         if not ns_dict: ns_dict = {}
-        all_ns_dict = {'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
+        entity_ns_dict = {'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
                        'http://stix.mitre.org/stix-1': 'stix',
                        'http://stix.mitre.org/common-1': 'stixCommon',
                        'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
@@ -60,19 +60,22 @@ class NamespaceParser(object):
         
         default_cybox_namespaces = dict((ns,alias) for (ns,alias,schemaloc) in cybox_nsparser.NS_LIST)            
         default_stix_namespaces = dict(default_cybox_namespaces.items() + XML_NAMESPACES.items() + DEFAULT_STIX_NS_TO_PREFIX.items() + DEFAULT_EXT_TO_PREFIX.items())
-        
-        ns_set = self._get_namespace_set(entity)
-        for ns in ns_set:
-            all_ns_dict[ns] = default_stix_namespaces[ns]
-        
-        # add additional @ns_dict and parsed, input namespaces 
-        all_ns_dict.update(ns_dict)
+
         if hasattr(entity, "__input_namespaces__"):
             for ns,alias in entity.__input_namespaces__.iteritems():
                 if ns not in (default_stix_namespaces):
-                    all_ns_dict[ns] = alias
+                    entity_ns_dict[ns] = alias
+
+        entity_ns_set = self._get_namespace_set(entity)
+        for ns in entity_ns_set:
+            if ns not in entity_ns_dict:
+                entity_ns_dict[ns] = default_stix_namespaces[ns]
         
-        return all_ns_dict
+        # add additional @ns_dict and parsed
+        entity_ns_dict.update(ns_dict)
+
+        
+        return entity_ns_dict
         
     def _get_input_schemalocations(self, entity):
         all_schemalocations = {}
