@@ -60,7 +60,7 @@ class Entity(object):
                     yield obs
             elif isinstance(obj, (Entity, cybox.Entity)):
                 yield obj
-            elif isinstance(obj, list):
+            elif isinstance(obj, (tuple, collections.MutableSequence)):
                 for item in obj:
                     if isinstance(item, Entity) or isinstance(item, Observable) or isinstance(item, cybox.Entity):
                         yield item
@@ -117,7 +117,50 @@ class Entity(object):
         """Convert from object representation to dict representation."""
         return cls.from_obj(entity_obj).to_dict()
 
-
+    def walk(self):
+        from cybox.core import (ObservableComposition, Observable, Object, Event,
+                                Action)
+        iterable = (collections.MutableSequence)
+        yieldable = (ObservableComposition, Observable, Object, Event, Action,
+                     Entity)
+        
+        def get_members(obj):
+            for v in obj.__dict__.itervalues():
+                if not v:
+                    continue
+                yield v
+        
+        visited = []
+        def descend(obj):
+            if id(obj) in visited:
+                return
+            visited.append(id(obj))
+            
+            for member in get_members(obj):
+                if isinstance(member, yieldable):
+                    yield member
+                    for i in descend(member):
+                        yield i
+                
+                if isinstance(member, iterable):
+                    for i in member:
+                        if isinstance(i, yieldable):
+                            yield i
+                        for d in descend(i):
+                            yield d
+                            
+            visited.remove(id(obj))
+        # end descend()
+        
+        for node in descend(self):
+            yield node
+        
+    def find(self, id_):
+        for entity in self.walk():
+            if hasattr(entity, "id_"):
+                if entity.id_ == id_:
+                    return entity
+        
 class EntityList(collections.MutableSequence, Entity):
     def __init__(self, *args):
         super(EntityList, self).__init__()
@@ -230,3 +273,5 @@ class EntityList(collections.MutableSequence, Entity):
             return_obj.append(contained_type.from_dict(item))
 
         return return_obj
+    
+
