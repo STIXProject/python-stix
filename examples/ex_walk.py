@@ -7,25 +7,30 @@ File: ex_walk.py
 
 Walks a STIXPackage object
 '''
-import io
-from pprint import pprint
+import sys
 
 from stix.core import STIXPackage
 from stix.indicator import Indicator
-import stix.bindings.stix_core as stix_core_binding
+from cybox.core import Object, Observable
 
 def main():
-    fn = 'ex_01.xml'
+    fn = sys.argv[-1] if len(sys.argv) == 2 else 'ex_01.xml'
     stix_package = STIXPackage.from_xml(fn)
-   
-    for child in stix_package.walk():
-        print type(child), child
 
-    result = stix_package.find("example:Object-1980ce43-8e03-490b-863a-ea404d12242e")
-    if result:
-        print "Found:", type(result), result
-    else:
-        print "Not found:"
+    indicator_count = 0
+    observable_count = 0
+    object_count = 0
+    for child in stix_package.walk():
+        if isinstance(child, Indicator):
+            indicator_count += 1
+        elif isinstance(child, Observable):
+            observable_count += 1
+        elif isinstance(child, Object):
+            object_count += 1
+
+    print "Indicators:", indicator_count
+    print "Observables:", observable_count
+    print "Objects:", object_count
 
 if __name__ == '__main__':
     main()
