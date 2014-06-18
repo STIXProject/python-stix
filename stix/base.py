@@ -123,13 +123,13 @@ class Entity(object):
         return cls.from_obj(entity_obj).to_dict()
 
     def walk(self):
+        import cybox
         from cybox.core import (ObservableComposition, Observable, Object, Event,
                                 Action)
         from cybox.common import ObjectProperties
 
         iterable = (collections.MutableSequence)
-        yieldable = (ObservableComposition, Observable, Object, Event, Action,
-                     ObjectProperties, Entity)
+        yieldable = (Entity, cybox.Entity)
         skip = {ObjectProperties : '_parent'}
 
         def can_skip(obj, field):
@@ -159,15 +159,15 @@ class Entity(object):
                     for i in member:
                         if isinstance(i, yieldable):
                             yield i
-                        for d in descend(i):
-                            yield d
+                            for d in descend(i):
+                                yield d
                             
             visited.remove(id(obj))
         # end descend()
         
         for node in descend(self):
             yield node
-        
+
     def find(self, id_):
         for entity in self.walk():
             try:
