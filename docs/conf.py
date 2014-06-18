@@ -33,7 +33,7 @@ exclude_patterns = ['_build']
 pygments_style = 'sphinx'
 
 html_theme = 'default'
-html_style = '/default.css'
+html_style = 'stix_doc.css'
 html_static_path = ['_static']
 htmlhelp_basename = 'python-stixdoc'
 
@@ -52,6 +52,8 @@ html_theme_options = {
     'sidebartextcolor': '#000',
     'visitedlinkcolor': '#ED1C24',
 }
+html_sidebars = {"**": ['localtoc.html', 'relations.html', 'sourcelink.html',
+'searchbox.html', 'links.html']}
 
 latex_elements = {}
 latex_documents = [

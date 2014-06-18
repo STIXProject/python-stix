@@ -83,7 +83,7 @@ class Sighting(stix.Entity):
         if self.source:
             return_obj.set_Source(self.source.to_obj())
         if self.confidence:
-            return_obj.set_Confidence(self.confidece.to_obj())
+            return_obj.set_Confidence(self.confidence.to_obj())
         if self.description:
             return_obj.set_Description(self.description.to_obj())
         if self.related_observables:
@@ -101,8 +101,8 @@ class Sighting(stix.Entity):
             d['source'] = self.source.to_dict()
         if self.reference:
             d['reference'] = str(self.reference)
-        if self.confidece:
-            d['confidence'] = self.confidece.to_dict()
+        if self.confidence:
+            d['confidence'] = self.confidence.to_dict()
         if self.description:
             d['description'] = self.description.to_dict()
         if self.related_observables:
