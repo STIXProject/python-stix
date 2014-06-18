@@ -85,8 +85,13 @@ class Entity(object):
             if raw_value:
                 if isinstance(raw_value, Entity):
                     value = raw_value.to_dict()
-                elif isinstance(raw_value, list):
-                    value = [x.to_dict() for x in raw_value]
+                elif isinstance(raw_value, collections.MutableSequence):
+                    value = []
+                    for x in raw_value:
+                        if isinstance(x, Entity):
+                            value.append(x.to_dict())
+                        else:
+                            value.append(x)
                 elif isinstance(raw_value, etree._ElementTree):
                     value = etree.tostring(raw_value)
                 else:
@@ -120,15 +125,23 @@ class Entity(object):
     def walk(self):
         from cybox.core import (ObservableComposition, Observable, Object, Event,
                                 Action)
+        from cybox.common import ObjectProperties
+
         iterable = (collections.MutableSequence)
         yieldable = (ObservableComposition, Observable, Object, Event, Action,
-                     Entity)
-        
+                     ObjectProperties, Entity)
+        skip = {ObjectProperties : '_parent'}
+
+        def can_skip(obj, field):
+            for klass, prop in skip.iteritems():
+                if isinstance(obj, klass) and prop == field :
+                   return True
+            return False
+
         def get_members(obj):
-            for v in obj.__dict__.itervalues():
-                if not v:
-                    continue
-                yield v
+            for k,v in obj.__dict__.iteritems():
+                if v and not can_skip(obj, k):
+                    yield v
         
         visited = []
         def descend(obj):
@@ -157,10 +170,12 @@ class Entity(object):
         
     def find(self, id_):
         for entity in self.walk():
-            if hasattr(entity, "id_"):
+            try:
                 if entity.id_ == id_:
                     return entity
-        
+            except:
+                pass
+
 class EntityList(collections.MutableSequence, Entity):
     def __init__(self, *args):
         super(EntityList, self).__init__()
