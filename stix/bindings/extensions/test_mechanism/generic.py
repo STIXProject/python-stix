@@ -561,7 +561,7 @@ class GenericTestMechanismType(indicator_binding.TestMechanismType):
             already_processed.add('reference_location')
             outfile.write(' reference_location=%s' % (self.gds_format_string(quote_attrib(self.reference_location).encode(ExternalEncoding), input_name='reference_location'), ))
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='GenericTestMechanismType', fromsubclass_=False, pretty_print=True):
-        super(GenericTestMechanismType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+        super(GenericTestMechanismType, self).exportChildren(outfile, level, nsmap, indicator_binding.XML_NS, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:

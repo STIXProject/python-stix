@@ -548,7 +548,7 @@ class OVAL5_10TestMechanismType(indicator_binding.TestMechanismType):
             xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
             outfile.write(xsi_type)
     def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='OVAL5.10TestMechanismType', fromsubclass_=False, pretty_print=True):
-        super(OVAL5_10TestMechanismType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+        super(OVAL5_10TestMechanismType, self).exportChildren(outfile, level, nsmap, indicator_binding.XML_NS, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
