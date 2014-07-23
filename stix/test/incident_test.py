@@ -24,14 +24,15 @@ INCIDENT_CATEGORIES = """<?xml version="1.0" encoding="UTF-8"?>
 
 class IncidentTest(EntityTestCase, unittest.TestCase):
     klass = Incident
-    _full_dict = {'attributed_threat_actors': {'scope': 'exclusive',
-                              'threat_actors': [{'threat_actor': {'description': 'A Threat Actor Description',
+    _full_dict = {
+'attributed_threat_actors': {'scope': 'exclusive',
+                             'threat_actors': [{'threat_actor': {'description': 'A Threat Actor Description',
                                                                   'id': 'example:threatactor-1',
                                                                   'sophistications': [{'value': {"value" : "Novice", 
                                                                                                  "xsi:type" : "stixVocabs:ThreatActorSophisticationVocab-1.0"}}],
                                                                   'title': 'A Threat Actor',
                                                                   'version': '1.1'}}]},
- 'categories': [{'value': 'Unauthorized Access',
+'categories': [{'value': 'Unauthorized Access',
                  'xsi:type': 'stixVocabs:IncidentCategoryVocab-1.0'},
                 {'value': 'Improper Usage',
                  'xsi:type': 'stixVocabs:IncidentCategoryVocab-1.0'}],
@@ -39,10 +40,10 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
               {'course_of_action': {'timestamp': '2014-05-05T14:50:25.992384+00:00', 'version': '1.1', 'id': 'example:coa-74e50620-7536-4fcd-94db-a6889f75e099'}}],
 'coordinators': [{'description': "Mr. Evil's enemy",
                    'identity': {'name': 'Ms. Coordinator'}}],
- 'description': 'The Datacenter was broken into.',
- 'external_ids': [{'source': 'some source',
+'description': 'The Datacenter was broken into.',
+'external_ids': [{'source': 'some source',
                    'value': '478392-feb3ca-98a9ef-984392742'}],
- 'impact_assessment': {'direct_impact_summary': {'asset_losses': {'value': 'Minor',
+'impact_assessment': {'direct_impact_summary': {'asset_losses': {'value': 'Minor',
                                                                   'xsi:type': 'stixVocabs:ImpactRatingVocab-1.0'},
                                                  'business_mission_disruption': {'value': 'Major',
                                                                                  'xsi:type': 'stixVocabs:ImpactRatingVocab-1.0'},
@@ -112,7 +113,10 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
                   'name': "Ms. Good",
               },
           },
-'security_compromise': {"value": "Suspected", "xsi:type":"stixVocabs:SecurityCompromiseVocab-1.0"}}
+'security_compromise': {"value": "Suspected", "xsi:type":"stixVocabs:SecurityCompromiseVocab-1.0"},
+'history': {'history_items':[{'journal_entry': {'value': 'hi',
+                                                'author': 'Paul'}}]}
+}
 
 
     def test_parse_category(self):

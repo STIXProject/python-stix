@@ -20,6 +20,7 @@ from .time import Time
 from .external_id import ExternalID
 from .impact_assessment import ImpactAssessment
 from .coa import COATaken, COATime, CourseOfAction
+from .history import History
 from stix.common.vocabs import (IncidentCategory, IntendedEffect, 
                                 DiscoveryMethod, SecurityCompromise, 
                                 IncidentStatus)
@@ -62,6 +63,7 @@ class Incident(stix.Entity):
         self.confidence = None
         self.coa_taken = None
         self.handling = None
+        self.history = History()
     
         if timestamp:
             self.timestamp = timestamp
@@ -503,6 +505,8 @@ class Incident(stix.Entity):
             return_obj.set_Status(self.status.to_obj())
         if self.handling:
             return_obj.set_Handling(self.handling.to_obj())
+        if self.history:
+            return_obj.set_History(self.history.to_obj())
 
         return return_obj
 
@@ -558,6 +562,7 @@ class Incident(stix.Entity):
             return_obj.related_incidents = RelatedIncidents.from_obj(obj.get_Related_Incidents())
             return_obj.status = VocabString.from_obj(obj.get_Status())
             return_obj.handling = Marking.from_obj(obj.get_Handling())
+            return_obj.history = History.from_obj(obj.get_History())
             
         return return_obj
 
@@ -621,7 +626,9 @@ class Incident(stix.Entity):
             d['status'] = self.status.to_dict()
         if self.handling:
             d['handling'] = self.handling.to_dict()
-            
+        if self.history:
+            d['history'] = self.history.to_dict()
+        
         return d
 
     @classmethod
@@ -660,6 +667,7 @@ class Incident(stix.Entity):
         return_obj.coa_taken = [COATaken.from_dict(x) for x in dict_repr.get('coa_taken', [])]
         return_obj.status = VocabString.from_dict(dict_repr.get('status'))
         return_obj.handling = Marking.from_obj(dict_repr.get('handling'))
+        return_obj.history = History.from_dict(dict_repr.get('history'))
         
         return return_obj
 
