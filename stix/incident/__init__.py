@@ -4,8 +4,8 @@
 
 import stix
 import stix.bindings.incident as incident_binding
-from stix.common import (Identity, Statement, StructuredText, VocabString, InformationSource,
-                         Confidence)
+from stix.common import (Identity, Statement, StructuredText, VocabString, 
+                         InformationSource, Confidence)
 from stix.common.related import (GenericRelationshipList, RelatedIndicator,
         RelatedThreatActor, RelatedTTP, RelatedObservable, RelatedIncident)
 from stix.indicator import Indicator
@@ -19,7 +19,9 @@ from .time import Time
 from .external_id import ExternalID
 from .impact_assessment import ImpactAssessment
 from .coa import COATaken, COATime, CourseOfAction
-from stix.common.vocabs import IncidentCategory, IntendedEffect, DiscoveryMethod, SecurityCompromise
+from stix.common.vocabs import (IncidentCategory, IntendedEffect, 
+                                DiscoveryMethod, SecurityCompromise, 
+                                IncidentStatus)
 
 from datetime import datetime
 from dateutil.tz import tzutc
@@ -37,6 +39,7 @@ class Incident(stix.Entity):
         self.description = description
         self.short_description = short_description
         self.title = title
+        self.status = None
         self.time = None
         self.victims = None
         self.attributed_threat_actors = AttributedThreatActors()
@@ -130,6 +133,19 @@ class Incident(stix.Entity):
                 self._short_description = StructuredText(value=value)
         else:
             self._short_description = None
+
+    @property
+    def status(self):
+        return self._status
+    
+    @status.setter
+    def status(self, value):
+        if not value:
+            self._status = None
+        elif isinstance(value, VocabString):
+            self._status = value
+        else:
+            self._status = IncidentStatus(value=value)
 
     @property
     def time(self):
@@ -469,6 +485,8 @@ class Incident(stix.Entity):
             return_obj.set_Confidence(self.confidence.to_obj())
         if self.coa_taken:
             return_obj.set_COA_Taken([x.to_obj() for x in self.coa_taken])
+        if self.status:
+            return_obj.set_Status(self.status.to_obj())
 
         return return_obj
 
@@ -522,7 +540,8 @@ class Incident(stix.Entity):
             return_obj.related_observables = RelatedObservables.from_obj(obj.get_Related_Observables())
             return_obj.leveraged_ttps = LeveragedTTPs.from_obj(obj.get_Leveraged_TTPs())
             return_obj.related_incidents = RelatedIncidents.from_obj(obj.get_Related_Incidents())
-
+            return_obj.status = VocabString.from_obj(obj.get_Status())
+            
         return return_obj
 
     def to_dict(self):
@@ -581,6 +600,9 @@ class Incident(stix.Entity):
             d['confidence'] = self.confidence.to_dict()
         if self.coa_taken:
             d['coa_taken'] = [x.to_dict() for x in self.coa_taken]
+        if self.status:
+            d['status'] = self.status.to_dict()
+            
         return d
 
     @classmethod
@@ -617,6 +639,7 @@ class Incident(stix.Entity):
         return_obj.security_compromise = SecurityCompromise.from_dict(dict_repr.get('security_compromise'))
         return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
         return_obj.coa_taken = [COATaken.from_dict(x) for x in dict_repr.get('coa_taken', [])]
+        return_obj.status = VocabString.from_dict(dict_repr.get('status'))
         
         return return_obj
 
