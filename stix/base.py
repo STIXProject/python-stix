@@ -124,8 +124,8 @@ class Entity(object):
 
     def walk(self):
         import cybox
-        from cybox.core import (ObservableComposition, Observable, Object, Event,
-                                Action)
+        from cybox.core import (ObservableComposition, Observable, Object, 
+                                Event, Action)
         from cybox.common import ObjectProperties
 
         iterable = (collections.MutableSequence)
@@ -135,11 +135,11 @@ class Entity(object):
         def can_skip(obj, field):
             for klass, prop in skip.iteritems():
                 if isinstance(obj, klass) and prop == field :
-                   return True
+                    return True
             return False
 
         def get_members(obj):
-            for k,v in obj.__dict__.iteritems():
+            for k, v in obj.__dict__.iteritems():
                 if v and not can_skip(obj, k):
                     yield v
         
