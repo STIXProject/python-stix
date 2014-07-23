@@ -60,7 +60,7 @@ class Entity(object):
                     yield obs
             elif isinstance(obj, (Entity, cybox.Entity)):
                 yield obj
-            elif isinstance(obj, list):
+            elif isinstance(obj, (tuple, collections.MutableSequence)):
                 for item in obj:
                     if isinstance(item, Entity) or isinstance(item, Observable) or isinstance(item, cybox.Entity):
                         yield item
@@ -85,8 +85,13 @@ class Entity(object):
             if raw_value:
                 if isinstance(raw_value, Entity):
                     value = raw_value.to_dict()
-                elif isinstance(raw_value, list):
-                    value = [x.to_dict() for x in raw_value]
+                elif isinstance(raw_value, collections.MutableSequence):
+                    value = []
+                    for x in raw_value:
+                        if isinstance(x, Entity):
+                            value.append(x.to_dict())
+                        else:
+                            value.append(x)
                 elif isinstance(raw_value, etree._ElementTree):
                     value = etree.tostring(raw_value)
                 else:
@@ -117,6 +122,59 @@ class Entity(object):
         """Convert from object representation to dict representation."""
         return cls.from_obj(entity_obj).to_dict()
 
+    def walk(self):
+        import cybox
+        from cybox.core import (ObservableComposition, Observable, Object, 
+                                Event, Action)
+        from cybox.common import ObjectProperties
+
+        iterable = (collections.MutableSequence)
+        yieldable = (Entity, cybox.Entity)
+        skip = {ObjectProperties : '_parent'}
+
+        def can_skip(obj, field):
+            for klass, prop in skip.iteritems():
+                if isinstance(obj, klass) and prop == field :
+                    return True
+            return False
+
+        def get_members(obj):
+            for k, v in obj.__dict__.iteritems():
+                if v and not can_skip(obj, k):
+                    yield v
+        
+        visited = []
+        def descend(obj):
+            if id(obj) in visited:
+                return
+            visited.append(id(obj))
+            
+            for member in get_members(obj):
+                if isinstance(member, yieldable):
+                    yield member
+                    for i in descend(member):
+                        yield i
+                
+                if isinstance(member, iterable):
+                    for i in member:
+                        if isinstance(i, yieldable):
+                            yield i
+                            for d in descend(i):
+                                yield d
+                            
+            visited.remove(id(obj))
+        # end descend()
+        
+        for node in descend(self):
+            yield node
+
+    def find(self, id_):
+        for entity in self.walk():
+            try:
+                if entity.id_ == id_:
+                    return entity
+            except:
+                pass
 
 class EntityList(collections.MutableSequence, Entity):
     def __init__(self, *args):
@@ -230,3 +288,5 @@ class EntityList(collections.MutableSequence, Entity):
             return_obj.append(contained_type.from_dict(item))
 
         return return_obj
+    
+
