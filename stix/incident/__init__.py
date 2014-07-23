@@ -11,6 +11,7 @@ from stix.common.related import (GenericRelationshipList, RelatedIndicator,
 from stix.indicator import Indicator
 from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
+from stix.data_marking import Marking
 import stix.utils
 from stix.utils import dates
 from .affected_asset import AffectedAsset
@@ -60,6 +61,7 @@ class Incident(stix.Entity):
         self.security_compromise = None
         self.confidence = None
         self.coa_taken = None
+        self.handling = None
     
         if timestamp:
             self.timestamp = timestamp
@@ -158,6 +160,18 @@ class Incident(stix.Entity):
 
         self._time = value
 
+    @property
+    def handling(self):
+        return self._handling
+    
+    @handling.setter
+    def handling(self, value):
+        if not value:
+            self._handling = None
+        elif isinstance(value, Marking):
+            self._handling = value
+        else:
+            raise ValueError('unable to set handling to type %s' % type(value))
     @property
     def intended_effects(self):
         return self._intended_effects
@@ -487,6 +501,8 @@ class Incident(stix.Entity):
             return_obj.set_COA_Taken([x.to_obj() for x in self.coa_taken])
         if self.status:
             return_obj.set_Status(self.status.to_obj())
+        if self.handling:
+            return_obj.set_Handling(self.handling.to_obj())
 
         return return_obj
 
@@ -541,6 +557,7 @@ class Incident(stix.Entity):
             return_obj.leveraged_ttps = LeveragedTTPs.from_obj(obj.get_Leveraged_TTPs())
             return_obj.related_incidents = RelatedIncidents.from_obj(obj.get_Related_Incidents())
             return_obj.status = VocabString.from_obj(obj.get_Status())
+            return_obj.handling = Marking.from_obj(obj.get_Handling())
             
         return return_obj
 
@@ -602,6 +619,8 @@ class Incident(stix.Entity):
             d['coa_taken'] = [x.to_dict() for x in self.coa_taken]
         if self.status:
             d['status'] = self.status.to_dict()
+        if self.handling:
+            d['handling'] = self.handling.to_dict()
             
         return d
 
@@ -640,6 +659,7 @@ class Incident(stix.Entity):
         return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
         return_obj.coa_taken = [COATaken.from_dict(x) for x in dict_repr.get('coa_taken', [])]
         return_obj.status = VocabString.from_dict(dict_repr.get('status'))
+        return_obj.handling = Marking.from_obj(dict_repr.get('handling'))
         
         return return_obj
 
