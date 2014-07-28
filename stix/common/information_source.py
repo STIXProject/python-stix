@@ -7,6 +7,8 @@ import cybox.common
 
 import stix
 import stix.bindings.stix_common as stix_common_binding
+from stix.common import VocabString
+from stix.common.vocabs import InformationSourceRole
 
 from .identity import Identity
 from .structured_text import StructuredText
@@ -24,6 +26,7 @@ class InformationSource(stix.Entity):
         self.time = time
         self.tools = tools
         self.references = references
+        self.roles = None
     
     @property
     def contributing_sources(self):
@@ -126,6 +129,31 @@ class InformationSource(stix.Entity):
 
         self._tools = value
 
+    @property
+    def roles(self):
+        return self._roles
+
+    @roles.setter
+    def roles(self, value):
+        self._roles = []
+
+        if not value:
+            return
+        elif isinstance(value, list):
+            for v in value:
+                self.add_role(v)
+        else:
+            self.add_role(value)
+
+    def add_role(self, value):
+        if not value:
+            return
+        elif isinstance(value, VocabString):
+            self.roles.append(value)
+        else:
+            role = InformationSourceRole(value)
+            self.roles.append(value=role)
+
     def to_obj(self, return_obj=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -143,6 +171,8 @@ class InformationSource(stix.Entity):
             return_obj.set_Time(self.time.to_obj())
         if self.tools:
             return_obj.set_Tools(self.tools.to_obj())
+        if self.roles:
+            return_obj.set_Role([x.to_obj() for x in self.roles])
         return return_obj
 
     @classmethod
@@ -162,6 +192,8 @@ class InformationSource(stix.Entity):
             return_obj.time = cybox.common.Time.from_obj(obj.get_Time())
         if obj.get_Tools():
             return_obj.tools = cybox.common.ToolInformationList.from_obj(obj.get_Tools())
+        if obj.get_Role():
+            return_obj.roles = [InformationSourceRole.from_obj(x) for x in obj.get_Role()]
         
         return return_obj
 
@@ -181,6 +213,7 @@ class InformationSource(stix.Entity):
         return_obj.identity = Identity.from_dict(dict_repr.get('identity'))
         return_obj.time = cybox.common.Time.from_dict(dict_repr.get('time'))
         return_obj.tools = cybox.common.ToolInformationList.from_list(dict_repr.get('tools'))
+        return_obj.roles = [InformationSourceRole.from_dict(x) for x in dict_repr.get('roles', [])]
 
         return return_obj
 
@@ -198,6 +231,8 @@ class InformationSource(stix.Entity):
             d['references'] = self.references
         if self.contributing_sources:
             d['contributing_sources'] = self.contributing_sources.to_dict()
+        if self.roles:
+            d['roles'] = [x.to_dict() for x in self.roles]
         return d
 
 class ContributingSources(stix.EntityList):

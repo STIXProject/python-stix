@@ -23,6 +23,16 @@ class InformationSourceTests(EntityTestCase, unittest.TestCase):
                 'description': "Superwebs",
             },
         ],
+        'roles': [
+            {
+                'value': 'Initial Author',
+                'xsi:type': 'stixVocabs:InformationSourceRoleVocab-1.0'
+            },
+            {
+                'value': 'Transformer/Translator',
+                'xsi:type': 'stixVocabs:InformationSourceRoleVocab-1.0'
+            }
+        ]
     }
 
 
