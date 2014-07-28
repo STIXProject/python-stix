@@ -22,7 +22,7 @@ API Reference
 =============
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    api/index
    
@@ -30,7 +30,7 @@ Bindings Reference
 ==================
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
 
    binding/index
 
