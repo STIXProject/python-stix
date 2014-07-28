@@ -193,7 +193,7 @@ class InformationSource(stix.Entity):
         if obj.get_Tools():
             return_obj.tools = cybox.common.ToolInformationList.from_obj(obj.get_Tools())
         if obj.get_Role():
-            return_obj.roles = [InformationSourceRole.from_obj(x) for x in obj.get_Role()]
+            return_obj.roles = [VocabString.from_obj(x) for x in obj.get_Role()]
         
         return return_obj
 
@@ -213,7 +213,7 @@ class InformationSource(stix.Entity):
         return_obj.identity = Identity.from_dict(dict_repr.get('identity'))
         return_obj.time = cybox.common.Time.from_dict(dict_repr.get('time'))
         return_obj.tools = cybox.common.ToolInformationList.from_list(dict_repr.get('tools'))
-        return_obj.roles = [InformationSourceRole.from_dict(x) for x in dict_repr.get('roles', [])]
+        return_obj.roles = [VocabString.from_dict(x) for x in dict_repr.get('roles', [])]
 
         return return_obj
 
