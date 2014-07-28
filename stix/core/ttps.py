@@ -18,6 +18,9 @@ class TTPs(stix.EntityList):
     def __init__(self, ttps=None):
         super(TTPs, self).__init__(ttps)
         self.kill_chains = KillChains()
+
+    def __nonzero__(self):
+        return super(TTPs, self).__nonzero__() or bool(self.kill_chains)
         
     @property
     def ttps(self):
