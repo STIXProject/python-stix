@@ -16,6 +16,17 @@ class TTPTests(EntityTestCase, unittest.TestCase):
             ],
             'infrastructure': {'title': "Infrastructure"},
         },
+        'handling': [
+            {
+                'marking_structures': [
+                    {
+                        'marking_model_name': 'TLP',
+                        'color': "RED",
+                        'xsi:type': "tlpMarking:TLPMarkingStructureType",
+                    }
+                ]
+            }
+        ],
         'exploit_targets': {
             'scope': "exclusive",
             'exploit_targets': [
