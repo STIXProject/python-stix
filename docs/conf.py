@@ -19,7 +19,8 @@ templates_path = ['_templates']
 source_suffix = '.rst'
 master_doc = 'index'
 
-exclude_patterns = ['_build']
+exclude_patterns = ['_build', '_includes']
+
 pygments_style = 'sphinx'
 
 html_theme = 'default'
