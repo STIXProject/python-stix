@@ -28,14 +28,14 @@ class Entity(object):
         all_ns_dict = parser.get_namespaces(self, ns_dict=ns_dict)
         return all_ns_dict
 
-    def _get_schema_locations(self, ns_dict=None):
+    def _get_schema_locations(self, ns_dict=None, schemaloc_dict=None):
         import stix.utils.nsparser as nsparser
         parser = nsparser.NamespaceParser()
-        schemaloc_dict = \
-            parser.get_namespace_schemalocation_dict(self, ns_dict=ns_dict)
-        return schemaloc_dict
+        all_schemaloc_dict = \
+            parser.get_namespace_schemalocation_dict(self, ns_dict=ns_dict, schemaloc_dict=schemaloc_dict)
+        return all_schemaloc_dict
 
-    def to_xml(self, include_namespaces=True, ns_dict=None, pretty=True):
+    def to_xml(self, include_namespaces=True, ns_dict=None, schemaloc_dict=None, pretty=True):
         """Export an object as an XML String""" 
         s = StringIO()
         namespace_def = ""
@@ -43,12 +43,12 @@ class Entity(object):
         import stix.utils.nsparser as nsparser
         if include_namespaces:
             all_ns_dict = self._get_namespaces(ns_dict)
-            schemaloc_dict = \
-                self._get_schema_locations(all_ns_dict)
+            all_schemaloc_dict = \
+                self._get_schema_locations(all_ns_dict, schemaloc_dict)
 
             parser = nsparser.NamespaceParser()
             namespace_def = parser.get_namespace_def_str(all_ns_dict,
-                                                         schemaloc_dict)
+                                                         all_schemaloc_dict)
         else:
             all_ns_dict = dict(nsparser.DEFAULT_STIX_NS_TO_PREFIX.items() +
                                nsparser.DEFAULT_EXT_TO_PREFIX.items())

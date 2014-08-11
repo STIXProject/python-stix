@@ -125,10 +125,13 @@ class NamespaceParser(object):
         del entity.nsparser_touched
         return all_schemalocations
 
-    def get_namespace_schemalocation_dict(self, entity, ns_dict=None):
+    def get_namespace_schemalocation_dict(self, entity, ns_dict=None, schemaloc_dict=None):
         d = {}
         if not ns_dict:
             ns_dict = self.get_namespaces(entity)
+
+        if not schemaloc_dict:
+            schemaloc_dict = {}
 
         input_schemalocations = self._get_input_schemalocations(entity)
         d.update(input_schemalocations)
@@ -151,8 +154,13 @@ class NamespaceParser(object):
                 schemalocation = default_stix_schemaloc_dict[ns]
                 d[ns] = schemalocation
             else:
-                warnings.warn("Unable to map namespace '%s' to "
-                              "schemaLocation" % ns)
+                if not ((ns in schemaloc_dict) or
+                        (ns in d) or
+                        (ns in XML_NAMESPACES)):
+                    warnings.warn("Unable to map namespace '%s' to "
+                                  "schemaLocation" % ns)
+
+        d.update(schemaloc_dict)
         return d
 
     def _get_xmlns_str(self, ns_dict):
