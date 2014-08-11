@@ -22,15 +22,17 @@ class Entity(object):
         """Create an object from a binding object"""
         raise NotImplementedError()
 
-    def _get_namespaces(self, ns_dict):
+    def _get_namespaces(self, ns_dict=None):
         import stix.utils.nsparser as nsparser
-        namespace_parser = nsparser.NamespaceParser()
-        all_ns_dict = namespace_parser.get_namespaces(self, ns_dict=ns_dict)        
+        parser = nsparser.NamespaceParser()
+        all_ns_dict = parser.get_namespaces(self, ns_dict=ns_dict)
         return all_ns_dict
 
-    def _get_schema_locations(self, namespaces=None):
+    def _get_schema_locations(self, ns_dict=None):
         import stix.utils.nsparser as nsparser
-        schemaloc_dict = nsparser.NamespaceParser().get_namespace_schemalocation_dict(self, namespaces=namespaces)
+        parser = nsparser.NamespaceParser()
+        schemaloc_dict = \
+            parser.get_namespace_schemalocation_dict(self, ns_dict=ns_dict)
         return schemaloc_dict
 
     def to_xml(self, include_namespaces=True, ns_dict=None, pretty=True):
@@ -40,17 +42,22 @@ class Entity(object):
 
         import stix.utils.nsparser as nsparser
         if include_namespaces:
-            if not ns_dict: ns_dict = {}
-            all_namespaces = self._get_namespaces(ns_dict)
-            schemaloc_dict = self._get_schema_locations(set(ns for ns,_ in all_namespaces))
-            namespace_def = nsparser.NamespaceParser().get_namespace_def_str(all_namespaces, schemaloc_dict)
+            all_ns_dict = self._get_namespaces(ns_dict)
+            schemaloc_dict = \
+                self._get_schema_locations(all_ns_dict)
+
+            parser = nsparser.NamespaceParser()
+            namespace_def = parser.get_namespace_def_str(all_ns_dict,
+                                                         schemaloc_dict)
         else:
-            all_namespaces = dict(nsparser.DEFAULT_STIX_NS_TO_PREFIX.items() + nsparser.DEFAULT_EXT_TO_PREFIX.items())
+            all_ns_dict = dict(nsparser.DEFAULT_STIX_NS_TO_PREFIX.items() +
+                               nsparser.DEFAULT_EXT_TO_PREFIX.items())
 
         if not pretty:
             namespace_def = namespace_def.replace('\n\t', ' ')
 
-        self.to_obj().export(s, 0, dict(all_namespaces), pretty_print=pretty, namespacedef_=namespace_def)
+        self.to_obj().export(s, 0, all_ns_dict, pretty_print=pretty,
+                             namespacedef_=namespace_def)
         return s.getvalue()
 
     def _get_children(self):
@@ -62,7 +69,9 @@ class Entity(object):
                 yield obj
             elif isinstance(obj, (tuple, collections.MutableSequence)):
                 for item in obj:
-                    if isinstance(item, Entity) or isinstance(item, Observable) or isinstance(item, cybox.Entity):
+                    if (isinstance(item, Entity) or
+                        isinstance(item, Observable) or
+                        isinstance(item, cybox.Entity)):
                         yield item
 
     def to_json(self):
