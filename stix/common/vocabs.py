@@ -67,7 +67,7 @@ class VocabString(stix.Entity):
             if xsi_type in k:
                 return v
 
-        raise ValueError("Unregistered xsi:type %s" % xsi_type)
+        return VocabString
 
     def to_obj(self, return_obj=None):
         if not return_obj:
