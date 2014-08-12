@@ -62,7 +62,7 @@ class STIXHeader(stix.Entity):
 
     @package_intents.setter
     def package_intents(self, value):
-        self._package_intents = []
+        self._package_intents = PackageIntents()
         if not value:
             return
         elif isinstance(value, list):
@@ -168,3 +168,10 @@ class STIXHeader(stix.Entity):
             d['profiles'] = self.profiles
 
         return d
+
+
+class PackageIntents(stix.EntityList):
+    _contained_type = VocabString
+
+    def _fix_value(self, value):
+        return PackageIntent(value)
