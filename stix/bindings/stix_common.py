@@ -4365,7 +4365,7 @@ if __name__ == '__main__':
 __all__ = [
     "GenericRelationshipType",
     "DateTimeWithPrecisionType",
-    "ProfileType",
+    "ProfilesType",
     "RelatedPackageRefType",
     "RelatedPackageRefsType",
     "ToolInformationType",
