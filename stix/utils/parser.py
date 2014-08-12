@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import stix
+from itertools import izip
 from distutils.version import StrictVersion
 from lxml import etree
 
@@ -56,8 +57,28 @@ class EntityParser(object):
             root = tree
         
         entity.__input_namespaces__ = {}
-        for alias,ns in root.nsmap.iteritems():
+        for alias, ns in root.nsmap.iteritems():
             entity.__input_namespaces__[ns] = alias
+
+    def _apply_input_schemalocations(self, tree, entity):
+        """
+        Attaches an __input_schemalocations__ dictionary to the input entity.
+
+        :param tree: The input etree instance
+        :param entity: The entity to attach the schemlocation dictionary to
+        """
+        try:
+            root = tree.getroot() # is tree an lxml.Element or lxml.ElementTree
+        except AttributeError:
+            root = tree
+
+        schemaloc_attrib_name = \
+            '{http://www.w3.org/2001/XMLSchema-instance}schemaLocation'
+        if root.attrib.get(schemaloc_attrib_name):
+            schemalocs = root.attrib[schemaloc_attrib_name].split()
+            pairs = izip(schemalocs[::2], schemalocs[1::2])
+            entity.__input_schemalocations__ = dict(pairs)
+
 
     def parse_xml_to_obj(self, xml_file, check_version=True, check_root=True):
         """Creates a STIX binding object from the supplied xml file.
@@ -108,5 +129,6 @@ class EntityParser(object):
         from stix.core import STIXPackage # resolve circular dependencies
         stix_package = STIXPackage().from_obj(stix_package_obj)
         self._apply_input_namespaces(tree, stix_package)
+        self._apply_input_schemalocations(tree, stix_package)
         
         return stix_package

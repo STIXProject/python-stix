@@ -221,7 +221,7 @@ class Indicator(stix.Entity):
 
     @indicator_types.setter
     def indicator_types(self, value):
-        self._indicator_types = []
+        self._indicator_types = IndicatorTypes()
         if not value:
             return
         elif isinstance(value, list):
@@ -704,4 +704,10 @@ class CompositeIndicatorExpression(stix.EntityList):
         super(CompositeIndicatorExpression, cls).from_dict(dict_repr, return_obj=return_obj)
         return_obj.operator = dict_repr.get('operator')
         return return_obj
-    
+
+class IndicatorTypes(stix.EntityList):
+    _namespace = "http://stix.mitre.org/Indicator-2"
+    _contained_type = VocabString
+
+    def _fix_value(self, value):
+        return IndicatorType(value)

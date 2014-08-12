@@ -43,6 +43,7 @@ Contents
 
    installation
    getting_started
+   examples/index
    api_vs_bindings/index
 
 API Reference

@@ -180,7 +180,7 @@ class Incident(stix.Entity):
 
     @intended_effects.setter
     def intended_effects(self, value):
-        self._intended_effects = []
+        self._intended_effects = IntendedEffects()
         if not value:
             return
         elif isinstance(value, list):
@@ -227,7 +227,7 @@ class Incident(stix.Entity):
 
     @categories.setter
     def categories(self, value):
-        self._categories = []
+        self._categories = IncidentCategories()
         if not value:
             return
         elif isinstance(value, list):
@@ -272,7 +272,7 @@ class Incident(stix.Entity):
 
     @discovery_methods.setter
     def discovery_methods(self, value):
-        self._discovery_methods = []
+        self._discovery_methods = DiscoveryMethods()
         if not value:
             return
         elif isinstance(value, list):
@@ -716,3 +716,25 @@ class RelatedIncidents(GenericRelationshipList):
     _contained_type = RelatedIncident
     _inner_name = "incidents"
 
+
+class DiscoveryMethods(stix.EntityList):
+    _namespace = "http://stix.mitre.org/Incident-1"
+    _contained_type = VocabString
+
+    def _fix_value(self, value):
+        return DiscoveryMethod(value)
+
+
+class IncidentCategories(stix.EntityList):
+    _namespace = "http://stix.mitre.org/Incident-1"
+    _contained_type = VocabString
+
+    def _fix_value(self, value):
+        return IncidentCategory(value)
+
+class IntendedEffects(stix.EntityList):
+    _namespace = "http://stix.mitre.org/Incident-1"
+    _contained_type = VocabString
+
+    def _fix_value(self, value):
+        return IntendedEffect(value)

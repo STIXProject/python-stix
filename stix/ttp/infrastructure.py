@@ -63,7 +63,7 @@ class Infrastructure(stix.Entity):
 
     @types.setter
     def types(self, value):
-        self._types = []
+        self._types = InfraStructureTypes()
         if not value:
             return
         elif isinstance(value, list):
@@ -161,3 +161,11 @@ class Infrastructure(stix.Entity):
         return_obj.observable_characterization = Observables.from_dict(dict_repr.get('observable_characterization'))
 
         return return_obj
+
+
+class InfraStructureTypes(stix.EntityList):
+    _namespace = "http://stix.mitre.org/TTP-1"
+    _contained_type = VocabString
+
+    def _fix_value(self, value):
+        return AttackerInfrastructureType(value)
