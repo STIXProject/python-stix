@@ -24,7 +24,7 @@ class VictimTargeting(stix.Entity):
 
     @targeted_systems.setter
     def targeted_systems(self, value):
-        self._targeted_systems = []
+        self._targeted_systems = TargetedSystems()
         if not value:
             return
         elif isinstance(value, list):
@@ -47,7 +47,7 @@ class VictimTargeting(stix.Entity):
 
     @targeted_information.setter
     def targeted_information(self, value):
-        self._targeted_information = []
+        self._targeted_information = TargetedInformation()
         if not value:
             return
         elif isinstance(value, list):
@@ -135,3 +135,19 @@ class VictimTargeting(stix.Entity):
         return_obj.targeted_technical_details = Observables.from_dict(dict_repr.get('targeted_technical_details'))
 
         return return_obj
+
+
+class TargetedSystems(stix.EntityList):
+    _namespace = "http://stix.mitre.org/TTP-1"
+    _contained_type = VocabString
+
+    def _fix_value(self, value):
+        return SystemType(value)
+
+
+class TargetedInformation(stix.EntityList):
+    _namespace = "http://stix.mitre.org/TTP-1"
+    _contained_type = VocabString
+
+    def _fix_value(self, value):
+        return InformationType(value)
