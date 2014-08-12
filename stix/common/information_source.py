@@ -135,7 +135,7 @@ class InformationSource(stix.Entity):
 
     @roles.setter
     def roles(self, value):
-        self._roles = []
+        self._roles = Roles()
 
         if not value:
             return
@@ -243,3 +243,10 @@ class ContributingSources(stix.EntityList):
     _contained_type = InformationSource
     _inner_name = "sources"
 
+
+class Roles(stix.EntityList):
+    _namespace = "http://stix.mitre.org/common-1"
+    _contained_type = VocabString
+
+    def _fix_value(self, value):
+        return InformationSourceRole(value)
