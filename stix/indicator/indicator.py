@@ -704,4 +704,9 @@ class CompositeIndicatorExpression(stix.EntityList):
         super(CompositeIndicatorExpression, cls).from_dict(dict_repr, return_obj=return_obj)
         return_obj.operator = dict_repr.get('operator')
         return return_obj
-    
+
+class IndicatorTypes(stix.EntityList):
+    _contained_type = VocabString
+
+    def _fix_value(self, value):
+        return IndicatorType(value)
