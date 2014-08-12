@@ -90,6 +90,44 @@ Which outputs:
 Success! The ``xmlns:myNS="http://MY-NAMESPACE.com"`` matches our ``NAMESPACE``
 dictionary and the ``id`` attribute includes the ``myNS`` namespace alias.
 
+Working With CybOX
+~~~~~~~~~~~~~~~~~~
+If you are creating CybOX entities such as ``Observables``, you'll want to set
+the ID namespace for ``python-cybox`` as well.
+
+Note that ``python-stix`` and ``python-cybox`` treat namespaces slightly
+differently (for now anyway). Where ``python-stix`` uses Python dictionaries,
+``python-cybox`` uses the ``cybox.utils.Namespace`` class to represent a
+namespace.
+
+.. testcode::
+
+    from cybox.utils import set_id_namespace, Namespace
+    from cybox.core import Observable
+
+    NAMESPACE = Namespace("http://MY-NAMESPACE.com", "myNS")
+    set_id_namespace(NAMESPACE)
+
+    obs = Observable()
+    print obs.to_xml()
+
+Which outputs:
+
+.. testoutput::
+
+    <cybox:ObservableType
+        xmlns:myNS="http://MY-NAMESPACE.com"
+        xmlns:cybox="http://cybox.mitre.org/cybox-2"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://cybox.mitre.org/cybox-2 http://cybox.mitre.org/XMLSchema/core/2.1/cybox_core.xsd"
+        id="myNS:Observable-7e6191d3-25e9-4283-a80c-867e175224ae">
+    </cybox:ObservableType>
+
+Success (again)! The ``xmlns:myNS="http://MY-NAMESPACE.com"`` matches our
+``Namespace`` object and the ``id`` attribute includes the ``myNS`` namespace
+alias.
+
+
 Controlled Vocabularies: VocabString
 ------------------------------------
 Many fields in STIX leverage the ``stixCommon:ControlledVocabularyStringType``,
