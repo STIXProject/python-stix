@@ -171,6 +171,7 @@ class STIXHeader(stix.Entity):
 
 
 class PackageIntents(stix.EntityList):
+    _namespace = "http://stix.mitre.org/stix-1"
     _contained_type = VocabString
 
     def _fix_value(self, value):

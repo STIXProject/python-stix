@@ -706,6 +706,7 @@ class CompositeIndicatorExpression(stix.EntityList):
         return return_obj
 
 class IndicatorTypes(stix.EntityList):
+    _namespace = "http://stix.mitre.org/Indicator-2"
     _contained_type = VocabString
 
     def _fix_value(self, value):
