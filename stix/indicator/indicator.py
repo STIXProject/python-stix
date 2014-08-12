@@ -221,7 +221,7 @@ class Indicator(stix.Entity):
 
     @indicator_types.setter
     def indicator_types(self, value):
-        self._indicator_types = []
+        self._indicator_types = IndicatorTypes()
         if not value:
             return
         elif isinstance(value, list):
