@@ -13,7 +13,7 @@ from stix.indicator import Indicator
 from stix.incident import Incident
 from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
-from stix.common.related import GenericRelationshipList
+from stix.common.related import RelatedPackages
 from .ttps import TTPs
 from cybox.core import Observables
 
@@ -428,13 +428,5 @@ class STIXPackage(stix.Entity):
         parser = EntityParser()
         return parser.parse_xml(xml_file)
 
-
-class RelatedPackages(GenericRelationshipList):
-    _namespace = 'http://stix.mitre.org/stix-1'
-    _binding = stix_core_binding
-    _binding_class = stix_core_binding.RelatedPackagesType
-    _binding_var = "Related_Package"
-    _contained_type = STIXPackage
-    _inner_name = "related_packages"
 
 

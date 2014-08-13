@@ -15,9 +15,11 @@ from .tools import ToolInformation
 
 from .related import (GenericRelationshipList, RelatedCampaign, RelatedCOA,
         RelatedExploitTarget, RelatedIdentity, RelatedIncident, 
-        RelatedIndicator, RelatedObservable, RelatedThreatActor, RelatedTTP)
+        RelatedIndicator, RelatedObservable, RelatedThreatActor, RelatedTTP,
+        RelatedPackage, RelatedPackages)
 
 # Patch in base types of Related* types
+from stix.core import STIXPackage
 from cybox.core import Observable
 from stix.campaign import Campaign
 from stix.coa import CourseOfAction
@@ -36,6 +38,10 @@ RelatedIndicator._base_type = Indicator
 RelatedThreatActor._base_type = ThreatActor
 RelatedTTP._base_type = TTP
 RelatedObservable._base_type = Observable
+RelatedPackage._base_type = STIXPackage
+
+# Path the RelatedPackages _contained_type
+RelatedPackages._contained_type = RelatedPackage
 
 import stix
 import stix.bindings.stix_common as common_binding

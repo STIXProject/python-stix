@@ -5,6 +5,7 @@ from __future__ import absolute_import
 
 import stix
 import stix.bindings.stix_common as common_binding
+import stix.bindings.stix_core as core_binding
 from .vocabs import VocabString
 from .information_source import InformationSource
 from .confidence import Confidence
@@ -227,6 +228,14 @@ class GenericRelationshipList(stix.EntityList):
 
         return return_obj
 
+class RelatedPackages(GenericRelationshipList):
+    _namespace = 'http://stix.mitre.org/stix-1'
+    _binding = core_binding
+    _binding_class = core_binding.RelatedPackagesType
+    _binding_var = "Related_Package"
+    # _contained_type is patched in common/__init__.py
+    _inner_name = "related_packages"
+
 
 class RelatedPackageRefs(stix.EntityList):
     _namespace = 'http://stix.mitre.org/common-1'
@@ -235,6 +244,7 @@ class RelatedPackageRefs(stix.EntityList):
     _binding_var = "Package_Reference"
     _contained_type = RelatedPackageRef
     _inner_name = "packages"
+
 
 
 class _BaseRelated(GenericRelationship):
@@ -381,3 +391,12 @@ class RelatedTTP(_BaseRelated):
     _binding_class = common_binding.RelatedTTPType
     # _base_type is set in common/__init__.py
     _inner_var = "TTP"
+
+
+class RelatedPackage(_BaseRelated):
+    _namespace = "http://stix.mitre.org/stix-1"
+    _binding = core_binding
+    _binding_class = core_binding.RelatedPackageType
+    # _base_type is set in common/__init__.py
+    _inner_var = "Package"
+

@@ -816,7 +816,7 @@ class RelatedPackageType(stix_common_binding.GenericRelationshipType):
         else:
             eol_ = ''
         if self.Package is not None:
-            self.Package.export(outfile, level, namespace_, name_='Package', pretty_print=pretty_print)
+            self.Package.export(outfile, level, nsmap, namespace_, name_='Package', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
