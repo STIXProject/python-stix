@@ -4,6 +4,7 @@
 import inspect
 import warnings
 import stix
+from stix.utils import get_id_namespace
 import cybox
 from cybox.core import Observables, Observable
 import cybox.utils.nsparser as cybox_nsparser
@@ -149,12 +150,14 @@ class NamespaceParser(object):
 
         # Iterate over input/discovered namespaces for document and attempt
         # to map them to schemalocations. Warn if unable to map ns to schemaloc.
+        default_id_namespace = get_id_namespace()
         for ns in ns_dict.iterkeys():
             if ns in default_stix_schemaloc_dict:
                 schemalocation = default_stix_schemaloc_dict[ns]
                 d[ns] = schemalocation
             else:
-                if not ((ns in schemaloc_dict) or
+                if not ((ns == default_id_namespace) or
+                        (ns in schemaloc_dict) or
                         (ns in d) or
                         (ns in XML_NAMESPACES)):
                     warnings.warn("Unable to map namespace '%s' to "
