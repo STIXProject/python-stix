@@ -2,8 +2,6 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 '''
-File: ex_03.py
-
 Description: Build a STIX Observables document
 '''
 
@@ -21,7 +19,7 @@ def main():
 
     stix_package = STIXPackage()
     stix_header = STIXHeader()
-    stix_header.description = "Example 03"
+    stix_header.description = "Example "
     stix_package.stix_header = stix_header
     stix_package.add_observable(f)
 

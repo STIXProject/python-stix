@@ -2,8 +2,6 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 '''
-File: ex_04.py
-
 Description: Build a STIX Document with Tool Information
 '''
 
@@ -20,7 +18,7 @@ def main():
     stix_header.information_source.tools = ToolInformationList()
     stix_header.information_source.tools.append(ToolInformation("python-stix ex_04.py", "The MITRE Corporation"))
 
-    stix_header.description = "Example 04"
+    stix_header.description = "Example "
     stix_package.stix_header = stix_header
 
     print(stix_package.to_xml())
