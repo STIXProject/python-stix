@@ -3,9 +3,7 @@
 # See LICENSE.txt for complete terms.
 
 '''
-File: ex_walk.py
-
-Walks a STIXPackage object
+Prints certain fields from a STIXPackage object using the python interface
 '''
 import sys
 
@@ -14,7 +12,7 @@ from stix.indicator import Indicator
 from cybox.core import Object, Observable
 
 def main():
-    fn = sys.argv[-1] if len(sys.argv) == 2 else 'ex_01.xml'
+    fn = sys.argv[-1] if len(sys.argv) == 2 else 'sample.xml'
     stix_package = STIXPackage.from_xml(fn)
 
     indicator_count = 0
