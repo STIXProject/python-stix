@@ -370,8 +370,8 @@ class Indicator(stix.Entity):
     def negate(self, value):
         if value in (1, True, '1'):
             self._negate = True
-        else:
-            self._negate = False
+        else:  # set to None so that binding will not output negate attribute
+            self._negate = None
     
     def set_producer_identity(self, identity):
         '''
