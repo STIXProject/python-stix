@@ -34,7 +34,7 @@ class STIXPackage(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, stix_header=None, courses_of_action=None, exploit_targets=None, indicators=None, observables=None, incidents=None, threat_actors=None, ttps=None, campaigns=None):
         self.id_ = id_ or stix.utils.create_id("Package")
         self.idref = idref
-        self.version = self._version
+        self.version = None # self._version
         self.stix_header = stix_header
         self.campaigns = campaigns
         self.courses_of_action = courses_of_action

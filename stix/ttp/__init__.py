@@ -23,7 +23,7 @@ class TTP(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("ttp")
         self.idref = idref
-        self.version = self._version
+        self.version = None # self._version
         self.title = title
         self.description = description
         self.short_description = short_description

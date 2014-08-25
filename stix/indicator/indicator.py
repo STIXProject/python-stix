@@ -50,7 +50,7 @@ class Indicator(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("indicator")
         self.idref = idref
-        self.version = self._version
+        self.version = None # self._version
         self.producer = None
         self.observables = None
         self.title = title
