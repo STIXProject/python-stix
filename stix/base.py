@@ -37,7 +37,19 @@ class Entity(object):
 
     def to_xml(self, include_namespaces=True, ns_dict=None, schemaloc_dict=None, pretty=True):
         """Export an object as an XML String""" 
-        s = StringIO()
+
+        class MaybeCodecBuffer():
+            def __init__(self):
+                self.buflist = []
+            def write(self,data):
+                if isinstance(data,unicode):
+                    self.buflist.append(data.encode('utf8'))
+                else:
+                    self.buflist.append(data)
+            def getvalue(self):
+                return ''.join(self.buflist)
+
+        mcb = MaybeCodecBuffer()
         namespace_def = ""
 
         import stix.utils.nsparser as nsparser
@@ -56,9 +68,9 @@ class Entity(object):
         if not pretty:
             namespace_def = namespace_def.replace('\n\t', ' ')
 
-        self.to_obj().export(s, 0, all_ns_dict, pretty_print=pretty,
+        self.to_obj().export(mcb, 0, all_ns_dict, pretty_print=pretty,
                              namespacedef_=namespace_def)
-        return s.getvalue()
+        return mcb.getvalue()
 
     def _get_children(self):
         for (name, obj) in inspect.getmembers(self):
