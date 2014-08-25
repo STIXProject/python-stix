@@ -564,8 +564,6 @@ class Indicator(stix.Entity):
             d['timestamp'] = dates.serialize_value(self.timestamp)
         if self.negate:
             d['negate'] = self.negate
-        else:
-            d['negate'] = False
         if self.version:
             d['version'] = self.version
         if self.observables:
@@ -622,7 +620,7 @@ class Indicator(stix.Entity):
         return_obj.idref     = dict_repr.get('idref')
         return_obj.timestamp = dict_repr.get('timestamp')
         return_obj.title     = dict_repr.get('title')
-        return_obj.negate    = dict_repr.get('negate', False)
+        return_obj.negate    = dict_repr.get('negate', None)
         return_obj.version   = dict_repr.get('version', cls._version)
         observable_dict      = dict_repr.get('observable')
         producer_dict        = dict_repr.get('producer')
