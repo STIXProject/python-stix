@@ -18,6 +18,7 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
             "test 1",
             "not a test 2"
         ],
+        'negate': True,
         'valid_time_positions': [
             {
                 'start_time': {'value': '2013-08-22T01:23:45', 'precision':'minute'},

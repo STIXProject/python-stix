@@ -70,6 +70,7 @@ class Indicator(stix.Entity):
         self.related_indicators = None
         self.observable_composition_operator = "AND"
         self.likely_impact = None
+        self.negate = None
     
         if timestamp:
             self.timestamp = timestamp
@@ -360,6 +361,17 @@ class Indicator(stix.Entity):
             self._likely_impact = value
         else:
             self._likely_impact = Statement(value=value)
+            
+    @property
+    def negate(self):
+        return self._negate
+    
+    @negate.setter
+    def negate(self, value):
+        if value in (1, True, '1'):
+            self._negate = True
+        else:
+            self._negate = False
     
     def set_producer_identity(self, identity):
         '''
@@ -445,6 +457,8 @@ class Indicator(stix.Entity):
         return_obj.set_timestamp(dates.serialize_value(self.timestamp))
         return_obj.set_Title(self.title)
         
+        if self.negate:
+            return_obj.set_negate(self._negate)
         if self.version:
             return_obj.set_version(self._version)
         if self.description:
@@ -516,6 +530,8 @@ class Indicator(stix.Entity):
             return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
             return_obj.likely_impact = Statement.from_obj(obj.get_Likely_Impact())
             
+            if obj.get_negate():
+                return_obj.negate = obj.get_negate()
             if obj.get_version():
                 return_obj.version = obj.get_version()
             if obj.get_Type():
@@ -546,6 +562,10 @@ class Indicator(stix.Entity):
             d['idref'] = self.idref
         if self.timestamp:
             d['timestamp'] = dates.serialize_value(self.timestamp)
+        if self.negate:
+            d['negate'] = self.negate
+        else:
+            d['negate'] = False
         if self.version:
             d['version'] = self.version
         if self.observables:
@@ -602,6 +622,7 @@ class Indicator(stix.Entity):
         return_obj.idref     = dict_repr.get('idref')
         return_obj.timestamp = dict_repr.get('timestamp')
         return_obj.title     = dict_repr.get('title')
+        return_obj.negate    = dict_repr.get('negate', False)
         return_obj.version   = dict_repr.get('version', cls._version)
         observable_dict      = dict_repr.get('observable')
         producer_dict        = dict_repr.get('producer')

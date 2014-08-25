@@ -1466,7 +1466,7 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
             already_processed.add('xsi:type')
             xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
             outfile.write(xsi_type)
-        if self.negate is not None and 'negate' not in already_processed:
+        if self.negate not in (None, False) and 'negate' not in already_processed:
             already_processed.add('negate')
             outfile.write(' negate="%s"' % self.gds_format_boolean(self.negate, input_name='negate'))
         if self.version is not None and 'version' not in already_processed:
