@@ -54,6 +54,20 @@ class TTP(stix.Entity):
             self.idref = None
     
     @property
+    def version(self):
+        return self._version
+    
+    @version.setter
+    def version(self, value):
+        if not value:
+            self._version = None
+        else:
+            if value != TTP._version:
+                self._version = value
+            else:
+                self._version = None
+    
+    @property
     def idref(self):
         return self._idref
     
