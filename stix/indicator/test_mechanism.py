@@ -12,7 +12,7 @@ class _BaseTestMechanism(stix.Entity):
     _binding_class = indicator_binding.TestMechanismType()
     
     def __init__(self, id_=None, idref=None):
-        self.id_ = id_ or stix.utils.create_id("testmechanism")
+        self.id_ = id_
         self.idref = idref
         self.efficacy = None
         self.producer = None
