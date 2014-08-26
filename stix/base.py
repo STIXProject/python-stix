@@ -1,6 +1,7 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+import warnings
 import collections
 import inspect
 import json
@@ -44,6 +45,10 @@ class Entity(object):
         all_ns_dict, all_schemaloc_dict = {}, {}
         namespace_def = ""
 
+        if (not auto_namespace) and (not ns_dict):
+            raise Exception("Auto-namespacing was disabled but ns_dict "
+                            "was empty or missing.")
+
         if include_namespaces:
             if auto_namespace:
                 all_ns_dict = self._get_namespaces(ns_dict)
@@ -65,10 +70,15 @@ class Entity(object):
             namespace_def += ("\n\t" +
                               parser.get_schemaloc_str(all_schemaloc_dict))
 
+        if not pretty:
+            namespace_def = namespace_def.replace('\n\t', ' ')
+
         s = StringIO()
+
         self.to_obj().export(s, 0, all_ns_dict, pretty_print=pretty,
-                             namespacedef_=namespace_def)
+                            namespacedef_=namespace_def)
         return s.getvalue()
+
 
     def _get_children(self):
         for (name, obj) in inspect.getmembers(self):
