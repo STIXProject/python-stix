@@ -53,7 +53,7 @@ class Entity(object):
             if auto_namespace:
                 all_ns_dict = self._get_namespaces(ns_dict)
             else:
-                all_ns_dict = ns_dict or {}
+                all_ns_dict = ns_dict
 
             namespace_def += "\n\t" + parser.get_xmlns_str(all_ns_dict)
         else:
@@ -76,7 +76,7 @@ class Entity(object):
         s = StringIO()
 
         self.to_obj().export(s, 0, all_ns_dict, pretty_print=pretty,
-                            namespacedef_=namespace_def)
+                             namespacedef_=namespace_def)
         return s.getvalue()
 
 
