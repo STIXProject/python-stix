@@ -5,7 +5,7 @@ import warnings
 import collections
 import inspect
 import json
-from cStringIO import StringIO
+from StringIO import StringIO
 
 import cybox
 from cybox.core import Observable, Observables
