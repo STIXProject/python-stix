@@ -193,10 +193,10 @@ class Incident(stix.Entity):
         if not value:
             return
         elif isinstance(value, Statement):
-            self._intended_effects.append(value)
+            self.intended_effects.append(value)
         else:
             intended_effect = IntendedEffect(value)
-            self._intended_effects.append(Statement(value=intended_effect))
+            self.intended_effects.append(Statement(value=intended_effect))
 
     @property
     def victims(self):
@@ -734,7 +734,8 @@ class IncidentCategories(stix.EntityList):
 
 class IntendedEffects(stix.EntityList):
     _namespace = "http://stix.mitre.org/Incident-1"
-    _contained_type = VocabString
+    _contained_type = Statement
 
     def _fix_value(self, value):
-        return IntendedEffect(value)
+        return Statement(value=IntendedEffect(value))
+
