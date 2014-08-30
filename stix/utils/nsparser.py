@@ -36,11 +36,6 @@ def walkns(entity):
 
     visited = []
     def descend(obj):
-        # if id(obj) in visited:
-        #     print "here"
-        #     return
-        # visited.append(id(obj))
-
         for member in get_members(obj):
             if isinstance(member, yieldable):
                 yield member
@@ -54,9 +49,7 @@ def walkns(entity):
                         for d in descend(i):
                             yield d
 
-        #visited.remove(id(obj))
     # end descend()
-
 
     for node in descend(entity):
         yield node
