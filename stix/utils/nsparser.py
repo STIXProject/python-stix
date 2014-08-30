@@ -4,7 +4,7 @@
 import collections
 import warnings
 import stix
-from stix.utils import get_id_namespace
+from stix.utils import get_id_namespace, get_id_namespace_alias
 import cybox
 from cybox.core import Observables, Observable
 from cybox.common import ObjectProperties, BaseProperty
@@ -48,14 +48,134 @@ def walkns(entity):
                             yield d
     # end descend()
 
-    for node in descend(entity):
-        yield node
+    if '_namespace' in entity.__class__.__dict__:
+        yield entity
+        for node in descend(entity):
+            yield node
 # end walkns()
 
+class NamespaceInfo(object):
+    def __init__(self):
+        self.ns = {}
+        self.schemalocs = {}
+        self.input_ns = {}
+        self.input_schemalocs = {}
+
+        self.post_ns = {}
+        self.post_schemaloc = {}
+
+
+    def __str__(self):
+        s = ("[-] Namespaces: %s \n"
+             "[-] Input Namespaces %s \n"
+             "[-] Schemalocs: %s \n"
+             "[-] Input Schemalocs: %s \n"
+             "[-] Post Processed Namespaces: %s \n"
+             "[-] Post Processed Schemalocs: %s \n" %
+             (self.ns, self.input_ns, self.schemalocs, self.input_schemalocs,
+              self.post_ns, self.post_schemaloc))
+
+        return s
 
 class NamespaceParser(object):
     def __init__(self):
         pass
+
+
+    def _init_nsinfo(self, entity, nsinfo):
+        for child in walkns(entity):
+            ns = child._namespace
+            ns_alias = None
+
+            try: ns_alias, type_ = child._XSI_TYPE.split(":")
+            except: pass
+
+            nsinfo.ns[ns] = ns_alias
+
+            try:
+                nsinfo.input_ns.update(child.__input_namespaces__)
+            except AttributeError:
+                pass
+
+            try:
+                nsinfo.input_schemalocs.update(child.__input_schemalocations__)
+            except AttributeError:
+                pass
+
+        return nsinfo
+
+
+    def get_nsinfo(self, entity, ns_dict=None, schemaloc_dict=None):
+        """Walks the entity and returns a NamespaceInfo object."""
+        id_ns = get_id_namespace()
+        id_ns_alias = get_id_namespace_alias()
+
+        if not ns_dict:
+            ns_dict = {}
+
+        nsinfo = NamespaceInfo()
+        nsinfo.post_ns.update({'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
+             'http://stix.mitre.org/stix-1': 'stix',
+             'http://stix.mitre.org/common-1': 'stixCommon',
+             'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
+             'http://cybox.mitre.org/cybox-2': 'cybox',
+             'http://cybox.mitre.org/common-2': 'cyboxCommon',
+             'http://cybox.mitre.org/default_vocabularies-2': 'cyboxVocabs',
+             id_ns: id_ns_alias})
+
+        self._init_nsinfo(entity, nsinfo)
+
+        for ns, alias in nsinfo.input_ns.iteritems():
+            if ns not in DEFAULT_STIX_NAMESPACES:
+                nsinfo.post_ns[ns] = alias
+
+        for ns, alias in nsinfo.ns.iteritems():
+            if alias:
+                nsinfo.post_ns[ns] = alias
+            else:
+                default_alias = DEFAULT_STIX_NAMESPACES[ns]
+                nsinfo.post_ns[ns] = default_alias
+
+        nsinfo.post_ns.update(ns_dict)
+
+        if all((nsinfo.post_ns.get('http://example.com/'),
+               nsinfo.post_ns.get('http://example.com'))):
+            del nsinfo.post_ns['http://example.com/']
+
+
+        aliases = []
+        for ns, alias in nsinfo.post_ns.iteritems():
+            if alias not in aliases:
+                aliases.append(alias)
+            else:
+                # TODO: Should we just throw an exception here?
+                # The XML will be invalid if there is a duplicate ns alias
+                warnings.warn("namespace alias '%s' mapped to '%s' and '%s'" %
+                              (alias, ns, aliases[alias]))
+
+        # Schemalocation stuff
+        if not schemaloc_dict:
+            schemaloc_dict = {}
+
+        nsinfo.post_schemaloc.update(nsinfo.input_schemalocs)
+
+        # Iterate over input/discovered namespaces for document and attempt
+        # to map them to schemalocations. Warn if unable to map ns to schemaloc.
+        for ns in nsinfo.post_ns:
+            if ns in DEFAULT_STIX_SCHEMALOCATIONS:
+                schemalocation = DEFAULT_STIX_SCHEMALOCATIONS[ns]
+                nsinfo.post_schemaloc[ns] = schemalocation
+            else:
+                if not ((ns == id_ns) or
+                        (ns in schemaloc_dict) or
+                        (ns in nsinfo.input_schemalocs) or
+                        (ns in XML_NAMESPACES)):
+                    warnings.warn("Unable to map namespace '%s' to "
+                                  "schemaLocation" % ns)
+
+        nsinfo.post_schemaloc.update(schemaloc_dict)
+
+        return nsinfo
 
     def _get_observable_namespace_dict(self, obs):
         '''Returns a dict of namespaces used within a CybOX Observable'''
