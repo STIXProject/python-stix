@@ -11,7 +11,6 @@ from cybox.common import ObjectProperties, BaseProperty
 import cybox.utils.nsparser as cybox_nsparser
 
 def walkns(entity):
-    yieldable = (stix.Entity, cybox.Entity)
     skip = {ObjectProperties : ('_parent'),
             BaseProperty: None}
 
@@ -20,7 +19,6 @@ def walkns(entity):
             if isinstance(obj, klass):
                 return (props is None) or (field in props)
         return False
-
 
     def get_members(obj):
         for k, v in obj.__dict__.iteritems():
@@ -37,18 +35,17 @@ def walkns(entity):
     visited = []
     def descend(obj):
         for member in get_members(obj):
-            if isinstance(member, yieldable):
+            if '_namespace' in member.__class__.__dict__:
                 yield member
                 for i in descend(member):
                     yield i
 
             if hasattr(member, "__getitem__"):
-                for i in member:
-                    if isinstance(i, yieldable):
+               for i in member:
+                    if '_namespace' in i.__class__.__dict__:
                         yield i
                         for d in descend(i):
                             yield d
-
     # end descend()
 
     for node in descend(entity):
