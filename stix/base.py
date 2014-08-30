@@ -39,42 +39,36 @@ class Entity(object):
     def to_xml(self, include_namespaces=True, include_schemalocs=True,
                ns_dict=None, schemaloc_dict=None, pretty=True,
                auto_namespace=True):
-        """Export an object as an XML String""" 
+        """Export an object as an XML String"""
         import stix.utils.nsparser as nsparser
         parser = nsparser.NamespaceParser()
-        all_ns_dict, all_schemaloc_dict = {}, {}
-        namespace_def = ""
 
-        if (not auto_namespace) and (not ns_dict) and include_namespaces:
+        if (not auto_namespace) and (not ns_dict):
             raise Exception("Auto-namespacing was disabled but ns_dict "
                             "was empty or missing.")
 
-        if include_namespaces:
-            if auto_namespace:
-                all_ns_dict = self._get_namespaces(ns_dict)
-            else:
-                all_ns_dict = ns_dict
-
-            namespace_def += "\n\t" + parser.get_xmlns_str(all_ns_dict)
+        if auto_namespace:
+            nsinfo = parser.get_nsinfo(self, ns_dict, schemaloc_dict)
+            obj_ns_dict = nsinfo.post_ns
         else:
-            all_ns_dict = dict(nsparser.DEFAULT_STIX_NAMESPACES)
+            nsinfo = nsparser.NamespaceInfo()
+            nsinfo.post_ns = ns_dict or {}
+            nsinfo.post_schemaloc = schemaloc_dict or {}
+            obj_ns_dict = dict(ns_dict.items() + nsparser.DEFAULT_STIX_NAMESPACES.items())
+
+        namespace_def = ""
+        if include_namespaces:
+            namespace_def += "\n\t" + parser.get_xmlns_str(nsinfo.post_ns)
 
         if include_schemalocs and include_namespaces:
-            if auto_namespace:
-                all_schemaloc_dict = \
-                    self._get_schema_locations(all_ns_dict, schemaloc_dict)
-            else:
-                all_schemaloc_dict = schemaloc_dict or {}
-
             namespace_def += ("\n\t" +
-                              parser.get_schemaloc_str(all_schemaloc_dict))
+                              parser.get_schemaloc_str(nsinfo.post_schemaloc))
 
         if not pretty:
             namespace_def = namespace_def.replace('\n\t', ' ')
 
         s = StringIO()
-        lwrite = s.write
-        self.to_obj().export(lwrite, 0, all_ns_dict, pretty_print=pretty,
+        self.to_obj().export(s.write, 0, obj_ns_dict, pretty_print=pretty,
                              namespacedef_=namespace_def)
         return s.getvalue()
 
