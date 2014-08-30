@@ -142,7 +142,7 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
 
         s = StringIO()
 
-        incident.export(s, 0, {'http://stix.mitre.org/Incident-1': 'incident'})
+        incident.export(s.write, 0, {'http://stix.mitre.org/Incident-1': 'incident'})
         xml = s.getvalue()
         self.assertTrue("A Description" in xml, "Description not exported")
 
