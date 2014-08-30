@@ -45,7 +45,7 @@ class Entity(object):
         all_ns_dict, all_schemaloc_dict = {}, {}
         namespace_def = ""
 
-        if (not auto_namespace) and (not ns_dict):
+        if (not auto_namespace) and (not ns_dict) and include_namespaces:
             raise Exception("Auto-namespacing was disabled but ns_dict "
                             "was empty or missing.")
 
@@ -57,8 +57,7 @@ class Entity(object):
 
             namespace_def += "\n\t" + parser.get_xmlns_str(all_ns_dict)
         else:
-            all_ns_dict = dict(nsparser.DEFAULT_STIX_NS_TO_PREFIX.items() +
-                               nsparser.DEFAULT_EXT_TO_PREFIX.items())
+            all_ns_dict = dict(nsparser.DEFAULT_STIX_NAMESPACES)
 
         if include_schemalocs and include_namespaces:
             if auto_namespace:
@@ -74,8 +73,8 @@ class Entity(object):
             namespace_def = namespace_def.replace('\n\t', ' ')
 
         s = StringIO()
-
-        self.to_obj().export(s, 0, all_ns_dict, pretty_print=pretty,
+        lwrite = s.write
+        self.to_obj().export(lwrite, 0, all_ns_dict, pretty_print=pretty,
                              namespacedef_=namespace_def)
         return s.getvalue()
 

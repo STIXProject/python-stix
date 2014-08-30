@@ -7,17 +7,18 @@ import stix
 from stix.utils import get_id_namespace
 import cybox
 from cybox.core import Observables, Observable
-from cybox.common import ObjectProperties
+from cybox.common import ObjectProperties, BaseProperty
 import cybox.utils.nsparser as cybox_nsparser
 
 def walkns(entity):
     yieldable = (stix.Entity, cybox.Entity)
-    skip = {ObjectProperties : '_parent'}
+    skip = {ObjectProperties : ('_parent'),
+            BaseProperty: None}
 
     def can_skip(obj, field):
-        for klass, prop in skip.iteritems():
-            if prop == field and isinstance(obj, klass):
-                return True
+        for klass, props in skip.iteritems():
+            if isinstance(obj, klass):
+                return (props is None) or (field in props)
         return False
 
 
@@ -35,9 +36,10 @@ def walkns(entity):
 
     visited = []
     def descend(obj):
-        if id(obj) in visited:
-            return
-        visited.append(id(obj))
+        # if id(obj) in visited:
+        #     print "here"
+        #     return
+        # visited.append(id(obj))
 
         for member in get_members(obj):
             if isinstance(member, yieldable):
@@ -52,7 +54,7 @@ def walkns(entity):
                         for d in descend(i):
                             yield d
 
-        visited.remove(id(obj))
+        #visited.remove(id(obj))
     # end descend()
 
 
