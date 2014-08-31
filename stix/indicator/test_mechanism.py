@@ -50,6 +50,7 @@ class _BaseTestMechanism(stix.Entity):
         
         from stix.extensions.test_mechanism.snort_test_mechanism import SnortTestMechanism
         from stix.extensions.test_mechanism.open_ioc_2010_test_mechanism import OpenIOCTestMechanism
+        from stix.extensions.test_mechanism.yara_test_mechanism import YaraTestMechanism
         
         if not return_obj:
             klass = _BaseTestMechanism.lookup_class(obj.xml_type)
@@ -95,6 +96,7 @@ class _BaseTestMechanism(stix.Entity):
         
         from stix.extensions.test_mechanism.snort_test_mechanism import SnortTestMechanism
         from stix.extensions.test_mechanism.open_ioc_2010_test_mechanism import OpenIOCTestMechanism
+        from stix.extensions.test_mechanism.yara_test_mechanism import YaraTestMechanism
         
         if not return_obj:
             klass = _BaseTestMechanism.lookup_class(d.get('xsi:type'))
