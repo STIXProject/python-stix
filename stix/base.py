@@ -6,9 +6,6 @@ import collections
 import inspect
 import json
 from StringIO import StringIO
-
-import cybox
-from cybox.core import Observable, Observables
 from lxml import etree
 
 class NamespaceInfo(object):
@@ -135,18 +132,6 @@ class Entity(object):
         """Create an object from a binding object"""
         raise NotImplementedError()
 
-    def _get_namespaces(self, ns_dict=None):
-        import stix.utils.nsparser as nsparser
-        parser = nsparser.NamespaceParser()
-        all_ns_dict = parser.get_namespaces(self, ns_dict=ns_dict)
-        return all_ns_dict
-
-    def _get_schema_locations(self, ns_dict=None, schemaloc_dict=None):
-        import stix.utils.nsparser as nsparser
-        parser = nsparser.NamespaceParser()
-        all_schemaloc_dict = \
-            parser.get_namespace_schemalocation_dict(self, ns_dict=ns_dict, schemaloc_dict=schemaloc_dict)
-        return all_schemaloc_dict
 
     def to_xml(self, include_namespaces=True, include_schemalocs=True,
                ns_dict=None, schemaloc_dict=None, pretty=True,
@@ -191,21 +176,6 @@ class Entity(object):
         obj.export(s.write, 0, obj_ns_dict, pretty_print=pretty,
                              namespacedef_=namespace_def)
         return s.getvalue()
-
-
-    def _get_children(self):
-        for (name, obj) in inspect.getmembers(self):
-            if isinstance(obj, Observables):
-                for obs in obj.observables:
-                    yield obs
-            elif isinstance(obj, (Entity, cybox.Entity)):
-                yield obj
-            elif isinstance(obj, (tuple, collections.MutableSequence)):
-                for item in obj:
-                    if (isinstance(item, Entity) or
-                        isinstance(item, Observable) or
-                        isinstance(item, cybox.Entity)):
-                        yield item
 
     def to_json(self):
         return json.dumps(self.to_dict())
@@ -265,10 +235,10 @@ class Entity(object):
         return cls.from_obj(entity_obj).to_dict()
 
     def walk(self):
-        import cybox
+        from cybox import Entity as cyboxEntity
         from cybox.common import ObjectProperties
 
-        yieldable = (Entity, cybox.Entity)
+        yieldable = (Entity, cyboxEntity)
         skip = {ObjectProperties : '_parent'}
 
         def can_skip(obj, field):
