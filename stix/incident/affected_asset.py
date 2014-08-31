@@ -149,7 +149,7 @@ class AffectedAsset(stix.Entity):
         return_obj.type_ = AssetType.from_obj(obj.get_Type())
         return_obj.description = StructuredText.from_obj(obj.get_Description())
         return_obj.business_function_or_role = StructuredText.from_obj(obj.get_Business_Function_Or_Role())
-        return_obj.owernship_class = VocabString.from_obj(obj.get_Ownership_Class())
+        return_obj.ownership_class = VocabString.from_obj(obj.get_Ownership_Class())
         return_obj.management_class = VocabString.from_obj(obj.get_Management_Class())
         return_obj.location_class = VocabString.from_obj(obj.get_Location_Class())
         #return_obj.location = None 
