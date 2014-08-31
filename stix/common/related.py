@@ -175,13 +175,29 @@ class GenericRelationshipList(stix.EntityList):
     _binding = common_binding
     _binding_class = _binding.GenericRelationshipListType
 
+    _ALLOWED_SCOPE = ('inclusive', 'exclusive')
+
     def __init__(self, scope=None, *args):
-        super(GenericRelationshipList, self).__init__()
+        super(GenericRelationshipList, self).__init__(*args)
         self.scope = scope
 
     def __nonzero__(self):
         return super(GenericRelationshipList, self).__nonzero__() \
                 or bool(self.scope)
+
+    @property
+    def scope(self):
+        return self._scope
+
+    @scope.setter
+    def scope(self, value):
+        if not value:
+            self._scope = None
+        else:
+            if value not in self._ALLOWED_SCOPE:
+                msg = "Scope must be one of [%s]" % (", ".join(self._ALLOWED_SCOPE))
+                raise ValueError(msg)
+            self._scope = value
 
     def to_obj(self):
         list_obj = super(GenericRelationshipList, self).to_obj()
