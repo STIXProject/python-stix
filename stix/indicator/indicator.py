@@ -68,7 +68,7 @@ class Indicator(stix.Entity):
         self.kill_chain_phases = KillChainPhasesReference()
         self.valid_time_positions = None
         self.related_indicators = None
-        self.observable_composition_operator = "AND"
+        self.observable_composition_operator = "OR"
         self.likely_impact = None
         self.negate = None
     
