@@ -14,6 +14,11 @@ class NamespaceInfo(object):
         self.input_namespaces = {}
         self.input_schemalocs = {}
 
+    def update(self, ns_info):
+        self.namespaces.update(ns_info.namespaces)
+        self.input_namespaces.update(ns_info.input_namespaces)
+        self.input_schemalocs.update(ns_info.input_schemalocs)
+
     def finalize(self, ns_dict=None, schemaloc_dict=None):
         from stix.utils import (get_id_namespace, get_id_namespace_alias,
                                 DEFAULT_STIX_NAMESPACES, XML_NAMESPACES,
