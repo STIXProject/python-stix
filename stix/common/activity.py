@@ -42,14 +42,14 @@ class Activity(stix.Entity):
         else:
             self._description = StructuredText(value=value)
 
-    def to_obj(self, return_obj=None):
+    def _to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
 
         if self.date_time:
-            return_obj.set_Date_Time(self.date_time.to_obj())
+            return_obj.set_Date_Time(self.date_time.to_obj(ns_info=ns_info))
         if self.description:
-            return_obj.set_Description(self.description.to_obj())
+            return_obj.set_Description(self.description.to_obj(ns_info=ns_info))
 
         return return_obj
 

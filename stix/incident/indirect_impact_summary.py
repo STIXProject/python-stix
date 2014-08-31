@@ -70,16 +70,16 @@ class IndirectImpactSummary(stix.Entity):
         else:
             self._legal_and_regulatory_costs = SecurityCompromise(value=value)
             
-    def to_obj(self):
+    def _to_obj(self, return_obj=None, ns_info=None):
         obj = self._binding_class()
         if self.loss_of_competitive_advantage:
-            obj.set_Loss_Of_Competitive_Advantage(self.loss_of_competitive_advantage.to_obj())
+            obj.set_Loss_Of_Competitive_Advantage(self.loss_of_competitive_advantage.to_obj(ns_info=ns_info))
         if self.brand_and_market_damage:
-            obj.set_Brand_And_Market_Damage(self.brand_and_market_damage.to_obj())
+            obj.set_Brand_And_Market_Damage(self.brand_and_market_damage.to_obj(ns_info=ns_info))
         if self.increased_operating_costs:
-            obj.set_Increased_Operating_Costs(self.increased_operating_costs.to_obj())
+            obj.set_Increased_Operating_Costs(self.increased_operating_costs.to_obj(ns_info=ns_info))
         if self.legal_and_regulatory_costs:
-            obj.set_Legal_And_Regulatory_Costs(self.legal_and_regulatory_costs.to_obj())
+            obj.set_Legal_And_Regulatory_Costs(self.legal_and_regulatory_costs.to_obj(ns_info=ns_info))
         return obj
 
     @classmethod

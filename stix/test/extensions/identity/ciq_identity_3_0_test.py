@@ -2,7 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import unittest
-from cybox.test import EntityTestCase
+from stix.test import EntityTestCase
 from stix.extensions.identity.ciq_identity_3_0 import CIQIdentity3_0Instance
 
 

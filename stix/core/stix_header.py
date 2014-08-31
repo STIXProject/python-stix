@@ -115,20 +115,20 @@ class STIXHeader(stix.Entity):
 
         return return_obj
 
-    def to_obj(self, return_obj=None):
+    def _to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding.STIXHeaderType()
 
         if self.title:
             return_obj.set_Title(self.title)
         if self.package_intents:
-            return_obj.set_Package_Intent([x.to_obj() for x in self.package_intents])
+            return_obj.set_Package_Intent([x.to_obj(ns_info=ns_info) for x in self.package_intents])
         if self.description:
-            return_obj.set_Description(self.description.to_obj())
+            return_obj.set_Description(self.description.to_obj(ns_info=ns_info))
         if self.handling:
-            return_obj.set_Handling(self.handling.to_obj())
+            return_obj.set_Handling(self.handling.to_obj(ns_info=ns_info))
         if self.information_source:
-            return_obj.set_Information_Source(self.information_source.to_obj())
+            return_obj.set_Information_Source(self.information_source.to_obj(ns_info=ns_info))
         if self.profiles:
             profiles_obj = stix_common_binding.ProfilesType(Profile=self.profiles)
             return_obj.set_Profiles(profiles_obj)

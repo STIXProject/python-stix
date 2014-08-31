@@ -7,7 +7,7 @@ import unittest
 from stix.indicator import Indicator
 import stix.bindings.indicator as indicator_binding
 from cybox.common import StructuredText
-from cybox.test import EntityTestCase
+from stix.test import EntityTestCase
 
 
 

@@ -34,10 +34,10 @@ class Marking(stix.Entity):
             raise ValueError('value must be instance of MarkingSpecification')
         self._markings.append(value)
 
-    def to_obj(self):
+    def _to_obj(self, return_obj=None, ns_info=None):
         obj = self._binding_class()
 
-        obj.set_Marking([x.to_obj() for x in self.markings])
+        obj.set_Marking([x.to_obj(ns_info=ns_info) for x in self.markings])
         return obj
 
     def to_list(self):
@@ -76,14 +76,14 @@ class MarkingSpecification(stix.Entity):
         self.marking_structures = []
         # TODO: add Information_Source
 
-    def to_obj(self):
+    def _to_obj(self, return_obj=None, ns_info=None):
         obj = self._binding_class()
 
         obj.set_id(self.id_)
         obj.set_idref(self.idref)
         obj.set_version(self.version)
         obj.set_Controlled_Structure(self.controlled_structure)
-        obj.set_Marking_Structure([x.to_obj() for x in self.marking_structures])
+        obj.set_Marking_Structure([x.to_obj(ns_info=ns_info) for x in self.marking_structures])
 
         return obj
 
@@ -143,14 +143,14 @@ class MarkingStructure(stix.Entity):
         self.marking_model_name = None
         self.marking_model_ref = None
 
-    def to_obj(self, obj=None):
-        if not obj:
-            obj = self._binding_class()
+    def _to_obj(self, return_obj=None, ns_info=None):
+        if not return_obj:
+            return_obj = self._binding_class()
 
-        obj.set_marking_model_name(self.marking_model_name)
-        obj.set_marking_model_ref(self.marking_model_ref)
+        return_obj.set_marking_model_name(self.marking_model_name)
+        return_obj.set_marking_model_ref(self.marking_model_ref)
 
-        return obj
+        return return_obj
 
     def to_dict(self):
         d = {}

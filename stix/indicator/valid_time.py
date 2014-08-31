@@ -39,14 +39,14 @@ class ValidTime(stix.Entity):
         else:
             self._end_time = DateTimeWithPrecision(value)
     
-    def to_obj(self, return_obj=None):
+    def _to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
         
         if self.start_time:
-            return_obj.set_Start_Time(self.start_time.to_obj())
+            return_obj.set_Start_Time(self.start_time.to_obj(ns_info=ns_info))
         if self.end_time:
-            return_obj.set_End_Time(self.end_time.to_obj())
+            return_obj.set_End_Time(self.end_time.to_obj(ns_info=ns_info))
         
         return return_obj
 

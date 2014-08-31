@@ -36,7 +36,7 @@ class JournalEntry(stix.Entity):
             raise ValueError("value must be one of [%s]" % ", ".join(x for x in DATETIME_PRECISION_VALUES))
         self._time_precision = value
     
-    def to_obj(self, return_obj=None):
+    def _to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
         
@@ -126,14 +126,14 @@ class HistoryItem(stix.Entity):
         else:
             self._journal_entry = JournalEntry(value)
             
-    def to_obj(self, return_obj=None):
+    def _to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
             
         if self.action_entry:
-            return_obj.set_Action_Entry(self.action_entry.to_obj())
+            return_obj.set_Action_Entry(self.action_entry.to_obj(ns_info=ns_info))
         if self.journal_entry:
-            return_obj.set_Journal_Entry(self.journal_entry.to_obj())
+            return_obj.set_Journal_Entry(self.journal_entry.to_obj(ns_info=ns_info))
         
         return return_obj
     

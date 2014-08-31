@@ -84,20 +84,20 @@ class Statement(stix.Entity):
         else:
             self._description = StructuredText(value=value)
 
-    def to_obj(self):
+    def _to_obj(self, return_obj=None, ns_info=None):
         obj = self._binding_class()
 
         if self.timestamp:
             obj.set_timestamp(self.timestamp.isoformat())
         obj.set_timestamp_precision(self.timestamp_precision)
         if self.value:
-            obj.set_Value(self.value.to_obj())
+            obj.set_Value(self.value.to_obj(ns_info=ns_info))
         if self.description:
-            obj.set_Description(self.description.to_obj())
+            obj.set_Description(self.description.to_obj(ns_info=ns_info))
         if self.source:
-            obj.set_Source(self.source.to_obj())
+            obj.set_Source(self.source.to_obj(ns_info=ns_info))
         if self.confidence:
-            obj.set_Confidence(self.confidence.to_obj())
+            obj.set_Confidence(self.confidence.to_obj(ns_info=ns_info))
 
         return obj
 

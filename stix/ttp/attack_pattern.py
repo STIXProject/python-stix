@@ -54,7 +54,7 @@ class AttackPattern(stix.Entity):
         else:
             self._short_description = None
 
-    def to_obj(self, return_obj=None):
+    def _to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
 
@@ -63,9 +63,9 @@ class AttackPattern(stix.Entity):
         return_obj.set_Title(self.title)
 
         if self.description:
-            return_obj.set_Description(self.description.to_obj())
+            return_obj.set_Description(self.description.to_obj(ns_info=ns_info))
         if self.short_description:
-            return_obj.set_Short_Description(self.short_description.to_obj())
+            return_obj.set_Short_Description(self.short_description.to_obj(ns_info=ns_info))
 
         return return_obj
 

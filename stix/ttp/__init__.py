@@ -224,7 +224,7 @@ class TTP(stix.Entity):
 
         self._handling = value
 
-    def to_obj(self, return_obj=None):
+    def _to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
 
@@ -235,25 +235,25 @@ class TTP(stix.Entity):
         return_obj.set_Title(self.title)
 
         if self.description:
-            return_obj.set_Description(self.description.to_obj())
+            return_obj.set_Description(self.description.to_obj(ns_info=ns_info))
         if self.short_description:
-            return_obj.set_Short_Description(self.short_description.to_obj())
+            return_obj.set_Short_Description(self.short_description.to_obj(ns_info=ns_info))
         if self.behavior:
-            return_obj.set_Behavior(self.behavior.to_obj())
+            return_obj.set_Behavior(self.behavior.to_obj(ns_info=ns_info))
         if self.related_ttps:
-            return_obj.set_Related_TTPs(self.related_ttps.to_obj())
+            return_obj.set_Related_TTPs(self.related_ttps.to_obj(ns_info=ns_info))
         if self.exploit_targets:
-            return_obj.set_Exploit_Targets(self.exploit_targets.to_obj())
+            return_obj.set_Exploit_Targets(self.exploit_targets.to_obj(ns_info=ns_info))
         if self.information_source:
-            return_obj.set_Information_Source(self.information_source.to_obj())
+            return_obj.set_Information_Source(self.information_source.to_obj(ns_info=ns_info))
         if self.intended_effects:
-            return_obj.set_Intended_Effect([x.to_obj() for x in self.intended_effects])
+            return_obj.set_Intended_Effect([x.to_obj(ns_info=ns_info) for x in self.intended_effects])
         if self.resources:
-            return_obj.set_Resources(self.resources.to_obj())
+            return_obj.set_Resources(self.resources.to_obj(ns_info=ns_info))
         if self.victim_targeting:
-            return_obj.set_Victim_Targeting(self.victim_targeting.to_obj())
+            return_obj.set_Victim_Targeting(self.victim_targeting.to_obj(ns_info=ns_info))
         if self.handling:
-            return_obj.set_Handling(self.handling.to_obj())
+            return_obj.set_Handling(self.handling.to_obj(ns_info=ns_info))
 
         return return_obj
 

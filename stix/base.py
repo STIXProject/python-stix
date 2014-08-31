@@ -11,12 +11,124 @@ import cybox
 from cybox.core import Observable, Observables
 from lxml import etree
 
+class NamespaceInfo(object):
+    def __init__(self):
+        self.namespaces = {}
+        self.input_namespaces = {}
+        self.input_schemalocs = {}
+
+    def finalize(self, ns_dict=None, schemaloc_dict=None):
+        from stix.utils import (get_id_namespace, get_id_namespace_alias,
+                                DEFAULT_STIX_NAMESPACES, XML_NAMESPACES,
+                                DEFAULT_STIX_SCHEMALOCATIONS)
+
+        if not ns_dict:
+            ns_dict = {}
+
+        if not schemaloc_dict:
+            schemaloc_dict = {}
+
+        id_ns = get_id_namespace()
+        id_ns_alias = get_id_namespace_alias()
+
+        d_ns = {'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
+                'http://stix.mitre.org/stix-1': 'stix',
+                'http://stix.mitre.org/common-1': 'stixCommon',
+                'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
+                'http://cybox.mitre.org/cybox-2': 'cybox',
+                'http://cybox.mitre.org/common-2': 'cyboxCommon',
+                'http://cybox.mitre.org/default_vocabularies-2': 'cyboxVocabs',
+                id_ns: id_ns_alias}
+
+        for ns, alias in self.input_namespaces.iteritems():
+            if ns not in DEFAULT_STIX_NAMESPACES:
+                d_ns[ns] = alias
+
+        for ns, alias in self.namespaces.iteritems():
+            if alias:
+                d_ns[ns] = alias
+            else:
+                default_alias = DEFAULT_STIX_NAMESPACES[ns]
+                d_ns[ns] = default_alias
+
+        d_ns.update(ns_dict)
+
+        if all((d_ns.get('http://example.com/'),
+               d_ns.get('http://example.com'))):
+            del d_ns['http://example.com/']
+
+        aliases = []
+        for ns, alias in d_ns.iteritems():
+            if alias not in aliases:
+                aliases.append(alias)
+            else:
+                # TODO: Should we just throw an exception here?
+                # The XML will be invalid if there is a duplicate ns alias
+                warnings.warn("namespace alias '%s' mapped to '%s' and '%s'" %
+                              (alias, ns, aliases[alias]))
+
+        d_sl = dict(self.input_schemalocs.items())
+
+        # Iterate over input/discovered namespaces for document and attempt
+        # to map them to schemalocations. Warn if unable to map ns to schemaloc.
+        for ns, _ in d_ns.iteritems():
+            if ns in DEFAULT_STIX_SCHEMALOCATIONS:
+                schemalocation = DEFAULT_STIX_SCHEMALOCATIONS[ns]
+                d_sl[ns] = schemalocation
+            else:
+                if not ((ns == id_ns) or
+                        (ns in schemaloc_dict) or
+                        (ns in self.input_schemalocs) or
+                        (ns in XML_NAMESPACES)):
+                    warnings.warn("Unable to map namespace '%s' to "
+                                  "schemaLocation" % ns)
+
+        d_sl.update(schemaloc_dict)
+
+        self.finalized_schemalocs = d_sl
+        self.finalized_namespaces = d_ns
+
+
+    def collect(self, entity):
+        try:
+            ns_alias, type_ = entity._XSI_TYPE.split(":")
+            self.namespaces[entity._namespace] = ns_alias
+        except:
+            self.namespaces[entity._namespace] = None
+
+        try:
+            self.input_namespaces.update(entity.__input_namespaces__)
+        except AttributeError:
+            pass
+
+        try:
+            self.input_schemalocs.update(entity.__input_schemalocations__)
+        except AttributeError:
+            pass
+
+    def __setitem__(self, key, value):
+        self.namespaces[key] = value
+
+
 class Entity(object):
     """Base class for all classes in the STIX API."""
+    _namespace = None
+    _XSI_TYPE = None
 
-    def to_obj(self, return_obj=None):
+
+    def to_obj(self, return_obj=None, ns_info=None):
+        obj = self._to_obj(return_obj, ns_info)
+
+        if ns_info:
+            ns_info.collect(self)
+
+        return obj
+
+
+    def _to_obj(self, return_obj=None, ns_info=None):
         """Export an object as a binding object representation"""
         raise NotImplementedError()
+
 
     @classmethod
     def from_obj(cls, obj):
@@ -40,35 +152,43 @@ class Entity(object):
                ns_dict=None, schemaloc_dict=None, pretty=True,
                auto_namespace=True):
         """Export an object as an XML String"""
-        import stix.utils.nsparser as nsparser
-        parser = nsparser.NamespaceParser()
+        from stix.utils.nsparser import  NamespaceParser, DEFAULT_STIX_NAMESPACES
+        parser = NamespaceParser()
+
+        if auto_namespace:
+            ns_info = NamespaceInfo()
+        else:
+            ns_info = None
+
+        obj = self.to_obj(ns_info=ns_info)
 
         if (not auto_namespace) and (not ns_dict):
             raise Exception("Auto-namespacing was disabled but ns_dict "
                             "was empty or missing.")
 
         if auto_namespace:
-            nsinfo = parser.get_nsinfo(self, ns_dict, schemaloc_dict)
-            obj_ns_dict = nsinfo.post_ns
+            ns_info.finalize()
+            obj_ns_dict = ns_info.finalized_namespaces
         else:
-            nsinfo = nsparser.NamespaceInfo()
-            nsinfo.post_ns = ns_dict or {}
-            nsinfo.post_schemaloc = schemaloc_dict or {}
-            obj_ns_dict = dict(ns_dict.items() + nsparser.DEFAULT_STIX_NAMESPACES.items())
+            ns_info = NamespaceInfo()
+            ns_info.finalized_namespaces = ns_dict or {}
+            ns_info.finalized_schemalocs = schemaloc_dict or {}
+            obj_ns_dict = dict(ns_dict.items() + DEFAULT_STIX_NAMESPACES.items())
 
         namespace_def = ""
         if include_namespaces:
-            namespace_def += "\n\t" + parser.get_xmlns_str(nsinfo.post_ns)
+            namespace_def += ("\n\t" +
+                              parser.get_xmlns_str(ns_info.finalized_namespaces))
 
         if include_schemalocs and include_namespaces:
             namespace_def += ("\n\t" +
-                              parser.get_schemaloc_str(nsinfo.post_schemaloc))
+                              parser.get_schemaloc_str(ns_info.finalized_schemalocs))
 
         if not pretty:
             namespace_def = namespace_def.replace('\n\t', ' ')
 
         s = StringIO()
-        self.to_obj().export(s.write, 0, obj_ns_dict, pretty_print=pretty,
+        obj.export(s.write, 0, obj_ns_dict, pretty_print=pretty,
                              namespacedef_=namespace_def)
         return s.getvalue()
 
@@ -256,11 +376,11 @@ class EntityList(collections.MutableSequence, Entity):
     # - _contained_type
     # - _inner_name
 
-    def to_obj(self, return_obj=None):
+    def _to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
 
-        setattr(return_obj, self._binding_var, [x.to_obj() for x in self])
+        setattr(return_obj, self._binding_var, [x.to_obj(ns_info=ns_info) for x in self])
 
         return return_obj
 

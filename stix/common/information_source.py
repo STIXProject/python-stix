@@ -154,25 +154,25 @@ class InformationSource(stix.Entity):
             role = InformationSourceRole(value)
             self.roles.append(value=role)
 
-    def to_obj(self, return_obj=None):
+    def _to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
             
         if self.description is not None:
-            return_obj.set_Description(self.description.to_obj())
+            return_obj.set_Description(self.description.to_obj(ns_info=ns_info))
         if self.references:
             references_obj = stix_common_binding.ReferencesType(Reference=self.references)
             return_obj.set_References(references_obj)
         if self.contributing_sources:
-            return_obj.set_Contributing_Sources(self.contributing_sources.to_obj())
+            return_obj.set_Contributing_Sources(self.contributing_sources.to_obj(ns_info=ns_info))
         if self.identity:
-            return_obj.set_Identity(self.identity.to_obj())
+            return_obj.set_Identity(self.identity.to_obj(ns_info=ns_info))
         if self.time:
-            return_obj.set_Time(self.time.to_obj())
+            return_obj.set_Time(self.time.to_obj(ns_info=ns_info))
         if self.tools:
-            return_obj.set_Tools(self.tools.to_obj())
+            return_obj.set_Tools(self.tools.to_obj(ns_info=ns_info))
         if self.roles:
-            return_obj.set_Role([x.to_obj() for x in self.roles])
+            return_obj.set_Role([x.to_obj(ns_info=ns_info) for x in self.roles])
         return return_obj
 
     @classmethod

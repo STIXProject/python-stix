@@ -65,16 +65,16 @@ class COATaken(stix.Entity):
         
         return return_obj
 
-    def to_obj(self, return_obj=None):
+    def _to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
             
         if self.time:
-            return_obj.set_Time(self.time.to_obj())
+            return_obj.set_Time(self.time.to_obj(ns_info=ns_info))
         if self.contributors:
-            return_obj.set_Contributors(self.contributors.to_obj())
+            return_obj.set_Contributors(self.contributors.to_obj(ns_info=ns_info))
         if self.course_of_action:
-            return_obj.set_Course_Of_Action(self.course_of_action.to_obj())
+            return_obj.set_Course_Of_Action(self.course_of_action.to_obj(ns_info=ns_info))
         
         return return_obj
     
@@ -150,14 +150,14 @@ class COATime(stix.Entity):
         return_obj.end = DateTimeWithPrecision.from_obj(obj.get_End())
         return return_obj
     
-    def to_obj(self, return_obj=None):
+    def _to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
             
         if self.start:
-            return_obj.set_Start(self.start.to_obj())
+            return_obj.set_Start(self.start.to_obj(ns_info=ns_info))
         if self.end:
-            return_obj.set_End(self.end.to_obj())
+            return_obj.set_End(self.end.to_obj(ns_info=ns_info))
         
         return return_obj
     

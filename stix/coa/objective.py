@@ -44,16 +44,16 @@ class Objective(stix.Entity):
         else:
             self._short_description = None
 
-    def to_obj(self, return_obj=None):
+    def _to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
 
         if self.description:
-            return_obj.set_Description(self.description.to_obj())
+            return_obj.set_Description(self.description.to_obj(ns_info=ns_info))
         if self.short_description:
-            return_obj.set_Short_Description(self.short_description.to_obj())
+            return_obj.set_Short_Description(self.short_description.to_obj(ns_info=ns_info))
         if self.applicability_confidence:
-            return_obj.set_Applicability_Confidence(self.applicability_confidence.to_obj())
+            return_obj.set_Applicability_Confidence(self.applicability_confidence.to_obj(ns_info=ns_info))
 
         return return_obj
 

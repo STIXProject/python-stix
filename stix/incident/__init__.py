@@ -446,7 +446,7 @@ class Incident(stix.Entity):
         else:
             raise ValueError("Cannot add coa_taken of type %s" % type(value))
 
-    def to_obj(self, return_obj=None):
+    def _to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
 
@@ -457,56 +457,56 @@ class Incident(stix.Entity):
         return_obj.set_Title(self.title)
         
         if self.description:
-            return_obj.set_Description(self.description.to_obj())
+            return_obj.set_Description(self.description.to_obj(ns_info=ns_info))
         if self.short_description:
-            return_obj.set_Short_Description(self.short_description.to_obj())
+            return_obj.set_Short_Description(self.short_description.to_obj(ns_info=ns_info))
         if self.time:
-            return_obj.set_Time(self.time.to_obj())
+            return_obj.set_Time(self.time.to_obj(ns_info=ns_info))
         if self.victims:
-            return_obj.set_Victim([x.to_obj() for x in self.victims])
+            return_obj.set_Victim([x.to_obj(ns_info=ns_info) for x in self.victims])
         if self.attributed_threat_actors:
-            return_obj.set_Attributed_Threat_Actors(self.attributed_threat_actors.to_obj())
+            return_obj.set_Attributed_Threat_Actors(self.attributed_threat_actors.to_obj(ns_info=ns_info))
         if self.related_indicators:
-            return_obj.set_Related_Indicators(self.related_indicators.to_obj())
+            return_obj.set_Related_Indicators(self.related_indicators.to_obj(ns_info=ns_info))
         if self.related_observables:
-            return_obj.set_Related_Observables(self.related_observables.to_obj())
+            return_obj.set_Related_Observables(self.related_observables.to_obj(ns_info=ns_info))
         if self.related_incidents:
-            return_obj.set_Related_Incidents(self.related_incidents.to_obj())
+            return_obj.set_Related_Incidents(self.related_incidents.to_obj(ns_info=ns_info))
         if self.categories:
-            return_obj.set_Categories(self._binding.CategoriesType(Category=[x.to_obj() for x in self.categories]))
+            return_obj.set_Categories(self._binding.CategoriesType(Category=[x.to_obj(ns_info=ns_info) for x in self.categories]))
         if self.intended_effects:
-            return_obj.set_Intended_Effect([x.to_obj() for x in self.intended_effects])
+            return_obj.set_Intended_Effect([x.to_obj(ns_info=ns_info) for x in self.intended_effects])
         if self.leveraged_ttps:
-            return_obj.set_Leveraged_TTPs(self.leveraged_ttps.to_obj())
+            return_obj.set_Leveraged_TTPs(self.leveraged_ttps.to_obj(ns_info=ns_info))
         if self.affected_assets:
-            a = self._binding.AffectedAssetsType(Affected_Asset=[x.to_obj() for x in self.affected_assets])
+            a = self._binding.AffectedAssetsType(Affected_Asset=[x.to_obj(ns_info=ns_info) for x in self.affected_assets])
             return_obj.set_Affected_Assets(a)
         if self.discovery_methods:
-            return_obj.set_Discovery_Method([x.to_obj() for x in self.discovery_methods])
+            return_obj.set_Discovery_Method([x.to_obj(ns_info=ns_info) for x in self.discovery_methods])
         if self.reporter:
-            return_obj.set_Reporter(self.reporter.to_obj())
+            return_obj.set_Reporter(self.reporter.to_obj(ns_info=ns_info))
         if self.responders:
-            return_obj.set_Responder([x.to_obj() for x in self.responders])
+            return_obj.set_Responder([x.to_obj(ns_info=ns_info) for x in self.responders])
         if self.coordinators:
-            return_obj.set_Coordinator([x.to_obj() for x in self.coordinators])
+            return_obj.set_Coordinator([x.to_obj(ns_info=ns_info) for x in self.coordinators])
         if self.external_ids:
-            return_obj.set_External_ID([x.to_obj() for x in self.external_ids])
+            return_obj.set_External_ID([x.to_obj(ns_info=ns_info) for x in self.external_ids])
         if self.impact_assessment:
-            return_obj.set_Impact_Assessment(self.impact_assessment.to_obj())
+            return_obj.set_Impact_Assessment(self.impact_assessment.to_obj(ns_info=ns_info))
         if self.information_source:
-            return_obj.set_Information_Source(self.information_source.to_obj())
+            return_obj.set_Information_Source(self.information_source.to_obj(ns_info=ns_info))
         if self.security_compromise:
-            return_obj.set_Security_Compromise(self.security_compromise.to_obj())
+            return_obj.set_Security_Compromise(self.security_compromise.to_obj(ns_info=ns_info))
         if self.confidence:
-            return_obj.set_Confidence(self.confidence.to_obj())
+            return_obj.set_Confidence(self.confidence.to_obj(ns_info=ns_info))
         if self.coa_taken:
-            return_obj.set_COA_Taken([x.to_obj() for x in self.coa_taken])
+            return_obj.set_COA_Taken([x.to_obj(ns_info=ns_info) for x in self.coa_taken])
         if self.status:
-            return_obj.set_Status(self.status.to_obj())
+            return_obj.set_Status(self.status.to_obj(ns_info=ns_info))
         if self.handling:
-            return_obj.set_Handling(self.handling.to_obj())
+            return_obj.set_Handling(self.handling.to_obj(ns_info=ns_info))
         if self.history:
-            return_obj.set_History(self.history.to_obj())
+            return_obj.set_History(self.history.to_obj(ns_info=ns_info))
 
         return return_obj
 

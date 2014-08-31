@@ -210,7 +210,7 @@ class Campaign(stix.Entity):
         else:
             self._status = CampaignStatus(value)
 
-    def to_obj(self, return_obj=None):
+    def _to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
 
@@ -221,35 +221,35 @@ class Campaign(stix.Entity):
         return_obj.set_version(self.version)
         return_obj.set_Title(self.title)
         if self.description:
-            return_obj.set_Description(self.description.to_obj())
+            return_obj.set_Description(self.description.to_obj(ns_info=ns_info))
         if self.short_description:
-            return_obj.set_Short_Description(self.short_description.to_obj())
+            return_obj.set_Short_Description(self.short_description.to_obj(ns_info=ns_info))
         if self.names:
-            return_obj.set_Names(self.names.to_obj())
+            return_obj.set_Names(self.names.to_obj(ns_info=ns_info))
         if self.intended_effects:
-            return_obj.set_Intended_Effect([x.to_obj() for x in self.intended_effects])
+            return_obj.set_Intended_Effect([x.to_obj(ns_info=ns_info) for x in self.intended_effects])
         if self.status:
-            return_obj.set_Status(self.status.to_obj())
+            return_obj.set_Status(self.status.to_obj(ns_info=ns_info))
         if self.related_ttps:
-            return_obj.set_Related_TTPs(self.related_ttps.to_obj())
+            return_obj.set_Related_TTPs(self.related_ttps.to_obj(ns_info=ns_info))
         if self.related_incidents:
-            return_obj.set_Related_Incidents(self.related_incidents.to_obj())
+            return_obj.set_Related_Incidents(self.related_incidents.to_obj(ns_info=ns_info))
         if self.related_indicators:
-            return_obj.set_Related_Indicators(self.related_indicators.to_obj())
+            return_obj.set_Related_Indicators(self.related_indicators.to_obj(ns_info=ns_info))
         if self.attribution:
-            return_obj.set_Attribution([x.to_obj() for x in self.attribution])
+            return_obj.set_Attribution([x.to_obj(ns_info=ns_info) for x in self.attribution])
         if self.associated_campaigns:
-            return_obj.set_Associated_Campaigns(self.associated_campaigns.to_obj())
+            return_obj.set_Associated_Campaigns(self.associated_campaigns.to_obj(ns_info=ns_info))
         if self.confidence:
-            return_obj.set_Confidence(self.confidence.to_obj())
+            return_obj.set_Confidence(self.confidence.to_obj(ns_info=ns_info))
         if self.activity:
-            return_obj.set_Activity([x.to_obj() for x in self.activity])
+            return_obj.set_Activity([x.to_obj(ns_info=ns_info) for x in self.activity])
         if self.information_source:
-            return_obj.set_Information_Source(self.information_source.to_obj())
+            return_obj.set_Information_Source(self.information_source.to_obj(ns_info=ns_info))
         if self.handling:
-            return_obj.set_Handling(self.handling.to_obj())
+            return_obj.set_Handling(self.handling.to_obj(ns_info=ns_info))
         if self.related_packages:
-            return_obj.set_Related_Packages(self.related_packages.to_obj())
+            return_obj.set_Related_Packages(self.related_packages.to_obj(ns_info=ns_info))
 
         return return_obj
 

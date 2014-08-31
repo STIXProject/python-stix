@@ -226,7 +226,7 @@ class CourseOfAction(stix.Entity):
 
         self._handling = value
 
-    def to_obj(self, return_obj=None):
+    def _to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
 
@@ -237,31 +237,31 @@ class CourseOfAction(stix.Entity):
         return_obj.set_version(self.version)
         return_obj.set_Title(self.title)
         if self.stage:
-            return_obj.set_Stage(self.stage.to_obj())
+            return_obj.set_Stage(self.stage.to_obj(ns_info=ns_info))
         if self.type_:
-            return_obj.set_Type(self.type_.to_obj())
+            return_obj.set_Type(self.type_.to_obj(ns_info=ns_info))
         if self.description:
-            return_obj.set_Description(self.description.to_obj())
+            return_obj.set_Description(self.description.to_obj(ns_info=ns_info))
         if self.short_description:
-            return_obj.set_Short_Description(self.short_description.to_obj())
+            return_obj.set_Short_Description(self.short_description.to_obj(ns_info=ns_info))
         if self.objective:
-            return_obj.set_Objective(self.objective.to_obj())
+            return_obj.set_Objective(self.objective.to_obj(ns_info=ns_info))
         if self.parameter_observables:
-            return_obj.set_Parameter_Observables(self.parameter_observables.to_obj())
+            return_obj.set_Parameter_Observables(self.parameter_observables.to_obj(ns_info=ns_info))
         if self.impact:
-            return_obj.set_Impact(self.impact.to_obj())
+            return_obj.set_Impact(self.impact.to_obj(ns_info=ns_info))
         if self.cost:
-            return_obj.set_Cost(self.cost.to_obj())
+            return_obj.set_Cost(self.cost.to_obj(ns_info=ns_info))
         if self.efficacy:
-            return_obj.set_Efficacy(self.efficacy.to_obj())
+            return_obj.set_Efficacy(self.efficacy.to_obj(ns_info=ns_info))
         if self.information_source:
-            return_obj.set_Information_Source(self.information_source.to_obj())
+            return_obj.set_Information_Source(self.information_source.to_obj(ns_info=ns_info))
         if self.handling:
-            return_obj.set_Handling(self.handling.to_obj())
+            return_obj.set_Handling(self.handling.to_obj(ns_info=ns_info))
         if self.related_coas:
-            return_obj.set_Related_COAs(self.related_coas.to_obj())
+            return_obj.set_Related_COAs(self.related_coas.to_obj(ns_info=ns_info))
         if self.related_packages:
-            return_obj.set_Related_Packages(self.related_packages.to_obj())
+            return_obj.set_Related_Packages(self.related_packages.to_obj(ns_info=ns_info))
 
         return return_obj
 

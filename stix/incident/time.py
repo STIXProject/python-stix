@@ -151,28 +151,28 @@ class Time(stix.Entity):
             self._incident_closed = None
 
 
-    def to_obj(self, return_obj=None):
+    def _to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
 
         if self.first_malicious_action:
-            return_obj.set_First_Malicious_Action(self.first_malicious_action.to_obj())
+            return_obj.set_First_Malicious_Action(self.first_malicious_action.to_obj(ns_info=ns_info))
         if self.initial_compromise:
-            return_obj.set_Initial_Compromise(self.initial_compromise.to_obj())
+            return_obj.set_Initial_Compromise(self.initial_compromise.to_obj(ns_info=ns_info))
         if self.first_data_exfiltration:
-            return_obj.set_First_Data_Exfiltration(self.first_data_exfiltration.to_obj())
+            return_obj.set_First_Data_Exfiltration(self.first_data_exfiltration.to_obj(ns_info=ns_info))
         if self._incident_discovery:
-            return_obj.set_Incident_Discovery(self.incident_discovery.to_obj())
+            return_obj.set_Incident_Discovery(self.incident_discovery.to_obj(ns_info=ns_info))
         if self.incident_opened:
-            return_obj.set_Incident_Opened(self.incident_opened.to_obj())
+            return_obj.set_Incident_Opened(self.incident_opened.to_obj(ns_info=ns_info))
         if self.containment_achieved:
-            return_obj.set_Containment_Achieved(self.containment_achieved.to_obj())
+            return_obj.set_Containment_Achieved(self.containment_achieved.to_obj(ns_info=ns_info))
         if self.restoration_achieved:
-            return_obj.set_Restoration_Achieved(self.restoration_achieved.to_obj())
+            return_obj.set_Restoration_Achieved(self.restoration_achieved.to_obj(ns_info=ns_info))
         if self.incident_reported:
-            return_obj.set_Incident_Reported(self.incident_reported.to_obj())
+            return_obj.set_Incident_Reported(self.incident_reported.to_obj(ns_info=ns_info))
         if self.incident_closed:
-            return_obj.set_Incident_Closed(self.incident_closed.to_obj())
+            return_obj.set_Incident_Closed(self.incident_closed.to_obj(ns_info=ns_info))
 
         return return_obj
 

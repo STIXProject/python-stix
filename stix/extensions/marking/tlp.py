@@ -13,10 +13,10 @@ class TLPMarkingStructure(MarkingStructure):
         super(TLPMarkingStructure, self).__init__()
         self.color = None
 
-    def to_obj(self):
+    def _to_obj(self, return_obj=None, ns_info=None):
         obj = self._binding_class()
 
-        MarkingStructure.to_obj(self, obj)
+        MarkingStructure._to_obj(self, obj)
 
         obj.set_color(self.color)
 

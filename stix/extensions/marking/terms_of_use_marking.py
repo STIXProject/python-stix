@@ -13,10 +13,10 @@ class TermsOfUseMarkingStructure(MarkingStructure):
         super(TermsOfUseMarkingStructure, self).__init__()
         self.terms_of_use = None
 
-    def to_obj(self):
+    def _to_obj(self, return_obj=None, ns_info=None):
         obj = self._binding_class()
 
-        MarkingStructure.to_obj(self, obj)
+        MarkingStructure._to_obj(self, obj)
 
         obj.set_Terms_Of_Use(self.terms_of_use)
 

@@ -7,7 +7,7 @@ import unittest
 from stix.incident import Incident
 import stix.bindings.incident as incident_binding
 from cybox.common import StructuredText
-from cybox.test import EntityTestCase
+from stix.test import EntityTestCase
 
 INCIDENT_CATEGORIES = """<?xml version="1.0" encoding="UTF-8"?>
 <incident:Incident

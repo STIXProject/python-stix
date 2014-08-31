@@ -69,7 +69,7 @@ class VocabString(stix.Entity):
 
         return VocabString
 
-    def to_obj(self, return_obj=None):
+    def _to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
 
