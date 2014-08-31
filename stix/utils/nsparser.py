@@ -1,12 +1,7 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-import collections
 import warnings
-import stix
-from stix.utils import get_id_namespace, get_id_namespace_alias
-import cybox
-from cybox.core import Observables, Observable
 from cybox.common import ObjectProperties, BaseProperty
 import cybox.utils.nsparser as cybox_nsparser
 
@@ -120,6 +115,7 @@ class NamespaceParser(object):
         pass
 
     def _walkns(self, entity):
+        # Skip some python-cybox classes and properties
         skip = {ObjectProperties : ('_parent'),
                 BaseProperty: None}
 
