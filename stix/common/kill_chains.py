@@ -11,7 +11,7 @@ class KillChain(stix.Entity):
     _binding_class = _binding.KillChainType
     
     def __init__(self, id_=None, name=None):
-        self.id_ = id_ or stix.utils.create_id("killchain")
+        self.id_ = id_
         self.name = name
         self.definer = None
         self.reference = None
@@ -106,7 +106,7 @@ class KillChainPhase(stix.Entity):
     _binding_class = _binding.KillChainPhaseType
     
     def __init__(self, phase_id=None, name=None, ordinality=None):
-        self.phase_id = phase_id or stix.utils.create_id("killchainphase")
+        self.phase_id = phase_id
         self.name = name
         self.ordinality = ordinality
     

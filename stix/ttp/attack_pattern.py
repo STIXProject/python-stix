@@ -12,7 +12,7 @@ class AttackPattern(stix.Entity):
     _namespace = "http://stix.mitre.org/TTP-1"
 
     def __init__(self, id_=None, title=None, description=None, short_description=None):
-        self.id_ = id_ or stix.utils.create_id("attackpattern")
+        self.id_ = id_
         self.capec_id = None
         self.title = title
         self.description = description

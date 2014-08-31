@@ -16,7 +16,7 @@ class Identity(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
 
     def __init__(self, id_=None, idref=None, name=None, related_identities=None):
-        self.id_ = id_ or stix.utils.create_id("Identity")
+        self.id_ = id_
         self.idref = idref
         self.name = name
         self.related_identities = RelatedIdentities()
