@@ -12,7 +12,7 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
     _full_dict = {
         'id': "example:Campaign-341",
         'timestamp': "2014-01-31T06:14:46",
-        'version': '1.1.1',
+        'version': '1.1.1.test',
         'title': 'Purple Elephant',
         'description': 'A pretty novice set of actors.',
         'short_description': 'novices',
@@ -35,7 +35,7 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
             'ttps': [
                 {
                     'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
-                    'ttp': {'title': "Stealth", 'version': '1.1.1'},
+                    'ttp': {'title': "Stealth", 'version': '1.1.1.test'},
                 }
             ]
         },
@@ -45,7 +45,7 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
                 {
                     'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
                     'incident': {'idref': "example:Incident-2",
-                                 'version': '1.1.1'},
+                                 'version': '1.1.1.test'},
                 }
             ]
         },
@@ -55,7 +55,7 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
                 {
                     'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
                     'indicator': {'idref': "example:Indicator-77",
-                                  'version': '2.1.1'},
+                                  'version': '2.1.1.test'},
                 }
             ]
         },
@@ -65,11 +65,11 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
                 {
                     'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
                     'threat_actor': {'title': "Campaign Actor #1",
-                                     'version': '1.1.1'},
+                                     'version': '1.1.1.test'},
                 },
                 {
                     'threat_actor': {'idref': "example:ThreatActor-111",
-                                     'version': '1.1.1'},
+                                     'version': '1.1.1.test'},
                 },
             ],
         }],
@@ -79,7 +79,7 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
                 {
                     'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
                     'information_source': {'description': "Threat Feed"},
-                    'campaign': {'title': "Baby Elephant", 'version': '1.1.1'},
+                    'campaign': {'title': "Baby Elephant", 'version': '1.1.1.test'},
                 }
             ],
         },

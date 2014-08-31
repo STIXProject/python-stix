@@ -37,7 +37,7 @@ class Incident(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("incident")
         self.idref = idref
-        self.version = self._version
+        self.version = None # self._version
         self.description = description
         self.short_description = short_description
         self.title = title
@@ -81,6 +81,20 @@ class Incident(stix.Entity):
         else:
             self._id = value
             self.idref = None
+    
+    @property
+    def version(self):
+        return self._version
+    
+    @version.setter
+    def version(self, value):
+        if not value:
+            self._version = None
+        else:
+            if value != Incident._version:
+                self._version = value
+            else:
+                self._version = None
     
     @property
     def idref(self):

@@ -7,7 +7,7 @@ class COATests(EntityTestCase, unittest.TestCase):
     _full_dict = {
         'id': 'example:coa-1',
         'timestamp': "2014-03-20T04:35:12",
-        'version': '1.1',
+        'version': '1.1.test',
         'title': "COA1",
         'stage':  {'value': 'Remedy', 'xsi:type': 'stixVocabs:COAStageVocab-1.0'},
         'type': {'value': 'Redirection', 'xsi:type': 'stixVocabs:CourseOfActionTypeVocab-1.0'},

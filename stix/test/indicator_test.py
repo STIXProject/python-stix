@@ -67,7 +67,7 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
             'time': {'produced_time': '2014-02-21T10:16:14.947201'}
         },
         'title': 'File Hash Example',
-        'version': '2.1.1'
+        'version': '2.1.1.test'
     }
 
 if __name__ == "__main__":
