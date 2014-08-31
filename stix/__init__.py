@@ -3,7 +3,7 @@
 
 __version__ = "1.1.1.1"
 
-from .base import Entity, EntityList, NamespaceInfo
+from .base import Entity, EntityList
 
 # Make sure common gets imported before anything else.
 from . import common

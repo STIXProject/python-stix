@@ -4,7 +4,8 @@
 import json
 import unittest
 
-from stix import Entity, EntityList, NamespaceInfo
+from stix import Entity, EntityList
+from stix.utils import NamespaceInfo
 import stix.bindings.stix_core as core_binding
 from stix.core import STIXPackage
 import stix.utils
