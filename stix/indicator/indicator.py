@@ -113,7 +113,7 @@ class RelatedIndicators(GenericRelationshipList):
         :class:`Indicator` will be wrapped in an instance of
         :class:`stix.common.related.RelatedIndicator`:
 
-        >>> related = Indicator())
+        >>> related = Indicator()
         >>> parent_indicator = Indicator()
         >>> parent_indicator.related_indicators.append(related)
         >>> print type(indicator.related_indicators[0])
@@ -297,18 +297,18 @@ class Indicator(stix.Entity):
         property declares the time of creation and is automatically set in
         ``__init__()``.
 
+        This property can accept ``datetime.datetime`` or ``str`` values.
+        If an ``str`` value is supplied, a best-effort attempt is made to
+        parse it into an instance of ``datetime.datetime``.
+
         Default Value: A ``datetime.dateime`` instance with a value of the
         date/time when ``__init__()`` was called.
 
         Note:
-            If an ``idref`` is set during ``__init__()``, the value of ``timestamp``
-            will default to the ``timestamp`` parameter, which has a default
-            value of ``None``.
-
-        Note:
-            This property can accept ``datetime.datetime`` or ``str`` values.
-            If an ``str`` value is supplied, a best-effort attempt is made to
-            parse it into an instance of ``datetime.datetime``.
+            If an ``idref`` is set during ``__init__()``, the value of
+            ``timestamp`` will not automatically generated and instead default
+            to the ``timestamp`` parameter, which has a default value of
+            ``None``.
 
         Returns:
             An instance of ``datetime.datetime``.
