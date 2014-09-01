@@ -162,6 +162,7 @@ class Indicator(stix.Entity):
             ``idref`` property.
         idref (optional): An identifier reference. If set this will unset the
             ``id_`` property.
+        title (optional): A string title.
         timestamp (optional): A timestamp value. Can be an instance of
             ``datetime.datetime`` or ``str``.
         description (optional): A string description.
