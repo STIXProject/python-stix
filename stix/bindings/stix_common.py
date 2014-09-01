@@ -342,6 +342,31 @@ def find_attr_value_(attr_name, node):
             value = attrs.get('{%s}%s' % (namespace, name, ))
     return value
 
+def find_attr_value_qname(attr_name, node):
+    attrs = node.attrib
+    attr_parts = attr_name.split(':')
+    value = None
+    if len(attr_parts) == 1:
+        value = attrs.get(attr_name)
+    elif len(attr_parts) == 2:
+        prefix, name = attr_parts
+        namespace = node.nsmap.get(prefix)
+        if namespace is not None:
+            value = attrs.get('{%s}%s' % (namespace, name, ))
+    if value is None:
+        return None, None
+    val_parts = value.split(':')
+    if len(val_parts) == 1:
+        return value, None
+    elif len(val_parts) == 2:
+        prefix, data = val_parts
+        namespace = node.nsmap.get(prefix)
+        if namespace is not None:
+            return value, namespace
+        else:
+            raise ValueError("No namespace defined for qname prefix %s" % (prefix))
+    else:
+        raise ValueError("Malformed qname %s" % (value))
 
 class GDSParseError(Exception):
     pass
@@ -2617,9 +2642,11 @@ class IndicatorBaseType(GeneratedsSuper):
     specified elsewhere."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, timestamp=None):
+    def __init__(self, idref=None, id=None, timestamp=None, idrefns=None, idns=None):
         self.idref = _cast(None, idref)
+        self.idrefns = _cast(None, idrefns)
         self.id = _cast(None, id)
+        self.idns = _cast(None, idns)
         self.timestamp = _cast(None, timestamp)
     def factory(*args_, **kwargs_):
         if IndicatorBaseType.subclass:
@@ -2627,9 +2654,9 @@ class IndicatorBaseType(GeneratedsSuper):
         else:
             return IndicatorBaseType(*args_, **kwargs_)
     factory = staticmethod(factory)
-    def get_idref(self): return self.idref
+    def get_idref(self): return self.idref, self.idrefns
     def set_idref(self, idref): self.idref = idref
-    def get_id(self): return self.id
+    def get_id(self): return self.id, self.idns
     def set_id(self, id): self.id = id
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
@@ -2674,14 +2701,16 @@ class IndicatorBaseType(GeneratedsSuper):
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
-        value = find_attr_value_('idref', node)
+        value,ns = find_attr_value_qname('idref', node)
         if value is not None and 'idref' not in already_processed:
             already_processed.add('idref')
             self.idref = value
-        value = find_attr_value_('id', node)
+            self.idrefns = ns
+        value,ns = find_attr_value_qname('id', node)
         if value is not None and 'id' not in already_processed:
             already_processed.add('id')
             self.id = value
+            self.idns = ns
         value = find_attr_value_('timestamp', node)
         if value is not None and 'timestamp' not in already_processed:
             already_processed.add('timestamp')
@@ -2717,9 +2746,11 @@ class IncidentBaseType(GeneratedsSuper):
     in conjunction with the idref field."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, timestamp=None):
+    def __init__(self, idref=None, id=None, timestamp=None, idrefns=None, idns=None):
         self.idref = _cast(None, idref)
+        self.idrefns = _cast(None, idrefns)
         self.id = _cast(None, id)
+        self.idns = _cast(None, idns)
         self.timestamp = _cast(None, timestamp)
         pass
     def factory(*args_, **kwargs_):
@@ -2728,9 +2759,9 @@ class IncidentBaseType(GeneratedsSuper):
         else:
             return IncidentBaseType(*args_, **kwargs_)
     factory = staticmethod(factory)
-    def get_idref(self): return self.idref
+    def get_idref(self): return self.idref, self.idrefns
     def set_idref(self, idref): self.idref = idref
-    def get_id(self): return self.id
+    def get_id(self): return self.id, self.idns
     def set_id(self, id): self.id = id
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
@@ -2775,14 +2806,16 @@ class IncidentBaseType(GeneratedsSuper):
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
-        value = find_attr_value_('idref', node)
+        value,ns = find_attr_value_qname('idref', node)
         if value is not None and 'idref' not in already_processed:
             already_processed.add('idref')
             self.idref = value
-        value = find_attr_value_('id', node)
+            self.idrefns = ns
+        value,ns = find_attr_value_qname('id', node)
         if value is not None and 'id' not in already_processed:
             already_processed.add('id')
             self.id = value
+            self.idns = ns
         value = find_attr_value_('timestamp', node)
         if value is not None and 'timestamp' not in already_processed:
             already_processed.add('timestamp')
@@ -2818,9 +2851,11 @@ class TTPBaseType(GeneratedsSuper):
     conjunction with the idref field."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, timestamp=None):
+    def __init__(self, idref=None, id=None, timestamp=None, idrefns=None, idns=None):
         self.idref = _cast(None, idref)
+        self.idrefns = _cast(None, idrefns)
         self.id = _cast(None, id)
+        self.idns = _cast(None, idns)
         self.timestamp = _cast(None, timestamp)
         pass
     def factory(*args_, **kwargs_):
@@ -2829,9 +2864,9 @@ class TTPBaseType(GeneratedsSuper):
         else:
             return TTPBaseType(*args_, **kwargs_)
     factory = staticmethod(factory)
-    def get_idref(self): return self.idref
+    def get_idref(self): return self.idref, self.idrefns
     def set_idref(self, idref): self.idref = idref
-    def get_id(self): return self.id
+    def get_id(self): return self.id, self.idns
     def set_id(self, id): self.id = id
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
@@ -2876,14 +2911,16 @@ class TTPBaseType(GeneratedsSuper):
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
-        value = find_attr_value_('idref', node)
+        value,ns = find_attr_value_qname('idref', node)
         if value is not None and 'idref' not in already_processed:
             already_processed.add('idref')
             self.idref = value
-        value = find_attr_value_('id', node)
+            self.idrefns = ns
+        value,ns = find_attr_value_qname('id', node)
         if value is not None and 'id' not in already_processed:
             already_processed.add('id')
             self.id = value
+            self.idns = ns
         value = find_attr_value_('timestamp', node)
         if value is not None and 'timestamp' not in already_processed:
             already_processed.add('timestamp')
@@ -2920,9 +2957,11 @@ class ExploitTargetBaseType(GeneratedsSuper):
     be used in conjunction with the idref field."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, timestamp=None):
+    def __init__(self, idref=None, id=None, timestamp=None, idrefns=None, idns=None):
         self.idref = _cast(None, idref)
+        self.idrefns = _cast(None, idrefns)
         self.id = _cast(None, id)
+        self.idns = _cast(None, idns)
         self.timestamp = _cast(None, timestamp)
         pass
     def factory(*args_, **kwargs_):
@@ -2931,9 +2970,9 @@ class ExploitTargetBaseType(GeneratedsSuper):
         else:
             return ExploitTargetBaseType(*args_, **kwargs_)
     factory = staticmethod(factory)
-    def get_idref(self): return self.idref
+    def get_idref(self): return self.idref, self.idrefns
     def set_idref(self, idref): self.idref = idref
-    def get_id(self): return self.id
+    def get_id(self): return self.id, self.idns
     def set_id(self, id): self.id = id
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
@@ -2978,14 +3017,16 @@ class ExploitTargetBaseType(GeneratedsSuper):
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
-        value = find_attr_value_('idref', node)
+        value,ns = find_attr_value_qname('idref', node)
         if value is not None and 'idref' not in already_processed:
             already_processed.add('idref')
             self.idref = value
-        value = find_attr_value_('id', node)
+            self.idrefns = ns
+        value,ns = find_attr_value_qname('id', node)
         if value is not None and 'id' not in already_processed:
             already_processed.add('id')
             self.id = value
+            self.idns = ns
         value = find_attr_value_('timestamp', node)
         if value is not None and 'timestamp' not in already_processed:
             already_processed.add('timestamp')
@@ -3021,9 +3062,11 @@ class CourseOfActionBaseType(GeneratedsSuper):
     field must only be used in conjunction with the idref field."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, timestamp=None):
+    def __init__(self, idref=None, id=None, timestamp=None, idrefns=None, idns=None):
         self.idref = _cast(None, idref)
+        self.idrefns = _cast(None, idrefns)
         self.id = _cast(None, id)
+        self.idns = _cast(None, idns)
         self.timestamp = _cast(None, timestamp)
         pass
     def factory(*args_, **kwargs_):
@@ -3032,9 +3075,9 @@ class CourseOfActionBaseType(GeneratedsSuper):
         else:
             return CourseOfActionBaseType(*args_, **kwargs_)
     factory = staticmethod(factory)
-    def get_idref(self): return self.idref
+    def get_idref(self): return self.idref, self.idrefns
     def set_idref(self, idref): self.idref = idref
-    def get_id(self): return self.id
+    def get_id(self): return self.id, self.idns
     def set_id(self, id): self.id = id
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
@@ -3079,14 +3122,16 @@ class CourseOfActionBaseType(GeneratedsSuper):
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
-        value = find_attr_value_('idref', node)
+        value,ns = find_attr_value_qname('idref', node)
         if value is not None and 'idref' not in already_processed:
             already_processed.add('idref')
             self.idref = value
-        value = find_attr_value_('id', node)
+            self.idrefns = ns
+        value,ns = find_attr_value_qname('id', node)
         if value is not None and 'id' not in already_processed:
             already_processed.add('id')
             self.id = value
+            self.idns = ns
         value = find_attr_value_('timestamp', node)
         if value is not None and 'timestamp' not in already_processed:
             already_processed.add('timestamp')
@@ -3342,9 +3387,11 @@ class CampaignBaseType(GeneratedsSuper):
     in conjunction with the idref field."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, timestamp=None):
+    def __init__(self, idref=None, id=None, timestamp=None, idrefns=None, idns=None):
         self.idref = _cast(None, idref)
+        self.idrefns = _cast(None, idrefns)
         self.id = _cast(None, id)
+        self.idns = _cast(None, idns)
         self.timestamp = _cast(None, timestamp)
         pass
     def factory(*args_, **kwargs_):
@@ -3353,9 +3400,9 @@ class CampaignBaseType(GeneratedsSuper):
         else:
             return CampaignBaseType(*args_, **kwargs_)
     factory = staticmethod(factory)
-    def get_idref(self): return self.idref
+    def get_idref(self): return self.idref, self.idrefns
     def set_idref(self, idref): self.idref = idref
-    def get_id(self): return self.id
+    def get_id(self): return self.id, self.idns
     def set_id(self, id): self.id = id
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
@@ -3400,14 +3447,16 @@ class CampaignBaseType(GeneratedsSuper):
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
-        value = find_attr_value_('idref', node)
+        value,ns = find_attr_value_qname('idref', node)
         if value is not None and 'idref' not in already_processed:
             already_processed.add('idref')
             self.idref = value
-        value = find_attr_value_('id', node)
+            self.idrefns = ns
+        value,ns = find_attr_value_qname('id', node)
         if value is not None and 'id' not in already_processed:
             already_processed.add('id')
             self.id = value
+            self.idns = ns
         value = find_attr_value_('timestamp', node)
         if value is not None and 'timestamp' not in already_processed:
             already_processed.add('timestamp')
@@ -3444,9 +3493,11 @@ class ThreatActorBaseType(GeneratedsSuper):
     used in conjunction with the idref field."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, timestamp=None):
+    def __init__(self, idref=None, id=None, timestamp=None, idrefns=None, idns=None):
         self.idref = _cast(None, idref)
+        self.idrefns = _cast(None, idrefns)
         self.id = _cast(None, id)
+        self.idns = _cast(None, idns)
         self.timestamp = _cast(None, timestamp)
         pass
     def factory(*args_, **kwargs_):
@@ -3455,9 +3506,9 @@ class ThreatActorBaseType(GeneratedsSuper):
         else:
             return ThreatActorBaseType(*args_, **kwargs_)
     factory = staticmethod(factory)
-    def get_idref(self): return self.idref
+    def get_idref(self): return self.idref, self.idrefns
     def set_idref(self, idref): self.idref = idref
-    def get_id(self): return self.id
+    def get_id(self): return self.id, self.idns
     def set_id(self, id): self.id = id
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
@@ -3502,14 +3553,16 @@ class ThreatActorBaseType(GeneratedsSuper):
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
-        value = find_attr_value_('idref', node)
+        value,ns = find_attr_value_qname('idref', node)
         if value is not None and 'idref' not in already_processed:
             already_processed.add('idref')
             self.idref = value
-        value = find_attr_value_('id', node)
+            self.idrefns = ns
+        value,ns = find_attr_value_qname('id', node)
         if value is not None and 'id' not in already_processed:
             already_processed.add('id')
             self.id = value
+            self.idns = ns
         value = find_attr_value_('timestamp', node)
         if value is not None and 'timestamp' not in already_processed:
             already_processed.add('timestamp')

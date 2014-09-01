@@ -517,8 +517,8 @@ class Incident(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = obj.get_id()
-        return_obj.idref = obj.get_idref()
+        return_obj.id_,return_obj.id_ns = obj.get_id()
+        return_obj.idref,return_obj.idref_ns = obj.get_idref()
         return_obj.timestamp = obj.get_timestamp()
         
         if isinstance(obj, cls._binding_class):
