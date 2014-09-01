@@ -385,3 +385,6 @@ class CourseOfAction(stix.Entity):
                 RelatedPackageRefs.from_dict(dict_repr.get('related_packages'))
 
         return return_obj
+
+# alias for CourseOfAction
+COA = CourseOfAction

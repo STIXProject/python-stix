@@ -23,3 +23,7 @@ Classes
 .. autoclass:: SuggestedCOAs
 	:show-inheritance:
 	:members:
+
+.. autoclass:: IndicatorTypes
+    :show-inheritance:
+    :members:

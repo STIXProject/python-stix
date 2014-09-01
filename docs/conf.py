@@ -13,6 +13,8 @@ extensions = [
     'sphinxcontrib.napoleon',
 ]
 
+napoleon_use_admonition_for_examples = False
+
 intersphinx_mapping = {'http://docs.python.org/': None}
 
 templates_path = ['_templates']

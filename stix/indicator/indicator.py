@@ -21,6 +21,57 @@ from stix.common.vocabs import IndicatorType
 from stix.common.kill_chains import KillChainPhasesReference
 
 class SuggestedCOAs(GenericRelationshipList):
+    """The ``SuggestedCOAs`` class provides functionality for adding
+    :class:`stix.common.related.RelatedCOA` instances to an :class:`Indicator`
+    instance.
+
+    The ``SuggestedCOAs`` class implements methods found on
+    ``collections.MutableSequence`` and as such can be interacted with as a
+    ``list`` (e.g., ``append()``).
+
+    The ``append()`` method can accept instances of
+    :class:`stix.common.related.RelatedCOA` or :class:`stix.coa.CourseOfAction`
+    as an argument.
+
+    Note:
+        Calling ``append()`` with an instance of :class:`stix.coa.CourseOfAction`
+        will wrap that instance in a :class:`stix.common.related.RelatedCOA` layer,
+        with the ``item`` set to the :class:`stix.coa.CourseOfAction` instance.
+
+    Examples:
+        Append an instance of :class:`stix.coa.CourseOfAction` to the
+        ``Indicator.suggested_coas`` property. The instance of
+        :class:`stix.coa.CourseOfAction` will be wrapped in an instance of
+        :class:`stix.common.related.RelatedCOA`.
+
+        >>> coa = CourseOfAction()
+        >>> indicator = Indicator()
+        >>> indicator.suggested_coas.append(coa)
+        >>> print type(indicator.suggested_coas[0])
+        <class 'stix.common.related.RelatedCOA'>
+
+        Iterate over the ``suggested_coas`` property of an :class:`Indicator` instance
+        and print the ids of each underlying :class:`stix.coa.CourseOfAction`
+        instance.
+
+        >>> for related_coa in indicator.suggested_coas:
+        >>>     print related_coa.item.id_
+
+    Args:
+        suggested_coas(list): A list of :class:`stix.coa.CourseOfAction`
+            or :class:`stix.common.related.RelatedCOA` instances.
+        scope (str): The scope of the items. Can be set to ``"inclusive"``
+            or ``"exclusive"``. See
+            :class:`stix.common.related.GenericRelationshipList` documentation for
+            more information.
+
+    Attributes:
+        scope (str): The scope of the items. Can be set to ``"inclusive"``
+            or ``"exclusive"``. See
+            :class:`stix.common.related.GenericRelationshipList` documentation for
+            more information.
+
+    """
     _namespace = "http://stix.mitre.org/Indicator-2"
     _binding = indicator_binding
     _binding_class = indicator_binding.SuggestedCOAsType
@@ -29,19 +80,87 @@ class SuggestedCOAs(GenericRelationshipList):
     _inner_name = "suggested_coas"
 
     def __init__(self, suggested_coas=None, scope=None):
-        if suggested_coas is None:
-            suggested_coas = []
-        super(SuggestedCOAs, self).__init__(*suggested_coas, scope=scope)
+         if suggested_coas is None:
+             suggested_coas = []
+         super(SuggestedCOAs, self).__init__(scope, *suggested_coas)
+
 
 class RelatedIndicators(GenericRelationshipList):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    """The ``RelatedIndicators`` class provides functionality for adding
+    :class:`stix.common.related.RelatedIndicator` instances to an
+    :class:`Indicator` instance.
+
+    The ``RelatedIndicators`` class implements methods found on
+    ``collections.MutableSequence`` and as such can be interacted with as a
+    ``list`` (e.g., ``append()``).
+
+    The ``append()`` method can accept instances of
+    :class:`stix.common.related.RelatedIndicator` or
+    :class:`Indicator` as an argument.
+
+    Note:
+        Calling ``append()`` with an instance of :class:`stix.coa.CourseOfAction`
+        will wrap that instance in a
+        :class:`stix.common.related.RelatedIndicator` layer, with ``item``
+        set to the :class:`Indicator` instance.
+
+    Examples:
+        Append an instance of :class:`Indicator` to the
+        ``Indicator.related_indicators`` property. The instance of
+        :class:`Indicator` will be wrapped in an instance of
+        :class:`stix.common.related.RelatedIndicator`:
+
+        >>> related = Indicator())
+        >>> parent_indicator = Indicator()
+        >>> parent_indicator.related_indicators.append(related)
+        >>> print type(indicator.related_indicators[0])
+        <class 'stix.common.related.RelatedIndicator'>
+
+        Iterate over the ``related_indicators`` property of an
+        :class:`Indicator` instance and print the ids of each underlying
+        :class:`Indicator`` instance:
+
+        >>> for related in indicator.related_indicators:
+        >>>     print related.item.id_
+
+    Args:
+        related_indicators (list): A list of :class:`Indicator` or
+            :class:`stix.common.related.RelatedIndicator` instances.
+        scope (str): The scope of the items. Can be set to ``"inclusive"``
+            or ``"exclusive"``. See
+            :class:`stix.common.related.GenericRelationshipList` documentation for
+            more information.
+
+    Attributes:
+        scope (str): The scope of the items. Can be set to ``"inclusive"``
+            or ``"exclusive"``. See
+            :class:`stix.common.related.GenericRelationshipList` documentation for
+            more information.
+
+    """
+    _namespace = "http://stix.mitre.org/Indicator-2"
     _binding = indicator_binding
     _binding_class = indicator_binding.RelatedIndicatorsType
     _binding_var = "Related_Indicator"
     _contained_type = RelatedIndicator
     _inner_name = "related_indicators"
 
+    def __init__(self, related_indicators=None, scope=None):
+        if related_indicators is None:
+            related_indicators = []
+        super(RelatedIndicators, self).__init__(scope, *related_indicators)
+
 class Indicator(stix.Entity):
+    """Implementation of the STIX ``IndicatorType``.
+
+    Args:
+        TODO FILL OUT
+
+    Attributes:
+        TODO FILL OUT
+
+    """
+
     _binding = indicator_binding
     _binding_class = indicator_binding.IndicatorType
     _namespace = 'http://stix.mitre.org/Indicator-2'
@@ -56,7 +175,7 @@ class Indicator(stix.Entity):
         self.title = title
         self.description = description
         self.short_description = short_description
-        self.indicator_types = None
+        self.indicator_types = IndicatorTypes()
         self.confidence = None
         self.indicated_ttps = None
         self.test_mechanisms = None
@@ -79,6 +198,19 @@ class Indicator(stix.Entity):
     
     @property
     def id_(self):
+        """The ID property for this :class:`Indicator`. This is automatically
+        set during ``__init__()``.
+
+        Note:
+            The :class:`Indicator` class cannot have both its ``id_`` and
+            ``idref`` properties set at the same time. As such, setting the
+            ``idref`` property will unset the ``id_`` property and setting
+            the ``id_`` property will unset the ``idref`` property.
+
+        Returns:
+            A string id.
+
+        """
         return self._id
     
     @id_.setter
@@ -91,6 +223,15 @@ class Indicator(stix.Entity):
     
     @property
     def version(self):
+        """The version property of this :class:`Indicator`. This property
+        will always return ``None`` unless it is set to a value different than
+        ``Indicator._version``.
+
+        Returns:
+            A string version if set to a value different than
+            ``Indicator._version``
+
+        """
         return self._version
     
     @version.setter
@@ -105,6 +246,23 @@ class Indicator(stix.Entity):
     
     @property
     def idref(self):
+        """The idref property for this :class:`Indicator`. Default value is
+        ``None``.
+
+        The ``idref`` property must be set to the ``id_`` value of another
+        :class:`Indicator` instance. An idref does not need to resolve to a
+        local :class"`Indicator` instance.
+
+        Note:
+            The :class:`Indicator` class cannot have both its ``id_`` and
+            ``idref`` properties set at the same time. As such, setting the
+            ``idref`` property will unset the ``id_`` property and setting
+            the ``id_`` property will unset the ``idref`` property.
+
+        Returns:
+            A idref string.
+
+        """
         return self._idref
     
     @idref.setter
@@ -117,6 +275,19 @@ class Indicator(stix.Entity):
     
     @property
     def timestamp(self):
+        """The timestamp propety for this :class:`Indicator` instance. This
+        property declares the time of creation and is automatically set in
+        ``__init__()``.
+
+        Note:
+            This property can accept ``datetime.datetime`` or ``str`` values.
+            If an ``str`` value is supplied, a best-effort attempt is made to
+            parse it into an instance of ``datetime.datetime``.
+
+        Returns:
+            An instance of ``datetime.datetime``.
+
+        """
         return self._timestamp
 
     @timestamp.setter
@@ -125,6 +296,10 @@ class Indicator(stix.Entity):
 
     @property
     def description(self):
+        """The description property for this :class:`Indicator`. This should be
+        set to a string value. Default value is ``None``.
+
+        """
         return self._description
 
     @description.setter
@@ -236,10 +411,11 @@ class Indicator(stix.Entity):
 
     @indicator_types.setter
     def indicator_types(self, value):
-        self._indicator_types = IndicatorTypes()
         if not value:
-            return
-        elif isinstance(value, list):
+            self._indicator_types = IndicatorTypes()
+        elif isinstance(value, IndicatorTypes):
+            self._indicator_types = value
+        elif hasattr(value, "__getitem__"):
             for v in value:
                 self.add_indicator_type(v)
         else:
@@ -674,6 +850,40 @@ class Indicator(stix.Entity):
         return return_obj
 
 class CompositeIndicatorExpression(stix.EntityList):
+    """Implementation of the STIX ``CompositeIndicatorExpressionType``.
+
+    The ``CompositeIndicatorExpression`` class implements methods found on
+    ``collections.MutableSequence`` and as such can be interacted with as a
+    ``list`` (e.g., ``append()``).
+
+    Note:
+        The ``append()`` method can only accept instances of :class:`Indicator`.
+
+    Examples:
+        Add a :class:`Indicator` instance to an instance of
+        :class:`CompositeIndicatorExpression`:
+
+        >>> i = Indicator()
+        >>> comp = CompositeIndicatorExpression()
+        >>> comp.append(i)
+
+        Create a :class:`CompositeIndicatorExpression` from a list of
+        :class:`Indicator` instances using ``*args`` argument list:
+
+        >>> list_indicators = [Indicator() for i in xrange(10)]
+        >>> comp = CompositeIndicatorExpression(CompositeIndicatorExpression.OP_OR, *list_indicators)
+        >>> len(comp)
+        10
+
+    Args:
+        operator (str): The logical composition operator. Must be ``"AND"`` or
+            ``"OR"``.
+        *args: Variable length argument list of :class:`Indicator` instances.
+
+    Attributes:
+        operator (str): The logical composition operator. Must be ``"AND"`` or
+            ``"OR"``.
+    """
     _binding = indicator_binding
     _binding_class = indicator_binding.CompositeIndicatorExpressionType
     _namespace = 'http://stix.mitre.org/Indicator-2'
@@ -739,6 +949,39 @@ class CompositeIndicatorExpression(stix.EntityList):
         return return_obj
 
 class IndicatorTypes(stix.EntityList):
+    """A :class:`stix.common.vocabs.VocabString` collection which defaults to
+    :class:`stix.common.vocabs.IndicatorType`. This class implements methods
+    found on ``collections.MutableSequence`` and as such can be interacted with
+    like a ``list``.
+
+    Note:
+        The ``append()`` method can accept ``str`` or
+        :class:`stix.common.vocabs.VocabString` instances. If a ``str`` instance
+        is passed in, an attempt will be made to convert it to an instance of
+        :class:`stix.common.vocabs.IndicatorType`.
+
+    Examples:
+        Add an instance of :class:`stix.common.vocabs.IndicatorType`:
+
+        >>> from stix.common.vocabs import IndicatorType
+        >>> itypes = IndicatorTypes()
+        >>> type_ = IndicatorType(IndicatorType.TERM_IP_WATCHLIST)
+        >>> itypes.append(type_)
+        >>> print len(itypes)
+        1
+
+        Add a string value:
+
+        >>> from stix.common.vocabs import IndicatorType
+        >>> itypes = IndicatorTypes()
+        >>> type(IndicatorType.TERM_IP_WATCHLIST)
+        <type 'str'>
+        >>> itypes.append(IndicatorType.TERM_IP_WATCHLIST)
+        >>> print len(itypes)
+        1
+
+
+    """
     _namespace = "http://stix.mitre.org/Indicator-2"
     _contained_type = VocabString
 
