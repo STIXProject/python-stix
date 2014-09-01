@@ -615,6 +615,29 @@ class Indicator(stix.Entity):
     
     @property
     def confidence(self):
+        """The confidence for this :class:`Indicator`.
+
+        This property can be set to an instance of ``str``,
+        :class:`stix.common.vocabs.VocabString`, or
+        :class:`stix.common.confidence.Confidence`.
+
+        Default Value: ``None``
+
+        Note:
+            If set to an instance of ``str`` or
+            :class:`stix.common.vocabs.VocabString`, that value will be wrapped
+            in an instance of
+            :class:`stix.common.confidence.Confidence`.
+
+        Returns:
+            An instance of of
+            :class:`stix.common.confidence.Confidence`.
+
+        Raises:
+            ValueError: If set to a ``str`` value that cannot be converted into
+                an instance of :class:`stix.common.confidence.Confidence`.
+
+        """
         return self._confidence
     
     @confidence.setter
