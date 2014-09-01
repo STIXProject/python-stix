@@ -9,20 +9,20 @@ Classes
 -------
 
 .. autoclass:: Indicator
-	:show-inheritance:
-	:members:
+    :show-inheritance:
+    :members:
 
 .. autoclass:: CompositeIndicatorExpression
-	:show-inheritance:
-	:members:
+    :show-inheritance:
+    :members:
 
 .. autoclass:: RelatedIndicators
-	:show-inheritance:
-	:members:
+    :show-inheritance:
+    :members:
 
 .. autoclass:: SuggestedCOAs
-	:show-inheritance:
-	:members:
+    :show-inheritance:
+    :members:
 
 .. autoclass:: IndicatorTypes
     :show-inheritance:
