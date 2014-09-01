@@ -4,21 +4,23 @@
 import stix
 import stix.utils
 from stix.utils import dates
-from stix.common import (Identity, InformationSource, StructuredText, VocabString, 
-                         Confidence, RelatedTTP, Statement)
-import stix.extensions.identity as ext_identity
+from stix.common import (Identity, InformationSource, StructuredText,
+                         VocabString, Confidence, RelatedTTP, Statement)
 import stix.bindings.indicator as indicator_binding
 from .test_mechanism import _BaseTestMechanism
 from .sightings import Sightings
 from .valid_time import ValidTime
-from stix.common.related import GenericRelationshipList, RelatedCOA, RelatedIndicator
+from stix.common.related import (GenericRelationshipList, RelatedCOA,
+                                 RelatedIndicator)
 from stix.data_marking import Marking
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
-from datetime import datetime
-from dateutil.tz import tzutc
+
 from stix.common.vocabs import IndicatorType
 from stix.common.kill_chains import KillChainPhasesReference
+
+from datetime import datetime
+from dateutil.tz import tzutc
 
 class SuggestedCOAs(GenericRelationshipList):
     """The ``SuggestedCOAs`` class provides functionality for adding
@@ -34,9 +36,10 @@ class SuggestedCOAs(GenericRelationshipList):
     as an argument.
 
     Note:
-        Calling ``append()`` with an instance of :class:`stix.coa.CourseOfAction`
-        will wrap that instance in a :class:`stix.common.related.RelatedCOA` layer,
-        with the ``item`` set to the :class:`stix.coa.CourseOfAction` instance.
+        Calling ``append()`` with an instance of
+        :class:`stix.coa.CourseOfAction` will wrap that instance in a
+        :class:`stix.common.related.RelatedCOA` layer, with the ``item`` set to
+        the :class:`stix.coa.CourseOfAction` instance.
 
     Examples:
         Append an instance of :class:`stix.coa.CourseOfAction` to the
@@ -50,9 +53,9 @@ class SuggestedCOAs(GenericRelationshipList):
         >>> print type(indicator.suggested_coas[0])
         <class 'stix.common.related.RelatedCOA'>
 
-        Iterate over the ``suggested_coas`` property of an :class:`Indicator` instance
-        and print the ids of each underlying :class:`stix.coa.CourseOfAction`
-        instance.
+        Iterate over the ``suggested_coas`` property of an :class:`Indicator`
+        instance and print the ids of each underlying
+        :class:`stix.coa.CourseOfAction` instance.
 
         >>> for related_coa in indicator.suggested_coas:
         >>>     print related_coa.item.id_
@@ -62,14 +65,14 @@ class SuggestedCOAs(GenericRelationshipList):
             or :class:`stix.common.related.RelatedCOA` instances.
         scope (str): The scope of the items. Can be set to ``"inclusive"``
             or ``"exclusive"``. See
-            :class:`stix.common.related.GenericRelationshipList` documentation for
-            more information.
+            :class:`stix.common.related.GenericRelationshipList` documentation
+            for more information.
 
     Attributes:
         scope (str): The scope of the items. Can be set to ``"inclusive"``
             or ``"exclusive"``. See
-            :class:`stix.common.related.GenericRelationshipList` documentation for
-            more information.
+            :class:`stix.common.related.GenericRelationshipList` documentation
+            for more information.
 
     """
     _namespace = "http://stix.mitre.org/Indicator-2"
@@ -99,8 +102,8 @@ class RelatedIndicators(GenericRelationshipList):
     :class:`Indicator` as an argument.
 
     Note:
-        Calling ``append()`` with an instance of :class:`stix.coa.CourseOfAction`
-        will wrap that instance in a
+        Calling ``append()`` with an instance of
+        :class:`stix.coa.CourseOfAction` will wrap that instance in a
         :class:`stix.common.related.RelatedIndicator` layer, with ``item``
         set to the :class:`Indicator` instance.
 
@@ -128,14 +131,14 @@ class RelatedIndicators(GenericRelationshipList):
             :class:`stix.common.related.RelatedIndicator` instances.
         scope (str, optional): The scope of the items. Can be set to
             ``"inclusive"`` or ``"exclusive"``. See
-            :class:`stix.common.related.GenericRelationshipList` documentation for
-            more information.
+            :class:`stix.common.related.GenericRelationshipList` documentation
+            for more information.
 
     Attributes:
         scope (str): The scope of the items. Can be set to ``"inclusive"``
             or ``"exclusive"``. See
-            :class:`stix.common.related.GenericRelationshipList` documentation for
-            more information.
+            :class:`stix.common.related.GenericRelationshipList` documentation
+            for more information.
 
     """
     _namespace = "http://stix.mitre.org/Indicator-2"
@@ -154,8 +157,8 @@ class Indicator(stix.Entity):
     """Implementation of the STIX ``IndicatorType``.
 
     Args:
-        id_ (optional): An identifier. If ``None``, a value will be generated via
-            ``stix.utils.create_id()``. If set, this will unset the
+        id_ (optional): An identifier. If ``None``, a value will be generated
+            via ``stix.utils.create_id()``. If set, this will unset the
             ``idref`` property.
         idref (optional): An identifier reference. If set this will unset the
             ``id_`` property.
@@ -165,13 +168,13 @@ class Indicator(stix.Entity):
         short_description (optional): A string short description.
 
     """
-
     _binding = indicator_binding
     _binding_class = indicator_binding.IndicatorType
     _namespace = 'http://stix.mitre.org/Indicator-2'
     _version = "2.1.1"
 
-    def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
+    def __init__(self, id_=None, idref=None, timestamp=None, title=None,
+                 description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("indicator")
         self.idref = idref
         self.version = None # self._version
@@ -233,6 +236,10 @@ class Indicator(stix.Entity):
         """The ``version`` property of this :class:`Indicator`. This property
         will always return ``None`` unless it is set to a value different than
         ``Indicator._version``.
+
+        Note:
+            This property refers to the version of the ``Indicator`` schema
+            type and should not be used for the purpose of content versioning.
 
         Default Value: ``None``
 
@@ -314,11 +321,18 @@ class Indicator(stix.Entity):
 
     @property
     def description(self):
-        """The ``description`` property for this :class:`Indicator`. This should be
-        set to a string value. Default value is ``None``.
+        """The ``description`` property for this :class:`Indicator`.
+
+        Default Value: ``None``
+
+        Note:
+            If set to a value that is not an instance of
+            :class:`stix.common.structured_text.StructuredText`, an attempt to
+            will be made to convert the value into an instance of
+            :class:`stix.common.structured_text.StructuredText`.
 
         Returns:
-            The value of the ``description`` property.
+           An instance of :class:`stix.common.structured_text.StructuredText`
 
         """
         return self._description
@@ -335,11 +349,18 @@ class Indicator(stix.Entity):
 
     @property
     def short_description(self):
-        """The ``short_ddescription`` property for this :class:`Indicator`. This should be
-        set to a string value. Default value is ``None``.
+        """The ``short_description`` property for this :class:`Indicator`.
+
+        Default Value: ``None``
+
+        Note:
+            If set to a value that is not an instance of
+            :class:`stix.common.structured_text.StructuredText`, an attempt to
+            will be made to convert the value into an instance of
+            :class:`stix.common.structured_text.StructuredText`.
 
         Returns:
-            The value of the ``description`` property.
+           An instance of :class:`stix.common.structured_text.StructuredText`
 
         """
         return self._short_description
@@ -356,6 +377,20 @@ class Indicator(stix.Entity):
 
     @property
     def producer(self):
+        """Contains information about the source of the :class:`Indicator`.
+
+        Default Value: ``None``
+
+        Returns:
+            An instance of
+            :class:`stix.common.information_source.InformationSource`
+
+        Raises:
+            ValueError: If set to a value that is not ``None`` and not an
+                instance of
+                :class:`stix.common.information_source.InformationSource`
+
+        """
         return self._producer
 
     @producer.setter
@@ -367,6 +402,23 @@ class Indicator(stix.Entity):
 
     @property
     def observable(self):
+        """A convenience property for accessing or setting the only
+        ``cybox.core.Observable`` instance held by this Indicator.
+
+        Default Value: Empty ``list``.
+
+        Setting this property results in the ``observables`` property being
+        reinitialized to an empty ``list`` and appending the input value,
+        resulting in a ``list`` containing one value.
+
+        Note:
+            If the ``observables`` list contains more than one item, this
+            property will only return the first item in the list.
+
+        Returns:
+            An instance of ``cybox.core.Observable``.
+
+        """
         if self.observables:
             return self.observables[0]
         else:
@@ -379,6 +431,20 @@ class Indicator(stix.Entity):
 
     @property
     def observables(self):
+        """A list of ``cybox.core.Observable`` instances. This can be set to
+        a single object instance or a list of objects.
+
+        Note:
+            If the input value or values are not instance(s) of
+            ``cybox.core.Observable``, an attempt will be made to
+            convert the value to an instance of ``cybox.core.Observable``.
+
+        Default Value: Empty ``list``
+
+        Returns:
+            A ``list`` of ``cybox.core.Observable`` instances.
+
+        """
         return self._observables
 
     @observables.setter
@@ -1010,7 +1076,6 @@ class IndicatorTypes(stix.EntityList):
         >>> itypes.append(IndicatorType.TERM_IP_WATCHLIST)
         >>> print len(itypes)
         1
-
 
     """
     _namespace = "http://stix.mitre.org/Indicator-2"
