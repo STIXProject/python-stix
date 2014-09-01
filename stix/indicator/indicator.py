@@ -421,6 +421,11 @@ class Indicator(stix.Entity):
         Returns:
             An instance of ``cybox.core.Observable``.
 
+        Raises:
+            ValueError: If set to a value that cannot be converted to an
+                instance of ``cybox.core.Observable``.
+
+
         """
         if self.observables:
             return self.observables[0]
@@ -447,6 +452,10 @@ class Indicator(stix.Entity):
         Returns:
             A ``list`` of ``cybox.core.Observable`` instances.
 
+        Raises:
+            ValueError: If set to a value that cannot be converted to an
+                instance of ``cybox.core.Observable``.
+
         """
         return self._observables
 
@@ -460,6 +469,18 @@ class Indicator(stix.Entity):
                 
     @property
     def alternative_id(self):
+        """An alternative identifi  er for this :class:`Indicator`
+
+        This property can be set to a single string identifier or a list of
+        identifiers. If set to a single object, the object will be inserted
+        into an empty list internally.
+
+        Default Value: Empty ``list``
+
+        Returns:
+            A list of alternative ids.
+
+        """
         return self._alternative_id
 
     @alternative_id.setter
@@ -474,6 +495,13 @@ class Indicator(stix.Entity):
             self.add_alternative_id(value)
 
     def add_alternative_id(self, value):
+        """Adds an alternative id to the ``alternative_id`` list property.
+
+        Note:
+            If ``None`` is passed in no value is added to the
+            ``alternative_id`` list property.
+
+        """
         if not value:
             return
         else:
@@ -481,6 +509,20 @@ class Indicator(stix.Entity):
                 
     @property
     def valid_time_positions(self):
+        """A list of valid time positions for this :class:`Indicator`.
+
+        This property can be set to a single instance or a list of
+        :class:`stix.indicator.valid_time.ValidTime` instances. If set to a
+        single instance, that object is converted into a list containing
+        one item.
+
+        Default Value: Empty ``list``
+
+        Returns:
+            A list of
+            :class:`stix.indicator.valid_time.ValidTime` instances.
+
+        """
         return self._valid_time_positions
 
     @valid_time_positions.setter
@@ -495,6 +537,15 @@ class Indicator(stix.Entity):
             self.add_valid_time_position(value)
 
     def add_valid_time_position(self, value):
+        """Adds an valid time position to the ``valid_time_positions`` property
+        list.
+
+        If `value` is ``None``, no item is added.
+
+        Raises:
+            ValueError: If the `value` argument is not an instance of
+                :class:`stix.indicator.valid_time.ValidTime`.
+        """
         if not value:
             return
         elif isinstance(value, ValidTime):
@@ -504,6 +555,26 @@ class Indicator(stix.Entity):
 
     @property
     def indicator_types(self):
+        """A list of indicator types for this :class:`Indicator`.
+
+        This property can be set to lists or single instances of ``str``
+        or :class:`stix.common.vocabs.VocabString` or an instance
+        of :class:`IndicatorTypes`.
+
+        Note:
+            If an instance of ``str`` is passed in (or a ``list`` containing
+            ``str`` values) an attempt will be made to convert that string
+            value to an instance of :class:`stix.common.vocabs.IndicatorType`.
+
+        Default Value: An empty ``IndicatorTypes`` instance.
+
+        See Also:
+            Documentation for :class:`IndicatorTypes`.
+
+        Returns:
+            An instance of ``IndicatorTypes``.
+
+        """
         return self._indicator_types
 
     @indicator_types.setter
@@ -519,6 +590,21 @@ class Indicator(stix.Entity):
             self.add_indicator_type(value)
 
     def add_indicator_type(self, value):
+        """Adds a value to the ``indicator_types`` list property.
+
+        The `value` parameter can be a ``str`` or an instance of
+        :class:`stix.common.vocabs.VocabString`.
+
+        Note:
+            If the `value` parameter is a ``str`` instance, an attempt will be
+            made to convert it into an instance of
+            :class:`stix.common.vocabs.IndicatorType`
+
+        Raises:
+            ValueError: If the `value` param is a ``str`` instance that cannot
+                be converted into an instance of
+                :class:`stix.common.vocabs.IndicatorType`.
+        """
         if not value:
             return
         elif isinstance(value, VocabString):
