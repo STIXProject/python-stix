@@ -47,9 +47,10 @@ class Indicator(stix.Entity):
     _namespace = 'http://stix.mitre.org/Indicator-2'
     _version = "2.1.1"
 
-    def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
+    def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None, idref_ns=None):
         self.id_ = id_ or stix.utils.create_id("indicator")
         self.idref = idref
+        self.idref_ns = idref_ns
         self.version = self._version
         self.producer = None
         self.observables = None

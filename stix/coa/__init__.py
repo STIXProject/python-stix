@@ -31,9 +31,10 @@ class CourseOfAction(stix.Entity):
     _namespace = "http://stix.mitre.org/CourseOfAction-1"
     _version = "1.1.1"
 
-    def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
+    def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None, idref_ns=None):
         self.id_ = id_ or stix.utils.create_id("coa")
         self.idref = idref
+        self.idref_ns = idref_ns
         self.version = self._version
         self.title = title
         self.stage = None
