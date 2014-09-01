@@ -1080,6 +1080,10 @@ class IndicatorTypes(stix.EntityList):
         >>> print len(itypes)
         1
 
+    Args:
+        *args: Variable length argument list of strings or
+            :class:`stix.common.vocabs.VocabString` instances.
+
     """
     _namespace = "http://stix.mitre.org/Indicator-2"
     _contained_type = VocabString
