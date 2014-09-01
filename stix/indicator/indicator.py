@@ -124,10 +124,10 @@ class RelatedIndicators(GenericRelationshipList):
         >>>     print related.item.id_
 
     Args:
-        related_indicators (list): A list of :class:`Indicator` or
+        related_indicators (list, optional): A list of :class:`Indicator` or
             :class:`stix.common.related.RelatedIndicator` instances.
-        scope (str): The scope of the items. Can be set to ``"inclusive"``
-            or ``"exclusive"``. See
+        scope (str, optional): The scope of the items. Can be set to
+            ``"inclusive"`` or ``"exclusive"``. See
             :class:`stix.common.related.GenericRelationshipList` documentation for
             more information.
 
@@ -154,10 +154,15 @@ class Indicator(stix.Entity):
     """Implementation of the STIX ``IndicatorType``.
 
     Args:
-        TODO FILL OUT
-
-    Attributes:
-        TODO FILL OUT
+        id_ (optional): An identifier. If ``None``, a value will be generated via
+            ``stix.utils.create_id()``. If set, this will unset the
+            ``idref`` property.
+        idref (optional): An identifier reference. If set this will unset the
+            ``id_`` property.
+        timestamp (optional): A timestamp value. Can be an instance of
+            ``datetime.datetime`` or ``str``.
+        description (optional): A string description.
+        short_description (optional): A string short description.
 
     """
 
@@ -198,8 +203,10 @@ class Indicator(stix.Entity):
     
     @property
     def id_(self):
-        """The ID property for this :class:`Indicator`. This is automatically
-        set during ``__init__()``.
+        """The ``id_`` property for this :class:`Indicator` which serves as
+        an identifier. This is automatically set during ``__init__()``.
+
+        Default Value: ``None``
 
         Note:
             The :class:`Indicator` class cannot have both its ``id_`` and
@@ -223,13 +230,15 @@ class Indicator(stix.Entity):
     
     @property
     def version(self):
-        """The version property of this :class:`Indicator`. This property
+        """The ``version`` property of this :class:`Indicator`. This property
         will always return ``None`` unless it is set to a value different than
         ``Indicator._version``.
 
+        Default Value: ``None``
+
         Returns:
-            A string version if set to a value different than
-            ``Indicator._version``
+            The value of the ``version`` property if set to a value different
+            than ``Indicator._version``
 
         """
         return self._version
@@ -246,12 +255,13 @@ class Indicator(stix.Entity):
     
     @property
     def idref(self):
-        """The idref property for this :class:`Indicator`. Default value is
-        ``None``.
+        """The ``idref`` property for this :class:`Indicator`.
 
         The ``idref`` property must be set to the ``id_`` value of another
         :class:`Indicator` instance. An idref does not need to resolve to a
-        local :class"`Indicator` instance.
+        local :class`Indicator` instance.
+
+        Default Value: ``None``.
 
         Note:
             The :class:`Indicator` class cannot have both its ``id_`` and
@@ -260,7 +270,7 @@ class Indicator(stix.Entity):
             the ``id_`` property will unset the ``idref`` property.
 
         Returns:
-            A idref string.
+            The value of the ``idref`` property
 
         """
         return self._idref
@@ -275,9 +285,17 @@ class Indicator(stix.Entity):
     
     @property
     def timestamp(self):
-        """The timestamp propety for this :class:`Indicator` instance. This
+        """The ``timestamp`` propety for this :class:`Indicator` instance. This
         property declares the time of creation and is automatically set in
         ``__init__()``.
+
+        Default Value: A ``datetime.dateime`` instance with a value of the
+        date/time when ``__init__()`` was called.
+
+        Note:
+            If an ``idref`` is set during ``__init__()``, the value of ``timestamp``
+            will default to the ``timestamp`` parameter, which has a default
+            value of ``None``.
 
         Note:
             This property can accept ``datetime.datetime`` or ``str`` values.
@@ -296,8 +314,11 @@ class Indicator(stix.Entity):
 
     @property
     def description(self):
-        """The description property for this :class:`Indicator`. This should be
+        """The ``description`` property for this :class:`Indicator`. This should be
         set to a string value. Default value is ``None``.
+
+        Returns:
+            The value of the ``description`` property.
 
         """
         return self._description
@@ -314,6 +335,13 @@ class Indicator(stix.Entity):
 
     @property
     def short_description(self):
+        """The ``short_ddescription`` property for this :class:`Indicator`. This should be
+        set to a string value. Default value is ``None``.
+
+        Returns:
+            The value of the ``description`` property.
+
+        """
         return self._short_description
 
     @short_description.setter
@@ -876,11 +904,14 @@ class CompositeIndicatorExpression(stix.EntityList):
         10
 
     Args:
-        operator (str): The logical composition operator. Must be ``"AND"`` or
+        operator (str, optional): The logical composition operator. Must be ``"AND"`` or
             ``"OR"``.
         *args: Variable length argument list of :class:`Indicator` instances.
 
     Attributes:
+        OP_AND (str): String ``"AND"``
+        OP_OR (str): String ``"OR"``
+        OPERATORS (tuple): Tuple of allowed ``operator`` values.
         operator (str): The logical composition operator. Must be ``"AND"`` or
             ``"OR"``.
     """
