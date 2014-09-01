@@ -332,7 +332,7 @@ class Indicator(stix.Entity):
             :class:`stix.common.structured_text.StructuredText`.
 
         Returns:
-           An instance of :class:`stix.common.structured_text.StructuredText`
+            An instance of :class:`stix.common.structured_text.StructuredText`
 
         """
         return self._description
@@ -360,7 +360,7 @@ class Indicator(stix.Entity):
             :class:`stix.common.structured_text.StructuredText`.
 
         Returns:
-           An instance of :class:`stix.common.structured_text.StructuredText`
+            An instance of :class:`stix.common.structured_text.StructuredText`
 
         """
         return self._short_description
