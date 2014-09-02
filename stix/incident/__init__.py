@@ -38,7 +38,7 @@ class Incident(stix.Entity):
         self.id_ = id_ or stix.utils.create_id("incident")
         self.idref = idref
         self.idref_ns = idref_ns
-        self.version = self._version
+        self.version = None # self._version
         self.description = description
         self.short_description = short_description
         self.title = title
@@ -82,6 +82,20 @@ class Incident(stix.Entity):
         else:
             self._id = value
             self.idref = None
+    
+    @property
+    def version(self):
+        return self._version
+    
+    @version.setter
+    def version(self, value):
+        if not value:
+            self._version = None
+        else:
+            if value != Incident._version:
+                self._version = value
+            else:
+                self._version = None
     
     @property
     def idref(self):
@@ -194,10 +208,10 @@ class Incident(stix.Entity):
         if not value:
             return
         elif isinstance(value, Statement):
-            self._intended_effects.append(value)
+            self.intended_effects.append(value)
         else:
             intended_effect = IntendedEffect(value)
-            self._intended_effects.append(Statement(value=intended_effect))
+            self.intended_effects.append(Statement(value=intended_effect))
 
     @property
     def victims(self):
@@ -735,7 +749,8 @@ class IncidentCategories(stix.EntityList):
 
 class IntendedEffects(stix.EntityList):
     _namespace = "http://stix.mitre.org/Incident-1"
-    _contained_type = VocabString
+    _contained_type = Statement
 
     def _fix_value(self, value):
-        return IntendedEffect(value)
+        return Statement(value=IntendedEffect(value))
+

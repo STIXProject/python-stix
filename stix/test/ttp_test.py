@@ -6,7 +6,7 @@ class TTPTests(EntityTestCase, unittest.TestCase):
     klass = TTP
     _full_dict = {
         'id': 'example:ttp-1',
-        'version': '1.1',
+        'version': '1.1.test',
         'title': "TTP1",
         'description': "This is a long description about a ttp",
         'short_description': "a TTP",

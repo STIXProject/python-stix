@@ -24,7 +24,7 @@ class TTP(stix.Entity):
         self.id_ = id_ or stix.utils.create_id("ttp")
         self.idref = idref
         self.idref_ns = idref_ns
-        self.version = self._version
+        self.version = None # self._version
         self.title = title
         self.description = description
         self.short_description = short_description
@@ -53,6 +53,20 @@ class TTP(stix.Entity):
         else:
             self._id = value
             self.idref = None
+    
+    @property
+    def version(self):
+        return self._version
+    
+    @version.setter
+    def version(self, value):
+        if not value:
+            self._version = None
+        else:
+            if value != TTP._version:
+                self._version = value
+            else:
+                self._version = None
     
     @property
     def idref(self):

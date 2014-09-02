@@ -35,7 +35,7 @@ class CourseOfAction(stix.Entity):
         self.id_ = id_ or stix.utils.create_id("coa")
         self.idref = idref
         self.idref_ns = idref_ns
-        self.version = self._version
+        self.version = None
         self.title = title
         self.stage = None
         self.type_ = None
@@ -68,6 +68,20 @@ class CourseOfAction(stix.Entity):
         else:
             self._id = value
             self.idref = None
+    
+    @property
+    def version(self):
+        return self._version
+    
+    @version.setter
+    def version(self, value):
+        if not value:
+            self._version = None
+        else:
+            if value != CourseOfAction._version:
+                self._version = value
+            else:
+                self._version = None
     
     @property
     def idref(self):
@@ -372,3 +386,6 @@ class CourseOfAction(stix.Entity):
                 RelatedPackageRefs.from_dict(dict_repr.get('related_packages'))
 
         return return_obj
+
+# alias for CourseOfAction
+COA = CourseOfAction

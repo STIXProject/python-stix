@@ -166,11 +166,14 @@ class NamespaceParser(object):
         d.update(schemaloc_dict)
         return d
 
-    def _get_xmlns_str(self, ns_dict):
+    def get_xmlns_str(self, ns_dict):
         return "\n\t".join(['xmlns:%s="%s"' %
                             (alias, ns) for ns, alias in sorted(ns_dict.iteritems())])
 
-    def _get_schemaloc_str(self, schemaloc_dict):
+    def get_schemaloc_str(self, schemaloc_dict):
+        if not schemaloc_dict:
+            return ""
+
         schemaloc_str_start = 'xsi:schemaLocation="\n\t'
         schemaloc_str_end = '"'
         schemaloc_str_content = "\n\t".join(["%s %s" %
@@ -178,7 +181,11 @@ class NamespaceParser(object):
         return schemaloc_str_start + schemaloc_str_content + schemaloc_str_end
 
     def get_namespace_def_str(self, namespaces, schemaloc_dict):
-        return "\n\t" + self._get_xmlns_str(namespaces) + "\n\t" + self._get_schemaloc_str(schemaloc_dict)
+        if not (namespaces or schemaloc_dict):
+            return ""
+
+        return ("\n\t" + self.get_xmlns_str(namespaces) + "\n\t" +
+               self.get_schemaloc_str(schemaloc_dict))
 
 XML_NAMESPACES = {'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
                   'http://www.w3.org/2001/XMLSchema': 'xs',

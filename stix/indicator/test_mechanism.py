@@ -12,7 +12,7 @@ class _BaseTestMechanism(stix.Entity):
     _binding_class = indicator_binding.TestMechanismType()
     
     def __init__(self, id_=None, idref=None):
-        self.id_ = id_ or stix.utils.create_id("testmechanism")
+        self.id_ = id_
         self.idref = idref
         self.efficacy = None
         self.producer = None
@@ -50,6 +50,7 @@ class _BaseTestMechanism(stix.Entity):
         
         from stix.extensions.test_mechanism.snort_test_mechanism import SnortTestMechanism
         from stix.extensions.test_mechanism.open_ioc_2010_test_mechanism import OpenIOCTestMechanism
+        from stix.extensions.test_mechanism.yara_test_mechanism import YaraTestMechanism
         
         if not return_obj:
             klass = _BaseTestMechanism.lookup_class(obj.xml_type)
@@ -95,6 +96,7 @@ class _BaseTestMechanism(stix.Entity):
         
         from stix.extensions.test_mechanism.snort_test_mechanism import SnortTestMechanism
         from stix.extensions.test_mechanism.open_ioc_2010_test_mechanism import OpenIOCTestMechanism
+        from stix.extensions.test_mechanism.yara_test_mechanism import YaraTestMechanism
         
         if not return_obj:
             klass = _BaseTestMechanism.lookup_class(d.get('xsi:type'))

@@ -1,6 +1,7 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+import warnings
 import collections
 import inspect
 import json
@@ -35,30 +36,49 @@ class Entity(object):
             parser.get_namespace_schemalocation_dict(self, ns_dict=ns_dict, schemaloc_dict=schemaloc_dict)
         return all_schemaloc_dict
 
-    def to_xml(self, include_namespaces=True, ns_dict=None, schemaloc_dict=None, pretty=True):
+    def to_xml(self, include_namespaces=True, include_schemalocs=True,
+               ns_dict=None, schemaloc_dict=None, pretty=True,
+               auto_namespace=True):
         """Export an object as an XML String""" 
-        s = StringIO()
+        import stix.utils.nsparser as nsparser
+        parser = nsparser.NamespaceParser()
+        all_ns_dict, all_schemaloc_dict = {}, {}
         namespace_def = ""
 
-        import stix.utils.nsparser as nsparser
-        if include_namespaces:
-            all_ns_dict = self._get_namespaces(ns_dict)
-            all_schemaloc_dict = \
-                self._get_schema_locations(all_ns_dict, schemaloc_dict)
+        if (not auto_namespace) and (not ns_dict):
+            raise Exception("Auto-namespacing was disabled but ns_dict "
+                            "was empty or missing.")
 
-            parser = nsparser.NamespaceParser()
-            namespace_def = parser.get_namespace_def_str(all_ns_dict,
-                                                         all_schemaloc_dict)
+        if include_namespaces:
+            if auto_namespace:
+                all_ns_dict = self._get_namespaces(ns_dict)
+            else:
+                all_ns_dict = ns_dict
+
+            namespace_def += "\n\t" + parser.get_xmlns_str(all_ns_dict)
         else:
             all_ns_dict = dict(nsparser.DEFAULT_STIX_NS_TO_PREFIX.items() +
                                nsparser.DEFAULT_EXT_TO_PREFIX.items())
 
+        if include_schemalocs and include_namespaces:
+            if auto_namespace:
+                all_schemaloc_dict = \
+                    self._get_schema_locations(all_ns_dict, schemaloc_dict)
+            else:
+                all_schemaloc_dict = schemaloc_dict or {}
+
+            namespace_def += ("\n\t" +
+                              parser.get_schemaloc_str(all_schemaloc_dict))
+
         if not pretty:
             namespace_def = namespace_def.replace('\n\t', ' ')
+
+        s = StringIO()
 
         self.to_obj().export(s, 0, all_ns_dict, pretty_print=pretty,
                              namespacedef_=namespace_def)
         return s.getvalue()
+
 
     def _get_children(self):
         for (name, obj) in inspect.getmembers(self):
