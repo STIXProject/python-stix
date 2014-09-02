@@ -89,25 +89,29 @@ class NamespaceInfo(object):
 
 
     def collect(self, entity):
-        try:
-            ns_alias, type_ = entity._XSI_TYPE.split(":")
-            self.namespaces[entity._namespace] = ns_alias
-        except:
-            self.namespaces[entity._namespace] = None
+        entity_dict = entity.__dict__
+        class_dict = entity.__class__.__dict__
 
-        try:
-            self.input_namespaces.update(entity.__input_namespaces__)
-        except AttributeError:
-            pass
+        ns = entity._namespace
+        xsi_type = class_dict.get('_XSI_TYPE')
 
-        try:
-            self.input_schemalocs.update(entity.__input_schemalocations__)
-        except AttributeError:
-            pass
+        if xsi_type:
+            try:
+                alias, type_ = xsi_type.split(":")
+                self.namespaces[ns] = alias
+            except:
+                self.namespaces[ns] = None
+        else:
+            self.namespaces[ns] = None
+
+        input_ns = entity_dict.get("__input_namespaces__", {})
+        self.input_namespaces.update(input_ns)
+
+        input_locs = entity_dict.get("__input_schemalocations__", {})
+        self.input_schemalocs.update(input_locs)
 
     def __setitem__(self, key, value):
         self.namespaces[key] = value
-
 
 
 class NamespaceParser(object):
@@ -236,7 +240,7 @@ STIX_NS_TO_SCHEMALOCATION = {
 
 CYBOX_NS_TO_SCHEMALOCATION = dict((ns, schemaloc) for ns, _, schemaloc in cybox_nsparser.NS_LIST if schemaloc)
 
-# Schema locations for namespaces not defined by STIX, but hosted on the STIX website     
+# Schema locations for namespaces not defined by STIX, but hosted on the STIX website
 EXT_NS_TO_SCHEMALOCATION = {'urn:oasis:names:tc:ciq:xal:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xAL.xsd',
                             'urn:oasis:names:tc:ciq:xpil:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd',
                             'urn:oasis:names:tc:ciq:xnl:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xNL.xsd'}
