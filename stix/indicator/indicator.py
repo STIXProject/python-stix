@@ -501,6 +501,9 @@ class Indicator(stix.Entity):
             If ``None`` is passed in no value is added to the
             ``alternative_id`` list property.
 
+        Args:
+            value: An identifier value.
+
         """
         if not value:
             return
@@ -540,7 +543,11 @@ class Indicator(stix.Entity):
         """Adds an valid time position to the ``valid_time_positions`` property
         list.
 
-        If `value` is ``None``, no item is added.
+        If `value` is ``None``, no item is added to the ``value_time_positions``
+        list.
+
+        Args:
+            value: An instance of :class:`stix.indicator.valid_time.ValidTime`.
 
         Raises:
             ValueError: If the `value` argument is not an instance of
@@ -599,6 +606,10 @@ class Indicator(stix.Entity):
             If the `value` parameter is a ``str`` instance, an attempt will be
             made to convert it into an instance of
             :class:`stix.common.vocabs.IndicatorType`
+
+        Args:
+            value: An instance of :class:`stix.common.vocabs.VocabString`
+                or ``str``.
 
         Raises:
             ValueError: If the `value` param is a ``str`` instance that cannot
@@ -665,6 +676,29 @@ class Indicator(stix.Entity):
             self.add_indicated_ttp(value)
             
     def add_indicated_ttp(self, v):
+        """Adds an Indicated TTP to the ``indicated_ttps`` list property
+        of this :class:`Indicator`.
+
+        The `v` parameter must be an instance of
+        :class:`stix.common.related.RelatedTTP` or :class:`stix.ttp.TTP`.
+
+        If the `v` parameter is ``None``, no item wil be added to the
+        ``indicated_ttps`` list property.
+
+        Note:
+            If the `v` parameter is not an instance of
+            :class:`stix.common.related.RelatedTTP` an attempt will be made
+            to convert it to one.
+
+        Args:
+            v: An instance of :class:`stix.common.related.RelatedTTP` or
+                :class:`stix.ttp.TTP`.
+
+        Raises:
+            ValueError: If the `v` parameter cannot be converted into an
+                instance of :class:`stix.common.related.RelatedTTP`
+
+        """
         if not v:
             return
         elif isinstance(v, RelatedTTP):
@@ -688,6 +722,30 @@ class Indicator(stix.Entity):
             self.add_test_mechanism(value)
             
     def add_test_mechanism(self, tm):
+        """Adds an Test Mechanism to the ``test_mechanisms`` list property
+        of this :class:`Indicator`.
+
+        The `tm` parameter must be an instance of a
+        :class:`stix.indicator.test_mechanism._BaseTestMechanism`
+        implementation.
+
+        If the `tm` parameter is ``None``, no item will be added to the
+        ``test_mechanisms`` list property.
+
+        See Also:
+            Test Mechanism implementations are found under the
+            :mod:`stix.extensions.test_mechanism` package.
+
+        Args:
+            tm: An instance of a
+                :class:`stix.indicator.test_mechanism._BaseTestMechanism`
+                implementation.
+
+        Raises:
+            ValueError: If the `tm` parameter is not an instance of
+                :class:`stix.indicator.test_mechanism._BaseTestMechanism`
+
+        """
         if not tm:
             return
         elif isinstance(tm, _BaseTestMechanism):
@@ -727,6 +785,36 @@ class Indicator(stix.Entity):
             self.add_related_indicator(value)
     
     def add_related_indicator(self, indicator):
+        """Adds an Related Indicator to the ``related_indicators`` list
+        property of this :class:`Indicator`.
+
+        The `indicator` parameter must be an instance of
+        :class:`stix.common.related.RelatedIndicator` or
+        :class:`Indicator`.
+
+        If the `indicator` parameter is ``None``, no item wil be added to the
+        ``related_indicators`` list property.
+
+        Calling this method is the same as calling ``append()`` on the
+        ``related_indicators`` proeprty.
+
+        See Also:
+            The :class:`RelatedIndicators` documentation.
+
+        Note:
+            If the `tm` parameter is not an instance of
+            :class:`stix.common.related.RelatedIndicator` an attempt will be
+            made to convert it to one.
+
+        Args:
+            indicator: An instance of :class:`Indicator` or
+                :class:`stix.common.related.RelatedIndicator`.
+
+        Raises:
+            ValueError: If the `indicator` parameter cannot be converted into
+                an instance of :class:`stix.common.related.RelatedIndicator`
+
+        """
         if not indicator:
             return
         elif isinstance(indicator, RelatedIndicator):
@@ -741,7 +829,8 @@ class Indicator(stix.Entity):
     @observable_composition_operator.setter
     def observable_composition_operator(self, value):
         if value not in ("AND", "OR"):
-            raise ValueError("observable_composition_operator must be 'AND' or 'OR'")
+            raise ValueError("observable_composition_operator must be 'AND' "
+                             "or 'OR'")
         
         self._observable_composition_operator = value
     
@@ -770,11 +859,36 @@ class Indicator(stix.Entity):
             self._negate = None
     
     def set_producer_identity(self, identity):
-        '''
-        Sets the name of the producer of this indicator.
-        The identity param can be a string (name) or an Identity
-        instance.
-        '''
+        """Sets the name of the producer of this indicator.
+
+        This is the same as calling
+        ``indicator.producer.identity.name = identity``.
+
+        If the ``producer`` property is ``None``, it will be initialized to
+        an instance of
+        :class:`stix.common.information_source.InformationSource`.
+
+        If the ``identity`` property of the ``producer`` instance is ``None``,
+        it will be initialized to an instance of
+        :class:`stix.common.identity.Identity`.
+
+        Note:
+            if the `identity` parameter is not an instance
+            :class:`stix.common.identity.Identity` an attempt will be made
+            to convert it to one.
+
+        Args:
+            identity: An instance of ``str`` or
+                ``stix.common.identity.Identity``.
+
+        """
+        if not identity:
+            try:
+                self.producer.identity.name = None
+            except AttributeError:
+                pass
+            return
+
         if not self.producer:
             self.producer = InformationSource()
 
@@ -784,40 +898,124 @@ class Indicator(stix.Entity):
             if not self.producer.identity:
                 self.producer.identity = Identity()
 
-            self.producer.identity.name = identity # assume it's a string
+            self.producer.identity.name = str(identity)
 
     def set_produced_time(self, produced_time):
-        '''The produced date variable must be in ISO 8601 format'''
+        """Sets the ``produced_time`` property of the ``producer`` property
+        instance fo `produced_time`.
+
+        This is the same as calling
+        ``indicator.producer.time.produced_time = produced_time``.
+
+        The `produced_time` parameter must be an instance of ``str``,
+        ``datetime.datetime``, or ``cybox.common.DateTimeWithPrecision``.
+
+        Note:
+            If `produced_time` is a ``str`` or ``datetime.datetime`` instance
+            an attempt will be made to convert it into an instance of
+            ``cybox.common.DateTimeWithPrecision``.
+
+        Args:
+            produced_time: An instance of ``str``,
+                ``datetime.datetime``, or ``cybox.common.DateTimeWithPrecision``.
+
+
+
+        """
+        if not self.producer:
+            self.producer = InformationSource()
+
         if not self.producer.time:
             self.producer.time = Time()
 
         self.producer.time.produced_time = produced_time
 
     def get_produced_time(self):
-        if self.producer and self.producer.time:
+        """Gets the produced time for this :class:`Indicator`.
+
+        This is the same as calling
+        ``produced_time = indicator.producer.time.produced_time``.
+
+        Returns:
+            ``None`` or an instance of ``cybox.common.DateTimeWithPrecision``.
+
+        """
+        try:
             return self.producer.time.produced_time
-        else:
-            return None    
+        except AttributeError:
+            return None
 
     def set_received_time(self, received_time):
-        '''Set the time when this indicator was received'''
+        """Sets the received time for this :class:`Indicator`.
+
+        This is the same as calling
+        ``indicator.producer.time.produced_time = produced_time``.
+
+        The `received_time` parameter must be an instance of ``str``,
+        ``datetime.datetime``, or ``cybox.common.DateTimeWithPrecision``.
+
+        Args:
+            received_time: An instance of ``str``,
+                ``datetime.datetime``, or ``cybox.common.DateTimeWithPrecision``.
+
+        Note:
+            If `received_time` is a ``str`` or ``datetime.datetime`` instance
+            an attempt will be made to convert it into an instance of
+            ``cybox.common.DateTimeWithPrecision``.
+
+        """
+        if not self.producer:
+            self.producer = InformationSource()
+
         if not self.producer.time:
             self.producer.time = Time()
 
         self.producer.time.received_time = received_time
 
     def get_received_time(self):
-        '''Return the time when this indicator was received'''
-        if self.producer and self.producer.time:
+        """Gets the received time for this :class:`Indicator`.
+
+        This is the same as calling
+        ``received_time = indicator.producer.time.received_time``.
+
+        Returns:
+            ``None`` or an instance of ``cybox.common.DateTimeWithPrecision``.
+
+        """
+        try:
             return self.producer.time.received_time
-        else:
+        except:
             return None
 
     def add_observable(self, observable):
-        ''' Adds an observable to the Indicator. If the number of observables associated with this indicator 
-            is greater than one, the indicator will nest all of its observables under a parent observable
-            composition, with an logical operator of 'OR'. If this is not ideal, an separate indicator
-            should be made for each observable'''
+        """Adds an observable to the ``observables`` list property of the
+        :class:`Indicator`.
+
+        If the `observable` parameter is ``None``, no item will be added
+        to the ``observables`` list.
+
+        Note:
+            The STIX Language dictates that an :class:`Indicator` can have only
+            one ``Observable`` under it. Because of this, the ``to_xml()``
+            method will convert the ``observables`` list into  an
+            ``cybox.core.ObservableComposition``  instance, in which each item
+            in the ``observables`` list will be added to the composition. By
+            default, the ``operator`` of the composition layer will be set to
+            ``"OR"``. The ``operator`` value can be changed via the
+            ``observable_composition_operator`` property.
+
+        Args:
+            observable: An instance of ``cybox.core.Observable`` or an object
+                type that can be converted into one.
+
+
+        Raises:
+            ValueError: If the `observable` param cannot be converted into an
+                instance of ``cybox.core.Observable``.
+
+        """
+        if not observable:
+            return
 
         if isinstance(observable, Observable):
             self.observables.append(observable)
@@ -838,8 +1036,27 @@ class Indicator(stix.Entity):
         return root_observable
 
     def add_object(self, object_):
-        ''' The object paramter is wrapped in an observable and attached to the indicator. The object must be a 
-            cybox.core.DefinedObject instance'''
+        """Adds a python-cybox Object instance to the ``observables`` list
+        property.
+
+        This is the same as calling ``indicator.add_observable(object_)``.
+
+        Note:
+            If the `object` param is not an instance of ``cybox.core.Object``
+            an attempt will be made to to convert it into one before wrapping
+            it in an ``cybox.core.Observable`` layer.
+
+        Args:
+            object_: An instance of ``cybox.core.Object`` or an object
+                that can be converted into an instance of
+                ``cybox.core.Observable``
+
+        Raises:
+            ValueError: if the `object_` param cannot be converted to an
+                instance of ``cybox.core.Observable``.
+        """
+        if not object_:
+            return
 
         observable = Observable(object_)
         self.add_observable(observable)
