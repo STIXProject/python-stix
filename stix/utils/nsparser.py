@@ -2,6 +2,8 @@
 # See LICENSE.txt for complete terms.
 
 import warnings
+from stix import Entity as StixEntity
+from cybox import Entity as CyboxEntity
 from cybox.common import ObjectProperties, BaseProperty
 import cybox.utils.nsparser as cybox_nsparser
 
@@ -89,26 +91,36 @@ class NamespaceInfo(object):
 
 
     def collect(self, entity):
-        entity_dict = entity.__dict__
-        class_dict = entity.__class__.__dict__
+        # Traverse the MRO so we can collect _namespace attributes on Entity
+        # derivations (e.g., WinFile extends File).
+        for klass in entity.__class__.__mro__:
+            if klass in (StixEntity, CyboxEntity):
+                break
 
-        ns = entity._namespace
-        xsi_type = class_dict.get('_XSI_TYPE')
+            # Prevents exception being raised if/when
+            # collections.MutableSequence or another base class appears in the
+            # MRO.
+            ns = klass.__dict__.get("_namespace")
+            if not ns:
+                continue
 
-        if xsi_type:
-            try:
-                alias, type_ = xsi_type.split(":")
-                self.namespaces[ns] = alias
-            except:
+            xsi_type = klass.__dict__.get('_XSI_TYPE')
+            if xsi_type:
+                try:
+                    alias, type_ = xsi_type.split(":")
+                    self.namespaces[ns] = alias
+                except:
+                    self.namespaces[ns] = None
+            else:
                 self.namespaces[ns] = None
-        else:
-            self.namespaces[ns] = None
 
+        entity_dict = entity.__dict__
         input_ns = entity_dict.get("__input_namespaces__", {})
         self.input_namespaces.update(input_ns)
 
         input_locs = entity_dict.get("__input_schemalocations__", {})
         self.input_schemalocs.update(input_locs)
+
 
     def __setitem__(self, key, value):
         self.namespaces[key] = value
