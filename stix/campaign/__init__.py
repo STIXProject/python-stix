@@ -38,6 +38,26 @@ class Attribution(GenericRelationshipList):
     _inner_name = "threat_actors"
 
 
+class AttributionList(stix.EntityList):
+    # NOT AN ACTUAL STIX CLASS. DO NOT CALL `.to_obj()`
+    # ON THIS DIRECTLY! THIS IS BEING USED FOR CASTING
+    # PURPOSES ONLY.
+    _namespace = "http://stix.mitre.org/Campaign-1"
+    _binding = None
+    _binding_class = None
+    _binding_var = None
+    _contained_type = Attribution
+    _inner_name = None
+
+    def _fix_value(self, value):
+        try:
+            new_value = self._contained_type(None, value)
+        except:
+            raise ValueError("Can't put '%s' (%s) into a %s" %
+                (value, type(value), self.__class__))
+        return new_value
+
+
 class RelatedIncidents(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Campaign-1"
     _binding = campaign_binding
@@ -92,7 +112,7 @@ class Campaign(stix.Entity):
         self.related_ttps = RelatedTTPs()
         self.related_incidents = RelatedIncidents()
         self.related_indicators = RelatedIndicators()
-        self.attribution = Attribution()
+        self.attribution = AttributionList()
         self.associated_campaigns = AssociatedCampaigns()
         self.confidence = None
         self.activity = []
@@ -223,6 +243,23 @@ class Campaign(stix.Entity):
             self._status = value
         else:
             self._status = CampaignStatus(value)
+
+    @property
+    def attribution(self):
+        return self._attribution
+
+    @attribution.setter
+    def attribution(self, value):
+        self._attribution = AttributionList()
+        if not value:
+            return
+        elif isinstance(value, AttributionList):
+            self._attribution = value
+        elif hasattr(value, '__getitem__'):
+            self._attribution = AttributionList(*value)
+        else:
+            self._attribution.append(value) # may raise a ValueError
+
 
     def to_obj(self, return_obj=None):
         if not return_obj:
