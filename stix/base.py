@@ -251,7 +251,7 @@ class EntityList(collections.MutableSequence, Entity):
         if not return_obj:
             return_obj = self._binding_class()
 
-        setattr(return_obj, self._binding_var, [x.to_obj(return_obj=return_obj, ns_info=ns_info) for x in self])
+        setattr(return_obj, self._binding_var, [x.to_obj(ns_info=ns_info) for x in self])
 
         return return_obj
 
