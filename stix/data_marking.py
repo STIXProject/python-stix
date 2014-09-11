@@ -68,12 +68,19 @@ class MarkingSpecification(stix.Entity):
     _binding_class = stix_data_marking_binding.MarkingSpecificationType
     _namespace = 'http://data-marking.mitre.org/Marking-1'
 
-    def __init__(self):
+    def __init__(self, controlled_structure=None, marking_structures=None):
         self.id_ = None
         self.idref = None
         self.version = None
-        self.controlled_structure = None
-        self.marking_structures = []
+        self.controlled_structure = controlled_structure
+
+        if isinstance(marking_structures,list):
+            self.marking_structures = marking_structures
+        elif marking_structures is None:
+            self.marking_structures = []
+        else:
+            raise TypeError('marking_structures must be a list, or None')
+
         # TODO: add Information_Source
 
     def to_obj(self):
