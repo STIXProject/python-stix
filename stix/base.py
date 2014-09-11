@@ -12,16 +12,13 @@ class Entity(object):
     _XSI_TYPE = None
 
 
+    def _collect_ns_info(self, ns_info=None):
+        if not ns_info:
+            return
+        ns_info.collect(self)
+
+
     def to_obj(self, return_obj=None, ns_info=None):
-        obj = self._to_obj(return_obj, ns_info)
-
-        if ns_info:
-            ns_info.collect(self)
-
-        return obj
-
-
-    def _to_obj(self, return_obj=None, ns_info=None):
         """Export an object as a binding object representation"""
         raise NotImplementedError()
 
@@ -248,11 +245,13 @@ class EntityList(collections.MutableSequence, Entity):
     # - _contained_type
     # - _inner_name
 
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 
-        setattr(return_obj, self._binding_var, [x.to_obj(ns_info=ns_info) for x in self])
+        setattr(return_obj, self._binding_var, [x.to_obj(return_obj=return_obj, ns_info=ns_info) for x in self])
 
         return return_obj
 

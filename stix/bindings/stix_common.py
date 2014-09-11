@@ -896,6 +896,7 @@ class ToolInformationType(cybox_common_binding.ToolInformationType):
             return ToolInformationType.subclass(*args_, **kwargs_)
         else:
             return ToolInformationType(*args_, **kwargs_)
+
     factory = staticmethod(factory)
     def get_Title(self): return self.Title
     def set_Title(self, Title): self.Title = Title

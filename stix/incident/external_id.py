@@ -31,7 +31,9 @@ class ExternalID(stix.Entity):
     def source(self, value):
         self._source = value
 
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         obj = self._binding_class()
         obj.set_valueOf_(self.value)
         obj.set_source(self.source)

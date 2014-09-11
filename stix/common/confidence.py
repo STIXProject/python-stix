@@ -90,7 +90,9 @@ class Confidence(stix.Entity):
     #     if value:
     #         raise NotImplementedError()
 
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         obj = self._binding_class()
 
         if self.timestamp:
@@ -166,7 +168,9 @@ class ConfidenceAssertionChain(stix.Entity):
             tmp_confidence = Confidence(value=confidence_assertion)
             self.confidence_assertions.append(tmp_confidence)
 
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         if not return_obj:
             return_obj = self._binding.ConfidenceAssertionChainType()
 

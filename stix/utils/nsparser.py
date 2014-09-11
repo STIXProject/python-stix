@@ -5,6 +5,7 @@ import warnings
 from stix import Entity as StixEntity
 from cybox import Entity as CyboxEntity
 from cybox.common import ObjectProperties, BaseProperty
+from cybox.common import VocabString as CyboxVocabString
 import cybox.utils.nsparser as cybox_nsparser
 
 class NamespaceInfo(object):
@@ -94,7 +95,7 @@ class NamespaceInfo(object):
         # Traverse the MRO so we can collect _namespace attributes on Entity
         # derivations (e.g., WinFile extends File).
         for klass in entity.__class__.__mro__:
-            if klass in (StixEntity, CyboxEntity):
+            if klass in (StixEntity, CyboxEntity, CyboxVocabString):
                 break
 
             # Prevents exception being raised if/when
@@ -104,15 +105,25 @@ class NamespaceInfo(object):
             if not ns:
                 continue
 
+            # cybox.objects.* ObjectPropreties derivations have an _XSI_NS
+            # class-level attribute which holds the namespace alias to be
+            # used for its namespace.
+            alias = klass.__dict__.get('_XSI_NS')
+            if alias:
+                self.namespaces[ns] = alias
+                continue
+
             xsi_type = klass.__dict__.get('_XSI_TYPE')
-            if xsi_type:
-                try:
-                    alias, type_ = xsi_type.split(":")
-                    self.namespaces[ns] = alias
-                except:
-                    self.namespaces[ns] = None
-            else:
+            if not xsi_type:
                 self.namespaces[ns] = None
+                continue
+
+            try:
+                alias, type_ = xsi_type.split(":")
+            except:
+                self.namespaces[ns] = None
+            else:
+                self.namespaces[ns] = alias
 
         entity_dict = entity.__dict__
         input_ns = entity_dict.get("__input_namespaces__", {})

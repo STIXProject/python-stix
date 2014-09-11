@@ -34,7 +34,9 @@ class Marking(stix.Entity):
             raise ValueError('value must be instance of MarkingSpecification')
         self._markings.append(value)
 
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         obj = self._binding_class()
 
         obj.set_Marking([x.to_obj(ns_info=ns_info) for x in self.markings])
@@ -76,7 +78,9 @@ class MarkingSpecification(stix.Entity):
         self.marking_structures = []
         # TODO: add Information_Source
 
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         obj = self._binding_class()
 
         obj.set_id(self.id_)
@@ -143,7 +147,9 @@ class MarkingStructure(stix.Entity):
         self.marking_model_name = None
         self.marking_model_ref = None
 
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 

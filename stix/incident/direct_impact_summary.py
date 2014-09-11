@@ -56,7 +56,9 @@ class DirectImpactSummary(stix.Entity):
         else:
             self._response_and_recovery_costs = ImpactRating(value=value)
             
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         obj = self._binding_class()
         if self.asset_losses:
             obj.set_Asset_Losses(self.asset_losses.to_obj(ns_info=ns_info))

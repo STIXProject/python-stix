@@ -65,7 +65,9 @@ class COATaken(stix.Entity):
         
         return return_obj
 
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
             
@@ -150,7 +152,9 @@ class COATime(stix.Entity):
         return_obj.end = DateTimeWithPrecision.from_obj(obj.get_End())
         return return_obj
     
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
             

@@ -45,11 +45,13 @@ class YaraTestMechanism(_BaseTestMechanism):
         
         return return_obj
     
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
             
-        super(YaraTestMechanism, self)._to_obj(return_obj)
+        super(YaraTestMechanism, self).to_obj(return_obj)
         return_obj.set_Version(self.version)
         return_obj.set_Rule(self.rule.to_obj(ns_info=ns_info))
         

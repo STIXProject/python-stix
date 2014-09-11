@@ -159,7 +159,9 @@ class AffectedAsset(stix.Entity):
             return_obj.nature_of_security_effect = [PropertyAffected.from_obj(x) for x in n.get_Property_Affected()]
         return return_obj
     
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
         
@@ -252,11 +254,13 @@ class AssetType(VocabString):
         return_obj.count_affected = obj.get_count_affected()
         return return_obj
     
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
         
-        super(AssetType, self)._to_obj(return_obj=return_obj)
+        super(AssetType, self).to_obj(return_obj=return_obj)
         return_obj.set_count_affected(self.count_affected)
         return return_obj
     

@@ -100,7 +100,9 @@ class ImpactAssessment(stix.Entity):
         else:
             self._impact_qualification = None
 
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         obj = self._binding_class()
         if self.direct_impact_summary:
             obj.set_Direct_Impact_Summary(self.direct_impact_summary.to_obj(ns_info=ns_info))

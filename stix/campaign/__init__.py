@@ -210,7 +210,9 @@ class Campaign(stix.Entity):
         else:
             self._status = CampaignStatus(value)
 
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 

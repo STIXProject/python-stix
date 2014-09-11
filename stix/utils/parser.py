@@ -80,7 +80,7 @@ class EntityParser(object):
             entity.__input_schemalocations__ = dict(pairs)
 
 
-    def parse_xml_to_obj(self, xml_file, check_version=True, check_root=True):
+    def parse_xmlto_obj(self, xml_file, check_version=True, check_root=True):
         """Creates a STIX binding object from the supplied xml file.
 
         Arguments:

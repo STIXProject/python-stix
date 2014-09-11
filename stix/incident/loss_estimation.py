@@ -30,7 +30,9 @@ class LossEstimation(stix.Entity):
     def iso_currency_code(self, value):
         self._iso_currency_code = value
 
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         obj = self._binding_class()
         if self.amount:
             obj.set_amount(self.amount)

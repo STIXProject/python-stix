@@ -75,11 +75,13 @@ class GenericTestMechanism(_BaseTestMechanism):
         
         return return_obj
     
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
             
-        super(GenericTestMechanism, self)._to_obj(return_obj)
+        super(GenericTestMechanism, self).to_obj(return_obj)
         return_obj.set_reference_location(self.reference_location)
         return_obj.set_Description(self.description.to_obj(ns_info=ns_info))
         return_obj.set_Type(self.type_.to_obj(ns_info=ns_info))

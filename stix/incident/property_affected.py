@@ -29,11 +29,13 @@ class NonPublicDataCompromised(VocabString):
         return_obj.data_encrypted = obj.get_data_encrypted()
         return return_obj
     
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
         
-        super(NonPublicDataCompromised, self)._to_obj(return_obj=return_obj)
+        super(NonPublicDataCompromised, self).to_obj(return_obj=return_obj)
         return_obj.set_data_encrypted(self.data_encrypted)
         return return_obj
     
@@ -145,7 +147,9 @@ class PropertyAffected(stix.Entity):
         return_obj.non_public_data_compromised = NonPublicDataCompromised.from_obj(obj.get_Non_Public_Data_Compromised())
         return return_obj
     
-    def _to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        self._collect_ns_info(ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
             
