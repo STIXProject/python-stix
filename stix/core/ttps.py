@@ -49,7 +49,7 @@ class TTPs(stix.EntityList):
         if not return_obj:
             return_obj = self._binding_class()
         
-        super(TTPs, self)._to_obj(return_obj)
+        super(TTPs, self)._to_obj(return_obj,ns_info=ns_info)
         
         if self.kill_chains:
             return_obj.set_Kill_Chains(self.kill_chains.to_obj(ns_info=ns_info))
