@@ -9,9 +9,9 @@ class SimpleMarkingStructure(MarkingStructure):
     _namespace = 'http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1'
     _XSI_TYPE = "simpleMarking:SimpleMarkingStructureType"
 
-    def __init__(self):
+    def __init__(self,statement=None):
         super(SimpleMarkingStructure, self).__init__()
-        self.statement = None
+        self.statement = statement
 
     def to_obj(self):
         obj = self._binding_class()
