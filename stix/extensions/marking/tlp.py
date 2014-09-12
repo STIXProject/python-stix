@@ -9,9 +9,9 @@ class TLPMarkingStructure(MarkingStructure):
     _namespace = 'http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1'
     _XSI_TYPE = "tlpMarking:TLPMarkingStructureType"
 
-    def __init__(self):
+    def __init__(self, color=None):
         super(TLPMarkingStructure, self).__init__()
-        self.color = None
+        self.color = color
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(TLPMarkingStructure, self).to_obj(return_obj=return_obj, ns_info=ns_info)
