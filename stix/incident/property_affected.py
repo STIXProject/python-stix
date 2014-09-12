@@ -26,7 +26,7 @@ class NonPublicDataCompromised(VocabString):
             return_obj = cls()
         
         super(NonPublicDataCompromised, cls).from_obj(obj, return_obj=return_obj)
-        return_obj.data_encrypted = obj.get_data_encrypted()
+        return_obj.data_encrypted = obj.data_encrypted
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):
@@ -36,7 +36,7 @@ class NonPublicDataCompromised(VocabString):
             return_obj = self._binding_class()
         
         super(NonPublicDataCompromised, self).to_obj(return_obj=return_obj)
-        return_obj.set_data_encrypted(self.data_encrypted)
+        return_obj.data_encrypted = self.data_encrypted
         return return_obj
     
     @classmethod
@@ -140,11 +140,11 @@ class PropertyAffected(stix.Entity):
         if not return_obj:
             return_obj = cls()
             
-        return_obj.property_ = VocabString.from_obj(obj.get_Property())
-        return_obj.description_of_effect = StructuredText.from_obj(obj.get_Description_Of_Effect())
-        return_obj.type_of_availability_loss = VocabString.from_obj(obj.get_Type_Of_Availability_Loss())
-        return_obj.duration_of_availability_loss = VocabString.from_obj(obj.get_Duration_Of_Availability_Loss())
-        return_obj.non_public_data_compromised = NonPublicDataCompromised.from_obj(obj.get_Non_Public_Data_Compromised())
+        return_obj.property_ = VocabString.from_obj(obj.Property)
+        return_obj.description_of_effect = StructuredText.from_obj(obj.Description_Of_Effect)
+        return_obj.type_of_availability_loss = VocabString.from_obj(obj.Type_Of_Availability_Loss)
+        return_obj.duration_of_availability_loss = VocabString.from_obj(obj.Duration_Of_Availability_Loss)
+        return_obj.non_public_data_compromised = NonPublicDataCompromised.from_obj(obj.Non_Public_Data_Compromised)
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):
@@ -154,15 +154,15 @@ class PropertyAffected(stix.Entity):
             return_obj = self._binding_class()
             
         if self.property_:
-            return_obj.set_Property(self.property_.to_obj(ns_info=ns_info))
+            return_obj.Property = self.property_.to_obj(ns_info=ns_info)
         if self.description_of_effect:
-            return_obj.set_Description_Of_Effect(self.description_of_effect.to_obj(ns_info=ns_info))
+            return_obj.Description_Of_Effect = self.description_of_effect.to_obj(ns_info=ns_info)
         if self.type_of_availability_loss:
-            return_obj.set_Type_Of_Availability_Loss(self.type_of_availability_loss.to_obj(ns_info=ns_info))
+            return_obj.Type_Of_Availability_Loss = self.type_of_availability_loss.to_obj(ns_info=ns_info)
         if self.duration_of_availability_loss:
-            return_obj.set_Duration_Of_Availability_Loss(self.duration_of_availability_loss.to_obj(ns_info=ns_info))
+            return_obj.Duration_Of_Availability_Loss = self.duration_of_availability_loss.to_obj(ns_info=ns_info)
         if self.non_public_data_compromised:
-            return_obj.set_Non_Public_Data_Compromised(self.non_public_data_compromised.to_obj(ns_info=ns_info))
+            return_obj.Non_Public_Data_Compromised = self.non_public_data_compromised.to_obj(ns_info=ns_info)
         
         return return_obj
     

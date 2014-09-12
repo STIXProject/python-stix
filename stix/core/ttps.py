@@ -54,7 +54,7 @@ class TTPs(stix.EntityList):
         super(TTPs, self).to_obj(return_obj,ns_info=ns_info)
         
         if self.kill_chains:
-            return_obj.set_Kill_Chains(self.kill_chains.to_obj(ns_info=ns_info))
+            return_obj.Kill_Chains = self.kill_chains.to_obj(ns_info=ns_info)
         
         return return_obj
     
@@ -66,7 +66,7 @@ class TTPs(stix.EntityList):
             return_obj = cls()
         
         super(TTPs, cls).from_obj(obj, return_obj)
-        return_obj.kill_chains = KillChains.from_obj(obj.get_Kill_Chains())
+        return_obj.kill_chains = KillChains.from_obj(obj.Kill_Chains)
         return return_obj
     
     def to_dict(self):

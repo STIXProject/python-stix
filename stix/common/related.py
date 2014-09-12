@@ -68,9 +68,9 @@ class GenericRelationship(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
-        return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
-        return_obj.relationship = VocabString.from_obj(obj.get_Relationship())
+        return_obj.confidence = Confidence.from_obj(obj.Confidence)
+        return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
+        return_obj.relationship = VocabString.from_obj(obj.Relationship)
 
         return return_obj
 
@@ -81,11 +81,11 @@ class GenericRelationship(stix.Entity):
             return_obj = self._binding_class()
 
         if self.confidence:
-            return_obj.set_Confidence(self.confidence.to_obj(ns_info=ns_info))
+            return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
         if self.information_source:
-            return_obj.set_Information_Source(self.information_source.to_obj(ns_info=ns_info))
+            return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
         if self.relationship:
-            return_obj.set_Relationship(self.relationship.to_obj(ns_info=ns_info))
+            return_obj.Relationship = self.relationship.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -131,9 +131,9 @@ class RelatedPackageRef(GenericRelationship):
         return_obj = super(RelatedPackageRef, self).to_obj(ns_info=ns_info)
 
         if self.idref:
-            return_obj.set_idref(self.idref)
+            return_obj.idref = self.idref
         if self.timestamp:
-            return_obj.set_timestamp(self.timestamp)
+            return_obj.timestamp = self.timestamp
 
         return return_obj
 
@@ -153,8 +153,8 @@ class RelatedPackageRef(GenericRelationship):
 
         super(RelatedPackageRef, cls).from_obj(obj, return_obj)
 
-        return_obj.idref = obj.get_idref()
-        return_obj.timestamp = obj.get_timestamp()
+        return_obj.idref = obj.idref
+        return_obj.timestamp = obj.timestamp
 
         return return_obj
 
@@ -191,7 +191,7 @@ class GenericRelationshipList(stix.EntityList):
         self._collect_ns_info(ns_info)
 
         list_obj = super(GenericRelationshipList, self).to_obj(ns_info=ns_info)
-        list_obj.set_scope(self.scope)
+        list_obj.scope = self.scope
         return list_obj
 
     def to_dict(self):
@@ -213,7 +213,7 @@ class GenericRelationshipList(stix.EntityList):
                 contained_type=cls._contained_type,
                 binding_var=cls._binding_var)
 
-        return_obj.scope = obj.get_scope()
+        return_obj.scope = obj.scope
 
         return return_obj
 

@@ -59,13 +59,13 @@ class Identity(stix.Entity):
         if not return_obj:
             return_obj = self._binding.IdentityType()
 
-        return_obj.set_id(self.id_)
-        return_obj.set_idref(self.idref)
+        return_obj.id = self.id_
+        return_obj.idref = self.idref
 
         if self.name:
-            return_obj.set_Name(self.name)
+            return_obj.Name = self.name
         if self.related_identities:
-            return_obj.set_Related_Identities(self.related_identities.to_obj(ns_info=ns_info))
+            return_obj.Related_Identities = self.related_identities.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -95,10 +95,10 @@ class Identity(stix.Entity):
             except AttributeError:
                 return_obj = Identity.from_obj(obj, cls())
         else:
-            return_obj.id_ = obj.get_id()
-            return_obj.idref = obj.get_idref()
-            return_obj.name = obj.get_Name()
-            return_obj.related_identities = RelatedIdentities.from_obj(obj.get_Related_Identities())
+            return_obj.id_ = obj.id
+            return_obj.idref = obj.idref
+            return_obj.name = obj.Name
+            return_obj.related_identities = RelatedIdentities.from_obj(obj.Related_Identities)
 
         return return_obj
 

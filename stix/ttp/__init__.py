@@ -230,32 +230,32 @@ class TTP(stix.Entity):
         if not return_obj:
             return_obj = self._binding_class()
 
-        return_obj.set_id(self.id_)
-        return_obj.set_idref(self.idref)
-        return_obj.set_timestamp(dates.serialize_value(self.timestamp))
-        return_obj.set_version(self.version)
-        return_obj.set_Title(self.title)
+        return_obj.id = self.id_
+        return_obj.idref = self.idref
+        return_obj.timestamp = dates.serialize_value(self.timestamp)
+        return_obj.version = self.version
+        return_obj.Title = self.title
 
         if self.description:
-            return_obj.set_Description(self.description.to_obj(ns_info=ns_info))
+            return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.short_description:
-            return_obj.set_Short_Description(self.short_description.to_obj(ns_info=ns_info))
+            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
         if self.behavior:
-            return_obj.set_Behavior(self.behavior.to_obj(ns_info=ns_info))
+            return_obj.Behavior = self.behavior.to_obj(ns_info=ns_info)
         if self.related_ttps:
-            return_obj.set_Related_TTPs(self.related_ttps.to_obj(ns_info=ns_info))
+            return_obj.Related_TTPs = self.related_ttps.to_obj(ns_info=ns_info)
         if self.exploit_targets:
-            return_obj.set_Exploit_Targets(self.exploit_targets.to_obj(ns_info=ns_info))
+            return_obj.Exploit_Targets = self.exploit_targets.to_obj(ns_info=ns_info)
         if self.information_source:
-            return_obj.set_Information_Source(self.information_source.to_obj(ns_info=ns_info))
+            return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
         if self.intended_effects:
-            return_obj.set_Intended_Effect([x.to_obj(ns_info=ns_info) for x in self.intended_effects])
+            return_obj.Intended_Effect = [x.to_obj(ns_info=ns_info) for x in self.intended_effects]
         if self.resources:
-            return_obj.set_Resources(self.resources.to_obj(ns_info=ns_info))
+            return_obj.Resources = self.resources.to_obj(ns_info=ns_info)
         if self.victim_targeting:
-            return_obj.set_Victim_Targeting(self.victim_targeting.to_obj(ns_info=ns_info))
+            return_obj.Victim_Targeting = self.victim_targeting.to_obj(ns_info=ns_info)
         if self.handling:
-            return_obj.set_Handling(self.handling.to_obj(ns_info=ns_info))
+            return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -266,25 +266,25 @@ class TTP(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = obj.get_id()
-        return_obj.idref = obj.get_idref()
-        return_obj.timestamp = obj.get_timestamp()
+        return_obj.id_ = obj.id
+        return_obj.idref = obj.idref
+        return_obj.timestamp = obj.timestamp
 
         if isinstance(obj, cls._binding_class): # TTPType properties
-            return_obj.version = obj.get_version() or cls._version
-            return_obj.title = obj.get_Title()
-            return_obj.description = StructuredText.from_obj(obj.get_Description())
-            return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
-            return_obj.behavior = Behavior.from_obj(obj.get_Behavior())
-            return_obj.related_ttps = RelatedTTPs.from_obj(obj.get_Related_TTPs())
-            return_obj.exploit_targets = ExploitTargets.from_obj(obj.get_Exploit_Targets())
-            return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
-            return_obj.resources = Resource.from_obj(obj.get_Resources())
-            return_obj.victim_targeting = VictimTargeting.from_obj(obj.get_Victim_Targeting())
-            return_obj.handling = Marking.from_obj(obj.get_Handling())
+            return_obj.version = obj.version or cls._version
+            return_obj.title = obj.Title
+            return_obj.description = StructuredText.from_obj(obj.Description)
+            return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
+            return_obj.behavior = Behavior.from_obj(obj.Behavior)
+            return_obj.related_ttps = RelatedTTPs.from_obj(obj.Related_TTPs)
+            return_obj.exploit_targets = ExploitTargets.from_obj(obj.Exploit_Targets)
+            return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
+            return_obj.resources = Resource.from_obj(obj.Resources)
+            return_obj.victim_targeting = VictimTargeting.from_obj(obj.Victim_Targeting)
+            return_obj.handling = Marking.from_obj(obj.Handling)
 
-            if obj.get_Intended_Effect():
-                return_obj.intended_effects = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
+            if obj.Intended_Effect:
+                return_obj.intended_effects = [Statement.from_obj(x) for x in obj.Intended_Effect]
 
         return return_obj
 

@@ -78,18 +78,18 @@ class Sighting(stix.Entity):
         if not return_obj:
             return_obj = self._binding_class()
         
-        return_obj.set_timestamp(dates.serialize_value(self.timestamp))
-        return_obj.set_timestamp_precision(self.timestamp_precision)
-        return_obj.set_Reference(self.reference)
+        return_obj.timestamp = dates.serialize_value(self.timestamp)
+        return_obj.timestamp_precision = self.timestamp_precision
+        return_obj.Reference = self.reference
         
         if self.source:
-            return_obj.set_Source(self.source.to_obj(ns_info=ns_info))
+            return_obj.Source = self.source.to_obj(ns_info=ns_info)
         if self.confidence:
-            return_obj.set_Confidence(self.confidence.to_obj(ns_info=ns_info))
+            return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
         if self.description:
-            return_obj.set_Description(self.description.to_obj(ns_info=ns_info))
+            return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.related_observables:
-            return_obj.set_Related_Observables(self.related_observables.to_obj(ns_info=ns_info))
+            return_obj.Related_Observables = self.related_observables.to_obj(ns_info=ns_info)
         
         return return_obj
 
@@ -119,13 +119,13 @@ class Sighting(stix.Entity):
         if return_obj is None:
             return_obj = cls()
         
-        return_obj.timestamp = obj.get_timestamp()
-        return_obj.timestamp_precision = obj.get_timestamp_precision()
-        return_obj.source = InformationSource.from_obj(obj.get_Source())
-        return_obj.refernce = obj.get_Reference()
-        return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
-        return_obj.description = StructuredText.from_obj(obj.get_Description())
-        return_obj.related_observables = RelatedObservables.from_obj(obj.get_Related_Observables())
+        return_obj.timestamp = obj.timestamp
+        return_obj.timestamp_precision = obj.timestamp_precision
+        return_obj.source = InformationSource.from_obj(obj.Source)
+        return_obj.refernce = obj.Reference
+        return_obj.confidence = Confidence.from_obj(obj.Confidence)
+        return_obj.description = StructuredText.from_obj(obj.Description)
+        return_obj.related_observables = RelatedObservables.from_obj(obj.Related_Observables)
         return return_obj
 
     @classmethod
@@ -163,7 +163,7 @@ class Sightings(stix.EntityList):
         self._collect_ns_info(ns_info)
 
         list_obj = super(Sightings, self).to_obj(ns_info=ns_info)
-        list_obj.set_sightings_count(self.sightings_count)
+        list_obj.sightings_count = self.sightings_count
         return list_obj
 
     def to_dict(self):
@@ -180,7 +180,7 @@ class Sightings(stix.EntityList):
             return_obj = cls()
 
         super(Sightings, cls).from_obj(obj, return_obj=return_obj)
-        return_obj.sightings_count = obj.get_sightings_count()
+        return_obj.sightings_count = obj.sightings_count
         return return_obj
 
     @classmethod

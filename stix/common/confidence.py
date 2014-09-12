@@ -96,14 +96,14 @@ class Confidence(stix.Entity):
         obj = self._binding_class()
 
         if self.timestamp:
-            obj.set_timestamp(self.timestamp.isoformat())
-        obj.set_timestamp_precision(self.timestamp_precision)
+            obj.timestamp = self.timestamp.isoformat()
+        obj.timestamp_precision = self.timestamp_precision
         if self.value:
-            obj.set_Value(self.value.to_obj(ns_info=ns_info))
+            obj.Value = self.value.to_obj(ns_info=ns_info)
         if self.description:
-            obj.set_Description(self.description.to_obj(ns_info=ns_info))
+            obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.source:
-            obj.set_Source(self.source.to_obj(ns_info=ns_info))
+            obj.Source = self.source.to_obj(ns_info=ns_info)
 
         return obj
 
@@ -130,11 +130,11 @@ class Confidence(stix.Entity):
             return None
         c = Confidence()
 
-        c.timestamp = obj.get_timestamp()
-        c.timestamp_precision = obj.get_timestamp_precision()
-        c.value = VocabString.from_obj(obj.get_Value())
-        c.description = StructuredText.from_obj(obj.get_Description())
-        c.source = InformationSource.from_obj(obj.get_Source())
+        c.timestamp = obj.timestamp
+        c.timestamp_precision = obj.timestamp_precision
+        c.value = VocabString.from_obj(obj.Value)
+        c.description = StructuredText.from_obj(obj.Description)
+        c.source = InformationSource.from_obj(obj.Source)
 
         return c
 

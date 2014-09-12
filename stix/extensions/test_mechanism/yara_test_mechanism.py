@@ -40,8 +40,8 @@ class YaraTestMechanism(_BaseTestMechanism):
             return_obj = cls()
         
         super(YaraTestMechanism, cls).from_obj(obj, return_obj)
-        return_obj.version = obj.get_Version() 
-        return_obj.rule = EncodedCDATA.from_obj(obj.get_Rule())
+        return_obj.version = obj.Version 
+        return_obj.rule = EncodedCDATA.from_obj(obj.Rule)
         
         return return_obj
     
@@ -52,8 +52,8 @@ class YaraTestMechanism(_BaseTestMechanism):
             return_obj = self._binding_class()
             
         super(YaraTestMechanism, self).to_obj(return_obj)
-        return_obj.set_Version(self.version)
-        return_obj.set_Rule(self.rule.to_obj(ns_info=ns_info))
+        return_obj.Version = self.version
+        return_obj.Rule = self.rule.to_obj(ns_info=ns_info)
         
         return return_obj
     

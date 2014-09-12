@@ -72,15 +72,15 @@ class CIQIdentity3_0Instance(Identity):
 
         super(CIQIdentity3_0Instance, self).to_obj(return_obj)
 
-        #return_obj.set_id(self.id_)
-        #return_obj.set_idref(self.idref_)
+        #return_obj.id = self.id_
+        #return_obj.idref = self.idref_
 
         if self.roles:
             for role in self.roles:
                 return_obj.add_Role(role)
 
         if self.specification:
-            return_obj.set_Specification(self.specification.to_obj(ns_info=ns_info))
+            return_obj.Specification = self.specification.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -93,8 +93,8 @@ class CIQIdentity3_0Instance(Identity):
 
         super(CIQIdentity3_0Instance, cls).from_obj(obj, return_obj)
 
-        roles = obj.get_Role()
-        specification = obj.get_Specification()
+        roles = obj.Role
+        specification = obj.Specification
 
         if roles:
             for role in roles:
@@ -1128,7 +1128,7 @@ class _BaseNameElement(stix.Entity):
 
     @classmethod
     def from_obj(cls, obj, return_obj):
-        return_obj.value = obj.get_valueOf_()
+        return_obj.value = obj.valueOf_
         return return_obj
 
     def to_obj(self, return_obj=None, ns_info=None):

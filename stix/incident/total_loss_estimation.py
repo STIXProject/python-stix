@@ -46,9 +46,9 @@ class TotalLossEstimation(stix.Entity):
 
         obj = self._binding_class()
         if self.initial_reported_total_loss_estimation:
-            obj.set_Initial_Reported_Total_Loss_Estimation(self.initial_reported_total_loss_estimation.to_obj(ns_info=ns_info))
+            obj.Initial_Reported_Total_Loss_Estimation = self.initial_reported_total_loss_estimation.to_obj(ns_info=ns_info)
         if self.actual_total_loss_estimation:
-            obj.set_Actual_Total_Loss_Estimation(self.actual_total_loss_estimation.to_obj(ns_info=ns_info))
+            obj.Actual_Total_Loss_Estimation = self.actual_total_loss_estimation.to_obj(ns_info=ns_info)
         return obj
 
     @classmethod
@@ -59,8 +59,8 @@ class TotalLossEstimation(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.initial_reported_total_loss_estimation = LossEstimation.from_obj(obj.get_Initial_Reported_Total_Loss_Estimation())
-        return_obj.actual_total_loss_estimation = LossEstimation.from_obj(obj.get_Actual_Total_Loss_Estimation())
+        return_obj.initial_reported_total_loss_estimation = LossEstimation.from_obj(obj.Initial_Reported_Total_Loss_Estimation)
+        return_obj.actual_total_loss_estimation = LossEstimation.from_obj(obj.Actual_Total_Loss_Estimation)
         return return_obj
 
     def to_dict(self):    
