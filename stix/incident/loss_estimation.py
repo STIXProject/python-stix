@@ -31,7 +31,7 @@ class LossEstimation(stix.Entity):
         self._iso_currency_code = value
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(LossEstimation, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         obj = self._binding_class()
         if self.amount:

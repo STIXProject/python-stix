@@ -73,7 +73,7 @@ class Sighting(stix.Entity):
             self._confidence = Confidence(value)
     
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(Sighting, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             return_obj = self._binding_class()
@@ -160,9 +160,7 @@ class Sightings(stix.EntityList):
         return super(Sightings, self).__nonzero__() or bool(self.sightings_count)
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
-
-        list_obj = super(Sightings, self).to_obj(ns_info=ns_info)
+        list_obj = super(Sightings, self).to_obj(return_obj=return_obj, ns_info=ns_info)
         list_obj.set_sightings_count(self.sightings_count)
         return list_obj
 

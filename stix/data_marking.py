@@ -35,7 +35,7 @@ class Marking(stix.Entity):
         self._markings.append(value)
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(Marking, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         obj = self._binding_class()
 
@@ -79,7 +79,7 @@ class MarkingSpecification(stix.Entity):
         # TODO: add Information_Source
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(MarkingSpecification, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         obj = self._binding_class()
 
@@ -148,7 +148,7 @@ class MarkingStructure(stix.Entity):
         self.marking_model_ref = None
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(MarkingStructure, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             return_obj = self._binding_class()

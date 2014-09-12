@@ -43,7 +43,7 @@ class KillChain(stix.Entity):
             
     
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(KillChain, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             return_obj = self._binding_class()
@@ -124,7 +124,7 @@ class KillChainPhase(stix.Entity):
             self._ordinality = None
     
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(KillChainPhase, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             return_obj = self._binding_class()
@@ -172,7 +172,7 @@ class KillChainPhaseReference(KillChainPhase):
         self.kill_chain_name = kill_chain_name
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(KillChainPhaseReference, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             return_obj = self._binding_class()

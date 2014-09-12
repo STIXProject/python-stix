@@ -75,7 +75,7 @@ class GenericRelationship(stix.Entity):
         return return_obj
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(GenericRelationship, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             return_obj = self._binding_class()
@@ -126,9 +126,7 @@ class RelatedPackageRef(GenericRelationship):
         self.timestamp = None
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
-
-        return_obj = super(RelatedPackageRef, self).to_obj(ns_info=ns_info)
+        return_obj = super(RelatedPackageRef, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if self.idref:
             return_obj.set_idref(self.idref)
@@ -188,9 +186,7 @@ class GenericRelationshipList(stix.EntityList):
                 or bool(self.scope)
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
-
-        list_obj = super(GenericRelationshipList, self).to_obj(ns_info=ns_info)
+        list_obj = super(GenericRelationshipList, self).to_obj(return_obj=return_obj, ns_info=ns_info)
         list_obj.set_scope(self.scope)
         return list_obj
 
@@ -283,8 +279,6 @@ class _BaseRelated(GenericRelationship):
         self._item = value
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
-
         if not return_obj:
             return_obj = self._binding_class()
 

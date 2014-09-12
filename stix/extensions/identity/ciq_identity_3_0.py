@@ -65,8 +65,6 @@ class CIQIdentity3_0Instance(Identity):
 
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
-
         if not return_obj:
             return_obj = self._binding.CIQIdentity3_0InstanceType()
 
@@ -319,7 +317,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         return return_obj
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(STIXCIQIdentity3_0, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             root_tag = STIXCIQIdentity3_0.XML_TAG
@@ -405,7 +403,7 @@ class Address(stix.Entity):
         self.administrative_area = administrative_area
     
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(Address, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             return_obj = et.Element(self.XML_TAG)
@@ -507,7 +505,7 @@ class AdministrativeArea(stix.Entity):
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(AdministrativeArea, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             return_obj = et.Element(self.XML_TAG)
@@ -578,7 +576,7 @@ class Country(stix.Entity):
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(Country, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             return_obj = et.Element(self.XML_TAG)
@@ -612,7 +610,7 @@ class NameElement(stix.Entity):
         self.value = value
         
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(NameElement, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         return_obj = et.Element(self.XML_TAG)
         return_obj.text = self.value
@@ -679,7 +677,7 @@ class FreeTextAddress(stix.Entity):
         return return_obj
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(FreeTextAddress, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             return_obj = et.Element(self.XML_TAG)
@@ -753,7 +751,7 @@ class PartyName(stix.Entity):
             raise ValueError('value must be instance of OrganisationName')
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(PartyName, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             root_tag = PartyName.XML_TAG
@@ -861,7 +859,7 @@ class NameLine(stix.Entity):
         self._value = value
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(NameLine, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             root_tag = NameLine.XML_TAG
@@ -931,7 +929,7 @@ class PersonName(stix.Entity):
             raise ValueError('value must be instance of PersonNameElement')
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(PersonName, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             root_tag = PersonName.XML_TAG
@@ -1038,7 +1036,7 @@ class OrganisationName(stix.Entity):
 
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(OrganisationName, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             root_tag = OrganisationName.XML_TAG
@@ -1132,7 +1130,7 @@ class _BaseNameElement(stix.Entity):
         return return_obj
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(_BaseNameElement, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         return_obj.text = self.value
         return return_obj
@@ -1183,16 +1181,15 @@ class PersonNameElement(_BaseNameElement):
         self._element_type = value    
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
-
         if not return_obj:
             root_tag = PersonNameElement.XML_TAG
             return_obj = et.Element(root_tag)
 
+        super(PersonNameElement, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if self.element_type:
             return_obj.attrib['ElementType'] = self.element_type
 
-        return_obj.text = self.value
         return return_obj
 
     @classmethod
@@ -1258,16 +1255,15 @@ class OrganisationNameElement(_BaseNameElement):
         self._element_type = value
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
-
         if not return_obj:
             root_tag = OrganisationNameElement.XML_TAG
             return_obj = et.Element(root_tag)
 
+        super(OrganisationNameElement, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if self.element_type:
             return_obj.attrib['ElementType'] = self.element_type
 
-        return_obj.text = self.value
         return return_obj
 
     @classmethod
@@ -1334,7 +1330,7 @@ class SubDivisionName(stix.Entity):
         self._type = value
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(SubDivisionName, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             root_tag = SubDivisionName.XML_TAG
@@ -1388,7 +1384,7 @@ class Language(stix.Entity):
         self.value = value
         
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(Language, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         return_obj = et.Element(self.XML_TAG)
         return_obj.text = self.value
@@ -1427,7 +1423,7 @@ class ElectronicAddressIdentifier(stix.Entity):
         self.value = value
         
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(ElectronicAddressIdentifier, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         return_obj = et.Element(self.XML_TAG)
         return_obj.text = self.value
@@ -1473,7 +1469,7 @@ class OrganisationInfo(stix.Entity):
         self.industry_type = industry_type
         
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(OrganisationInfo, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         return_obj = et.Element(self.XML_TAG)
         if self.industry_type:
@@ -1515,7 +1511,7 @@ class FreeTextLine(stix.Entity):
         self.type_ = type_
         
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(FreeTextLine, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         return_obj = et.Element(self.XML_TAG)
         if self.type_:
@@ -1684,7 +1680,7 @@ class ContactNumberElement(stix.Entity):
             self._type_ = value
         
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(ContactNumberElement, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         return_obj = et.Element(self.XML_TAG)
         if self.type_:

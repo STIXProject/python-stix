@@ -66,7 +66,7 @@ class EncodedCDATA(stix.Entity):
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(EncodedCDATA, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             return_obj = self._binding_class()

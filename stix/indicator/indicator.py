@@ -449,7 +449,7 @@ class Indicator(stix.Entity):
         self.add_observable(observable)
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(Indicator, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             return_obj = self._binding_class()
@@ -694,9 +694,7 @@ class CompositeIndicatorExpression(stix.EntityList):
         return super(CompositeIndicatorExpression, self).__nonzero__()
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
-
-        list_obj = super(CompositeIndicatorExpression, self).to_obj(ns_info=ns_info)
+        list_obj = super(CompositeIndicatorExpression, self).to_obj(return_obj=return_obj, ns_info=ns_info)
         list_obj.set_operator(self.operator)
         return list_obj
 

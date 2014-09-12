@@ -38,12 +38,9 @@ class ToolInformation(cybox.common.ToolInformation):
             self._short_description = None
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
-
         if not return_obj:
             return_obj = self._binding_class()
 
-        print "to_obj: sent", type(return_obj)
         super(ToolInformation, self).to_obj(return_obj=return_obj, ns_info=ns_info)
         
         return_obj.set_Title(self.title)        

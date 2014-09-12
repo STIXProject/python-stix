@@ -276,7 +276,7 @@ class ThreatActor(stix.Entity):
             self.planning_and_operational_supports.append(Statement(value=pos))
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(ThreatActor, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             return_obj = self._binding_class()

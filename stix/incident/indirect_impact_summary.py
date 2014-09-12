@@ -71,7 +71,7 @@ class IndirectImpactSummary(stix.Entity):
             self._legal_and_regulatory_costs = SecurityCompromise(value=value)
             
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(IndirectImpactSummary, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         obj = self._binding_class()
         if self.loss_of_competitive_advantage:

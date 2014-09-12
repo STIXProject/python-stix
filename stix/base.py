@@ -19,8 +19,14 @@ class Entity(object):
 
 
     def to_obj(self, return_obj=None, ns_info=None):
-        """Export an object as a binding object representation"""
-        raise NotImplementedError()
+        """Converts an `Entity` into a binding object.
+
+        Note:
+            This needs to be overridden by derived classes.
+
+        """
+        self._collect_ns_info(ns_info)
+        return return_obj
 
 
     @classmethod
@@ -246,7 +252,7 @@ class EntityList(collections.MutableSequence, Entity):
     # - _inner_name
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(EntityList, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             return_obj = self._binding_class()

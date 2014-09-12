@@ -42,7 +42,7 @@ class TotalLossEstimation(stix.Entity):
             raise ValueError("value must be LossEstimation instance")
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(TotalLossEstimation, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         obj = self._binding_class()
         if self.initial_reported_total_loss_estimation:

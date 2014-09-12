@@ -155,7 +155,7 @@ class InformationSource(stix.Entity):
             self.roles.append(value=role)
 
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
+        super(InformationSource, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             return_obj = self._binding_class()

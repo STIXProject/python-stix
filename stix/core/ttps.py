@@ -46,12 +46,10 @@ class TTPs(stix.EntityList):
             raise ValueError('Cannot add type %s to ttp list' % type(ttp))
         
     def to_obj(self, return_obj=None, ns_info=None):
-        self._collect_ns_info(ns_info)
-
         if not return_obj:
             return_obj = self._binding_class()
         
-        super(TTPs, self).to_obj(return_obj,ns_info=ns_info)
+        super(TTPs, self).to_obj(return_obj=return_obj, ns_info=ns_info)
         
         if self.kill_chains:
             return_obj.set_Kill_Chains(self.kill_chains.to_obj(ns_info=ns_info))
