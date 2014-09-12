@@ -74,16 +74,18 @@ class GenericRelationship(stix.Entity):
 
         return return_obj
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(GenericRelationship, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 
         if self.confidence:
-            return_obj.set_Confidence(self.confidence.to_obj())
+            return_obj.set_Confidence(self.confidence.to_obj(ns_info=ns_info))
         if self.information_source:
-            return_obj.set_Information_Source(self.information_source.to_obj())
+            return_obj.set_Information_Source(self.information_source.to_obj(ns_info=ns_info))
         if self.relationship:
-            return_obj.set_Relationship(self.relationship.to_obj())
+            return_obj.set_Relationship(self.relationship.to_obj(ns_info=ns_info))
 
         return return_obj
 
@@ -123,8 +125,8 @@ class RelatedPackageRef(GenericRelationship):
         self.idref = None
         self.timestamp = None
 
-    def to_obj(self):
-        return_obj = super(RelatedPackageRef, self).to_obj()
+    def to_obj(self, return_obj=None, ns_info=None):
+        return_obj = super(RelatedPackageRef, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if self.idref:
             return_obj.set_idref(self.idref)
@@ -199,8 +201,8 @@ class GenericRelationshipList(stix.EntityList):
                 raise ValueError(msg)
             self._scope = value
 
-    def to_obj(self):
-        list_obj = super(GenericRelationshipList, self).to_obj()
+    def to_obj(self, return_obj=None, ns_info=None):
+        list_obj = super(GenericRelationshipList, self).to_obj(return_obj=return_obj, ns_info=ns_info)
         list_obj.set_scope(self.scope)
         return list_obj
 
@@ -292,14 +294,14 @@ class _BaseRelated(GenericRelationship):
 
         self._item = value
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
 
-        super(_BaseRelated, self).to_obj(return_obj=return_obj)
+        super(_BaseRelated, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if self.item:
-            setattr(return_obj, self._inner_var, self.item.to_obj())
+            setattr(return_obj, self._inner_var, self.item.to_obj(ns_info=ns_info))
 
         return return_obj
 

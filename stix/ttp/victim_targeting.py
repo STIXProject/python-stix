@@ -77,18 +77,20 @@ class VictimTargeting(stix.Entity):
         else:
             self._targeted_technical_details = Observables(observables=[value])
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(VictimTargeting, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 
         if self.identity:
-            return_obj.set_Identity(self.identity.to_obj())
+            return_obj.set_Identity(self.identity.to_obj(ns_info=ns_info))
         if self.targeted_information:
-            return_obj.set_Targeted_Information([x.to_obj() for x in self.targeted_information])
+            return_obj.set_Targeted_Information([x.to_obj(ns_info=ns_info) for x in self.targeted_information])
         if self.targeted_systems:
-            return_obj.set_Targeted_Systems([x.to_obj() for x in self.targeted_systems])
+            return_obj.set_Targeted_Systems([x.to_obj(ns_info=ns_info) for x in self.targeted_systems])
         if self.targeted_technical_details:
-            return_obj.set_Targeted_Technical_Details(self.targeted_technical_details.to_obj())
+            return_obj.set_Targeted_Technical_Details(self.targeted_technical_details.to_obj(ns_info=ns_info))
 
         return return_obj
 

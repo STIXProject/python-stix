@@ -39,7 +39,9 @@ class DateTimeWithPrecision(stix.Entity):
 
         self._precision = value
 
-    def to_obj(self):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(DateTimeWithPrecision, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         obj = self._binding_class()
         obj.set_valueOf_(serialize_value(self.value))
         obj.set_precision(self.precision)

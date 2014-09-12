@@ -75,11 +75,11 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
         return_obj.ioc = obj.get_ioc()
         return return_obj
     
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
             
-        super(OpenIOCTestMechanism, self).to_obj(return_obj)
+        super(OpenIOCTestMechanism, self).to_obj(return_obj=return_obj, ns_info=ns_info)
         return_obj.set_ioc(self.ioc) 
         return return_obj
     

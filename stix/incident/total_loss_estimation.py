@@ -41,12 +41,14 @@ class TotalLossEstimation(stix.Entity):
         else:
             raise ValueError("value must be LossEstimation instance")
 
-    def to_obj(self):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(TotalLossEstimation, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         obj = self._binding_class()
         if self.initial_reported_total_loss_estimation:
-            obj.set_Initial_Reported_Total_Loss_Estimation(self.initial_reported_total_loss_estimation.to_obj())
+            obj.set_Initial_Reported_Total_Loss_Estimation(self.initial_reported_total_loss_estimation.to_obj(ns_info=ns_info))
         if self.actual_total_loss_estimation:
-            obj.set_Actual_Total_Loss_Estimation(self.actual_total_loss_estimation.to_obj())
+            obj.set_Actual_Total_Loss_Estimation(self.actual_total_loss_estimation.to_obj(ns_info=ns_info))
         return obj
 
     @classmethod

@@ -56,14 +56,16 @@ class DirectImpactSummary(stix.Entity):
         else:
             self._response_and_recovery_costs = ImpactRating(value=value)
             
-    def to_obj(self):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(DirectImpactSummary, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         obj = self._binding_class()
         if self.asset_losses:
-            obj.set_Asset_Losses(self.asset_losses.to_obj())
+            obj.set_Asset_Losses(self.asset_losses.to_obj(ns_info=ns_info))
         if self.business_mission_disruption:
-            obj.set_Business_Mission_Disruption(self.business_mission_disruption.to_obj())
+            obj.set_Business_Mission_Disruption(self.business_mission_disruption.to_obj(ns_info=ns_info))
         if self.response_and_recovery_costs:
-            obj.set_Response_And_Recovery_Costs(self.response_and_recovery_costs.to_obj())
+            obj.set_Response_And_Recovery_Costs(self.response_and_recovery_costs.to_obj(ns_info=ns_info))
         return obj
 
     @classmethod

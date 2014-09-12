@@ -63,7 +63,9 @@ class _BaseTestMechanism(stix.Entity):
         
         return return_obj
     
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(_BaseTestMechanism, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
         
@@ -71,9 +73,9 @@ class _BaseTestMechanism(stix.Entity):
         return_obj.set_idref(self.idref)
         
         if self.efficacy:
-            return_obj.set_Efficacy(self.efficacy.to_obj())
+            return_obj.set_Efficacy(self.efficacy.to_obj(ns_info=ns_info))
         if self.producer:
-            return_obj.set_Producer(self.producer.to_obj())
+            return_obj.set_Producer(self.producer.to_obj(ns_info=ns_info))
         
         return return_obj
     

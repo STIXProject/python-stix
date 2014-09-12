@@ -31,7 +31,7 @@ class STIXPackage(stix.Entity):
     _namespace = 'http://stix.mitre.org/stix-1'
     _version = "1.1.1"
 
-    def __init__(self, id_=None, idref=None, timestamp=None, stix_header=None, courses_of_action=None, exploit_targets=None, indicators=None, observables=None, incidents=None, threat_actors=None, ttps=None, campaigns=None):
+    def     __init__(self, id_=None, idref=None, timestamp=None, stix_header=None, courses_of_action=None, exploit_targets=None, indicators=None, observables=None, incidents=None, threat_actors=None, ttps=None, campaigns=None):
         self.id_ = id_ or stix.utils.create_id("Package")
         self.idref = idref
         self.version = self._version
@@ -281,7 +281,9 @@ class STIXPackage(stix.Entity):
         self.ttps.append(ttp)
    
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(STIXPackage, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 
@@ -291,45 +293,45 @@ class STIXPackage(stix.Entity):
         return_obj.set_timestamp(dates.serialize_value(self.timestamp))
 
         if self.stix_header:
-            return_obj.set_STIX_Header(self.stix_header.to_obj())
+            return_obj.set_STIX_Header(self.stix_header.to_obj(ns_info=ns_info))
         
         if self.campaigns:
             coas_obj = self._binding.CampaignsType()
-            coas_obj.set_Campaign([x.to_obj() for x in self.campaigns])
+            coas_obj.set_Campaign([x.to_obj(ns_info=ns_info) for x in self.campaigns])
             return_obj.set_Campaigns(coas_obj)
             
         if self.courses_of_action:
             coas_obj = self._binding.CoursesOfActionType()
-            coas_obj.set_Course_Of_Action([x.to_obj() for x in self.courses_of_action])
+            coas_obj.set_Course_Of_Action([x.to_obj(ns_info=ns_info) for x in self.courses_of_action])
             return_obj.set_Courses_Of_Action(coas_obj)
         
         if self.exploit_targets:
             et_obj = stix_common_binding.ExploitTargetsType()
-            et_obj.set_Exploit_Target([x.to_obj() for x in self.exploit_targets])
+            et_obj.set_Exploit_Target([x.to_obj(ns_info=ns_info) for x in self.exploit_targets])
             return_obj.set_Exploit_Targets(et_obj)
             
         if self.indicators:
             indicators_obj = self._binding.IndicatorsType()
-            indicators_obj.set_Indicator([x.to_obj() for x in self.indicators])
+            indicators_obj.set_Indicator([x.to_obj(ns_info=ns_info) for x in self.indicators])
             return_obj.set_Indicators(indicators_obj)
 
         if self.observables:
-            return_obj.set_Observables(self.observables.to_obj())
+            return_obj.set_Observables(self.observables.to_obj(ns_info=ns_info))
 
         if self.incidents:
             incidents_obj = self._binding.IncidentsType()
-            incidents_obj.set_Incident([x.to_obj() for x in self.incidents])
+            incidents_obj.set_Incident([x.to_obj(ns_info=ns_info) for x in self.incidents])
             return_obj.set_Incidents(incidents_obj)
         if self.threat_actors:
             threat_actors_obj = self._binding.ThreatActorsType()
-            threat_actors_obj.set_Threat_Actor([x.to_obj() for x in self.threat_actors])
+            threat_actors_obj.set_Threat_Actor([x.to_obj(ns_info=ns_info) for x in self.threat_actors])
             return_obj.set_Threat_Actors(threat_actors_obj)
         
         if self.ttps:
-            return_obj.set_TTPs(self.ttps.to_obj())
+            return_obj.set_TTPs(self.ttps.to_obj(ns_info=ns_info))
            
         if self.related_packages:
-            return_obj.set_Related_Packages(self.related_packages.to_obj())
+            return_obj.set_Related_Packages(self.related_packages.to_obj(ns_info=ns_info))
              
         return return_obj
 

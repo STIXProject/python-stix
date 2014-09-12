@@ -100,18 +100,20 @@ class ImpactAssessment(stix.Entity):
         else:
             self._impact_qualification = None
 
-    def to_obj(self):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(ImpactAssessment, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         obj = self._binding_class()
         if self.direct_impact_summary:
-            obj.set_Direct_Impact_Summary(self.direct_impact_summary.to_obj())
+            obj.set_Direct_Impact_Summary(self.direct_impact_summary.to_obj(ns_info=ns_info))
         if self.indirect_impact_summary:
-            obj.set_Indirect_Impact_Summary(self.indirect_impact_summary.to_obj())
+            obj.set_Indirect_Impact_Summary(self.indirect_impact_summary.to_obj(ns_info=ns_info))
         if self.total_loss_estimation:
-            obj.set_Total_Loss_Estimation(self.total_loss_estimation.to_obj())
+            obj.set_Total_Loss_Estimation(self.total_loss_estimation.to_obj(ns_info=ns_info))
         if self.impact_qualification:
-            obj.set_Impact_Qualification(self.impact_qualification.to_obj())
+            obj.set_Impact_Qualification(self.impact_qualification.to_obj(ns_info=ns_info))
         if self.effects:
-            effects_obj = self._binding.EffectsType(Effect=[x.to_obj() for x in self.effects])
+            effects_obj = self._binding.EffectsType(Effect=[x.to_obj(ns_info=ns_info) for x in self.effects])
             obj.set_Effects(effects_obj)
         return obj
 

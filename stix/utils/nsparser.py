@@ -1,174 +1,213 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-import inspect
 import warnings
-import stix
-from stix.utils import get_id_namespace
-import cybox
-from cybox.core import Observables, Observable
+from stix import Entity as StixEntity
+from cybox import Entity as CyboxEntity
+from cybox.common import ObjectProperties, BaseProperty
+from cybox.common import VocabString as CyboxVocabString
 import cybox.utils.nsparser as cybox_nsparser
 
-class NamespaceParser(object):
+class NamespaceInfo(object):
     def __init__(self):
-        pass
+        self.namespaces = {}
+        self.input_namespaces = {}
+        self.input_schemalocs = {}
 
-    def _get_observable_namespace_dict(self, obs):
-        '''Returns a dict of namespaces used within a CybOX Observable'''
-        namespaces = {'http://cybox.mitre.org/default_vocabularies-2': 'cyboxVocabs'}
-        
-        obs_namespaces = obs._get_namespaces()
-        for namespace in obs_namespaces:
-            namespaces[namespace.name] = namespace.prefix
-            
-        return namespaces
+    def update(self, ns_info):
+        self.namespaces.update(ns_info.namespaces)
+        self.input_namespaces.update(ns_info.input_namespaces)
+        self.input_schemalocs.update(ns_info.input_schemalocs)
 
-    def _get_namespace_dict(self, entity):
-        all_namespaces = {}
+    def finalize(self, ns_dict=None, schemaloc_dict=None):
+        from stix.utils import (get_id_namespace, get_id_namespace_alias,
+                                DEFAULT_STIX_NAMESPACES, XML_NAMESPACES,
+                                DEFAULT_STIX_SCHEMALOCATIONS)
 
-        if not isinstance(entity, (stix.Entity, cybox.Entity)):
-            raise ValueError("Must provide an instance of stix.Entity or cybox.core.Observable")
+        if not ns_dict:
+            ns_dict = {}
 
-        entity.nsparser_touched = True
-        if isinstance(entity, Observable):
-            all_namespaces.update(self._get_observable_namespace_dict(entity))
-        elif isinstance(entity, Observables):
-            for child in entity._get_children():
-                all_namespaces.update(self._get_namespace_dict(child))
-        elif hasattr(entity, "_namespace"):
-            if hasattr(entity, "_XSI_TYPE") and entity._XSI_TYPE:
-                ns_alias = entity._XSI_TYPE.split(":")[0]
-                all_namespaces[entity._namespace] = ns_alias
-            else:
-                all_namespaces[entity._namespace] = None
+        if not schemaloc_dict:
+            schemaloc_dict = {}
 
-            for child in entity._get_children():
-                if not hasattr(child, "nsparser_touched"):
-                    if hasattr(child, "_namespace") or isinstance(child, Observable):
-                        all_namespaces.update(self._get_namespace_dict(child))
+        id_ns = get_id_namespace()
+        id_ns_alias = get_id_namespace_alias()
 
-        del entity.nsparser_touched
-        return all_namespaces
+        d_ns = {'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
+                'http://stix.mitre.org/stix-1': 'stix',
+                'http://stix.mitre.org/common-1': 'stixCommon',
+                'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
+                'http://cybox.mitre.org/cybox-2': 'cybox',
+                'http://cybox.mitre.org/common-2': 'cyboxCommon',
+                'http://cybox.mitre.org/default_vocabularies-2': 'cyboxVocabs',
+                id_ns: id_ns_alias}
 
-    def get_namespaces(self, entity, ns_dict=None):
-        """Returns a set of namespace for all namespaces
-        used within the supplied entity.
-        
-        Arguments:
-        entity -- A python-stix Entity instance
-        ns_dict -- Additional namespaces to add to the returned dictionary
-        """
-        import stix.utils.idgen as idgen
-        
-        if not ns_dict: ns_dict = {}
-        entity_namespaces = \
-            {'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
-             'http://stix.mitre.org/stix-1': 'stix',
-             'http://stix.mitre.org/common-1': 'stixCommon',
-             'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
-             idgen.get_id_namespace(): idgen.get_id_namespace_alias()}
-        
-        default_cybox_namespaces = dict((ns, alias) for (ns, alias, _) in cybox_nsparser.NS_LIST)
-        default_stix_namespaces = dict(default_cybox_namespaces.items() +
-                                       XML_NAMESPACES.items() +
-                                       DEFAULT_STIX_NS_TO_PREFIX.items() +
-                                       DEFAULT_EXT_TO_PREFIX.items())
+        for ns, alias in self.input_namespaces.iteritems():
+            if ns not in DEFAULT_STIX_NAMESPACES:
+                d_ns[ns] = alias
 
-        if hasattr(entity, "__input_namespaces__"):
-            for ns, alias in entity.__input_namespaces__.iteritems():
-                if ns not in (default_stix_namespaces):
-                    entity_namespaces[ns] = alias
-
-        entity_ns_dict = self._get_namespace_dict(entity)
-        for ns, alias in entity_ns_dict.iteritems():
+        for ns, alias in self.namespaces.iteritems():
             if alias:
-                entity_namespaces[ns] = alias
-            elif ns not in entity_namespaces:
-                default_alias = default_stix_namespaces[ns]
-                entity_namespaces[ns] = default_alias
-        
-        # add additional @ns_dict and parsed
-        entity_namespaces.update(ns_dict)
+                d_ns[ns] = alias
+            else:
+                default_alias = DEFAULT_STIX_NAMESPACES[ns]
+                d_ns[ns] = default_alias
 
-        # Remove "http://example.com/" namespace if "http://example.com" exists
-        # A bit of a hack to resolve issues with the STIX samples and our
-        # own default ID namespace
-        if all((entity_namespaces.get('http://example.com/'),
-               entity_namespaces.get('http://example.com'))):
-            del entity_namespaces['http://example.com/']
+        d_ns.update(ns_dict)
 
-        # sanity check namespaces for things like duplicate aliases
-        aliases = {}
-        for ns, alias in entity_namespaces.iteritems():
+        if all((d_ns.get('http://example.com/'),
+               d_ns.get('http://example.com'))):
+            del d_ns['http://example.com/']
+
+        aliases = []
+        for ns, alias in d_ns.iteritems():
             if alias not in aliases:
-                aliases[alias] = ns
+                aliases.append(alias)
             else:
                 # TODO: Should we just throw an exception here?
                 # The XML will be invalid if there is a duplicate ns alias
                 warnings.warn("namespace alias '%s' mapped to '%s' and '%s'" %
                               (alias, ns, aliases[alias]))
 
-        return entity_namespaces
-        
-    def _get_input_schemalocations(self, entity):
-        all_schemalocations = {}
-        if not isinstance(entity, stix.Entity):
-            return all_schemalocations
-
-        entity.nsparser_touched = True
-        if hasattr(entity, "__input_schemalocations__"):
-            all_schemalocations.update(entity.__input_schemalocations__)
-
-        for child in entity._get_children():
-            if not hasattr(child, "nsparser_touched"):
-                all_schemalocations.update(self._get_input_schemalocations(child))
-        
-        del entity.nsparser_touched
-        return all_schemalocations
-
-    def get_namespace_schemalocation_dict(self, entity, ns_dict=None, schemaloc_dict=None):
-        d = {}
-        if not ns_dict:
-            ns_dict = self.get_namespaces(entity)
-
-        if not schemaloc_dict:
-            schemaloc_dict = {}
-
-        input_schemalocations = self._get_input_schemalocations(entity)
-        d.update(input_schemalocations)
-
-        # Build default schemaLocation dictionary for CybOX
-        default_cybox_schemaloc_dict = {}
-        for ns, _, schemaloc in cybox_nsparser.NS_LIST:
-            if schemaloc:
-                default_cybox_schemaloc_dict[ns] = schemaloc
-
-        # Build default schemaLocation dict for STIX and CybOX and extension
-        default_stix_schemaloc_dict = dict(STIX_NS_TO_SCHEMALOCATION.items() +
-                                           EXT_NS_TO_SCHEMALOCATION.items() +
-                                           default_cybox_schemaloc_dict.items())
+        d_sl = dict(self.input_schemalocs.items())
 
         # Iterate over input/discovered namespaces for document and attempt
         # to map them to schemalocations. Warn if unable to map ns to schemaloc.
-        id_namespace = get_id_namespace()
-        for ns in ns_dict.iterkeys():
-            if ns in default_stix_schemaloc_dict:
-                schemalocation = default_stix_schemaloc_dict[ns]
-                d[ns] = schemalocation
+        for ns, _ in d_ns.iteritems():
+            if ns in DEFAULT_STIX_SCHEMALOCATIONS:
+                schemalocation = DEFAULT_STIX_SCHEMALOCATIONS[ns]
+                d_sl[ns] = schemalocation
             else:
-                if not ((ns == id_namespace) or
+                if not ((ns == id_ns) or
                         (ns in schemaloc_dict) or
-                        (ns in d) or
+                        (ns in self.input_schemalocs) or
                         (ns in XML_NAMESPACES)):
                     warnings.warn("Unable to map namespace '%s' to "
                                   "schemaLocation" % ns)
 
-        d.update(schemaloc_dict)
-        return d
+        d_sl.update(schemaloc_dict)
+
+        self.finalized_schemalocs = d_sl
+        self.finalized_namespaces = d_ns
+
+
+    def collect(self, entity):
+        # Traverse the MRO so we can collect _namespace attributes on Entity
+        # derivations (e.g., WinFile extends File).
+        for klass in entity.__class__.__mro__:
+            if klass in (StixEntity, CyboxEntity, CyboxVocabString):
+                break
+
+            # Prevents exception being raised if/when
+            # collections.MutableSequence or another base class appears in the
+            # MRO.
+            ns = klass.__dict__.get("_namespace")
+            if not ns:
+                continue
+
+            # cybox.objects.* ObjectPropreties derivations have an _XSI_NS
+            # class-level attribute which holds the namespace alias to be
+            # used for its namespace.
+            alias = klass.__dict__.get('_XSI_NS')
+            if alias:
+                self.namespaces[ns] = alias
+                continue
+
+            xsi_type = klass.__dict__.get('_XSI_TYPE')
+            if not xsi_type:
+                self.namespaces[ns] = None
+                continue
+
+            try:
+                alias, type_ = xsi_type.split(":")
+            except:
+                self.namespaces[ns] = None
+            else:
+                self.namespaces[ns] = alias
+
+        entity_dict = entity.__dict__
+        input_ns = entity_dict.get("__input_namespaces__", {})
+        self.input_namespaces.update(input_ns)
+
+        input_locs = entity_dict.get("__input_schemalocations__", {})
+        self.input_schemalocs.update(input_locs)
+
+
+    def __setitem__(self, key, value):
+        self.namespaces[key] = value
+
+
+class NamespaceParser(object):
+    def __init__(self):
+        pass
+
+    def _walkns(self, entity):
+        # Skip some python-cybox classes and properties
+        skip = {ObjectProperties : ('_parent'),
+                BaseProperty: None}
+
+        def can_skip(obj, field):
+            for klass, props in skip.iteritems():
+                if isinstance(obj, klass):
+                    return (props is None) or (field in props)
+            return False
+
+        def get_members(obj):
+            for k, v in obj.__dict__.iteritems():
+                if v and not can_skip(obj, k):
+                    yield v
+            try:
+                for field in obj._fields.itervalues():
+                    yield field
+            except AttributeError:
+                # no _fields or itervalues()
+                pass
+
+
+        visited = []
+        def descend(obj):
+            for member in get_members(obj):
+                if '_namespace' in member.__class__.__dict__:
+                    yield member
+                    for i in descend(member):
+                        yield i
+
+                if hasattr(member, "__getitem__"):
+                   for i in member:
+                        if '_namespace' in i.__class__.__dict__:
+                            yield i
+                            for d in descend(i):
+                                yield d
+        # end descend()
+
+        if '_namespace' in entity.__class__.__dict__:
+            yield entity
+            for node in descend(entity):
+                yield node
+
+
+    def get_namespaces(self, entity, ns_dict=None):
+        ns_info = NamespaceInfo()
+        for node in self._walkns(entity):
+            ns_info.collect(node)
+
+        ns_info.finalize(ns_dict=ns_dict)
+        return ns_info.finalized_namespaces
+
+
+    def get_namespace_schemalocation_dict(self, entity, ns_dict=None, schemaloc_dict=None):
+        ns_info = NamespaceInfo()
+        for node in self._walkns(entity):
+            ns_info.collect(node)
+
+        ns_info.finalize(ns_dict=ns_dict, schemaloc_dict=schemaloc_dict)
+        return ns_info.finalized_schemalocs
+
 
     def get_xmlns_str(self, ns_dict):
         return "\n\t".join(['xmlns:%s="%s"' %
                             (alias, ns) for ns, alias in sorted(ns_dict.iteritems())])
+
 
     def get_schemaloc_str(self, schemaloc_dict):
         if not schemaloc_dict:
@@ -180,12 +219,14 @@ class NamespaceParser(object):
                                              (ns, loc) for ns, loc in sorted(schemaloc_dict.iteritems())])
         return schemaloc_str_start + schemaloc_str_content + schemaloc_str_end
 
+
     def get_namespace_def_str(self, namespaces, schemaloc_dict):
         if not (namespaces or schemaloc_dict):
             return ""
 
         return ("\n\t" + self.get_xmlns_str(namespaces) + "\n\t" +
                self.get_schemaloc_str(schemaloc_dict))
+
 
 XML_NAMESPACES = {'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
                   'http://www.w3.org/2001/XMLSchema': 'xs',
@@ -220,7 +261,9 @@ STIX_NS_TO_SCHEMALOCATION = {
     'http://stix.mitre.org/extensions/Vulnerability#CVRF-1': 'http://stix.mitre.org/XMLSchema/extensions/vulnerability/cvrf_1.1/1.1.1/cvrf_1.1_vulnerability.xsd',
     'http://stix.mitre.org/stix-1': 'http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd'}
 
-# Schema locations for namespaces not defined by STIX, but hosted on the STIX website     
+CYBOX_NS_TO_SCHEMALOCATION = dict((ns, schemaloc) for ns, _, schemaloc in cybox_nsparser.NS_LIST if schemaloc)
+
+# Schema locations for namespaces not defined by STIX, but hosted on the STIX website
 EXT_NS_TO_SCHEMALOCATION = {'urn:oasis:names:tc:ciq:xal:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xAL.xsd',
                             'urn:oasis:names:tc:ciq:xpil:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd',
                             'urn:oasis:names:tc:ciq:xnl:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xNL.xsd'}
@@ -266,3 +309,14 @@ DEFAULT_EXT_TO_PREFIX = {
     'urn:oasis:names:tc:ciq:xal:3': 'xal',
     'urn:oasis:names:tc:ciq:xpil:3': 'xpil',
     'urn:oasis:names:tc:ciq:xnl:3': 'xnl'}
+
+DEFAULT_CYBOX_NAMESPACES = dict((ns, alias) for (ns, alias, _) in cybox_nsparser.NS_LIST)
+
+DEFAULT_STIX_NAMESPACES  = dict(DEFAULT_CYBOX_NAMESPACES.items() +
+                                XML_NAMESPACES.items() +
+                                DEFAULT_STIX_NS_TO_PREFIX.items() +
+                                DEFAULT_EXT_TO_PREFIX.items())
+
+DEFAULT_STIX_SCHEMALOCATIONS = dict(STIX_NS_TO_SCHEMALOCATION.items() +
+                                    EXT_NS_TO_SCHEMALOCATION.items() +
+                                    CYBOX_NS_TO_SCHEMALOCATION.items())

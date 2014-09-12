@@ -90,18 +90,20 @@ class Behavior(stix.Entity):
         else:
             raise ValueError("Unable to add item to exploit list: %s" % type(exploit))
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(Behavior, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 
         if self.malware_instances:
-            malware_obj = self._binding.MalwareType(Malware_Instance=[x.to_obj() for x in self.malware_instances])
+            malware_obj = self._binding.MalwareType(Malware_Instance=[x.to_obj(ns_info=ns_info) for x in self.malware_instances])
             return_obj.set_Malware(malware_obj)
         if self.exploits:
-            exploits_obj = self._binding.ExploitsType(Exploit=[x.to_obj() for x in self.exploits])
+            exploits_obj = self._binding.ExploitsType(Exploit=[x.to_obj(ns_info=ns_info) for x in self.exploits])
             return_obj.set_Exploits(exploits_obj)
         if self.attack_patterns:
-            attack_patterns_obj = self._binding.AttackPatternsType(Attack_Pattern=[x.to_obj() for x in self.attack_patterns])
+            attack_patterns_obj = self._binding.AttackPatternsType(Attack_Pattern=[x.to_obj(ns_info=ns_info) for x in self.attack_patterns])
             return_obj.set_Attack_Patterns(attack_patterns_obj)
 
         return return_obj

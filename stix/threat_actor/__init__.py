@@ -289,7 +289,9 @@ class ThreatActor(stix.Entity):
             pos = PlanningAndOperationalSupport(value)
             self.planning_and_operational_supports.append(Statement(value=pos))
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(ThreatActor, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 
@@ -300,36 +302,36 @@ class ThreatActor(stix.Entity):
         return_obj.set_version(self.version)
         return_obj.set_Title(self.title)
         if self.description:
-            return_obj.set_Description(self.description.to_obj())
+            return_obj.set_Description(self.description.to_obj(ns_info=ns_info))
         if self.short_description:
-            return_obj.set_Short_Description(self.short_description.to_obj())
+            return_obj.set_Short_Description(self.short_description.to_obj(ns_info=ns_info))
         if self.identity:
-            return_obj.set_Identity(self.identity.to_obj())
+            return_obj.set_Identity(self.identity.to_obj(ns_info=ns_info))
         if self.types:
-            return_obj.set_Type([x.to_obj() for x in self.types])
+            return_obj.set_Type([x.to_obj(ns_info=ns_info) for x in self.types])
         if self.motivations:
-            return_obj.set_Motivation([x.to_obj() for x in self.motivations])
+            return_obj.set_Motivation([x.to_obj(ns_info=ns_info) for x in self.motivations])
         if self.sophistications:
-            return_obj.set_Sophistication([x.to_obj() for x in self.sophistications])
+            return_obj.set_Sophistication([x.to_obj(ns_info=ns_info) for x in self.sophistications])
         if self.intended_effects:
-            return_obj.set_Intended_Effect([x.to_obj() for x in self.intended_effects])
+            return_obj.set_Intended_Effect([x.to_obj(ns_info=ns_info) for x in self.intended_effects])
         if self.planning_and_operational_supports:
-            return_obj.set_Planning_And_Operational_Support([x.to_obj()
+            return_obj.set_Planning_And_Operational_Support([x.to_obj(ns_info=ns_info)
                     for x in self.planning_and_operational_supports])
         if self.observed_ttps:
-            return_obj.set_Observed_TTPs(self.observed_ttps.to_obj())
+            return_obj.set_Observed_TTPs(self.observed_ttps.to_obj(ns_info=ns_info))
         if self.associated_campaigns:
-            return_obj.set_Associated_Campaigns(self.associated_campaigns.to_obj())
+            return_obj.set_Associated_Campaigns(self.associated_campaigns.to_obj(ns_info=ns_info))
         if self.associated_actors:
-            return_obj.set_Associated_Actors(self.associated_actors.to_obj())
+            return_obj.set_Associated_Actors(self.associated_actors.to_obj(ns_info=ns_info))
         if self.handling:
-            return_obj.set_Handling(self.handling.to_obj())
+            return_obj.set_Handling(self.handling.to_obj(ns_info=ns_info))
         if self.confidence:
-            return_obj.set_Confidence(self.confidence.to_obj())
+            return_obj.set_Confidence(self.confidence.to_obj(ns_info=ns_info))
         if self.information_source:
-            return_obj.set_Information_Source(self.information_source.to_obj())
+            return_obj.set_Information_Source(self.information_source.to_obj(ns_info=ns_info))
         if self.related_packages:
-            return_obj.set_Related_Packages(self.related_packages.to_obj())
+            return_obj.set_Related_Packages(self.related_packages.to_obj(ns_info=ns_info))
 
         return return_obj
 

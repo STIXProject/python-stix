@@ -1,6 +1,6 @@
 import unittest
 
-from cybox.test import EntityTestCase
+from stix.test import EntityTestCase
 
 from stix.common import Activity
 

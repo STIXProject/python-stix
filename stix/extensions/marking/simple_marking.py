@@ -13,10 +13,12 @@ class SimpleMarkingStructure(MarkingStructure):
         super(SimpleMarkingStructure, self).__init__()
         self.statement = None
 
-    def to_obj(self):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(SimpleMarkingStructure, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         obj = self._binding_class()
 
-        MarkingStructure.to_obj(self, obj)
+        MarkingStructure.to_obj(self, return_obj=obj, ns_info=ns_info)
 
         obj.set_Statement(self.statement)
 

@@ -13,7 +13,9 @@ class StructuredText(stix.Entity):
         self.value = value
         self.structuring_format = None
 
-    def to_obj(self):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(StructuredText, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         text_obj = self._binding.StructuredTextType()
 
         text_obj.set_valueOf_(self.value)

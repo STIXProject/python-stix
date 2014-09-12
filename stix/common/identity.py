@@ -53,7 +53,10 @@ class Identity(stix.Entity):
     def name(self, value):
         self._name = value if value else None
 
-    def to_obj(self, return_obj=None):
+
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(Identity, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding.IdentityType()
 
@@ -63,7 +66,7 @@ class Identity(stix.Entity):
         if self.name:
             return_obj.set_Name(self.name)
         if self.related_identities:
-            return_obj.set_Related_Identities(self.related_identities.to_obj())
+            return_obj.set_Related_Identities(self.related_identities.to_obj(ns_info=ns_info))
 
         return return_obj
 

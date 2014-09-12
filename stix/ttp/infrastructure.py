@@ -93,7 +93,9 @@ class Infrastructure(stix.Entity):
         else:
             self._observable_characterization = Observables(observables=[value])
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(Infrastructure, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 
@@ -101,13 +103,13 @@ class Infrastructure(stix.Entity):
         return_obj.set_Title(self.title)
 
         if self.description:
-            return_obj.set_Description(self.description.to_obj())
+            return_obj.set_Description(self.description.to_obj(ns_info=ns_info))
         if self.short_description:
-            return_obj.set_Short_Description(self.short_description.to_obj())
+            return_obj.set_Short_Description(self.short_description.to_obj(ns_info=ns_info))
         if self.types:
-            return_obj.set_Type([x.to_obj() for x in self.types])
+            return_obj.set_Type([x.to_obj(ns_info=ns_info) for x in self.types])
         if self.observable_characterization:
-            return_obj.set_Observable_Characterization(self.observable_characterization.to_obj())
+            return_obj.set_Observable_Characterization(self.observable_characterization.to_obj(ns_info=ns_info))
 
         return return_obj
 

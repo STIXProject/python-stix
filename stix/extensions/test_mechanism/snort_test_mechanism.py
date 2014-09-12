@@ -137,23 +137,23 @@ class SnortTestMechanism(_BaseTestMechanism):
         
         return return_obj
     
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
             
-        super(SnortTestMechanism, self).to_obj(return_obj)
-        
+        super(SnortTestMechanism, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         return_obj.set_Product_Name(self.product_name)
         return_obj.set_Version(self.version)
         
         if self.rules:
-            return_obj.set_Rule([x.to_obj() for x in self.rules])
+            return_obj.set_Rule([x.to_obj(ns_info=ns_info) for x in self.rules])
         if self.event_filters:
-            return_obj.set_Event_Filter([x.to_obj() for x in self.event_filters])
+            return_obj.set_Event_Filter([x.to_obj(ns_info=ns_info) for x in self.event_filters])
         if self.rate_filters:
-            return_obj.set_Rate_Filter([x.to_obj() for x in self.rate_filters])
+            return_obj.set_Rate_Filter([x.to_obj(ns_info=ns_info) for x in self.rate_filters])
         if self.event_suppressions:
-            return_obj.set_Event_Suppression([x.to_obj() for x in self.event_suppressions])    
+            return_obj.set_Event_Suppression([x.to_obj(ns_info=ns_info) for x in self.event_suppressions])
         
         return return_obj
     
