@@ -135,10 +135,10 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
         asset = incident_binding.AffectedAssetType()
 
         description = StructuredText("A Description")
-        asset.set_Structured_Description(description.to_obj())
+        asset.Structured_Description = description.to_obj()
 
         assets.add_Affected_Asset(asset)
-        incident.set_Affected_Assets(assets)
+        incident.Affected_Assets = assets
 
         s = StringIO()
 

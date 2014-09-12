@@ -42,10 +42,10 @@ class JournalEntry(stix.Entity):
         if not return_obj:
             return_obj = self._binding_class()
         
-        return_obj.set_valueOf_(self.value)
-        return_obj.set_author(self.author)
-        return_obj.set_time(serialize_value(self.time))
-        return_obj.set_time_precision(self.time_precision)
+        return_obj.valueOf_ = self.value
+        return_obj.author = self.author
+        return_obj.time = serialize_value(self.time)
+        return_obj.time_precision = self.time_precision
         
         return return_obj
     
@@ -57,10 +57,10 @@ class JournalEntry(stix.Entity):
         if not return_obj:
             return_obj = cls()
             
-        return_obj.value = obj.get_valueOf_()
-        return_obj.author = obj.get_author()
-        return_obj.time = obj.get_time()
-        return_obj.time_precision = obj.get_time_precision()
+        return_obj.value = obj.valueOf_
+        return_obj.author = obj.author
+        return_obj.time = obj.time
+        return_obj.time_precision = obj.time_precision
         
         return return_obj
         
@@ -135,9 +135,9 @@ class HistoryItem(stix.Entity):
             return_obj = self._binding_class()
             
         if self.action_entry:
-            return_obj.set_Action_Entry(self.action_entry.to_obj(ns_info=ns_info))
+            return_obj.Action_Entry = self.action_entry.to_obj(ns_info=ns_info)
         if self.journal_entry:
-            return_obj.set_Journal_Entry(self.journal_entry.to_obj(ns_info=ns_info))
+            return_obj.Journal_Entry = self.journal_entry.to_obj(ns_info=ns_info)
         
         return return_obj
     
@@ -149,8 +149,8 @@ class HistoryItem(stix.Entity):
         if not return_obj:
             return_obj = cls()
             
-        return_obj.action_entry = COATaken.from_obj(obj.get_Action_Entry())
-        return_obj.journal_entry = JournalEntry.from_obj(obj.get_Journal_Entry())
+        return_obj.action_entry = COATaken.from_obj(obj.Action_Entry)
+        return_obj.journal_entry = JournalEntry.from_obj(obj.Journal_Entry)
         
         return return_obj
             

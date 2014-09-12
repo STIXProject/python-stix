@@ -145,18 +145,18 @@ class AffectedAsset(stix.Entity):
             return None
         if not return_obj:
             return_obj = cls()
-            
-        return_obj.type_ = AssetType.from_obj(obj.get_Type())
-        return_obj.description = StructuredText.from_obj(obj.get_Description())
-        return_obj.business_function_or_role = StructuredText.from_obj(obj.get_Business_Function_Or_Role())
-        return_obj.ownership_class = VocabString.from_obj(obj.get_Ownership_Class())
-        return_obj.management_class = VocabString.from_obj(obj.get_Management_Class())
-        return_obj.location_class = VocabString.from_obj(obj.get_Location_Class())
+
+        return_obj.type_ = AssetType.from_obj(obj.Type)
+        return_obj.description = StructuredText.from_obj(obj.Description)
+        return_obj.business_function_or_role = StructuredText.from_obj(obj.Business_Function_Or_Role)
+        return_obj.ownership_class = VocabString.from_obj(obj.Ownership_Class)
+        return_obj.management_class = VocabString.from_obj(obj.Management_Class)
+        return_obj.location_class = VocabString.from_obj(obj.Location_Class)
         #return_obj.location = None 
         
-        if obj.get_Nature_Of_Security_Effect():
-            n = obj.get_Nature_Of_Security_Effect()
-            return_obj.nature_of_security_effect = [PropertyAffected.from_obj(x) for x in n.get_Property_Affected()]
+        if obj.Nature_Of_Security_Effect:
+            n = obj.Nature_Of_Security_Effect
+            return_obj.nature_of_security_effect = [PropertyAffected.from_obj(x) for x in n.Property_Affected]
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):
@@ -166,25 +166,25 @@ class AffectedAsset(stix.Entity):
             return_obj = self._binding_class()
         
         if self.type_:
-            return_obj.set_Type(self.type_.to_obj(ns_info=ns_info))
+            return_obj.Type = self.type_.to_obj(ns_info=ns_info)
         if self.description:
-            return_obj.set_Description(self.description.to_obj(ns_info=ns_info))
+            return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.business_function_or_role:
-            return_obj.set_Business_Function_Or_Role(self.business_function_or_role.to_obj(ns_info=ns_info))
+            return_obj.Business_Function_Or_Role = self.business_function_or_role.to_obj(ns_info=ns_info)
         if self.ownership_class:
-            return_obj.set_Ownership_Class(self.ownership_class.to_obj(ns_info=ns_info))
+            return_obj.Ownership_Class = self.ownership_class.to_obj(ns_info=ns_info)
         if self.management_class:
-            return_obj.set_Management_Class(self.management_class.to_obj(ns_info=ns_info))
+            return_obj.Management_Class = self.management_class.to_obj(ns_info=ns_info)
         if self.location_class:
-            return_obj.set_Location_Class(self.location_class.to_obj(ns_info=ns_info))
+            return_obj.Location_Class = self.location_class.to_obj(ns_info=ns_info)
 #         if self.location:
-#             return_obj.set_Location(self.location.to_obj(ns_info=ns_info))
+#             return_obj.Location = self.location.to_obj(ns_info=ns_info)
         if self.nature_of_security_effect:
             property_affected_list = [x.to_obj(ns_info=ns_info) for x in self.nature_of_security_effect]
             n = self._binding.NatureOfSecurityEffectType(Property_Affected=property_affected_list)
-            return_obj.set_Nature_Of_Security_Effect(n)
+            return_obj.Nature_Of_Security_Effect = n
         if self.structured_description:
-            return_obj.set_Structured_Description(self.structured_description.to_obj(ns_info=ns_info))
+            return_obj.Structured_Description = self.structured_description.to_obj(ns_info=ns_info)
        
         return return_obj
     
@@ -251,7 +251,7 @@ class AssetType(VocabString):
             return_obj = cls()
         
         super(AssetType, cls).from_obj(obj, return_obj=return_obj)
-        return_obj.count_affected = obj.get_count_affected()
+        return_obj.count_affected = obj.count_affected
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):
@@ -259,7 +259,7 @@ class AssetType(VocabString):
             return_obj = self._binding_class()
         
         super(AssetType, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-        return_obj.set_count_affected(self.count_affected)
+        return_obj.count_affected = self.count_affected
         return return_obj
     
     @classmethod

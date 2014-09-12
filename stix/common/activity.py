@@ -49,9 +49,9 @@ class Activity(stix.Entity):
             return_obj = self._binding_class()
 
         if self.date_time:
-            return_obj.set_Date_Time(self.date_time.to_obj(ns_info=ns_info))
+            return_obj.Date_Time = self.date_time.to_obj(ns_info=ns_info)
         if self.description:
-            return_obj.set_Description(self.description.to_obj(ns_info=ns_info))
+            return_obj.Description = self.description.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -64,8 +64,8 @@ class Activity(stix.Entity):
             return_obj = cls()
 
         return_obj.date_time = \
-                DateTimeWithPrecision.from_obj(obj.get_Date_Time())
-        return_obj.description = StructuredText.from_obj(obj.get_Description())
+                DateTimeWithPrecision.from_obj(obj.Date_Time)
+        return_obj.description = StructuredText.from_obj(obj.Description)
 
         return return_obj
 

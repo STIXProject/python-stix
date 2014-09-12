@@ -20,7 +20,7 @@ class TLPMarkingStructure(MarkingStructure):
 
         MarkingStructure.to_obj(self, return_obj=obj, ns_info=ns_info)
 
-        obj.set_color(self.color)
+        obj.color = self.color
 
         return obj
 
@@ -38,7 +38,7 @@ class TLPMarkingStructure(MarkingStructure):
 
         m = TLPMarkingStructure()
         MarkingStructure.from_obj(obj, m)
-        m.color = obj.get_color()
+        m.color = obj.color
 
         return m
 

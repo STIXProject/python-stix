@@ -103,15 +103,15 @@ class STIXHeader(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.title = obj.get_Title()
-        return_obj.description = StructuredText.from_obj(obj.get_Description())
-        return_obj.handling = Marking.from_obj(obj.get_Handling())
-        return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
+        return_obj.title = obj.Title
+        return_obj.description = StructuredText.from_obj(obj.Description)
+        return_obj.handling = Marking.from_obj(obj.Handling)
+        return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
 
-        if obj.get_Package_Intent():
-            return_obj.package_intents = [VocabString.from_obj(x) for x in obj.get_Package_Intent()]
-        if obj.get_Profiles():
-            return_obj.profiles = obj.get_Profiles().get_Profile()
+        if obj.Package_Intent:
+            return_obj.package_intents = [VocabString.from_obj(x) for x in obj.Package_Intent]
+        if obj.Profiles:
+            return_obj.profiles = obj.Profiles.Profile
 
         return return_obj
 
@@ -122,18 +122,18 @@ class STIXHeader(stix.Entity):
             return_obj = self._binding.STIXHeaderType()
 
         if self.title:
-            return_obj.set_Title(self.title)
+            return_obj.Title = self.title
         if self.package_intents:
-            return_obj.set_Package_Intent([x.to_obj(ns_info=ns_info) for x in self.package_intents])
+            return_obj.Package_Intent = [x.to_obj(ns_info=ns_info) for x in self.package_intents]
         if self.description:
-            return_obj.set_Description(self.description.to_obj(ns_info=ns_info))
+            return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.handling:
-            return_obj.set_Handling(self.handling.to_obj(ns_info=ns_info))
+            return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
         if self.information_source:
-            return_obj.set_Information_Source(self.information_source.to_obj(ns_info=ns_info))
+            return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
         if self.profiles:
             profiles_obj = stix_common_binding.ProfilesType(Profile=self.profiles)
-            return_obj.set_Profiles(profiles_obj)
+            return_obj.Profiles = profiles_obj
 
         return return_obj
 

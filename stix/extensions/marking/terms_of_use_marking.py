@@ -20,7 +20,7 @@ class TermsOfUseMarkingStructure(MarkingStructure):
 
         MarkingStructure.to_obj(self, return_obj=obj, ns_info=ns_info)
 
-        obj.set_Terms_Of_Use(self.terms_of_use)
+        obj.Terms_Of_Use = self.terms_of_use
 
         return obj
 
@@ -38,7 +38,7 @@ class TermsOfUseMarkingStructure(MarkingStructure):
 
         m = TermsOfUseMarkingStructure()
         MarkingStructure.from_obj(obj, m)
-        m.terms_of_use = obj.get_Terms_Of_Use()
+        m.terms_of_use = obj.Terms_Of_Use
 
         return m
 

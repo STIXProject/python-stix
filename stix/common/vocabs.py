@@ -76,14 +76,14 @@ class VocabString(stix.Entity):
             return_obj = self._binding_class()
 
         #TODO: handle normalization
-        #vocab_obj.set_valueOf_(normalize_to_xml(self.value))
-        return_obj.set_valueOf_(self.value)
-        return_obj.set_xsi_type(self.xsi_type)
+        #vocab_obj.valueOf_ = normalize_to_xml(self.value)
+        return_obj.valueOf_ = self.value
+        return_obj.xsi_type = self.xsi_type
 
         if self.vocab_name is not None:
-            return_obj.set_vocab_name(self.vocab_name)
+            return_obj.vocab_name = self.vocab_name
         if self.vocab_reference is not None:
-            return_obj.set_vocab_reference(self.vocab_reference)
+            return_obj.vocab_reference = self.vocab_reference
 
         return return_obj
 
@@ -115,10 +115,10 @@ class VocabString(stix.Entity):
         # xsi_type should be set automatically by the class's constructor.
         
         #TODO: handle denormalization
-        #vocab_str.value = denormalize_from_xml(vocab_obj.get_valueOf_())
-        return_obj.value = vocab_obj.get_valueOf_()
-        return_obj.vocab_name = vocab_obj.get_vocab_name()
-        return_obj.vocab_reference = vocab_obj.get_vocab_reference()
+        #vocab_str.value = denormalize_from_xml(vocab_obj.valueOf_)
+        return_obj.value = vocab_obj.valueOf_
+        return_obj.vocab_name = vocab_obj.vocab_name
+        return_obj.vocab_reference = vocab_obj.vocab_reference
 
         return return_obj
 

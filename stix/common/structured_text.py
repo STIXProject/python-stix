@@ -18,9 +18,9 @@ class StructuredText(stix.Entity):
 
         text_obj = self._binding.StructuredTextType()
 
-        text_obj.set_valueOf_(self.value)
+        text_obj.valueOf_ = self.value
         if self.structuring_format is not None:
-            text_obj.set_structuring_format(self.structuring_format)
+            text_obj.structuring_format = self.structuring_format
         return text_obj
 
     def to_dict(self):
@@ -41,8 +41,8 @@ class StructuredText(stix.Entity):
 
         text = StructuredText()
 
-        text.value = text_obj.get_valueOf_()
-        text.structuring_format = text_obj.get_structuring_format()
+        text.value = text_obj.valueOf_
+        text.structuring_format = text_obj.structuring_format
 
         return text
 

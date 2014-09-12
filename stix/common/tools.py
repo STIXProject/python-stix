@@ -43,9 +43,9 @@ class ToolInformation(cybox.common.ToolInformation):
 
         super(ToolInformation, self).to_obj(return_obj=return_obj, ns_info=ns_info)
         
-        return_obj.set_Title(self.title)        
+        return_obj.Title = self.title        
         if self.short_description:
-            return_obj.set_Short_Description(self.short_description.to_obj(ns_info=ns_info))
+            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -58,8 +58,8 @@ class ToolInformation(cybox.common.ToolInformation):
 
         super(ToolInformation, cls).from_obj(obj, tool_class=return_obj)
         
-        return_obj.title = obj.get_Title()
-        return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
+        return_obj.title = obj.Title
+        return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
         
         return return_obj
 

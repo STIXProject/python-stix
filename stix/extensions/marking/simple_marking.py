@@ -20,7 +20,7 @@ class SimpleMarkingStructure(MarkingStructure):
 
         MarkingStructure.to_obj(self, return_obj=obj, ns_info=ns_info)
 
-        obj.set_Statement(self.statement)
+        obj.Statement = self.statement
 
         return obj
 
@@ -38,7 +38,7 @@ class SimpleMarkingStructure(MarkingStructure):
 
         m = SimpleMarkingStructure()
         MarkingStructure.from_obj(obj, m)
-        m.statement = obj.get_Statement()
+        m.statement = obj.Statement
 
         return m
 

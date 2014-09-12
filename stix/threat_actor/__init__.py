@@ -295,43 +295,42 @@ class ThreatActor(stix.Entity):
         if not return_obj:
             return_obj = self._binding_class()
 
-        return_obj.set_id(self.id_)
-        return_obj.set_idref(self.idref)
+        return_obj.id = self.id_
+        return_obj.idref = self.idref
         if self.timestamp:
-            return_obj.set_timestamp(dates.serialize_value(self.timestamp))
-        return_obj.set_version(self.version)
-        return_obj.set_Title(self.title)
+            return_obj.timestamp = dates.serialize_value(self.timestamp)
+        return_obj.version = self.version
+        return_obj.Title = self.title
         if self.description:
-            return_obj.set_Description(self.description.to_obj(ns_info=ns_info))
+            return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.short_description:
-            return_obj.set_Short_Description(self.short_description.to_obj(ns_info=ns_info))
+            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
         if self.identity:
-            return_obj.set_Identity(self.identity.to_obj(ns_info=ns_info))
+            return_obj.Identity = self.identity.to_obj(ns_info=ns_info)
         if self.types:
-            return_obj.set_Type([x.to_obj(ns_info=ns_info) for x in self.types])
+            return_obj.Type = [x.to_obj(ns_info=ns_info) for x in self.types]
         if self.motivations:
-            return_obj.set_Motivation([x.to_obj(ns_info=ns_info) for x in self.motivations])
+            return_obj.Motivation = [x.to_obj(ns_info=ns_info) for x in self.motivations]
         if self.sophistications:
-            return_obj.set_Sophistication([x.to_obj(ns_info=ns_info) for x in self.sophistications])
+            return_obj.Sophistication = [x.to_obj(ns_info=ns_info) for x in self.sophistications]
         if self.intended_effects:
-            return_obj.set_Intended_Effect([x.to_obj(ns_info=ns_info) for x in self.intended_effects])
+            return_obj.Intended_Effect = [x.to_obj(ns_info=ns_info) for x in self.intended_effects]
         if self.planning_and_operational_supports:
-            return_obj.set_Planning_And_Operational_Support([x.to_obj(ns_info=ns_info)
-                    for x in self.planning_and_operational_supports])
+            return_obj.Planning_And_Operational_Support = [x.to_obj(ns_info=ns_info) for x in self.planning_and_operational_supports]
         if self.observed_ttps:
-            return_obj.set_Observed_TTPs(self.observed_ttps.to_obj(ns_info=ns_info))
+            return_obj.Observed_TTPs = self.observed_ttps.to_obj(ns_info=ns_info)
         if self.associated_campaigns:
-            return_obj.set_Associated_Campaigns(self.associated_campaigns.to_obj(ns_info=ns_info))
+            return_obj.Associated_Campaigns = self.associated_campaigns.to_obj(ns_info=ns_info)
         if self.associated_actors:
-            return_obj.set_Associated_Actors(self.associated_actors.to_obj(ns_info=ns_info))
+            return_obj.Associated_Actors = self.associated_actors.to_obj(ns_info=ns_info)
         if self.handling:
-            return_obj.set_Handling(self.handling.to_obj(ns_info=ns_info))
+            return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
         if self.confidence:
-            return_obj.set_Confidence(self.confidence.to_obj(ns_info=ns_info))
+            return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
         if self.information_source:
-            return_obj.set_Information_Source(self.information_source.to_obj(ns_info=ns_info))
+            return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
         if self.related_packages:
-            return_obj.set_Related_Packages(self.related_packages.to_obj(ns_info=ns_info))
+            return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -342,27 +341,27 @@ class ThreatActor(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = obj.get_id()
-        return_obj.idref = obj.get_idref()
-        return_obj.timestamp = obj.get_timestamp()
+        return_obj.id_ = obj.id
+        return_obj.idref = obj.idref
+        return_obj.timestamp = obj.timestamp
         if isinstance(obj, cls._binding_class): # ThreatActorType properties
-            return_obj.version = obj.get_version() if obj.get_version() else cls._version
-            return_obj.title = obj.get_Title()
-            return_obj.description = StructuredText.from_obj(obj.get_Description())
-            return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
-            return_obj.identity = Identity.from_obj(obj.get_Identity())
-            return_obj.types = [Statement.from_obj(x) for x in obj.get_Type()]
-            return_obj.motivations = [Statement.from_obj(x) for x in obj.get_Motivation()]
-            return_obj.sophistications = [Statement.from_obj(x) for x in obj.get_Sophistication()]
-            return_obj.intended_effects = [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
-            return_obj.planning_and_operational_supports = [Statement.from_obj(x) for x in obj.get_Planning_And_Operational_Support()]
-            return_obj.observed_ttps = ObservedTTPs.from_obj(obj.get_Observed_TTPs())
-            return_obj.associated_campaigns = AssociatedCampaigns.from_obj(obj.get_Associated_Campaigns())
-            return_obj.associated_actors = AssociatedActors.from_obj(obj.get_Associated_Actors())
-            return_obj.handling = Marking.from_obj(obj.get_Handling())
-            return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
-            return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
-            return_obj.related_packages = RelatedPackageRefs.from_obj(obj.get_Related_Packages())
+            return_obj.version = obj.version if obj.version else cls._version
+            return_obj.title = obj.Title
+            return_obj.description = StructuredText.from_obj(obj.Description)
+            return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
+            return_obj.identity = Identity.from_obj(obj.Identity)
+            return_obj.types = [Statement.from_obj(x) for x in obj.Type]
+            return_obj.motivations = [Statement.from_obj(x) for x in obj.Motivation]
+            return_obj.sophistications = [Statement.from_obj(x) for x in obj.Sophistication]
+            return_obj.intended_effects = [Statement.from_obj(x) for x in obj.Intended_Effect]
+            return_obj.planning_and_operational_supports = [Statement.from_obj(x) for x in obj.Planning_And_Operational_Support]
+            return_obj.observed_ttps = ObservedTTPs.from_obj(obj.Observed_TTPs)
+            return_obj.associated_campaigns = AssociatedCampaigns.from_obj(obj.Associated_Campaigns)
+            return_obj.associated_actors = AssociatedActors.from_obj(obj.Associated_Actors)
+            return_obj.handling = Marking.from_obj(obj.Handling)
+            return_obj.confidence = Confidence.from_obj(obj.Confidence)
+            return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
+            return_obj.related_packages = RelatedPackageRefs.from_obj(obj.Related_Packages)
 
         return return_obj
 
