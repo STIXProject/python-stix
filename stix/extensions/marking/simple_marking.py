@@ -9,7 +9,7 @@ class SimpleMarkingStructure(MarkingStructure):
     _namespace = 'http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1'
     _XSI_TYPE = "simpleMarking:SimpleMarkingStructureType"
 
-    def __init__(self,statement=None):
+    def __init__(self, statement=None):
         super(SimpleMarkingStructure, self).__init__()
         self.statement = statement
 

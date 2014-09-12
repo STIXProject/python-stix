@@ -9,7 +9,7 @@ class TermsOfUseMarkingStructure(MarkingStructure):
     _namespace = 'http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1'
     _XSI_TYPE = "TOUMarking:TermsOfUseMarkingStructureType"
 
-    def __init__(self,terms_of_use=None):
+    def __init__(self, terms_of_use=None):
         super(TermsOfUseMarkingStructure, self).__init__()
         self.terms_of_use = terms_of_use
 
