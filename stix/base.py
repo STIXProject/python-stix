@@ -34,7 +34,7 @@ class Entity(object):
 
     def to_xml(self, include_namespaces=True, include_schemalocs=True,
                ns_dict=None, schemaloc_dict=None, pretty=True,
-               auto_namespace=True):
+               auto_namespace=True, include_idgen=True):
         """Export an object as an XML String"""
         from stix.utils.nsparser import (NamespaceParser, NamespaceInfo,
                                          DEFAULT_STIX_NAMESPACES)
@@ -60,6 +60,10 @@ class Entity(object):
             ns_info.finalized_namespaces = ns_dict or {}
             ns_info.finalized_schemalocs = schemaloc_dict or {}
             obj_ns_dict = dict(ns_dict.items() + DEFAULT_STIX_NAMESPACES.items())
+
+        if include_idgen:
+            from stix.utils.idgen import get_id_namespace, get_id_namespace_alias
+            obj_ns_dict[ get_id_namespace() ] = get_id_namespace_alias()
 
         namespace_def = ""
         if include_namespaces:
