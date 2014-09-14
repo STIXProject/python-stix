@@ -84,20 +84,22 @@ class Statement(stix.Entity):
         else:
             self._description = StructuredText(value=value)
 
-    def to_obj(self):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(Statement, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         obj = self._binding_class()
 
         if self.timestamp:
-            obj.set_timestamp(self.timestamp.isoformat())
-        obj.set_timestamp_precision(self.timestamp_precision)
+            obj.timestamp = self.timestamp.isoformat()
+        obj.timestamp_precision = self.timestamp_precision
         if self.value:
-            obj.set_Value(self.value.to_obj())
+            obj.Value = self.value.to_obj(ns_info=ns_info)
         if self.description:
-            obj.set_Description(self.description.to_obj())
+            obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.source:
-            obj.set_Source(self.source.to_obj())
+            obj.Source = self.source.to_obj(ns_info=ns_info)
         if self.confidence:
-            obj.set_Confidence(self.confidence.to_obj())
+            obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
 
         return obj
 
@@ -128,12 +130,12 @@ class Statement(stix.Entity):
             return None
         s = cls()
 
-        s.timestamp = obj.get_timestamp()
-        s.timestamp_precision = obj.get_timestamp_precision()
-        s.value = VocabString.from_obj(obj.get_Value())
-        s.description = StructuredText.from_obj(obj.get_Description())
-        s.source = InformationSource.from_obj(obj.get_Source())
-        s.confidence = Confidence.from_obj(obj.get_Confidence())
+        s.timestamp = obj.timestamp
+        s.timestamp_precision = obj.timestamp_precision
+        s.value = VocabString.from_obj(obj.Value)
+        s.description = StructuredText.from_obj(obj.Description)
+        s.source = InformationSource.from_obj(obj.Source)
+        s.confidence = Confidence.from_obj(obj.Confidence)
 
         return s
 

@@ -59,22 +59,24 @@ class COATaken(stix.Entity):
         if not return_obj:
             return_obj = cls()
             
-        return_obj.time = COATime.from_obj(obj.get_Time())
-        return_obj.contributors = Contributors.from_obj(obj.get_Contributors())
-        return_obj.course_of_action = CourseOfAction.from_obj(obj.get_Course_Of_Action())
+        return_obj.time = COATime.from_obj(obj.Time)
+        return_obj.contributors = Contributors.from_obj(obj.Contributors)
+        return_obj.course_of_action = CourseOfAction.from_obj(obj.Course_Of_Action)
         
         return return_obj
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(COATaken, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
             
         if self.time:
-            return_obj.set_Time(self.time.to_obj())
+            return_obj.Time = self.time.to_obj(ns_info=ns_info)
         if self.contributors:
-            return_obj.set_Contributors(self.contributors.to_obj())
+            return_obj.Contributors = self.contributors.to_obj(ns_info=ns_info)
         if self.course_of_action:
-            return_obj.set_Course_Of_Action(self.course_of_action.to_obj())
+            return_obj.Course_Of_Action = self.course_of_action.to_obj(ns_info=ns_info)
         
         return return_obj
     
@@ -146,18 +148,20 @@ class COATime(stix.Entity):
         if not return_obj:
             return_obj = cls()
             
-        return_obj.start = DateTimeWithPrecision.from_obj(obj.get_Start())
-        return_obj.end = DateTimeWithPrecision.from_obj(obj.get_End())
+        return_obj.start = DateTimeWithPrecision.from_obj(obj.Start)
+        return_obj.end = DateTimeWithPrecision.from_obj(obj.End)
         return return_obj
     
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(COATime, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
             
         if self.start:
-            return_obj.set_Start(self.start.to_obj())
+            return_obj.Start = self.start.to_obj(ns_info=ns_info)
         if self.end:
-            return_obj.set_End(self.end.to_obj())
+            return_obj.End = self.end.to_obj(ns_info=ns_info)
         
         return return_obj
     

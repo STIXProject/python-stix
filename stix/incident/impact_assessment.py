@@ -100,19 +100,21 @@ class ImpactAssessment(stix.Entity):
         else:
             self._impact_qualification = None
 
-    def to_obj(self):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(ImpactAssessment, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         obj = self._binding_class()
         if self.direct_impact_summary:
-            obj.set_Direct_Impact_Summary(self.direct_impact_summary.to_obj())
+            obj.Direct_Impact_Summary = self.direct_impact_summary.to_obj(ns_info=ns_info)
         if self.indirect_impact_summary:
-            obj.set_Indirect_Impact_Summary(self.indirect_impact_summary.to_obj())
+            obj.Indirect_Impact_Summary = self.indirect_impact_summary.to_obj(ns_info=ns_info)
         if self.total_loss_estimation:
-            obj.set_Total_Loss_Estimation(self.total_loss_estimation.to_obj())
+            obj.Total_Loss_Estimation = self.total_loss_estimation.to_obj(ns_info=ns_info)
         if self.impact_qualification:
-            obj.set_Impact_Qualification(self.impact_qualification.to_obj())
+            obj.Impact_Qualification = self.impact_qualification.to_obj(ns_info=ns_info)
         if self.effects:
-            effects_obj = self._binding.EffectsType(Effect=[x.to_obj() for x in self.effects])
-            obj.set_Effects(effects_obj)
+            effects_obj = self._binding.EffectsType(Effect=[x.to_obj(ns_info=ns_info) for x in self.effects])
+            obj.Effects = effects_obj
         return obj
 
     @classmethod
@@ -122,13 +124,13 @@ class ImpactAssessment(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.direct_impact_summary = DirectImpactSummary.from_obj(obj.get_Direct_Impact_Summary())
-        return_obj.indirect_impact_summary = IndirectImpactSummary.from_obj(obj.get_Indirect_Impact_Summary())
-        return_obj.total_loss_estimation = TotalLossEstimation.from_obj(obj.get_Total_Loss_Estimation())
-        return_obj.impact_qualification = ImpactQualification.from_obj(obj.get_Impact_Qualification())
+        return_obj.direct_impact_summary = DirectImpactSummary.from_obj(obj.Direct_Impact_Summary)
+        return_obj.indirect_impact_summary = IndirectImpactSummary.from_obj(obj.Indirect_Impact_Summary)
+        return_obj.total_loss_estimation = TotalLossEstimation.from_obj(obj.Total_Loss_Estimation)
+        return_obj.impact_qualification = ImpactQualification.from_obj(obj.Impact_Qualification)
         
-        if obj.get_Effects():
-            return_obj.effects = [VocabString.from_obj(x) for x in obj.get_Effects().get_Effect()]
+        if obj.Effects:
+            return_obj.effects = [VocabString.from_obj(x) for x in obj.Effects.Effect]
         return return_obj
 
     def to_dict(self):    

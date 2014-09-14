@@ -68,22 +68,22 @@ class GenericTestMechanism(_BaseTestMechanism):
             return_obj = cls()
         
         super(GenericTestMechanism, cls).from_obj(obj, return_obj)
-        return_obj.reference_location = obj.get_reference_location()
-        return_obj.description = StructuredText.from_obj(obj.get_Description())
-        return_obj.type_ = VocabString.from_obj(obj.get_Type())
-        return_obj.specification = EncodedCDATA.from_obj(obj.get_Specification())
+        return_obj.reference_location = obj.reference_location
+        return_obj.description = StructuredText.from_obj(obj.Description)
+        return_obj.type_ = VocabString.from_obj(obj.Type)
+        return_obj.specification = EncodedCDATA.from_obj(obj.Specification)
         
         return return_obj
     
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
             
-        super(GenericTestMechanism, self).to_obj(return_obj)
-        return_obj.set_reference_location(self.reference_location)
-        return_obj.set_Description(self.description.to_obj())
-        return_obj.set_Type(self.type_.to_obj())
-        return_obj.set_Specification(self.specification.to_obj())    
+        super(GenericTestMechanism, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+        return_obj.reference_location = self.reference_location
+        return_obj.Description = self.description.to_obj(ns_info=ns_info)
+        return_obj.Type = self.type_.to_obj(ns_info=ns_info)
+        return_obj.Specification = self.specification.to_obj(ns_info=ns_info)
         
         return return_obj
     

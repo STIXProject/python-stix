@@ -274,10 +274,10 @@ Namespace_extract_pat_ = re_.compile(r'{(.*)}(.*)')
 # Support/utility functions.
 #
 
-def showIndent(outfile, level, pretty_print=True):
+def showIndent(lwrite, level, pretty_print=True):
     if pretty_print:
-        for idx in range(level):
-            outfile.write('    ')
+
+            lwrite('    ' * level)
 
 def quote_xml(inStr):
     if not inStr:
@@ -384,32 +384,32 @@ class MixedContainer:
         return self.value
     def getName(self):
         return self.name
-    def export(self, outfile, level, name, namespace, pretty_print=True):
+    def export(self, lwrite, level, name, namespace, pretty_print=True):
         if self.category == MixedContainer.CategoryText:
             # Prevent exporting empty content as empty lines.
             if self.value.strip():
-                outfile.write(self.value)
+                lwrite(self.value)
         elif self.category == MixedContainer.CategorySimple:
-            self.exportSimple(outfile, level, name)
+            self.exportSimple(lwrite, level, name)
         else:    # category == MixedContainer.CategoryComplex
-            self.value.export(outfile, level, namespace, name, pretty_print)
-    def exportSimple(self, outfile, level, name):
+            self.value.export(lwrite, level, namespace, name, pretty_print)
+    def exportSimple(self, lwrite, level, name):
         if self.content_type == MixedContainer.TypeString:
-            outfile.write('<%s>%s</%s>' %
+            lwrite('<%s>%s</%s>' %
                 (self.name, self.value, self.name))
         elif self.content_type == MixedContainer.TypeInteger or \
                 self.content_type == MixedContainer.TypeBoolean:
-            outfile.write('<%s>%d</%s>' %
+            lwrite('<%s>%d</%s>' %
                 (self.name, self.value, self.name))
         elif self.content_type == MixedContainer.TypeFloat or \
                 self.content_type == MixedContainer.TypeDecimal:
-            outfile.write('<%s>%f</%s>' %
+            lwrite('<%s>%f</%s>' %
                 (self.name, self.value, self.name))
         elif self.content_type == MixedContainer.TypeDouble:
-            outfile.write('<%s>%g</%s>' %
+            lwrite('<%s>%g</%s>' %
                 (self.name, self.value, self.name))
         elif self.content_type == MixedContainer.TypeBase64:
-            outfile.write('<%s>%s</%s>' %
+            lwrite('<%s>%s</%s>' %
                 (self.name, base64.b64encode(self.value), self.name))
     def to_etree(self, element):
         if self.category == MixedContainer.CategoryText:
@@ -444,22 +444,22 @@ class MixedContainer:
         elif self.content_type == MixedContainer.TypeBase64:
             text = '%s' % base64.b64encode(self.value)
         return text
-    def exportLiteral(self, outfile, level, name):
+    def exportLiteral(self, lwrite, level, name):
         if self.category == MixedContainer.CategoryText:
-            showIndent(outfile, level)
-            outfile.write('model_.MixedContainer(%d, %d, "%s", "%s"),\n'
+            showIndent(lwrite, level)
+            lwrite('model_.MixedContainer(%d, %d, "%s", "%s"),\n'
                 % (self.category, self.content_type, self.name, self.value))
         elif self.category == MixedContainer.CategorySimple:
-            showIndent(outfile, level)
-            outfile.write('model_.MixedContainer(%d, %d, "%s", "%s"),\n'
+            showIndent(lwrite, level)
+            lwrite('model_.MixedContainer(%d, %d, "%s", "%s"),\n'
                 % (self.category, self.content_type, self.name, self.value))
         else:    # category == MixedContainer.CategoryComplex
-            showIndent(outfile, level)
-            outfile.write('model_.MixedContainer(%d, %d, "%s",\n' % \
+            showIndent(lwrite, level)
+            lwrite('model_.MixedContainer(%d, %d, "%s",\n' % \
                 (self.category, self.content_type, self.name,))
-            self.value.exportLiteral(outfile, level + 1)
-            showIndent(outfile, level)
-            outfile.write(')\n')
+            self.value.exportLiteral(lwrite, level + 1)
+            showIndent(lwrite, level)
+            lwrite(')\n')
 
 
 class MemberSpec_(object):
@@ -527,39 +527,39 @@ class PropertyAffectedType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='PropertyAffectedType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='PropertyAffectedType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='PropertyAffectedType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='PropertyAffectedType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='PropertyAffectedType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='PropertyAffectedType'):
         pass
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='PropertyAffectedType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='PropertyAffectedType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         if self.Property is not None:
-            self.Property.export(outfile, level, nsmap, namespace_, name_='Property', pretty_print=pretty_print)
+            self.Property.export(lwrite, level, nsmap, namespace_, name_='Property', pretty_print=pretty_print)
         if self.Description_Of_Effect is not None:
-            self.Description_Of_Effect.export(outfile, level, nsmap, namespace_, name_='Description_Of_Effect', pretty_print=pretty_print)
+            self.Description_Of_Effect.export(lwrite, level, nsmap, namespace_, name_='Description_Of_Effect', pretty_print=pretty_print)
         if self.Type_Of_Availability_Loss is not None:
-            self.Type_Of_Availability_Loss.export(outfile, level, nsmap, namespace_, name_='Type_Of_Availability_Loss', pretty_print=pretty_print)
+            self.Type_Of_Availability_Loss.export(lwrite, level, nsmap, namespace_, name_='Type_Of_Availability_Loss', pretty_print=pretty_print)
         if self.Duration_Of_Availability_Loss is not None:
-            self.Duration_Of_Availability_Loss.export(outfile, level, nsmap, namespace_, name_='Duration_Of_Availability_Loss', pretty_print=pretty_print)
+            self.Duration_Of_Availability_Loss.export(lwrite, level, nsmap, namespace_, name_='Duration_Of_Availability_Loss', pretty_print=pretty_print)
         if self.Non_Public_Data_Compromised is not None:
-            self.Non_Public_Data_Compromised.export(outfile, level, nsmap, namespace_, name_='Non_Public_Data_Compromised', pretty_print=pretty_print)
+            self.Non_Public_Data_Compromised.export(lwrite, level, nsmap, namespace_, name_='Non_Public_Data_Compromised', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -643,47 +643,47 @@ class AffectedAssetType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='AffectedAssetType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AffectedAssetType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='AffectedAssetType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='AffectedAssetType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='AffectedAssetType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='AffectedAssetType'):
         pass
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='AffectedAssetType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AffectedAssetType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         if self.Type is not None:
-            self.Type.export(outfile, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
+            self.Type.export(lwrite, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
         if self.Description is not None:
-            self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Business_Function_Or_Role is not None:
-            self.Business_Function_Or_Role.export(outfile, level, nsmap, namespace_, name_='Business_Function_Or_Role', pretty_print=pretty_print)
+            self.Business_Function_Or_Role.export(lwrite, level, nsmap, namespace_, name_='Business_Function_Or_Role', pretty_print=pretty_print)
         if self.Ownership_Class is not None:
-            self.Ownership_Class.export(outfile, level, nsmap, namespace_, name_='Ownership_Class', pretty_print=pretty_print)
+            self.Ownership_Class.export(lwrite, level, nsmap, namespace_, name_='Ownership_Class', pretty_print=pretty_print)
         if self.Management_Class is not None:
-            self.Management_Class.export(outfile, level, nsmap, namespace_, name_='Management_Class', pretty_print=pretty_print)
+            self.Management_Class.export(lwrite, level, nsmap, namespace_, name_='Management_Class', pretty_print=pretty_print)
         if self.Location_Class is not None:
-            self.Location_Class.export(outfile, level, nsmap, namespace_, name_='Location_Class', pretty_print=pretty_print)
+            self.Location_Class.export(lwrite, level, nsmap, namespace_, name_='Location_Class', pretty_print=pretty_print)
         if self.Location is not None:
-            self.Location.export(outfile, level, nsmap, namespace_, name_='Location', pretty_print=pretty_print)
+            self.Location.export(lwrite, level, nsmap, namespace_, name_='Location', pretty_print=pretty_print)
         if self.Nature_Of_Security_Effect is not None:
-            self.Nature_Of_Security_Effect.export(outfile, level, nsmap, namespace_, name_='Nature_Of_Security_Effect', pretty_print=pretty_print)
+            self.Nature_Of_Security_Effect.export(lwrite, level, nsmap, namespace_, name_='Nature_Of_Security_Effect', pretty_print=pretty_print)
         if self.Structured_Description is not None:
-            self.Structured_Description.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Structured_Description', pretty_print=pretty_print)
+            self.Structured_Description.export(lwrite, level, "%s:" % (nsmap[namespace_]), name_='Structured_Description', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -790,41 +790,41 @@ class ImpactAssessmentType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='ImpactAssessmentType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ImpactAssessmentType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='ImpactAssessmentType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='ImpactAssessmentType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='ImpactAssessmentType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='ImpactAssessmentType'):
         pass
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ImpactAssessmentType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ImpactAssessmentType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         if self.Direct_Impact_Summary is not None:
-            self.Direct_Impact_Summary.export(outfile, level, nsmap, namespace_, name_='Direct_Impact_Summary', pretty_print=pretty_print)
+            self.Direct_Impact_Summary.export(lwrite, level, nsmap, namespace_, name_='Direct_Impact_Summary', pretty_print=pretty_print)
         if self.Indirect_Impact_Summary is not None:
-            self.Indirect_Impact_Summary.export(outfile, level, nsmap, namespace_, name_='Indirect_Impact_Summary', pretty_print=pretty_print)
+            self.Indirect_Impact_Summary.export(lwrite, level, nsmap, namespace_, name_='Indirect_Impact_Summary', pretty_print=pretty_print)
         if self.Total_Loss_Estimation is not None:
-            self.Total_Loss_Estimation.export(outfile, level, nsmap, namespace_, name_='Total_Loss_Estimation', pretty_print=pretty_print)
+            self.Total_Loss_Estimation.export(lwrite, level, nsmap, namespace_, name_='Total_Loss_Estimation', pretty_print=pretty_print)
         if self.Impact_Qualification is not None:
-            self.Impact_Qualification.export(outfile, level, nsmap, namespace_, name_='Impact_Qualification', pretty_print=pretty_print)
+            self.Impact_Qualification.export(lwrite, level, nsmap, namespace_, name_='Impact_Qualification', pretty_print=pretty_print)
         if self.Effects is not None:
-            self.Effects.export(outfile, level, nsmap, namespace_, name_='Effects', pretty_print=pretty_print)
+            self.Effects.export(lwrite, level, nsmap, namespace_, name_='Effects', pretty_print=pretty_print)
         if self.External_Impact_Assessment_Model is not None:
-            self.External_Impact_Assessment_Model.export(outfile, level, nsmap, namespace_, name_='External_Impact_Assessment_Model', pretty_print=pretty_print)
+            self.External_Impact_Assessment_Model.export(lwrite, level, nsmap, namespace_, name_='External_Impact_Assessment_Model', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -903,29 +903,29 @@ class ExternalImpactAssessmentModelType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='ExternalImpactAssessmentModelType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ExternalImpactAssessmentModelType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='ExternalImpactAssessmentModelType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='ExternalImpactAssessmentModelType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='ExternalImpactAssessmentModelType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='ExternalImpactAssessmentModelType'):
         if self.model_name is not None and 'model_name' not in already_processed:
             already_processed.add('model_name')
-            outfile.write(' model_name=%s' % (self.gds_format_string(quote_attrib(self.model_name).encode(ExternalEncoding), input_name='model_name'), ))
+            lwrite(' model_name=%s' % (self.gds_format_string(quote_attrib(self.model_name).encode(ExternalEncoding), input_name='model_name'), ))
         if self.model_reference is not None and 'model_reference' not in already_processed:
             already_processed.add('model_reference')
-            outfile.write(' model_reference=%s' % (self.gds_format_string(quote_attrib(self.model_reference).encode(ExternalEncoding), input_name='model_reference'), ))
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ExternalImpactAssessmentModelType', fromsubclass_=False, pretty_print=True):
+            lwrite(' model_reference=%s' % (self.gds_format_string(quote_attrib(self.model_reference).encode(ExternalEncoding), input_name='model_reference'), ))
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ExternalImpactAssessmentModelType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
         already_processed = set()
@@ -977,39 +977,39 @@ class COATakenType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='COATakenType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='COATakenType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='COATakenType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='COATakenType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='COATakenType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='COATakenType'):
         if self.extensiontype_ is not None and 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
-            outfile.write('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')
-            outfile.write('  xsi:type="%s"' % self.extensiontype_)
+            lwrite('  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')
+            lwrite('  xsi:type="%s"' % self.extensiontype_)
         pass
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='COATakenType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='COATakenType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         if self.Time is not None:
-            self.Time.export(outfile, level, nsmap, namespace_, name_='Time', pretty_print=pretty_print)
+            self.Time.export(lwrite, level, nsmap, namespace_, name_='Time', pretty_print=pretty_print)
         if self.Contributors is not None:
-            self.Contributors.export(outfile, level, nsmap, namespace_, name_='Contributors', pretty_print=pretty_print)
+            self.Contributors.export(lwrite, level, nsmap, namespace_, name_='Contributors', pretty_print=pretty_print)
         if self.Course_Of_Action is not None:
-            self.Course_Of_Action.export(outfile, level, nsmap, namespace_, name_='Course_Of_Action', pretty_print=pretty_print)
+            self.Course_Of_Action.export(lwrite, level, nsmap, namespace_, name_='Course_Of_Action', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1093,33 +1093,33 @@ class JournalEntryType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='JournalEntryType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='JournalEntryType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='JournalEntryType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='JournalEntryType')
         if self.hasContent_():
-            outfile.write('>')
-            outfile.write(str(self.valueOf_).encode(ExternalEncoding))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>')
+            lwrite(str(self.valueOf_).encode(ExternalEncoding))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='JournalEntryType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='JournalEntryType'):
         if self.time is not None and 'time' not in already_processed:
             already_processed.add('time')
-            outfile.write(' time="%s"' % self.gds_format_datetime(self.time, input_name='time'))
+            lwrite(' time="%s"' % self.gds_format_datetime(self.time, input_name='time'))
         if self.time_precision is not None and 'time_precision' not in already_processed:
             already_processed.add('time_precision')
-            outfile.write(' time_precision=%s' % (quote_attrib(self.time_precision), ))
+            lwrite(' time_precision=%s' % (quote_attrib(self.time_precision), ))
         if self.author is not None and 'author' not in already_processed:
             already_processed.add('author')
-            outfile.write(' author=%s' % (self.gds_format_string(quote_attrib(self.author).encode(ExternalEncoding), input_name='author'), ))
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='JournalEntryType', fromsubclass_=False, pretty_print=True):
+            lwrite(' author=%s' % (self.gds_format_string(quote_attrib(self.author).encode(ExternalEncoding), input_name='author'), ))
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='JournalEntryType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
         already_processed = set()
@@ -1173,29 +1173,29 @@ class COARequestedType(COATakenType):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='COARequestedType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='COARequestedType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='COARequestedType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='COARequestedType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='COARequestedType'):
-        super(COARequestedType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='COARequestedType')
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='COARequestedType'):
+        super(COARequestedType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='COARequestedType')
         if self.priority is not None and 'priority' not in already_processed:
             already_processed.add('priority')
-            outfile.write(' priority=%s' % (self.gds_format_string(quote_attrib(self.priority).encode(ExternalEncoding), input_name='priority'), ))
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='COARequestedType', fromsubclass_=False, pretty_print=True):
-        super(COARequestedType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+            lwrite(' priority=%s' % (self.gds_format_string(quote_attrib(self.priority).encode(ExternalEncoding), input_name='priority'), ))
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='COARequestedType', fromsubclass_=False, pretty_print=True):
+        super(COARequestedType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1238,31 +1238,31 @@ class ContributorsType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='ContributorsType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ContributorsType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='ContributorsType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='ContributorsType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='ContributorsType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='ContributorsType'):
         pass
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ContributorsType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ContributorsType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         for Contributor_ in self.Contributor:
-            Contributor_.export(outfile, level, "%s:" % (nsmap[namespace_]), name_='Contributor', pretty_print=pretty_print)
+            Contributor_.export(lwrite, level, "%s:" % (nsmap[namespace_]), name_='Contributor', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1302,33 +1302,33 @@ class COATimeType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='COATimeType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='COATimeType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='COATimeType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='COATimeType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='COATimeType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='COATimeType'):
         pass
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='COATimeType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='COATimeType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         if self.Start is not None:
-            self.Start.export(outfile, level, nsmap, namespace_, name_='Start', pretty_print=pretty_print)
+            self.Start.export(lwrite, level, nsmap, namespace_, name_='Start', pretty_print=pretty_print)
         if self.End is not None:
-            self.End.export(outfile, level, nsmap, namespace_, name_='End', pretty_print=pretty_print)
+            self.End.export(lwrite, level, nsmap, namespace_, name_='End', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1374,29 +1374,29 @@ class LossEstimationType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='LossEstimationType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='LossEstimationType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='LossEstimationType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='LossEstimationType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='LossEstimationType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='LossEstimationType'):
         if self.iso_currency_code is not None and 'iso_currency_code' not in already_processed:
             already_processed.add('iso_currency_code')
-            outfile.write(' iso_currency_code=%s' % (self.gds_format_string(quote_attrib(self.iso_currency_code).encode(ExternalEncoding), input_name='iso_currency_code'), ))
+            lwrite(' iso_currency_code=%s' % (self.gds_format_string(quote_attrib(self.iso_currency_code).encode(ExternalEncoding), input_name='iso_currency_code'), ))
         if self.amount is not None and 'amount' not in already_processed:
             already_processed.add('amount')
-            outfile.write(' amount=%s' % (self.gds_format_string(quote_attrib(self.amount).encode(ExternalEncoding), input_name='amount'), ))
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='LossEstimationType', fromsubclass_=False, pretty_print=True):
+            lwrite(' amount=%s' % (self.gds_format_string(quote_attrib(self.amount).encode(ExternalEncoding), input_name='amount'), ))
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='LossEstimationType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
         already_processed = set()
@@ -1441,33 +1441,33 @@ class TotalLossEstimationType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='TotalLossEstimationType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='TotalLossEstimationType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='TotalLossEstimationType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='TotalLossEstimationType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='TotalLossEstimationType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='TotalLossEstimationType'):
         pass
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='TotalLossEstimationType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='TotalLossEstimationType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         if self.Initial_Reported_Total_Loss_Estimation is not None:
-            self.Initial_Reported_Total_Loss_Estimation.export(outfile, level, nsmap, namespace_, name_='Initial_Reported_Total_Loss_Estimation', pretty_print=pretty_print)
+            self.Initial_Reported_Total_Loss_Estimation.export(lwrite, level, nsmap, namespace_, name_='Initial_Reported_Total_Loss_Estimation', pretty_print=pretty_print)
         if self.Actual_Total_Loss_Estimation is not None:
-            self.Actual_Total_Loss_Estimation.export(outfile, level, nsmap, namespace_, name_='Actual_Total_Loss_Estimation', pretty_print=pretty_print)
+            self.Actual_Total_Loss_Estimation.export(lwrite, level, nsmap, namespace_, name_='Actual_Total_Loss_Estimation', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1519,37 +1519,37 @@ class IndirectImpactSummaryType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='IndirectImpactSummaryType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='IndirectImpactSummaryType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='IndirectImpactSummaryType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='IndirectImpactSummaryType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='IndirectImpactSummaryType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='IndirectImpactSummaryType'):
         pass
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='IndirectImpactSummaryType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='IndirectImpactSummaryType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         if self.Loss_Of_Competitive_Advantage is not None:
-            self.Loss_Of_Competitive_Advantage.export(outfile, level, nsmap, namespace_, name_='Loss_Of_Competitive_Advantage', pretty_print=pretty_print)
+            self.Loss_Of_Competitive_Advantage.export(lwrite, level, nsmap, namespace_, name_='Loss_Of_Competitive_Advantage', pretty_print=pretty_print)
         if self.Brand_And_Market_Damage is not None:
-            self.Brand_And_Market_Damage.export(outfile, level, nsmap, namespace_, name_='Brand_And_Market_Damage', pretty_print=pretty_print)
+            self.Brand_And_Market_Damage.export(lwrite, level, nsmap, namespace_, name_='Brand_And_Market_Damage', pretty_print=pretty_print)
         if self.Increased_Operating_Costs is not None:
-            self.Increased_Operating_Costs.export(outfile, level, nsmap, namespace_, name_='Increased_Operating_Costs', pretty_print=pretty_print)
+            self.Increased_Operating_Costs.export(lwrite, level, nsmap, namespace_, name_='Increased_Operating_Costs', pretty_print=pretty_print)
         if self.Legal_And_Regulatory_Costs is not None:
-            self.Legal_And_Regulatory_Costs.export(outfile, level, nsmap, namespace_, name_='Legal_And_Regulatory_Costs', pretty_print=pretty_print)
+            self.Legal_And_Regulatory_Costs.export(lwrite, level, nsmap, namespace_, name_='Legal_And_Regulatory_Costs', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1605,35 +1605,35 @@ class DirectImpactSummaryType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='DirectImpactSummaryType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='DirectImpactSummaryType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='DirectImpactSummaryType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='DirectImpactSummaryType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='DirectImpactSummaryType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='DirectImpactSummaryType'):
         pass
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='DirectImpactSummaryType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='DirectImpactSummaryType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         if self.Asset_Losses is not None:
-            self.Asset_Losses.export(outfile, level, nsmap, namespace_, name_='Asset_Losses', pretty_print=pretty_print)
+            self.Asset_Losses.export(lwrite, level, nsmap, namespace_, name_='Asset_Losses', pretty_print=pretty_print)
         if self.Business_Mission_Disruption is not None:
-            self.Business_Mission_Disruption.export(outfile, level, nsmap, namespace_, name_='Business-Mission_Disruption', pretty_print=pretty_print)
+            self.Business_Mission_Disruption.export(lwrite, level, nsmap, namespace_, name_='Business-Mission_Disruption', pretty_print=pretty_print)
         if self.Response_And_Recovery_Costs is not None:
-            self.Response_And_Recovery_Costs.export(outfile, level, nsmap, namespace_, name_='Response_And_Recovery_Costs', pretty_print=pretty_print)
+            self.Response_And_Recovery_Costs.export(lwrite, level, nsmap, namespace_, name_='Response_And_Recovery_Costs', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1682,31 +1682,31 @@ class NatureOfSecurityEffectType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='NatureOfSecurityEffectType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='NatureOfSecurityEffectType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='NatureOfSecurityEffectType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='NatureOfSecurityEffectType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='NatureOfSecurityEffectType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='NatureOfSecurityEffectType'):
         pass
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='NatureOfSecurityEffectType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='NatureOfSecurityEffectType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         for Property_Affected_ in self.Property_Affected:
-            Property_Affected_.export(outfile, level, nsmap, namespace_, name_='Property_Affected', pretty_print=pretty_print)
+            Property_Affected_.export(lwrite, level, nsmap, namespace_, name_='Property_Affected', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1746,33 +1746,33 @@ class HistoryItemType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='HistoryItemType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='HistoryItemType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='HistoryItemType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='HistoryItemType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='HistoryItemType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='HistoryItemType'):
         pass
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='HistoryItemType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='HistoryItemType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         if self.Action_Entry is not None:
-            self.Action_Entry.export(outfile, level, nsmap, namespace_, name_='Action_Entry', pretty_print=pretty_print)
+            self.Action_Entry.export(lwrite, level, nsmap, namespace_, name_='Action_Entry', pretty_print=pretty_print)
         if self.Journal_Entry is not None:
-            self.Journal_Entry.export(outfile, level, nsmap, namespace_, name_='Journal_Entry', pretty_print=pretty_print)
+            self.Journal_Entry.export(lwrite, level, nsmap, namespace_, name_='Journal_Entry', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1817,31 +1817,31 @@ class HistoryType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='HistoryType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='HistoryType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='HistoryType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='HistoryType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='HistoryType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='HistoryType'):
         pass
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='HistoryType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='HistoryType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         for History_Item_ in self.History_Item:
-            History_Item_.export(outfile, level, nsmap, namespace_, name_='History_Item', pretty_print=pretty_print)
+            History_Item_.export(lwrite, level, nsmap, namespace_, name_='History_Item', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1882,31 +1882,31 @@ class AffectedAssetsType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='AffectedAssetsType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AffectedAssetsType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='AffectedAssetsType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='AffectedAssetsType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='AffectedAssetsType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='AffectedAssetsType'):
         pass
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='AffectedAssetsType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AffectedAssetsType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         for Affected_Asset_ in self.Affected_Asset:
-            Affected_Asset_.export(outfile, level, nsmap, namespace_, name_='Affected_Asset', pretty_print=pretty_print)
+            Affected_Asset_.export(lwrite, level, nsmap, namespace_, name_='Affected_Asset', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -1974,47 +1974,47 @@ class TimeType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='TimeType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='TimeType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='TimeType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='TimeType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='TimeType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='TimeType'):
         pass
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='TimeType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='TimeType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         if self.First_Malicious_Action is not None:
-            self.First_Malicious_Action.export(outfile, level, nsmap, namespace_, name_='First_Malicious_Action', pretty_print=pretty_print)
+            self.First_Malicious_Action.export(lwrite, level, nsmap, namespace_, name_='First_Malicious_Action', pretty_print=pretty_print)
         if self.Initial_Compromise is not None:
-            self.Initial_Compromise.export(outfile, level, nsmap, namespace_, name_='Initial_Compromise', pretty_print=pretty_print)
+            self.Initial_Compromise.export(lwrite, level, nsmap, namespace_, name_='Initial_Compromise', pretty_print=pretty_print)
         if self.First_Data_Exfiltration is not None:
-            self.First_Data_Exfiltration.export(outfile, level, nsmap, namespace_, name_='First_Data_Exfiltration', pretty_print=pretty_print)
+            self.First_Data_Exfiltration.export(lwrite, level, nsmap, namespace_, name_='First_Data_Exfiltration', pretty_print=pretty_print)
         if self.Incident_Discovery is not None:
-            self.Incident_Discovery.export(outfile, level, nsmap, namespace_, name_='Incident_Discovery', pretty_print=pretty_print)
+            self.Incident_Discovery.export(lwrite, level, nsmap, namespace_, name_='Incident_Discovery', pretty_print=pretty_print)
         if self.Incident_Opened is not None:
-            self.Incident_Opened.export(outfile, level, nsmap, namespace_, name_='Incident_Opened', pretty_print=pretty_print)
+            self.Incident_Opened.export(lwrite, level, nsmap, namespace_, name_='Incident_Opened', pretty_print=pretty_print)
         if self.Containment_Achieved is not None:
-            self.Containment_Achieved.export(outfile, level, nsmap, namespace_, name_='Containment_Achieved', pretty_print=pretty_print)
+            self.Containment_Achieved.export(lwrite, level, nsmap, namespace_, name_='Containment_Achieved', pretty_print=pretty_print)
         if self.Restoration_Achieved is not None:
-            self.Restoration_Achieved.export(outfile, level, nsmap, namespace_, name_='Restoration_Achieved', pretty_print=pretty_print)
+            self.Restoration_Achieved.export(lwrite, level, nsmap, namespace_, name_='Restoration_Achieved', pretty_print=pretty_print)
         if self.Incident_Reported is not None:
-            self.Incident_Reported.export(outfile, level, nsmap, namespace_, name_='Incident_Reported', pretty_print=pretty_print)
+            self.Incident_Reported.export(lwrite, level, nsmap, namespace_, name_='Incident_Reported', pretty_print=pretty_print)
         if self.Incident_Closed is not None:
-            self.Incident_Closed.export(outfile, level, nsmap, namespace_, name_='Incident_Closed', pretty_print=pretty_print)
+            self.Incident_Closed.export(lwrite, level, nsmap, namespace_, name_='Incident_Closed', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2089,31 +2089,31 @@ class CategoriesType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='CategoriesType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='CategoriesType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='CategoriesType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='CategoriesType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='CategoriesType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='CategoriesType'):
         pass
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='CategoriesType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='CategoriesType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         for Category_ in self.Category:
-            Category_.export(outfile, level, nsmap, namespace_, name_='Category', pretty_print=pretty_print)
+            Category_.export(lwrite, level, nsmap, namespace_, name_='Category', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2156,31 +2156,31 @@ class EffectsType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='EffectsType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='EffectsType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='EffectsType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='EffectsType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='EffectsType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='EffectsType'):
         pass
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='EffectsType', fromsubclass_=False, pretty_print=True):
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='EffectsType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         for Effect_ in self.Effect:
-            Effect_.export(outfile, level, nsmap, namespace_, name_='Effect', pretty_print=pretty_print)
+            Effect_.export(lwrite, level, nsmap, namespace_, name_='Effect', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2225,32 +2225,32 @@ class AttributedThreatActorsType(stix_common_binding.GenericRelationshipListType
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='AttributedThreatActorsType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AttributedThreatActorsType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='AttributedThreatActorsType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='AttributedThreatActorsType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='AttributedThreatActorsType'):
-        super(AttributedThreatActorsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='AttributedThreatActorsType')
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='AttributedThreatActorsType', fromsubclass_=False, pretty_print=True):
-        super(AttributedThreatActorsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='AttributedThreatActorsType'):
+        super(AttributedThreatActorsType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='AttributedThreatActorsType')
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AttributedThreatActorsType', fromsubclass_=False, pretty_print=True):
+        super(AttributedThreatActorsType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         for Threat_Actor_ in self.Threat_Actor:
-            Threat_Actor_.export(outfile, level, nsmap, namespace_, name_='Threat_Actor', pretty_print=pretty_print)
+            Threat_Actor_.export(lwrite, level, nsmap, namespace_, name_='Threat_Actor', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2294,32 +2294,32 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedIndicatorsType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedIndicatorsType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedIndicatorsType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedIndicatorsType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='RelatedIndicatorsType'):
-        super(RelatedIndicatorsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedIndicatorsType')
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedIndicatorsType', fromsubclass_=False, pretty_print=True):
-        super(RelatedIndicatorsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='RelatedIndicatorsType'):
+        super(RelatedIndicatorsType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedIndicatorsType')
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedIndicatorsType', fromsubclass_=False, pretty_print=True):
+        super(RelatedIndicatorsType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         for Related_Indicator_ in self.Related_Indicator:
-            Related_Indicator_.export(outfile, level, nsmap, namespace_, name_='Related_Indicator', pretty_print=pretty_print)
+            Related_Indicator_.export(lwrite, level, nsmap, namespace_, name_='Related_Indicator', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2363,32 +2363,32 @@ class RelatedObservablesType(stix_common_binding.GenericRelationshipListType):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedObservablesType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedObservablesType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedObservablesType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedObservablesType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='RelatedObservablesType'):
-        super(RelatedObservablesType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedObservablesType')
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedObservablesType', fromsubclass_=False, pretty_print=True):
-        super(RelatedObservablesType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='RelatedObservablesType'):
+        super(RelatedObservablesType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedObservablesType')
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedObservablesType', fromsubclass_=False, pretty_print=True):
+        super(RelatedObservablesType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         for Related_Observable_ in self.Related_Observable:
-            Related_Observable_.export(outfile, level, nsmap, namespace_, name_='Related_Observable', pretty_print=pretty_print)
+            Related_Observable_.export(lwrite, level, nsmap, namespace_, name_='Related_Observable', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2432,32 +2432,32 @@ class LeveragedTTPsType(stix_common_binding.GenericRelationshipListType):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='LeveragedTTPsType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='LeveragedTTPsType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='LeveragedTTPsType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='LeveragedTTPsType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='LeveragedTTPsType'):
-        super(LeveragedTTPsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='LeveragedTTPsType')
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='LeveragedTTPsType', fromsubclass_=False, pretty_print=True):
-        super(LeveragedTTPsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='LeveragedTTPsType'):
+        super(LeveragedTTPsType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='LeveragedTTPsType')
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='LeveragedTTPsType', fromsubclass_=False, pretty_print=True):
+        super(LeveragedTTPsType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         for Leveraged_TTP_ in self.Leveraged_TTP:
-            Leveraged_TTP_.export(outfile, level, nsmap, namespace_, name_='Leveraged_TTP', pretty_print=pretty_print)
+            Leveraged_TTP_.export(lwrite, level, nsmap, namespace_, name_='Leveraged_TTP', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2501,32 +2501,32 @@ class RelatedIncidentsType(stix_common_binding.GenericRelationshipListType):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedIncidentsType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedIncidentsType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedIncidentsType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedIncidentsType')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='RelatedIncidentsType'):
-        super(RelatedIncidentsType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='RelatedIncidentsType')
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='RelatedIncidentsType', fromsubclass_=False, pretty_print=True):
-        super(RelatedIncidentsType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='RelatedIncidentsType'):
+        super(RelatedIncidentsType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedIncidentsType')
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedIncidentsType', fromsubclass_=False, pretty_print=True):
+        super(RelatedIncidentsType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         for Related_Incident_ in self.Related_Incident:
-            Related_Incident_.export(outfile, level, nsmap, namespace_, name_='Related_Incident', pretty_print=pretty_print)
+            Related_Incident_.export(lwrite, level, nsmap, namespace_, name_='Related_Incident', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -2579,29 +2579,29 @@ class AssetTypeType(stix_common_binding.ControlledVocabularyStringType):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='AssetTypeType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AssetTypeType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='AssetTypeType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='AssetTypeType')
         if self.hasContent_():
-            outfile.write('>')
-            outfile.write(unicode(self.valueOf_).encode(ExternalEncoding))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>')
+            lwrite(unicode(self.valueOf_).encode(ExternalEncoding))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='AssetTypeType'):
-        super(AssetTypeType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='AssetTypeType')
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='AssetTypeType'):
+        super(AssetTypeType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='AssetTypeType')
         if self.count_affected is not None and 'count_affected' not in already_processed:
             already_processed.add('count_affected')
-            outfile.write(' count_affected=%s' % (self.gds_format_string(quote_attrib(self.count_affected).encode(ExternalEncoding), input_name='count_affected'), ))
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='AssetTypeType', fromsubclass_=False, pretty_print=True):
-        super(AssetTypeType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+            lwrite(' count_affected=%s' % (self.gds_format_string(quote_attrib(self.count_affected).encode(ExternalEncoding), input_name='count_affected'), ))
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AssetTypeType', fromsubclass_=False, pretty_print=True):
+        super(AssetTypeType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         pass
     def build(self, node):
         already_processed = set()
@@ -2812,103 +2812,103 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='Incident', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='Incident', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='Incident')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='Incident')
         if self.hasContent_():
-            outfile.write('>%s' % (eol_, ))
-            self.exportChildren(outfile, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(outfile, level, pretty_print)
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='Incident'):
-        super(IncidentType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='Incident')
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='Incident'):
+        super(IncidentType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='Incident')
 #         if 'xmlns' not in already_processed:
 #             already_processed.add('xmlns')
 #             xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
-#             outfile.write(xmlns)   
+#             lwrite(xmlns)
         if 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
             xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
-            outfile.write(xsi_type)
+            lwrite(xsi_type)
         if self.URL is not None and 'URL' not in already_processed:
             already_processed.add('URL')
-            outfile.write(' URL=%s' % (self.gds_format_string(quote_attrib(self.URL).encode(ExternalEncoding), input_name='URL'), ))
+            lwrite(' URL=%s' % (self.gds_format_string(quote_attrib(self.URL).encode(ExternalEncoding), input_name='URL'), ))
         if self.version is not None and 'version' not in already_processed:
             already_processed.add('version')
-            outfile.write(' version=%s' % (quote_attrib(self.version), ))
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='IncidentType', fromsubclass_=False, pretty_print=True):
-        super(IncidentType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+            lwrite(' version=%s' % (quote_attrib(self.version), ))
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='IncidentType', fromsubclass_=False, pretty_print=True):
+        super(IncidentType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
         if self.Title is not None:
-            showIndent(outfile, level, pretty_print)
-            outfile.write('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
+            showIndent(lwrite, level, pretty_print)
+            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
         for External_ID_ in self.External_ID:
-            External_ID_.export(outfile, level, nsmap, namespace_, name_='External_ID', pretty_print=pretty_print)
+            External_ID_.export(lwrite, level, nsmap, namespace_, name_='External_ID', pretty_print=pretty_print)
         if self.Time is not None:
-            self.Time.export(outfile, level, nsmap, namespace_, name_='Time', pretty_print=pretty_print)
+            self.Time.export(lwrite, level, nsmap, namespace_, name_='Time', pretty_print=pretty_print)
         if self.Description is not None:
-            self.Description.export(outfile, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Short_Description is not None:
-            self.Short_Description.export(outfile, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+            self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         if self.Categories is not None:
-            self.Categories.export(outfile, level, nsmap, namespace_, name_='Categories', pretty_print=pretty_print)
+            self.Categories.export(lwrite, level, nsmap, namespace_, name_='Categories', pretty_print=pretty_print)
         if self.Reporter is not None:
-            self.Reporter.export(outfile, level, nsmap, namespace_, name_='Reporter', pretty_print=pretty_print)
+            self.Reporter.export(lwrite, level, nsmap, namespace_, name_='Reporter', pretty_print=pretty_print)
         for Responder_ in self.Responder:
-            Responder_.export(outfile, level, nsmap, namespace_, name_='Responder', pretty_print=pretty_print)
+            Responder_.export(lwrite, level, nsmap, namespace_, name_='Responder', pretty_print=pretty_print)
         for Coordinator_ in self.Coordinator:
-            Coordinator_.export(outfile, level, nsmap, namespace_, name_='Coordinator', pretty_print=pretty_print)
+            Coordinator_.export(lwrite, level, nsmap, namespace_, name_='Coordinator', pretty_print=pretty_print)
         for Victim_ in self.Victim:
-            Victim_.export(outfile, level, nsmap, namespace_, name_='Victim', pretty_print=pretty_print)
+            Victim_.export(lwrite, level, nsmap, namespace_, name_='Victim', pretty_print=pretty_print)
         if self.Affected_Assets is not None:
-            self.Affected_Assets.export(outfile, level, nsmap, namespace_, name_='Affected_Assets', pretty_print=pretty_print)
+            self.Affected_Assets.export(lwrite, level, nsmap, namespace_, name_='Affected_Assets', pretty_print=pretty_print)
         if self.Impact_Assessment is not None:
-            self.Impact_Assessment.export(outfile, level, nsmap, namespace_, name_='Impact_Assessment', pretty_print=pretty_print)
+            self.Impact_Assessment.export(lwrite, level, nsmap, namespace_, name_='Impact_Assessment', pretty_print=pretty_print)
         if self.Status is not None:
-            self.Status.export(outfile, level, nsmap, namespace_, name_='Status', pretty_print=pretty_print)
+            self.Status.export(lwrite, level, nsmap, namespace_, name_='Status', pretty_print=pretty_print)
         if self.Related_Indicators is not None:
-            self.Related_Indicators.export(outfile, level, nsmap, namespace_, name_='Related_Indicators', pretty_print=pretty_print)
+            self.Related_Indicators.export(lwrite, level, nsmap, namespace_, name_='Related_Indicators', pretty_print=pretty_print)
         if self.Related_Observables is not None:
-            self.Related_Observables.export(outfile, level, nsmap, namespace_, name_='Related_Observables', pretty_print=pretty_print)
+            self.Related_Observables.export(lwrite, level, nsmap, namespace_, name_='Related_Observables', pretty_print=pretty_print)
         if self.Leveraged_TTPs is not None:
-            self.Leveraged_TTPs.export(outfile, level, nsmap, namespace_, name_='Leveraged_TTPs', pretty_print=pretty_print)
+            self.Leveraged_TTPs.export(lwrite, level, nsmap, namespace_, name_='Leveraged_TTPs', pretty_print=pretty_print)
         if self.Attributed_Threat_Actors is not None:
-            self.Attributed_Threat_Actors.export(outfile, level, nsmap, namespace_, name_='Attributed_Threat_Actors', pretty_print=pretty_print)
+            self.Attributed_Threat_Actors.export(lwrite, level, nsmap, namespace_, name_='Attributed_Threat_Actors', pretty_print=pretty_print)
         for Intended_Effect_ in self.Intended_Effect:
-            Intended_Effect_.export(outfile, level, nsmap, namespace_, name_='Intended_Effect', pretty_print=pretty_print)
+            Intended_Effect_.export(lwrite, level, nsmap, namespace_, name_='Intended_Effect', pretty_print=pretty_print)
         if self.Security_Compromise is not None:
-            self.Security_Compromise.export(outfile, level, nsmap, namespace_, name_='Security_Compromise', pretty_print=pretty_print)
+            self.Security_Compromise.export(lwrite, level, nsmap, namespace_, name_='Security_Compromise', pretty_print=pretty_print)
         for Discovery_Method_ in self.Discovery_Method:
-            Discovery_Method_.export(outfile, level, nsmap, namespace_, name_='Discovery_Method', pretty_print=pretty_print)
+            Discovery_Method_.export(lwrite, level, nsmap, namespace_, name_='Discovery_Method', pretty_print=pretty_print)
         if self.Related_Incidents is not None:
-            self.Related_Incidents.export(outfile, level, nsmap, namespace_, name_='Related_Incidents', pretty_print=pretty_print)
+            self.Related_Incidents.export(lwrite, level, nsmap, namespace_, name_='Related_Incidents', pretty_print=pretty_print)
         for COA_Requested_ in self.COA_Requested:
-            COA_Requested_.export(outfile, level, nsmap, namespace_, name_='COA_Requested', pretty_print=pretty_print)
+            COA_Requested_.export(lwrite, level, nsmap, namespace_, name_='COA_Requested', pretty_print=pretty_print)
         for COA_Taken_ in self.COA_Taken:
-            COA_Taken_.export(outfile, level, nsmap, namespace_, name_='COA_Taken', pretty_print=pretty_print)
+            COA_Taken_.export(lwrite, level, nsmap, namespace_, name_='COA_Taken', pretty_print=pretty_print)
         if self.Confidence is not None:
-            self.Confidence.export(outfile, level, nsmap, namespace_, name_='Confidence', pretty_print=pretty_print)
+            self.Confidence.export(lwrite, level, nsmap, namespace_, name_='Confidence', pretty_print=pretty_print)
         for Contact_ in self.Contact:
-            Contact_.export(outfile, level, nsmap, namespace_, name_='Contact', pretty_print=pretty_print)
+            Contact_.export(lwrite, level, nsmap, namespace_, name_='Contact', pretty_print=pretty_print)
         if self.History is not None:
-            self.History.export(outfile, level, nsmap, namespace_, name_='History', pretty_print=pretty_print)
+            self.History.export(lwrite, level, nsmap, namespace_, name_='History', pretty_print=pretty_print)
         if self.Information_Source is not None:
-            self.Information_Source.export(outfile, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
+            self.Information_Source.export(lwrite, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
         if self.Handling is not None:
-            self.Handling.export(outfile, level, nsmap, namespace_, name_='Handling', pretty_print=pretty_print)
+            self.Handling.export(lwrite, level, nsmap, namespace_, name_='Handling', pretty_print=pretty_print)
         if self.Related_Packages is not None:
-            self.Related_Packages.export(outfile, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
+            self.Related_Packages.export(lwrite, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3085,28 +3085,28 @@ class NonPublicDataCompromisedType(stix_common_binding.ControlledVocabularyStrin
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='NonPublicDataCompromisedType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='NonPublicDataCompromisedType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='NonPublicDataCompromisedType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='NonPublicDataCompromisedType')
         if self.hasContent_():
-            outfile.write('>')
-            outfile.write(unicode(self.valueOf_).encode(ExternalEncoding))
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>')
+            lwrite(unicode(self.valueOf_).encode(ExternalEncoding))
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='NonPublicDataCompromisedType'):
-        super(NonPublicDataCompromisedType, self).exportAttributes(outfile, level, already_processed, namespace_, name_='NonPublicDataCompromisedType')
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='NonPublicDataCompromisedType'):
+        super(NonPublicDataCompromisedType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='NonPublicDataCompromisedType')
         if self.data_encrypted is not None and 'data_encrypted' not in already_processed:
             already_processed.add('data_encrypted')
-            outfile.write(' data_encrypted="%s"' % self.gds_format_boolean(self.data_encrypted, input_name='data_encrypted'))
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='NonPublicDataCompromisedType', fromsubclass_=False, pretty_print=True):
-        super(NonPublicDataCompromisedType, self).exportChildren(outfile, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+            lwrite(' data_encrypted="%s"' % self.gds_format_boolean(self.data_encrypted, input_name='data_encrypted'))
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='NonPublicDataCompromisedType', fromsubclass_=False, pretty_print=True):
+        super(NonPublicDataCompromisedType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         pass
     def build(self, node):
         already_processed = set()
@@ -3155,26 +3155,26 @@ class ExternalIDType(GeneratedsSuper):
             return True
         else:
             return False
-    def export(self, outfile, level, nsmap, namespace_=XML_NS, name_='ExternalIDType', namespacedef_='', pretty_print=True):
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ExternalIDType', namespacedef_='', pretty_print=True):
         if pretty_print:
             eol_ = '\n'
         else:
             eol_ = ''
-        showIndent(outfile, level, pretty_print)
-        outfile.write('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
         already_processed = set()
-        self.exportAttributes(outfile, level, already_processed, namespace_, name_='ExternalIDType')
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='ExternalIDType')
         if self.hasContent_():
-            outfile.write('>')
-            outfile.write(unicode(self.valueOf_).encode(ExternalEncoding))
-            outfile.write('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+            lwrite('>')
+            lwrite(unicode(self.valueOf_).encode(ExternalEncoding))
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
-            outfile.write('/>%s' % (eol_, ))
-    def exportAttributes(self, outfile, level, already_processed, namespace_='incident:', name_='ExternalIDType'):
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='ExternalIDType'):
         if self.source is not None and 'source' not in already_processed:
             already_processed.add('source')
-            outfile.write(' source=%s' % (self.gds_format_string(quote_attrib(self.source).encode(ExternalEncoding), input_name='source'), ))
-    def exportChildren(self, outfile, level, nsmap, namespace_=XML_NS, name_='ExternalIDType', fromsubclass_=False, pretty_print=True):
+            lwrite(' source=%s' % (self.gds_format_string(quote_attrib(self.source).encode(ExternalEncoding), input_name='source'), ))
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ExternalIDType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
         already_processed = set()

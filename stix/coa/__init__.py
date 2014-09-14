@@ -241,42 +241,44 @@ class CourseOfAction(stix.Entity):
 
         self._handling = value
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(CourseOfAction, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 
-        return_obj.set_id(self.id_)
-        return_obj.set_idref(self.idref)
+        return_obj.id = self.id_
+        return_obj.idref = self.idref
         if self.timestamp:
-            return_obj.set_timestamp(self.timestamp.isoformat())
-        return_obj.set_version(self.version)
-        return_obj.set_Title(self.title)
+            return_obj.timestamp = self.timestamp.isoformat()
+        return_obj.version = self.version
+        return_obj.Title = self.title
         if self.stage:
-            return_obj.set_Stage(self.stage.to_obj())
+            return_obj.Stage = self.stage.to_obj(ns_info=ns_info)
         if self.type_:
-            return_obj.set_Type(self.type_.to_obj())
+            return_obj.Type = self.type_.to_obj(ns_info=ns_info)
         if self.description:
-            return_obj.set_Description(self.description.to_obj())
+            return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.short_description:
-            return_obj.set_Short_Description(self.short_description.to_obj())
+            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
         if self.objective:
-            return_obj.set_Objective(self.objective.to_obj())
+            return_obj.Objective = self.objective.to_obj(ns_info=ns_info)
         if self.parameter_observables:
-            return_obj.set_Parameter_Observables(self.parameter_observables.to_obj())
+            return_obj.Parameter_Observables = self.parameter_observables.to_obj(ns_info=ns_info)
         if self.impact:
-            return_obj.set_Impact(self.impact.to_obj())
+            return_obj.Impact = self.impact.to_obj(ns_info=ns_info)
         if self.cost:
-            return_obj.set_Cost(self.cost.to_obj())
+            return_obj.Cost = self.cost.to_obj(ns_info=ns_info)
         if self.efficacy:
-            return_obj.set_Efficacy(self.efficacy.to_obj())
+            return_obj.Efficacy = self.efficacy.to_obj(ns_info=ns_info)
         if self.information_source:
-            return_obj.set_Information_Source(self.information_source.to_obj())
+            return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
         if self.handling:
-            return_obj.set_Handling(self.handling.to_obj())
+            return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
         if self.related_coas:
-            return_obj.set_Related_COAs(self.related_coas.to_obj())
+            return_obj.Related_COAs = self.related_coas.to_obj(ns_info=ns_info)
         if self.related_packages:
-            return_obj.set_Related_Packages(self.related_packages.to_obj())
+            return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -287,29 +289,31 @@ class CourseOfAction(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_,return_obj.id_ns = obj.get_id()
-        return_obj.idref,return_obj.idref_ns = obj.get_idref()
-        return_obj.timestamp = obj.get_timestamp()
+        return_obj.id_ = obj.id
+        return_obj.id_ns = obj.idns
+        return_obj.idref = obj.idref
+        return_obj.idref_ns = obj.idrefns
+        return_obj.timestamp = obj.timestamp
 
         if isinstance(obj, cls._binding_class): # CourseOfActionType properties
-            return_obj.version = obj.get_version() or cls._version
-            return_obj.title = obj.get_Title()
-            return_obj.stage = VocabString.from_obj(obj.get_Stage())
-            return_obj.type_ = VocabString.from_obj(obj.get_Type())
-            return_obj.description = StructuredText.from_obj(obj.get_Description())
-            return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
-            return_obj.objective = Objective.from_obj(obj.get_Objective())
+            return_obj.version = obj.version or cls._version
+            return_obj.title = obj.Title
+            return_obj.stage = VocabString.from_obj(obj.Stage)
+            return_obj.type_ = VocabString.from_obj(obj.Type)
+            return_obj.description = StructuredText.from_obj(obj.Description)
+            return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
+            return_obj.objective = Objective.from_obj(obj.Objective)
             return_obj.parameter_observables = \
-                    Observables.from_obj(obj.get_Parameter_Observables())
-            return_obj.impact = Statement.from_obj(obj.get_Impact())
-            return_obj.cost = Statement.from_obj(obj.get_Cost())
-            return_obj.efficacy = Statement.from_obj(obj.get_Efficacy())
-            return_obj.information_source = InformationSource.from_obj(obj.get_Information_Source())
-            return_obj.handling = Marking.from_obj(obj.get_Handling())
+                    Observables.from_obj(obj.Parameter_Observables)
+            return_obj.impact = Statement.from_obj(obj.Impact)
+            return_obj.cost = Statement.from_obj(obj.Cost)
+            return_obj.efficacy = Statement.from_obj(obj.Efficacy)
+            return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
+            return_obj.handling = Marking.from_obj(obj.Handling)
             return_obj.related_coas = \
-                    RelatedCOAs.from_obj(obj.get_Related_COAs())
+                    RelatedCOAs.from_obj(obj.Related_COAs)
             return_obj.related_packages = \
-                    RelatedPackageRefs.from_obj(obj.get_Related_Packages())
+                    RelatedPackageRefs.from_obj(obj.Related_Packages)
 
         return return_obj
 

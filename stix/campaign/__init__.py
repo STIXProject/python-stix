@@ -262,46 +262,48 @@ class Campaign(stix.Entity):
             self._attribution.append(value) # may raise a ValueError
 
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(Campaign, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 
-        return_obj.set_id(self.id_)
-        return_obj.set_idref(self.idref)
+        return_obj.id = self.id_
+        return_obj.idref = self.idref
         if self.timestamp:
-            return_obj.set_timestamp(self.timestamp.isoformat())
-        return_obj.set_version(self.version)
-        return_obj.set_Title(self.title)
+            return_obj.timestamp = self.timestamp.isoformat()
+        return_obj.version = self.version
+        return_obj.Title = self.title
         if self.description:
-            return_obj.set_Description(self.description.to_obj())
+            return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.short_description:
-            return_obj.set_Short_Description(self.short_description.to_obj())
+            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
         if self.names:
-            return_obj.set_Names(self.names.to_obj())
+            return_obj.Names = self.names.to_obj(ns_info=ns_info)
         if self.intended_effects:
-            return_obj.set_Intended_Effect([x.to_obj() for x in self.intended_effects])
+            return_obj.Intended_Effect = [x.to_obj(ns_info=ns_info) for x in self.intended_effects]
         if self.status:
-            return_obj.set_Status(self.status.to_obj())
+            return_obj.Status = self.status.to_obj(ns_info=ns_info)
         if self.related_ttps:
-            return_obj.set_Related_TTPs(self.related_ttps.to_obj())
+            return_obj.Related_TTPs = self.related_ttps.to_obj(ns_info=ns_info)
         if self.related_incidents:
-            return_obj.set_Related_Incidents(self.related_incidents.to_obj())
+            return_obj.Related_Incidents = self.related_incidents.to_obj(ns_info=ns_info)
         if self.related_indicators:
-            return_obj.set_Related_Indicators(self.related_indicators.to_obj())
+            return_obj.Related_Indicators = self.related_indicators.to_obj(ns_info=ns_info)
         if self.attribution:
-            return_obj.set_Attribution([x.to_obj() for x in self.attribution])
+            return_obj.Attribution = [x.to_obj(ns_info=ns_info) for x in self.attribution]
         if self.associated_campaigns:
-            return_obj.set_Associated_Campaigns(self.associated_campaigns.to_obj())
+            return_obj.Associated_Campaigns = self.associated_campaigns.to_obj(ns_info=ns_info)
         if self.confidence:
-            return_obj.set_Confidence(self.confidence.to_obj())
+            return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
         if self.activity:
-            return_obj.set_Activity([x.to_obj() for x in self.activity])
+            return_obj.Activity = [x.to_obj(ns_info=ns_info) for x in self.activity]
         if self.information_source:
-            return_obj.set_Information_Source(self.information_source.to_obj())
+            return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
         if self.handling:
-            return_obj.set_Handling(self.handling.to_obj())
+            return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
         if self.related_packages:
-            return_obj.set_Related_Packages(self.related_packages.to_obj())
+            return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -312,37 +314,39 @@ class Campaign(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_,return_obj.id_ns = obj.get_id()
-        return_obj.idref,return_obj.idref_ns = obj.get_idref()
-        return_obj.timestamp = obj.get_timestamp()
+        return_obj.id_ = obj.id
+        return_obj.id_ns = obj.idns
+        return_obj.idref = obj.idref
+        return_obj.idref_ns = obj.idrefns
+        return_obj.timestamp = obj.timestamp
         
         if isinstance(obj, cls._binding_class):
-            return_obj.version = obj.get_version() or cls._version
-            return_obj.title = obj.get_Title()
-            return_obj.description = StructuredText.from_obj(obj.get_Description())
+            return_obj.version = obj.version or cls._version
+            return_obj.title = obj.Title
+            return_obj.description = StructuredText.from_obj(obj.Description)
             return_obj.short_description = \
-                    StructuredText.from_obj(obj.get_Short_Description())
-            return_obj.names = Names.from_obj(obj.get_Names())
+                    StructuredText.from_obj(obj.Short_Description)
+            return_obj.names = Names.from_obj(obj.Names)
             return_obj.intended_effects = \
-                    [Statement.from_obj(x) for x in obj.get_Intended_Effect()]
-            return_obj.status = VocabString.from_obj(obj.get_Status())
-            return_obj.related_ttps = RelatedTTPs.from_obj(obj.get_Related_TTPs())
+                    [Statement.from_obj(x) for x in obj.Intended_Effect]
+            return_obj.status = VocabString.from_obj(obj.Status)
+            return_obj.related_ttps = RelatedTTPs.from_obj(obj.Related_TTPs)
             return_obj.related_incidents = \
-                    RelatedIncidents.from_obj(obj.get_Related_Incidents())
+                    RelatedIncidents.from_obj(obj.Related_Incidents)
             return_obj.related_indicators = \
-                    RelatedIndicators.from_obj(obj.get_Related_Indicators())
+                    RelatedIndicators.from_obj(obj.Related_Indicators)
             return_obj.attribution = \
-                    [Attribution.from_obj(x) for x in obj.get_Attribution()]
+                    [Attribution.from_obj(x) for x in obj.Attribution]
             return_obj.associated_campaigns = \
-                    AssociatedCampaigns.from_obj(obj.get_Associated_Campaigns())
-            return_obj.confidence = Confidence.from_obj(obj.get_Confidence())
+                    AssociatedCampaigns.from_obj(obj.Associated_Campaigns)
+            return_obj.confidence = Confidence.from_obj(obj.Confidence)
             return_obj.activity = \
-                    [Activity.from_obj(x) for x in obj.get_Activity()]
+                    [Activity.from_obj(x) for x in obj.Activity]
             return_obj.information_source = \
-                    InformationSource.from_obj(obj.get_Information_Source())
-            return_obj.handling = Marking.from_obj(obj.get_Handling())
+                    InformationSource.from_obj(obj.Information_Source)
+            return_obj.handling = Marking.from_obj(obj.Handling)
             return_obj.related_packages = \
-                    RelatedPackageRefs.from_obj(obj.get_Related_Packages())
+                    RelatedPackageRefs.from_obj(obj.Related_Packages)
 
         return return_obj
 

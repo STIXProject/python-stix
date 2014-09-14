@@ -4,6 +4,9 @@ python:
    - "2.7"
 
 install:
+   # TODO: Once there's a release of python-cybox with the correct changes,
+   # allow python-cybox to be installed normally.
+   - pip install https://github.com/CybOXProject/python-cybox/archive/master.zip
    - pip install .
 
 script:

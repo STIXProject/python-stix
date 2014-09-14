@@ -3,7 +3,7 @@
 
 import unittest
 
-from cybox.test import EntityTestCase
+from stix.test import EntityTestCase
 
 from stix.extensions.marking.terms_of_use_marking import TermsOfUseMarkingStructure
 

@@ -9,16 +9,18 @@ class SimpleMarkingStructure(MarkingStructure):
     _namespace = 'http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1'
     _XSI_TYPE = "simpleMarking:SimpleMarkingStructureType"
 
-    def __init__(self):
+    def __init__(self, statement=None):
         super(SimpleMarkingStructure, self).__init__()
-        self.statement = None
+        self.statement = statement
 
-    def to_obj(self):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(SimpleMarkingStructure, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         obj = self._binding_class()
 
-        MarkingStructure.to_obj(self, obj)
+        MarkingStructure.to_obj(self, return_obj=obj, ns_info=ns_info)
 
-        obj.set_Statement(self.statement)
+        obj.Statement = self.statement
 
         return obj
 
@@ -36,7 +38,7 @@ class SimpleMarkingStructure(MarkingStructure):
 
         m = SimpleMarkingStructure()
         MarkingStructure.from_obj(obj, m)
-        m.statement = obj.get_Statement()
+        m.statement = obj.Statement
 
         return m
 

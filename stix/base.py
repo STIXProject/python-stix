@@ -1,101 +1,89 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-import warnings
 import collections
-import inspect
 import json
 from StringIO import StringIO
-
-import cybox
-from cybox.core import Observable, Observables
 from lxml import etree
 
 class Entity(object):
     """Base class for all classes in the STIX API."""
+    _namespace = None
+    _XSI_TYPE = None
 
-    def to_obj(self, return_obj=None):
-        """Export an object as a binding object representation"""
-        raise NotImplementedError()
+
+    def _collect_ns_info(self, ns_info=None):
+        if not ns_info:
+            return
+        ns_info.collect(self)
+
+
+    def to_obj(self, return_obj=None, ns_info=None):
+        """Converts an `Entity` into a binding object.
+
+        Note:
+            This needs to be overridden by derived classes.
+
+        """
+        self._collect_ns_info(ns_info)
+        return return_obj
+
 
     @classmethod
     def from_obj(cls, obj):
         """Create an object from a binding object"""
         raise NotImplementedError()
 
-    def _get_namespaces(self, ns_dict=None):
-        import stix.utils.nsparser as nsparser
-        parser = nsparser.NamespaceParser()
-        all_ns_dict = parser.get_namespaces(self, ns_dict=ns_dict)
-        return all_ns_dict
-
-    def _get_schema_locations(self, ns_dict=None, schemaloc_dict=None):
-        import stix.utils.nsparser as nsparser
-        parser = nsparser.NamespaceParser()
-        all_schemaloc_dict = \
-            parser.get_namespace_schemalocation_dict(self, ns_dict=ns_dict, schemaloc_dict=schemaloc_dict)
-        return all_schemaloc_dict
 
     def to_xml(self, include_namespaces=True, include_schemalocs=True,
                ns_dict=None, schemaloc_dict=None, pretty=True,
                auto_namespace=True):
-        """Export an object as an XML String""" 
-        import stix.utils.nsparser as nsparser
-        parser = nsparser.NamespaceParser()
-        all_ns_dict, all_schemaloc_dict = {}, {}
-        namespace_def = ""
+        """Export an object as an XML String"""
+        from stix.utils.nsparser import (NamespaceParser, NamespaceInfo,
+                                         DEFAULT_STIX_NAMESPACES)
+        parser = NamespaceParser()
+
+        if auto_namespace:
+            ns_info = NamespaceInfo()
+        else:
+            ns_info = None
+
+        obj = self.to_obj(ns_info=ns_info)
 
         if (not auto_namespace) and (not ns_dict):
             raise Exception("Auto-namespacing was disabled but ns_dict "
                             "was empty or missing.")
 
-        if include_namespaces:
-            if auto_namespace:
-                all_ns_dict = self._get_namespaces(ns_dict)
-            else:
-                all_ns_dict = ns_dict
-
-            namespace_def += "\n\t" + parser.get_xmlns_str(all_ns_dict)
+        if auto_namespace:
+            ns_info.finalize()
+            obj_ns_dict = ns_info.finalized_namespaces
         else:
-            all_ns_dict = dict(nsparser.DEFAULT_STIX_NS_TO_PREFIX.items() +
-                               nsparser.DEFAULT_EXT_TO_PREFIX.items())
+            ns_info = NamespaceInfo()
+            ns_info.finalized_namespaces = ns_dict or {}
+            ns_info.finalized_schemalocs = schemaloc_dict or {}
+            obj_ns_dict = dict(ns_dict.items() + DEFAULT_STIX_NAMESPACES.items())
+
+        namespace_def = ""
+        if include_namespaces:
+            namespace_def += ("\n\t" +
+                              parser.get_xmlns_str(ns_info.finalized_namespaces))
 
         if include_schemalocs and include_namespaces:
-            if auto_namespace:
-                all_schemaloc_dict = \
-                    self._get_schema_locations(all_ns_dict, schemaloc_dict)
-            else:
-                all_schemaloc_dict = schemaloc_dict or {}
-
             namespace_def += ("\n\t" +
-                              parser.get_schemaloc_str(all_schemaloc_dict))
+                              parser.get_schemaloc_str(ns_info.finalized_schemalocs))
 
         if not pretty:
             namespace_def = namespace_def.replace('\n\t', ' ')
 
         s = StringIO()
-
-        self.to_obj().export(s, 0, all_ns_dict, pretty_print=pretty,
+        obj.export(s.write, 0, obj_ns_dict, pretty_print=pretty,
                              namespacedef_=namespace_def)
         return s.getvalue()
 
 
-    def _get_children(self):
-        for (name, obj) in inspect.getmembers(self):
-            if isinstance(obj, Observables):
-                for obs in obj.observables:
-                    yield obs
-            elif isinstance(obj, (Entity, cybox.Entity)):
-                yield obj
-            elif isinstance(obj, (tuple, collections.MutableSequence)):
-                for item in obj:
-                    if (isinstance(item, Entity) or
-                        isinstance(item, Observable) or
-                        isinstance(item, cybox.Entity)):
-                        yield item
-
     def to_json(self):
         return json.dumps(self.to_dict())
+
 
     @classmethod
     def from_json(cls, json_doc):
@@ -152,18 +140,15 @@ class Entity(object):
         return cls.from_obj(entity_obj).to_dict()
 
     def walk(self):
-        import cybox
-        from cybox.core import (ObservableComposition, Observable, Object, 
-                                Event, Action)
+        from cybox import Entity as cyboxEntity
         from cybox.common import ObjectProperties
 
-        iterable = (collections.MutableSequence)
-        yieldable = (Entity, cybox.Entity)
+        yieldable = (Entity, cyboxEntity)
         skip = {ObjectProperties : '_parent'}
 
         def can_skip(obj, field):
             for klass, prop in skip.iteritems():
-                if isinstance(obj, klass) and prop == field :
+                if prop == field and isinstance(obj, klass):
                     return True
             return False
 
@@ -171,29 +156,29 @@ class Entity(object):
             for k, v in obj.__dict__.iteritems():
                 if v and not can_skip(obj, k):
                     yield v
-        
+
         visited = []
         def descend(obj):
             if id(obj) in visited:
                 return
             visited.append(id(obj))
-            
+
             for member in get_members(obj):
                 if isinstance(member, yieldable):
                     yield member
                     for i in descend(member):
                         yield i
-                
-                if isinstance(member, iterable):
+
+                if hasattr(member, "__getitem__"):
                     for i in member:
                         if isinstance(i, yieldable):
                             yield i
                             for d in descend(i):
                                 yield d
-                            
+
             visited.remove(id(obj))
         # end descend()
-        
+
         for node in descend(self):
             yield node
 
@@ -266,11 +251,13 @@ class EntityList(collections.MutableSequence, Entity):
     # - _contained_type
     # - _inner_name
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(EntityList, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 
-        setattr(return_obj, self._binding_var, [x.to_obj() for x in self])
+        setattr(return_obj, self._binding_var, [x.to_obj(ns_info=ns_info) for x in self])
 
         return return_obj
 

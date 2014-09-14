@@ -4,7 +4,7 @@
 import unittest
 
 from stix.campaign import Campaign
-from cybox.test import EntityTestCase
+from stix.test import EntityTestCase
 
 
 class CampaignTest(EntityTestCase, unittest.TestCase):

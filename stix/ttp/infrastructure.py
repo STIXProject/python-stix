@@ -93,21 +93,23 @@ class Infrastructure(stix.Entity):
         else:
             self._observable_characterization = Observables(observables=[value])
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(Infrastructure, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 
-        return_obj.set_id(self.id_)
-        return_obj.set_Title(self.title)
+        return_obj.id = self.id_
+        return_obj.Title = self.title
 
         if self.description:
-            return_obj.set_Description(self.description.to_obj())
+            return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.short_description:
-            return_obj.set_Short_Description(self.short_description.to_obj())
+            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
         if self.types:
-            return_obj.set_Type([x.to_obj() for x in self.types])
+            return_obj.Type = [x.to_obj(ns_info=ns_info) for x in self.types]
         if self.observable_characterization:
-            return_obj.set_Observable_Characterization(self.observable_characterization.to_obj())
+            return_obj.Observable_Characterization = self.observable_characterization.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -118,14 +120,14 @@ class Infrastructure(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = obj.get_id()
-        return_obj.title = obj.get_Title()
-        return_obj.description = StructuredText.from_obj(obj.get_Description())
-        return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
-        return_obj.observable_characterization = Observables.from_obj(obj.get_Observable_Characterization())
+        return_obj.id_ = obj.id
+        return_obj.title = obj.Title
+        return_obj.description = StructuredText.from_obj(obj.Description)
+        return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
+        return_obj.observable_characterization = Observables.from_obj(obj.Observable_Characterization)
 
-        if obj.get_Type():
-            return_obj.types = [VocabString.from_obj(x) for x in obj.get_Type()]
+        if obj.Type:
+            return_obj.types = [VocabString.from_obj(x) for x in obj.Type]
 
         return return_obj
 

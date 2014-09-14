@@ -30,12 +30,14 @@ class LossEstimation(stix.Entity):
     def iso_currency_code(self, value):
         self._iso_currency_code = value
 
-    def to_obj(self):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(LossEstimation, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         obj = self._binding_class()
         if self.amount:
-            obj.set_amount(self.amount)
+            obj.amount = self.amount
         if self.iso_currency_code:
-            obj.set_iso_currency_code(self.iso_currency_code)
+            obj.iso_currency_code = self.iso_currency_code
         return obj
 
     @classmethod
@@ -46,8 +48,8 @@ class LossEstimation(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.amount = obj.get_amount()
-        return_obj.iso_currency_code = obj.get_iso_currency_code()
+        return_obj.amount = obj.amount
+        return_obj.iso_currency_code = obj.iso_currency_code
         return return_obj
 
     def to_dict(self):    

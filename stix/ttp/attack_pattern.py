@@ -54,18 +54,20 @@ class AttackPattern(stix.Entity):
         else:
             self._short_description = None
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(AttackPattern, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 
-        return_obj.set_id(self.id_)
-        return_obj.set_capec_id(self.capec_id)
-        return_obj.set_Title(self.title)
+        return_obj.id = self.id_
+        return_obj.capec_id = self.capec_id
+        return_obj.Title = self.title
 
         if self.description:
-            return_obj.set_Description(self.description.to_obj())
+            return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.short_description:
-            return_obj.set_Short_Description(self.short_description.to_obj())
+            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -76,11 +78,11 @@ class AttackPattern(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = obj.get_id()
-        return_obj.capec_id = obj.get_capec_id()
-        return_obj.title = obj.get_Title()
-        return_obj.description = StructuredText.from_obj(obj.get_Description())
-        return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
+        return_obj.id_ = obj.id
+        return_obj.capec_id = obj.capec_id
+        return_obj.title = obj.Title
+        return_obj.description = StructuredText.from_obj(obj.Description)
+        return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
 
         return return_obj
 

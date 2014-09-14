@@ -90,19 +90,21 @@ class Behavior(stix.Entity):
         else:
             raise ValueError("Unable to add item to exploit list: %s" % type(exploit))
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(Behavior, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 
         if self.malware_instances:
-            malware_obj = self._binding.MalwareType(Malware_Instance=[x.to_obj() for x in self.malware_instances])
-            return_obj.set_Malware(malware_obj)
+            malware_obj = self._binding.MalwareType(Malware_Instance=[x.to_obj(ns_info=ns_info) for x in self.malware_instances])
+            return_obj.Malware = malware_obj
         if self.exploits:
-            exploits_obj = self._binding.ExploitsType(Exploit=[x.to_obj() for x in self.exploits])
-            return_obj.set_Exploits(exploits_obj)
+            exploits_obj = self._binding.ExploitsType(Exploit=[x.to_obj(ns_info=ns_info) for x in self.exploits])
+            return_obj.Exploits = exploits_obj
         if self.attack_patterns:
-            attack_patterns_obj = self._binding.AttackPatternsType(Attack_Pattern=[x.to_obj() for x in self.attack_patterns])
-            return_obj.set_Attack_Patterns(attack_patterns_obj)
+            attack_patterns_obj = self._binding.AttackPatternsType(Attack_Pattern=[x.to_obj(ns_info=ns_info) for x in self.attack_patterns])
+            return_obj.Attack_Patterns = attack_patterns_obj
 
         return return_obj
 
@@ -113,12 +115,12 @@ class Behavior(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        if obj.get_Malware():
-            return_obj.malware_instances = [MalwareInstance.from_obj(x) for x in obj.get_Malware().get_Malware_Instance()]
-        if obj.get_Exploits():
-            return_obj.exploits = [Exploit.from_obj(x) for x in obj.get_Exploits().get_Exploit()]
-        if obj.get_Attack_Patterns():
-            return_obj.attack_patterns = [AttackPattern.from_obj(x) for x in obj.get_Attack_Patterns().get_Attack_Pattern()]
+        if obj.Malware:
+            return_obj.malware_instances = [MalwareInstance.from_obj(x) for x in obj.Malware.Malware_Instance]
+        if obj.Exploits:
+            return_obj.exploits = [Exploit.from_obj(x) for x in obj.Exploits.Exploit]
+        if obj.Attack_Patterns:
+            return_obj.attack_patterns = [AttackPattern.from_obj(x) for x in obj.Attack_Patterns.Attack_Pattern]
         return return_obj
 
     def to_dict(self):

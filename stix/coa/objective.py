@@ -44,16 +44,18 @@ class Objective(stix.Entity):
         else:
             self._short_description = None
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(Objective, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 
         if self.description:
-            return_obj.set_Description(self.description.to_obj())
+            return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.short_description:
-            return_obj.set_Short_Description(self.short_description.to_obj())
+            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
         if self.applicability_confidence:
-            return_obj.set_Applicability_Confidence(self.applicability_confidence.to_obj())
+            return_obj.Applicability_Confidence = self.applicability_confidence.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -77,9 +79,9 @@ class Objective(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.description = StructuredText.from_obj(obj.get_Description())
-        return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
-        return_obj.applicability_confidence = Confidence.from_obj(obj.get_Applicability_Confidence())
+        return_obj.description = StructuredText.from_obj(obj.Description)
+        return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
+        return_obj.applicability_confidence = Confidence.from_obj(obj.Applicability_Confidence)
         return return_obj
 
     def to_dict(self):

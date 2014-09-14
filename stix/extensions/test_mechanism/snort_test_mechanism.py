@@ -123,37 +123,37 @@ class SnortTestMechanism(_BaseTestMechanism):
             return_obj = cls()
         
         super(SnortTestMechanism, cls).from_obj(obj, return_obj)
-        return_obj.product_name = obj.get_Product_Name()
-        return_obj.version = obj.get_Version()
+        return_obj.product_name = obj.Product_Name
+        return_obj.version = obj.Version
         
-        if obj.get_Rule():
-            return_obj.rules = [EncodedCDATA.from_obj(x) for x in obj.get_Rule()]
-        if obj.get_Event_Filter():
-            return_obj.event_filters = [EncodedCDATA.from_obj(x) for x in obj.get_Event_Filter()]
-        if obj.get_Rate_Filter():
-            return_obj.rate_filters = [EncodedCDATA.from_obj(x) for x in obj.get_Rate_Filter()]
-        if obj.get_Event_Suppression():
-            return_obj.event_suppressions = [EncodedCDATA.from_obj(x) for x in obj.get_Event_Suppression()]
+        if obj.Rule:
+            return_obj.rules = [EncodedCDATA.from_obj(x) for x in obj.Rule]
+        if obj.Event_Filter:
+            return_obj.event_filters = [EncodedCDATA.from_obj(x) for x in obj.Event_Filter]
+        if obj.Rate_Filter:
+            return_obj.rate_filters = [EncodedCDATA.from_obj(x) for x in obj.Rate_Filter]
+        if obj.Event_Suppression:
+            return_obj.event_suppressions = [EncodedCDATA.from_obj(x) for x in obj.Event_Suppression]
         
         return return_obj
     
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
             
-        super(SnortTestMechanism, self).to_obj(return_obj)
-        
-        return_obj.set_Product_Name(self.product_name)
-        return_obj.set_Version(self.version)
+        super(SnortTestMechanism, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
+        return_obj.Product_Name = self.product_name
+        return_obj.Version = self.version
         
         if self.rules:
-            return_obj.set_Rule([x.to_obj() for x in self.rules])
+            return_obj.Rule = [x.to_obj(ns_info=ns_info) for x in self.rules]
         if self.event_filters:
-            return_obj.set_Event_Filter([x.to_obj() for x in self.event_filters])
+            return_obj.Event_Filter = [x.to_obj(ns_info=ns_info) for x in self.event_filters]
         if self.rate_filters:
-            return_obj.set_Rate_Filter([x.to_obj() for x in self.rate_filters])
+            return_obj.Rate_Filter = [x.to_obj(ns_info=ns_info) for x in self.rate_filters]
         if self.event_suppressions:
-            return_obj.set_Event_Suppression([x.to_obj() for x in self.event_suppressions])    
+            return_obj.Event_Suppression = [x.to_obj(ns_info=ns_info) for x in self.event_suppressions]
         
         return return_obj
     

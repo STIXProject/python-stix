@@ -34,10 +34,12 @@ class Marking(stix.Entity):
             raise ValueError('value must be instance of MarkingSpecification')
         self._markings.append(value)
 
-    def to_obj(self):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(Marking, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         obj = self._binding_class()
 
-        obj.set_Marking([x.to_obj() for x in self.markings])
+        obj.Marking = [x.to_obj(ns_info=ns_info) for x in self.markings]
         return obj
 
     def to_list(self):
@@ -48,7 +50,7 @@ class Marking(stix.Entity):
         if not obj:
             return None
 
-        mlist = [MarkingSpecification.from_obj(x) for x in obj.get_Marking()]
+        mlist = [MarkingSpecification.from_obj(x) for x in obj.Marking]
         return Marking(mlist)
 
     @staticmethod
@@ -83,14 +85,16 @@ class MarkingSpecification(stix.Entity):
 
         # TODO: add Information_Source
 
-    def to_obj(self):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(MarkingSpecification, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         obj = self._binding_class()
 
-        obj.set_id(self.id_)
-        obj.set_idref(self.idref)
-        obj.set_version(self.version)
-        obj.set_Controlled_Structure(self.controlled_structure)
-        obj.set_Marking_Structure([x.to_obj() for x in self.marking_structures])
+        obj.id = self.id_
+        obj.idref = self.idref
+        obj.version = self.version
+        obj.Controlled_Structure = self.controlled_structure
+        obj.Marking_Structure = [x.to_obj(ns_info=ns_info) for x in self.marking_structures]
 
         return obj
 
@@ -116,11 +120,11 @@ class MarkingSpecification(stix.Entity):
 
         m = MarkingSpecification()
 
-        m.id_ = obj.get_id()
-        m.idref = obj.get_idref()
-        m.version = obj.get_version()
-        m.controlled_structure = obj.get_Controlled_Structure()
-        m.marking_structures = [MarkingStructure.from_obj(x) for x in obj.get_Marking_Structure()]
+        m.id_ = obj.id
+        m.idref = obj.idref
+        m.version = obj.version
+        m.controlled_structure = obj.Controlled_Structure
+        m.marking_structures = [MarkingStructure.from_obj(x) for x in obj.Marking_Structure]
 
         return m
 
@@ -150,14 +154,16 @@ class MarkingStructure(stix.Entity):
         self.marking_model_name = None
         self.marking_model_ref = None
 
-    def to_obj(self, obj=None):
-        if not obj:
-            obj = self._binding_class()
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(MarkingStructure, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
-        obj.set_marking_model_name(self.marking_model_name)
-        obj.set_marking_model_ref(self.marking_model_ref)
+        if not return_obj:
+            return_obj = self._binding_class()
 
-        return obj
+        return_obj.marking_model_name = self.marking_model_name
+        return_obj.marking_model_ref = self.marking_model_ref
+
+        return return_obj
 
     def to_dict(self):
         d = {}
@@ -192,8 +198,8 @@ class MarkingStructure(stix.Entity):
 
         if partial:
             m = partial
-            m.marking_model_name = obj.get_marking_model_name()
-            m.marking_model_ref = obj.get_marking_model_ref()
+            m.marking_model_name = obj.marking_model_name
+            m.marking_model_ref = obj.marking_model_ref
 
         else:
             cls = MarkingStructure.lookup_class(obj.xml_type)

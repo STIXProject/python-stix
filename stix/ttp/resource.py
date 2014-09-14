@@ -72,18 +72,20 @@ class Resource(stix.Entity):
         else:
             self._personas.append(Identity(name=persona))
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(Resource, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 
         if self.tools:
-            tools_obj = self._binding.ToolsType(Tool=[x.to_obj() for x in self.tools])
-            return_obj.set_Tools(tools_obj)
+            tools_obj = self._binding.ToolsType(Tool=[x.to_obj(ns_info=ns_info) for x in self.tools])
+            return_obj.Tools = tools_obj
         if self.infrastructure:
-            return_obj.set_Infrastructure(self.infrastructure.to_obj())
+            return_obj.Infrastructure = self.infrastructure.to_obj(ns_info=ns_info)
         if self.personas:
-            personas_obj = self._binding.PersonasType(Persona=[x.to_obj() for x in self.personas])
-            return_obj.set_Personas(personas_obj)
+            personas_obj = self._binding.PersonasType(Persona=[x.to_obj(ns_info=ns_info) for x in self.personas])
+            return_obj.Personas = personas_obj
 
         return return_obj
 
@@ -94,12 +96,12 @@ class Resource(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.infrastructure = Infrastructure.from_obj(obj.get_Infrastructure())
+        return_obj.infrastructure = Infrastructure.from_obj(obj.Infrastructure)
 
-        if obj.get_Tools():
-            return_obj.tools = [ToolInformation.from_obj(x) for x in obj.get_Tools().get_Tool()]
-        if obj.get_Personas():
-            return_obj.personas = [Identity.from_obj(x) for x in obj.get_Personas().get_Persona()]
+        if obj.Tools:
+            return_obj.tools = [ToolInformation.from_obj(x) for x in obj.Tools.Tool]
+        if obj.Personas:
+            return_obj.personas = [Identity.from_obj(x) for x in obj.Personas.Persona]
 
         return return_obj
 

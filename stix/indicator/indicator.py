@@ -1062,61 +1062,63 @@ class Indicator(stix.Entity):
         observable = Observable(object_)
         self.add_observable(observable)
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(Indicator, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 
-        return_obj.set_id(self.id_)
-        return_obj.set_idref(self.idref)
-        return_obj.set_timestamp(dates.serialize_value(self.timestamp))
-        return_obj.set_Title(self.title)
+        return_obj.id = self.id_
+        return_obj.idref = self.idref
+        return_obj.timestamp = dates.serialize_value(self.timestamp)
+        return_obj.Title = self.title
         
         if self.negate:
-            return_obj.set_negate(self._negate)
+            return_obj.negate = self._negate
         if self.version:
-            return_obj.set_version(self._version)
+            return_obj.version = self._version
         if self.description:
-            return_obj.set_Description(self.description.to_obj())
+            return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.short_description:
-            return_obj.set_Short_Description(self.short_description.to_obj())
+            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
         if self.confidence:
-            return_obj.set_Confidence(self.confidence.to_obj())
+            return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
         if self.indicator_types:
             for indicator_type in self.indicator_types:
-                tmp_indicator_type = indicator_type.to_obj()
+                tmp_indicator_type = indicator_type.to_obj(ns_info=ns_info)
                 return_obj.add_Type(tmp_indicator_type)
         if self.indicated_ttps:
-            return_obj.set_Indicated_TTP([x.to_obj() for x in self.indicated_ttps])
+            return_obj.Indicated_TTP = [x.to_obj(ns_info=ns_info) for x in self.indicated_ttps]
         if self.observables:
             if len(self.observables) > 1:
                 root_observable = self._merge_observables(self.observables)
             else:
                 root_observable = self.observables[0]
-            return_obj.set_Observable(root_observable.to_obj())
+            return_obj.Observable = root_observable.to_obj(ns_info=ns_info)
         if self.producer:
-            return_obj.set_Producer(self.producer.to_obj())
+            return_obj.Producer = self.producer.to_obj(ns_info=ns_info)
         if self.test_mechanisms:
             tms_obj = self._binding.TestMechanismsType()
-            tms_obj.set_Test_Mechanism([x.to_obj() for x in self.test_mechanisms])
-            return_obj.set_Test_Mechanisms(tms_obj)
+            tms_obj.Test_Mechanism = [x.to_obj(ns_info=ns_info) for x in self.test_mechanisms]
+            return_obj.Test_Mechanisms = tms_obj
         if self.likely_impact:
-            return_obj.set_Likely_Impact(self.likely_impact.to_obj())
+            return_obj.Likely_Impact = self.likely_impact.to_obj(ns_info=ns_info)
         if self.alternative_id:
-            return_obj.set_Alternative_ID(self.alternative_id)
+            return_obj.Alternative_ID = self.alternative_id
         if self.valid_time_positions:
-            return_obj.set_Valid_Time_Position([x.to_obj() for x in self.valid_time_positions])
+            return_obj.Valid_Time_Position = [x.to_obj(ns_info=ns_info) for x in self.valid_time_positions]
         if self.suggested_coas:
-            return_obj.set_Suggested_COAs(self.suggested_coas.to_obj())
+            return_obj.Suggested_COAs = self.suggested_coas.to_obj(ns_info=ns_info)
         if self.sightings:
-            return_obj.set_Sightings(self.sightings.to_obj())
+            return_obj.Sightings = self.sightings.to_obj(ns_info=ns_info)
         if self.composite_indicator_expression:
-            return_obj.set_Composite_Indicator_Expression(self.composite_indicator_expression.to_obj())
+            return_obj.Composite_Indicator_Expression = self.composite_indicator_expression.to_obj(ns_info=ns_info)
         if self.handling:
-            return_obj.set_Handling(self.handling.to_obj())
+            return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
         if self.kill_chain_phases:
-            return_obj.set_Kill_Chain_Phases(self.kill_chain_phases.to_obj())
+            return_obj.Kill_Chain_Phases = self.kill_chain_phases.to_obj(ns_info=ns_info)
         if self.related_indicators:
-            return_obj.set_Related_Indicators(self.related_indicators.to_obj())
+            return_obj.Related_Indicators = self.related_indicators.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -1127,44 +1129,46 @@ class Indicator(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_,return_obj.id_ns = obj.get_id()
-        return_obj.idref,return_obj.idref_ns = obj.get_idref()
-        return_obj.timestamp        = obj.get_timestamp()
+        return_obj.id_              = obj.id
+        return_obj.id_ns            = obj.idns
+        return_obj.idref            = obj.idref
+        return_obj.idref_ns         = obj.idrefns
+        return_obj.timestamp        = obj.timestamp
         
         if isinstance(obj, cls._binding_class):
-            return_obj.title            = obj.get_Title()
-            return_obj.description      = StructuredText.from_obj(obj.get_Description())
-            return_obj.short_description = StructuredText.from_obj(obj.get_Short_Description())
-            return_obj.producer         = InformationSource.from_obj(obj.get_Producer())
-            return_obj.confidence       = Confidence.from_obj(obj.get_Confidence())
-            return_obj.sightings        = Sightings.from_obj(obj.get_Sightings())
-            return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_obj(obj.get_Composite_Indicator_Expression())
-            return_obj.handling = Marking.from_obj(obj.get_Handling())
-            return_obj.kill_chain_phases = KillChainPhasesReference.from_obj(obj.get_Kill_Chain_Phases())
-            return_obj.related_indicators = RelatedIndicators.from_obj(obj.get_Related_Indicators())
-            return_obj.likely_impact = Statement.from_obj(obj.get_Likely_Impact())
+            return_obj.title            = obj.Title
+            return_obj.description      = StructuredText.from_obj(obj.Description)
+            return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
+            return_obj.producer         = InformationSource.from_obj(obj.Producer)
+            return_obj.confidence       = Confidence.from_obj(obj.Confidence)
+            return_obj.sightings        = Sightings.from_obj(obj.Sightings)
+            return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_obj(obj.Composite_Indicator_Expression)
+            return_obj.handling = Marking.from_obj(obj.Handling)
+            return_obj.kill_chain_phases = KillChainPhasesReference.from_obj(obj.Kill_Chain_Phases)
+            return_obj.related_indicators = RelatedIndicators.from_obj(obj.Related_Indicators)
+            return_obj.likely_impact = Statement.from_obj(obj.Likely_Impact)
             
-            if obj.get_negate():
-                return_obj.negate = obj.get_negate()
-            if obj.get_version():
-                return_obj.version = obj.get_version()
-            if obj.get_Type():
-                for indicator_type in obj.get_Type():
+            if obj.negate:
+                return_obj.negate = obj.negate
+            if obj.version:
+                return_obj.version = obj.version
+            if obj.Type:
+                for indicator_type in obj.Type:
                     return_obj.add_indicator_type(VocabString.from_obj(indicator_type)) 
-            if obj.get_Observable():
-                observable_obj = obj.get_Observable()
+            if obj.Observable:
+                observable_obj = obj.Observable
                 observable = Observable.from_obj(observable_obj)
                 return_obj.observables.append(observable)
-            if obj.get_Indicated_TTP():
-                return_obj.indicated_ttps = [RelatedTTP.from_obj(x) for x in obj.get_Indicated_TTP()]
-            if obj.get_Test_Mechanisms():
-                return_obj.test_mechanisms = [_BaseTestMechanism.from_obj(x) for x in obj.get_Test_Mechanisms().get_Test_Mechanism()]
-            if obj.get_Suggested_COAs():
-                return_obj.suggested_coas = SuggestedCOAs.from_obj(obj.get_Suggested_COAs())
-            if obj.get_Alternative_ID():
-                return_obj.alternative_id = obj.get_Alternative_ID()
-            if obj.get_Valid_Time_Position():
-                return_obj.valid_time_positions = [ValidTime.from_obj(x) for x in obj.get_Valid_Time_Position()]    
+            if obj.Indicated_TTP:
+                return_obj.indicated_ttps = [RelatedTTP.from_obj(x) for x in obj.Indicated_TTP]
+            if obj.Test_Mechanisms:
+                return_obj.test_mechanisms = [_BaseTestMechanism.from_obj(x) for x in obj.Test_Mechanisms.Test_Mechanism]
+            if obj.Suggested_COAs:
+                return_obj.suggested_coas = SuggestedCOAs.from_obj(obj.Suggested_COAs)
+            if obj.Alternative_ID:
+                return_obj.alternative_id = obj.Alternative_ID
+            if obj.Valid_Time_Position:
+                return_obj.valid_time_positions = [ValidTime.from_obj(x) for x in obj.Valid_Time_Position]    
             
         return return_obj
 
@@ -1342,9 +1346,9 @@ class CompositeIndicatorExpression(stix.EntityList):
     def __nonzero__(self):
         return super(CompositeIndicatorExpression, self).__nonzero__()
 
-    def to_obj(self):
-        list_obj = super(CompositeIndicatorExpression, self).to_obj()
-        list_obj.set_operator(self.operator)
+    def to_obj(self, return_obj=None, ns_info=None):
+        list_obj = super(CompositeIndicatorExpression, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+        list_obj.operator = self.operator
         return list_obj
 
     def to_dict(self):
@@ -1361,7 +1365,7 @@ class CompositeIndicatorExpression(stix.EntityList):
             return_obj = cls()
 
         super(CompositeIndicatorExpression, cls).from_obj(obj, return_obj=return_obj)
-        return_obj.operator = obj.get_operator()
+        return_obj.operator = obj.operator
         return return_obj
 
     @classmethod

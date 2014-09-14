@@ -9,16 +9,18 @@ class TermsOfUseMarkingStructure(MarkingStructure):
     _namespace = 'http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1'
     _XSI_TYPE = "TOUMarking:TermsOfUseMarkingStructureType"
 
-    def __init__(self):
+    def __init__(self, terms_of_use=None):
         super(TermsOfUseMarkingStructure, self).__init__()
-        self.terms_of_use = None
+        self.terms_of_use = terms_of_use
 
-    def to_obj(self):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(TermsOfUseMarkingStructure, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         obj = self._binding_class()
 
-        MarkingStructure.to_obj(self, obj)
+        MarkingStructure.to_obj(self, return_obj=obj, ns_info=ns_info)
 
-        obj.set_Terms_Of_Use(self.terms_of_use)
+        obj.Terms_Of_Use = self.terms_of_use
 
         return obj
 
@@ -36,7 +38,7 @@ class TermsOfUseMarkingStructure(MarkingStructure):
 
         m = TermsOfUseMarkingStructure()
         MarkingStructure.from_obj(obj, m)
-        m.terms_of_use = obj.get_Terms_Of_Use()
+        m.terms_of_use = obj.Terms_Of_Use
 
         return m
 

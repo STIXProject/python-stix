@@ -31,7 +31,11 @@ class STIXPackage(stix.Entity):
     _namespace = 'http://stix.mitre.org/stix-1'
     _version = "1.1.1"
 
+<<<<<<< HEAD
     def __init__(self, id_=None, idref=None, timestamp=None, stix_header=None, courses_of_action=None, exploit_targets=None, indicators=None, observables=None, incidents=None, threat_actors=None, ttps=None, campaigns=None, idref_ns=None):
+=======
+    def     __init__(self, id_=None, idref=None, timestamp=None, stix_header=None, courses_of_action=None, exploit_targets=None, indicators=None, observables=None, incidents=None, threat_actors=None, ttps=None, campaigns=None):
+>>>>>>> mitre/master
         self.id_ = id_ or stix.utils.create_id("Package")
         self.idref = idref
         self.idref_ns = idref_ns
@@ -282,55 +286,57 @@ class STIXPackage(stix.Entity):
         self.ttps.append(ttp)
    
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(STIXPackage, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
 
-        return_obj.set_id(self.id_)
-        return_obj.set_idref(self.idref)
-        return_obj.set_version(self.version)
-        return_obj.set_timestamp(dates.serialize_value(self.timestamp))
+        return_obj.id = self.id_
+        return_obj.idref = self.idref
+        return_obj.version = self.version
+        return_obj.timestamp = dates.serialize_value(self.timestamp)
 
         if self.stix_header:
-            return_obj.set_STIX_Header(self.stix_header.to_obj())
+            return_obj.STIX_Header = self.stix_header.to_obj(ns_info=ns_info)
         
         if self.campaigns:
             coas_obj = self._binding.CampaignsType()
-            coas_obj.set_Campaign([x.to_obj() for x in self.campaigns])
-            return_obj.set_Campaigns(coas_obj)
+            coas_obj.Campaign = [x.to_obj(ns_info=ns_info) for x in self.campaigns]
+            return_obj.Campaigns = coas_obj
             
         if self.courses_of_action:
             coas_obj = self._binding.CoursesOfActionType()
-            coas_obj.set_Course_Of_Action([x.to_obj() for x in self.courses_of_action])
-            return_obj.set_Courses_Of_Action(coas_obj)
+            coas_obj.Course_Of_Action = [x.to_obj(ns_info=ns_info) for x in self.courses_of_action]
+            return_obj.Courses_Of_Action = coas_obj
         
         if self.exploit_targets:
             et_obj = stix_common_binding.ExploitTargetsType()
-            et_obj.set_Exploit_Target([x.to_obj() for x in self.exploit_targets])
-            return_obj.set_Exploit_Targets(et_obj)
+            et_obj.Exploit_Target = [x.to_obj(ns_info=ns_info) for x in self.exploit_targets]
+            return_obj.Exploit_Targets = et_obj
             
         if self.indicators:
             indicators_obj = self._binding.IndicatorsType()
-            indicators_obj.set_Indicator([x.to_obj() for x in self.indicators])
-            return_obj.set_Indicators(indicators_obj)
+            indicators_obj.Indicator = [x.to_obj(ns_info=ns_info) for x in self.indicators]
+            return_obj.Indicators = indicators_obj
 
         if self.observables:
-            return_obj.set_Observables(self.observables.to_obj())
+            return_obj.Observables = self.observables.to_obj(ns_info=ns_info)
 
         if self.incidents:
             incidents_obj = self._binding.IncidentsType()
-            incidents_obj.set_Incident([x.to_obj() for x in self.incidents])
-            return_obj.set_Incidents(incidents_obj)
+            incidents_obj.Incident = [x.to_obj(ns_info=ns_info) for x in self.incidents]
+            return_obj.Incidents = incidents_obj
         if self.threat_actors:
             threat_actors_obj = self._binding.ThreatActorsType()
-            threat_actors_obj.set_Threat_Actor([x.to_obj() for x in self.threat_actors])
-            return_obj.set_Threat_Actors(threat_actors_obj)
+            threat_actors_obj.Threat_Actor = [x.to_obj(ns_info=ns_info) for x in self.threat_actors]
+            return_obj.Threat_Actors = threat_actors_obj
         
         if self.ttps:
-            return_obj.set_TTPs(self.ttps.to_obj())
+            return_obj.TTPs = self.ttps.to_obj(ns_info=ns_info)
            
         if self.related_packages:
-            return_obj.set_Related_Packages(self.related_packages.to_obj())
+            return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
              
         return return_obj
 
@@ -374,30 +380,32 @@ class STIXPackage(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_,return_obj.id_ns = obj.get_id()
-        return_obj.idref,return_obj.idref_ns = obj.get_idref()
-        return_obj.timestamp = obj.get_timestamp()
-        return_obj.stix_header = STIXHeader.from_obj(obj.get_STIX_Header())
-        return_obj.related_packages = RelatedPackages.from_obj(obj.get_Related_Packages())
+        return_obj.id_ = obj.id
+        return_obj.id_ns = obj.idns
+        return_obj.idref = obj.idref
+        return_obj.idref_ns = obj.idrefns
+        return_obj.timestamp = obj.timestamp
+        return_obj.stix_header = STIXHeader.from_obj(obj.STIX_Header)
+        return_obj.related_packages = RelatedPackages.from_obj(obj.Related_Packages)
 
-        if obj.get_version():
-            return_obj.version = obj.get_version()
-        if obj.get_Campaigns():
-            return_obj.campaigns = [Campaign.from_obj(x) for x in obj.get_Campaigns().get_Campaign()]
-        if obj.get_Courses_Of_Action():
-            return_obj.courses_of_action = [CourseOfAction.from_obj(x) for x in obj.get_Courses_Of_Action().get_Course_Of_Action()]
-        if obj.get_Exploit_Targets():
-            return_obj.exploit_targets = [ExploitTarget.from_obj(x) for x in obj.get_Exploit_Targets().get_Exploit_Target()]
-        if obj.get_Indicators():
-            return_obj.indicators = [Indicator.from_obj(x) for x in obj.get_Indicators().get_Indicator()]
-        if obj.get_Observables():
-            return_obj.observables = Observables.from_obj(obj.get_Observables())
-        if obj.get_Incidents():
-            return_obj.incidents = [Incident.from_obj(x) for x in obj.get_Incidents().get_Incident()]
-        if obj.get_Threat_Actors():
-            return_obj.threat_actors = [ThreatActor.from_obj(x) for x in obj.get_Threat_Actors().get_Threat_Actor()]
-        if obj.get_TTPs():
-            return_obj.ttps = TTPs.from_obj(obj.get_TTPs())
+        if obj.version:
+            return_obj.version = obj.version
+        if obj.Campaigns:
+            return_obj.campaigns = [Campaign.from_obj(x) for x in obj.Campaigns.Campaign]
+        if obj.Courses_Of_Action:
+            return_obj.courses_of_action = [CourseOfAction.from_obj(x) for x in obj.Courses_Of_Action.Course_Of_Action]
+        if obj.Exploit_Targets:
+            return_obj.exploit_targets = [ExploitTarget.from_obj(x) for x in obj.Exploit_Targets.Exploit_Target]
+        if obj.Indicators:
+            return_obj.indicators = [Indicator.from_obj(x) for x in obj.Indicators.Indicator]
+        if obj.Observables:
+            return_obj.observables = Observables.from_obj(obj.Observables)
+        if obj.Incidents:
+            return_obj.incidents = [Incident.from_obj(x) for x in obj.Incidents.Incident]
+        if obj.Threat_Actors:
+            return_obj.threat_actors = [ThreatActor.from_obj(x) for x in obj.Threat_Actors.Threat_Actor]
+        if obj.TTPs:
+            return_obj.ttps = TTPs.from_obj(obj.TTPs)
             
         return return_obj
 

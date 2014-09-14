@@ -42,18 +42,20 @@ class KillChain(stix.Entity):
             raise ValueError('value must be instance of KillChainPhase')
             
     
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(KillChain, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
     
-        return_obj.set_id(self.id_)
-        return_obj.set_name(self.name)
-        return_obj.set_definer(self.definer)
-        return_obj.set_reference(self.reference)
-        return_obj.set_number_of_phases(self.number_of_phases)
+        return_obj.id = self.id_
+        return_obj.name = self.name
+        return_obj.definer = self.definer
+        return_obj.reference = self.reference
+        return_obj.number_of_phases = self.number_of_phases
         
         if self.kill_chain_phases:
-            return_obj.set_Kill_Chain_Phase([x.to_obj() for x in self.kill_chain_phases])
+            return_obj.Kill_Chain_Phase = [x.to_obj(ns_info=ns_info) for x in self.kill_chain_phases]
     
         return return_obj
     
@@ -64,14 +66,14 @@ class KillChain(stix.Entity):
         if not return_obj:
             return_obj = cls()
     
-        return_obj.id_ = obj.get_id()
-        return_obj.name = obj.get_name()
-        return_obj.definer = obj.get_definer()
-        return_obj.reference = obj.get_reference()
-        return_obj.number_of_phases = obj.get_number_of_phases()
+        return_obj.id_ = obj.id
+        return_obj.name = obj.name
+        return_obj.definer = obj.definer
+        return_obj.reference = obj.reference
+        return_obj.number_of_phases = obj.number_of_phases
         
-        if obj.get_Kill_Chain_Phase():
-            return_obj.kill_chain_phases = [KillChainPhase.from_obj(x) for x in obj.get_Kill_Chain_Phase()]
+        if obj.Kill_Chain_Phase:
+            return_obj.kill_chain_phases = [KillChainPhase.from_obj(x) for x in obj.Kill_Chain_Phase]
     
         return return_obj
     
@@ -121,13 +123,15 @@ class KillChainPhase(stix.Entity):
         else:
             self._ordinality = None
     
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(KillChainPhase, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
     
-        return_obj.set_phase_id(self.phase_id)
-        return_obj.set_name(self.name)
-        return_obj.set_ordinality(self.ordinality)
+        return_obj.phase_id = self.phase_id
+        return_obj.name = self.name
+        return_obj.ordinality = self.ordinality
     
         return return_obj
     
@@ -138,9 +142,9 @@ class KillChainPhase(stix.Entity):
         if not return_obj:
             return_obj = cls()
     
-        return_obj.phase_id = obj.get_phase_id()
-        return_obj.name = obj.get_name()
-        return_obj.ordinality = obj.get_ordinality()
+        return_obj.phase_id = obj.phase_id
+        return_obj.name = obj.name
+        return_obj.ordinality = obj.ordinality
         
         return return_obj
     
@@ -167,13 +171,15 @@ class KillChainPhaseReference(KillChainPhase):
         self.kill_chain_id = kill_chain_id
         self.kill_chain_name = kill_chain_name
 
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(KillChainPhaseReference, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
     
-        super(KillChainPhaseReference, self).to_obj(return_obj=return_obj)
-        return_obj.set_kill_chain_id(self.kill_chain_id)
-        return_obj.set_kill_chain_name(self.kill_chain_name)
+        super(KillChainPhaseReference, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+        return_obj.kill_chain_id = self.kill_chain_id
+        return_obj.kill_chain_name = self.kill_chain_name
         return return_obj
     
     @classmethod
@@ -184,8 +190,8 @@ class KillChainPhaseReference(KillChainPhase):
             return_obj = cls()
     
         super(KillChainPhaseReference, cls).from_obj(obj, return_obj=return_obj)
-        return_obj.kill_chain_id = obj.get_kill_chain_id()
-        return_obj.kill_chain_name = obj.get_kill_chain_name()
+        return_obj.kill_chain_id = obj.kill_chain_id
+        return_obj.kill_chain_name = obj.kill_chain_name
         return return_obj
     
     def to_dict(self):

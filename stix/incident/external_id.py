@@ -31,10 +31,12 @@ class ExternalID(stix.Entity):
     def source(self, value):
         self._source = value
 
-    def to_obj(self):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(ExternalID, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         obj = self._binding_class()
-        obj.set_valueOf_(self.value)
-        obj.set_source(self.source)
+        obj.valueOf_ = self.value
+        obj.source = self.source
         return obj
 
     @classmethod
@@ -45,8 +47,8 @@ class ExternalID(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.value = obj.get_valueOf_()
-        return_obj.source = obj.get_source()
+        return_obj.value = obj.valueOf_
+        return_obj.source = obj.source
         return return_obj
 
     def to_dict(self):    

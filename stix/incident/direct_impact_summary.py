@@ -56,14 +56,16 @@ class DirectImpactSummary(stix.Entity):
         else:
             self._response_and_recovery_costs = ImpactRating(value=value)
             
-    def to_obj(self):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(DirectImpactSummary, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         obj = self._binding_class()
         if self.asset_losses:
-            obj.set_Asset_Losses(self.asset_losses.to_obj())
+            obj.Asset_Losses = self.asset_losses.to_obj(ns_info=ns_info)
         if self.business_mission_disruption:
-            obj.set_Business_Mission_Disruption(self.business_mission_disruption.to_obj())
+            obj.Business_Mission_Disruption = self.business_mission_disruption.to_obj(ns_info=ns_info)
         if self.response_and_recovery_costs:
-            obj.set_Response_And_Recovery_Costs(self.response_and_recovery_costs.to_obj())
+            obj.Response_And_Recovery_Costs = self.response_and_recovery_costs.to_obj(ns_info=ns_info)
         return obj
 
     @classmethod
@@ -74,9 +76,9 @@ class DirectImpactSummary(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.asset_losses = VocabString.from_obj(obj.get_Asset_Losses())
-        return_obj.business_mission_disruption = VocabString.from_obj(obj.get_Business_Mission_Disruption())
-        return_obj.response_and_recovery_costs = VocabString.from_obj(obj.get_Response_And_Recovery_Costs())
+        return_obj.asset_losses = VocabString.from_obj(obj.Asset_Losses)
+        return_obj.business_mission_disruption = VocabString.from_obj(obj.Business_Mission_Disruption)
+        return_obj.response_and_recovery_costs = VocabString.from_obj(obj.Response_And_Recovery_Costs)
         return return_obj
 
     def to_dict(self):    

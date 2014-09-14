@@ -61,16 +61,18 @@ class EncodedCDATA(stix.Entity):
         if not return_obj:
             return_obj = cls()
         
-        return_obj.value =  obj.get_valueOf_()
-        return_obj.encoded = obj.get_encoded()
+        return_obj.value =  obj.valueOf_
+        return_obj.encoded = obj.encoded
         return return_obj
     
-    def to_obj(self, return_obj=None):
+    def to_obj(self, return_obj=None, ns_info=None):
+        super(EncodedCDATA, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         if not return_obj:
             return_obj = self._binding_class()
             
-        return_obj.set_valueOf_(self.value)
-        return_obj.set_encoded(self.encoded)
+        return_obj.valueOf_ = self.value
+        return_obj.encoded = self.encoded
         return return_obj
     
     @classmethod

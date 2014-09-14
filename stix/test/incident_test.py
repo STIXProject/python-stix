@@ -7,7 +7,7 @@ import unittest
 from stix.incident import Incident
 import stix.bindings.incident as incident_binding
 from cybox.common import StructuredText
-from cybox.test import EntityTestCase
+from stix.test import EntityTestCase
 
 INCIDENT_CATEGORIES = """<?xml version="1.0" encoding="UTF-8"?>
 <incident:Incident
@@ -135,14 +135,14 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
         asset = incident_binding.AffectedAssetType()
 
         description = StructuredText("A Description")
-        asset.set_Structured_Description(description.to_obj())
+        asset.Structured_Description = description.to_obj()
 
         assets.add_Affected_Asset(asset)
-        incident.set_Affected_Assets(assets)
+        incident.Affected_Assets = assets
 
         s = StringIO()
 
-        incident.export(s, 0, {'http://stix.mitre.org/Incident-1': 'incident'})
+        incident.export(s.write, 0, {'http://stix.mitre.org/Incident-1': 'incident'})
         xml = s.getvalue()
         self.assertTrue("A Description" in xml, "Description not exported")
 
