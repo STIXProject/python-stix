@@ -57,6 +57,7 @@ class Entity(object):
         if auto_namespace:
             ns_info.finalize()
             obj_ns_dict = ns_info.finalized_namespaces
+            obj_ns_dict.update(ns_dict or {})
         else:
             ns_info = NamespaceInfo()
             ns_info.finalized_namespaces = ns_dict or {}
