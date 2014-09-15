@@ -20,8 +20,7 @@ class NamespaceInfo(object):
         self.input_schemalocs.update(ns_info.input_schemalocs)
 
     def finalize(self, ns_dict=None, schemaloc_dict=None):
-        from stix.utils import (get_id_namespace, get_id_namespace_alias,
-                                DEFAULT_STIX_NAMESPACES, XML_NAMESPACES,
+        from stix.utils import (DEFAULT_STIX_NAMESPACES, XML_NAMESPACES,
                                 DEFAULT_STIX_SCHEMALOCATIONS)
 
         if not ns_dict:
@@ -30,17 +29,13 @@ class NamespaceInfo(object):
         if not schemaloc_dict:
             schemaloc_dict = {}
 
-        id_ns = get_id_namespace()
-        id_ns_alias = get_id_namespace_alias()
-
         d_ns = {'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
                 'http://stix.mitre.org/stix-1': 'stix',
                 'http://stix.mitre.org/common-1': 'stixCommon',
                 'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
                 'http://cybox.mitre.org/cybox-2': 'cybox',
                 'http://cybox.mitre.org/common-2': 'cyboxCommon',
-                'http://cybox.mitre.org/default_vocabularies-2': 'cyboxVocabs',
-                id_ns: id_ns_alias}
+                'http://cybox.mitre.org/default_vocabularies-2': 'cyboxVocabs'}
 
         for ns, alias in self.input_namespaces.iteritems():
             if ns not in DEFAULT_STIX_NAMESPACES:
@@ -78,8 +73,7 @@ class NamespaceInfo(object):
                 schemalocation = DEFAULT_STIX_SCHEMALOCATIONS[ns]
                 d_sl[ns] = schemalocation
             else:
-                if not ((ns == id_ns) or
-                        (ns in schemaloc_dict) or
+                if not ((ns in schemaloc_dict) or
                         (ns in self.input_schemalocs) or
                         (ns in XML_NAMESPACES)):
                     warnings.warn("Unable to map namespace '%s' to "
