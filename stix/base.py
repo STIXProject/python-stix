@@ -6,6 +6,17 @@ import json
 from StringIO import StringIO
 from lxml import etree
 
+class MaybeCodecBuffer():
+    def __init__(self):
+        self.buflist = []
+    def write(self,data):
+        if isinstance(data,unicode):
+            self.buflist.append(data.encode('utf8'))
+        else:
+            self.buflist.append(data)
+    def getvalue(self):
+        return ''.join(self.buflist)
+
 class Entity(object):
     """Base class for all classes in the STIX API."""
     _namespace = None
@@ -75,7 +86,7 @@ class Entity(object):
         if not pretty:
             namespace_def = namespace_def.replace('\n\t', ' ')
 
-        s = StringIO()
+        s = MaybeCodecBuffer()
         obj.export(s.write, 0, obj_ns_dict, pretty_print=pretty,
                              namespacedef_=namespace_def)
         return s.getvalue()
