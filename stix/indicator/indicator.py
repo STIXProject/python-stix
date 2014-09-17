@@ -1237,7 +1237,7 @@ class Indicator(stix.Entity):
         return_obj.timestamp = dict_repr.get('timestamp')
         return_obj.title     = dict_repr.get('title')
         return_obj.negate    = dict_repr.get('negate', None)
-        return_obj.version   = dict_repr.get('version', cls._version)
+        return_obj.version   = dict_repr.get('version')
         observable_dict      = dict_repr.get('observable')
         producer_dict        = dict_repr.get('producer')
         description_dict     = dict_repr.get('description')

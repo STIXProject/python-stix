@@ -294,7 +294,7 @@ class CourseOfAction(stix.Entity):
         return_obj.timestamp = obj.timestamp
 
         if isinstance(obj, cls._binding_class): # CourseOfActionType properties
-            return_obj.version = obj.version or cls._version
+            return_obj.version = obj.version
             return_obj.title = obj.Title
             return_obj.stage = VocabString.from_obj(obj.Stage)
             return_obj.type_ = VocabString.from_obj(obj.Type)
@@ -324,7 +324,7 @@ class CourseOfAction(stix.Entity):
         if self.timestamp:
             d['timestamp'] = self.timestamp.isoformat()
         if self.version:
-            d['version'] = self.version or self._version
+            d['version'] = self.version
         if self.title:
             d['title'] = self.title
         if self.stage:
@@ -368,7 +368,7 @@ class CourseOfAction(stix.Entity):
         return_obj.id_ = dict_repr.get('id')
         return_obj.idref = dict_repr.get('idref')
         return_obj.timestamp = dict_repr.get('timestamp')
-        return_obj.version = dict_repr.get('version', cls._version)
+        return_obj.version = dict_repr.get('version')
         return_obj.title = dict_repr.get('title')
         return_obj.stage = VocabString.from_dict(dict_repr.get('stage'))
         return_obj.type_ = VocabString.from_dict(dict_repr.get('type'))
