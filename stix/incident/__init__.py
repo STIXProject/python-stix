@@ -33,6 +33,7 @@ class Incident(stix.Entity):
     _binding_class = _binding.IncidentType
     _namespace = "http://stix.mitre.org/Incident-1"
     _version = "1.1.1"
+    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1")
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("incident")
@@ -91,10 +92,11 @@ class Incident(stix.Entity):
         if not value:
             self._version = None
         else:
-            if value != Incident._version:
-                self._version = value
-            else:
-                self._version = None
+            if value not in self._ALL_VERSIONS:
+                msg = ("Version must be one of %s. Found '%s'" %
+                      (self._ALL_VERSIONS, value))
+                raise ValueError(msg)
+            self._version = value
     
     @property
     def idref(self):
@@ -537,7 +539,7 @@ class Incident(stix.Entity):
         return_obj.timestamp = obj.timestamp
         
         if isinstance(obj, cls._binding_class):
-            return_obj.version = obj.version or cls._version
+            return_obj.version = obj.version
             return_obj.title = obj.Title
             return_obj.description = StructuredText.from_obj(obj.Description)
             return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
@@ -590,7 +592,7 @@ class Incident(stix.Entity):
         if self.timestamp:
             d['timestamp'] = dates.serialize_value(self.timestamp)
         if self.version:
-            d['version'] = self.version or self._version
+            d['version'] = self.version
         if self.title:
             d['title'] = self.title
         if self.description:
@@ -656,7 +658,7 @@ class Incident(stix.Entity):
         return_obj.id_ = dict_repr.get('id')
         return_obj.idref = dict_repr.get('idref')
         return_obj.timestamp = dict_repr.get('timestamp')
-        return_obj.version = dict_repr.get('version', cls._version)
+        return_obj.version = dict_repr.get('version')
         return_obj.title = dict_repr.get('title')
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))

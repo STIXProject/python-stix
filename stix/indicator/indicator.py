@@ -173,6 +173,7 @@ class Indicator(stix.Entity):
     _binding_class = indicator_binding.IndicatorType
     _namespace = 'http://stix.mitre.org/Indicator-2'
     _version = "2.1.1"
+    _ALL_VERSIONS = ("2.0", "2.0.1", "2.1", "2.1.1")
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
@@ -256,10 +257,11 @@ class Indicator(stix.Entity):
         if not value:
             self._version = None
         else:
-            if value != Indicator._version:
-                self._version = value
-            else:
-                self._version = None
+            if value not in self._ALL_VERSIONS:
+                msg = ("Version must be one of %s. Found '%s'" %
+                      (self._ALL_VERSIONS, value))
+                raise ValueError(msg)
+            self._version = value
     
     @property
     def idref(self):
@@ -1236,7 +1238,7 @@ class Indicator(stix.Entity):
         return_obj.timestamp = dict_repr.get('timestamp')
         return_obj.title     = dict_repr.get('title')
         return_obj.negate    = dict_repr.get('negate', None)
-        return_obj.version   = dict_repr.get('version', cls._version)
+        return_obj.version   = dict_repr.get('version')
         observable_dict      = dict_repr.get('observable')
         producer_dict        = dict_repr.get('producer')
         description_dict     = dict_repr.get('description')
