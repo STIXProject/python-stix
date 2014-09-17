@@ -30,6 +30,7 @@ class CourseOfAction(stix.Entity):
     _binding_class = coa_binding.CourseOfActionType
     _namespace = "http://stix.mitre.org/CourseOfAction-1"
     _version = "1.1.1"
+    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1")
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("coa")
@@ -77,10 +78,10 @@ class CourseOfAction(stix.Entity):
         if not value:
             self._version = None
         else:
-            if value != CourseOfAction._version:
-                self._version = value
-            else:
-                self._version = None
+            if value not in self._ALL_VERSIONS:
+                msg = "Version must be one of [%s]" % (", ".join(self._ALL_VERSIONS))
+                raise ValueError(msg)
+            self._version = value
     
     @property
     def idref(self):
