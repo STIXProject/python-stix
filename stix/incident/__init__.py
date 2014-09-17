@@ -93,7 +93,8 @@ class Incident(stix.Entity):
             self._version = None
         else:
             if value not in self._ALL_VERSIONS:
-                msg = "Version must be one of [%s]" % (", ".join(self._ALL_VERSIONS))
+                msg = ("Version must be one of %s. Found '%s'" %
+                      (self._ALL_VERSIONS, value))
                 raise ValueError(msg)
             self._version = value
     
