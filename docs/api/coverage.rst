@@ -54,23 +54,90 @@ Relationships                   ⚠ Partial
 STIX Extensions
 ---------------
 
+.. raw:: html
+
+  <h4 style="background-color: #FFCACA">STIX Address Extensions</h4>
+
 =============================   =====================   ==========================================================================================
 STIX Construct                  API Coverage            Documentation
 =============================   =====================   ==========================================================================================
-CAPEC                           × None                  
 CIQ Address                     × None                  
+=============================   =====================   ==========================================================================================
+
+.. raw:: html
+
+  <h4 style="background-color: #FFCACA">STIX Attack Pattern Extensions</h4>
+
+=============================   =====================   ==========================================================================================
+STIX Construct                  API Coverage            Documentation
+=============================   =====================   ==========================================================================================
+CAPEC 2.7                       × None                  
+=============================   =====================   ==========================================================================================
+
+.. raw:: html
+
+  <h4 style="background-color: #FFCACA">STIX Identity Extensions</h4>
+
+=============================   =====================   ==========================================================================================
+STIX Construct                  API Coverage            Documentation
+=============================   =====================   ==========================================================================================
 CIQ Identity                    ✓ Full                  :class:`stix.extensions.identity.ciq_identity_3_0.CIQIdentity3_0Instance`
-CVRF                            × None                  
-Generic Structured COA          × None                  
-Generic Test Mechanism          ✓ Full                  :class:`stix.extensions.test_mechanism.generic_test_mechanism.GenericTestMechanism`
+=============================   =====================   ==========================================================================================
+
+.. raw:: html
+
+  <h4 style="background-color: #FFCACA">STIX Malware Extensions</h4>
+
+=============================   =====================   ==========================================================================================
+STIX Construct                  API Coverage            Documentation
+=============================   =====================   ==========================================================================================
 MAEC                            ✓ Full                  :class:`stix.extensions.malware.maec_4_1_malware.MAECInstance`
-OVAL                            × None                  
-OpenIOC                         ✓ Full                  :class:`stix.extensions.test_mechanism.open_ioc_2010_test_mechanism.OpenIOCTestMechanism`
-SNORT                           ✓ Full                  :class:`stix.extensions.test_mechanism.snort_test_mechanism.SnortTestMechanism`
+=============================   =====================   ==========================================================================================
+
+.. raw:: html
+
+  <h4 style="background-color: #FFCACA">STIX Marking Extensions</h4>
+
+=============================   =====================   ==========================================================================================
+STIX Construct                  API Coverage            Documentation
+=============================   =====================   ==========================================================================================
 Simple Marking                  ⚠ Partial               :class:`stix.extensions.marking.simple_marking.SimpleMarkingStructure`
 TLP                             ⚠ Partial               :class:`stix.extensions.marking.tlp.TLPMarkingStructure`
 Terms of Use                    ⚠ Partial               :class:`stix.extensions.marking.terms_of_use_marking.TermsOfUseMarkingStructure`
+=============================   =====================   ==========================================================================================
+
+.. raw:: html
+
+  <h4 style="background-color: #FFCACA">STIX Structured COA Extensions</h4>
+
+=============================   =====================   ==========================================================================================
+STIX Construct                  API Coverage            Documentation
+=============================   =====================   ==========================================================================================
+Generic Structured COA          × None                  
+=============================   =====================   ==========================================================================================
+
+.. raw:: html
+
+  <h4 style="background-color: #FFCACA">STIX Test Mechanism Extensions</h4>
+
+=============================   =====================   ==========================================================================================
+STIX Construct                  API Coverage            Documentation
+=============================   =====================   ==========================================================================================
+Generic Test Mechanism          ✓ Full                  :class:`stix.extensions.test_mechanism.generic_test_mechanism.GenericTestMechanism`
+OVAL                            × None                  
+OpenIOC                         ✓ Full                  :class:`stix.extensions.test_mechanism.open_ioc_2010_test_mechanism.OpenIOCTestMechanism`
+SNORT                           ✓ Full                  :class:`stix.extensions.test_mechanism.snort_test_mechanism.SnortTestMechanism`
 YARA                            ✓ Full                  :class:`stix.extensions.test_mechanism.yara_test_mechanism.YaraTestMechanism`
+=============================   =====================   ==========================================================================================
+
+.. raw:: html
+
+  <h4 style="background-color: #FFCACA">STIX Vulnerability Extensions</h4>
+
+=============================   =====================   ==========================================================================================
+STIX Construct                  API Coverage            Documentation
+=============================   =====================   ==========================================================================================
+CVRF                            × None                  
 =============================   =====================   ==========================================================================================
 
 STIX Vocabularies
