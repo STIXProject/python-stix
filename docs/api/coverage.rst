@@ -23,7 +23,7 @@ STIX Header                     ✓ Full                  :class:`stix.core.stix
 Related Packages                ✓ Full                  :class:`stix.core.stix_package.RelatedPackages`
 =============================   =====================	===============================================
 
-Top-level STIX Constructs
+STIX Top-level Constructs
 -------------------------
 
 =============================   ==========================  =====================
