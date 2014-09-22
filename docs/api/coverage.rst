@@ -59,7 +59,7 @@ STIX Construct                  API Coverage            Documentation
 =============================   =====================   ==========================================================================================
 CAPEC                           × None                  
 CIQ Address                     × None                  
-CIQ Identity                    ✓ Full                  :class:`stix.extensions.identity.ciq_identity_3_0.STIX.CIQIdentity3_0Instance`
+CIQ Identity                    ✓ Full                  :class:`stix.extensions.identity.ciq_identity_3_0.CIQIdentity3_0Instance`
 CVRF                            × None                  
 Generic Structured COA          × None                  
 Generic Test Mechanism          ✓ Full                  :class:`stix.extensions.test_mechanism.generic_test_mechanism.GenericTestMechanism`

@@ -48,7 +48,7 @@ Contents
 
 API Coverage
 ============
-Want to find out which STIX construcs the *python-stix* APIs currently cover? Check here for a current overview!
+Want to find out which STIX constructs the *python-stix* APIs currently cover? Check here for a current overview!
 
 .. toctree::
    :maxdepth: 1
