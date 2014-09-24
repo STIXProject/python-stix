@@ -116,6 +116,7 @@ class _BaseTestMechanism(stix.Entity):
         d['xsi:type'] = self._XSI_TYPE # added by subclass
         return d
     
+#: Mapping of test mechanism extension types to classes
 _EXTENSION_MAP = {}
 def add_extension(cls):
     _EXTENSION_MAP[cls._XSI_TYPE] = cls
