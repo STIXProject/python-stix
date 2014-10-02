@@ -498,7 +498,7 @@ class CAPEC2_7InstanceType(ttp_binding.AttackPatternType):
     def __init__(self, capec_id=None, Description=None, CAPEC=None):
         super(CAPEC2_7InstanceType, self).__init__(capec_id=capec_id, Description=Description)
         self.CAPEC = CAPEC
-        self.xmlns          = "http://stix.mitre.org/extensions/AP#CAPEC2.7-1"
+        self.xmlns          = XML_NS
         self.xmlns_prefix   = "capecInstance"
         self.xml_type       = "CAPEC2.7InstanceType"
 

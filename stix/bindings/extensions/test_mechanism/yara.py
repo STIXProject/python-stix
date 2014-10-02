@@ -499,7 +499,7 @@ class YaraTestMechanismType(indicator_binding.TestMechanismType):
     superclass = indicator_binding.TestMechanismType
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, Version=None, Rule=None):
         super(YaraTestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
-        self.xmlns          = "http://stix.mitre.org/extensions/TestMechanism#Yara-1"
+        self.xmlns          = XML_NS
         self.xmlns_prefix   = "yaraTM"
         self.xml_type       = "YaraTestMechanismType"
         self.Version = Version
