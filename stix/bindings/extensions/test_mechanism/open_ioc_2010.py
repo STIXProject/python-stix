@@ -499,7 +499,7 @@ class OpenIOC2010TestMechanismType(indicator_binding.TestMechanismType):
     superclass = indicator_binding.TestMechanismType
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, ioc=None):
         super(OpenIOC2010TestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
-        self.xmlns          = "http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1"
+        self.xmlns          = XML_NS
         self.xmlns_prefix   = "stix-openioc"
         self.xml_type       = "OpenIOC2010TestMechanismType"
         self.ioc = ioc

@@ -497,7 +497,7 @@ class OVAL5_10TestMechanismType(indicator_binding.TestMechanismType):
     superclass = indicator_binding.TestMechanismType
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, oval_definitions=None, oval_variables=None):
         super(OVAL5_10TestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
-        self.xmlns          = "http://stix.mitre.org/extensions/TestMechanism#OVAL5.10-1"
+        self.xmlns          = XML_NS
         self.xmlns_prefix   = "ovalTM"
         self.xml_type       = "OVAL5.10TestMechanismType"
         self.oval_definitions = oval_definitions

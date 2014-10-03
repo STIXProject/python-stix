@@ -497,7 +497,7 @@ class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
     superclass = course_of_action_binding.StructuredCOAType
     def __init__(self, idref=None, id=None, reference_location=None, Description=None, Type=None, Specification=None):
         super(GenericStructuredCOAType, self).__init__(idref=idref, id=id)
-        self.xmlns          = "http://stix.mitre.org/extensions/StructuredCOA#Generic-1"
+        self.xmlns          = XML_NS
         self.xmlns_prefix   = "genericStructuredCOA"
         self.xml_type       = "GenericStructuredCOAType"
         self.reference_location = _cast(None, reference_location)

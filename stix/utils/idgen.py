@@ -3,6 +3,8 @@
 
 import uuid
 
+#: Default "example" namespace used for identifiers when no other namespace is
+#: defined.
 EXAMPLE_NAMESPACE = {'http://example.com' : 'example'}
 
 class InvalidMethodError(ValueError):
@@ -65,8 +67,8 @@ class IDGenerator(object):
 
 
 
-# Singleton instance within this module. It is lazily instantiated, so simply
-# importing the utils module will not create the object.
+#: Singleton instance within this module. It is lazily instantiated, so simply
+#: importing the utils module will not create the object.
 __generator = None
 
 

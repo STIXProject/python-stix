@@ -228,12 +228,15 @@ class NamespaceParser(object):
                self.get_schemaloc_str(schemaloc_dict))
 
 
-XML_NAMESPACES = {'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
-                  'http://www.w3.org/2001/XMLSchema': 'xs',
-                  'http://www.w3.org/1999/xlink': 'xlink',
-                  'http://www.w3.org/2000/09/xmldsig#': 'ds'}
+#: Schema locations for standard XML namespaces
+XML_NAMESPACES = {
+    'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
+    'http://www.w3.org/2001/XMLSchema': 'xs',
+    'http://www.w3.org/1999/xlink': 'xlink',
+    'http://www.w3.org/2000/09/xmldsig#': 'ds'
+}
 
-# Schema locations for namespaces defined by the STIX language
+#: Schema locations for namespaces defined by the STIX language
 STIX_NS_TO_SCHEMALOCATION = {
     'http://data-marking.mitre.org/Marking-1': 'http://stix.mitre.org/XMLSchema/data_marking/1.1.1/data_marking.xsd',
     'http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1': 'http://stix.mitre.org/XMLSchema/extensions/marking/simple/1.1.1/simple_marking.xsd',
@@ -259,16 +262,20 @@ STIX_NS_TO_SCHEMALOCATION = {
     'http://stix.mitre.org/extensions/TestMechanism#Snort-1': 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/snort/1.1.1/snort_test_mechanism.xsd',
     'http://stix.mitre.org/extensions/TestMechanism#YARA-1': 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/yara/1.1.1/yara_test_mechanism.xsd',
     'http://stix.mitre.org/extensions/Vulnerability#CVRF-1': 'http://stix.mitre.org/XMLSchema/extensions/vulnerability/cvrf_1.1/1.1.1/cvrf_1.1_vulnerability.xsd',
-    'http://stix.mitre.org/stix-1': 'http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd'}
+    'http://stix.mitre.org/stix-1': 'http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd'
+}
 
+#: Schema locations for namespaces defined by the CybOX language
 CYBOX_NS_TO_SCHEMALOCATION = dict((ns, schemaloc) for ns, _, schemaloc in cybox_nsparser.NS_LIST if schemaloc)
 
-# Schema locations for namespaces not defined by STIX, but hosted on the STIX website
-EXT_NS_TO_SCHEMALOCATION = {'urn:oasis:names:tc:ciq:xal:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xAL.xsd',
-                            'urn:oasis:names:tc:ciq:xpil:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd',
-                            'urn:oasis:names:tc:ciq:xnl:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xNL.xsd'}
+#: Schema locations for namespaces not defined by STIX, but hosted on the STIX website
+EXT_NS_TO_SCHEMALOCATION = {
+    'urn:oasis:names:tc:ciq:xal:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xAL.xsd',
+    'urn:oasis:names:tc:ciq:xpil:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd',
+    'urn:oasis:names:tc:ciq:xnl:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xNL.xsd'
+}
 
-# Default namespace->alias mappings. These can be overriden by user-provided dictionaries on export
+#: Default namespace->alias mappings. These can be overriden by user-provided dictionaries on export.
 DEFAULT_STIX_NS_TO_PREFIX = {
     'http://cybox.mitre.org/common-2': 'cyboxCommon',
     'http://cybox.mitre.org/cybox-2': 'cybox',
@@ -296,8 +303,10 @@ DEFAULT_STIX_NS_TO_PREFIX = {
     'http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1': 'stix-openioc',
     'http://stix.mitre.org/extensions/TestMechanism#Snort-1': 'snortTM',
     'http://stix.mitre.org/extensions/TestMechanism#YARA-1': 'yaraTM',
-    'http://stix.mitre.org/extensions/Vulnerability#CVRF-1': 'stix-cvrf'}
+    'http://stix.mitre.org/extensions/Vulnerability#CVRF-1': 'stix-cvrf'
+}
 
+#: Mapping of extension namespaces to their (typical) prefixes.
 DEFAULT_EXT_TO_PREFIX = {
     'http://capec.mitre.org/capec-2': 'capec',
     'http://maec.mitre.org/XMLSchema/maec-package-2': 'maec',
@@ -308,7 +317,8 @@ DEFAULT_EXT_TO_PREFIX = {
     'http://www.icasi.org/CVRF/schema/cvrf/1.1': 'cvrf',
     'urn:oasis:names:tc:ciq:xal:3': 'xal',
     'urn:oasis:names:tc:ciq:xpil:3': 'xpil',
-    'urn:oasis:names:tc:ciq:xnl:3': 'xnl'}
+    'urn:oasis:names:tc:ciq:xnl:3': 'xnl'
+}
 
 DEFAULT_CYBOX_NAMESPACES = dict((ns, alias) for (ns, alias, _) in cybox_nsparser.NS_LIST)
 

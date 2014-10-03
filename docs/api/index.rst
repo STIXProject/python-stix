@@ -80,7 +80,6 @@ The *python-stix* APIs are the recommended tools for reading, writing, and manip
 	:titlesonly:
 	:glob:
 
-	extensions/*
 	extensions/*/*
 	
 **STIX Incident** -- Modules located in the `stix.incident`_ package

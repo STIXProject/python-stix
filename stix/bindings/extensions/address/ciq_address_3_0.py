@@ -500,7 +500,7 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
     def __init__(self, Location=None):
         super(CIQAddress3_0InstanceType, self).__init__()
         self.Location = Location
-        self.xmlns          = "http://stix.mitre.org/extensions/Address#CIQAddress3.0-1"
+        self.xmlns          = XML_NS
         self.xmlns_prefix   = "ciqAddress"
         self.xml_type       = "CIQAddress3.0InstanceType"
     def factory(*args_, **kwargs_):

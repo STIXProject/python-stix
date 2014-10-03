@@ -796,6 +796,7 @@ class InformationSourceRole(VocabString):
     TERM_AGGREGATOR = "Aggregator"
     TERM_TRANSFORMERORTRANSLATOR = "Transformer/Translator"
 
+#: Mapping of Controlled Vocabulary xsi:type's to their class implementations.
 _VOCAB_MAP = {}
 def add_vocab(cls):
     _VOCAB_MAP[cls._XSI_TYPE] = cls
