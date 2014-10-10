@@ -163,7 +163,6 @@ class NamespaceParser(object):
                 # no _fields or itervalues()
                 pass
 
-
         visited = []
         def descend(obj):
             for member in get_members(obj):
