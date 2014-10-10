@@ -673,7 +673,7 @@ class Incident(stix.Entity):
         return_obj.intended_effects = [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
         return_obj.leveraged_ttps = LeveragedTTPs.from_dict(dict_repr.get('leveraged_ttps'))
         return_obj.affected_assets = [AffectedAsset.from_dict(x) for x in dict_repr.get('affected_assets', [])]
-        return_obj.discovery_methdos = [DiscoveryMethod.from_dict(x) for x in dict_repr.get('discovery_methods', [])]
+        return_obj.discovery_methods = [DiscoveryMethod.from_dict(x) for x in dict_repr.get('discovery_methods', [])]
         return_obj.reporter = InformationSource.from_dict(dict_repr.get('reporter'))
         return_obj.responders = [InformationSource.from_dict(x) for x in dict_repr.get('responders', [])]
         return_obj.coordinators = [InformationSource.from_dict(x) for x in dict_repr.get('coordinators', [])]
@@ -684,7 +684,7 @@ class Incident(stix.Entity):
         return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
         return_obj.coa_taken = [COATaken.from_dict(x) for x in dict_repr.get('coa_taken', [])]
         return_obj.status = VocabString.from_dict(dict_repr.get('status'))
-        return_obj.handling = Marking.from_obj(dict_repr.get('handling'))
+        return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
         return_obj.history = History.from_dict(dict_repr.get('history'))
         
         return return_obj
