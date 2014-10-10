@@ -684,7 +684,7 @@ class Incident(stix.Entity):
         return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
         return_obj.coa_taken = [COATaken.from_dict(x) for x in dict_repr.get('coa_taken', [])]
         return_obj.status = VocabString.from_dict(dict_repr.get('status'))
-        return_obj.handling = Marking.from_obj(dict_repr.get('handling'))
+        return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
         return_obj.history = History.from_dict(dict_repr.get('history'))
         
         return return_obj
