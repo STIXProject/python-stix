@@ -8,6 +8,7 @@
 # Generated Thu Apr 11 15:07:51 2013 by generateDS.py version 2.9a.
 #
 
+import sys
 from stix.bindings import *
 import stix.bindings.course_of_action as course_of_action_binding
 import stix.bindings.stix_common as stix_common_binding

@@ -8,6 +8,7 @@
 # Generated Thu Apr 11 15:07:43 2013 by generateDS.py version 2.9a.
 #
 
+import sys
 from stix.bindings import *
 import stix.bindings.ttp as ttp_binding
 

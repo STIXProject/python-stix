@@ -8,7 +8,7 @@
 # Generated Thu Apr 11 15:06:21 2013 by generateDS.py version 2.9a.
 #
 
-
+import sys
 from stix.bindings import *
 import cybox.bindings.cybox_core as cybox_core_binding
 import stix.bindings.stix_common as stix_common_binding
