@@ -1,3 +1,23 @@
+Version 1.1.1.2
+2014-10-15
+- #10 Partial fix. Improved CDATA handling in bindings and API classes.
+  Added stix.utils.cdata() and stix.utils.strip_cdata() methods.
+- #29 Moved duplicated binding code to stix.bindings module
+- #163 Performance enhancements in to_xml() serialization
+- #148 #202 #210 #214 Fixed several issues with extensions.
+- #171 Indicator @negate attribute not exported unless set
+- #173 Versions on core constructs are only output if set by user.
+- #174 Non-core constructs no longer get auto-assigned IDs.
+- #184 Added `include_schemalocs` parameter to to_xml() for optional
+  schemalocation output
+- #199 Improvements to data marking __init__ methods (thanks @benjamin9999!)
+- #201 Added short_description property to stix.core.STIXHeader class
+- #202 Fixed TOU marking schemalocation
+- #209 Removed Python warning that is raised when trying to resolve
+  schemalocation for id namespace.
+- #215 Fixed typos in Incident class (thanks @DavidWatersHub!)
+- Added more docs to stix.readthedocs.org
+
 Version 1.1.1.1
 2014-08-12
 - Changed stix.core.ttps.TTPs to be iterable
