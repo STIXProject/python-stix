@@ -20,18 +20,18 @@ Version 1.1.1.2
 
 Version 1.1.1.1
 2014-08-12
-- Changed stix.core.ttps.TTPs to be iterable
+- #133 Changed stix.core.ttps.TTPs to be iterable
+- #139 Bug/typo fixes with confidence field on stix.indicator.Indicator
+- #145 Updates to VocabString for support of non-default CVs
+- #155 Added walk() and find() methods to stix.Entity class
+- #154 #143 Added YaraTestMechanism and GenericTestMechanism extensions
+- #157 Implemented handling on TTP
 - Made stix.Entity.from_json() a classmethod
-- Bug/typo fixes with confidence field on stix.indicator.Indicator
-- Updates to VocabString for support of non-default CVs
-- Added walk() and find() methods to stix.Entity class
-- Added YaraTestMechanism and GenericTestMechanism extensions
-- Implemented handling on TTP
 - Added more coverage to STIX constructs
 
 Version 1.1.1.0
 2014-05-09
-- Support for STIX v1.1.1
+- #132 Support for STIX v1.1.1
 - Updated all schemalocations to reference new STIX v1.1.1 schemas
 - Changed Confidence.source to be of type InformationSource
 - Changed Statement.source to be of type InformationSource
