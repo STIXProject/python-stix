@@ -258,6 +258,8 @@ def quote_xml(text):
     if not text:
         return ''
 
+    text = str(text)
+    
     if text.startswith(CDATA_START):
         return text
 
@@ -268,7 +270,7 @@ def quote_attrib(text):
     if not text:
         return ''
 
-    return saxutils.quoteattr(text)
+    return saxutils.quoteattr(str(text))
 
 
 def quote_python(inStr):
