@@ -43,7 +43,7 @@ instructions.
 -  `lxml <http://lxml.de/>`_
 
 Installation on Ubuntu 14.04 (and older)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ::
 
