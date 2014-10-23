@@ -55,14 +55,6 @@ API Reference
    api/index
    api/coverage
 
-Bindings Reference
-==================
-
-.. toctree::
-   :maxdepth: 1
-
-   binding/index
-
 Contributing
 ============
 If a bug is found, a feature is missing, or something just isn't behaving the way you'd expect it to, please submit an issue to our `tracker`_. If you'd like to contribute code to our repository, you can do so by issuing a `pull request`_ and we will work with you to try and integrate that code into our repository.

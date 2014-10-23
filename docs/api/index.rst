@@ -1,7 +1,7 @@
 .. include:: /_includes/wip_prolog.rst
 
-API Documentation
-=================
+API Reference
+=============
 
 The *python-stix* APIs are the recommended tools for reading, writing, and manipulating STIX XML documents.
 
