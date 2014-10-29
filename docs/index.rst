@@ -46,30 +46,14 @@ Contents
    examples/index
    api_vs_bindings/index
 
-API Coverage
-============
-Want to find out which STIX constructs the *python-stix* APIs currently cover? Check here for a current overview!
-
-.. toctree::
-   :maxdepth: 1
-   
-   api/coverage
-
 API Reference
 =============
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    api/index
-   
-Bindings Reference
-==================
-
-.. toctree::
-   :maxdepth: 1
-
-   binding/index
+   api/coverage
 
 Contributing
 ============

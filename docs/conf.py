@@ -10,6 +10,7 @@ extensions = [
     'sphinx.ext.doctest',
     'sphinx.ext.ifconfig',
     'sphinx.ext.intersphinx',
+    'sphinx.ext.viewcode',
     'sphinxcontrib.napoleon',
 ]
 
