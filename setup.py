@@ -25,8 +25,9 @@ extras_require = {
         'sphinxcontrib-napoleon==0.2.4',
     ],
     'test': [
-        "nose==1.3.0",
-        "tox==1.6.1",
+        'nose==1.3.0',
+        'tox==1.6.1',
+        'maec>=4.1.0.8,<4.1.1.0'
     ],
 }
 
