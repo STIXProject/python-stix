@@ -46,6 +46,7 @@ class NamespaceInfo(object):
             if ns not in DEFAULT_STIX_NAMESPACES:
                 d_ns[ns] = alias
 
+
         for ns, alias in self.namespaces.iteritems():
             if alias:
                 d_ns[ns] = alias
@@ -89,7 +90,6 @@ class NamespaceInfo(object):
 
         self.finalized_schemalocs = d_sl
         self.finalized_namespaces = d_ns
-
 
     def collect(self, entity):
         # Traverse the MRO so we can collect _namespace attributes on Entity
@@ -308,7 +308,7 @@ DEFAULT_STIX_NS_TO_PREFIX = {
 #: Mapping of extension namespaces to their (typical) prefixes.
 DEFAULT_EXT_TO_PREFIX = {
     'http://capec.mitre.org/capec-2': 'capec',
-    'http://maec.mitre.org/XMLSchema/maec-package-2': 'maec',
+    'http://maec.mitre.org/XMLSchema/maec-package-2': 'maecPackage',
     'http://oval.mitre.org/XMLSchema/oval-definitions-5': 'oval-def',
     'http://oval.mitre.org/XMLSchema/oval-variables-5': 'oval-var',
     'http://schemas.mandiant.com/2010/ioc': 'ioc',
@@ -329,3 +329,13 @@ DEFAULT_STIX_NAMESPACES  = dict(DEFAULT_CYBOX_NAMESPACES.items() +
 DEFAULT_STIX_SCHEMALOCATIONS = dict(STIX_NS_TO_SCHEMALOCATION.items() +
                                     EXT_NS_TO_SCHEMALOCATION.items() +
                                     CYBOX_NS_TO_SCHEMALOCATION.items())
+# python-maec support code
+try:
+    from maec.utils.nsparser import NS_LIST
+    DEFAULT_MAEC_NAMESPACES = dict((ns, alias) for (ns, alias, _) in NS_LIST)
+    DEFAULT_MAEC_NAMESPACES.pop('http://maec.mitre.org/default_vocabularies-1')
+    MAEC_NS_TO_SCHEMALOCATION = dict((ns, schemaloc) for ns, _, schemaloc in NS_LIST if schemaloc)
+    DEFAULT_STIX_NAMESPACES.update(DEFAULT_MAEC_NAMESPACES)
+    DEFAULT_STIX_SCHEMALOCATIONS.update(MAEC_NS_TO_SCHEMALOCATION)
+except ImportError:
+    pass
