@@ -8,6 +8,7 @@ from xml.sax import saxutils
 
 from lxml import etree as etree_
 
+
 CDATA_START = "<![CDATA["
 CDATA_END = "]]>"
 
@@ -20,10 +21,12 @@ _Tag_strip_pattern_ = re.compile(r'\{.*\}')
 
 
 def parsexml_(*args, **kwargs):
+    from stix.utils.parser import get_xml_parser
+
     if 'parser' not in kwargs:
         # Use the lxml ElementTree compatible parser so that, e.g.,
         # we ignore comments.
-        kwargs['parser'] = etree_.ETCompatXMLParser(huge_tree=True)
+        kwargs['parser'] = get_xml_parser()
     return etree_.parse(*args, **kwargs)
 
 
@@ -327,7 +330,6 @@ def _cast(typ, value):
     if typ is None or value is None:
         return value
     return typ(value)
-
 
 __all__ = [
     '_cast',
