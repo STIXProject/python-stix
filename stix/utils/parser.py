@@ -32,7 +32,7 @@ UnsupportedRootElement = UnsupportedRootElementError # for backwards compatibili
 
 
 def get_xml_parser():
-    """Returns an ``etree.ETCompatXMLParser`` instance."""k
+    """Returns an ``etree.ETCompatXMLParser`` instance."""
     parser = etree.ETCompatXMLParser(
         huge_tree=True,
         remove_comments=True,
