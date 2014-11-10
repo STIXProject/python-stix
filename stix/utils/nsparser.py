@@ -2,6 +2,8 @@
 # See LICENSE.txt for complete terms.
 
 import warnings
+import itertools
+
 from stix import Entity as StixEntity
 from cybox import Entity as CyboxEntity
 from cybox.common import ObjectProperties, BaseProperty
@@ -319,16 +321,27 @@ DEFAULT_EXT_TO_PREFIX = {
     'urn:oasis:names:tc:ciq:xnl:3': 'xnl'
 }
 
-DEFAULT_CYBOX_NAMESPACES = dict((ns, alias) for (ns, alias, _) in cybox_nsparser.NS_LIST)
+DEFAULT_CYBOX_NAMESPACES = dict(
+    (ns, alias) for (ns, alias, _) in cybox_nsparser.NS_LIST
+)
 
-DEFAULT_STIX_NAMESPACES  = dict(DEFAULT_CYBOX_NAMESPACES.items() +
-                                XML_NAMESPACES.items() +
-                                DEFAULT_STIX_NS_TO_PREFIX.items() +
-                                DEFAULT_EXT_TO_PREFIX.items())
+DEFAULT_STIX_NAMESPACES  = dict(
+    itertools.chain(
+        DEFAULT_CYBOX_NAMESPACES.iteritems(),
+        XML_NAMESPACES.iteritems(),
+        DEFAULT_STIX_NS_TO_PREFIX.iteritems(),
+        DEFAULT_EXT_TO_PREFIX.iteritems()
+    )
+)
 
-DEFAULT_STIX_SCHEMALOCATIONS = dict(STIX_NS_TO_SCHEMALOCATION.items() +
-                                    EXT_NS_TO_SCHEMALOCATION.items() +
-                                    CYBOX_NS_TO_SCHEMALOCATION.items())
+DEFAULT_STIX_SCHEMALOCATIONS = dict(
+    itertools.chain(
+        STIX_NS_TO_SCHEMALOCATION.iteritems(),
+        EXT_NS_TO_SCHEMALOCATION.iteritems(),
+        CYBOX_NS_TO_SCHEMALOCATION.iteritems(),
+    )
+)
+
 # python-maec support code
 try:
     from maec.utils.nsparser import NS_LIST
