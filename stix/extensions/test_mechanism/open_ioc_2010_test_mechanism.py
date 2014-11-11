@@ -95,7 +95,7 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
             
         super(OpenIOCTestMechanism, cls).from_dict(d, return_obj)
         if 'ioc' in d:
-            parser = etree.ETCompatXMLParser(huge_tree=True)
+            parser = stix.utils.parser.get_xml_parser()
             return_obj.ioc = etree.parse(StringIO(d['ioc']), parser=parser)
         
         return return_obj
