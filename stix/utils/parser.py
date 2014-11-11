@@ -2,9 +2,9 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import itertools
-from distutils.version import StrictVersion
+from distutils.version import StrictVersion as sv
 from lxml import etree
+from stix.utils import ignored
 
 NS_XSI = "http://www.w3.org/2001/XMLSchema-instance"
 TAG_XSI_TYPE = "{%s}type" % NS_XSI
@@ -102,18 +102,21 @@ class EntityParser(object):
 
         if 'version' not in root.attrib:
             raise UnknownVersionError(
-                "No version attribute set on xml instance. Unable to determine "
-                "version compatibility"
+                "No version attribute set on root STIX_Package element. "
+                "Unable to determine version compatibility with python-stix."
             )
 
         python_stix_version = stix.__version__ # ex: '1.1.0.0'
         supported_stix_version = python_stix_version[:-2] # ex: '1.1.0'
         document_version = root.attrib['version']
 
-        if StrictVersion(supported_stix_version) != StrictVersion(document_version):
-            raise UnsupportedVersionError(
+        if sv(supported_stix_version) != sv(document_version):
+            error = (
                 "Your python-stix library supports STIX %s. Document "
                 "version was %s" % (supported_stix_version, document_version),
+            )
+            raise UnsupportedVersionError(
+                message=error,
                 expected=supported_stix_version,
                 found=document_version
             )
@@ -151,12 +154,9 @@ class EntityParser(object):
         """
         root = get_etree_root(tree)
 
-        try:
-            schemaloc = get_schemaloc_pairs(root)
-            entity.__input_schemalocations__ = dict(schemaloc)
-        except KeyError:
-            pass
-
+        with ignored(KeyError):
+            pairs = get_schemaloc_pairs(root)
+            entity.__input_schemalocations__ = dict(pairs)
 
     def parse_xml_to_obj(self, xml_file, check_version=True, check_root=True):
         """Creates a STIX binding object from the supplied xml file.
