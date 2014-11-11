@@ -30,7 +30,7 @@ class Entity(object):
 
 
     @classmethod
-    def from_obj(cls, obj):
+    def from_obj(cls, obj, return_obj=None):
         """Create an object from a binding object"""
         raise NotImplementedError()
 
