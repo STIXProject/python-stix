@@ -276,6 +276,9 @@ class _BaseRelated(GenericRelationship):
     #               lowercase version is used for the key name in the
     #               dictionary representation).
 
+    _base_type = None
+    _inner_var = None
+
     def __init__(self, item=None, confidence=None,
                        information_source=None, relationship=None):
         super(_BaseRelated, self).__init__(confidence, information_source,

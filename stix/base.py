@@ -7,6 +7,10 @@ import json
 from StringIO import StringIO
 from lxml import etree
 
+def _override(*args, **kwargs):
+    raise NotImplementedError()
+
+
 class Entity(object):
     """Base class for all classes in the STIX API."""
     _namespace = None
@@ -225,9 +229,9 @@ class Entity(object):
                 pass
 
 class EntityList(collections.MutableSequence, Entity):
-    _binding_class = None
+    _binding_class = _override
     _binding_var = None
-    _contained_type = None
+    _contained_type = _override
     _inner_name = None
 
     def __init__(self, *args):
