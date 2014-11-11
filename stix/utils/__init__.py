@@ -1,13 +1,23 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+import contextlib
 from lxml import etree
-
-from .idgen import *
-from .nsparser import *
 
 CDATA_START = "<![CDATA["
 CDATA_END = "]]>"
+
+@contextlib.contextmanager
+def ignored(*exceptions):
+    """Allows you to ignore exceptions cleanly using context managers. This
+    exists in Python 3.
+
+    """
+    try:
+        yield
+    except exceptions:
+        pass
+
 
 def strip_cdata(text):
     """Removes all CDATA blocks from `text` if it contains them.
@@ -49,3 +59,7 @@ def cdata(text):
 
     escaped = "{0}{1}{2}".format(CDATA_START, text, CDATA_END)
     return escaped
+
+
+from .idgen import *
+from .nsparser import *

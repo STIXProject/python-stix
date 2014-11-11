@@ -9,6 +9,7 @@ from cybox import Entity as CyboxEntity
 from cybox.common import ObjectProperties, BaseProperty
 from cybox.common import VocabString as CyboxVocabString
 import cybox.utils.nsparser as cybox_nsparser
+from stix.utils import ignored
 
 class NamespaceInfo(object):
     def __init__(self):
@@ -22,9 +23,10 @@ class NamespaceInfo(object):
         self.input_schemalocs.update(ns_info.input_schemalocs)
 
     def finalize(self, ns_dict=None, schemaloc_dict=None):
-        from stix.utils import (get_id_namespace, get_id_namespace_alias,
-                                DEFAULT_STIX_NAMESPACES, XML_NAMESPACES,
-                                DEFAULT_STIX_SCHEMALOCATIONS)
+        from stix.utils import (
+            get_id_namespace, get_id_namespace_alias, DEFAULT_STIX_NAMESPACES,
+            XML_NAMESPACES, DEFAULT_STIX_SCHEMALOCATIONS
+        )
 
         if not ns_dict:
             ns_dict = {}
@@ -35,14 +37,16 @@ class NamespaceInfo(object):
         id_ns = get_id_namespace()
         id_ns_alias = get_id_namespace_alias()
 
-        d_ns = {'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
-                'http://stix.mitre.org/stix-1': 'stix',
-                'http://stix.mitre.org/common-1': 'stixCommon',
-                'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
-                'http://cybox.mitre.org/cybox-2': 'cybox',
-                'http://cybox.mitre.org/common-2': 'cyboxCommon',
-                'http://cybox.mitre.org/default_vocabularies-2': 'cyboxVocabs',
-                id_ns: id_ns_alias}
+        d_ns = {
+            'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
+            'http://stix.mitre.org/stix-1': 'stix',
+            'http://stix.mitre.org/common-1': 'stixCommon',
+            'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
+            'http://cybox.mitre.org/cybox-2': 'cybox',
+            'http://cybox.mitre.org/common-2': 'cyboxCommon',
+            'http://cybox.mitre.org/default_vocabularies-2': 'cyboxVocabs',
+            id_ns: id_ns_alias
+        }
 
         for ns, alias in self.input_namespaces.iteritems():
             if ns not in DEFAULT_STIX_NAMESPACES:
@@ -58,8 +62,15 @@ class NamespaceInfo(object):
 
         d_ns.update(ns_dict)
 
-        if all((d_ns.get('http://example.com/'),
-               d_ns.get('http://example.com'))):
+        # Attempts to resolve issues where our samples use
+        # 'http://example.com/' for our example namespace but python-stix uses
+        # 'http://example.com' by removing the former.
+        examples = (
+            ('http://example.com/' in d_ns),
+            ('http://example.com' in d_ns)
+        )
+
+        if all(examples):
             del d_ns['http://example.com/']
 
         aliases = []
@@ -69,8 +80,11 @@ class NamespaceInfo(object):
             else:
                 # TODO: Should we just throw an exception here?
                 # The XML will be invalid if there is a duplicate ns alias
-                warnings.warn("namespace alias '%s' mapped to '%s' and '%s'" %
-                              (alias, ns, aliases[alias]))
+                warnings.warn(
+                    "namespace alias '{0}' mapped to '{1}' and '{2}'".format(
+                        alias, ns, aliases[alias]
+                    )
+                )
 
         d_sl = dict(self.input_schemalocs.items())
 
@@ -81,15 +95,21 @@ class NamespaceInfo(object):
                 schemalocation = DEFAULT_STIX_SCHEMALOCATIONS[ns]
                 d_sl[ns] = schemalocation
             else:
-                if not ((ns == id_ns) or
-                        (ns in schemaloc_dict) or
-                        (ns in self.input_schemalocs) or
-                        (ns in XML_NAMESPACES)):
-                    warnings.warn("Unable to map namespace '%s' to "
-                                  "schemaLocation" % ns)
+                unmappable = (
+                    (ns == id_ns),
+                    (ns in schemaloc_dict),
+                    (ns in self.input_schemalocs),
+                    (ns in XML_NAMESPACES)
+                )
+
+                if any(unmappable):
+                    continue
+
+                warnings.warn(
+                    "Unable to map namespace '%s' to schemaLocation" % ns
+                )
 
         d_sl.update(schemaloc_dict)
-
         self.finalized_schemalocs = d_sl
         self.finalized_namespaces = d_ns
 
@@ -189,6 +209,7 @@ class NamespaceParser(object):
 
     def get_namespaces(self, entity, ns_dict=None):
         ns_info = NamespaceInfo()
+
         for node in self._walkns(entity):
             ns_info.collect(node)
 
@@ -198,6 +219,7 @@ class NamespaceParser(object):
 
     def get_namespace_schemalocation_dict(self, entity, ns_dict=None, schemaloc_dict=None):
         ns_info = NamespaceInfo()
+
         for node in self._walkns(entity):
             ns_info.collect(node)
 
@@ -206,8 +228,10 @@ class NamespaceParser(object):
 
 
     def get_xmlns_str(self, ns_dict):
-        return "\n\t".join(['xmlns:%s="%s"' %
-                            (alias, ns) for ns, alias in sorted(ns_dict.iteritems())])
+        pairs = sorted(ns_dict.iteritems())
+        return "\n\t".join(
+            'xmlns:%s="%s"' % (alias, ns) for ns, alias in pairs
+        )
 
 
     def get_schemaloc_str(self, schemaloc_dict):
@@ -216,17 +240,26 @@ class NamespaceParser(object):
 
         schemaloc_str_start = 'xsi:schemaLocation="\n\t'
         schemaloc_str_end = '"'
-        schemaloc_str_content = "\n\t".join(["%s %s" %
-                                             (ns, loc) for ns, loc in sorted(schemaloc_dict.iteritems())])
+
+        pairs = sorted(schemaloc_dict.iteritems())
+        schemaloc_str_content = "\n\t".join(
+            "%s %s" % (ns, loc) for ns, loc in pairs
+        )
+
         return schemaloc_str_start + schemaloc_str_content + schemaloc_str_end
 
 
     def get_namespace_def_str(self, namespaces, schemaloc_dict):
-        if not (namespaces or schemaloc_dict):
+        if not any((namespaces, schemaloc_dict)):
             return ""
 
-        return ("\n\t" + self.get_xmlns_str(namespaces) + "\n\t" +
-               self.get_schemaloc_str(schemaloc_dict))
+        parts = (
+            self.get_xmlns_str(namespaces),
+            self.get_schemaloc_str(schemaloc_dict)
+        )
+
+        return "\n\t".join(parts)
+
 
 
 #: Schema locations for standard XML namespaces
@@ -343,12 +376,14 @@ DEFAULT_STIX_SCHEMALOCATIONS = dict(
 )
 
 # python-maec support code
-try:
+with ignored(ImportError):
     from maec.utils.nsparser import NS_LIST
+
     DEFAULT_MAEC_NAMESPACES = dict((ns, alias) for (ns, alias, _) in NS_LIST)
-    DEFAULT_MAEC_NAMESPACES.pop('http://maec.mitre.org/default_vocabularies-1')
-    MAEC_NS_TO_SCHEMALOCATION = dict((ns, schemaloc) for ns, _, schemaloc in NS_LIST if schemaloc)
+    del DEFAULT_MAEC_NAMESPACES['http://maec.mitre.org/default_vocabularies-1']
+    MAEC_NS_TO_SCHEMALOCATION = dict(
+        (ns, schemaloc) for ns, _, schemaloc in NS_LIST if schemaloc
+    )
+
     DEFAULT_STIX_NAMESPACES.update(DEFAULT_MAEC_NAMESPACES)
     DEFAULT_STIX_SCHEMALOCATIONS.update(MAEC_NS_TO_SCHEMALOCATION)
-except ImportError:
-    pass
