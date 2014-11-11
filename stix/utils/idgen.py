@@ -19,8 +19,8 @@ class IDGenerator(object):
 
     METHODS = (METHOD_UUID, METHOD_INT,)
 
-    def __init__(self, namespace=EXAMPLE_NAMESPACE, method=METHOD_UUID):
-        self.namespace = namespace
+    def __init__(self, namespace=None, method=METHOD_UUID):
+        self.namespace = namespace or EXAMPLE_NAMESPACE
         self.method = method
         self.next_int = 1
 
