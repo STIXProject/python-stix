@@ -62,7 +62,7 @@ class IDGenerator(object):
         else:
             raise InvalidMethodError()
 
-        ns, ns_prefix = self.namespace.iteritems().next()
+        _, ns_prefix = self.namespace.iteritems().next()
         return "%s:%s-%s" % (ns_prefix, prefix, id_)
 
 
