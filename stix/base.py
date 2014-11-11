@@ -34,14 +34,18 @@ class Entity(object):
         """Create an object from a binding object"""
         raise NotImplementedError()
 
+    USE_NS_DICT = 0
+    FULLY_AUTOMATED = True
+    ENRICH_NS_DICT = 2
 
     def to_xml(self, include_namespaces=True, include_schemalocs=True,
                ns_dict=None, schemaloc_dict=None, pretty=True,
-               auto_namespace=True):
+               auto_namespace=FULLY_AUTOMATED):
         """Export an object as an XML String"""
         from stix.utils.nsparser import (NamespaceParser, NamespaceInfo,
                                          DEFAULT_STIX_NAMESPACES)
         parser = NamespaceParser()
+
 
         if auto_namespace:
             ns_info = NamespaceInfo()
@@ -56,7 +60,13 @@ class Entity(object):
 
         if auto_namespace:
             ns_info.finalize()
-            obj_ns_dict = ns_info.finalized_namespaces
+            if auto_namespace == self.FULLY_AUTOMATED:
+                obj_ns_dict = ns_info.finalized_namespaces
+            else:
+                calculated_obj_ns_dict = ns_info.finalized_namespaces
+                obj_ns_dict = dict(ns_dict.items() + calculated_obj_ns_dict.items())
+
+
         else:
             ns_info = NamespaceInfo()
             ns_info.finalized_namespaces = ns_dict or {}
@@ -66,7 +76,7 @@ class Entity(object):
         namespace_def = ""
         if include_namespaces:
             namespace_def += ("\n\t" +
-                              parser.get_xmlns_str(ns_info.finalized_namespaces))
+                              parser.get_xmlns_str(obj_ns_dict))
 
         if include_schemalocs and include_namespaces:
             namespace_def += ("\n\t" +
