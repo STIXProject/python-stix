@@ -2,8 +2,8 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-from distutils.version import StrictVersion as sv
 from lxml import etree
+from distutils.version import StrictVersion
 from stix.utils import ignored
 
 NS_XSI = "http://www.w3.org/2001/XMLSchema-instance"
@@ -110,7 +110,7 @@ class EntityParser(object):
         supported_stix_version = python_stix_version[:-2] # ex: '1.1.0'
         document_version = root.attrib['version']
 
-        if sv(supported_stix_version) != sv(document_version):
+        if StrictVersion(supported_stix_version) != StrictVersion(document_version):
             error = (
                 "Your python-stix library supports STIX %s. Document "
                 "version was %s" % (supported_stix_version, document_version),
