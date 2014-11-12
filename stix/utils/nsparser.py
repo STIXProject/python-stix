@@ -194,7 +194,7 @@ class NamespaceParser(object):
                         yield i
 
                 if hasattr(member, "__getitem__"):
-                   for i in member:
+                    for i in member:
                         if '_namespace' in i.__class__.__dict__:
                             yield i
                             for d in descend(i):
