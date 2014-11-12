@@ -162,7 +162,6 @@ class AvailabilityLossType(VocabString):
         'Obscuration',
         'Unknown'
     )
-    
     TERM_DESTRUCTION = "Destruction"
     TERM_LOSS = "Loss"
     TERM_INTERRUPTION = "Interruption"
@@ -194,7 +193,6 @@ class ThreatActorType(VocabString):
         'Insider Threat',
         'Disgruntled Customer / User'
     )
-    
     TERM_CYBER_ESPIONAGE_OPERATIONS = "Cyber Espionage Operations"
     TERM_HACKER = "Hacker"
     TERM_HACKER_WHITE_HAT = "Hacker - White hat"
@@ -244,7 +242,6 @@ class AttackerInfrastructureType(VocabString):
         'Hosting - Legitimate Hosting',
         'Electronic Payment Methods'
     )
-    
     TERM_ANONYMIZATION = "Anonymization"
     TERM_ANONYMIZATION_PROXY = "Anonymization - Proxy"
     TERM_ANONYMIZATION_TOR_NETWORK = "Anonymization - TOR Network"
@@ -295,7 +292,6 @@ class DiscoveryMethod(VocabString):
         'User',
         'Unknown'
     )
-    
     TERM_AGENT_DISCLOSURE = "Agent Disclosure"
     TERM_FRAUD_DETECTION = "Fraud Detection"
     TERM_MONITORING_SERVICE = "Monitoring Service"
@@ -329,7 +325,6 @@ class AttackerToolType(VocabString):
         'Application Scanner',
         'Password Cracking'
     )
-    
     TERM_MALWARE = "Malware"
     TERM_PENETRATION_TESTING = "Penetration Testing"
     TERM_PORT_SCANNER = "Port Scanner"
@@ -359,7 +354,6 @@ class IndicatorType(VocabString):
         'IMEI Watchlist',
         'IMSI Watchlist'
     )
-    
     TERM_MALICIOUS_EMAIL = "Malicious E-mail"
     TERM_IP_WATCHLIST = "IP Watchlist"
     TERM_FILE_HASH_WATCHLIST = "File Hash Watchlist"
@@ -409,7 +403,6 @@ class SystemType(VocabString):
         'Users - Workstation',
         'Users - Removable Media'
     )
-    
     TERM_ENTERPRISE_SYSTEMS = "Enterprise Systems"
     TERM_ENTERPRISE_SYSTEMS_APPLICATION_LAYER = "Enterprise Systems - Application Layer"
     TERM_ENTERPRISE_SYSTEMS_DATABASE_LAYER = "Enterprise Systems - Database Layer"
@@ -448,7 +441,6 @@ class CampaignStatus(VocabString):
         'Historic',
         'Future'
     )
-    
     TERM_ONGOING = "Ongoing"
     TERM_HISTORIC = "Historic"
     TERM_FUTURE = "Future"
@@ -469,7 +461,6 @@ class IncidentStatus(VocabString):
         'Rejected',
         'Deleted'
     )
-    
     TERM_NEW = "New"
     TERM_OPEN = "Open"
     TERM_STALLED = "Stalled"
@@ -491,7 +482,6 @@ class ManagementClass(VocabString):
         'Co-Management',
         'Unknown'
     )
-    
     TERM_INTERNALLYMANAGED = "Internally-Managed"
     TERM_EXTERNALLYMANAGEMENT = "Externally-Management"
     TERM_COMANAGEMENT = "Co-Management"
@@ -518,7 +508,6 @@ class Motivation(VocabString):
         'Opportunistic',
         'Political'
     )
-    
     TERM_IDEOLOGICAL = "Ideological"
     TERM_IDEOLOGICAL_ANTICORRUPTION = "Ideological - Anti-Corruption"
     TERM_IDEOLOGICAL_ANTIESTABLISHMENT = "Ideological - Anti-Establishment"
@@ -548,7 +537,6 @@ class IncidentCategory(VocabString):
         'Scans/Probes/Attempted Access',
         'Investigation'
     )
-    
     TERM_EXERCISEORNETWORK_DEFENSE_TESTING = "Exercise/Network Defense Testing"
     TERM_UNAUTHORIZED_ACCESS = "Unauthorized Access"
     TERM_DENIAL_OF_SERVICE = "Denial of Service"
@@ -570,7 +558,6 @@ class ImpactQualification(VocabString):
         'Catastrophic',
         'Unknown'
     )
-    
     TERM_INSIGNIFICANT = "Insignificant"
     TERM_DISTRACTING = "Distracting"
     TERM_PAINFUL = "Painful"
@@ -607,7 +594,6 @@ class PlanningAndOperationalSupport(VocabString):
         'Planning - Pre-Operational Surveillance and Reconnaissance',
         'Planning - Target Selection'
     )
-    
     TERM_DATA_EXPLOITATION = "Data Exploitation"
     TERM_DATA_EXPLOITATION_ANALYTIC_SUPPORT = "Data Exploitation - Analytic Support"
     TERM_DATA_EXPLOITATION_TRANSLATION_SUPPORT = "Data Exploitation - Translation Support"
@@ -654,7 +640,6 @@ class CourseOfActionType(VocabString):
         'Policy Actions',
         'Other'
     )
-    
     TERM_PERIMETER_BLOCKING = "Perimeter Blocking"
     TERM_INTERNAL_BLOCKING = "Internal Blocking"
     TERM_REDIRECTION = "Redirection"
@@ -683,7 +668,6 @@ class SecurityCompromise(VocabString):
         'No',
         'Unknown'
     )
-    
     TERM_YES = "Yes"
     TERM_SUSPECTED = "Suspected"
     TERM_NO = "No"
@@ -701,7 +685,6 @@ class ImpactRating(VocabString):
         'Major',
         'Unknown'
     )
-    
     TERM_NONE = "None"
     TERM_MINOR = "Minor"
     TERM_MODERATE = "Moderate"
@@ -792,7 +775,6 @@ class AssetType(VocabString):
         'Person',
         'Unknown'
     )
-    
     TERM_BACKUP = "Backup"
     TERM_DATABASE = "Database"
     TERM_DHCP = "DHCP"
@@ -880,7 +862,6 @@ class COAStage(VocabString):
         'Remedy',
         'Response'
     )
-    
     TERM_REMEDY = "Remedy"
     TERM_RESPONSE = "Response"
 
@@ -896,7 +877,6 @@ class LocationClass(VocabString):
         'Mobile',
         'Unknown'
     )
-    
     TERM_INTERNALLYLOCATED = "Internally-Located"
     TERM_EXTERNALLYLOCATED = "Externally-Located"
     TERM_COLOCATED = "Co-Located"
@@ -919,7 +899,6 @@ class InformationType(VocabString):
         'Information Assets - User Credentials',
         'Authentication Cookies'
     )
-    
     TERM_INFORMATION_ASSETS = "Information Assets"
     TERM_INFORMATION_ASSETS_CORPORATE_EMPLOYEE_INFORMATION = "Information Assets - Corporate Employee Information"
     TERM_INFORMATION_ASSETS_CUSTOMER_PII = "Information Assets - Customer PII"
@@ -942,7 +921,6 @@ class ThreatActorSophistication(VocabString):
         'Novice',
         'Aspirant'
     )
-    
     TERM_INNOVATOR = "Innovator"
     TERM_EXPERT = "Expert"
     TERM_PRACTITIONER = "Practitioner"
@@ -961,7 +939,6 @@ class HighMediumLow(VocabString):
         'None',
         'Unknown'
     )
-    
     TERM_HIGH = "High"
     TERM_MEDIUM = "Medium"
     TERM_LOW = "Low"
@@ -980,7 +957,6 @@ class LossProperty(VocabString):
         'Accountability',
         'Non-Repudiation'
     )
-    
     TERM_CONFIDENTIALITY = "Confidentiality"
     TERM_INTEGRITY = "Integrity"
     TERM_AVAILABILITY = "Availability"
@@ -1018,7 +994,6 @@ class IntendedEffect(VocabString):
         'Traffic Diversion',
         'Unauthorized Access'
     )
-    
     TERM_ADVANTAGE = "Advantage"
     TERM_ADVANTAGE_ECONOMIC = "Advantage - Economic"
     TERM_ADVANTAGE_MILITARY = "Advantage - Military"
@@ -1071,7 +1046,6 @@ class PackageIntent(VocabString):
         'Observations - Email',
         'Malware Samples'
     )
-    
     TERM_COLLECTIVE_THREAT_INTELLIGENCE = "Collective Threat Intelligence"
     TERM_THREAT_REPORT = "Threat Report"
     TERM_INDICATORS = "Indicators"
@@ -1107,7 +1081,6 @@ class LossDuration(VocabString):
         'Seconds',
         'Unknown'
     )
-    
     TERM_PERMANENT = "Permanent"
     TERM_WEEKS = "Weeks"
     TERM_DAYS = "Days"
@@ -1128,7 +1101,6 @@ class OwnershipClass(VocabString):
         'Customer-Owned',
         'Unknown'
     )
-    
     TERM_INTERNALLYOWNED = "Internally-Owned"
     TERM_EMPLOYEEOWNED = "Employee-Owned"
     TERM_PARTNEROWNED = "Partner-Owned"
@@ -1160,7 +1132,6 @@ class MalwareType(VocabString):
         'Rogue Antivirus',
         'Rootkit'
     )
-    
     TERM_AUTOMATED_TRANSFER_SCRIPTS = "Automated Transfer Scripts"
     TERM_ADWARE = "Adware"
     TERM_DIALER = "Dialer"
@@ -1201,7 +1172,6 @@ class IncidentEffect(VocabString):
         'Unintended Access',
         'User Data Loss'
     )
-    
     TERM_BRAND_OR_IMAGE_DEGRADATION = "Brand or Image Degradation"
     TERM_LOSS_OF_COMPETITIVE_ADVANTAGE = "Loss of Competitive Advantage"
     TERM_LOSS_OF_COMPETITIVE_ADVANTAGE_ECONOMIC = "Loss of Competitive Advantage - Economic"
@@ -1228,7 +1198,6 @@ class InformationSourceRole(VocabString):
         'Aggregator',
         'Transformer/Translator'
     )
-    
     TERM_INITIAL_AUTHOR = "Initial Author"
     TERM_CONTENT_ENHANCERORREFINER = "Content Enhancer/Refiner"
     TERM_AGGREGATOR = "Aggregator"
