@@ -1265,7 +1265,7 @@ class Indicator(stix.Entity):
         if description_dict:
             return_obj.description = StructuredText.from_dict(description_dict)
         for indicator_type_dict in indicator_type_list:
-                return_obj.add_indicator_type(VocabString.from_dict(indicator_type_dict))
+            return_obj.add_indicator_type(VocabString.from_dict(indicator_type_dict))
         if confidence_dict:
             return_obj.confidence = Confidence.from_dict(confidence_dict)
         if alternative_id_dict:
