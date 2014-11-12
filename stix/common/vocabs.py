@@ -177,7 +177,7 @@ class ThreatActorType(VocabString):
     _ALLOWED_VALUES = (
         'Cyber Espionage Operations',
         'Hacker',
-	    'Hacker - White hat',
+        'Hacker - White hat',
         'Hacker - Gray hat',
         'Hacker - Black hat',
         'Hacktivist',
