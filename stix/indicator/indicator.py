@@ -4,14 +4,17 @@
 import stix
 import stix.utils
 from stix.utils import dates
-from stix.common import (Identity, InformationSource, StructuredText,
-                         VocabString, Confidence, RelatedTTP, Statement)
+from stix.common import (
+    Identity, InformationSource, StructuredText, VocabString, Confidence,
+    RelatedTTP, Statement
+)
 import stix.bindings.indicator as indicator_binding
 from .test_mechanism import _BaseTestMechanism
 from .sightings import Sightings
 from .valid_time import ValidTime
-from stix.common.related import (GenericRelationshipList, RelatedCOA,
-                                 RelatedIndicator)
+from stix.common.related import (
+    GenericRelationshipList, RelatedCOA, RelatedIndicator
+)
 from stix.data_marking import Marking
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
