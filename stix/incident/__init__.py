@@ -25,8 +25,11 @@ from stix.common.vocabs import (IncidentCategory, IntendedEffect,
                                 DiscoveryMethod, SecurityCompromise, 
                                 IncidentStatus)
 
+from cybox.core import Observable
+
 from datetime import datetime
 from dateutil.tz import tzutc
+
 
 class Incident(stix.Entity):
     _binding = incident_binding
@@ -461,6 +464,82 @@ class Incident(stix.Entity):
             self.coa_taken.append(COATaken(course_of_action=value))
         else:
             raise ValueError("Cannot add coa_taken of type %s" % type(value))
+
+    def add_related_indicator(self, indicator):
+        """Adds an Related Indicator to the ``related_indicators`` list
+        property of this :class:`Incident`.
+
+        The `indicator` parameter must be an instance of
+        :class:`stix.common.related.RelatedIndicator` or
+        :class:`Indicator`.
+
+        If the `indicator` parameter is ``None``, no item wil be added to the
+        ``related_indicators`` list property.
+
+        Calling this method is the same as calling ``append()`` on the
+        ``related_indicators`` property.
+
+        See Also:
+            The :class:`RelatedIndicators` documentation.
+
+        Note:
+            If the `indicator` parameter is not an instance of
+            :class:`stix.common.related.RelatedIndicator` an attempt will be
+            made to convert it to one.
+
+        Args:
+            indicator: An instance of :class:`Indicator` or
+                :class:`stix.common.related.RelatedIndicator`.
+
+        Raises:
+            ValueError: If the `indicator` parameter cannot be converted into
+                an instance of :class:`stix.common.related.RelatedIndicator`
+
+        """
+        if not indicator:
+            return
+        elif isinstance(indicator, RelatedIndicator):
+            self.related_indicators.append(indicator)
+        else:
+            self.related_indicators.append(RelatedIndicator(indicator))
+
+    def add_related_observable(self, observable):
+        """Adds a Related Observable to the ``related_observables`` list
+        property of this :class:`Incident`.
+
+        The `observable` parameter must be an instance of
+        :class:`stix.common.related.RelatedObservable` or
+        :class:`Observable`.
+
+        If the `observable` parameter is ``None``, no item will be added to the
+        ``related_observables`` list property.
+
+        Calling this method is the same as calling ``append()`` on the
+        ``related_observables`` property.
+
+        See Also:
+            The :class:`RelatedObservables` documentation.
+
+        Note:
+            If the `observable` parameter is not an instance of
+            :class:`stix.common.related.RelatedObservable` an attempt will be
+            made to convert it to one.
+
+        Args:
+            observable: An instance of :class:`Observable` or
+                :class:`stix.common.related.RelatedObservable`.
+
+        Raises:
+            ValueError: If the `indicator` parameter cannot be converted into
+                an instance of :class:`stix.common.related.RelatedIndicator`
+
+        """
+        if not observable:
+            return
+        elif isinstance(observable, RelatedObservable):
+            self.related_observables.append(observable)
+        else:
+            self.related_observables.append(RelatedObservable(Observable(observable)))
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(Incident, self).to_obj(return_obj=return_obj, ns_info=ns_info)

@@ -13,16 +13,25 @@ class Time(stix.Entity):
     _binding_class = _binding.TimeType
     _namespace = "http://stix.mitre.org/Incident-1"
 
-    def __init__(self):
-        self.first_malicious_action = None
-        self.initial_compromise = None
-        self.first_data_exfiltration = None
-        self.incident_discovery = None
-        self.incident_opened = None
-        self.containment_achieved  = None
-        self.restoration_achieved = None
-        self.incident_reported = None
-        self.incident_closed = None
+    def __init__(self,
+                 first_malicious_action=None,
+                 initial_compromise=None,
+                 first_data_exfiltration=None,
+                 incident_discovery=None,
+                 incident_opened=None,
+                 containment_achieved=None,
+                 restoration_achieved=None,
+                 incident_reported=None,
+                 incident_closed=None):
+        self.first_malicious_action = first_malicious_action
+        self.initial_compromise = initial_compromise
+        self.first_data_exfiltration = first_data_exfiltration
+        self.incident_discovery = incident_discovery
+        self.incident_opened = incident_opened
+        self.containment_achieved = containment_achieved
+        self.restoration_achieved = restoration_achieved
+        self.incident_reported = incident_reported
+        self.incident_closed = incident_closed
 
     @property
     def first_malicious_action(self):
