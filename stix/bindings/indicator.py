@@ -1008,7 +1008,7 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
             eol_ = ''
         if self.Title is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
+            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
         for Type_ in self.Type:
             Type_.export(lwrite, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
         for Alternative_ID_ in self.Alternative_ID:
@@ -1072,7 +1072,6 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Title':
             Title_ = child_.text
-            Title_ = self.gds_validate_string(Title_, node, 'Title')
             self.Title = Title_
         elif nodeName_ == 'Type':
             obj_ = stix_common_binding.ControlledVocabularyStringType.factory()

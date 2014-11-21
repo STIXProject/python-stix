@@ -261,19 +261,20 @@ def quote_xml(text):
     if not text:
         return ''
 
-    text = str(text)
-    
-    if text.startswith(CDATA_START):
-        return text
+    text = unicode(text)
+    if not text.startswith(CDATA_START):
+        text = saxutils.escape(text)
 
-    return saxutils.escape(text)
+    return text.encode(ExternalEncoding)
 
 
 def quote_attrib(text):
     if not text:
         return ''
 
-    return saxutils.quoteattr(str(text))
+    text = unicode(text)
+    text = saxutils.quoteattr(text)
+    return text.encode(ExternalEncoding)
 
 
 def quote_python(inStr):

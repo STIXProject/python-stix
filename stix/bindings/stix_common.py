@@ -3619,7 +3619,7 @@ class StructuredTextType(GeneratedsSuper):
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='StructuredTextType')
         if self.hasContent_():
             lwrite('>')
-            lwrite(unicode(quote_xml(self.valueOf_)).encode(ExternalEncoding))
+            lwrite(quote_xml(self.valueOf_))
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
@@ -3770,7 +3770,7 @@ class ControlledVocabularyStringType(GeneratedsSuper):
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='ControlledVocabularyStringType')
         if self.hasContent_():
             lwrite('>')
-            lwrite(unicode(self.valueOf_).encode(ExternalEncoding))
+            lwrite(quote_xml(self.valueOf_))
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
