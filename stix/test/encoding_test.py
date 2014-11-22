@@ -15,21 +15,29 @@ from stix.exploit_target import ExploitTarget
 from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
 from stix.common import StructuredText
+import stix.incident.affected_asset as affected_asset
+
 from stix.test import round_trip
 
 UNICODE_STR = u"❤ ♎ ☀ ★ ☂ ♞ ☯ ☭ ☢ €☎⚑ ❄♫✂"
 
 class EncodingTests(unittest.TestCase):
 
-    def test_double_encode(self):
-        s = StructuredText(UNICODE_STR)
-        s2 = round_trip(s)
-        self.assertEqual(s.value, s2.value)
-
     def _test_equal(self, obj1, obj2):
         self.assertEqual(obj1.title, obj2.title)
         self.assertEqual(obj1.description.value, obj2.description.value)
         self.assertEqual(obj1.short_description.value, obj2.short_description.value)
+
+    def test_structured_text(self):
+        s = StructuredText(UNICODE_STR)
+        s2 = round_trip(s)
+        self.assertEqual(s.value, s2.value)
+
+    def test_asset_type(self):
+        a = affected_asset.AssetType()
+        a.count_affected = 1
+        a2 = round_trip(a)
+        self.assertEqual(a.count_affected, a2.count_affected)
 
     def test_stix_header(self):
         header = STIXHeader()
