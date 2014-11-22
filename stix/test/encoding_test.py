@@ -19,23 +19,17 @@ from stix.test import round_trip
 
 UNICODE_STR = u"❤ ♎ ☀ ★ ☂ ♞ ☯ ☭ ☢ €☎⚑ ❄♫✂"
 
-def _test_unicode_values(val1, val2):
-    encoding = bindings.ExternalEncoding
-
-    if isinstance(val1, unicode):
-        val1 = val1.encode(encoding)
-
-    if isinstance(val2, unicode):
-        val2 = val2.encode(encoding)
-
-    return val1 == val2
-
 class EncodingTests(unittest.TestCase):
 
     def test_double_encode(self):
         s = StructuredText(UNICODE_STR)
         s2 = round_trip(s)
-        self.assertTrue(_test_unicode_values(s.value, s2.value))
+        self.assertEqual(s.value, s2.value)
+
+    def _test_equal(self, obj1, obj2):
+        self.assertEqual(obj1.title, obj2.title)
+        self.assertEqual(obj1.description.value, obj2.description.value)
+        self.assertEqual(obj1.short_description.value, obj2.short_description.value)
 
     def test_stix_header(self):
         header = STIXHeader()
@@ -43,7 +37,7 @@ class EncodingTests(unittest.TestCase):
         header.description = UNICODE_STR
         header.short_description = UNICODE_STR
         header2 = round_trip(header)
-        self.assertTrue(_test_unicode_values(header.title, header2.title))
+        self._test_equal(header, header2)
 
     def test_indicator(self):
         i = Indicator()
@@ -51,7 +45,7 @@ class EncodingTests(unittest.TestCase):
         i.description = UNICODE_STR
         i.short_description = UNICODE_STR
         i2 = round_trip(i)
-        self.assertTrue(_test_unicode_values(i.title, i2.title))
+        self._test_equal(i, i2)
 
     def test_incident(self):
         i = Incident()
@@ -59,7 +53,7 @@ class EncodingTests(unittest.TestCase):
         i.description = UNICODE_STR
         i.short_description = UNICODE_STR
         i2 = round_trip(i)
-        self.assertTrue(_test_unicode_values(i.title, i2.title))
+        self._test_equal(i, i2)
 
     def test_ttp(self):
         t = TTP()
@@ -67,7 +61,7 @@ class EncodingTests(unittest.TestCase):
         t.description = UNICODE_STR
         t.short_description = UNICODE_STR
         t2 = round_trip(t)
-        self.assertTrue(_test_unicode_values(t.title, t2.title))
+        self._test_equal(t, t2)
 
     def test_ta(self):
         t = ThreatActor()
@@ -75,7 +69,7 @@ class EncodingTests(unittest.TestCase):
         t.description = UNICODE_STR
         t.short_description = UNICODE_STR
         t2 = round_trip(t)
-        self.assertTrue(_test_unicode_values(t.title, t2.title))
+        self._test_equal(t, t2)
 
     def test_et(self):
         e = ExploitTarget()
@@ -83,7 +77,7 @@ class EncodingTests(unittest.TestCase):
         e.description = UNICODE_STR
         e.short_description = UNICODE_STR
         e2 = round_trip(e)
-        self.assertTrue(_test_unicode_values(e.title, e2.title))
+        self._test_equal(e, e2)
 
     def test_campaign(self):
         c = Campaign()
@@ -91,7 +85,7 @@ class EncodingTests(unittest.TestCase):
         c.description = UNICODE_STR
         c.short_description = UNICODE_STR
         c2 = round_trip(c)
-        self.assertTrue(_test_unicode_values(c.title, c2.title))
+        self._test_equal(c, c2)
 
     def test_quote_xml(self):
         s = bindings.quote_xml(UNICODE_STR)
