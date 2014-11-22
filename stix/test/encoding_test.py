@@ -8,7 +8,12 @@ import unittest
 
 import stix.bindings as bindings
 from stix.core import STIXHeader
+from stix.campaign import Campaign
 from stix.indicator import Indicator
+from stix.incident import Incident
+from stix.exploit_target import ExploitTarget
+from stix.threat_actor import ThreatActor
+from stix.ttp import TTP
 from stix.common import StructuredText
 from stix.test import round_trip
 
@@ -24,7 +29,6 @@ def _test_unicode_values(val1, val2):
         val2 = val2.encode(encoding)
 
     return val1 == val2
-
 
 class EncodingTests(unittest.TestCase):
 
@@ -48,6 +52,46 @@ class EncodingTests(unittest.TestCase):
         i.short_description = UNICODE_STR
         i2 = round_trip(i)
         self.assertTrue(_test_unicode_values(i.title, i2.title))
+
+    def test_incident(self):
+        i = Incident()
+        i.title = UNICODE_STR
+        i.description = UNICODE_STR
+        i.short_description = UNICODE_STR
+        i2 = round_trip(i)
+        self.assertTrue(_test_unicode_values(i.title, i2.title))
+
+    def test_ttp(self):
+        t = TTP()
+        t.title = UNICODE_STR
+        t.description = UNICODE_STR
+        t.short_description = UNICODE_STR
+        t2 = round_trip(t)
+        self.assertTrue(_test_unicode_values(t.title, t2.title))
+
+    def test_ta(self):
+        t = ThreatActor()
+        t.title = UNICODE_STR
+        t.description = UNICODE_STR
+        t.short_description = UNICODE_STR
+        t2 = round_trip(t)
+        self.assertTrue(_test_unicode_values(t.title, t2.title))
+
+    def test_et(self):
+        e = ExploitTarget()
+        e.title = UNICODE_STR
+        e.description = UNICODE_STR
+        e.short_description = UNICODE_STR
+        e2 = round_trip(e)
+        self.assertTrue(_test_unicode_values(e.title, e2.title))
+
+    def test_campaign(self):
+        c = Campaign()
+        c.title = UNICODE_STR
+        c.description = UNICODE_STR
+        c.short_description = UNICODE_STR
+        c2 = round_trip(c)
+        self.assertTrue(_test_unicode_values(c.title, c2.title))
 
     def test_quote_xml(self):
         s = bindings.quote_xml(UNICODE_STR)

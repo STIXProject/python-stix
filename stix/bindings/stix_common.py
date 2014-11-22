@@ -158,7 +158,7 @@ class DateTimeWithPrecisionType(GeneratedsSuper):
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='DateTimeWithPrecisionType')
         if self.hasContent_():
             lwrite('>')
-            lwrite(str(self.valueOf_).encode(ExternalEncoding))
+            lwrite(quote_xml(self.valueOf_))
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
@@ -236,7 +236,7 @@ class ProfilesType(GeneratedsSuper):
             eol_ = ''
         for Profile_ in self.Profile:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Profile>%s</%s:Profile>%s' % (nsmap[namespace_],self.gds_format_string(quote_xml(Profile_).encode(ExternalEncoding), input_name='Profile'), nsmap[namespace_], eol_))
+            lwrite('<%s:Profile>%s</%s:Profile>%s' % (nsmap[namespace_],quote_xml(Profile_), nsmap[namespace_], eol_))
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -469,7 +469,7 @@ class ToolInformationType(cybox_common_binding.ToolInformationType):
             eol_ = ''
         if self.Title:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_],self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
+            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_],quote_xml(self.Title), nsmap[namespace_], eol_))
         if self.Short_Description is not None:
             self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
     def build(self, node):
@@ -952,19 +952,19 @@ class KillChainType(GeneratedsSuper):
     def exportAttributes(self, lwrite, level, already_processed, namespace_='stixCommon:', name_='KillChainType'):
         if self.reference is not None and 'reference' not in already_processed:
             already_processed.add('reference')
-            lwrite(' reference=%s' % (self.gds_format_string(quote_attrib(self.reference).encode(ExternalEncoding), input_name='reference'), ))
+            lwrite(' reference=%s' % (quote_attrib(self.reference), ))
         if self.number_of_phases is not None and 'number_of_phases' not in already_processed:
             already_processed.add('number_of_phases')
-            lwrite(' number_of_phases=%s' % (self.gds_format_string(quote_attrib(self.number_of_phases).encode(ExternalEncoding), input_name='number_of_phases'), ))
+            lwrite(' number_of_phases=%s' % (quote_attrib(self.number_of_phases), ))
         if self.id is not None and 'id' not in already_processed:
             already_processed.add('id')
             lwrite(' id=%s' % (quote_attrib(self.id), ))
         if self.definer is not None and 'definer' not in already_processed:
             already_processed.add('definer')
-            lwrite(' definer=%s' % (self.gds_format_string(quote_attrib(self.definer).encode(ExternalEncoding), input_name='definer'), ))
+            lwrite(' definer=%s' % (quote_attrib(self.definer), ))
         if self.name is not None and 'name' not in already_processed:
             already_processed.add('name')
-            lwrite(' name=%s' % (self.gds_format_string(quote_attrib(self.name).encode(ExternalEncoding), input_name='name'), ))
+            lwrite(' name=%s' % (quote_attrib(self.name), ))
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='KillChainType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
@@ -1062,7 +1062,7 @@ class KillChainPhaseType(GeneratedsSuper):
             lwrite(' ordinality="%s"' % self.gds_format_integer(self.ordinality, input_name='ordinality'))
         if self.name is not None and 'name' not in already_processed:
             already_processed.add('name')
-            lwrite(' name=%s' % (self.gds_format_string(quote_attrib(self.name).encode(ExternalEncoding), input_name='name'), ))
+            lwrite(' name=%s' % (quote_attrib(self.name), ))
         if self.phase_id is not None and 'phase_id' not in already_processed:
             already_processed.add('phase_id')
             lwrite(' phase_id=%s' % (quote_attrib(self.phase_id), ))
@@ -1213,7 +1213,7 @@ class KillChainPhaseReferenceType(KillChainPhaseType):
         super(KillChainPhaseReferenceType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='KillChainPhaseReferenceType')
         if self.kill_chain_name is not None and 'kill_chain_name' not in already_processed:
             already_processed.add('kill_chain_name')
-            lwrite(' kill_chain_name=%s' % (self.gds_format_string(quote_attrib(self.kill_chain_name).encode(ExternalEncoding), input_name='kill_chain_name'), ))
+            lwrite(' kill_chain_name=%s' % (quote_attrib(self.kill_chain_name), ))
         if self.kill_chain_id is not None and 'kill_chain_id' not in already_processed:
             already_processed.add('kill_chain_id')
             lwrite(' kill_chain_id=%s' % (quote_attrib(self.kill_chain_id), ))
@@ -1313,7 +1313,7 @@ class IdentityType(GeneratedsSuper):
             eol_ = ''
         if self.Name is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Name>%s</%s:Name>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Name).encode(ExternalEncoding), input_name='Name'), nsmap[namespace_], eol_))
+            lwrite('<%s:Name>%s</%s:Name>%s' % (nsmap[namespace_], quote_xml(self.Name), nsmap[namespace_], eol_))
         if self.Related_Identities is not None:
             self.Related_Identities.export(lwrite, level, nsmap, namespace_, name_='Related_Identities', pretty_print=pretty_print)
     def build(self, node):
@@ -3308,7 +3308,7 @@ class ReferencesType(GeneratedsSuper):
             eol_ = ''
         for Reference_ in self.Reference:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Reference>%s</%s:Reference>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(Reference_).encode(ExternalEncoding), input_name='Reference'), nsmap[namespace_], eol_))
+            lwrite('<%s:Reference>%s</%s:Reference>%s' % (nsmap[namespace_], quote_xml(Reference_), nsmap[namespace_], eol_))
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -3627,7 +3627,7 @@ class StructuredTextType(GeneratedsSuper):
     def exportAttributes(self, lwrite, level, already_processed, namespace_='stixCommon:', name_='StructuredTextType'):
         if self.structuring_format is not None and 'structuring_format' not in already_processed:
             already_processed.add('structuring_format')
-            lwrite(' structuring_format=%s' % (self.gds_format_string(quote_attrib(self.structuring_format).encode(ExternalEncoding), input_name='structuring_format'), ))
+            lwrite(' structuring_format=%s' % (quote_attrib(self.structuring_format), ))
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='StructuredTextType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
@@ -3693,7 +3693,7 @@ class EncodedCDATAType(GeneratedsSuper):
             else:
                 value = self.valueOf_
 
-            lwrite(str(value).encode(ExternalEncoding))
+            lwrite(quote_xml(value))
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
@@ -3778,13 +3778,13 @@ class ControlledVocabularyStringType(GeneratedsSuper):
     def exportAttributes(self, lwrite, level, already_processed, namespace_='stixCommon:', name_='ControlledVocabularyStringType'):
         if self.xsi_type is not None and 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
-            lwrite(' xsi:type=%s' % self.gds_format_string(quote_attrib(self.xsi_type).encode(ExternalEncoding), input_name='xsi:type'))
+            lwrite(' xsi:type=%s' % quote_attrib(self.xsi_type))
         if self.vocab_reference is not None and 'vocab_reference' not in already_processed:
             already_processed.add('vocab_reference')
-            lwrite(' vocab_reference=%s' % (self.gds_format_string(quote_attrib(self.vocab_reference).encode(ExternalEncoding), input_name='vocab_reference'), ))
+            lwrite(' vocab_reference=%s' % (quote_attrib(self.vocab_reference), ))
         if self.vocab_name is not None and 'vocab_name' not in already_processed:
             already_processed.add('vocab_name')
-            lwrite(' vocab_name=%s' % (self.gds_format_string(quote_attrib(self.vocab_name).encode(ExternalEncoding), input_name='vocab_name'), ))
+            lwrite(' vocab_name=%s' % (quote_attrib(self.vocab_name), ))
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ControlledVocabularyStringType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):

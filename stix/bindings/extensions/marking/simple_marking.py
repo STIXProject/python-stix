@@ -81,7 +81,7 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
             eol_ = ''
         if self.Statement is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Statement>%s</%s:Statement>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Statement).encode(ExternalEncoding), input_name='Statement'), nsmap[namespace_], eol_))
+            lwrite('<%s:Statement>%s</%s:Statement>%s' % (nsmap[namespace_], quote_xml(self.Statement), nsmap[namespace_], eol_))
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)

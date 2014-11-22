@@ -82,7 +82,7 @@ class TermsOfUseMarkingStructureType(data_marking_binding.MarkingStructureType):
             eol_ = ''
         if self.Terms_Of_Use is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Terms_Of_Use>%s</%s:Terms_Of_Use>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Terms_Of_Use).encode(ExternalEncoding), input_name='Terms_Of_Use'), nsmap[namespace_], eol_))
+            lwrite('<%s:Terms_Of_Use>%s</%s:Terms_Of_Use>%s' % (nsmap[namespace_], quote_xml(self.Terms_Of_Use), nsmap[namespace_], eol_))
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)

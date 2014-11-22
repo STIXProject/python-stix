@@ -479,7 +479,7 @@ class SightingType(GeneratedsSuper):
             self.Source.export(lwrite, level, nsmap, namespace_, name_='Source', pretty_print=pretty_print)
         if self.Reference is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Reference>%s</%s:Reference>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Reference).encode(ExternalEncoding), input_name='Reference'), nsmap[namespace_], eol_))
+            lwrite('<%s:Reference>%s</%s:Reference>%s' % (nsmap[namespace_], quote_xml(self.Reference), nsmap[namespace_], eol_))
         if self.Confidence is not None:
             self.Confidence.export(lwrite, level, nsmap, namespace_, name_='Confidence', pretty_print=pretty_print)
         if self.Description is not None:
@@ -1013,7 +1013,7 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
             Type_.export(lwrite, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
         for Alternative_ID_ in self.Alternative_ID:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Alternative_ID>%s</%s:Alternative_ID>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(Alternative_ID_).encode(ExternalEncoding), input_name='Alternative_ID'), nsmap[namespace_], eol_))
+            lwrite('<%s:Alternative_ID>%s</%s:Alternative_ID>%s' % (nsmap[namespace_], quote_xml(Alternative_ID_), nsmap[namespace_], eol_))
         if self.Description is not None:
             self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Short_Description is not None:
