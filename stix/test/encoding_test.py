@@ -134,6 +134,21 @@ class EncodingTests(unittest.TestCase):
         s = bindings.quote_xml(b)
         self.assertEqual(str(b), s)
 
+    def test_quote_xml_encoded(self):
+        encoding = bindings.ExternalEncoding
+        encoded = UNICODE_STR.encode(encoding)
+        quoted = bindings.quote_xml(encoded)
+        decoded = quoted.decode(encoding)
+        self.assertEqual(UNICODE_STR, decoded)
+
+    def test_quote_attrib_encoded(self):
+        encoding = bindings.ExternalEncoding
+        encoded = UNICODE_STR.encode(encoding)
+        quoted = bindings.quote_attrib(encoded)[1:-1]
+        decoded = quoted.decode(encoding)
+        self.assertEqual(UNICODE_STR, decoded)
+
+
 
 if __name__ == "__main__":
     unittest.main()
