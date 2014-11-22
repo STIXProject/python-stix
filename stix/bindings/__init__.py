@@ -261,16 +261,22 @@ def quote_xml(text):
     if not text:
         return ''
 
+    # Convert `text` to unicode string. This is mainly a catch-all for non
+    # string/unicode types like bool and int.
     try:
         text = unicode(text)
     except UnicodeDecodeError:
         text = text.decode(ExternalEncoding)
 
+    # Convert unicode string to correct output character encoding.
     text = text.encode(ExternalEncoding)
 
+    # If it's a CDATA block, return the text as is.
     if text.startswith(CDATA_START):
         return text
 
+    # If it's not a CDATA block, escape the XML and return the character
+    # encoded string.
     return saxutils.escape(text)
 
 
@@ -278,12 +284,18 @@ def quote_attrib(text):
     if not text:
         return ''
 
+    # Convert `text` to unicode string. This is mainly a catch-all for non
+    # string/unicode types like bool and int.
     try:
         text = unicode(text)
     except UnicodeDecodeError:
         text = text.decode(ExternalEncoding)
 
+    # Convert the unicode string to the correct output character encoding.
     text = text.encode(ExternalEncoding)
+
+    # Return the escaped the value of text.
+    # Note: This wraps the escaped text in quotation marks.
     return saxutils.quoteattr(text)
 
 
