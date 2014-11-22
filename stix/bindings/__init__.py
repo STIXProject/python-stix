@@ -266,23 +266,25 @@ def quote_xml(text):
     except UnicodeDecodeError:
         text = text.decode(ExternalEncoding)
 
-    if not text.startswith(CDATA_START):
-        text = saxutils.escape(text)
+    text = text.encode(ExternalEncoding)
 
-    return text.encode(ExternalEncoding)
+    if text.startswith(CDATA_START):
+        return text
+
+    return saxutils.escape(text)
 
 
 def quote_attrib(text):
     if not text:
         return ''
-    
+
     try:
         text = unicode(text)
     except UnicodeDecodeError:
         text = text.decode(ExternalEncoding)
 
-    text = saxutils.quoteattr(text)
-    return text.encode(ExternalEncoding)
+    text = text.encode(ExternalEncoding)
+    return saxutils.quoteattr(text)
 
 
 def quote_python(inStr):
