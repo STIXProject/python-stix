@@ -83,7 +83,7 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
             xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
             lwrite(xsi_type)
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='CIQIdentity3.0InstanceType', fromsubclass_=False, pretty_print=True):
-        super(CIQIdentity3_0InstanceType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+        super(CIQIdentity3_0InstanceType, self).exportChildren(lwrite, level, nsmap, stix_common_binding.XML_NS, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
