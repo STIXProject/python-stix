@@ -121,10 +121,10 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
             eol_ = ''
         if self.Product_Name is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Product_Name>%s</%s:Product_Name>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Product_Name).encode(ExternalEncoding), input_name='Product_Name'), nsmap[namespace_], eol_))
+            lwrite('<%s:Product_Name>%s</%s:Product_Name>%s' % (nsmap[namespace_], quote_xml(self.Product_Name), nsmap[namespace_], eol_))
         if self.Version is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Version>%s</%s:Version>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Version).encode(ExternalEncoding), input_name='Version'), nsmap[namespace_], eol_))
+            lwrite('<%s:Version>%s</%s:Version>%s' % (nsmap[namespace_], quote_xml(self.Version), nsmap[namespace_], eol_))
         for Rule_ in self.Rule:
             Rule_.export(lwrite, level, nsmap, namespace_, name_='Rule', pretty_print=pretty_print)
         for Event_Filter_ in self.Event_Filter:

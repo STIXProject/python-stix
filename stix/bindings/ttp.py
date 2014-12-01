@@ -1,8 +1,7 @@
-# Copyright (c) 2014, The MITRE Corporation. All rights reserved.
-# See LICENSE.txt for complete terms.
-
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# Copyright (c) 2014, The MITRE Corporation. All rights reserved.
+# See LICENSE.txt for complete terms.
 
 #
 # Generated Thu Apr 11 15:06:30 2013 by generateDS.py version 2.9a.
@@ -96,7 +95,7 @@ class AttackPatternType(GeneratedsSuper):
             lwrite(' idref=%s' % (quote_attrib(self.idref), ))
         if self.capec_id is not None and 'capec_id' not in already_processed:
             already_processed.add('capec_id')
-            lwrite(' capec_id=%s' % (self.gds_format_string(quote_attrib(self.capec_id).encode(ExternalEncoding), input_name='capec_id'), ))
+            lwrite(' capec_id=%s' % (quote_attrib(self.capec_id), ))
         if self.id is not None and 'id' not in already_processed:
             already_processed.add('id')
             lwrite(' id=%s' % (quote_attrib(self.id), ))
@@ -107,7 +106,7 @@ class AttackPatternType(GeneratedsSuper):
             eol_ = ''
         if self.Title is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
+            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
         if self.Description is not None:
             self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Short_Description is not None:
@@ -247,7 +246,7 @@ class MalwareInstanceType(GeneratedsSuper):
             Name_.export(lwrite, level, nsmap, namespace_, name_='Name', pretty_print=pretty_print)
         if self.Title is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
+            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
         if self.Description is not None:
             self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Short_Description is not None:
@@ -363,7 +362,7 @@ class ExploitType(GeneratedsSuper):
             eol_ = ''
         if self.Title is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
+            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
         if self.Description is not None:
             self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Short_Description is not None:
@@ -479,7 +478,7 @@ class InfrastructureType(GeneratedsSuper):
             eol_ = ''
         if self.Title is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
+            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
         for Type_ in self.Type:
             Type_.export(lwrite, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
         if self.Description is not None:
@@ -1369,7 +1368,7 @@ class TTPType(stix_common_binding.TTPBaseType):
             eol_ = ''
         if self.Title is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
+            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
         if self.Description is not None:
             self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Short_Description is not None:

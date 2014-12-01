@@ -94,7 +94,7 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
             #self.Specification.export(lwrite, level, nsmap, namespace_, name_='Specification', pretty_print=pretty_print)
         for Role_ in self.Role:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Role>%s</%s:Role>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(Role_).encode(ExternalEncoding), input_name='Role'), nsmap[namespace_], eol_))
+            lwrite('<%s:Role>%s</%s:Role>%s' % (nsmap[namespace_], quote_xml(Role_), nsmap[namespace_], eol_))
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)

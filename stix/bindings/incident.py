@@ -450,10 +450,10 @@ class ExternalImpactAssessmentModelType(GeneratedsSuper):
     def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='ExternalImpactAssessmentModelType'):
         if self.model_name is not None and 'model_name' not in already_processed:
             already_processed.add('model_name')
-            lwrite(' model_name=%s' % (self.gds_format_string(quote_attrib(self.model_name).encode(ExternalEncoding), input_name='model_name'), ))
+            lwrite(' model_name=%s' % (quote_attrib(self.model_name), ))
         if self.model_reference is not None and 'model_reference' not in already_processed:
             already_processed.add('model_reference')
-            lwrite(' model_reference=%s' % (self.gds_format_string(quote_attrib(self.model_reference).encode(ExternalEncoding), input_name='model_reference'), ))
+            lwrite(' model_reference=%s' % (quote_attrib(self.model_reference), ))
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ExternalImpactAssessmentModelType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
@@ -633,7 +633,7 @@ class JournalEntryType(GeneratedsSuper):
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='JournalEntryType')
         if self.hasContent_():
             lwrite('>')
-            lwrite(str(self.valueOf_).encode(ExternalEncoding))
+            lwrite(quote_xml(self.valueOf_))
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
@@ -647,7 +647,7 @@ class JournalEntryType(GeneratedsSuper):
             lwrite(' time_precision=%s' % (quote_attrib(self.time_precision), ))
         if self.author is not None and 'author' not in already_processed:
             already_processed.add('author')
-            lwrite(' author=%s' % (self.gds_format_string(quote_attrib(self.author).encode(ExternalEncoding), input_name='author'), ))
+            lwrite(' author=%s' % (quote_attrib(self.author), ))
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='JournalEntryType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
@@ -722,7 +722,7 @@ class COARequestedType(COATakenType):
         super(COARequestedType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='COARequestedType')
         if self.priority is not None and 'priority' not in already_processed:
             already_processed.add('priority')
-            lwrite(' priority=%s' % (self.gds_format_string(quote_attrib(self.priority).encode(ExternalEncoding), input_name='priority'), ))
+            lwrite(' priority=%s' % (quote_attrib(self.priority), ))
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='COARequestedType', fromsubclass_=False, pretty_print=True):
         super(COARequestedType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
     def build(self, node):
@@ -921,10 +921,10 @@ class LossEstimationType(GeneratedsSuper):
     def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='LossEstimationType'):
         if self.iso_currency_code is not None and 'iso_currency_code' not in already_processed:
             already_processed.add('iso_currency_code')
-            lwrite(' iso_currency_code=%s' % (self.gds_format_string(quote_attrib(self.iso_currency_code).encode(ExternalEncoding), input_name='iso_currency_code'), ))
+            lwrite(' iso_currency_code=%s' % (quote_attrib(self.iso_currency_code), ))
         if self.amount is not None and 'amount' not in already_processed:
             already_processed.add('amount')
-            lwrite(' amount=%s' % (self.gds_format_string(quote_attrib(self.amount).encode(ExternalEncoding), input_name='amount'), ))
+            lwrite(' amount=%s' % (quote_attrib(self.amount), ))
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='LossEstimationType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
@@ -2119,7 +2119,7 @@ class AssetTypeType(stix_common_binding.ControlledVocabularyStringType):
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='AssetTypeType')
         if self.hasContent_():
             lwrite('>')
-            lwrite(unicode(self.valueOf_).encode(ExternalEncoding))
+            lwrite(quote_xml(self.valueOf_))
             self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
             lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
@@ -2128,7 +2128,7 @@ class AssetTypeType(stix_common_binding.ControlledVocabularyStringType):
         super(AssetTypeType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='AssetTypeType')
         if self.count_affected is not None and 'count_affected' not in already_processed:
             already_processed.add('count_affected')
-            lwrite(' count_affected=%s' % (self.gds_format_string(quote_attrib(self.count_affected).encode(ExternalEncoding), input_name='count_affected'), ))
+            lwrite(' count_affected=%s' % (quote_attrib(self.count_affected), ))
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AssetTypeType', fromsubclass_=False, pretty_print=True):
         super(AssetTypeType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         pass
@@ -2369,7 +2369,7 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             lwrite(xsi_type)
         if self.URL is not None and 'URL' not in already_processed:
             already_processed.add('URL')
-            lwrite(' URL=%s' % (self.gds_format_string(quote_attrib(self.URL).encode(ExternalEncoding), input_name='URL'), ))
+            lwrite(' URL=%s' % (quote_attrib(self.URL), ))
         if self.version is not None and 'version' not in already_processed:
             already_processed.add('version')
             lwrite(' version=%s' % (quote_attrib(self.version), ))
@@ -2381,7 +2381,7 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             eol_ = ''
         if self.Title is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
+            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
         for External_ID_ in self.External_ID:
             External_ID_.export(lwrite, level, nsmap, namespace_, name_='External_ID', pretty_print=pretty_print)
         if self.Time is not None:
@@ -2625,7 +2625,7 @@ class NonPublicDataCompromisedType(stix_common_binding.ControlledVocabularyStrin
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='NonPublicDataCompromisedType')
         if self.hasContent_():
             lwrite('>')
-            lwrite(unicode(self.valueOf_).encode(ExternalEncoding))
+            lwrite(quote_xml(self.valueOf_))
             lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             lwrite('/>%s' % (eol_, ))
@@ -2695,14 +2695,14 @@ class ExternalIDType(GeneratedsSuper):
         self.exportAttributes(lwrite, level, already_processed, namespace_, name_='ExternalIDType')
         if self.hasContent_():
             lwrite('>')
-            lwrite(unicode(self.valueOf_).encode(ExternalEncoding))
+            lwrite(quote_xml(self.valueOf_))
             lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
         else:
             lwrite('/>%s' % (eol_, ))
     def exportAttributes(self, lwrite, level, already_processed, namespace_='incident:', name_='ExternalIDType'):
         if self.source is not None and 'source' not in already_processed:
             already_processed.add('source')
-            lwrite(' source=%s' % (self.gds_format_string(quote_attrib(self.source).encode(ExternalEncoding), input_name='source'), ))
+            lwrite(' source=%s' % (quote_attrib(self.source), ))
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ExternalIDType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):

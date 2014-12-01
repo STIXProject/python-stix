@@ -324,7 +324,7 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             eol_ = ''
         if self.Title is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
+            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
         if self.Stage is not None:
             self.Stage.export(lwrite, level, nsmap, namespace_, name_='Stage', pretty_print=pretty_print)
         if self.Type is not None:

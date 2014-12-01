@@ -183,7 +183,7 @@ class MarkingStructureType(GeneratedsSuper):
             lwrite(' idref=%s' % (quote_attrib(self.idref), ))
         if self.marking_model_ref is not None and 'marking_model_ref' not in already_processed:
             already_processed.add('marking_model_ref')
-            lwrite(' marking_model_ref=%s' % (self.gds_format_string(quote_attrib(self.marking_model_ref).encode(ExternalEncoding), input_name='marking_model_ref'), ))
+            lwrite(' marking_model_ref=%s' % (quote_attrib(self.marking_model_ref), ))
         if self.marking_model_name is not None and 'marking_model_name' not in already_processed:
             already_processed.add('marking_model_name')
             lwrite(' marking_model_name=%s' % (quote_attrib(self.marking_model_name), ))
@@ -290,7 +290,7 @@ class MarkingSpecificationType(GeneratedsSuper):
             lwrite(' id=%s' % (quote_attrib(self.id), ))
         if self.version is not None and 'version' not in already_processed:
             already_processed.add('version')
-            lwrite(' version=%s' % (self.gds_format_string(quote_attrib(self.version).encode(ExternalEncoding), input_name='version'), ))
+            lwrite(' version=%s' % (quote_attrib(self.version), ))
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='MarkingSpecificationType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
@@ -298,7 +298,7 @@ class MarkingSpecificationType(GeneratedsSuper):
             eol_ = ''
         if self.Controlled_Structure is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Controlled_Structure>%s</%s:Controlled_Structure>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Controlled_Structure).encode(ExternalEncoding), input_name='Controlled_Structure'), nsmap[namespace_], eol_))
+            lwrite('<%s:Controlled_Structure>%s</%s:Controlled_Structure>%s' % (nsmap[namespace_], quote_xml(self.Controlled_Structure), nsmap[namespace_], eol_))
         for Marking_Structure_ in self.get_Marking_Structure():
             Marking_Structure_.export(lwrite, level, nsmap, namespace_, name_='Marking_Structure', pretty_print=pretty_print)
         if self.Information_Source is not None:

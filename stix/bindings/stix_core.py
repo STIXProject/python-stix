@@ -438,7 +438,7 @@ class STIXHeaderType(GeneratedsSuper):
             eol_ = ''
         if self.Title is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
+            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
         for Package_Intent_ in self.Package_Intent:
             Package_Intent_.export(lwrite, level, nsmap, namespace_, name_='Package_Intent', pretty_print=pretty_print)
         if self.Description is not None:

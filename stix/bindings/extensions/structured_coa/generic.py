@@ -87,7 +87,7 @@ class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
             lwrite(xsi_type)
         if self.reference_location is not None and 'reference_location' not in already_processed:
             already_processed.add('reference_location')
-            lwrite(' reference_location=%s' % (self.gds_format_string(quote_attrib(self.reference_location).encode(ExternalEncoding), input_name='reference_location'), ))
+            lwrite(' reference_location=%s' % (quote_attrib(self.reference_location), ))
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='GenericStructuredCOAType', fromsubclass_=False, pretty_print=True):
         super(GenericStructuredCOAType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         if pretty_print:

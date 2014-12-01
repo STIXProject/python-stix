@@ -43,7 +43,35 @@ class Entity(object):
     def to_xml(self, include_namespaces=True, include_schemalocs=True,
                ns_dict=None, schemaloc_dict=None, pretty=True,
                auto_namespace=True):
-        """Export an object as an XML String"""
+        """Serializes a :class:`Entity` instance to an XML string.
+
+        The default character encoding is ``utf-8`` and can be set via the
+        ``stix.bindings.ExternalEncoding`` attribute.
+
+        Args:
+            auto_namespace: Automatically discover and export XML namespaces
+                for a STIX :class:`Entity` instance.
+            include_namespaces: Export namespace definitions in the output
+                XML. Default is ``True``.
+            include_schemalocs: Export ``xsi:schemaLocation`` attribute
+                in the output document. This will attempt to associate
+                namespaces declared in the STIX document with schema locations.
+                If a namespace cannot be resolved to a schemaLocation, a
+                Python warning will be raised. Schemalocations will only be
+                exported if `include_namespaces` is also ``True``.
+            ns_dict: Dictionary of XML definitions (namespace is key, alias is
+                value) to include in the exported document. This must be
+                passed in if `auto_namespace` is ``False``.
+            schemaloc_dict: Dictionary of XML ``namespace: schema location``
+                mappings to include in the exported document. These will
+                only be included if `auto_namespace` is ``False``.
+            pretty: Pretty-print the XML.
+
+        Returns:
+            An XML representation of this
+            :class:`Entity` instance. Default character encoding is ``utf-8``.
+
+        """
         from stix.utils.nsparser import (
             NamespaceParser, NamespaceInfo,DEFAULT_STIX_NAMESPACES
         )
