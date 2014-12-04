@@ -258,7 +258,7 @@ def showIndent(lwrite, level, pretty_print=True):
 
 
 def quote_xml(text):
-    if not text:
+    if text is None:
         return ''
 
     # Convert `text` to unicode string. This is mainly a catch-all for non
@@ -281,7 +281,7 @@ def quote_xml(text):
 
 
 def quote_attrib(text):
-    if not text:
+    if text is None:
         return ''
 
     # Convert `text` to unicode string. This is mainly a catch-all for non
