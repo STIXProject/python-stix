@@ -150,35 +150,35 @@ class EncodingTests(unittest.TestCase):
         decoded = quoted.decode(encoding)
         self.assertEqual(UNICODE_STR, decoded)
 
-    def test_zero_xml_encoded(self):
+    def test_quote_xml_zero(self):
         i = 0
         s = bindings.quote_xml(i)
         self.assertEqual(str(i), s)
 
-    def test_zero_attrib_encoded(self):
+    def test_quote_attrib_zero(self):
         i = 0
         s = bindings.quote_attrib(i)
         s = s[1:-1]
         self.assertEqual(str(i), s)
 
-    def test_none_xml_encoded(self):
+    def test_quote_xml_none(self):
         i = None
         s = bindings.quote_xml(i)
         self.assertEqual('', s)
 
-    def test_none_attrib_encoded(self):
+    def test_quote_attrib_none(self):
         i = None
         s = bindings.quote_attrib(i)
         s = s[1:-1]
         self.assertEqual('', s)
 
-    def test_empty_attrib_encoded(self):
+    def test_quote_attrib_empty(self):
         i = ''
         s = bindings.quote_attrib(i)
         s = s[1:-1]
         self.assertEqual('', s)
 
-    def test_empty_xml_encoded(self):
+    def test_quote_xml_empty(self):
         i = ''
         s = bindings.quote_xml(i)
         self.assertEqual('', s)
