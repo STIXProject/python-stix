@@ -282,7 +282,7 @@ def quote_xml(text):
 
 def quote_attrib(text):
     if text is None:
-        return ''
+        return '""'
 
     # Convert `text` to unicode string. This is mainly a catch-all for non
     # string/unicode types like bool and int.
