@@ -424,9 +424,9 @@ class STIXPackage(stix.Entity):
         return return_obj
 
     @classmethod
-    def from_xml(cls, xml_file):
+    def from_xml(cls, xml_file, encoding='utf-8'):
         parser = EntityParser()
-        return parser.parse_xml(xml_file)
+        return parser.parse_xml(xml_file, encoding=encoding)
 
 
 

@@ -31,7 +31,7 @@ class UnsupportedRootElementError(Exception):
 UnsupportedRootElement = UnsupportedRootElementError # for backwards compatibility
 
 
-def get_xml_parser():
+def get_xml_parser(encoding='utf-8'):
     """Returns an ``etree.ETCompatXMLParser`` instance."""
     parser = etree.ETCompatXMLParser(
         huge_tree=True,
@@ -39,18 +39,20 @@ def get_xml_parser():
         strip_cdata=False,
         remove_blank_text=True,
         resolve_entities=False,
+        encoding=encoding
     )
 
     return parser
 
 
-def get_etree_root(doc):
+def get_etree_root(doc, encoding='utf-8'):
     """Returns an instance of lxml.etree._Element for the given `doc` input.
 
     Args:
         doc: The input XML document. Can be an instance of
             ``lxml.etree._Element``, ``lxml.etree._ElementTree``, a file-like
             object, or a string filename.
+        encoding: The character encoding of `doc`.
 
     Returns:
         An ``lxml.etree._Element`` instance for `doc`.
@@ -65,7 +67,7 @@ def get_etree_root(doc):
     elif isinstance(doc, etree._ElementTree):
         root = doc.getroot()
     else:
-        parser = get_xml_parser()
+        parser = get_xml_parser(encoding=encoding)
         tree = etree.parse(doc, parser=parser)
         root = tree.getroot()
 
@@ -84,9 +86,7 @@ def get_schemaloc_pairs(node):
     """
     schemalocs = node.attrib[TAG_SCHEMALOCATION]
     l = schemalocs.split()
-    pairs = zip(l[::2], l[1::2])
-
-    return pairs
+    return zip(l[::2], l[1::2])
 
 
 class EntityParser(object):
@@ -158,7 +158,8 @@ class EntityParser(object):
             pairs = get_schemaloc_pairs(root)
             entity.__input_schemalocations__ = dict(pairs)
 
-    def parse_xml_to_obj(self, xml_file, check_version=True, check_root=True):
+    def parse_xml_to_obj(self, xml_file, check_version=True, check_root=True,
+                         encoding='utf-8'):
         """Creates a STIX binding object from the supplied xml file.
 
         Args:
@@ -166,6 +167,7 @@ class EntityParser(object):
                 instance document
             check_version: Inspect the version before parsing.
             check_root: Inspect the root element before parsing.
+            encoding: The character encoding of the input `xml_file`.
 
         Raises:
             .UnknownVersionError: If `check_version` is ``True`` and `xml_file`
@@ -176,7 +178,7 @@ class EntityParser(object):
                 contains an invalid root element.
 
         """
-        root = get_etree_root(xml_file)
+        root = get_etree_root(xml_file, encoding=encoding)
 
         if check_version:
             self._check_version(root)
@@ -190,7 +192,8 @@ class EntityParser(object):
 
         return stix_package_obj
 
-    def parse_xml(self, xml_file, check_version=True, check_root=True):
+    def parse_xml(self, xml_file, check_version=True, check_root=True,
+                  encoding='utf-8'):
         """Creates a python-stix STIXPackage object from the supplied xml_file.
 
         Args:
@@ -198,6 +201,7 @@ class EntityParser(object):
                 instance document
             check_version: Inspect the version before parsing.
             check_root: Inspect the root element before parsing.
+            encoding: The character encoding of the input `xml_file`.
 
         Raises:
             .UnknownVersionError: If `check_version` is ``True`` and `xml_file`
@@ -208,12 +212,13 @@ class EntityParser(object):
                 contains an invalid root element.
 
         """
-        root = get_etree_root(xml_file)
+        root = get_etree_root(xml_file, encoding=encoding)
 
         stix_package_obj = self.parse_xml_to_obj(
             xml_file=root,
             check_version=check_version,
-            check_root=check_root
+            check_root=check_root,
+            encoding=encoding
         )
         
         from stix.core import STIXPackage # resolve circular dependencies
