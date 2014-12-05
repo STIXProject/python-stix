@@ -232,5 +232,23 @@ class EncodingTests(unittest.TestCase):
         header = sp.stix_header
         self.assertEqual(header.title, UNICODE_STR)
 
+
+    def test_utf16_roundtrip(self):
+        sh = STIXHeader()
+        sh.title = UNICODE_STR
+        sp = STIXPackage()
+        sp.stix_header = sh
+
+        # serialize as utf-16
+        xml16 = sp.to_xml(encoding='utf-16')
+
+        # deserialize as utf-16
+        sp2 = STIXPackage.from_xml(StringIO(xml16), encoding='utf-16')
+        sh2 = sp2.stix_header
+
+        # check that the titles align
+        self.assertEqual(sh.title, sh2.title)
+
+
 if __name__ == "__main__":
     unittest.main()
