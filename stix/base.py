@@ -45,7 +45,7 @@ class Entity(object):
     def to_xml(self, include_namespaces=True, include_schemalocs=True,
                ns_dict=None, schemaloc_dict=None, pretty=True,
                auto_namespace=True, encoding='utf-8'):
-        """Serializes a :class:`Entity` instance to a string.
+        """Serializes a :class:`Entity` instance to an XML string.
 
         The default character encoding is ``utf-8`` and can be set via the
         `encoding` parameter. If `encoding` is ``None``, a unicode string
