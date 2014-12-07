@@ -132,7 +132,8 @@ class Entity(object):
                 namespacedef_=namespace_def   # namespace/schemaloc def string
             )
 
-        s = unicode(sio.getvalue())  # the outer unicode() wrapper probably isn't necessary
+        # Ensure that the StringIO buffer is unicode
+        s = unicode(sio.getvalue())
 
         if encoding:
             return s.encode(encoding)

@@ -31,7 +31,7 @@ class UnsupportedRootElementError(Exception):
 UnsupportedRootElement = UnsupportedRootElementError # for backwards compatibility
 
 
-def get_xml_parser(encoding='utf-8'):
+def get_xml_parser(encoding=None):
     """Returns an ``etree.ETCompatXMLParser`` instance."""
     parser = etree.ETCompatXMLParser(
         huge_tree=True,
@@ -45,14 +45,16 @@ def get_xml_parser(encoding='utf-8'):
     return parser
 
 
-def get_etree_root(doc, encoding='utf-8'):
+def get_etree_root(doc, encoding=None):
     """Returns an instance of lxml.etree._Element for the given `doc` input.
 
     Args:
         doc: The input XML document. Can be an instance of
             ``lxml.etree._Element``, ``lxml.etree._ElementTree``, a file-like
             object, or a string filename.
-        encoding: The character encoding of `doc`.
+        encoding: The character encoding of `doc`. If ``None``, an attempt
+            will be made to determine the character encoding by the XML
+            parser.
 
     Returns:
         An ``lxml.etree._Element`` instance for `doc`.
@@ -193,7 +195,7 @@ class EntityParser(object):
         return stix_package_obj
 
     def parse_xml(self, xml_file, check_version=True, check_root=True,
-                  encoding='utf-8'):
+                  encoding=None):
         """Creates a python-stix STIXPackage object from the supplied xml_file.
 
         Args:
@@ -201,7 +203,9 @@ class EntityParser(object):
                 instance document
             check_version: Inspect the version before parsing.
             check_root: Inspect the root element before parsing.
-            encoding: The character encoding of the input `xml_file`.
+            encoding: The character encoding of the input `xml_file`. If
+                ``None``, an attempt will be made to determine the input
+                character encoding.
 
         Raises:
             .UnknownVersionError: If `check_version` is ``True`` and `xml_file`
