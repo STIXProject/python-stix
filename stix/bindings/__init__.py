@@ -8,6 +8,7 @@ from xml.sax import saxutils
 import contextlib
 from lxml import etree as etree_
 
+import cybox.bindings as cybox_bindings
 
 CDATA_START = "<![CDATA["
 CDATA_END = "]]>"
@@ -25,11 +26,16 @@ def save_encoding(encoding='utf-8'):
     global ExternalEncoding
 
     try:
-        orig = ExternalEncoding
+        orig_stix_encoding = ExternalEncoding
+        orig_cybox_encoding = cybox_bindings.ExternalEncoding
+
         ExternalEncoding = encoding
+        cybox_bindings.ExternalEncoding = encoding
+
         yield
     finally:
-        ExternalEncoding = orig
+        ExternalEncoding = orig_stix_encoding
+        cybox_bindings.ExternalEncoding = orig_cybox_encoding
 
 
 def parsexml_(*args, **kwargs):
