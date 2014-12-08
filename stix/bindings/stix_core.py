@@ -31,9 +31,11 @@ class STIXType(GeneratedsSuper):
     version for this content."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, timestamp=None, version=None, STIX_Header=None, Observables=None, Indicators=None, TTPs=None, Exploit_Targets=None, Incidents=None, Courses_Of_Action=None, Campaigns=None, Threat_Actors=None, Related_Packages=None):
+    def __init__(self, idref=None, id=None, timestamp=None, version=None, STIX_Header=None, Observables=None, Indicators=None, TTPs=None, Exploit_Targets=None, Incidents=None, Courses_Of_Action=None, Campaigns=None, Threat_Actors=None, Related_Packages=None, idrefns=None, idns=None):
         self.idref = _cast(None, idref)
+        self.idrefns = _cast(None, idrefns)
         self.id = _cast(None, id)
+        self.idns = _cast(None, idns)
         self.timestamp = _cast(None, timestamp)
         self.version = _cast(None, version)
         self.STIX_Header = STIX_Header
@@ -73,9 +75,9 @@ class STIXType(GeneratedsSuper):
     def set_Threat_Actors(self, Threat_Actors): self.Threat_Actors = Threat_Actors
     def get_Related_Packages(self): return self.Related_Packages
     def set_Related_Packages(self, value): self.Related_Packages = value
-    def get_idref(self): return self.idref
+    def get_idref(self): return self.idref, self.idrefns
     def set_idref(self, idref): self.idref = idref
-    def get_id(self): return self.id
+    def get_id(self): return self.id, self.idns
     def set_id(self, id): self.id = id
     def get_version(self): return self.version
     def set_version(self, version): self.version = version
@@ -164,14 +166,16 @@ class STIXType(GeneratedsSuper):
             nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
             self.buildChildren(child, node, nodeName_)
     def buildAttributes(self, node, attrs, already_processed):
-        value = find_attr_value_('idref', node)
+        value,ns = find_attr_value_qname('idref', node)
         if value is not None and 'idref' not in already_processed:
             already_processed.add('idref')
             self.idref = value
-        value = find_attr_value_('id', node)
+            self.idrefns = ns
+        value,ns = find_attr_value_qname('id', node)
         if value is not None and 'id' not in already_processed:
             already_processed.add('id')
             self.id = value
+            self.idns = ns
         value = find_attr_value_('version', node)
         if value is not None and 'version' not in already_processed:
             already_processed.add('version')

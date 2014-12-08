@@ -179,9 +179,10 @@ class Indicator(stix.Entity):
     _ALL_VERSIONS = ("2.0", "2.0.1", "2.1", "2.1.1")
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
-                 description=None, short_description=None):
+                 description=None, short_description=None, idref_ns=None):
         self.id_ = id_ or stix.utils.create_id("indicator")
         self.idref = idref
+        self.idref_ns = idref_ns
         self.version = None # self._version
         self.producer = None
         self.observables = None
@@ -1134,7 +1135,9 @@ class Indicator(stix.Entity):
             return_obj = cls()
 
         return_obj.id_              = obj.id
+        return_obj.id_ns            = obj.idns
         return_obj.idref            = obj.idref
+        return_obj.idref_ns         = obj.idrefns
         return_obj.timestamp        = obj.timestamp
         
         if isinstance(obj, cls._binding_class):

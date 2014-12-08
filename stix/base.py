@@ -7,9 +7,19 @@ import json
 from StringIO import StringIO
 from lxml import etree
 
+class MaybeCodecBuffer():
+    def __init__(self):
+        self.buflist = []
+    def write(self,data):
+        if isinstance(data,unicode):
+            self.buflist.append(data.encode('utf8'))
+        else:
+            self.buflist.append(data)
+    def getvalue(self):
+        return ''.join(self.buflist)
+
 def _override(*args, **kwargs):
     raise NotImplementedError()
-
 
 class Entity(object):
     """Base class for all classes in the STIX API."""
@@ -42,7 +52,7 @@ class Entity(object):
 
     def to_xml(self, include_namespaces=True, include_schemalocs=True,
                ns_dict=None, schemaloc_dict=None, pretty=True,
-               auto_namespace=True):
+               auto_namespace=True, include_idgen=True):
         """Serializes a :class:`Entity` instance to an XML string.
 
         The default character encoding is ``utf-8`` and can be set via the
@@ -94,6 +104,7 @@ class Entity(object):
         if auto_namespace:
             ns_info.finalize()
             obj_ns_dict = ns_info.finalized_namespaces
+            obj_ns_dict.update(ns_dict or {})
         else:
             ns_info = NamespaceInfo()
             ns_info.finalized_namespaces = ns_dict or {}
@@ -104,6 +115,10 @@ class Entity(object):
                     DEFAULT_STIX_NAMESPACES.iteritems()
                 )
             )
+
+        if include_idgen:
+            from stix.utils.idgen import get_id_namespace, get_id_namespace_alias
+            obj_ns_dict[ get_id_namespace() ] = get_id_namespace_alias()
 
         namespace_def = ""
         if include_namespaces:
@@ -117,7 +132,7 @@ class Entity(object):
         if not pretty:
             namespace_def = namespace_def.replace('\n\t', ' ')
 
-        s = StringIO()
+        s = MaybeCodecBuffer()
         obj.export(
             s.write,                      # output buffer
             0,                            # output level

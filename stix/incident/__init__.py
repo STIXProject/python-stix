@@ -35,9 +35,10 @@ class Incident(stix.Entity):
     _version = "1.1.1"
     _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1")
 
-    def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
+    def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None, idref_ns=None):
         self.id_ = id_ or stix.utils.create_id("incident")
         self.idref = idref
+        self.idref_ns = idref_ns
         self.version = None # self._version
         self.description = description
         self.short_description = short_description
@@ -536,7 +537,9 @@ class Incident(stix.Entity):
             return_obj = cls()
 
         return_obj.id_ = obj.id
+        return_obj.id_ns = obj.idns
         return_obj.idref = obj.idref
+        return_obj.idref_ns = obj.idrefns
         return_obj.timestamp = obj.timestamp
         
         if isinstance(obj, cls._binding_class):
