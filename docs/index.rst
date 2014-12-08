@@ -11,6 +11,8 @@ The **python-stix** library provides an API for developing and consuming *Struct
 
 .. _STIX website: http://stix.mitre.org
 
+.. _version-support:
+
 Versions
 --------
 Each version of python-stix is designed to work with a single version of the
@@ -20,20 +22,30 @@ version of STIX.
 ============ ===================
 STIX Version python-stix Version
 ============ ===================
-1.1.1        1.1.1.1 (`PyPI`__) (`GitHub`__)
+1.1.1        1.1.1.2 (`PyPI`__) (`GitHub`__)
 1.1.0        1.1.0.6 (`PyPI`__) (`GitHub`__)
 1.0.1        1.0.1.1 (`PyPI`__) (`GitHub`__)
 1.0          1.0.0a7 (`PyPI`__) (`GitHub`__)
 ============ ===================
 
-__ https://pypi.python.org/pypi/stix/1.1.1.1
-__ https://github.com/STIXProject/python-stix/tree/v1.1.1.1
+__ https://pypi.python.org/pypi/stix/1.1.1.2
+__ https://github.com/STIXProject/python-stix/tree/v1.1.1.2
 __ https://pypi.python.org/pypi/stix/1.1.0.6
 __ https://github.com/STIXProject/python-stix/tree/v1.1.0.6
 __ https://pypi.python.org/pypi/stix/1.0.1.1
 __ https://github.com/STIXProject/python-stix/tree/v1.0.1.1
 __ https://pypi.python.org/pypi/stix/1.0.0a7
 __ https://github.com/STIXProject/python-stix/tree/v1.0.0a7
+
+Users and developers working with multiple versions of STIX content may want
+to take a look at `stix-ramrod`_, which is a library designed to update STIX
+and CybOX content.
+
+Check out the `Working with python-stix`_ section for examples on how to
+integrate **stix-ramrod** and **python-stix**.
+
+.. _stix-ramrod: http://stix-ramrod.readthedocs.org/en/latest/
+.. _Working With python-stix: http://stix-ramrod.readthedocs.org/en/latest/api/examples.html#working-with-python-stix
 
 
 Contents
@@ -50,17 +62,10 @@ API Reference
 =============
 
 .. toctree::
-   :maxdepth: 1
+   :maxdepth: 2
 
    api/index
-   
-Bindings Reference
-==================
-
-.. toctree::
-   :maxdepth: 1
-
-   binding/index
+   api/coverage
 
 Contributing
 ============

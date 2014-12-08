@@ -25,7 +25,7 @@ class Confidence(stix.Entity):
         self.description = description
         self.source = source
         #TODO: support confidence_assertion_chain
-        #self.onfidence_assertion_chain = None
+        #self.confidence_assertion_chain = None
 
     @property
     def timestamp(self):
@@ -163,7 +163,7 @@ class ConfidenceAssertionChain(stix.Entity):
 
     def add_confidence_assertion(self, confidence_assertion):
         if isinstance(confidence_assertion, Confidence):
-            self.confidence_assertion.append(confidence_assertion)
+            self.confidence_assertions.append(confidence_assertion)
         else:
             tmp_confidence = Confidence(value=confidence_assertion)
             self.confidence_assertions.append(tmp_confidence)

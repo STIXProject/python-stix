@@ -2,11 +2,14 @@
 # See LICENSE.txt for complete terms.
 
 import warnings
+import itertools
+
 from stix import Entity as StixEntity
 from cybox import Entity as CyboxEntity
 from cybox.common import ObjectProperties, BaseProperty
 from cybox.common import VocabString as CyboxVocabString
 import cybox.utils.nsparser as cybox_nsparser
+from stix.utils import ignored
 
 class NamespaceInfo(object):
     def __init__(self):
@@ -20,8 +23,10 @@ class NamespaceInfo(object):
         self.input_schemalocs.update(ns_info.input_schemalocs)
 
     def finalize(self, ns_dict=None, schemaloc_dict=None):
-        from stix.utils import (DEFAULT_STIX_NAMESPACES, XML_NAMESPACES,
-                                DEFAULT_STIX_SCHEMALOCATIONS)
+        from stix.utils import (
+            DEFAULT_STIX_NAMESPACES, XML_NAMESPACES,
+            DEFAULT_STIX_SCHEMALOCATIONS,
+        )
 
         if not ns_dict:
             ns_dict = {}
@@ -29,17 +34,20 @@ class NamespaceInfo(object):
         if not schemaloc_dict:
             schemaloc_dict = {}
 
-        d_ns = {'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
-                'http://stix.mitre.org/stix-1': 'stix',
-                'http://stix.mitre.org/common-1': 'stixCommon',
-                'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
-                'http://cybox.mitre.org/cybox-2': 'cybox',
-                'http://cybox.mitre.org/common-2': 'cyboxCommon',
-                'http://cybox.mitre.org/default_vocabularies-2': 'cyboxVocabs'}
+        d_ns = {
+            'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
+            'http://stix.mitre.org/stix-1': 'stix',
+            'http://stix.mitre.org/common-1': 'stixCommon',
+            'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
+            'http://cybox.mitre.org/cybox-2': 'cybox',
+            'http://cybox.mitre.org/common-2': 'cyboxCommon',
+            'http://cybox.mitre.org/default_vocabularies-2': 'cyboxVocabs',
+        }
 
         for ns, alias in self.input_namespaces.iteritems():
             if ns not in DEFAULT_STIX_NAMESPACES:
                 d_ns[ns] = alias
+
 
         for ns, alias in self.namespaces.iteritems():
             if alias:
@@ -50,8 +58,15 @@ class NamespaceInfo(object):
 
         d_ns.update(ns_dict)
 
-        if all((d_ns.get('http://example.com/'),
-               d_ns.get('http://example.com'))):
+        # Attempts to resolve issues where our samples use
+        # 'http://example.com/' for our example namespace but python-stix uses
+        # 'http://example.com' by removing the former.
+        examples = (
+            ('http://example.com/' in d_ns),
+            ('http://example.com' in d_ns)
+        )
+
+        if all(examples):
             del d_ns['http://example.com/']
 
         aliases = []
@@ -61,8 +76,11 @@ class NamespaceInfo(object):
             else:
                 # TODO: Should we just throw an exception here?
                 # The XML will be invalid if there is a duplicate ns alias
-                warnings.warn("namespace alias '%s' mapped to '%s' and '%s'" %
-                              (alias, ns, aliases[alias]))
+                warnings.warn(
+                    "namespace alias '{0}' mapped to '{1}' and '{2}'".format(
+                        alias, ns, aliases[alias]
+                    )
+                )
 
         d_sl = dict(self.input_schemalocs.items())
 
@@ -73,17 +91,22 @@ class NamespaceInfo(object):
                 schemalocation = DEFAULT_STIX_SCHEMALOCATIONS[ns]
                 d_sl[ns] = schemalocation
             else:
-                if not ((ns in schemaloc_dict) or
-                        (ns in self.input_schemalocs) or
-                        (ns in XML_NAMESPACES)):
-                    warnings.warn("Unable to map namespace '%s' to "
-                                  "schemaLocation" % ns)
+                unmappable = (
+                    (ns in schemaloc_dict),
+                    (ns in self.input_schemalocs),
+                    (ns in XML_NAMESPACES)
+                )
+
+                if any(unmappable):
+                    continue
+
+                warnings.warn(
+                    "Unable to map namespace '%s' to schemaLocation" % ns
+                )
 
         d_sl.update(schemaloc_dict)
-
         self.finalized_schemalocs = d_sl
         self.finalized_namespaces = d_ns
-
 
     def collect(self, entity):
         # Traverse the MRO so we can collect _namespace attributes on Entity
@@ -157,7 +180,6 @@ class NamespaceParser(object):
                 # no _fields or itervalues()
                 pass
 
-
         visited = []
         def descend(obj):
             for member in get_members(obj):
@@ -167,7 +189,7 @@ class NamespaceParser(object):
                         yield i
 
                 if hasattr(member, "__getitem__"):
-                   for i in member:
+                    for i in member:
                         if '_namespace' in i.__class__.__dict__:
                             yield i
                             for d in descend(i):
@@ -182,6 +204,7 @@ class NamespaceParser(object):
 
     def get_namespaces(self, entity, ns_dict=None):
         ns_info = NamespaceInfo()
+
         for node in self._walkns(entity):
             ns_info.collect(node)
 
@@ -191,6 +214,7 @@ class NamespaceParser(object):
 
     def get_namespace_schemalocation_dict(self, entity, ns_dict=None, schemaloc_dict=None):
         ns_info = NamespaceInfo()
+
         for node in self._walkns(entity):
             ns_info.collect(node)
 
@@ -199,8 +223,10 @@ class NamespaceParser(object):
 
 
     def get_xmlns_str(self, ns_dict):
-        return "\n\t".join(['xmlns:%s="%s"' %
-                            (alias, ns) for ns, alias in sorted(ns_dict.iteritems())])
+        pairs = sorted(ns_dict.iteritems())
+        return "\n\t".join(
+            'xmlns:%s="%s"' % (alias, ns) for ns, alias in pairs
+        )
 
 
     def get_schemaloc_str(self, schemaloc_dict):
@@ -209,30 +235,42 @@ class NamespaceParser(object):
 
         schemaloc_str_start = 'xsi:schemaLocation="\n\t'
         schemaloc_str_end = '"'
-        schemaloc_str_content = "\n\t".join(["%s %s" %
-                                             (ns, loc) for ns, loc in sorted(schemaloc_dict.iteritems())])
+
+        pairs = sorted(schemaloc_dict.iteritems())
+        schemaloc_str_content = "\n\t".join(
+            "%s %s" % (ns, loc) for ns, loc in pairs
+        )
+
         return schemaloc_str_start + schemaloc_str_content + schemaloc_str_end
 
 
     def get_namespace_def_str(self, namespaces, schemaloc_dict):
-        if not (namespaces or schemaloc_dict):
+        if not any((namespaces, schemaloc_dict)):
             return ""
 
-        return ("\n\t" + self.get_xmlns_str(namespaces) + "\n\t" +
-               self.get_schemaloc_str(schemaloc_dict))
+        parts = (
+            self.get_xmlns_str(namespaces),
+            self.get_schemaloc_str(schemaloc_dict)
+        )
+
+        return "\n\t".join(parts)
 
 
-XML_NAMESPACES = {'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
-                  'http://www.w3.org/2001/XMLSchema': 'xs',
-                  'http://www.w3.org/1999/xlink': 'xlink',
-                  'http://www.w3.org/2000/09/xmldsig#': 'ds'}
 
-# Schema locations for namespaces defined by the STIX language
+#: Schema locations for standard XML namespaces
+XML_NAMESPACES = {
+    'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
+    'http://www.w3.org/2001/XMLSchema': 'xs',
+    'http://www.w3.org/1999/xlink': 'xlink',
+    'http://www.w3.org/2000/09/xmldsig#': 'ds'
+}
+
+#: Schema locations for namespaces defined by the STIX language
 STIX_NS_TO_SCHEMALOCATION = {
     'http://data-marking.mitre.org/Marking-1': 'http://stix.mitre.org/XMLSchema/data_marking/1.1.1/data_marking.xsd',
     'http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1': 'http://stix.mitre.org/XMLSchema/extensions/marking/simple/1.1.1/simple_marking.xsd',
     'http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1': 'http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.1.1/tlp_marking.xsd',
-    'http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1': 'http://stix.mitre.org/XMLSchema/extensions/marking/terms_of_use/1.0/terms_of_use_marking.xsd',
+    'http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1': 'http://stix.mitre.org/XMLSchema/extensions/marking/terms_of_use/1.0.1/terms_of_use_marking.xsd',
     'http://stix.mitre.org/Campaign-1': 'http://stix.mitre.org/XMLSchema/campaign/1.1.1/campaign.xsd',
     'http://stix.mitre.org/CourseOfAction-1': 'http://stix.mitre.org/XMLSchema/course_of_action/1.1.1/course_of_action.xsd',
     'http://stix.mitre.org/ExploitTarget-1': 'http://stix.mitre.org/XMLSchema/exploit_target/1.1.1/exploit_target.xsd',
@@ -253,16 +291,20 @@ STIX_NS_TO_SCHEMALOCATION = {
     'http://stix.mitre.org/extensions/TestMechanism#Snort-1': 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/snort/1.1.1/snort_test_mechanism.xsd',
     'http://stix.mitre.org/extensions/TestMechanism#YARA-1': 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/yara/1.1.1/yara_test_mechanism.xsd',
     'http://stix.mitre.org/extensions/Vulnerability#CVRF-1': 'http://stix.mitre.org/XMLSchema/extensions/vulnerability/cvrf_1.1/1.1.1/cvrf_1.1_vulnerability.xsd',
-    'http://stix.mitre.org/stix-1': 'http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd'}
+    'http://stix.mitre.org/stix-1': 'http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd'
+}
 
+#: Schema locations for namespaces defined by the CybOX language
 CYBOX_NS_TO_SCHEMALOCATION = dict((ns, schemaloc) for ns, _, schemaloc in cybox_nsparser.NS_LIST if schemaloc)
 
-# Schema locations for namespaces not defined by STIX, but hosted on the STIX website
-EXT_NS_TO_SCHEMALOCATION = {'urn:oasis:names:tc:ciq:xal:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xAL.xsd',
-                            'urn:oasis:names:tc:ciq:xpil:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd',
-                            'urn:oasis:names:tc:ciq:xnl:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xNL.xsd'}
+#: Schema locations for namespaces not defined by STIX, but hosted on the STIX website
+EXT_NS_TO_SCHEMALOCATION = {
+    'urn:oasis:names:tc:ciq:xal:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xAL.xsd',
+    'urn:oasis:names:tc:ciq:xpil:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd',
+    'urn:oasis:names:tc:ciq:xnl:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xNL.xsd'
+}
 
-# Default namespace->alias mappings. These can be overriden by user-provided dictionaries on export
+#: Default namespace->alias mappings. These can be overriden by user-provided dictionaries on export.
 DEFAULT_STIX_NS_TO_PREFIX = {
     'http://cybox.mitre.org/common-2': 'cyboxCommon',
     'http://cybox.mitre.org/cybox-2': 'cybox',
@@ -290,11 +332,13 @@ DEFAULT_STIX_NS_TO_PREFIX = {
     'http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1': 'stix-openioc',
     'http://stix.mitre.org/extensions/TestMechanism#Snort-1': 'snortTM',
     'http://stix.mitre.org/extensions/TestMechanism#YARA-1': 'yaraTM',
-    'http://stix.mitre.org/extensions/Vulnerability#CVRF-1': 'stix-cvrf'}
+    'http://stix.mitre.org/extensions/Vulnerability#CVRF-1': 'stix-cvrf'
+}
 
+#: Mapping of extension namespaces to their (typical) prefixes.
 DEFAULT_EXT_TO_PREFIX = {
     'http://capec.mitre.org/capec-2': 'capec',
-    'http://maec.mitre.org/XMLSchema/maec-package-2': 'maec',
+    'http://maec.mitre.org/XMLSchema/maec-package-2': 'maecPackage',
     'http://oval.mitre.org/XMLSchema/oval-definitions-5': 'oval-def',
     'http://oval.mitre.org/XMLSchema/oval-variables-5': 'oval-var',
     'http://schemas.mandiant.com/2010/ioc': 'ioc',
@@ -302,15 +346,39 @@ DEFAULT_EXT_TO_PREFIX = {
     'http://www.icasi.org/CVRF/schema/cvrf/1.1': 'cvrf',
     'urn:oasis:names:tc:ciq:xal:3': 'xal',
     'urn:oasis:names:tc:ciq:xpil:3': 'xpil',
-    'urn:oasis:names:tc:ciq:xnl:3': 'xnl'}
+    'urn:oasis:names:tc:ciq:xnl:3': 'xnl'
+}
 
-DEFAULT_CYBOX_NAMESPACES = dict((ns, alias) for (ns, alias, _) in cybox_nsparser.NS_LIST)
+DEFAULT_CYBOX_NAMESPACES = dict(
+    (ns, alias) for (ns, alias, _) in cybox_nsparser.NS_LIST
+)
 
-DEFAULT_STIX_NAMESPACES  = dict(DEFAULT_CYBOX_NAMESPACES.items() +
-                                XML_NAMESPACES.items() +
-                                DEFAULT_STIX_NS_TO_PREFIX.items() +
-                                DEFAULT_EXT_TO_PREFIX.items())
+DEFAULT_STIX_NAMESPACES  = dict(
+    itertools.chain(
+        DEFAULT_CYBOX_NAMESPACES.iteritems(),
+        XML_NAMESPACES.iteritems(),
+        DEFAULT_STIX_NS_TO_PREFIX.iteritems(),
+        DEFAULT_EXT_TO_PREFIX.iteritems()
+    )
+)
 
-DEFAULT_STIX_SCHEMALOCATIONS = dict(STIX_NS_TO_SCHEMALOCATION.items() +
-                                    EXT_NS_TO_SCHEMALOCATION.items() +
-                                    CYBOX_NS_TO_SCHEMALOCATION.items())
+DEFAULT_STIX_SCHEMALOCATIONS = dict(
+    itertools.chain(
+        STIX_NS_TO_SCHEMALOCATION.iteritems(),
+        EXT_NS_TO_SCHEMALOCATION.iteritems(),
+        CYBOX_NS_TO_SCHEMALOCATION.iteritems(),
+    )
+)
+
+# python-maec support code
+with ignored(ImportError):
+    from maec.utils.nsparser import NS_LIST
+
+    DEFAULT_MAEC_NAMESPACES = dict((ns, alias) for (ns, alias, _) in NS_LIST)
+    del DEFAULT_MAEC_NAMESPACES['http://maec.mitre.org/default_vocabularies-1']
+    MAEC_NS_TO_SCHEMALOCATION = dict(
+        (ns, schemaloc) for ns, _, schemaloc in NS_LIST if schemaloc
+    )
+
+    DEFAULT_STIX_NAMESPACES.update(DEFAULT_MAEC_NAMESPACES)
+    DEFAULT_STIX_SCHEMALOCATIONS.update(MAEC_NS_TO_SCHEMALOCATION)

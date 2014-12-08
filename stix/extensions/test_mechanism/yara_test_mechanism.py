@@ -50,8 +50,11 @@ class YaraTestMechanism(_BaseTestMechanism):
             return_obj = self._binding_class()
             
         super(YaraTestMechanism, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-        return_obj.Version = self.version
-        return_obj.Rule = self.rule.to_obj(ns_info=ns_info)
+
+        if self.version:
+            return_obj.Version = self.version
+        if self.rule:
+            return_obj.Rule = self.rule.to_obj(ns_info=ns_info)
         
         return return_obj
     

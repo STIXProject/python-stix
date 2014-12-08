@@ -20,7 +20,7 @@ that shouldn't be done in production code:
   constructs.
 
 See the `STIX Idioms <http://stixproject.github.io/documentation/idioms/>`_
-documentation for more great examples of how to use ``python-stix``.
+documentation for more great examples of how to use **python-stix**.
 
 
 Creating a STIX Package
@@ -49,10 +49,9 @@ Which outputs:
         </stix:STIX_Header>
     </stix:STIX_Package>
 
-
 ID Namespaces
 -------------
-By default, ``python-stix`` sets the default ID namespace to
+By default, **python-stix** sets the default ID namespace to
 ``http://example.com`` with an alias of ``example``. This results in STIX
 id declarations that look like
 ``id="example:Package-2813128d-f45e-41f7-b10a-20a5656e3785"``.
@@ -95,8 +94,8 @@ Working With CybOX
 If you are creating CybOX entities such as ``Observables``, you'll want to set
 the ID namespace for ``python-cybox`` as well.
 
-Note that ``python-stix`` and ``python-cybox`` treat namespaces slightly
-differently (for now anyway). Where ``python-stix`` uses Python dictionaries,
+Note that **python-stix** and ``python-cybox`` treat namespaces slightly
+differently (for now anyway). Where **python-stix** uses Python dictionaries,
 ``python-cybox`` uses the ``cybox.utils.Namespace`` class to represent a
 namespace.
 
@@ -135,7 +134,7 @@ which acts as a base type for controlled vocabulary implementations. The STIX
 language defines a set of default controlled vocabularies which are  found in
 the ``stix_default_vocabs.xsd`` XML Schema file.
 
-The ``python-stix`` library contains a ``stix.common.vocabs`` module, which
+The **python-stix** library contains a ``stix.common.vocabs`` module, which
 defines the ``VocabString`` class implementation of the schema
 ``ControlledVocabularyStringType`` as well as ``VocabString`` implementations
 which correspond to default controlled vocabularies.
@@ -199,7 +198,7 @@ Which outputs:
 Non-Default Vocabulary Terms
 ############################
 Though it is suggested, STIX content authors are not required to use the default
-controlled vocabulary for a given field. As such, ``python-stix`` allows users
+controlled vocabulary for a given field. As such, **python-stix** allows users
 to pass in non-default values for controlled vocabulary fields.
 
 To set a controlled vocabulary to a non-default vocabulary term, pass a

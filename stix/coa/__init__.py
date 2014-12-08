@@ -30,6 +30,7 @@ class CourseOfAction(stix.Entity):
     _binding_class = coa_binding.CourseOfActionType
     _namespace = "http://stix.mitre.org/CourseOfAction-1"
     _version = "1.1.1"
+    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1")
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("coa")
@@ -77,10 +78,11 @@ class CourseOfAction(stix.Entity):
         if not value:
             self._version = None
         else:
-            if value != CourseOfAction._version:
-                self._version = value
-            else:
-                self._version = None
+            if value not in self._ALL_VERSIONS:
+                msg = ("Version must be one of %s. Found '%s'" %
+                      (self._ALL_VERSIONS, value))
+                raise ValueError(msg)
+            self._version = value
     
     @property
     def idref(self):
@@ -293,7 +295,7 @@ class CourseOfAction(stix.Entity):
         return_obj.timestamp = obj.timestamp
 
         if isinstance(obj, cls._binding_class): # CourseOfActionType properties
-            return_obj.version = obj.version or cls._version
+            return_obj.version = obj.version
             return_obj.title = obj.Title
             return_obj.stage = VocabString.from_obj(obj.Stage)
             return_obj.type_ = VocabString.from_obj(obj.Type)
@@ -323,7 +325,7 @@ class CourseOfAction(stix.Entity):
         if self.timestamp:
             d['timestamp'] = self.timestamp.isoformat()
         if self.version:
-            d['version'] = self.version or self._version
+            d['version'] = self.version
         if self.title:
             d['title'] = self.title
         if self.stage:
@@ -367,7 +369,7 @@ class CourseOfAction(stix.Entity):
         return_obj.id_ = dict_repr.get('id')
         return_obj.idref = dict_repr.get('idref')
         return_obj.timestamp = dict_repr.get('timestamp')
-        return_obj.version = dict_repr.get('version', cls._version)
+        return_obj.version = dict_repr.get('version')
         return_obj.title = dict_repr.get('title')
         return_obj.stage = VocabString.from_dict(dict_repr.get('stage'))
         return_obj.type_ = VocabString.from_dict(dict_repr.get('type'))

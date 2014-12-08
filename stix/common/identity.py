@@ -152,6 +152,7 @@ class RelatedIdentities(stix.EntityList):
     _inner_name = "identities"
 
 
+#: Mapping of identity extension types to classes
 _EXTENSION_MAP = {}
 def add_extension(cls):
     _EXTENSION_MAP[cls._XSI_TYPE] = cls
