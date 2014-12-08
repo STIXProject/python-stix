@@ -242,7 +242,19 @@ class AssetType(VocabString):
     def is_plain(self):
         '''Override VocabString.is_plain()'''
         return False
-    
+
+    @property
+    def count_affected(self):
+        return self._count_affected
+
+    @count_affected.setter
+    def count_affected(self, value):
+        if value is None:
+            self._count_affected = None
+            return
+
+        self._count_affected = int(value)
+
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:

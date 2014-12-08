@@ -4,14 +4,17 @@
 import stix
 import stix.utils
 from stix.utils import dates
-from stix.common import (Identity, InformationSource, StructuredText,
-                         VocabString, Confidence, RelatedTTP, Statement)
+from stix.common import (
+    Identity, InformationSource, StructuredText, VocabString, Confidence,
+    RelatedTTP, Statement
+)
 import stix.bindings.indicator as indicator_binding
 from .test_mechanism import _BaseTestMechanism
 from .sightings import Sightings
 from .valid_time import ValidTime
-from stix.common.related import (GenericRelationshipList, RelatedCOA,
-                                 RelatedIndicator)
+from stix.common.related import (
+    GenericRelationshipList, RelatedCOA, RelatedIndicator
+)
 from stix.data_marking import Marking
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
@@ -173,6 +176,7 @@ class Indicator(stix.Entity):
     _binding_class = indicator_binding.IndicatorType
     _namespace = 'http://stix.mitre.org/Indicator-2'
     _version = "2.1.1"
+    _ALL_VERSIONS = ("2.0", "2.0.1", "2.1", "2.1.1")
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
@@ -256,10 +260,11 @@ class Indicator(stix.Entity):
         if not value:
             self._version = None
         else:
-            if value != Indicator._version:
-                self._version = value
-            else:
-                self._version = None
+            if value not in self._ALL_VERSIONS:
+                msg = ("Version must be one of %s. Found '%s'" %
+                      (self._ALL_VERSIONS, value))
+                raise ValueError(msg)
+            self._version = value
     
     @property
     def idref(self):
@@ -1236,7 +1241,7 @@ class Indicator(stix.Entity):
         return_obj.timestamp = dict_repr.get('timestamp')
         return_obj.title     = dict_repr.get('title')
         return_obj.negate    = dict_repr.get('negate', None)
-        return_obj.version   = dict_repr.get('version', cls._version)
+        return_obj.version   = dict_repr.get('version')
         observable_dict      = dict_repr.get('observable')
         producer_dict        = dict_repr.get('producer')
         description_dict     = dict_repr.get('description')
@@ -1263,7 +1268,7 @@ class Indicator(stix.Entity):
         if description_dict:
             return_obj.description = StructuredText.from_dict(description_dict)
         for indicator_type_dict in indicator_type_list:
-                return_obj.add_indicator_type(VocabString.from_dict(indicator_type_dict))
+            return_obj.add_indicator_type(VocabString.from_dict(indicator_type_dict))
         if confidence_dict:
             return_obj.confidence = Confidence.from_dict(confidence_dict)
         if alternative_id_dict:

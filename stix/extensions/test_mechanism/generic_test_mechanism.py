@@ -80,10 +80,14 @@ class GenericTestMechanism(_BaseTestMechanism):
             return_obj = self._binding_class()
             
         super(GenericTestMechanism, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-        return_obj.reference_location = self.reference_location
-        return_obj.Description = self.description.to_obj(ns_info=ns_info)
-        return_obj.Type = self.type_.to_obj(ns_info=ns_info)
-        return_obj.Specification = self.specification.to_obj(ns_info=ns_info)
+        if self.reference_location:
+            return_obj.reference_location = self.reference_location
+        if self.description:
+            return_obj.Description = self.description.to_obj(ns_info=ns_info)
+        if self.type_:
+            return_obj.Type = self.type_.to_obj(ns_info=ns_info)
+        if self.specification:
+            return_obj.Specification = self.specification.to_obj(ns_info=ns_info)
         
         return return_obj
     
