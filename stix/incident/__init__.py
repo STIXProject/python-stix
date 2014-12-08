@@ -33,6 +33,7 @@ class Incident(stix.Entity):
     _binding_class = _binding.IncidentType
     _namespace = "http://stix.mitre.org/Incident-1"
     _version = "1.1.1"
+    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1")
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         self.id_ = id_ or stix.utils.create_id("incident")
@@ -91,10 +92,11 @@ class Incident(stix.Entity):
         if not value:
             self._version = None
         else:
-            if value != Incident._version:
-                self._version = value
-            else:
-                self._version = None
+            if value not in self._ALL_VERSIONS:
+                msg = ("Version must be one of %s. Found '%s'" %
+                      (self._ALL_VERSIONS, value))
+                raise ValueError(msg)
+            self._version = value
     
     @property
     def idref(self):
@@ -461,6 +463,7 @@ class Incident(stix.Entity):
             raise ValueError("Cannot add coa_taken of type %s" % type(value))
 
     def to_obj(self, return_obj=None, ns_info=None):
+        super(Incident, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             return_obj = self._binding_class()
@@ -537,7 +540,7 @@ class Incident(stix.Entity):
         return_obj.timestamp = obj.timestamp
         
         if isinstance(obj, cls._binding_class):
-            return_obj.version = obj.version or cls._version
+            return_obj.version = obj.version
             return_obj.title = obj.Title
             return_obj.description = StructuredText.from_obj(obj.Description)
             return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
@@ -590,7 +593,7 @@ class Incident(stix.Entity):
         if self.timestamp:
             d['timestamp'] = dates.serialize_value(self.timestamp)
         if self.version:
-            d['version'] = self.version or self._version
+            d['version'] = self.version
         if self.title:
             d['title'] = self.title
         if self.description:
@@ -656,7 +659,7 @@ class Incident(stix.Entity):
         return_obj.id_ = dict_repr.get('id')
         return_obj.idref = dict_repr.get('idref')
         return_obj.timestamp = dict_repr.get('timestamp')
-        return_obj.version = dict_repr.get('version', cls._version)
+        return_obj.version = dict_repr.get('version')
         return_obj.title = dict_repr.get('title')
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
@@ -670,7 +673,7 @@ class Incident(stix.Entity):
         return_obj.intended_effects = [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
         return_obj.leveraged_ttps = LeveragedTTPs.from_dict(dict_repr.get('leveraged_ttps'))
         return_obj.affected_assets = [AffectedAsset.from_dict(x) for x in dict_repr.get('affected_assets', [])]
-        return_obj.discovery_methdos = [DiscoveryMethod.from_dict(x) for x in dict_repr.get('discovery_methods', [])]
+        return_obj.discovery_methods = [DiscoveryMethod.from_dict(x) for x in dict_repr.get('discovery_methods', [])]
         return_obj.reporter = InformationSource.from_dict(dict_repr.get('reporter'))
         return_obj.responders = [InformationSource.from_dict(x) for x in dict_repr.get('responders', [])]
         return_obj.coordinators = [InformationSource.from_dict(x) for x in dict_repr.get('coordinators', [])]
@@ -681,7 +684,7 @@ class Incident(stix.Entity):
         return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
         return_obj.coa_taken = [COATaken.from_dict(x) for x in dict_repr.get('coa_taken', [])]
         return_obj.status = VocabString.from_dict(dict_repr.get('status'))
-        return_obj.handling = Marking.from_obj(dict_repr.get('handling'))
+        return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
         return_obj.history = History.from_dict(dict_repr.get('history'))
         
         return return_obj

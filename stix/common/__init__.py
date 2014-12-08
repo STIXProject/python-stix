@@ -44,7 +44,9 @@ RelatedPackage._base_type = STIXPackage
 RelatedPackages._contained_type = RelatedPackage
 
 import stix
+import stix.utils as utils
 import stix.bindings.stix_common as common_binding
+
 class EncodedCDATA(stix.Entity):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
@@ -70,9 +72,10 @@ class EncodedCDATA(stix.Entity):
 
         if not return_obj:
             return_obj = self._binding_class()
-            
-        return_obj.valueOf_ = self.value
+
         return_obj.encoded = self.encoded
+        return_obj.valueOf_ = utils.cdata(self.value)
+
         return return_obj
     
     @classmethod

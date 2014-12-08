@@ -30,11 +30,14 @@ class VocabString(stix.Entity):
     
     @value.setter
     def value(self, v):
+        allowed = self._ALLOWED_VALUES
+
         if not v:
             self._value = None
-        elif self._ALLOWED_VALUES:
-            if v not in self._ALLOWED_VALUES:
-                raise ValueError('value must be one of [%s]. Received "%s"' % (", ".join(self._ALLOWED_VALUES), v))
+        elif allowed and (v not in allowed):
+            raise ValueError(
+                'Value must be one of %s. Received "%s"' % (allowed, v)
+            )
         
         self._value = v
 
@@ -150,8 +153,15 @@ class VocabString(stix.Entity):
 class AvailabilityLossType(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:AvailabilityLossTypeVocab-1.1.1'
-    _ALLOWED_VALUES = ('Destruction', 'Loss', 'Interruption', 'Degradation', 'Acceleration', 'Obscuration', 'Unknown')
-    
+    _ALLOWED_VALUES = (
+        'Destruction',
+        'Loss',
+        'Interruption',
+        'Degradation',
+        'Acceleration',
+        'Obscuration',
+        'Unknown'
+    )
     TERM_DESTRUCTION = "Destruction"
     TERM_LOSS = "Loss"
     TERM_INTERRUPTION = "Interruption"
@@ -164,8 +174,25 @@ class AvailabilityLossType(VocabString):
 class ThreatActorType(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:ThreatActorTypeVocab-1.0'
-    _ALLOWED_VALUES = ('Cyber Espionage Operations', 'Hacker', 'Hacker - White hat', 'Hacker - Gray hat', 'Hacker - Black hat', 'Hacktivist', 'State Actor / Agency', 'eCrime Actor - Credential Theft Botnet Operator', 'eCrime Actor - Credential Theft Botnet Service', 'eCrime Actor - Malware Developer', 'eCrime Actor - Money Laundering Network', 'eCrime Actor - Organized Crime Actor', 'eCrime Actor - Spam Service', 'eCrime Actor - Traffic Service', 'eCrime Actor - Underground Call Service', 'Insider Threat', 'Disgruntled Customer / User')
-    
+    _ALLOWED_VALUES = (
+        'Cyber Espionage Operations',
+        'Hacker',
+        'Hacker - White hat',
+        'Hacker - Gray hat',
+        'Hacker - Black hat',
+        'Hacktivist',
+        'State Actor / Agency',
+        'eCrime Actor - Credential Theft Botnet Operator',
+        'eCrime Actor - Credential Theft Botnet Service',
+        'eCrime Actor - Malware Developer',
+        'eCrime Actor - Money Laundering Network',
+        'eCrime Actor - Organized Crime Actor',
+        'eCrime Actor - Spam Service',
+        'eCrime Actor - Traffic Service',
+        'eCrime Actor - Underground Call Service',
+        'Insider Threat',
+        'Disgruntled Customer / User'
+    )
     TERM_CYBER_ESPIONAGE_OPERATIONS = "Cyber Espionage Operations"
     TERM_HACKER = "Hacker"
     TERM_HACKER_WHITE_HAT = "Hacker - White hat"
@@ -189,8 +216,32 @@ class ThreatActorType(VocabString):
 class AttackerInfrastructureType(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:AttackerInfrastructureTypeVocab-1.0'
-    _ALLOWED_VALUES = ('Anonymization', 'Anonymization - Proxy', 'Anonymization - TOR Network', 'Anonymization - VPN', 'Communications', 'Communications - Blogs', 'Communications - Forums', 'Communications - Internet Relay Chat', 'Communications - Micro-Blogs', 'Communications - Mobile Communications', 'Communications - Social Networks', 'Communications - User-Generated Content Websites', 'Domain Registration', 'Domain Registration - Dynamic DNS Services', 'Domain Registration - Legitimate Domain Registration Services', 'Domain Registration - Malicious Domain Registrars', 'Domain Registration - Top-Level Domain Registrars', 'Hosting', 'Hosting - Bulletproof / Rogue Hosting', 'Hosting - Cloud Hosting', 'Hosting - Compromised Server', 'Hosting - Fast Flux Botnet Hosting', 'Hosting - Legitimate Hosting', 'Electronic Payment Methods')
-    
+    _ALLOWED_VALUES = (
+        'Anonymization',
+        'Anonymization - Proxy',
+        'Anonymization - TOR Network',
+        'Anonymization - VPN',
+        'Communications',
+        'Communications - Blogs',
+        'Communications - Forums',
+        'Communications - Internet Relay Chat',
+        'Communications - Micro-Blogs',
+        'Communications - Mobile Communications',
+        'Communications - Social Networks',
+        'Communications - User-Generated Content Websites',
+        'Domain Registration',
+        'Domain Registration - Dynamic DNS Services',
+        'Domain Registration - Legitimate Domain Registration Services',
+        'Domain Registration - Malicious Domain Registrars',
+        'Domain Registration - Top-Level Domain Registrars',
+        'Hosting',
+        'Hosting - Bulletproof / Rogue Hosting',
+        'Hosting - Cloud Hosting',
+        'Hosting - Compromised Server',
+        'Hosting - Fast Flux Botnet Hosting',
+        'Hosting - Legitimate Hosting',
+        'Electronic Payment Methods'
+    )
     TERM_ANONYMIZATION = "Anonymization"
     TERM_ANONYMIZATION_PROXY = "Anonymization - Proxy"
     TERM_ANONYMIZATION_TOR_NETWORK = "Anonymization - TOR Network"
@@ -221,8 +272,26 @@ class AttackerInfrastructureType(VocabString):
 class DiscoveryMethod(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:DiscoveryMethodVocab-1.0'
-    _ALLOWED_VALUES = ('Agent Disclosure', 'Fraud Detection', 'Monitoring Service', 'Law Enforcement', 'Customer', 'Unrelated Party', 'Audit', 'Antivirus', 'Incident Response', 'Financial Audit', 'Fraud Detection', 'HIPS', 'IT Audit', 'Log Review', 'NIDS', 'Security Alarm', 'User', 'Unknown')
-    
+    _ALLOWED_VALUES = (
+        'Agent Disclosure',
+        'Fraud Detection',
+        'Monitoring Service',
+        'Law Enforcement',
+        'Customer',
+        'Unrelated Party',
+        'Audit',
+        'Antivirus',
+        'Incident Response',
+        'Financial Audit',
+        'Fraud Detection',
+        'HIPS',
+        'IT Audit',
+        'Log Review',
+        'NIDS',
+        'Security Alarm',
+        'User',
+        'Unknown'
+    )
     TERM_AGENT_DISCLOSURE = "Agent Disclosure"
     TERM_FRAUD_DETECTION = "Fraud Detection"
     TERM_MONITORING_SERVICE = "Monitoring Service"
@@ -247,8 +316,15 @@ class DiscoveryMethod(VocabString):
 class AttackerToolType(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:AttackerToolTypeVocab-1.0'
-    _ALLOWED_VALUES = ('Malware', 'Penetration Testing', 'Port Scanner', 'Traffic Scanner', 'Vulnerability Scanner', 'Application Scanner', 'Password Cracking')
-    
+    _ALLOWED_VALUES = (
+        'Malware',
+        'Penetration Testing',
+        'Port Scanner',
+        'Traffic Scanner',
+        'Vulnerability Scanner',
+        'Application Scanner',
+        'Password Cracking'
+    )
     TERM_MALWARE = "Malware"
     TERM_PENETRATION_TESTING = "Penetration Testing"
     TERM_PORT_SCANNER = "Port Scanner"
@@ -262,8 +338,22 @@ class AttackerToolType(VocabString):
 class IndicatorType(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:IndicatorTypeVocab-1.1'
-    _ALLOWED_VALUES = ('Malicious E-mail', 'IP Watchlist', 'File Hash Watchlist', 'Domain Watchlist', 'URL Watchlist', 'Malware Artifacts', 'C2', 'Anonymization', 'Exfiltration', 'Host Characteristics', 'Compromised PKI Certificate', 'Login Name', 'IMEI Watchlist', 'IMSI Watchlist')
-    
+    _ALLOWED_VALUES = (
+        'Malicious E-mail',
+        'IP Watchlist',
+        'File Hash Watchlist',
+        'Domain Watchlist',
+        'URL Watchlist',
+        'Malware Artifacts',
+        'C2',
+        'Anonymization',
+        'Exfiltration',
+        'Host Characteristics',
+        'Compromised PKI Certificate',
+        'Login Name',
+        'IMEI Watchlist',
+        'IMSI Watchlist'
+    )
     TERM_MALICIOUS_EMAIL = "Malicious E-mail"
     TERM_IP_WATCHLIST = "IP Watchlist"
     TERM_FILE_HASH_WATCHLIST = "File Hash Watchlist"
@@ -284,8 +374,35 @@ class IndicatorType(VocabString):
 class SystemType(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:SystemTypeVocab-1.0'
-    _ALLOWED_VALUES = ('Enterprise Systems', 'Enterprise Systems - Application Layer', 'Enterprise Systems - Database Layer', 'Enterprise Systems - Enterprise Technologies and Support Infrastructure', 'Enterprise Systems - Network Systems', 'Enterprise Systems - Networking Devices', 'Enterprise Systems - Web Layer', 'Enterprise Systems - VoIP', 'Industrial Control Systems', 'Industrial Control Systems - Equipment Under Control', 'Industrial Control Systems - Operations Management', 'Industrial Control Systems - Safety, Protection and Local Control', 'Industrial Control Systems - Supervisory Control', 'Mobile Systems', 'Mobile Systems - Mobile Operating Systems', 'Mobile Systems - Near Field Communications', 'Mobile Systems - Mobile Devices', 'Third-Party Services', 'Third-Party Services - Application Stores', 'Third-Party Services - Cloud Services', 'Third-Party Services - Security Vendors', 'Third-Party Services - Social Media', 'Third-Party Services - Software Update', 'Users', 'Users - Application And Software', 'Users - Workstation', 'Users - Removable Media')
-    
+    _ALLOWED_VALUES = (
+        'Enterprise Systems',
+        'Enterprise Systems - Application Layer',
+        'Enterprise Systems - Database Layer',
+        'Enterprise Systems - Enterprise Technologies and Support Infrastructure',
+        'Enterprise Systems - Network Systems',
+        'Enterprise Systems - Networking Devices',
+        'Enterprise Systems - Web Layer',
+        'Enterprise Systems - VoIP',
+        'Industrial Control Systems',
+        'Industrial Control Systems - Equipment Under Control',
+        'Industrial Control Systems - Operations Management',
+        'Industrial Control Systems - Safety, Protection and Local Control',
+        'Industrial Control Systems - Supervisory Control',
+        'Mobile Systems',
+        'Mobile Systems - Mobile Operating Systems',
+        'Mobile Systems - Near Field Communications',
+        'Mobile Systems - Mobile Devices',
+        'Third-Party Services',
+        'Third-Party Services - Application Stores',
+        'Third-Party Services - Cloud Services',
+        'Third-Party Services - Security Vendors',
+        'Third-Party Services - Social Media',
+        'Third-Party Services - Software Update',
+        'Users',
+        'Users - Application And Software',
+        'Users - Workstation',
+        'Users - Removable Media'
+    )
     TERM_ENTERPRISE_SYSTEMS = "Enterprise Systems"
     TERM_ENTERPRISE_SYSTEMS_APPLICATION_LAYER = "Enterprise Systems - Application Layer"
     TERM_ENTERPRISE_SYSTEMS_DATABASE_LAYER = "Enterprise Systems - Database Layer"
@@ -319,8 +436,11 @@ class SystemType(VocabString):
 class CampaignStatus(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:CampaignStatusVocab-1.0'
-    _ALLOWED_VALUES = ('Ongoing', 'Historic', 'Future')
-    
+    _ALLOWED_VALUES = (
+        'Ongoing',
+        'Historic',
+        'Future'
+    )
     TERM_ONGOING = "Ongoing"
     TERM_HISTORIC = "Historic"
     TERM_FUTURE = "Future"
@@ -330,8 +450,17 @@ class CampaignStatus(VocabString):
 class IncidentStatus(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:IncidentStatusVocab-1.0'
-    _ALLOWED_VALUES = ('New', 'Open', 'Stalled', 'Containment Achieved', 'Restoration Achieved', 'Incident Reported', 'Closed', 'Rejected', 'Deleted')
-    
+    _ALLOWED_VALUES = (
+        'New',
+        'Open',
+        'Stalled',
+        'Containment Achieved',
+        'Restoration Achieved',
+        'Incident Reported',
+        'Closed',
+        'Rejected',
+        'Deleted'
+    )
     TERM_NEW = "New"
     TERM_OPEN = "Open"
     TERM_STALLED = "Stalled"
@@ -347,8 +476,12 @@ class IncidentStatus(VocabString):
 class ManagementClass(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:ManagementClassVocab-1.0'
-    _ALLOWED_VALUES = ('Internally-Managed', 'Externally-Management', 'Co-Management', 'Unknown')
-    
+    _ALLOWED_VALUES = (
+        'Internally-Managed',
+        'Externally-Management',
+        'Co-Management',
+        'Unknown'
+    )
     TERM_INTERNALLYMANAGED = "Internally-Managed"
     TERM_EXTERNALLYMANAGEMENT = "Externally-Management"
     TERM_COMANAGEMENT = "Co-Management"
@@ -359,8 +492,22 @@ class ManagementClass(VocabString):
 class Motivation(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:MotivationVocab-1.1'
-    _ALLOWED_VALUES = ('Ideological', 'Ideological - Anti-Corruption', 'Ideological - Anti-Establishment', 'Ideological - Environmental', 'Ideological - Ethnic / Nationalist', 'Ideological - Information Freedom', 'Ideological - Religious', 'Ideological - Security Awareness', 'Ideological - Human Rights', 'Ego', 'Financial or Economic', 'Military', 'Opportunistic', 'Political')
-    
+    _ALLOWED_VALUES = (
+        'Ideological',
+        'Ideological - Anti-Corruption',
+        'Ideological - Anti-Establishment',
+        'Ideological - Environmental',
+        'Ideological - Ethnic / Nationalist',
+        'Ideological - Information Freedom',
+        'Ideological - Religious',
+        'Ideological - Security Awareness',
+        'Ideological - Human Rights',
+        'Ego',
+        'Financial or Economic',
+        'Military',
+        'Opportunistic',
+        'Political'
+    )
     TERM_IDEOLOGICAL = "Ideological"
     TERM_IDEOLOGICAL_ANTICORRUPTION = "Ideological - Anti-Corruption"
     TERM_IDEOLOGICAL_ANTIESTABLISHMENT = "Ideological - Anti-Establishment"
@@ -381,8 +528,15 @@ class Motivation(VocabString):
 class IncidentCategory(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:IncidentCategoryVocab-1.0'
-    _ALLOWED_VALUES = ('Exercise/Network Defense Testing', 'Unauthorized Access', 'Denial of Service', 'Malicious Code', 'Improper Usage', 'Scans/Probes/Attempted Access', 'Investigation')
-    
+    _ALLOWED_VALUES = (
+        'Exercise/Network Defense Testing',
+        'Unauthorized Access',
+        'Denial of Service',
+        'Malicious Code',
+        'Improper Usage',
+        'Scans/Probes/Attempted Access',
+        'Investigation'
+    )
     TERM_EXERCISEORNETWORK_DEFENSE_TESTING = "Exercise/Network Defense Testing"
     TERM_UNAUTHORIZED_ACCESS = "Unauthorized Access"
     TERM_DENIAL_OF_SERVICE = "Denial of Service"
@@ -396,8 +550,14 @@ class IncidentCategory(VocabString):
 class ImpactQualification(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:ImpactQualificationVocab-1.0'
-    _ALLOWED_VALUES = ('Insignificant', 'Distracting', 'Painful', 'Damaging', 'Catastrophic', 'Unknown')
-    
+    _ALLOWED_VALUES = (
+        'Insignificant',
+        'Distracting',
+        'Painful',
+        'Damaging',
+        'Catastrophic',
+        'Unknown'
+    )
     TERM_INSIGNIFICANT = "Insignificant"
     TERM_DISTRACTING = "Distracting"
     TERM_PAINFUL = "Painful"
@@ -410,8 +570,30 @@ class ImpactQualification(VocabString):
 class PlanningAndOperationalSupport(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:PlanningAndOperationalSupportVocab-1.0.1'
-    _ALLOWED_VALUES = ('Data Exploitation', 'Data Exploitation - Analytic Support', 'Data Exploitation - Translation Support', 'Financial Resources', 'Financial Resources - Academic', 'Financial Resources - Commercial', 'Financial Resources - Government', 'Financial Resources - Hacktivist or Grassroot', 'Financial Resources - Non-Attributable Finance', 'Skill Development / Recruitment', 'Skill Development / Recruitment - Contracting and Hiring', 'Skill Development / Recruitment - Document Exploitation (DOCEX) Training', 'Skill Development / Recruitment - Internal Training', 'Skill Development / Recruitment - Military Programs', 'Skill Development / Recruitment - Security / Hacker Conferences', 'Skill Development / Recruitment - Underground Forums', 'Skill Development / Recruitment - University Programs', 'Planning', 'Planning - Operational Cover Plan', 'Planning - Open-Source Intelligence (OSINT) Gathering', 'Planning - Pre-Operational Surveillance and Reconnaissance', 'Planning - Target Selection')
-    
+    _ALLOWED_VALUES = (
+        'Data Exploitation',
+        'Data Exploitation - Analytic Support',
+        'Data Exploitation - Translation Support',
+        'Financial Resources',
+        'Financial Resources - Academic',
+        'Financial Resources - Commercial',
+        'Financial Resources - Government',
+        'Financial Resources - Hacktivist or Grassroot',
+        'Financial Resources - Non-Attributable Finance',
+        'Skill Development / Recruitment',
+        'Skill Development / Recruitment - Contracting and Hiring',
+        'Skill Development / Recruitment - Document Exploitation (DOCEX) Training',
+        'Skill Development / Recruitment - Internal Training',
+        'Skill Development / Recruitment - Military Programs',
+        'Skill Development / Recruitment - Security / Hacker Conferences',
+        'Skill Development / Recruitment - Underground Forums',
+        'Skill Development / Recruitment - University Programs',
+        'Planning',
+        'Planning - Operational Cover Plan',
+        'Planning - Open-Source Intelligence (OSINT) Gathering',
+        'Planning - Pre-Operational Surveillance and Reconnaissance',
+        'Planning - Target Selection'
+    )
     TERM_DATA_EXPLOITATION = "Data Exploitation"
     TERM_DATA_EXPLOITATION_ANALYTIC_SUPPORT = "Data Exploitation - Analytic Support"
     TERM_DATA_EXPLOITATION_TRANSLATION_SUPPORT = "Data Exploitation - Translation Support"
@@ -440,8 +622,24 @@ class PlanningAndOperationalSupport(VocabString):
 class CourseOfActionType(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:CourseOfActionTypeVocab-1.0'
-    _ALLOWED_VALUES = ('Perimeter Blocking', 'Internal Blocking', 'Redirection', 'Redirection (Honey Pot)', 'Hardening', 'Patching', 'Eradication', 'Rebuilding', 'Training', 'Monitoring', 'Physical Access Restrictions', 'Logical Access Restrictions', 'Public Disclosure', 'Diplomatic Actions', 'Policy Actions', 'Other')
-    
+    _ALLOWED_VALUES = (
+        'Perimeter Blocking',
+        'Internal Blocking',
+        'Redirection',
+        'Redirection (Honey Pot)',
+        'Hardening',
+        'Patching',
+        'Eradication',
+        'Rebuilding',
+        'Training',
+        'Monitoring',
+        'Physical Access Restrictions',
+        'Logical Access Restrictions',
+        'Public Disclosure',
+        'Diplomatic Actions',
+        'Policy Actions',
+        'Other'
+    )
     TERM_PERIMETER_BLOCKING = "Perimeter Blocking"
     TERM_INTERNAL_BLOCKING = "Internal Blocking"
     TERM_REDIRECTION = "Redirection"
@@ -464,8 +662,12 @@ class CourseOfActionType(VocabString):
 class SecurityCompromise(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:SecurityCompromiseVocab-1.0'
-    _ALLOWED_VALUES = ('Yes', 'Suspected', 'No', 'Unknown')
-    
+    _ALLOWED_VALUES = (
+        'Yes',
+        'Suspected',
+        'No',
+        'Unknown'
+    )
     TERM_YES = "Yes"
     TERM_SUSPECTED = "Suspected"
     TERM_NO = "No"
@@ -476,8 +678,13 @@ class SecurityCompromise(VocabString):
 class ImpactRating(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:ImpactRatingVocab-1.0'
-    _ALLOWED_VALUES = ('None', 'Minor', 'Moderate', 'Major', 'Unknown')
-    
+    _ALLOWED_VALUES = (
+        'None',
+        'Minor',
+        'Moderate',
+        'Major',
+        'Unknown'
+    )
     TERM_NONE = "None"
     TERM_MINOR = "Minor"
     TERM_MODERATE = "Moderate"
@@ -489,8 +696,85 @@ class ImpactRating(VocabString):
 class AssetType(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:AssetTypeVocab-1.0'
-    _ALLOWED_VALUES = ('Backup', 'Database', 'DHCP', 'Directory', 'DCS', 'DNS', 'File', 'Log', 'Mail', 'Mainframe', 'Payment switch', 'POS controller', 'Print', 'Proxy', 'Remote access', 'SCADA', 'Web application', 'Server', 'Access reader', 'Camera', 'Firewall', 'HSM', 'IDS', 'Broadband', 'PBX', 'Private WAN', 'PLC', 'Public WAN', 'RTU', 'Router or switch', 'SAN', 'Telephone', 'VoIP adapter', 'LAN', 'WLAN', 'Network', 'Auth token', 'ATM', 'Desktop', 'PED pad', 'Gas terminal', 'Laptop', 'Media', 'Mobile phone', 'Peripheral', 'POS terminal', 'Kiosk', 'Tablet', 'Telephone', 'VoIP phone', 'User Device', 'Tapes', 'Disk media', 'Documents', 'Flash drive', 'Disk drive', 'Smart card', 'Payment card', 'Media', 'Administrator', 'Auditor', 'Call center', 'Cashier', 'Customer', 'Developer', 'End-user', 'Executive', 'Finance', 'Former employee', 'Guard', 'Helpdesk', 'Human resources', 'Maintenance', 'Manager', 'Partner', 'Person', 'Unknown')
-    
+    _ALLOWED_VALUES = (
+        'Backup',
+        'Database',
+        'DHCP',
+        'Directory',
+        'DCS',
+        'DNS',
+        'File',
+        'Log',
+        'Mail',
+        'Mainframe',
+        'Payment switch',
+        'POS controller',
+        'Print',
+        'Proxy',
+        'Remote access',
+        'SCADA',
+        'Web application',
+        'Server',
+        'Access reader',
+        'Camera',
+        'Firewall',
+        'HSM',
+        'IDS',
+        'Broadband',
+        'PBX',
+        'Private WAN',
+        'PLC',
+        'Public WAN',
+        'RTU',
+        'Router or switch',
+        'SAN',
+        'Telephone',
+        'VoIP adapter',
+        'LAN',
+        'WLAN',
+        'Network',
+        'Auth token',
+        'ATM',
+        'Desktop',
+        'PED pad',
+        'Gas terminal',
+        'Laptop',
+        'Media',
+        'Mobile phone',
+        'Peripheral',
+        'POS terminal',
+        'Kiosk',
+        'Tablet',
+        'Telephone',
+        'VoIP phone',
+        'User Device',
+        'Tapes',
+        'Disk media',
+        'Documents',
+        'Flash drive',
+        'Disk drive',
+        'Smart card',
+        'Payment card',
+        'Media',
+        'Administrator',
+        'Auditor',
+        'Call center',
+        'Cashier',
+        'Customer',
+        'Developer',
+        'End-user',
+        'Executive',
+        'Finance',
+        'Former employee',
+        'Guard',
+        'Helpdesk',
+        'Human resources',
+        'Maintenance',
+        'Manager',
+        'Partner',
+        'Person',
+        'Unknown'
+    )
     TERM_BACKUP = "Backup"
     TERM_DATABASE = "Database"
     TERM_DHCP = "DHCP"
@@ -574,8 +858,10 @@ class AssetType(VocabString):
 class COAStage(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:COAStageVocab-1.0'
-    _ALLOWED_VALUES = ('Remedy', 'Response')
-    
+    _ALLOWED_VALUES = (
+        'Remedy',
+        'Response'
+    )
     TERM_REMEDY = "Remedy"
     TERM_RESPONSE = "Response"
 
@@ -584,8 +870,13 @@ class COAStage(VocabString):
 class LocationClass(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:LocationClassVocab-1.0'
-    _ALLOWED_VALUES = ('Internally-Located', 'Externally-Located', 'Co-Located', 'Mobile', 'Unknown')
-    
+    _ALLOWED_VALUES = (
+        'Internally-Located',
+        'Externally-Located',
+        'Co-Located',
+        'Mobile',
+        'Unknown'
+    )
     TERM_INTERNALLYLOCATED = "Internally-Located"
     TERM_EXTERNALLYLOCATED = "Externally-Located"
     TERM_COLOCATED = "Co-Located"
@@ -597,8 +888,17 @@ class LocationClass(VocabString):
 class InformationType(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:InformationTypeVocab-1.0'
-    _ALLOWED_VALUES = ('Information Assets', 'Information Assets - Corporate Employee Information', 'Information Assets - Customer PII', 'Information Assets - Email Lists / Archives', 'Information Assets - Financial Data', 'Information Assets - Intellectual Property', 'Information Assets - Mobile Phone Contacts', 'Information Assets - User Credentials', 'Authentication Cookies')
-    
+    _ALLOWED_VALUES = (
+        'Information Assets',
+        'Information Assets - Corporate Employee Information',
+        'Information Assets - Customer PII',
+        'Information Assets - Email Lists / Archives',
+        'Information Assets - Financial Data',
+        'Information Assets - Intellectual Property',
+        'Information Assets - Mobile Phone Contacts',
+        'Information Assets - User Credentials',
+        'Authentication Cookies'
+    )
     TERM_INFORMATION_ASSETS = "Information Assets"
     TERM_INFORMATION_ASSETS_CORPORATE_EMPLOYEE_INFORMATION = "Information Assets - Corporate Employee Information"
     TERM_INFORMATION_ASSETS_CUSTOMER_PII = "Information Assets - Customer PII"
@@ -614,8 +914,13 @@ class InformationType(VocabString):
 class ThreatActorSophistication(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:ThreatActorSophisticationVocab-1.0'
-    _ALLOWED_VALUES = ('Innovator', 'Expert', 'Practitioner', 'Novice', 'Aspirant')
-    
+    _ALLOWED_VALUES = (
+        'Innovator',
+        'Expert',
+        'Practitioner',
+        'Novice',
+        'Aspirant'
+    )
     TERM_INNOVATOR = "Innovator"
     TERM_EXPERT = "Expert"
     TERM_PRACTITIONER = "Practitioner"
@@ -627,8 +932,13 @@ class ThreatActorSophistication(VocabString):
 class HighMediumLow(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:HighMediumLowVocab-1.0'
-    _ALLOWED_VALUES = ('High', 'Medium', 'Low', 'None', 'Unknown')
-    
+    _ALLOWED_VALUES = (
+        'High',
+        'Medium',
+        'Low',
+        'None',
+        'Unknown'
+    )
     TERM_HIGH = "High"
     TERM_MEDIUM = "Medium"
     TERM_LOW = "Low"
@@ -640,8 +950,13 @@ class HighMediumLow(VocabString):
 class LossProperty(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:LossPropertyVocab-1.0'
-    _ALLOWED_VALUES = ('Confidentiality', 'Integrity', 'Availability', 'Accountability', 'Non-Repudiation')
-    
+    _ALLOWED_VALUES = (
+        'Confidentiality',
+        'Integrity',
+        'Availability',
+        'Accountability',
+        'Non-Repudiation'
+    )
     TERM_CONFIDENTIALITY = "Confidentiality"
     TERM_INTEGRITY = "Integrity"
     TERM_AVAILABILITY = "Availability"
@@ -653,8 +968,32 @@ class LossProperty(VocabString):
 class IntendedEffect(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:IntendedEffectVocab-1.0'
-    _ALLOWED_VALUES = ('Advantage', 'Advantage - Economic', 'Advantage - Military', 'Advantage - Political', 'Theft', 'Theft - Intellectual Property', 'Theft - Credential Theft', 'Theft - Identity Theft', 'Theft - Theft of Proprietary Information', 'Account Takeover', 'Brand Damage', 'Competitive Advantage', 'Degradation of Service', 'Denial and Deception', 'Destruction', 'Disruption', 'Embarrassment', 'Exposure', 'Extortion', 'Fraud', 'Harassment', 'ICS Control', 'Traffic Diversion', 'Unauthorized Access')
-    
+    _ALLOWED_VALUES = (
+        'Advantage',
+        'Advantage - Economic',
+        'Advantage - Military',
+        'Advantage - Political',
+        'Theft',
+        'Theft - Intellectual Property',
+        'Theft - Credential Theft',
+        'Theft - Identity Theft',
+        'Theft - Theft of Proprietary Information',
+        'Account Takeover',
+        'Brand Damage',
+        'Competitive Advantage',
+        'Degradation of Service',
+        'Denial and Deception',
+        'Destruction',
+        'Disruption',
+        'Embarrassment',
+        'Exposure',
+        'Extortion',
+        'Fraud',
+        'Harassment',
+        'ICS Control',
+        'Traffic Diversion',
+        'Unauthorized Access'
+    )
     TERM_ADVANTAGE = "Advantage"
     TERM_ADVANTAGE_ECONOMIC = "Advantage - Economic"
     TERM_ADVANTAGE_MILITARY = "Advantage - Military"
@@ -685,8 +1024,28 @@ class IntendedEffect(VocabString):
 class PackageIntent(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:PackageIntentVocab-1.0'
-    _ALLOWED_VALUES = ('Collective Threat Intelligence', 'Threat Report', 'Indicators', 'Indicators - Phishing', 'Indicators - Watchlist', 'Indicators - Malware Artifacts', 'Indicators - Network Activity', 'Indicators - Endpoint Characteristics', 'Campaign Characterization', 'Threat Actor Characterization', 'Exploit Characterization', 'Attack Pattern Characterization', 'Malware Characterization', 'TTP - Infrastructure', 'TTP - Tools', 'Courses of Action', 'Incident', 'Observations', 'Observations - Email', 'Malware Samples')
-    
+    _ALLOWED_VALUES = (
+        'Collective Threat Intelligence',
+        'Threat Report',
+        'Indicators',
+        'Indicators - Phishing',
+        'Indicators - Watchlist',
+        'Indicators - Malware Artifacts',
+        'Indicators - Network Activity',
+        'Indicators - Endpoint Characteristics',
+        'Campaign Characterization',
+        'Threat Actor Characterization',
+        'Exploit Characterization',
+        'Attack Pattern Characterization',
+        'Malware Characterization',
+        'TTP - Infrastructure',
+        'TTP - Tools',
+        'Courses of Action',
+        'Incident',
+        'Observations',
+        'Observations - Email',
+        'Malware Samples'
+    )
     TERM_COLLECTIVE_THREAT_INTELLIGENCE = "Collective Threat Intelligence"
     TERM_THREAT_REPORT = "Threat Report"
     TERM_INDICATORS = "Indicators"
@@ -713,8 +1072,15 @@ class PackageIntent(VocabString):
 class LossDuration(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:LossDurationVocab-1.0'
-    _ALLOWED_VALUES = ('Permanent', 'Weeks', 'Days', 'Hours', 'Minutes', 'Seconds', 'Unknown')
-    
+    _ALLOWED_VALUES = (
+        'Permanent',
+        'Weeks',
+        'Days',
+        'Hours',
+        'Minutes',
+        'Seconds',
+        'Unknown'
+    )
     TERM_PERMANENT = "Permanent"
     TERM_WEEKS = "Weeks"
     TERM_DAYS = "Days"
@@ -728,8 +1094,13 @@ class LossDuration(VocabString):
 class OwnershipClass(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:OwnershipClassVocab-1.0'
-    _ALLOWED_VALUES = ('Internally-Owned', 'Employee-Owned', 'Partner-Owned', 'Customer-Owned', 'Unknown')
-    
+    _ALLOWED_VALUES = (
+        'Internally-Owned',
+        'Employee-Owned',
+        'Partner-Owned',
+        'Customer-Owned',
+        'Unknown'
+    )
     TERM_INTERNALLYOWNED = "Internally-Owned"
     TERM_EMPLOYEEOWNED = "Employee-Owned"
     TERM_PARTNEROWNED = "Partner-Owned"
@@ -741,8 +1112,26 @@ class OwnershipClass(VocabString):
 class MalwareType(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:MalwareTypeVocab-1.0'
-    _ALLOWED_VALUES = ('Automated Transfer Scripts', 'Adware', 'Dialer', 'Bot', 'Bot - Credential Theft', 'Bot - DDoS', 'Bot - Loader', 'Bot - Spam', 'DoS / DDoS', 'DoS / DDoS - Participatory', 'DoS / DDoS - Script', 'DoS / DDoS - Stress Test Tools', 'Exploit Kits', 'POS / ATM Malware', 'Ransomware', 'Remote Access Trojan', 'Rogue Antivirus', 'Rootkit')
-    
+    _ALLOWED_VALUES = (
+        'Automated Transfer Scripts',
+        'Adware',
+        'Dialer',
+        'Bot',
+        'Bot - Credential Theft',
+        'Bot - DDoS',
+        'Bot - Loader',
+        'Bot - Spam',
+        'DoS / DDoS',
+        'DoS / DDoS - Participatory',
+        'DoS / DDoS - Script',
+        'DoS / DDoS - Stress Test Tools',
+        'Exploit Kits',
+        'POS / ATM Malware',
+        'Ransomware',
+        'Remote Access Trojan',
+        'Rogue Antivirus',
+        'Rootkit'
+    )
     TERM_AUTOMATED_TRANSFER_SCRIPTS = "Automated Transfer Scripts"
     TERM_ADWARE = "Adware"
     TERM_DIALER = "Dialer"
@@ -767,8 +1156,22 @@ class MalwareType(VocabString):
 class IncidentEffect(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:IncidentEffectVocab-1.0'
-    _ALLOWED_VALUES = ('Brand or Image Degradation', 'Loss of Competitive Advantage', 'Loss of Competitive Advantage - Economic', 'Loss of Competitive Advantage - Military', 'Loss of Competitive Advantage - Political', 'Data Breach or Compromise', 'Degradation of Service', 'Destruction', 'Disruption of Service / Operations', 'Financial Loss', 'Loss of Confidential / Proprietary Information or Intellectual Property', 'Regulatory, Compliance or Legal Impact', 'Unintended Access', 'User Data Loss')
-    
+    _ALLOWED_VALUES = (
+        'Brand or Image Degradation',
+        'Loss of Competitive Advantage',
+        'Loss of Competitive Advantage - Economic',
+        'Loss of Competitive Advantage - Military',
+        'Loss of Competitive Advantage - Political',
+        'Data Breach or Compromise',
+        'Degradation of Service',
+        'Destruction',
+        'Disruption of Service / Operations',
+        'Financial Loss',
+        'Loss of Confidential / Proprietary Information or Intellectual Property',
+        'Regulatory, Compliance or Legal Impact',
+        'Unintended Access',
+        'User Data Loss'
+    )
     TERM_BRAND_OR_IMAGE_DEGRADATION = "Brand or Image Degradation"
     TERM_LOSS_OF_COMPETITIVE_ADVANTAGE = "Loss of Competitive Advantage"
     TERM_LOSS_OF_COMPETITIVE_ADVANTAGE_ECONOMIC = "Loss of Competitive Advantage - Economic"
@@ -789,13 +1192,18 @@ class IncidentEffect(VocabString):
 class InformationSourceRole(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:InformationSourceRoleVocab-1.0'
-    _ALLOWED_VALUES = ('Initial Author', 'Content Enhancer/Refiner', 'Aggregator', 'Transformer/Translator')
-    
+    _ALLOWED_VALUES = (
+        'Initial Author',
+        'Content Enhancer/Refiner',
+        'Aggregator',
+        'Transformer/Translator'
+    )
     TERM_INITIAL_AUTHOR = "Initial Author"
     TERM_CONTENT_ENHANCERORREFINER = "Content Enhancer/Refiner"
     TERM_AGGREGATOR = "Aggregator"
     TERM_TRANSFORMERORTRANSLATOR = "Transformer/Translator"
 
+#: Mapping of Controlled Vocabulary xsi:type's to their class implementations.
 _VOCAB_MAP = {}
 def add_vocab(cls):
     _VOCAB_MAP[cls._XSI_TYPE] = cls

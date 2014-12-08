@@ -10,6 +10,7 @@ class IdentityTests(EntityTestCase, unittest.TestCase):
     _full_dict = {
         'title': "A Title",
         'description': "A really, really long description",
+        'short_description': 'A really, really short description',
         'handling': [
             {
                 'marking_structures': [{

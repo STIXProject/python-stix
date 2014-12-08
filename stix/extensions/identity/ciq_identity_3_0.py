@@ -1,16 +1,12 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+import lxml.etree as et
+
 import stix
 import stix.common.identity
 from stix.common import Identity
-import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
-
-# xml element tree creation
-#from xml.etree import cElementTree as et
-import lxml.etree as et
-from stix.bindings.extensions.identity.ciq_identity_3_0 import XML_NS_XNL
 
 XML_NS_XPIL     = "urn:oasis:names:tc:ciq:xpil:3"
 XML_NS_XNL      = "urn:oasis:names:tc:ciq:xnl:3"
