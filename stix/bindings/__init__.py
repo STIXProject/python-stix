@@ -339,6 +339,32 @@ def find_attr_value_(attr_name, node):
             value = attrs.get('{%s}%s' % (namespace, name, ))
     return value
 
+def find_attr_value_qname(attr_name, node):
+    attrs = node.attrib
+    attr_parts = attr_name.split(':')
+    value = None
+    if len(attr_parts) == 1:
+        value = attrs.get(attr_name)
+    elif len(attr_parts) == 2:
+        prefix, name = attr_parts
+        namespace = node.nsmap.get(prefix)
+        if namespace is not None:
+            value = attrs.get('{%s}%s' % (namespace, name, ))
+    if value is None:
+        return None, None
+    val_parts = value.split(':')
+    if len(val_parts) == 1:
+        return value, None
+    elif len(val_parts) == 2:
+        prefix, data = val_parts
+        namespace = node.nsmap.get(prefix)
+        if namespace is not None:
+            return value, namespace
+        else:
+            raise ValueError("No namespace defined for qname prefix %s" % (prefix))
+    else:
+        raise ValueError("Malformed qname %s" % (value))
+
 
 class GDSParseError(Exception):
     pass
