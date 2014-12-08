@@ -25,8 +25,9 @@ extras_require = {
         'sphinxcontrib-napoleon==0.2.4',
     ],
     'test': [
-        "nose==1.3.0",
-        "tox==1.6.1",
+        'nose==1.3.0',
+        'tox==1.6.1',
+        'maec>=4.1.0.8,<4.1.1.0'
     ],
 }
 
@@ -39,7 +40,7 @@ setup(
     long_description=readme,
     url="http://stix.mitre.org",
     packages=find_packages(),
-    install_requires=['lxml>=2.3', 'python-dateutil', 'cybox>=2.1.0.6,<2.1.1.0'],
+    install_requires=['lxml>=2.3', 'python-dateutil', 'cybox>=2.1.0.8,<2.1.1.0'],
     extras_require=extras_require,
     classifiers=[
         "Programming Language :: Python",

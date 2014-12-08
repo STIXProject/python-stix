@@ -31,7 +31,7 @@ class STIXPackage(stix.Entity):
     _namespace = 'http://stix.mitre.org/stix-1'
     _version = "1.1.1"
 
-    def     __init__(self, id_=None, idref=None, timestamp=None, stix_header=None, courses_of_action=None, exploit_targets=None, indicators=None, observables=None, incidents=None, threat_actors=None, ttps=None, campaigns=None, idref_ns=None):
+    def __init__(self, id_=None, idref=None, timestamp=None, stix_header=None, courses_of_action=None, exploit_targets=None, indicators=None, observables=None, incidents=None, threat_actors=None, ttps=None, campaigns=None, idref_ns=None):
         self.id_ = id_ or stix.utils.create_id("Package")
         self.idref = idref
         self.idref_ns = idref_ns
@@ -159,7 +159,6 @@ class STIXPackage(stix.Entity):
             self.observables = Observables(observables=observable)
         else:
             self.observables.add(observable)
-
 
     @property
     def incidents(self):
@@ -414,8 +413,7 @@ class STIXPackage(stix.Entity):
         return_obj.idref = dict_repr.get('idref', None)
         return_obj.timestamp = dict_repr.get('timestamp')
         return_obj.version = dict_repr.get('version', cls._version)
-        header_dict = dict_repr.get('stix_header', None)
-        return_obj.stix_header = STIXHeader.from_dict(header_dict)
+        return_obj.stix_header = STIXHeader.from_dict(dict_repr.get('stix_header', None))
         return_obj.campaigns = [Campaign.from_dict(x) for x in dict_repr.get('campaigns', [])]
         return_obj.courses_of_action = [CourseOfAction.from_dict(x) for x in dict_repr.get('courses_of_action', [])]
         return_obj.exploit_targets = [ExploitTarget.from_dict(x) for x in dict_repr.get('exploit_targets', [])]

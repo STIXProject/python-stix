@@ -174,5 +174,24 @@ class SnortTestMechanism(_BaseTestMechanism):
         return_obj.event_suppressions = [EncodedCDATA.from_dict(x) for x in d.get('event_suppressions', [])]
         
         return return_obj
-    
+
+
+    def to_dict(self):
+        d = super(SnortTestMechanism, self).to_dict()
+
+        if self.product_name:
+            d['product_name'] = self.product_name
+        if self.version:
+            d['version'] = self.version
+        if self.rules:
+            d['rules'] = [x.to_dict() for x in self.rules]
+        if self.event_filters:
+            d['event_filters'] = [x.to_dict() for x in self.event_filters]
+        if self.rate_filters:
+            d['rate_filters'] = [x.to_dict() for x in self.rate_filters]
+        if self.event_suppressions:
+            d['event_suppressions'] = [x.to_dict for x in self.event_suppressions]
+
+        return d
+
 stix.indicator.test_mechanism.add_extension(SnortTestMechanism)

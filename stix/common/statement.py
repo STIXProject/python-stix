@@ -49,7 +49,7 @@ class Statement(stix.Entity):
     def value(self, value):
         if value is None:
             self._value = None
-        if isinstance(value, VocabString):
+        elif isinstance(value, VocabString):
             self._value = value
         else:
             # HighMediumLow is the default vocab to use for the Value
@@ -128,6 +128,7 @@ class Statement(stix.Entity):
         
         if not obj:
             return None
+
         s = cls()
 
         s.timestamp = obj.timestamp

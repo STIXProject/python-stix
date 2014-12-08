@@ -7,11 +7,14 @@ A python library for parsing, manipulating, and generating STIX v1.1.1 content.
 :Documentation: http://stix.readthedocs.org
 :Information: http://stix.mitre.org
 
-|travis badge| |version badge| |downloads badge|
+|travis badge| |landscape.io badge| |version badge| |downloads badge|
 
 .. |travis badge| image:: https://api.travis-ci.org/STIXProject/python-stix.png?branch=master
    :target: https://travis-ci.org/STIXProject/python-stix
    :alt: Build Status
+.. |landscape.io badge| image:: https://landscape.io/github/STIXProject/python-stix/master/landscape.png
+   :target: https://landscape.io/github/STIXProject/python-stix/master
+   :alt: Code Health
 .. |version badge| image:: https://pypip.in/v/stix/badge.png
    :target: https://pypi.python.org/pypi/stix/
 .. |downloads badge| image:: https://pypip.in/d/stix/badge.png
@@ -43,7 +46,7 @@ instructions.
 -  `lxml <http://lxml.de/>`_
 
 Installation on Ubuntu 14.04 (and older)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ::
 

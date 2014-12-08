@@ -56,7 +56,7 @@ class ToolInformation(cybox.common.ToolInformation):
         if not return_obj:
             return_obj = cls()
 
-        super(ToolInformation, cls).from_obj(obj, tool_class=return_obj)
+        super(ToolInformation, cls).from_obj(obj, return_obj)
         
         return_obj.title = obj.Title
         return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
@@ -80,7 +80,7 @@ class ToolInformation(cybox.common.ToolInformation):
         if not return_obj:
             return_obj = cls()
 
-        super(ToolInformation, cls).from_dict(dict_repr, tool_class=return_obj)
+        super(ToolInformation, cls).from_dict(dict_repr, return_obj)
         return_obj.title = dict_repr.get('title')
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
         

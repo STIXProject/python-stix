@@ -1,10 +1,15 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+import itertools
 import collections
 import json
 from StringIO import StringIO
 from lxml import etree
+
+def _override(*args, **kwargs):
+    raise NotImplementedError()
+
 
 class Entity(object):
     """Base class for all classes in the STIX API."""
@@ -30,7 +35,7 @@ class Entity(object):
 
 
     @classmethod
-    def from_obj(cls, obj):
+    def from_obj(cls, obj, return_obj=None):
         """Create an object from a binding object"""
         raise NotImplementedError()
 
@@ -38,9 +43,39 @@ class Entity(object):
     def to_xml(self, include_namespaces=True, include_schemalocs=True,
                ns_dict=None, schemaloc_dict=None, pretty=True,
                auto_namespace=True):
-        """Export an object as an XML String"""
-        from stix.utils.nsparser import (NamespaceParser, NamespaceInfo,
-                                         DEFAULT_STIX_NAMESPACES)
+        """Serializes a :class:`Entity` instance to an XML string.
+
+        The default character encoding is ``utf-8`` and can be set via the
+        ``stix.bindings.ExternalEncoding`` attribute.
+
+        Args:
+            auto_namespace: Automatically discover and export XML namespaces
+                for a STIX :class:`Entity` instance.
+            include_namespaces: Export namespace definitions in the output
+                XML. Default is ``True``.
+            include_schemalocs: Export ``xsi:schemaLocation`` attribute
+                in the output document. This will attempt to associate
+                namespaces declared in the STIX document with schema locations.
+                If a namespace cannot be resolved to a schemaLocation, a
+                Python warning will be raised. Schemalocations will only be
+                exported if `include_namespaces` is also ``True``.
+            ns_dict: Dictionary of XML definitions (namespace is key, alias is
+                value) to include in the exported document. This must be
+                passed in if `auto_namespace` is ``False``.
+            schemaloc_dict: Dictionary of XML ``namespace: schema location``
+                mappings to include in the exported document. These will
+                only be included if `auto_namespace` is ``False``.
+            pretty: Pretty-print the XML.
+
+        Returns:
+            An XML representation of this
+            :class:`Entity` instance. Default character encoding is ``utf-8``.
+
+        """
+        from stix.utils.nsparser import (
+            NamespaceParser, NamespaceInfo,DEFAULT_STIX_NAMESPACES
+        )
+
         parser = NamespaceParser()
 
         if auto_namespace:
@@ -51,8 +86,10 @@ class Entity(object):
         obj = self.to_obj(ns_info=ns_info)
 
         if (not auto_namespace) and (not ns_dict):
-            raise Exception("Auto-namespacing was disabled but ns_dict "
-                            "was empty or missing.")
+            raise Exception(
+                "Auto-namespacing was disabled but ns_dict was empty "
+                "or missing."
+            )
 
         if auto_namespace:
             ns_info.finalize()
@@ -61,23 +98,34 @@ class Entity(object):
             ns_info = NamespaceInfo()
             ns_info.finalized_namespaces = ns_dict or {}
             ns_info.finalized_schemalocs = schemaloc_dict or {}
-            obj_ns_dict = dict(ns_dict.items() + DEFAULT_STIX_NAMESPACES.items())
+            obj_ns_dict = dict(
+                itertools.chain(
+                    ns_dict.iteritems(),
+                    DEFAULT_STIX_NAMESPACES.iteritems()
+                )
+            )
 
         namespace_def = ""
         if include_namespaces:
-            namespace_def += ("\n\t" +
-                              parser.get_xmlns_str(ns_info.finalized_namespaces))
+            xmlns = parser.get_xmlns_str(ns_info.finalized_namespaces)
+            namespace_def += ("\n\t" + xmlns)
 
         if include_schemalocs and include_namespaces:
-            namespace_def += ("\n\t" +
-                              parser.get_schemaloc_str(ns_info.finalized_schemalocs))
+            schemaloc = parser.get_schemaloc_str(ns_info.finalized_schemalocs)
+            namespace_def += ("\n\t" + schemaloc)
 
         if not pretty:
             namespace_def = namespace_def.replace('\n\t', ' ')
 
         s = StringIO()
-        obj.export(s.write, 0, obj_ns_dict, pretty_print=pretty,
-                             namespacedef_=namespace_def)
+        obj.export(
+            s.write,                      # output buffer
+            0,                            # output level
+            obj_ns_dict,                  # namespace dictionary
+            pretty_print=pretty,          # pretty printing
+            namespacedef_=namespace_def   # namespace/schemaloc def string
+        )
+
         return s.getvalue()
 
 
@@ -87,6 +135,16 @@ class Entity(object):
 
     @classmethod
     def from_json(cls, json_doc):
+        """Parses the JSON document `json_doc` and returns a STIX
+        :class:`Entity` implementation instance.
+
+        Arguments:
+            json_doc: Input JSON representation of a STIX entity.
+
+        Returns:
+            An implementation of :class:`.Entity` (e.g., :class:`.STIXPackage`).
+
+        """
         try:
             d = json.load(json_doc)
         except AttributeError: # catch the read() error
@@ -95,6 +153,10 @@ class Entity(object):
         return cls.from_dict(d)
 
     def to_dict(self):
+        """Converts a STIX :class:`Entity` implementation into a Python
+        dictionary. This may be overridden by derived classes.
+
+        """
         d = {}
         for raw_key in self.__dict__.keys():
             raw_value = self.__dict__[raw_key]
@@ -183,6 +245,10 @@ class Entity(object):
             yield node
 
     def find(self, id_):
+        """Searches the children of a :class:`Entity` implementation for an
+        object with an ``id_`` property that matches `id_`.
+
+        """
         for entity in self.walk():
             try:
                 if entity.id_ == id_:
@@ -191,6 +257,11 @@ class Entity(object):
                 pass
 
 class EntityList(collections.MutableSequence, Entity):
+    _binding_class = _override
+    _binding_var = None
+    _contained_type = _override
+    _inner_name = None
+
     def __init__(self, *args):
         super(EntityList, self).__init__()
         self._inner = []

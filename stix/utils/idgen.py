@@ -3,6 +3,8 @@
 
 import uuid
 
+#: Default "example" namespace used for identifiers when no other namespace is
+#: defined.
 EXAMPLE_NAMESPACE = {'http://example.com' : 'example'}
 
 class InvalidMethodError(ValueError):
@@ -17,8 +19,8 @@ class IDGenerator(object):
 
     METHODS = (METHOD_UUID, METHOD_INT,)
 
-    def __init__(self, namespace=EXAMPLE_NAMESPACE, method=METHOD_UUID):
-        self.namespace = namespace
+    def __init__(self, namespace=None, method=METHOD_UUID):
+        self.namespace = namespace or EXAMPLE_NAMESPACE
         self.method = method
         self.next_int = 1
 
@@ -60,13 +62,13 @@ class IDGenerator(object):
         else:
             raise InvalidMethodError()
 
-        ns, ns_prefix = self.namespace.iteritems().next()
+        _, ns_prefix = self.namespace.iteritems().next()
         return "%s:%s-%s" % (ns_prefix, prefix, id_)
 
 
 
-# Singleton instance within this module. It is lazily instantiated, so simply
-# importing the utils module will not create the object.
+#: Singleton instance within this module. It is lazily instantiated, so simply
+#: importing the utils module will not create the object.
 __generator = None
 
 

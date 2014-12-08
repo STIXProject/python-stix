@@ -13,10 +13,13 @@ class STIXHeader(stix.Entity):
     _binding = stix_core_binding
     _namespace = 'http://stix.mitre.org/stix-1'
 
-    def __init__(self, package_intents=None, description=None, handling=None, information_source=None, title=None):
+    def __init__(self, package_intents=None, description=None, handling=None,
+        information_source=None, title=None, short_description=None):
+
         self.package_intents = package_intents
         self.title = title
         self.description = description
+        self.short_description=short_description
         self.handling = handling
         self.information_source = information_source
         self.profiles = []
@@ -44,6 +47,36 @@ class STIXHeader(stix.Entity):
             self._description = None
         else:
             raise ValueError('value must be instance of StructuredText or basestring')
+
+    @property
+    def short_description(self):
+        """The ``short_description`` property for this entity.
+
+        Default Value: ``None``
+
+        Note:
+            If set to a value that is not an instance of
+            :class:`stix.common.structured_text.StructuredText`, an attempt to
+            will be made to convert the value into an instance of
+            :class:`stix.common.structured_text.StructuredText`.
+
+        Returns:
+            An instance of
+            :class:`stix.common.structured_text.StructuredText`
+
+        """
+        return self._short_description
+
+    @short_description.setter
+    def short_description(self, value):
+        if value:
+            if isinstance(value, StructuredText):
+                self._short_description = value
+            else:
+                self._short_description = StructuredText(value=value)
+        else:
+            self._short_description = None
+
 
     @property
     def handling(self):
@@ -105,6 +138,7 @@ class STIXHeader(stix.Entity):
 
         return_obj.title = obj.Title
         return_obj.description = StructuredText.from_obj(obj.Description)
+        return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
         return_obj.handling = Marking.from_obj(obj.Handling)
         return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
 
@@ -127,6 +161,8 @@ class STIXHeader(stix.Entity):
             return_obj.Package_Intent = [x.to_obj(ns_info=ns_info) for x in self.package_intents]
         if self.description:
             return_obj.Description = self.description.to_obj(ns_info=ns_info)
+        if self.short_description:
+            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
         if self.handling:
             return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
         if self.information_source:
@@ -148,6 +184,7 @@ class STIXHeader(stix.Entity):
         return_obj.title = dict_repr.get('title')
         return_obj.package_intents = [VocabString.from_dict(x) for x in dict_repr.get('package_intents', [])]
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
+        return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
         return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
         return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
         return_obj.profiles = dict_repr.get('profiles')
@@ -162,6 +199,8 @@ class STIXHeader(stix.Entity):
             d['package_intents'] = [x.to_dict() for x in self.package_intents]
         if self.description:
             d['description'] = self.description.to_dict()
+        if self.short_description:
+            d['short_description'] = self.short_description.to_dict()
         if self.handling:
             d['handling'] = self.handling.to_dict()
         if self.information_source:

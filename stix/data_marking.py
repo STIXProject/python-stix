@@ -35,10 +35,12 @@ class Marking(stix.Entity):
         self._markings.append(value)
 
     def to_obj(self, return_obj=None, ns_info=None):
-        super(Marking, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+        super(Marking, self).to_obj(
+            return_obj=return_obj,
+            ns_info=ns_info
+        )
 
         obj = self._binding_class()
-
         obj.Marking = [x.to_obj(ns_info=ns_info) for x in self.markings]
         return obj
 
@@ -86,7 +88,10 @@ class MarkingSpecification(stix.Entity):
         # TODO: add Information_Source
 
     def to_obj(self, return_obj=None, ns_info=None):
-        super(MarkingSpecification, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+        super(MarkingSpecification, self).to_obj(
+            return_obj=return_obj,
+            ns_info=ns_info
+        )
 
         obj = self._binding_class()
 
@@ -94,7 +99,9 @@ class MarkingSpecification(stix.Entity):
         obj.idref = self.idref
         obj.version = self.version
         obj.Controlled_Structure = self.controlled_structure
-        obj.Marking_Structure = [x.to_obj(ns_info=ns_info) for x in self.marking_structures]
+        obj.Marking_Structure = [
+            x.to_obj(ns_info=ns_info) for x in self.marking_structures
+        ]
 
         return obj
 
@@ -109,7 +116,9 @@ class MarkingSpecification(stix.Entity):
         if self.controlled_structure:
             d['controlled_structure'] = self.controlled_structure
         if self.marking_structures:
-            d['marking_structures'] = [x.to_dict() for x in self.marking_structures]
+            d['marking_structures'] = [
+                x.to_dict() for x in self.marking_structures
+            ]
 
         return d
 
@@ -124,7 +133,9 @@ class MarkingSpecification(stix.Entity):
         m.idref = obj.idref
         m.version = obj.version
         m.controlled_structure = obj.Controlled_Structure
-        m.marking_structures = [MarkingStructure.from_obj(x) for x in obj.Marking_Structure]
+        m.marking_structures = [
+            MarkingStructure.from_obj(x) for x in obj.Marking_Structure
+        ]
 
         return m
 
@@ -133,14 +144,18 @@ class MarkingSpecification(stix.Entity):
         if not marking_dict:
             return None
 
+
+
+        get = marking_dict.get  # PEP8 line length fix
         m = MarkingSpecification()
 
-        m.id_ = marking_dict.get('id')
-        m.idref = marking_dict.get('idref')
-        m.version = marking_dict.get('version')
-        m.controlled_structure = marking_dict.get('controlled_structure')
-        m.marking_structures = [MarkingStructure.from_dict(x) for x in
-                marking_dict.get('marking_structures', [])]
+        m.id_ = get('id')
+        m.idref = get('idref')
+        m.version = get('version')
+        m.controlled_structure = get('controlled_structure')
+        m.marking_structures = [
+            MarkingStructure.from_dict(x) for x in get('marking_structures', [])
+        ]
 
         return m
 
@@ -155,7 +170,10 @@ class MarkingStructure(stix.Entity):
         self.marking_model_ref = None
 
     def to_obj(self, return_obj=None, ns_info=None):
-        super(MarkingStructure, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+        super(MarkingStructure, self).to_obj(
+            return_obj=return_obj,
+            ns_info=ns_info
+        )
 
         if not return_obj:
             return_obj = self._binding_class()
@@ -228,6 +246,7 @@ class MarkingStructure(stix.Entity):
         return m
 
 
+#: Mapping of marking extension types to classes
 _EXTENSION_MAP = {}
 def add_extension(cls):
     _EXTENSION_MAP[cls._XSI_TYPE] = cls

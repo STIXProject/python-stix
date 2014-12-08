@@ -10,7 +10,7 @@ class ThreatActorTests(EntityTestCase, unittest.TestCase):
     _full_dict = {
         'id': 'example:ThreatActor-1',
         'timestamp': "2014-01-31T06:14:46",
-        'version': '1.1.test',
+        'version': '1.1',
         'title': "BadGuy1",
         'description': "This is a long description about a threat actor.",
         'short_description': "A bad guy",
