@@ -385,6 +385,7 @@ __all__ = [
     'etree_',
     'ExternalEncoding',
     'find_attr_value_',
+    'find_attr_value_qname',
     'get_all_text_',
     'parsexml_',
     'quote_xml',
