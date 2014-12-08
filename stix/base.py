@@ -42,7 +42,7 @@ class Entity(object):
 
     def to_xml(self, include_namespaces=True, include_schemalocs=True,
                ns_dict=None, schemaloc_dict=None, pretty=True,
-               auto_namespace=True):
+               auto_namespace=True, include_idgen=True):
         """Serializes a :class:`Entity` instance to an XML string.
 
         The default character encoding is ``utf-8`` and can be set via the
@@ -105,6 +105,10 @@ class Entity(object):
                     DEFAULT_STIX_NAMESPACES.iteritems()
                 )
             )
+
+        if include_idgen:
+            from stix.utils.idgen import get_id_namespace, get_id_namespace_alias
+            obj_ns_dict[ get_id_namespace() ] = get_id_namespace_alias()
 
         namespace_def = ""
         if include_namespaces:
