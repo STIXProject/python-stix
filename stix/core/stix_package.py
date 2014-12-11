@@ -424,9 +424,23 @@ class STIXPackage(stix.Entity):
         return return_obj
 
     @classmethod
-    def from_xml(cls, xml_file):
+    def from_xml(cls, xml_file, encoding=None):
+        """Parses the `xml_file` file-like object and returns a
+        :class:`STIXPackage` instance.
+
+        Args:
+            xml_file: A file, file-like object, etree._Element, or
+                etree._ElementTree instance.
+            encoding: The character encoding of the `xml_file` input. If
+                ``None``, an attempt will be made to determine the input
+                character encoding. Default is ``None``.
+
+        Returns:
+            An instance of :class:`STIXPackage`.
+
+        """
         parser = EntityParser()
-        return parser.parse_xml(xml_file)
+        return parser.parse_xml(xml_file, encoding=encoding)
 
 
 
