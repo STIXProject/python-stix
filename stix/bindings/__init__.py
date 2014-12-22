@@ -10,6 +10,12 @@ from lxml import etree as etree_
 
 import cybox.bindings as cybox_bindings
 
+try:
+    import maec.bindings as maec_bindings
+    _MAEC_INSTALLED = True
+except ImportError:
+    _MAEC_INSTALLED = False
+
 CDATA_START = "<![CDATA["
 CDATA_END = "]]>"
 
@@ -26,16 +32,30 @@ def save_encoding(encoding='utf-8'):
     global ExternalEncoding
 
     try:
+        # Save original binding encoding attribute value
         orig_stix_encoding = ExternalEncoding
         orig_cybox_encoding = cybox_bindings.ExternalEncoding
 
+        # Set binding encoding attribute value to `encoding`
         ExternalEncoding = encoding
         cybox_bindings.ExternalEncoding = encoding
 
+        # Set MAEC binding encoding attribute to `encoding` if python-maec
+        # is installed.
+        if _MAEC_INSTALLED:
+            orig_maec_encoding = maec_bindings.ExternalEncoding
+            maec_bindings.ExternalEncoding = encoding
+
+        # Return to caller
         yield
+
     finally:
+        # Reset the binding encoding attribute values to original values
         ExternalEncoding = orig_stix_encoding
         cybox_bindings.ExternalEncoding = orig_cybox_encoding
+
+        if _MAEC_INSTALLED:
+            maec_bindings.ExternalEncoding = orig_maec_encoding
 
 
 def parsexml_(*args, **kwargs):
