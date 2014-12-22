@@ -78,7 +78,7 @@ class Entity(object):
 
         """
         from stix.utils.nsparser import (
-            NamespaceParser, NamespaceInfo,DEFAULT_STIX_NAMESPACES
+            NamespaceParser, NamespaceInfo, DEFAULT_STIX_NAMESPACES
         )
 
         parser = NamespaceParser()
