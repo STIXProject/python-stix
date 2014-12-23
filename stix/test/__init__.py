@@ -3,7 +3,7 @@
 
 import json
 import unittest
-
+import stix.bindings as bindings
 from stix import Entity, EntityList
 from stix.utils import NamespaceInfo
 import stix.bindings.stix_core as core_binding
@@ -67,10 +67,13 @@ def round_trip(o, output=False, list_=False):
     ns_info = NamespaceInfo()
     xobj = o2.to_obj(ns_info=ns_info)
 
-
     try:
         # 6. Bindings Object -> XML String
-        xml_string = o2.to_xml()
+        xml_string = o2.to_xml(encoding=bindings.ExternalEncoding)
+
+        if not isinstance(xml_string, unicode):
+            xml_string = xml_string.decode(bindings.ExternalEncoding)
+
     except KeyError as ex:
         print str(ex)
         ns_info.finalize()
