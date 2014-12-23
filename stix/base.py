@@ -7,6 +7,8 @@ import json
 from StringIO import StringIO
 from lxml import etree
 
+import stix.bindings as bindings
+
 def _override(*args, **kwargs):
     raise NotImplementedError()
 
@@ -42,11 +44,12 @@ class Entity(object):
 
     def to_xml(self, include_namespaces=True, include_schemalocs=True,
                ns_dict=None, schemaloc_dict=None, pretty=True,
-               auto_namespace=True, include_idgen=True):
+               auto_namespace=True, encoding='utf-8', include_idgen=True):
         """Serializes a :class:`Entity` instance to an XML string.
 
         The default character encoding is ``utf-8`` and can be set via the
-        ``stix.bindings.ExternalEncoding`` attribute.
+        `encoding` parameter. If `encoding` is ``None``, a unicode string
+        is returned.
 
         Args:
             auto_namespace: Automatically discover and export XML namespaces
@@ -66,14 +69,16 @@ class Entity(object):
                 mappings to include in the exported document. These will
                 only be included if `auto_namespace` is ``False``.
             pretty: Pretty-print the XML.
+            encoding: The output character encoding. Default is ``utf-8``. If
+                `encoding` is set to ``None``, a unicode string is returned.
 
         Returns:
-            An XML representation of this
+            An XML string for this
             :class:`Entity` instance. Default character encoding is ``utf-8``.
 
         """
         from stix.utils.nsparser import (
-            NamespaceParser, NamespaceInfo,DEFAULT_STIX_NAMESPACES
+            NamespaceParser, NamespaceInfo, DEFAULT_STIX_NAMESPACES
         )
 
         parser = NamespaceParser()
@@ -122,17 +127,23 @@ class Entity(object):
         if not pretty:
             namespace_def = namespace_def.replace('\n\t', ' ')
 
-        s = StringIO()
-        obj.export(
-            s.write,                      # output buffer
-            0,                            # output level
-            obj_ns_dict,                  # namespace dictionary
-            pretty_print=pretty,          # pretty printing
-            namespacedef_=namespace_def   # namespace/schemaloc def string
-        )
+        with bindings.save_encoding(encoding):
+            sio = StringIO()
+            obj.export(
+                sio.write,                    # output buffer
+                0,                            # output level
+                obj_ns_dict,                  # namespace dictionary
+                pretty_print=pretty,          # pretty printing
+                namespacedef_=namespace_def   # namespace/schemaloc def string
+            )
 
-        return s.getvalue()
+        # Ensure that the StringIO buffer is unicode
+        s = unicode(sio.getvalue())
 
+        if encoding:
+            return s.encode(encoding)
+
+        return s
 
     def to_json(self):
         return json.dumps(self.to_dict())
