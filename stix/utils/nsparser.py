@@ -4,12 +4,13 @@
 import warnings
 import itertools
 
-from stix import Entity as StixEntity
 from cybox import Entity as CyboxEntity
 from cybox.common import ObjectProperties, BaseProperty
 from cybox.common import VocabString as CyboxVocabString
 import cybox.utils.nsparser as cybox_nsparser
-from stix.utils import ignored
+
+from stix import Entity as StixEntity
+from stix.utils import (ignored, get_id_namespace, get_id_namespace_alias)
 
 class NamespaceInfo(object):
     def __init__(self):
@@ -23,11 +24,6 @@ class NamespaceInfo(object):
         self.input_schemalocs.update(ns_info.input_schemalocs)
 
     def finalize(self, ns_dict=None, schemaloc_dict=None):
-        from stix.utils import (
-            get_id_namespace, get_id_namespace_alias, DEFAULT_STIX_NAMESPACES,
-            XML_NAMESPACES, DEFAULT_STIX_SCHEMALOCATIONS
-        )
-
         if not ns_dict:
             ns_dict = {}
 
@@ -52,7 +48,6 @@ class NamespaceInfo(object):
             if ns not in DEFAULT_STIX_NAMESPACES:
                 d_ns[ns] = alias
 
-
         for ns, alias in self.namespaces.iteritems():
             if alias:
                 d_ns[ns] = alias
@@ -73,18 +68,16 @@ class NamespaceInfo(object):
         if all(examples):
             del d_ns['http://example.com/']
 
-        aliases = []
+        aliases = {}
         for ns, alias in d_ns.iteritems():
             if alias not in aliases:
-                aliases.append(alias)
+                aliases[alias] = ns
             else:
                 # TODO: Should we just throw an exception here?
                 # The XML will be invalid if there is a duplicate ns alias
-                warnings.warn(
-                    "namespace alias '{0}' mapped to '{1}' and '{2}'".format(
-                        alias, ns, aliases[alias]
-                    )
-                )
+                message = "namespace alias '{0}' mapped to '{1}' and '{2}'"
+                message = message.format(alias, ns, aliases[alias])
+                warnings.warn(message)
 
         d_sl = dict(self.input_schemalocs.items())
 
