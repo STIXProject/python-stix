@@ -1,13 +1,45 @@
 # Copyright (c) 2014, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# builtin
 import itertools
 import collections
+import StringIO
 import json
-from StringIO import StringIO
+
+# external
 from lxml import etree
 
+# internal
 import stix.bindings as bindings
+
+# lazy imports
+cybox = None
+cybox_common = None
+utils = None
+nsparser = None
+
+__LAZY_MODS_LOADED = False
+
+
+def _load_lazy_mods():
+    global cybox, cybox_common, utils, nsparser
+    global __LAZY_MODS_LOADED
+
+    if __LAZY_MODS_LOADED:
+        return
+
+    if not cybox:
+        import cybox
+    if not cybox_common:
+        import cybox.common as cybox_common
+    if not utils:
+        import stix.utils as utils
+    if not nsparser
+        import stix.utils.nsparser as nsparser
+
+    __LAZY_MODS_LOADED = True
+
 
 def _override(*args, **kwargs):
     raise NotImplementedError()
@@ -77,14 +109,11 @@ class Entity(object):
             :class:`Entity` instance. Default character encoding is ``utf-8``.
 
         """
-        from stix.utils.nsparser import (
-            NamespaceParser, NamespaceInfo, DEFAULT_STIX_NAMESPACES
-        )
-
-        parser = NamespaceParser()
+        _load_lazy_mods()
+        parser = nsparser.NamespaceParser()
 
         if auto_namespace:
-            ns_info = NamespaceInfo()
+            ns_info = nsparser.NamespaceInfo()
         else:
             ns_info = None
 
@@ -97,16 +126,16 @@ class Entity(object):
             )
 
         if auto_namespace:
-            ns_info.finalize()
+            ns_info.finalize(ns_dict=ns_dict, schemaloc_dict=schemaloc_dict)
             obj_ns_dict = ns_info.finalized_namespaces
         else:
-            ns_info = NamespaceInfo()
+            ns_info = nsparser.NamespaceInfo()
             ns_info.finalized_namespaces = ns_dict or {}
             ns_info.finalized_schemalocs = schemaloc_dict or {}
             obj_ns_dict = dict(
                 itertools.chain(
                     ns_dict.iteritems(),
-                    DEFAULT_STIX_NAMESPACES.iteritems()
+                    nsparser.DEFAULT_STIX_NAMESPACES.iteritems()
                 )
             )
 
@@ -213,11 +242,10 @@ class Entity(object):
         return cls.from_obj(entity_obj).to_dict()
 
     def walk(self):
-        from cybox import Entity as cyboxEntity
-        from cybox.common import ObjectProperties
+        _load_lazy_mods()
 
-        yieldable = (Entity, cyboxEntity)
-        skip = {ObjectProperties : '_parent'}
+        yieldable = (Entity, cybox.cyboxEntity)
+        skip = {cybox_common.ObjectProperties : '_parent'}
 
         def can_skip(obj, field):
             for klass, prop in skip.iteritems():
