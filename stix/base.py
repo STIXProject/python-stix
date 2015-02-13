@@ -35,7 +35,7 @@ def _load_lazy_mods():
         import cybox.common as cybox_common
     if not utils:
         import stix.utils as utils
-    if not nsparser
+    if not nsparser:
         import stix.utils.nsparser as nsparser
 
     __LAZY_MODS_LOADED = True
@@ -152,7 +152,7 @@ class Entity(object):
             namespace_def = namespace_def.replace('\n\t', ' ')
 
         with bindings.save_encoding(encoding):
-            sio = StringIO()
+            sio = StringIO.StringIO()
             obj.export(
                 sio.write,                    # output buffer
                 0,                            # output level
