@@ -32,7 +32,7 @@ XML = \
 </stix:STIX_Package>
 """
 
-# Create a VocabString class for our CustomVocab-1.0 vocabulary which
+# Create a VocabString class for our CustomVocab-1.0 vocabular
 class CustomVocab(vocabs.VocabString):
     _namespace = 'http://customvocabs.com/vocabs-1'
     _XSI_TYPE = 'customVocabs:CustomVocab-1.0'
