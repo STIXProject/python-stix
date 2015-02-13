@@ -318,9 +318,9 @@ the input and all the namespaces, ``xsi:types``, etc. are attached to each
 instance of ``VocabString``. When serializing the document, the input namespaces
 and ``xsi:type`` attributes are retained!
 
-However, to `create` new content which utilizes a custom controlled vocabulary,
-developers must create a :class:`.VocabString` implementation which mirrors
-the schema definition.
+However, to `create` new content which utilizes a schema defined and enforced
+custom controlled vocabulary, developers must create a :class:`.VocabString`
+implementation which mirrors the schema definition.
 
 For our ``CustomVocab-1.0`` schema type, the Python would look like this:
 
@@ -346,9 +346,14 @@ XML Schema definition, just with a lot less typing!
         of this vocabulary.
 * ``_ALLOWED_VALUES``: A ``tuple`` of allowable values for this vocabulary.
 
-The call to ``add_vocab()` registers the class and its ``xsi:type`` as a
-``VocabString`` implementation so **python-stix** will know to build instances
-of ``CustomVocab`` when parsed content contains ``CustomVocab-1.0`` content,
+.. note::
+
+    The call to ``add_vocab()`` registers the class and its ``xsi:type`` as a
+    ``VocabString`` implementation so **python-stix** will know to build
+    instances of ``CustomVocab`` when parsed content contains
+    ``CustomVocab-1.0`` content. You must call ``add_vocab()`` to register
+    your class prior to parsing content if you want the parser to build
+    instances of your custom vocabulary class!
 
 .. code-block:: python
 
