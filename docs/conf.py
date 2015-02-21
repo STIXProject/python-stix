@@ -1,7 +1,7 @@
 import stix
 
 project = u'python-stix'
-copyright = u'2014, The MITRE Corporation'
+copyright = u'2015, The MITRE Corporation'
 version = stix.__version__
 release = version
 

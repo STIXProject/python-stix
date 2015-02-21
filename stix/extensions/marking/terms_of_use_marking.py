@@ -1,3 +1,6 @@
+# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# See LICENSE.txt for complete terms.
+
 import stix.bindings.extensions.marking.terms_of_use_marking as tou_marking_binding
 import stix.data_marking
 from stix.data_marking import MarkingStructure
