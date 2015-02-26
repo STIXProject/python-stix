@@ -230,3 +230,183 @@ Which outputs:
 Notice that the ``<stix:Package_Intent>`` field does not have an ``xsi:type``
 attribute. As such, this field can contain any string value and is not bound
 by a controlled vocabulary enumeration of terms.
+
+
+Working With Custom Controlled Vocabularies
+###########################################
+
+STIX allows content authors and developers to extend the
+``ControlledVocabularyStringType`` schema type for the definition of new
+controlled vocabularies. The **python-stix** library allows developers to
+create and register Python types which mirror the custom XML Schema vocabulary
+types.
+
+XSD Example
+"""""""""""
+
+The following XML Schema example shows the definition of a a new custom
+controlled vocabulary schema type. Instances of this schema type could be
+used wherever a ``ControlledVocabularyStringType`` instance is expected
+(e.g., the ``STIX_Header/Package_Intent`` field).
+
+.. code-block:: xml
+
+    Filename: customVocabs.xsd
+
+    <xs:schema
+        xmlns:xs="http://www.w3.org/2001/XMLSchema"
+        xmlns:customVocabs="http://customvocabs.com/vocabs-1"
+        xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
+        xmlns:stixCommon="http://stix.mitre.org/common-1"
+        targetNamespace="http://customvocabs.com/vocabs-1"
+        elementFormDefault="qualified"
+        version="1.1.1"
+        xml:lang="English">
+        <xs:import namespace="http://stix.mitre.org/common-1" schemaLocation="http://stix.mitre.org/XMLSchema/common/1.1.1/stix_common.xsd"/>
+        <xs:complexType name="CustomVocab-1.0">
+            <xs:simpleContent>
+                <xs:restriction base="stixCommon:ControlledVocabularyStringType">
+                    <xs:simpleType>
+                        <xs:union memberTypes="customVocabs:CustomEnum-1.0"/>
+                    </xs:simpleType>
+                    <xs:attribute name="vocab_name" type="xs:string" use="optional" fixed="Test Vocab"/>
+                    <xs:attribute name="vocab_reference" type="xs:anyURI" use="optional" fixed="http://example.com/TestVocab"/>
+                </xs:restriction>
+            </xs:simpleContent>
+        </xs:complexType>
+        <xs:simpleType name="CustomEnum-1.0">
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="FOO"/>
+                <xs:enumeration value="BAR"/>
+            </xs:restriction>
+        </xs:simpleType>
+    </xs:schema>
+
+XML Instance Sample
+"""""""""""""""""""
+
+The following STIX XML instance document shows a potential use of this field.
+Note the ``xsi:type=customVocabs:CustomVocab-1.0`` on the ``Package_Intent``
+field.
+
+.. code-block:: xml
+
+    Filename: customVocabs.xml
+
+    <stix:STIX_Package
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:stixExample="http://stix.mitre.org/example"
+        xmlns:stix="http://stix.mitre.org/stix-1"
+        xmlns:customVocabs="http://customvocabs.com/vocabs-1"
+        xsi:schemaLocation="
+        http://stix.mitre.org/stix-1 /path/to/stix_core.xsd
+        http://customvocabs.com/vocabs-1 /path/to/customVocabs.xsd"
+        id="stixExample:STIXPackage-33fe3b22-0201-47cf-85d0-97c02164528d"
+        timestamp="2014-05-08T09:00:00.000000Z"
+        version="1.1.1">
+        <stix:STIX_Header>
+            <stix:Package_Intent xsi:type="customVocabs:CustomVocab-1.0">FOO</stix:Package_Intent>
+        </stix:STIX_Header>
+    </stix:STIX_Package>
+
+Python Code
+"""""""""""
+
+To parse content which uses custom controlled vocabularies, Python developers
+don't have to do anything special--you just call ``STIXPackage.from_xml()`` on
+the input and all the namespaces, ``xsi:types``, etc. are attached to each
+instance of ``VocabString``. When serializing the document, the input namespaces
+and ``xsi:type`` attributes are retained!
+
+However, to `create` new content which utilizes a schema defined and enforced
+custom controlled vocabulary, developers must create a :class:`.VocabString`
+implementation which mirrors the schema definition.
+
+For our ``CustomVocab-1.0`` schema type, the Python would look like this:
+
+.. code-block:: python
+
+    from stix.common import vocabs
+
+    # Create a custom vocabulary type
+    class CustomVocab(vocabs.VocabString):
+        _namespace = 'http://customvocabs.com/vocabs-1'
+        _XSI_TYPE = 'customVocabs:CustomVocab-1.0'
+        _ALLOWED_VALUES = ('FOO', 'BAR')
+
+    # Register the type as a VocabString
+    vocabs.add_vocab(CustomVocab)
+
+As you can see, we can express a lot of the same information found in the
+XML Schema definition, just with a lot less typing!
+
+* ``_namespace``: The ``targetNamespace`` for our custom vocabulary
+
+* ``_XSI_TYPE``: The ``xsi:type`` attribute value to write out for instances
+        of this vocabulary.
+* ``_ALLOWED_VALUES``: A ``tuple`` of allowable values for this vocabulary.
+
+.. note::
+
+    The call to ``add_vocab()`` registers the class and its ``xsi:type`` as a
+    ``VocabString`` implementation so **python-stix** will know to build
+    instances of ``CustomVocab`` when parsed content contains
+    ``CustomVocab-1.0`` content. You must call ``add_vocab()`` to register
+    your class prior to parsing content if you want the parser to build
+    instances of your custom vocabulary class!
+
+.. code-block:: python
+
+    # builtin
+    from StringIO import StringIO
+
+    # python-stix modules
+    from stix.core import STIXPackage
+    from stix.common import vocabs
+
+    XML = \
+    """
+    <stix:STIX_Package
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:stix="http://stix.mitre.org/stix-1"
+        xmlns:customVocabs="http://customvocabs.com/vocabs-1"
+        xmlns:example="http://example.com/"
+        xsi:schemaLocation="
+        http://stix.mitre.org/stix-1 /path/to/stix_core.xsd
+        http://customvocabs.com/vocabs-1 /path/to/customVocabs.xsd"
+        id="example:STIXPackage-33fe3b22-0201-47cf-85d0-97c02164528d"
+        timestamp="2014-05-08T09:00:00.000000Z"
+        version="1.1.1">
+        <stix:STIX_Header>
+            <stix:Package_Intent xsi:type="customVocabs:CustomVocab-1.0">FOO</stix:Package_Intent>
+        </stix:STIX_Header>
+    </stix:STIX_Package>
+    """
+
+    # Create a VocabString class for our CustomVocab-1.0 vocabulary which
+    class CustomVocab(vocabs.VocabString):
+        _namespace = 'http://customvocabs.com/vocabs-1'
+        _XSI_TYPE = 'customVocabs:CustomVocab-1.0'
+        _ALLOWED_VALUES = ('FOO', 'BAR')
+
+    # Register our Custom Vocabulary class so parsing builds instances of
+    # CustomVocab
+    vocabs.add_vocab(CustomVocab)
+
+    # Parse the input document
+    sio = StringIO(XML)
+    package = STIXPackage.from_xml(sio)
+
+    # Retrieve the first (and only) Package_Intent entry
+    package_intent = package.stix_header.package_intents[0]
+
+    # Print information about the input Package_Intent
+    print type(package_intent), package_intent.xsi_type, package_intent
+
+    # Add another Package Intent
+    bar = CustomVocab('BAR')
+    package.stix_header.add_package_intent(bar)
+
+    # This will include the 'BAR' CustomVocab entry
+    print package.to_xml()
+
