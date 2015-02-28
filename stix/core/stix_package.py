@@ -6,6 +6,7 @@ from datetime import datetime
 
 # external
 from dateutil.tz import tzutc
+from cybox.core import Observables
 
 # internal
 import stix
@@ -21,12 +22,9 @@ from stix.incident import Incident
 from stix.threat_actor import ThreatActor
 from stix.common.related import RelatedPackages
 from .ttps import TTPs
-from cybox.core import Observables
 
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.stix_core as stix_core_binding
-
-
 
 
 class STIXPackage(stix.Entity):
@@ -112,7 +110,7 @@ class STIXPackage(stix.Entity):
 
         if not value:
             return
-        elif isinstance(value, list):
+        elif isinstance(value, (list, tuple)):
             for v in value:
                 self.add_indicator(v)
         else:
@@ -140,7 +138,7 @@ class STIXPackage(stix.Entity):
 
         if not value:
             return
-        elif isinstance(value, list):
+        elif isinstance(value, (list, tuple)):
             for v in value:
                 self.add_campaign(v)
         else:
@@ -185,7 +183,7 @@ class STIXPackage(stix.Entity):
         
         if not value:
             return
-        elif isinstance(value, list):
+        elif isinstance(value, (list, tuple)):
             for v in value:
                 self.add_incident(v)
         else:
@@ -213,7 +211,7 @@ class STIXPackage(stix.Entity):
         
         if not value:
             return
-        elif isinstance(value, list):
+        elif isinstance(value, (list, tuple)):
             for v in value:
                 self.add_threat_actor(v)
         else:
@@ -241,7 +239,7 @@ class STIXPackage(stix.Entity):
         
         if not value:
             return
-        elif isinstance(value, list):
+        elif isinstance(value, (list, tuple)):
             for v in value:
                 self.add_course_of_action(v)
         else:
@@ -269,7 +267,7 @@ class STIXPackage(stix.Entity):
         
         if not value:
             return
-        elif isinstance(value, list):
+        elif isinstance(value, (list, tuple)):
             for v in value:
                 self.add_exploit_target(v)
         else:
@@ -295,7 +293,7 @@ class STIXPackage(stix.Entity):
 
         if not value:
             self._ttps = TTPs()
-        elif isinstance(value, list):
+        elif isinstance(value, (list, tuple)):
             for v in value:
                 self.add_ttp(v)
         else:
@@ -323,7 +321,7 @@ class STIXPackage(stix.Entity):
 
         if self.stix_header:
             return_obj.STIX_Header = self.stix_header.to_obj(ns_info=ns_info)
-        
+
         if self.campaigns:
             return_obj.Campaigns = self.campaigns.to_obj(ns_info=ns_info)
             
@@ -355,6 +353,7 @@ class STIXPackage(stix.Entity):
 
     def to_dict(self):
         d = {}
+        
         if self.id_:
             d['id'] = self.id_
         if self.idref:
