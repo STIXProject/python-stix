@@ -1,13 +1,18 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-import itertools
+# stdlib
 import collections
+import itertools
 import json
-from StringIO import StringIO
-from lxml import etree
+import StringIO
 
+# external
+import lxml.etree
+
+# internal
 import stix.bindings as bindings
+
 
 def _override(*args, **kwargs):
     raise NotImplementedError()
@@ -123,7 +128,7 @@ class Entity(object):
             namespace_def = namespace_def.replace('\n\t', ' ')
 
         with bindings.save_encoding(encoding):
-            sio = StringIO()
+            sio = StringIO.StringIO()
             obj.export(
                 sio.write,                    # output buffer
                 0,                            # output level
@@ -182,8 +187,8 @@ class Entity(object):
                             value.append(x.to_dict())
                         else:
                             value.append(x)
-                elif isinstance(raw_value, etree._ElementTree):
-                    value = etree.tostring(raw_value)
+                elif isinstance(raw_value, lxml.etree._ElementTree):
+                    value = lxml.etree.tostring(raw_value)
                 else:
                     value = raw_value
                 
@@ -213,59 +218,21 @@ class Entity(object):
         return cls.from_obj(entity_obj).to_dict()
 
     def walk(self):
-        from cybox import Entity as cyboxEntity
-        from cybox.common import ObjectProperties
-
-        yieldable = (Entity, cyboxEntity)
-        skip = {ObjectProperties : '_parent'}
-
-        def can_skip(obj, field):
-            for klass, prop in skip.iteritems():
-                if prop == field and isinstance(obj, klass):
-                    return True
-            return False
-
-        def get_members(obj):
-            for k, v in obj.__dict__.iteritems():
-                if v and not can_skip(obj, k):
-                    yield v
-
-        visited = []
-        def descend(obj):
-            if id(obj) in visited:
-                return
-            visited.append(id(obj))
-
-            for member in get_members(obj):
-                if isinstance(member, yieldable):
-                    yield member
-                    for i in descend(member):
-                        yield i
-
-                if hasattr(member, "__getitem__"):
-                    for i in member:
-                        if isinstance(i, yieldable):
-                            yield i
-                            for d in descend(i):
-                                yield d
-
-            visited.remove(id(obj))
-        # end descend()
-
-        for node in descend(self):
-            yield node
+        from stix.utils import walk
+        return walk.iterwalk(self)
 
     def find(self, id_):
         """Searches the children of a :class:`Entity` implementation for an
         object with an ``id_`` property that matches `id_`.
 
         """
+        if not id_:
+            return
+
         for entity in self.walk():
-            try:
-                if entity.id_ == id_:
-                    return entity
-            except:
-                pass
+            if id_ == getattr(entity, "id_", None):
+                return entity
+
 
 class EntityList(collections.MutableSequence, Entity):
     _binding_class = _override

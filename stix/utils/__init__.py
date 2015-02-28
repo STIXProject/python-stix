@@ -2,7 +2,11 @@
 # See LICENSE.txt for complete terms.
 
 import contextlib
+
 from lxml import etree
+
+import stix
+import cybox
 
 CDATA_START = "<![CDATA["
 CDATA_END = "]]>"
@@ -59,6 +63,28 @@ def cdata(text):
 
     escaped = "{0}{1}{2}".format(CDATA_START, text, CDATA_END)
     return escaped
+
+
+def iter_vars(obj):
+    d = getattr(obj, "__dict__", {})
+    return d.iteritems()
+
+
+def iter_typed_fields(obj):
+    d = getattr(obj, "_fields", {})
+    return d.itervalues()
+
+
+def is_stix(entity):
+    return isinstance(entity, stix.Entity)
+
+
+def is_cybox(entity):
+    return isinstance(entity, cybox.Entity)
+
+
+def is_entity(entity):
+    return isinstance(entity, (cybox.Entity, stix.Entity))
 
 
 from .idgen import *

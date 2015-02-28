@@ -1,8 +1,9 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-import dateutil
 from datetime import datetime
+
+import dateutil
 
 def parse_value(value):
     if not value:

@@ -116,19 +116,19 @@ class NamespaceInfo(object):
             # Prevents exception being raised if/when
             # collections.MutableSequence or another base class appears in the
             # MRO.
-            ns = klass.__dict__.get("_namespace")
+            ns = getattr(klass, "_namespace", None)
             if not ns:
                 continue
 
             # cybox.objects.* ObjectPropreties derivations have an _XSI_NS
             # class-level attribute which holds the namespace alias to be
             # used for its namespace.
-            alias = klass.__dict__.get('_XSI_NS')
+            alias = getattr(klass, "_XSI_NS", None)
             if alias:
                 self.namespaces[ns] = alias
                 continue
 
-            xsi_type = klass.__dict__.get('_XSI_TYPE')
+            xsi_type = getattr(klass, "_XSI_TYPE", None)
             if not xsi_type:
                 self.namespaces[ns] = None
                 continue
@@ -140,12 +140,13 @@ class NamespaceInfo(object):
             else:
                 self.namespaces[ns] = alias
 
-        entity_dict = entity.__dict__
-        input_ns = entity_dict.get("__input_namespaces__", {})
-        self.input_namespaces.update(input_ns)
+        input_ns = getattr(entity, "__input_namespaces__", None)
+        if input_ns is not None:
+            self.input_namespaces.update(input_ns)
 
-        input_locs = entity_dict.get("__input_schemalocations__", {})
-        self.input_schemalocs.update(input_locs)
+        input_locs = getattr(entity, "__input_schemalocations__", None)
+        if input_locs is not None:
+            self.input_schemalocs.update(input_locs)
 
 
     def __setitem__(self, key, value):
