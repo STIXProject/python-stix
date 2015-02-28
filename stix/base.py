@@ -179,7 +179,8 @@ class Entity(object):
         :class:`Entity` implementation instance.
 
         Arguments:
-            json_doc: Input JSON representation of a STIX entity.
+            json_doc: Input JSON representation of a STIX entity. This can be
+                a readable object or a JSON string.
 
         Returns:
             An implementation of :class:`.Entity` (e.g., :class:`.STIXPackage`).
@@ -245,6 +246,7 @@ class Entity(object):
         from stix.utils import walk
         return walk.iterwalk(self)
 
+
     def find(self, id_):
         """Searches the children of a :class:`Entity` implementation for an
         object with an ``id_`` property that matches `id_`.
@@ -263,6 +265,7 @@ class EntityList(collections.MutableSequence, Entity):
     _binding_var = None
     _contained_type = _override
     _inner_name = None
+    _dict_as_list = False
 
     def __init__(self, *args):
         super(EntityList, self).__init__()
@@ -334,7 +337,13 @@ class EntityList(collections.MutableSequence, Entity):
 
         return return_obj
 
+    def to_list(self):
+        return [h.to_dict() for h in self]
+
     def to_dict(self):
+        if self._dict_as_list:
+            return self.to_list()
+
         d = {}
 
         if self._inner:
@@ -361,8 +370,31 @@ class EntityList(collections.MutableSequence, Entity):
         return return_obj
 
     @classmethod
+    def from_list(cls, list_repr, return_obj=None, contained_type=None):
+
+        if not isinstance(list_repr, list):
+            return None
+
+        if return_obj is None:
+            return_obj = cls()
+        if not contained_type:
+            contained_type = cls._contained_type
+
+        return_obj.extend(contained_type.from_dict(x) for x in list_repr)
+        return return_obj
+
+    @classmethod
     def from_dict(cls, dict_repr, return_obj=None, contained_type=None,
                   inner_name=None):
+
+        if cls._dict_as_list:
+            return cls.from_list(
+                dict_repr,
+                return_obj=return_obj,
+                contained_type=contained_type,
+            )
+
+
         if not isinstance(dict_repr, dict):
             return None
 
