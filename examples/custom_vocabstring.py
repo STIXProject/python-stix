@@ -32,7 +32,7 @@ XML = \
 </stix:STIX_Package>
 """
 
-# Create a VocabString class for our CustomVocab-1.0 vocabulary
+# Create a VocabString class for our CustomVocab-1.0 vocabular
 class CustomVocab(vocabs.VocabString):
     _namespace = 'http://customvocabs.com/vocabs-1'
     _XSI_TYPE = 'customVocabs:CustomVocab-1.0'
@@ -55,5 +55,7 @@ print type(package_intent), package_intent.xsi_type, package_intent
 bar = CustomVocab('BAR')
 package.stix_header.add_package_intent(bar)
 
+schemalocs = {'http://customvocabs.com/vocabs-1': '/path/to/customVocabs.xsd'}
+
 # This will include the 'BAR' CustomVocab entry
-print package.to_xml()
+print package.to_xml(schemaloc_dict=schemalocs)
