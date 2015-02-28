@@ -28,6 +28,12 @@ def _iter_vars(obj):
 
 
 def iterwalk(obj):
+    """Returns an generator which 'walks` the input `obj` model. Each
+    iteration yields a stix.Entity or cybox.Entity instance.
+
+    This is performed depth-first.
+
+    """
     def yield_and_walk(item):
         if not is_entity(item):
             return
@@ -52,6 +58,17 @@ def iterwalk(obj):
 
 
 def iterpath(obj, path=None):
+    """Returns a generator which `walks` the input `obj` model. Each
+    iteration yields a triple containing a list of ancestor nodes, the name
+    of the field, and the field value.
+
+    Example:
+        An Indicator Title with a value of "Test" could be yielded as follows:
+        ([STIXPackage, Indicators, Indicator], "title", "Test")
+
+    This is performed depth-first.
+
+    """
     def yield_and_descend(name, item):
         yield (path, attr_name(name), item)
 
