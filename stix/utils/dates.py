@@ -4,6 +4,7 @@
 from datetime import datetime
 
 import dateutil
+import dateutil.tz
 
 def parse_value(value):
     if not value:
@@ -16,3 +17,7 @@ def serialize_value(value):
     if not value:
         return None
     return value.isoformat()
+
+
+def now():
+    return datetime.now(tz=dateutil.tz.tzutc())

@@ -1,19 +1,12 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# stdlib
-from datetime import datetime
-
 # external
-from dateutil.tz import tzutc
 from cybox.core import Observables
 
 # internal
 import stix
-import stix.utils
-from stix.utils import dates
-from stix.utils import parser
-from stix_header import STIXHeader
+import stix.utils as utils
 from stix.campaign import Campaign
 from stix.coa import CourseOfAction
 from stix.exploit_target import ExploitTarget
@@ -21,8 +14,12 @@ from stix.indicator import Indicator
 from stix.incident import Incident
 from stix.threat_actor import ThreatActor
 from stix.common.related import RelatedPackages
+
+# relative imports
+from .stix_header import STIXHeader
 from .ttps import TTPs
 
+# binding imports
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.stix_core as stix_core_binding
 
@@ -51,7 +48,7 @@ class STIXPackage(stix.Entity):
         if timestamp:
             self.timestamp = timestamp
         else:
-            self.timestamp = datetime.now(tzutc()) if not idref else None
+            self.timestamp = utils.dates.now() if not idref else None
     
     @property
     def id_(self):
@@ -83,7 +80,7 @@ class STIXPackage(stix.Entity):
 
     @timestamp.setter
     def timestamp(self, value):
-        self._timestamp = dates.parse_value(value)
+        self._timestamp = utils.dates.parse_value(value)
 
     @property
     def stix_header(self):
@@ -317,7 +314,7 @@ class STIXPackage(stix.Entity):
         return_obj.id = self.id_
         return_obj.idref = self.idref
         return_obj.version = self.version
-        return_obj.timestamp = dates.serialize_value(self.timestamp)
+        return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
 
         if self.stix_header:
             return_obj.STIX_Header = self.stix_header.to_obj(ns_info=ns_info)
@@ -353,7 +350,7 @@ class STIXPackage(stix.Entity):
 
     def to_dict(self):
         d = {}
-        
+
         if self.id_:
             d['id'] = self.id_
         if self.idref:
@@ -363,7 +360,7 @@ class STIXPackage(stix.Entity):
         if self.idref:
             d['idref'] = self.idref
         if self.timestamp:
-            d['timestamp'] = dates.serialize_value(self.timestamp)
+            d['timestamp'] = utils.dates.serialize_value(self.timestamp)
         if self.stix_header:
             d['stix_header'] = self.stix_header.to_dict()
         if self.campaigns:
@@ -457,7 +454,7 @@ class STIXPackage(stix.Entity):
             An instance of :class:`STIXPackage`.
 
         """
-        entity_parser = parser.EntityParser()
+        entity_parser = utils.parser.EntityParser()
         return entity_parser.parse_xml(xml_file, encoding=encoding)
 
 
