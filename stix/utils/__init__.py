@@ -67,34 +67,46 @@ def cdata(text):
     escaped = "{0}{1}{2}".format(CDATA_START, text, CDATA_END)
     return escaped
 
-
-def iter_vars(obj):
-    d = getattr(obj, "__dict__", {})
-    return d.iteritems()
-
-
-def iter_typed_fields(obj):
-    d = getattr(obj, "_fields", {})
-    return d.itervalues()
-
-
 def is_stix(entity):
+    """Returns true if `entity` is an instance of :class:`stix.Entity`."""
     return isinstance(entity, stix.Entity)
 
 
 def is_cybox(entity):
+    """Returns true if `entity` is an instance of :class:`cybox.Entity`."""
     return isinstance(entity, cybox.Entity)
 
 
 def is_entity(entity):
+    """Returns true if `entity` is an instance of :class:`stix.Entity` or
+    :class:`cybox.Entity`.
+
+    """
     return isinstance(entity, (cybox.Entity, stix.Entity))
 
 
 def is_entitylist(entity):
+    """Returns true if `entity` is an instance of :class:`stix.EntityList`
+    or :class:`cybox.EntityList`.
+
+    """
     return isinstance(entity, (cybox.EntityList, stix.EntityList))
 
 
 def attr_name(name):
+    """Converts `name` into the form expected for python-stix and
+    python-cybox properties.
+
+    This is used when attempting to access the property getter/setter via
+    the __dict__ instance var entries.
+
+    Example:
+        >>> attr_name("id")
+        'id_'
+        >>> attr_name("title")
+        'title
+
+    """
     if name.startswith("_"):
         name = name[1:]
 
