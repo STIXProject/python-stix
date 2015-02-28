@@ -1,10 +1,17 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# stdlib
+from datetime import datetime
+
+# external
+from dateutil.tz import tzutc
+
+# internal
 import stix
 import stix.utils
 from stix.utils import dates
-from stix.utils.parser import EntityParser
+from stix.utils import parser
 from stix_header import STIXHeader
 from stix.campaign import Campaign
 from stix.coa import CourseOfAction
@@ -12,18 +19,15 @@ from stix.exploit_target import ExploitTarget
 from stix.indicator import Indicator
 from stix.incident import Incident
 from stix.threat_actor import ThreatActor
-from stix.ttp import TTP
 from stix.common.related import RelatedPackages
 from .ttps import TTPs
 from cybox.core import Observables
 
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.stix_core as stix_core_binding
-import cybox.bindings.cybox_core as cybox_core_binding
 
-from StringIO import StringIO
-from datetime import datetime
-from dateutil.tz import tzutc
+
+
 
 class STIXPackage(stix.Entity):
     _binding = stix_core_binding
@@ -100,7 +104,11 @@ class STIXPackage(stix.Entity):
 
     @indicators.setter
     def indicators(self, value):
-        self._indicators = []
+        if isinstance(value, Indicators):
+            self._indicators = value
+            return
+
+        self._indicators = Indicators()
 
         if not value:
             return
@@ -124,7 +132,11 @@ class STIXPackage(stix.Entity):
 
     @campaigns.setter
     def campaigns(self, value):
-        self._campaigns = []
+        if isinstance(value, Campaigns):
+            self._campaigns = value
+            return
+
+        self._campaigns = Campaigns()
 
         if not value:
             return
@@ -165,7 +177,11 @@ class STIXPackage(stix.Entity):
     
     @incidents.setter
     def incidents(self, value):
-        self._incidents = []
+        if isinstance(value, Incidents):
+            self._incidents = value
+            return
+
+        self._incidents = Incidents()
         
         if not value:
             return
@@ -189,7 +205,11 @@ class STIXPackage(stix.Entity):
     
     @threat_actors.setter
     def threat_actors(self, value):
-        self._threat_actors = []
+        if isinstance(value, ThreatActors):
+            self._threat_actors = value
+            return
+
+        self._threat_actors = ThreatActors()
         
         if not value:
             return
@@ -213,7 +233,11 @@ class STIXPackage(stix.Entity):
     
     @courses_of_action.setter
     def courses_of_action(self, value):
-        self._courses_of_action = []
+        if isinstance(value, CoursesOfAction):
+            self._courses_of_action = value
+            return
+
+        self._courses_of_action = CoursesOfAction()
         
         if not value:
             return
@@ -237,7 +261,11 @@ class STIXPackage(stix.Entity):
     
     @exploit_targets.setter
     def exploit_targets(self, value):
-        self._exploit_targets = []
+        if isinstance(value, ExploitTargets):
+            self._exploit_targets = value
+            return
+
+        self._exploit_targets = ExploitTargets()
         
         if not value:
             return
@@ -261,10 +289,12 @@ class STIXPackage(stix.Entity):
     
     @ttps.setter
     def ttps(self, value):
+        if isinstance(value, TTPs):
+            self._ttps = value
+            return
+
         if not value:
             self._ttps = TTPs()
-        elif isinstance(value, TTPs):
-            self._ttps = value
         elif isinstance(value, list):
             for v in value:
                 self.add_ttp(v)
@@ -295,36 +325,25 @@ class STIXPackage(stix.Entity):
             return_obj.STIX_Header = self.stix_header.to_obj(ns_info=ns_info)
         
         if self.campaigns:
-            coas_obj = self._binding.CampaignsType()
-            coas_obj.Campaign = [x.to_obj(ns_info=ns_info) for x in self.campaigns]
-            return_obj.Campaigns = coas_obj
+            return_obj.Campaigns = self.campaigns.to_obj(ns_info=ns_info)
             
         if self.courses_of_action:
-            coas_obj = self._binding.CoursesOfActionType()
-            coas_obj.Course_Of_Action = [x.to_obj(ns_info=ns_info) for x in self.courses_of_action]
-            return_obj.Courses_Of_Action = coas_obj
+            return_obj.Courses_Of_Action = self.courses_of_action.to_obj(ns_info=ns_info)
         
         if self.exploit_targets:
-            et_obj = stix_common_binding.ExploitTargetsType()
-            et_obj.Exploit_Target = [x.to_obj(ns_info=ns_info) for x in self.exploit_targets]
-            return_obj.Exploit_Targets = et_obj
+            return_obj.Exploit_Targets = self.exploit_targets.to_obj(ns_info=ns_info)
             
         if self.indicators:
-            indicators_obj = self._binding.IndicatorsType()
-            indicators_obj.Indicator = [x.to_obj(ns_info=ns_info) for x in self.indicators]
-            return_obj.Indicators = indicators_obj
+            return_obj.Indicators = self.indicators.to_obj(ns_info=ns_info)
 
         if self.observables:
             return_obj.Observables = self.observables.to_obj(ns_info=ns_info)
 
         if self.incidents:
-            incidents_obj = self._binding.IncidentsType()
-            incidents_obj.Incident = [x.to_obj(ns_info=ns_info) for x in self.incidents]
-            return_obj.Incidents = incidents_obj
+            return_obj.Incidents = self.incidents.to_obj(ns_info=ns_info)
+
         if self.threat_actors:
-            threat_actors_obj = self._binding.ThreatActorsType()
-            threat_actors_obj.Threat_Actor = [x.to_obj(ns_info=ns_info) for x in self.threat_actors]
-            return_obj.Threat_Actors = threat_actors_obj
+            return_obj.Threat_Actors = self.threat_actors.to_obj(ns_info=ns_info)
         
         if self.ttps:
             return_obj.TTPs = self.ttps.to_obj(ns_info=ns_info)
@@ -349,19 +368,19 @@ class STIXPackage(stix.Entity):
         if self.stix_header:
             d['stix_header'] = self.stix_header.to_dict()
         if self.campaigns:
-            d['campaigns'] = [x.to_dict() for x in self.campaigns]
+            d['campaigns'] = self.campaigns.to_dict()
         if self.courses_of_action:
-            d['courses_of_action'] = [x.to_dict() for x in self.courses_of_action]
+            d['courses_of_action'] = self.courses_of_action.to_dict()
         if self.exploit_targets:
-            d['exploit_targets'] = [x.to_dict() for x in self.exploit_targets]
+            d['exploit_targets'] = self.exploit_targets.to_dict()
         if self.indicators:
-            d['indicators'] = [x.to_dict() for x in self.indicators]
+            d['indicators'] = self.indicators.to_dict()
         if self.observables:
             d['observables'] = self.observables.to_dict()
         if self.incidents:
-            d['incidents'] = [x.to_dict() for x in self.incidents]
+            d['incidents'] = self.incidents.to_dict()
         if self.threat_actors:
-            d['threat_actors'] = [x.to_dict() for x in self.threat_actors]
+            d['threat_actors'] = self.threat_actors.to_dict()
         if self.ttps:
             d['ttps'] = self.ttps.to_dict()
         if self.related_packages:
@@ -383,19 +402,19 @@ class STIXPackage(stix.Entity):
         if obj.version:
             return_obj.version = obj.version
         if obj.Campaigns:
-            return_obj.campaigns = [Campaign.from_obj(x) for x in obj.Campaigns.Campaign]
+            return_obj.campaigns = Campaigns.from_obj(obj.Campaigns)
         if obj.Courses_Of_Action:
-            return_obj.courses_of_action = [CourseOfAction.from_obj(x) for x in obj.Courses_Of_Action.Course_Of_Action]
+            return_obj.courses_of_action = CoursesOfAction.from_obj(obj.Courses_Of_Action)
         if obj.Exploit_Targets:
-            return_obj.exploit_targets = [ExploitTarget.from_obj(x) for x in obj.Exploit_Targets.Exploit_Target]
+            return_obj.exploit_targets = ExploitTargets.from_obj(obj.Exploit_Targets)
         if obj.Indicators:
-            return_obj.indicators = [Indicator.from_obj(x) for x in obj.Indicators.Indicator]
+            return_obj.indicators = Indicators.from_obj(obj.Indicators)
         if obj.Observables:
             return_obj.observables = Observables.from_obj(obj.Observables)
         if obj.Incidents:
-            return_obj.incidents = [Incident.from_obj(x) for x in obj.Incidents.Incident]
+            return_obj.incidents = Incident.from_obj(obj.Incidents)
         if obj.Threat_Actors:
-            return_obj.threat_actors = [ThreatActor.from_obj(x) for x in obj.Threat_Actors.Threat_Actor]
+            return_obj.threat_actors = ThreatActors.from_obj(obj.Threat_Actors)
         if obj.TTPs:
             return_obj.ttps = TTPs.from_obj(obj.TTPs)
             
@@ -406,18 +425,18 @@ class STIXPackage(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = dict_repr.get('id', None)
-        return_obj.idref = dict_repr.get('idref', None)
+        return_obj.id_ = dict_repr.get('id')
+        return_obj.idref = dict_repr.get('idref')
         return_obj.timestamp = dict_repr.get('timestamp')
         return_obj.version = dict_repr.get('version', cls._version)
-        return_obj.stix_header = STIXHeader.from_dict(dict_repr.get('stix_header', None))
-        return_obj.campaigns = [Campaign.from_dict(x) for x in dict_repr.get('campaigns', [])]
-        return_obj.courses_of_action = [CourseOfAction.from_dict(x) for x in dict_repr.get('courses_of_action', [])]
-        return_obj.exploit_targets = [ExploitTarget.from_dict(x) for x in dict_repr.get('exploit_targets', [])]
-        return_obj.indicators = [Indicator.from_dict(x) for x in dict_repr.get('indicators', [])]
+        return_obj.stix_header = STIXHeader.from_dict(dict_repr.get('stix_header'))
+        return_obj.campaigns = Campaigns.from_dict(dict_repr.get('campaigns'))
+        return_obj.courses_of_action = CoursesOfAction.from_dict(dict_repr.get('courses_of_action'))
+        return_obj.exploit_targets = ExploitTargets.from_dict(dict_repr.get('exploit_targets'))
+        return_obj.indicators = Indicators.from_dict(dict_repr.get('indicators'))
         return_obj.observables = Observables.from_dict(dict_repr.get('observables'))
-        return_obj.incidents = [Incident.from_dict(x) for x in dict_repr.get('incidents', [])]
-        return_obj.threat_actors = [ThreatActor.from_dict(x) for x in dict_repr.get('threat_actors', [])]
+        return_obj.incidents = Incidents.from_dict(dict_repr.get('incidents'))
+        return_obj.threat_actors = ThreatActors.from_dict(dict_repr.get('threat_actors'))
         return_obj.ttps = TTPs.from_dict(dict_repr.get('ttps'))
         return_obj.related_packages = RelatedPackages.from_dict(dict_repr.get('related_packages'))
         
@@ -439,8 +458,66 @@ class STIXPackage(stix.Entity):
             An instance of :class:`STIXPackage`.
 
         """
-        parser = EntityParser()
-        return parser.parse_xml(xml_file, encoding=encoding)
+        entity_parser = parser.EntityParser()
+        return entity_parser.parse_xml(xml_file, encoding=encoding)
 
 
+class Campaigns(stix.EntityList):
+    _binding = stix_core_binding
+    _namespace = 'http://stix.mitre.org/stix-1'
+    _binding_class = _binding.CampaignsType
+    _contained_type = Campaign
+    _binding_var = "Campaign"
+    _inner_name = "campaigns"
+    _dict_as_list = True
+
+
+class CoursesOfAction(stix.EntityList):
+    _binding = stix_core_binding
+    _namespace = 'http://stix.mitre.org/stix-1'
+    _binding_class = _binding.CoursesOfActionType
+    _contained_type = CourseOfAction
+    _binding_var = "Course_Of_Action"
+    _inner_name = "courses_of_action"
+    _dict_as_list = True
+
+
+class ExploitTargets(stix.EntityList):
+    _binding = stix_common_binding
+    _namespace = 'http://stix.mitre.org/common-1'
+    _binding_class = _binding.ExploitTargetsType
+    _contained_type = ExploitTarget
+    _binding_var = "Exploit_Target"
+    _inner_name = "exploit_targets"
+    _dict_as_list = True
+
+
+class Incidents(stix.EntityList):
+    _binding = stix_core_binding
+    _namespace = 'http://stix.mitre.org/stix-1'
+    _binding_class = _binding.IncidentsType
+    _contained_type = Incident
+    _binding_var = "Incident"
+    _inner_name = "incidents"
+    _dict_as_list = True
+
+
+class Indicators(stix.EntityList):
+    _binding = stix_core_binding
+    _namespace = 'http://stix.mitre.org/stix-1'
+    _binding_class = _binding.IndicatorsType
+    _contained_type = Indicator
+    _binding_var = "Indicator"
+    _inner_name = "indicators"
+    _dict_as_list = True
+
+
+class ThreatActors(stix.EntityList):
+    _binding = stix_core_binding
+    _namespace = 'http://stix.mitre.org/stix-1'
+    _binding_class = _binding.ThreatActorsType
+    _contained_type = ThreatActor
+    _binding_var = "Threat_Actor"
+    _inner_name = "threat_actors"
+    _dict_as_list = True
 
