@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import contextlib
+import keyword
 
 from lxml import etree
 
@@ -10,6 +11,8 @@ import cybox
 
 CDATA_START = "<![CDATA["
 CDATA_END = "]]>"
+
+_CONFLICTING_NAMES = keyword.kwlist + ['id', 'type','range']
 
 @contextlib.contextmanager
 def ignored(*exceptions):
@@ -87,5 +90,19 @@ def is_entity(entity):
     return isinstance(entity, (cybox.Entity, stix.Entity))
 
 
+def is_entitylist(entity):
+    return isinstance(entity, (cybox.EntityList, stix.EntityList))
+
+def attr_name(name):
+    if name.startswith("_"):
+        name = name[1:]
+
+    if name in _CONFLICTING_NAMES:
+        name = name + "_"
+
+    return name
+
+
 from .idgen import *
 from .nsparser import *
+from .walk import *

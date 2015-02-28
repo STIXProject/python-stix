@@ -1,15 +1,17 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# stdlib
 import warnings
 import itertools
 
-from cybox import Entity as CyboxEntity
-from cybox.common import ObjectProperties, BaseProperty
-from cybox.common import VocabString as CyboxVocabString
-import cybox.utils.nsparser as cybox_nsparser
+# external
+import cybox
+import cybox.core
+import cybox.common
+import cybox.utils
 
-from stix import Entity as StixEntity
+import stix
 from stix.utils import (ignored, get_id_namespace, get_id_namespace_alias)
 
 class NamespaceInfo(object):
@@ -24,8 +26,19 @@ class NamespaceInfo(object):
         self.input_schemalocs.update(ns_info.input_schemalocs)
 
     def finalize(self, ns_dict=None, schemaloc_dict=None):
-        ns_dict = dict(ns_dict.iteritems()) if ns_dict else {}
-        schemaloc_dict = dict(schemaloc_dict.iteritems()) if schemaloc_dict else {}
+        # If ns_dict was passed in, make a copy so we don't mistakenly modify
+        # the original.
+        if ns_dict:
+            ns_dict = dict(ns_dict.iteritems())
+        else:
+            ns_dict = {}
+
+        # If schemaloc_dict was passed in, make a copy so we don't mistakenly
+        # modify the original.
+        if schemaloc_dict:
+            schemaloc_dict = dict(schemaloc_dict.iteritems())
+        else:
+            schemaloc_dict = {}
 
         id_ns = get_id_namespace()
         id_ns_alias = get_id_namespace_alias()
@@ -142,7 +155,7 @@ class NamespaceInfo(object):
         # Traverse the MRO so we can collect _namespace attributes on Entity
         # derivations (e.g., WinFile extends File).
         for klass in entity.__class__.__mro__:
-            if klass in (StixEntity, CyboxEntity, CyboxVocabString):
+            if klass in (stix.Entity, cybox.Entity, cybox.common.VocabString):
                 break
 
             # Prevents exception being raised if/when
@@ -165,12 +178,13 @@ class NamespaceInfo(object):
                 self.namespaces[ns] = None
                 continue
 
-            try:
-                alias, type_ = xsi_type.split(":")
-            except:
-                self.namespaces[ns] = None
+            # Attempt to split the xsi:type attribute value into the ns alias
+            # and the typename.
+            typeinfo = xsi_type.split(":")
+            if len(typeinfo) == 2:
+                self.namespaces[ns] = typeinfo[0]
             else:
-                self.namespaces[ns] = alias
+                self.namespaces[ns] = None
 
         input_ns = getattr(entity, "__input_namespaces__", None)
         if input_ns is not None:
@@ -189,54 +203,10 @@ class NamespaceParser(object):
     def __init__(self):
         pass
 
-    def _walkns(self, entity):
-        # Skip some python-cybox classes and properties
-        skip = {ObjectProperties : ('_parent'),
-                BaseProperty: None}
-
-        def can_skip(obj, field):
-            for klass, props in skip.iteritems():
-                if isinstance(obj, klass):
-                    return (props is None) or (field in props)
-            return False
-
-        def get_members(obj):
-            for k, v in obj.__dict__.iteritems():
-                if v and not can_skip(obj, k):
-                    yield v
-            try:
-                for field in obj._fields.itervalues():
-                    yield field
-            except AttributeError:
-                # no _fields or itervalues()
-                pass
-
-        visited = []
-        def descend(obj):
-            for member in get_members(obj):
-                if '_namespace' in member.__class__.__dict__:
-                    yield member
-                    for i in descend(member):
-                        yield i
-
-                if hasattr(member, "__getitem__"):
-                    for i in member:
-                        if '_namespace' in i.__class__.__dict__:
-                            yield i
-                            for d in descend(i):
-                                yield d
-        # end descend()
-
-        if '_namespace' in entity.__class__.__dict__:
-            yield entity
-            for node in descend(entity):
-                yield node
-
-
     def get_namespaces(self, entity, ns_dict=None):
         ns_info = NamespaceInfo()
 
-        for node in self._walkns(entity):
+        for node in self.walk(entity):
             ns_info.collect(node)
 
         ns_info.finalize(ns_dict=ns_dict)
@@ -246,7 +216,7 @@ class NamespaceParser(object):
     def get_namespace_schemalocation_dict(self, entity, ns_dict=None, schemaloc_dict=None):
         ns_info = NamespaceInfo()
 
-        for node in self._walkns(entity):
+        for node in self.walk(entity):
             ns_info.collect(node)
 
         ns_info.finalize(ns_dict=ns_dict, schemaloc_dict=schemaloc_dict)
@@ -326,7 +296,7 @@ STIX_NS_TO_SCHEMALOCATION = {
 }
 
 #: Schema locations for namespaces defined by the CybOX language
-CYBOX_NS_TO_SCHEMALOCATION = dict((ns, schemaloc) for ns, _, schemaloc in cybox_nsparser.NS_LIST if schemaloc)
+CYBOX_NS_TO_SCHEMALOCATION = dict((ns, schemaloc) for ns, _, schemaloc in cybox.utils.nsparser.NS_LIST if schemaloc)
 
 #: Schema locations for namespaces not defined by STIX, but hosted on the STIX website
 EXT_NS_TO_SCHEMALOCATION = {
@@ -381,7 +351,7 @@ DEFAULT_EXT_TO_PREFIX = {
 }
 
 DEFAULT_CYBOX_NAMESPACES = dict(
-    (ns, alias) for (ns, alias, _) in cybox_nsparser.NS_LIST
+    (ns, alias) for (ns, alias, _) in cybox.utils.nsparser.NS_LIST
 )
 
 DEFAULT_STIX_NAMESPACES  = dict(
