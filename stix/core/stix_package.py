@@ -7,6 +7,8 @@ from cybox.core import Observables
 # internal
 import stix
 import stix.utils as utils
+import stix.utils.parser as parser
+
 from stix.campaign import Campaign
 from stix.coa import CourseOfAction
 from stix.exploit_target import ExploitTarget
@@ -454,7 +456,7 @@ class STIXPackage(stix.Entity):
             An instance of :class:`STIXPackage`.
 
         """
-        entity_parser = utils.parser.EntityParser()
+        entity_parser = parser.EntityParser()
         return entity_parser.parse_xml(xml_file, encoding=encoding)
 
 

@@ -1,14 +1,17 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-import stix
-from lxml import etree
+# stdlib
 from distutils.version import StrictVersion
+
+# external
+from lxml import etree
+
+# internal
+import stix
+import stix.xmlconst as xmlconst
 from stix.utils import ignored
 
-NS_XSI = "http://www.w3.org/2001/XMLSchema-instance"
-TAG_XSI_TYPE = "{%s}type" % NS_XSI
-TAG_SCHEMALOCATION = "{%s}schemaLocation" % NS_XSI
 
 class UnknownVersionError(Exception):
     pass
@@ -86,7 +89,7 @@ def get_schemaloc_pairs(node):
         KeyError: If `node` does not have an xsi:schemaLocation attribute.
 
     """
-    schemalocs = node.attrib[TAG_SCHEMALOCATION]
+    schemalocs = node.attrib[xmlconst.TAG_SCHEMALOCATION]
     l = schemalocs.split()
     return zip(l[::2], l[1::2])
 

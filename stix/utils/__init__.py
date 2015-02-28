@@ -93,6 +93,7 @@ def is_entity(entity):
 def is_entitylist(entity):
     return isinstance(entity, (cybox.EntityList, stix.EntityList))
 
+
 def attr_name(name):
     if name.startswith("_"):
         name = name[1:]

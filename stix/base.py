@@ -11,7 +11,7 @@ import json
 import lxml
 
 # internal
-import stix.bindings as bindings
+from . import bindings
 
 # lazy imports
 cybox = None
@@ -243,9 +243,8 @@ class Entity(object):
         return cls.from_obj(entity_obj).to_dict()
 
     def walk(self):
-        from stix.utils import walk
-        return walk.iterwalk(self)
-
+        _load_lazy_mods()
+        return utils.walk.iterwalk(self)
 
     def find(self, id_):
         """Searches the children of a :class:`Entity` implementation for an
