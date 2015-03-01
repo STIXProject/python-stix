@@ -11,8 +11,13 @@ import cybox.core
 import cybox.common
 import cybox.utils
 
+# internal
 import stix
-from stix.utils import (ignored, get_id_namespace, get_id_namespace_alias)
+
+# relative
+from . import ignored
+from .idgen import get_id_namespace, get_id_namespace_alias
+
 
 class NamespaceInfo(object):
     def __init__(self):

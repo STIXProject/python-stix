@@ -1,17 +1,21 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-from datetime import datetime
+# stdlib
+import datetime
 
+# external
 import dateutil
 import dateutil.tz
+
 
 def parse_value(value):
     if not value:
         return None
-    elif isinstance(value, datetime):
+    elif isinstance(value, datetime.datetime):
         return value
     return dateutil.parser.parse(value)
+
 
 def serialize_value(value):
     if not value:
@@ -20,4 +24,4 @@ def serialize_value(value):
 
 
 def now():
-    return datetime.now(tz=dateutil.tz.tzutc())
+    return datetime.datetime.now(tz=dateutil.tz.tzutc())

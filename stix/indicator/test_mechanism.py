@@ -6,6 +6,7 @@ import stix.utils
 from stix.common import InformationSource, Statement
 import stix.bindings.indicator as indicator_binding
 
+
 class _BaseTestMechanism(stix.Entity):
     _namespace = "http://stix.mitre.org/Indicator-2"
     _binding = indicator_binding
@@ -117,7 +118,18 @@ class _BaseTestMechanism(stix.Entity):
         d = super(_BaseTestMechanism, self).to_dict()
         d['xsi:type'] = self._XSI_TYPE # added by subclass
         return d
-    
+
+
+class TestMechanisms(stix.EntityList):
+    _binding = indicator_binding
+    _namespace = 'http://stix.mitre.org/Indicator-2'
+    _binding_class = _binding.TestMechanismsType
+    _contained_type = _BaseTestMechanism
+    _binding_var = "Test_Mechanism"
+    _inner_name = "test_mechanisms"
+    _dict_as_list = True
+
+
 #: Mapping of test mechanism extension types to classes
 _EXTENSION_MAP = {}
 def add_extension(cls):

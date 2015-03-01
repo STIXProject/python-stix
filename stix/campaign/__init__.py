@@ -36,24 +36,8 @@ class Attribution(GenericRelationshipList):
     _inner_name = "threat_actors"
 
 
-class AttributionList(stix.EntityList):
-    # NOT AN ACTUAL STIX CLASS. DO NOT CALL `.to_obj()`
-    # ON THIS DIRECTLY! THIS IS BEING USED FOR CASTING
-    # PURPOSES ONLY.
-    _namespace = "http://stix.mitre.org/Campaign-1"
-    _binding = None
-    _binding_class = None
-    _binding_var = None
+class AttributionList(stix.TypedList):
     _contained_type = Attribution
-    _inner_name = None
-
-    def _fix_value(self, value):
-        try:
-            new_value = self._contained_type(None, value)
-        except:
-            raise ValueError("Can't put '%s' (%s) into a %s" %
-                (value, type(value), self.__class__))
-        return new_value
 
 
 class RelatedIncidents(GenericRelationshipList):
@@ -250,11 +234,14 @@ class Campaign(stix.Entity):
 
     @attribution.setter
     def attribution(self, value):
+        if isinstance(value, AttributionList):
+            self._attribution = value
+            return
+
         self._attribution = AttributionList()
+
         if not value:
             return
-        elif isinstance(value, AttributionList):
-            self._attribution = value
         elif hasattr(value, '__getitem__'):
             self._attribution = AttributionList(*value)
         else:
@@ -290,7 +277,7 @@ class Campaign(stix.Entity):
         if self.related_indicators:
             return_obj.Related_Indicators = self.related_indicators.to_obj(ns_info=ns_info)
         if self.attribution:
-            return_obj.Attribution = [x.to_obj(ns_info=ns_info) for x in self.attribution]
+            return_obj.Attribution = self.attribution.to_obj(ns_info=ns_info)
         if self.associated_campaigns:
             return_obj.Associated_Campaigns = self.associated_campaigns.to_obj(ns_info=ns_info)
         if self.confidence:
@@ -332,8 +319,7 @@ class Campaign(stix.Entity):
                     RelatedIncidents.from_obj(obj.Related_Incidents)
             return_obj.related_indicators = \
                     RelatedIndicators.from_obj(obj.Related_Indicators)
-            return_obj.attribution = \
-                    [Attribution.from_obj(x) for x in obj.Attribution]
+            return_obj.attribution = AttributionList.from_obj(obj.Attribution)
             return_obj.associated_campaigns = \
                     AssociatedCampaigns.from_obj(obj.Associated_Campaigns)
             return_obj.confidence = Confidence.from_obj(obj.Confidence)
@@ -376,7 +362,7 @@ class Campaign(stix.Entity):
         if self.related_indicators:
             d['related_indicators'] = self.related_indicators.to_dict()
         if self.attribution:
-            d['attribution'] = [x.to_dict() for x in self.attribution]
+            d['attribution'] = self.attribution.to_list()
         if self.associated_campaigns:
             d['associated_campaigns'] = self.associated_campaigns.to_dict()
         if self.confidence:
@@ -419,9 +405,7 @@ class Campaign(stix.Entity):
                 RelatedIncidents.from_dict(dict_repr.get('related_incidents'))
         return_obj.related_indicators = \
                 RelatedIndicators.from_dict(dict_repr.get('related_indicators'))
-        return_obj.attribution = \
-                [Attribution.from_dict(x) for x in
-                        dict_repr.get('attribution', [])]
+        return_obj.attribution = AttributionList.from_list(dict_repr.get('attribution'))
         return_obj.associated_campaigns = \
                 AssociatedCampaigns.from_dict(dict_repr.get('associated_campaigns'))
         return_obj.confidence = \

@@ -3,7 +3,7 @@
 
 __version__ = "1.1.1.3"
 
-from .base import Entity, EntityList
+from .base import Entity, EntityList, TypedList
 
 # Make sure common gets imported before anything else.
 from . import common

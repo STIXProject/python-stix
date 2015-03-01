@@ -67,6 +67,7 @@ def cdata(text):
     escaped = "{0}{1}{2}".format(CDATA_START, text, CDATA_END)
     return escaped
 
+
 def is_stix(entity):
     """Returns true if `entity` is an instance of :class:`stix.Entity`."""
     return isinstance(entity, stix.Entity)
@@ -115,7 +116,8 @@ def attr_name(name):
 
     return name
 
-
+from .nsparser import *
+from .dates import *
 from .idgen import *
 from .nsparser import *
 from .walk import *

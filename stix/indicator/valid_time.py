@@ -83,3 +83,7 @@ class ValidTime(stix.Entity):
         return_obj.end_time = DateTimeWithPrecision.from_dict(d.get('end_time'))
         
         return return_obj
+
+
+class ValidTimePositions(stix.TypedList):
+    _contained_type = ValidTime

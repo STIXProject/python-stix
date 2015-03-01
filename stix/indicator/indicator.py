@@ -2,28 +2,25 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils
-from stix.utils import dates
+import stix.utils as utils
 from stix.common import (
     Identity, InformationSource, StructuredText, VocabString, Confidence,
     RelatedTTP, Statement
 )
 import stix.bindings.indicator as indicator_binding
-from .test_mechanism import _BaseTestMechanism
+from .test_mechanism import _BaseTestMechanism, TestMechanisms
 from .sightings import Sightings
-from .valid_time import ValidTime
+from .valid_time import ValidTime, ValidTimePositions
 from stix.common.related import (
     GenericRelationshipList, RelatedCOA, RelatedIndicator
 )
 from stix.data_marking import Marking
-from cybox.core import Observable, ObservableComposition
-from cybox.common import Time
-
 from stix.common.vocabs import IndicatorType
 from stix.common.kill_chains import KillChainPhasesReference
 
-from datetime import datetime
-from dateutil.tz import tzutc
+from cybox.core import Observable, ObservableComposition
+from cybox.common import Time
+
 
 class SuggestedCOAs(GenericRelationshipList):
     """The ``SuggestedCOAs`` class provides functionality for adding
@@ -190,15 +187,15 @@ class Indicator(stix.Entity):
         self.short_description = short_description
         self.indicator_types = IndicatorTypes()
         self.confidence = None
-        self.indicated_ttps = None
-        self.test_mechanisms = None
+        self.indicated_ttps = IndicatedTTPs()
+        self.test_mechanisms = TestMechanisms()
         self.alternative_id = None
         self.suggested_coas = SuggestedCOAs()
         self.sightings = Sightings()
         self.composite_indicator_expression = None
         self.handling = None
         self.kill_chain_phases = KillChainPhasesReference()
-        self.valid_time_positions = None
+        self.valid_time_positions = ValidTimePositions()
         self.related_indicators = None
         self.observable_composition_operator = "OR"
         self.likely_impact = None
@@ -207,7 +204,7 @@ class Indicator(stix.Entity):
         if timestamp:
             self.timestamp = timestamp
         else:
-            self.timestamp = datetime.now(tzutc()) if not idref else None
+            self.timestamp = utils.dates.now() if not idref else None
     
     @property
     def id_(self):
@@ -323,7 +320,7 @@ class Indicator(stix.Entity):
 
     @timestamp.setter
     def timestamp(self, value):
-        self._timestamp = dates.parse_value(value)
+        self._timestamp = utils.dates.parse_value(value)
 
     @property
     def description(self):
@@ -535,7 +532,12 @@ class Indicator(stix.Entity):
 
     @valid_time_positions.setter
     def valid_time_positions(self, value):
-        self._valid_time_positions = []
+        if isinstance(value, ValidTimePositions):
+            self._valid_time_positions = value
+            return
+
+        self._valid_time_positions = ValidTimePositions()
+
         if not value:
             return
         elif isinstance(value, list):
@@ -671,7 +673,12 @@ class Indicator(stix.Entity):
     
     @indicated_ttps.setter
     def indicated_ttps(self, value):
-        self._indicated_ttps = []
+        if isinstance(value, IndicatedTTPs):
+            self._indicated_ttps = value
+            return
+
+        self._indicated_ttps = IndicatedTTPs()
+
         if not value:
             return
         elif isinstance(value, list):
@@ -717,7 +724,12 @@ class Indicator(stix.Entity):
     
     @test_mechanisms.setter
     def test_mechanisms(self, value):
-        self._test_mechanisms = []
+        if isinstance(value, TestMechanisms):
+            self._test_mechanisms = value
+            return
+
+        self._test_mechanisms = TestMechanisms()
+
         if not value:
             return
         elif isinstance(value, list):
@@ -834,8 +846,8 @@ class Indicator(stix.Entity):
     @observable_composition_operator.setter
     def observable_composition_operator(self, value):
         if value not in ("AND", "OR"):
-            raise ValueError("observable_composition_operator must be 'AND' "
-                             "or 'OR'")
+            error = "observable_composition_operator must be 'AND' or 'OR'"
+            raise ValueError(error)
         
         self._observable_composition_operator = value
     
@@ -1074,7 +1086,7 @@ class Indicator(stix.Entity):
 
         return_obj.id = self.id_
         return_obj.idref = self.idref
-        return_obj.timestamp = dates.serialize_value(self.timestamp)
+        return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
         return_obj.Title = self.title
         
         if self.negate:
@@ -1088,29 +1100,19 @@ class Indicator(stix.Entity):
         if self.confidence:
             return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
         if self.indicator_types:
-            for indicator_type in self.indicator_types:
-                tmp_indicator_type = indicator_type.to_obj(ns_info=ns_info)
-                return_obj.add_Type(tmp_indicator_type)
+            return_obj.Type = self.indicator_types.to_obj(ns_info=ns_info)
         if self.indicated_ttps:
-            return_obj.Indicated_TTP = [x.to_obj(ns_info=ns_info) for x in self.indicated_ttps]
-        if self.observables:
-            if len(self.observables) > 1:
-                root_observable = self._merge_observables(self.observables)
-            else:
-                root_observable = self.observables[0]
-            return_obj.Observable = root_observable.to_obj(ns_info=ns_info)
+            return_obj.Indicated_TTP = self.indicated_ttps.to_obj(ns_info=ns_info)
         if self.producer:
             return_obj.Producer = self.producer.to_obj(ns_info=ns_info)
         if self.test_mechanisms:
-            tms_obj = self._binding.TestMechanismsType()
-            tms_obj.Test_Mechanism = [x.to_obj(ns_info=ns_info) for x in self.test_mechanisms]
-            return_obj.Test_Mechanisms = tms_obj
+            return_obj.Test_Mechanisms = self.test_mechanisms.to_obj(ns_info=ns_info)
         if self.likely_impact:
             return_obj.Likely_Impact = self.likely_impact.to_obj(ns_info=ns_info)
         if self.alternative_id:
             return_obj.Alternative_ID = self.alternative_id
         if self.valid_time_positions:
-            return_obj.Valid_Time_Position = [x.to_obj(ns_info=ns_info) for x in self.valid_time_positions]
+            return_obj.Valid_Time_Position = self.valid_time_positions.to_obj(ns_info=ns_info)
         if self.suggested_coas:
             return_obj.Suggested_COAs = self.suggested_coas.to_obj(ns_info=ns_info)
         if self.sightings:
@@ -1123,6 +1125,12 @@ class Indicator(stix.Entity):
             return_obj.Kill_Chain_Phases = self.kill_chain_phases.to_obj(ns_info=ns_info)
         if self.related_indicators:
             return_obj.Related_Indicators = self.related_indicators.to_obj(ns_info=ns_info)
+        if self.observables:
+            if len(self.observables) > 1:
+                root_observable = self._merge_observables(self.observables)
+            else:
+                root_observable = self.observables[0]
+            return_obj.Observable = root_observable.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -1138,6 +1146,8 @@ class Indicator(stix.Entity):
         return_obj.timestamp        = obj.timestamp
         
         if isinstance(obj, cls._binding_class):
+            return_obj.negate = obj.negate
+            return_obj.version = obj.version
             return_obj.title            = obj.Title
             return_obj.description      = StructuredText.from_obj(obj.Description)
             return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
@@ -1149,28 +1159,17 @@ class Indicator(stix.Entity):
             return_obj.kill_chain_phases = KillChainPhasesReference.from_obj(obj.Kill_Chain_Phases)
             return_obj.related_indicators = RelatedIndicators.from_obj(obj.Related_Indicators)
             return_obj.likely_impact = Statement.from_obj(obj.Likely_Impact)
-            
-            if obj.negate:
-                return_obj.negate = obj.negate
-            if obj.version:
-                return_obj.version = obj.version
-            if obj.Type:
-                for indicator_type in obj.Type:
-                    return_obj.add_indicator_type(VocabString.from_obj(indicator_type)) 
+            return_obj.indicator_types = IndicatorTypes.from_obj(obj.Type)
+            return_obj.test_mechanisms = TestMechanisms.from_obj(obj.Test_Mechanisms)
+            return_obj.suggested_coas = SuggestedCOAs.from_obj(obj.Suggested_COAs)
+            return_obj.alternative_id = obj.Alternative_ID
+            return_obj.indicated_ttps = IndicatedTTPs.from_obj(obj.Indicated_TTP)
+            return_obj.valid_time_positions = ValidTimePositions.from_obj(obj.Valid_Time_Position)
+
             if obj.Observable:
                 observable_obj = obj.Observable
                 observable = Observable.from_obj(observable_obj)
                 return_obj.observables.append(observable)
-            if obj.Indicated_TTP:
-                return_obj.indicated_ttps = [RelatedTTP.from_obj(x) for x in obj.Indicated_TTP]
-            if obj.Test_Mechanisms:
-                return_obj.test_mechanisms = [_BaseTestMechanism.from_obj(x) for x in obj.Test_Mechanisms.Test_Mechanism]
-            if obj.Suggested_COAs:
-                return_obj.suggested_coas = SuggestedCOAs.from_obj(obj.Suggested_COAs)
-            if obj.Alternative_ID:
-                return_obj.alternative_id = obj.Alternative_ID
-            if obj.Valid_Time_Position:
-                return_obj.valid_time_positions = [ValidTime.from_obj(x) for x in obj.Valid_Time_Position]    
             
         return return_obj
 
@@ -1181,17 +1180,11 @@ class Indicator(stix.Entity):
         if self.idref:
             d['idref'] = self.idref
         if self.timestamp:
-            d['timestamp'] = dates.serialize_value(self.timestamp)
+            d['timestamp'] = utils.dates.serialize_value(self.timestamp)
         if self.negate:
             d['negate'] = self.negate
         if self.version:
             d['version'] = self.version
-        if self.observables:
-            if len(self.observables) == 1:
-                d['observable'] = self.observables[0].to_dict()
-            else:
-                composite_observable = self._merge_observables(self.observables)
-                d['observable'] = composite_observable.to_dict()
         if self.producer:
             d['producer'] = self.producer.to_dict()
         if self.title:
@@ -1201,19 +1194,19 @@ class Indicator(stix.Entity):
         if self.short_description:
             d['short_description'] = self.short_description.to_dict()
         if self.indicator_types:
-            d['indicator_types'] = [x.to_dict() for x in self.indicator_types]
+            d['indicator_types'] = self.indicator_types.to_list()
         if self.confidence:
             d['confidence'] = self.confidence.to_dict()
         if self.indicated_ttps:
-            d['indicated_ttps'] = [x.to_dict() for x in self.indicated_ttps]
+            d['indicated_ttps'] = self.indicated_ttps.to_list()
         if self.test_mechanisms:
-            d['test_mechanisms'] = [x.to_dict() for x in self.test_mechanisms]
+            d['test_mechanisms'] = self.test_mechanisms.to_list()
         if self.likely_impact:
             d['likely_impact'] = self.likely_impact.to_dict()
         if self.alternative_id:
             d['alternative_id'] = self.alternative_id
         if self.valid_time_positions:
-            d['valid_time_positions'] = [x.to_dict() for x in self.valid_time_positions]
+            d['valid_time_positions'] = self.valid_time_positions.to_list()
         if self.suggested_coas:
             d['suggested_coas'] = self.suggested_coas.to_dict()
         if self.sightings:
@@ -1226,7 +1219,13 @@ class Indicator(stix.Entity):
             d['kill_chain_phases'] = self.kill_chain_phases.to_dict()
         if self.related_indicators:
             d['related_indicators'] = self.related_indicators.to_dict()
-        
+        if self.observables:
+            if len(self.observables) == 1:
+                d['observable'] = self.observables[0].to_dict()
+            else:
+                composite_observable = self._merge_observables(self.observables)
+                d['observable'] = composite_observable.to_dict()
+
         return d
 
     @classmethod
@@ -1240,19 +1239,13 @@ class Indicator(stix.Entity):
         return_obj.idref     = dict_repr.get('idref')
         return_obj.timestamp = dict_repr.get('timestamp')
         return_obj.title     = dict_repr.get('title')
-        return_obj.negate    = dict_repr.get('negate', None)
+        return_obj.negate    = dict_repr.get('negate')
         return_obj.version   = dict_repr.get('version')
-        observable_dict      = dict_repr.get('observable')
-        producer_dict        = dict_repr.get('producer')
-        description_dict     = dict_repr.get('description')
-        indicator_type_list  = dict_repr.get('indicator_types', [])
-        confidence_dict      = dict_repr.get('confidence')
-        alternative_id_dict  = dict_repr.get('alternative_id')
-        valid_time_position_dict  = dict_repr.get('valid_time_positions')
-
+        return_obj.alternative_id = dict_repr.get('alternative_id')
+        return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
-        return_obj.indicated_ttps = [RelatedTTP.from_dict(x) for x in dict_repr.get('indicated_ttps', [])]
-        return_obj.test_mechanisms = [_BaseTestMechanism.from_dict(x) for x in dict_repr.get('test_mechanisms', [])]
+        return_obj.indicated_ttps =  IndicatedTTPs.from_dict(dict_repr.get('indicated_ttps'))
+        return_obj.test_mechanisms = TestMechanisms.from_list(dict_repr.get('test_mechanisms'))
         return_obj.suggested_coas = SuggestedCOAs.from_dict(dict_repr.get('suggested_coas'))
         return_obj.sightings = Sightings.from_dict(dict_repr.get('sightings'))
         return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_dict(dict_repr.get('composite_indicator_expression'))
@@ -1260,24 +1253,14 @@ class Indicator(stix.Entity):
         return_obj.kill_chain_phases = KillChainPhasesReference.from_dict(dict_repr.get('kill_chain_phases'))
         return_obj.related_indicators = RelatedIndicators.from_dict(dict_repr.get('related_indicators'))
         return_obj.likely_impact = Statement.from_dict(dict_repr.get('likely_impact'))
-        
-        if observable_dict:
-            return_obj.add_observable(Observable.from_dict(observable_dict))
-        if producer_dict:
-            return_obj.producer = InformationSource.from_dict(producer_dict)
-        if description_dict:
-            return_obj.description = StructuredText.from_dict(description_dict)
-        for indicator_type_dict in indicator_type_list:
-            return_obj.add_indicator_type(VocabString.from_dict(indicator_type_dict))
-        if confidence_dict:
-            return_obj.confidence = Confidence.from_dict(confidence_dict)
-        if alternative_id_dict:
-            return_obj.alternative_id = alternative_id_dict
-        if valid_time_position_dict:
-            for valid_time_position_type_dict in valid_time_position_dict:
-                return_obj.add_valid_time_position(ValidTime.from_dict(valid_time_position_type_dict))
-        
+        return_obj.indicator_types = IndicatorTypes.from_list(dict_repr.get('indicator_types'))
+        return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
+        return_obj.valid_time_positions = ValidTimePositions.from_dict(dict_repr.get('valid_time_positions'))
+        return_obj.observable = Observable.from_dict(dict_repr.get('observable'))
+        return_obj.producer = InformationSource.from_dict(dict_repr.get('producer'))
+
         return return_obj
+
 
 class CompositeIndicatorExpression(stix.EntityList):
     """Implementation of the STIX ``CompositeIndicatorExpressionType``.
@@ -1316,6 +1299,7 @@ class CompositeIndicatorExpression(stix.EntityList):
         OPERATORS (tuple): Tuple of allowed ``operator`` values.
         operator (str): The logical composition operator. Must be ``"AND"`` or
             ``"OR"``.
+
     """
     _binding = indicator_binding
     _binding_class = indicator_binding.CompositeIndicatorExpressionType
@@ -1381,6 +1365,7 @@ class CompositeIndicatorExpression(stix.EntityList):
         return_obj.operator = dict_repr.get('operator')
         return return_obj
 
+
 class IndicatorTypes(stix.EntityList):
     """A :class:`stix.common.vocabs.VocabString` collection which defaults to
     :class:`stix.common.vocabs.IndicatorType`. This class implements methods
@@ -1423,3 +1408,8 @@ class IndicatorTypes(stix.EntityList):
 
     def _fix_value(self, value):
         return IndicatorType(value)
+
+
+class IndicatedTTPs(stix.TypedList):
+    _contained_type = RelatedTTP
+

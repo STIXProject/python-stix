@@ -21,7 +21,6 @@ class COATests(EntityTestCase, unittest.TestCase):
             'short_description': "Stop the bad stuff",
             'applicability_confidence': {'value': {'value': 'Medium', 
                                                    'xsi:type': 'stixVocabs:HighMediumLowVocab-1.0'}},
-
         },
         'parameter_observables': {
             'major_version': 2,

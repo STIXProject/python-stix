@@ -114,7 +114,22 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
                 {'idref': "example:Package-AB", 'relationship': "Parent"},
                 {'idref': "example:Package-CD", 'relationship': "Child"}
             ]
-        }
+        },
+        'attribution': [
+            {
+                'scope': 'exclusive',
+                'threat_actors': [
+                    {
+                    'threat_actor': {
+                        'id': 'example:threatactor-56f3f0db-b5d5-431c-ae56-c18f02caf500',
+                        'timestamp': '2014-08-08T15:50:10.983629+00:00',
+                        'title': 'People behind the intrusion',
+                        'version': '1.1.1'
+                    }
+                 }
+                ]
+            }
+        ],
     }
 
 

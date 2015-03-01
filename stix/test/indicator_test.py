@@ -10,7 +10,6 @@ from cybox.common import StructuredText
 from stix.test import EntityTestCase
 
 
-
 class IndicatorTest(EntityTestCase, unittest.TestCase):
     klass = Indicator
     _full_dict = {
