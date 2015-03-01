@@ -1,12 +1,16 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from cybox.core import Observables
+
+# internal
 import stix
 import stix.utils as utils
 from stix.common import StructuredText, VocabString
-from cybox.core import Observables
 import stix.bindings.ttp as ttp_binding
 from stix.common.vocabs import AttackerInfrastructureType
+
 
 class Infrastructure(stix.Entity):
     _binding = ttp_binding

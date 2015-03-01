@@ -1,14 +1,20 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from cybox.core import Observables
 
+# internal
 import stix
 import stix.utils as utils
-from stix.common import VocabString, StructuredText
+from stix.common import vocabs, VocabString, StructuredText
 import stix.bindings.incident as incident_binding
+
+# relative
 from .property_affected import PropertyAffected
-from cybox.core import Observables
-from stix.common.vocabs import OwnershipClass, ManagementClass, LocationClass
+
+
+
 
 class AffectedAsset(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
@@ -76,7 +82,7 @@ class AffectedAsset(stix.Entity):
         elif isinstance(value, VocabString):
             self._ownership_class = value
         else:
-            self._ownership_class = OwnershipClass(value)
+            self._ownership_class = vocabs.OwnershipClass(value)
     
     @property
     def management_class(self):
@@ -89,7 +95,7 @@ class AffectedAsset(stix.Entity):
         elif isinstance(value, VocabString):
             self._management_class = value
         else:
-            self._management_class = ManagementClass(value)
+            self._management_class = vocabs.ManagementClass(value)
     
     @property
     def location_class(self):
@@ -102,7 +108,7 @@ class AffectedAsset(stix.Entity):
         elif isinstance(value, VocabString):
             self._location_class = value
         else:
-            self._location_class = LocationClass(value)
+            self._location_class = vocabs.LocationClass(value)
     
     @property
     def nature_of_security_effect(self):
@@ -199,9 +205,9 @@ class AffectedAsset(stix.Entity):
         return_obj.type_ = AssetType.from_dict(d.get('type'))
         return_obj.description = StructuredText.from_dict(d.get('description'))
         return_obj.business_function_or_role = StructuredText.from_dict(d.get('business_function_or_role'))
-        return_obj.ownership_class = OwnershipClass.from_dict(d.get('ownership_class'))
-        return_obj.management_class = ManagementClass.from_dict(d.get('management_class'))
-        return_obj.location_class = LocationClass.from_dict(d.get('location_class'))
+        return_obj.ownership_class = VocabString.from_dict(d.get('ownership_class'))
+        return_obj.management_class = VocabString.from_dict(d.get('management_class'))
+        return_obj.location_class = VocabString.from_dict(d.get('location_class'))
         #return_obj.location = Location.from_dict(d.get('location'))
         return_obj.nature_of_security_effect = [PropertyAffected.from_dict(x) for x in d.get('nature_of_security_effect')]
         return_obj.structured_description = Observables.from_dict(d.get('structured_description'))

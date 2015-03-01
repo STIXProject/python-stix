@@ -1,11 +1,15 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# internal
 import stix
 import stix.utils as utils
 from stix.common import ToolInformation, Identity
-from .infrastructure import Infrastructure
 import stix.bindings.ttp as ttp_binding
+
+# relative
+from .infrastructure import Infrastructure
+
 
 class Resource(stix.Entity):
     _binding = ttp_binding

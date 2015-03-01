@@ -3,9 +3,8 @@
 
 
 import stix
-from stix.common import VocabString, StructuredText
+from stix.common import vocabs, VocabString, StructuredText
 import stix.bindings.incident as incident_binding
-from stix.common.vocabs import LossProperty, LossDuration
 from stix.common.vocabs import AvailabilityLossType as AvailabilityLoss
 
 
@@ -77,7 +76,7 @@ class PropertyAffected(stix.Entity):
         elif isinstance(value, VocabString):
             self._property = value
         else:
-            self._property = LossProperty(value)
+            self._property = vocabs.LossProperty(value)
         
     @property
     def description_of_effect(self):
@@ -116,7 +115,7 @@ class PropertyAffected(stix.Entity):
         elif isinstance(value, VocabString):
             self._duration_of_availability_loss = value
         else:
-            self._duration_of_availability_loss = LossDuration(value)
+            self._duration_of_availability_loss = vocabs.LossDuration(value)
     
     @property
     def non_public_data_compromised(self):

@@ -8,8 +8,7 @@ import cybox.common
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
-from stix.common import VocabString
-from stix.common.vocabs import InformationSourceRole
+from stix.common import vocabs, VocabString
 
 from .identity import Identity
 from .structured_text import StructuredText
@@ -152,7 +151,7 @@ class InformationSource(stix.Entity):
         elif isinstance(value, VocabString):
             self.roles.append(value)
         else:
-            role = InformationSourceRole(value)
+            role = vocabs.InformationSourceRole(value)
             self.roles.append(value=role)
 
     def to_obj(self, return_obj=None, ns_info=None):
@@ -252,4 +251,4 @@ class Roles(stix.EntityList):
     _contained_type = VocabString
 
     def _fix_value(self, value):
-        return InformationSourceRole(value)
+        return vocabs.InformationSourceRole(value)

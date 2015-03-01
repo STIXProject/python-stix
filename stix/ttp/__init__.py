@@ -1,14 +1,18 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# internal
 import stix
 import stix.utils as utils
 import stix.bindings.ttp as ttp_binding
 from stix.common import vocabs, StructuredText, InformationSource, Statement
 from stix.data_marking import Marking
+
+# relative
 from .behavior import Behavior
 from .resource import Resource
 from .victim_targeting import VictimTargeting
+
 
 class TTP(stix.Entity):
     _binding = ttp_binding
@@ -359,6 +363,7 @@ class TTP(stix.Entity):
         return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
 
         return return_obj
+
 
 # Avoid circular imports
 from .related_ttps import RelatedTTPs

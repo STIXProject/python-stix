@@ -5,9 +5,11 @@ import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
+
 DATE_PRECISION_VALUES = ("year", "month", "day")
 TIME_PRECISION_VALUES = ("hour", "minute", "second")
 DATETIME_PRECISION_VALUES = DATE_PRECISION_VALUES + TIME_PRECISION_VALUES
+
 
 class DateTimeWithPrecision(stix.Entity):
     _binding = common_binding

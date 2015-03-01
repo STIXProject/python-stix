@@ -2,10 +2,10 @@
 # See LICENSE.txt for complete terms.
 
 # builtin
-import itertools
-import collections
-import StringIO
 import json
+import collections
+import itertools
+import StringIO
 
 # external
 import lxml.etree

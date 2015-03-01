@@ -3,12 +3,16 @@
 
 from __future__ import absolute_import
 
+# internal
 import stix
 import stix.bindings.stix_common as common_binding
 import stix.bindings.stix_core as core_binding
+
+# relative
 from .vocabs import VocabString
 from .information_source import InformationSource
 from .confidence import Confidence
+
 
 class GenericRelationship(stix.Entity):
     _namespace = "http://stix.mitre.org/common-1"
@@ -252,6 +256,7 @@ class GenericRelationshipList(stix.EntityList):
 
         return return_obj
 
+
 class RelatedPackages(GenericRelationshipList):
     _namespace = 'http://stix.mitre.org/stix-1'
     _binding = core_binding
@@ -268,7 +273,6 @@ class RelatedPackageRefs(stix.EntityList):
     _binding_var = "Package_Reference"
     _contained_type = RelatedPackageRef
     _inner_name = "packages"
-
 
 
 class _BaseRelated(GenericRelationship):
@@ -358,6 +362,7 @@ class RelatedCampaign(_BaseRelated):
     # _base_type is set in common/__init__.py
     _inner_var = "Campaign"
 
+
 class RelatedCOA(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
@@ -365,12 +370,14 @@ class RelatedCOA(_BaseRelated):
     # _base_type is set in common/__init__.py
     _inner_var = "Course_Of_Action"
 
+
 class RelatedExploitTarget(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedExploitTargetType
     # _base_type is set in common/__init__.py
     _inner_var = "Exploit_Target"
+
 
 class RelatedIdentity(_BaseRelated):
     _namespace = 'http://stix.mitre.org/common-1'

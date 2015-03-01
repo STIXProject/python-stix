@@ -1,12 +1,16 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# internal
 import stix
 import stix.utils
 import stix.bindings.incident as incident_binding
 from stix.common import DateTimeWithPrecision
-from .contributors import Contributors, Contributor
 from stix.coa import CourseOfAction
+
+# relative
+from .contributors import Contributors, Contributor
+
 
 class COATaken(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"

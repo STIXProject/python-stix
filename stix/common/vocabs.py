@@ -3,6 +3,8 @@
 
 import stix
 import stix.bindings.stix_common as stix_common_binding
+
+
 #TODO: handle normalization
 #from cybox.utils import normalize_to_xml, denormalize_from_xml
 

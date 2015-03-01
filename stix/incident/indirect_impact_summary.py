@@ -2,9 +2,8 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-from stix.common.vocabs import SecurityCompromise
 import stix.bindings.incident as incident_binding
-from stix.common import VocabString
+from stix.common import vocabs, VocabString
 
 class IndirectImpactSummary(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
@@ -29,7 +28,7 @@ class IndirectImpactSummary(stix.Entity):
         elif isinstance(value, VocabString):
             self._loss_of_competitive_advantage = value
         else:
-            self._loss_of_competitive_advantage = SecurityCompromise(value=value)
+            self._loss_of_competitive_advantage = vocabs.SecurityCompromise(value=value)
 
     @property
     def brand_and_market_damage(self):
@@ -42,7 +41,7 @@ class IndirectImpactSummary(stix.Entity):
         elif isinstance(value, VocabString):
             self._brand_and_market_damage = value
         else:
-            self._brand_and_market_damage = SecurityCompromise(value=value)
+            self._brand_and_market_damage = vocabs.SecurityCompromise(value=value)
 
     @property
     def increased_operating_costs(self):
@@ -55,7 +54,7 @@ class IndirectImpactSummary(stix.Entity):
         elif isinstance(value, VocabString):
             self._increased_operating_costs = value
         else:
-            self._increased_operating_costs = SecurityCompromise(value=value)
+            self._increased_operating_costs = vocabs.SecurityCompromise(value=value)
 
     @property
     def legal_and_regulatory_costs(self):
@@ -68,7 +67,7 @@ class IndirectImpactSummary(stix.Entity):
         elif isinstance(value, VocabString):
             self._legal_and_regulatory_costs = value
         else:
-            self._legal_and_regulatory_costs = SecurityCompromise(value=value)
+            self._legal_and_regulatory_costs = vocabs.SecurityCompromise(value=value)
             
     def to_obj(self, return_obj=None, ns_info=None):
         super(IndirectImpactSummary, self).to_obj(return_obj=return_obj, ns_info=ns_info)

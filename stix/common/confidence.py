@@ -3,13 +3,13 @@
 
 from __future__ import absolute_import
 
-
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
 from .structured_text import StructuredText
 from .vocabs import VocabString, HighMediumLow
+
 
 class Confidence(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'

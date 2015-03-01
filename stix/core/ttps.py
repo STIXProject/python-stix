@@ -4,9 +4,9 @@
 import stix
 import stix.utils as utils
 from stix.ttp import TTP
-
-import stix.bindings.stix_core as core_binding
+from stix.bindings import stix_core as core_binding
 from stix.common.kill_chains import KillChains
+
 
 class TTPs(stix.EntityList):
     _binding = core_binding

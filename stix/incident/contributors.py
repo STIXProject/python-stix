@@ -6,6 +6,7 @@ import stix.utils
 import stix.bindings.incident as incident_binding
 from cybox.common import Contributor
 
+
 class Contributors(stix.EntityList):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding = incident_binding

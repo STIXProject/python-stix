@@ -2,9 +2,9 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils
 from stix.common import StructuredText
 import stix.bindings.ttp as ttp_binding
+
 
 class AttackPattern(stix.Entity):
     _binding = ttp_binding

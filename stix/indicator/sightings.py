@@ -2,13 +2,13 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils
-from stix.utils import dates
-from stix.common import (GenericRelationshipList, RelatedObservable, StructuredText,
-                         Confidence, InformationSource)
+import stix.utils as utils
+from stix.common import (
+    GenericRelationshipList, RelatedObservable, StructuredText, Confidence,
+    InformationSource
+)
 import stix.bindings.indicator as indicator_binding
-from datetime import datetime
-from dateutil.tz import tzutc
+
 
 class Sighting(stix.Entity):
     _namespace = "http://stix.mitre.org/Indicator-2"
@@ -16,7 +16,7 @@ class Sighting(stix.Entity):
     _binding_class = _binding.SightingType
     
     def __init__(self, timestamp=None, timestamp_precision=None, description=None):
-        self.timestamp = timestamp or datetime.now(tzutc())
+        self.timestamp = timestamp or utils.dates.now()
         self.timestamp_precision = timestamp_precision
         self.description = description
         self.source = None
@@ -30,7 +30,7 @@ class Sighting(stix.Entity):
 
     @timestamp.setter
     def timestamp(self, value):
-        self._timestamp = dates.parse_value(value)
+        self._timestamp = utils.dates.parse_value(value)
     
     @property
     def description(self):
@@ -57,8 +57,7 @@ class Sighting(stix.Entity):
             self._source = value
         else:
             raise ValueError("source must be of type InformationSource")
-          
-    
+
     @property
     def confidence(self):
         return self._confidence
@@ -78,7 +77,7 @@ class Sighting(stix.Entity):
         if not return_obj:
             return_obj = self._binding_class()
         
-        return_obj.timestamp = dates.serialize_value(self.timestamp)
+        return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
         return_obj.timestamp_precision = self.timestamp_precision
         return_obj.Reference = self.reference
         
@@ -96,7 +95,7 @@ class Sighting(stix.Entity):
     def to_dict(self):
         d = {}
         if self.timestamp:
-            d['timestamp'] = dates.serialize_value(self.timestamp)
+            d['timestamp'] = utils.dates.serialize_value(self.timestamp)
         if self.timestamp_precision:
             d['timestamp_precision'] = str(self.timestamp_precision)
         if self.source:
@@ -143,6 +142,7 @@ class Sighting(stix.Entity):
         return_obj.description = StructuredText.from_dict(d.get('description'))
         return_obj.related_observables = RelatedObservables.from_dict(d.get('related_observables'))
         return return_obj
+
 
 class Sightings(stix.EntityList):
     _namespace = "http://stix.mitre.org/Indicator-2"
@@ -191,6 +191,7 @@ class Sightings(stix.EntityList):
         super(Sightings, cls).from_dict(dict_repr, return_obj=return_obj)
         return_obj.sightings_count = dict_repr.get('sightings_count')
         return return_obj
+
 
 class RelatedObservables(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Indicator-2"

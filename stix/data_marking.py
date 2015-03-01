@@ -5,6 +5,7 @@ import stix
 import stix.utils as utils
 import stix.bindings.data_marking as stix_data_marking_binding
 
+
 class Marking(stix.Entity):
     _binding = stix_data_marking_binding
     _binding_class = stix_data_marking_binding.MarkingType

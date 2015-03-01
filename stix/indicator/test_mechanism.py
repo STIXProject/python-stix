@@ -2,7 +2,6 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils
 from stix.common import InformationSource, Statement
 import stix.bindings.indicator as indicator_binding
 

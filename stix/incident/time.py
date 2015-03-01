@@ -5,6 +5,7 @@ import stix
 import stix.bindings.incident as incident_binding
 from stix.common import DateTimeWithPrecision
 
+
 class Time(stix.Entity):
     _binding = incident_binding
     _binding_class = _binding.TimeType

@@ -8,6 +8,7 @@ from stix.common import EncodedCDATA, StructuredText, VocabString
 from stix.indicator.test_mechanism import _BaseTestMechanism
 import stix.bindings.extensions.test_mechanism.generic as generic_tm_binding
 
+
 class GenericTestMechanism(_BaseTestMechanism):
     _namespace = "http://stix.mitre.org/extensions/TestMechanism#Generic-1"
     _binding = generic_tm_binding
@@ -119,5 +120,6 @@ class GenericTestMechanism(_BaseTestMechanism):
             d['specification'] = self.specification.to_dict()
         
         return d
+
     
 stix.indicator.test_mechanism.add_extension(GenericTestMechanism)

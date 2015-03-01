@@ -1,11 +1,15 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# internal
 import stix
 import stix.bindings.incident as incident_binding
 from stix.common.datetimewithprecision import DATETIME_PRECISION_VALUES
 from stix.utils.dates import parse_value, serialize_value
+
+# relative
 from .coa import COATaken
+
 
 class JournalEntry(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"

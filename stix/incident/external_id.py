@@ -4,6 +4,7 @@
 import stix
 import stix.bindings.incident as incident_binding
 
+
 class ExternalID(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding  = incident_binding

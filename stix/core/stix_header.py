@@ -5,10 +5,8 @@ import stix
 import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.stix_core as stix_core_binding
-from stix.common import InformationSource, StructuredText, VocabString
+from stix.common import vocabs, InformationSource, StructuredText, VocabString
 from stix.data_marking import Marking
-
-from stix.common.vocabs import PackageIntent
 
 class STIXHeader(stix.Entity):
     _binding = stix_core_binding
@@ -111,7 +109,7 @@ class STIXHeader(stix.Entity):
         elif isinstance(package_intent, VocabString):
             self.package_intents.append(package_intent)
         else:
-            tmp_package_intent = PackageIntent(value=package_intent)
+            tmp_package_intent = vocabs.PackageIntent(value=package_intent)
             self.package_intents.append(tmp_package_intent)
 
     @property
@@ -217,4 +215,4 @@ class PackageIntents(stix.EntityList):
     _contained_type = VocabString
 
     def _fix_value(self, value):
-        return PackageIntent(value)
+        return vocabs.PackageIntent(value)

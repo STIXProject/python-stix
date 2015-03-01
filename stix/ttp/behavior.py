@@ -2,12 +2,12 @@
 # See LICENSE.txt for complete terms.
 import stix
 import stix.utils as utils
+import stix.bindings.ttp as ttp_binding
 
 from .malware_instance import MalwareInstance
 from .exploit import Exploit
 from .attack_pattern import AttackPattern
 
-import stix.bindings.ttp as ttp_binding
 
 class Behavior(stix.Entity):
     _binding = ttp_binding

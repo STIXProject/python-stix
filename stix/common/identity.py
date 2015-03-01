@@ -7,8 +7,6 @@ import stix
 import stix.utils
 import stix.bindings.stix_common as common_binding
 
-# import of RelatedIdentity is below
-
 
 class Identity(stix.Entity):
     _binding = common_binding

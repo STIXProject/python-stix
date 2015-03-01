@@ -1,14 +1,20 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# stdlib
+from StringIO import StringIO
+
+# external
+from lxml import etree
+
+# internal
 import stix
 import stix.utils
 import stix.utils.parser
 import stix.indicator.test_mechanism
 from stix.indicator.test_mechanism import _BaseTestMechanism
 import stix.bindings.extensions.test_mechanism.open_ioc_2010 as open_ioc_tm_binding
-from lxml import etree
-from StringIO import StringIO
+
 
 class OpenIOCTestMechanism(_BaseTestMechanism):
     _namespace = "http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1"

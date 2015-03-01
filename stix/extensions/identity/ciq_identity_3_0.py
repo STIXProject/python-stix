@@ -8,6 +8,7 @@ import stix.utils as utils
 import stix.common as common
 import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
 
+
 XML_NS_XPIL     = "urn:oasis:names:tc:ciq:xpil:3"
 XML_NS_XNL      = "urn:oasis:names:tc:ciq:xnl:3"
 XML_NS_XAL      = "urn:oasis:names:tc:ciq:xal:3"
@@ -17,6 +18,7 @@ et.register_namespace('xpil', XML_NS_XPIL)
 et.register_namespace('xnl', XML_NS_XNL)
 et.register_namespace('xal', XML_NS_XAL)
 et.register_namespace('ExtSch', XML_NS_STIX_EXT)
+
 
 class CIQIdentity3_0Instance(common.Identity):
     _binding        = ciq_identity_binding
@@ -131,6 +133,7 @@ class CIQIdentity3_0Instance(common.Identity):
             return_obj.specification = STIXCIQIdentity3_0.from_dict(specification)
 
         return return_obj
+
 
 class STIXCIQIdentity3_0(stix.Entity):
     _namespace      = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
@@ -391,6 +394,7 @@ class STIXCIQIdentity3_0(stix.Entity):
             d['contact_numbers'] = [x.to_dict() for x in self.contact_numbers]
         return d
 
+
 class Address(stix.Entity):
     _namespace = XML_NS_XPIL
     XML_TAG = "{%s}Address" % _namespace
@@ -457,6 +461,7 @@ class Address(stix.Entity):
         return_obj.country = Country.from_dict(d.get('country'))
         return_obj.administrative_area = AdministrativeArea.from_dict(d.get('administrative_area'))
         return return_obj
+
             
 class AdministrativeArea(stix.Entity):
     _namespace = XML_NS_XAL
@@ -528,6 +533,7 @@ class AdministrativeArea(stix.Entity):
         
         return_obj.name_elements = [NameElement.from_dict(x) for x in d.get('name_elements', [])]
         return return_obj
+
         
 class Country(stix.Entity):
     _namespace = XML_NS_XAL
@@ -600,6 +606,7 @@ class Country(stix.Entity):
         return_obj.name_elements = [NameElement.from_dict(x) for x in d.get('name_elements', [])]
         return return_obj
 
+
 class NameElement(stix.Entity):
     _namespace = XML_NS_XAL
     XML_TAG = "{%s}NameElement" % XML_NS_XAL
@@ -637,6 +644,7 @@ class NameElement(stix.Entity):
         return_obj = cls()
         return_obj.value = d.get('value')
         return return_obj
+
 
 class FreeTextAddress(stix.Entity):
     _namespace = XML_NS_XAL
@@ -702,7 +710,8 @@ class FreeTextAddress(stix.Entity):
         if self.address_lines:
             d['address_lines'] = self.address_lines
         return d
-    
+
+
 class PartyName(stix.Entity):
     _namespace = XML_NS_XPIL
     XML_TAG = "{%s}PartyName" % _namespace
@@ -837,6 +846,7 @@ class PartyName(stix.Entity):
 
         return return_obj
 
+
 class NameLine(stix.Entity):
     _namespace = XML_NS_XNL
     XML_TAG = "{%s}NameLine" % _namespace
@@ -906,6 +916,7 @@ class NameLine(stix.Entity):
         return_obj.type = dict_repr.get('type', None)
 
         return return_obj
+
 
 class PersonName(stix.Entity):
     _namespace = XML_NS_XNL
@@ -978,6 +989,7 @@ class PersonName(stix.Entity):
             return_obj.add_name_element(PersonNameElement.from_dict(ne_dict))
 
         return return_obj
+
 
 class OrganisationName(stix.Entity):
     _namespace = XML_NS_XNL
@@ -1142,6 +1154,7 @@ class _BaseNameElement(stix.Entity):
         d['value'] = self.value
         return d
 
+
 class PersonNameElement(_BaseNameElement):
     _namespace = XML_NS_XNL
     XML_TAG = "{%s}NameElement" % _namespace
@@ -1225,6 +1238,7 @@ class PersonNameElement(_BaseNameElement):
 
         return return_obj
 
+
 class OrganisationNameElement(_BaseNameElement):
     _namespace = XML_NS_XNL
     XML_TAG = "{%s}NameElement" % _namespace
@@ -1298,6 +1312,7 @@ class OrganisationNameElement(_BaseNameElement):
         return_obj.element_type = dict_repr.get('element_type')
 
         return return_obj
+
 
 class SubDivisionName(stix.Entity):
     _namespace = XML_NS_XNL
@@ -1374,6 +1389,7 @@ class SubDivisionName(stix.Entity):
         return_obj.type = dict_repr.get('type')
         return return_obj
 
+
 class Language(stix.Entity):
     _namespace = XML_NS_XPIL
     XML_TAG = "{%s}Language" % _namespace
@@ -1411,6 +1427,7 @@ class Language(stix.Entity):
         return_obj = cls()
         return_obj.value = d.get('value')
         return return_obj
+
     
 class ElectronicAddressIdentifier(stix.Entity):
     _namespace = XML_NS_XPIL
@@ -1458,6 +1475,7 @@ class ElectronicAddressIdentifier(stix.Entity):
         return_obj.value = d.get('value')
         return_obj.type_ = d.get('type')
         return return_obj
+
 
 class OrganisationInfo(stix.Entity):
     _namespace = XML_NS_XPIL
@@ -1546,6 +1564,7 @@ class FreeTextLine(stix.Entity):
         return_obj.type_ = d.get('type')
         return_obj.value = d.get('value')
         return return_obj
+
 
 class ContactNumber(stix.Entity):
     _namespace = XML_NS_XPIL
@@ -1643,7 +1662,8 @@ class ContactNumber(stix.Entity):
         return_obj.contact_number_elements = [ContactNumberElement.from_dict(x) for x in d.get('contact_number_elements', [])]
        
         return return_obj
-    
+
+
 class ContactNumberElement(stix.Entity):
     _namespace = XML_NS_XPIL
     XML_TAG = "{%s}ContactNumberElement" % _namespace

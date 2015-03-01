@@ -1,12 +1,15 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from cybox.core import Observables
+
+# internal
 import stix
 import stix.utils as utils
-from stix.common import VocabString, Identity
-from cybox.core import Observables
+from stix.common import vocabs, VocabString, Identity
 import stix.bindings.ttp as ttp_binding
-from stix.common.vocabs import SystemType, InformationType
+
 
 class VictimTargeting(stix.Entity):
     _binding = ttp_binding
@@ -40,7 +43,7 @@ class VictimTargeting(stix.Entity):
         elif isinstance(system, VocabString):
             self._targeted_systems.append(system)
         else:
-            self._targeted_systems.append(SystemType(value=system))
+            self._targeted_systems.append(vocabs.SystemType(value=system))
 
     @property
     def targeted_information(self):
@@ -63,7 +66,7 @@ class VictimTargeting(stix.Entity):
         elif isinstance(targeted_information, VocabString):
             self._targeted_information.append(targeted_information)
         else:
-            self._targeted_information.append(InformationType(value=targeted_information))
+            self._targeted_information.append(vocabs.InformationType(value=targeted_information))
 
     @property
     def targeted_technical_details(self):
@@ -145,7 +148,7 @@ class TargetedSystems(stix.EntityList):
     _contained_type = VocabString
 
     def _fix_value(self, value):
-        return SystemType(value)
+        return vocabs.SystemType(value)
 
 
 class TargetedInformation(stix.EntityList):
@@ -153,4 +156,4 @@ class TargetedInformation(stix.EntityList):
     _contained_type = VocabString
 
     def _fix_value(self, value):
-        return InformationType(value)
+        return vocabs.InformationType(value)
