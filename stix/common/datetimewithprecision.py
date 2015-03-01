@@ -2,9 +2,8 @@
 # See LICENSE.txt for complete terms.
 
 import stix
+import stix.utils as utils
 import stix.bindings.stix_common as common_binding
-import dateutil
-from stix.utils.dates import parse_value, serialize_value
 
 DATE_PRECISION_VALUES = ("year", "month", "day")
 TIME_PRECISION_VALUES = ("hour", "minute", "second")
@@ -26,7 +25,7 @@ class DateTimeWithPrecision(stix.Entity):
 
     @value.setter
     def value(self, value):
-        self._value = parse_value(value)
+        self._value = utils.dates.parse_value(value)
 
     @property
     def precision(self):
@@ -43,7 +42,7 @@ class DateTimeWithPrecision(stix.Entity):
         super(DateTimeWithPrecision, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         obj = self._binding_class()
-        obj.valueOf_ = serialize_value(self.value)
+        obj.valueOf_ = utils.dates.serialize_value(self.value)
         obj.precision = self.precision
         return obj
 
@@ -61,10 +60,10 @@ class DateTimeWithPrecision(stix.Entity):
 
     def to_dict(self):    
         if self.precision == 'second':
-            return serialize_value(self.value)
+            return utils.dates.serialize_value(self.value)
        
         d  = {}
-        d['value'] = serialize_value(self.value)
+        d['value'] = utils.dates.serialize_value(self.value)
         d['precision'] = self.precision
         return d
 

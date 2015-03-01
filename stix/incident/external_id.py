@@ -3,7 +3,6 @@
 
 import stix
 import stix.bindings.incident as incident_binding
-import dateutil
 
 class ExternalID(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"

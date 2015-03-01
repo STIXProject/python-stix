@@ -16,6 +16,7 @@ import stix
 
 # relative
 from . import ignored
+from .walk import iterwalk
 from .idgen import get_id_namespace, get_id_namespace_alias
 
 
@@ -211,7 +212,7 @@ class NamespaceParser(object):
     def get_namespaces(self, entity, ns_dict=None):
         ns_info = NamespaceInfo()
 
-        for node in self.walk(entity):
+        for node in iterwalk(entity):
             ns_info.collect(node)
 
         ns_info.finalize(ns_dict=ns_dict)
@@ -221,7 +222,7 @@ class NamespaceParser(object):
     def get_namespace_schemalocation_dict(self, entity, ns_dict=None, schemaloc_dict=None):
         ns_info = NamespaceInfo()
 
-        for node in self.walk(entity):
+        for node in iterwalk(entity):
             ns_info.collect(node)
 
         ns_info.finalize(ns_dict=ns_dict, schemaloc_dict=schemaloc_dict)

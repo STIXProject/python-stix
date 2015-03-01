@@ -2,14 +2,12 @@
 # See LICENSE.txt for complete terms.
 
 import json
-import unittest
-import stix.bindings as bindings
-from stix import Entity, EntityList
-from stix.utils import NamespaceInfo
-import stix.bindings.stix_core as core_binding
-from stix.core import STIXPackage
-import stix.utils
+
 import cybox.utils
+
+import stix.bindings as bindings
+from stix.utils import NamespaceInfo
+
 
 def round_trip_dict(cls, dict_):
     obj = cls.object_from_dict(dict_)

@@ -1,6 +1,7 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 import stix
+import stix.utils as utils
 
 from .malware_instance import MalwareInstance
 from .exploit import Exploit

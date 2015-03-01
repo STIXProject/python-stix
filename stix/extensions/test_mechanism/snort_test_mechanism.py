@@ -2,7 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils
+import stix.utils as utils
 import stix.indicator.test_mechanism
 from stix.common import EncodedCDATA
 from stix.indicator.test_mechanism import _BaseTestMechanism
@@ -36,7 +36,7 @@ class SnortTestMechanism(_BaseTestMechanism):
             for v in value:
                 self.add_rule(v)
         else:
-            self.add_rule(v)
+            self.add_rule(value)
     
     def add_rule(self, rule):
         if not rule:
@@ -59,7 +59,7 @@ class SnortTestMechanism(_BaseTestMechanism):
             for v in value:
                 self.add_event_filter(v)
         else:
-            self.add_event_filter(v)
+            self.add_event_filter(value)
     
     def add_event_filter(self, item):
         if not item:
@@ -82,7 +82,7 @@ class SnortTestMechanism(_BaseTestMechanism):
             for v in value:
                 self.add_rate_filter(v)
         else:
-            self.add_rate_filter(v)
+            self.add_rate_filter(value)
     
     def add_rate_filter(self, item):
         if not item:
@@ -105,7 +105,7 @@ class SnortTestMechanism(_BaseTestMechanism):
             for v in value:
                 self.add_event_suppression(v)
         else:
-            self.add_event_suppression(v)
+            self.add_event_suppression(value)
     
     def add_event_suppression(self, item):
         if not item:

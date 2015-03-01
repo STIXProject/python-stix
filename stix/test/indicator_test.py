@@ -1,12 +1,9 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-from StringIO import StringIO
 import unittest
 
 from stix.indicator import Indicator
-import stix.bindings.indicator as indicator_binding
-from cybox.common import StructuredText
 from stix.test import EntityTestCase
 
 
@@ -46,7 +43,7 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
             }
         },
         'producer': {
-            'description': '',
+            'description': 'A sample description',
             'identity': {
                 'id': 'example:Identity-1ae603ab-9b0b-11e3-980e-28cfe912ced8',
                 'specification': {

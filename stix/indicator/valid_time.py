@@ -3,10 +3,9 @@
 
 import stix
 import stix.utils
-from stix.utils import dates
 from stix.common import DateTimeWithPrecision
 import stix.bindings.indicator as indicator_binding
-from datetime import datetime
+
 
 class ValidTime(stix.Entity):
     _namespace = "http://stix.mitre.org/Indicator-2"

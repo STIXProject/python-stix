@@ -4,12 +4,12 @@
 import stix
 import stix.utils as utils
 import stix.bindings.threat_actor as threat_actor_binding
-from stix.common import (Confidence, Identity, InformationSource, Statement,
-        StructuredText, VocabString)
+from stix.common import (
+    Confidence, Identity, InformationSource, Statement, StructuredText
+)
 from stix.common.related import (GenericRelationshipList, RelatedCampaign,
         RelatedPackageRefs, RelatedTTP, RelatedThreatActor)
 from stix.data_marking import Marking
-import stix.utils
 from stix.common import vocabs
 
 class ObservedTTPs(GenericRelationshipList):

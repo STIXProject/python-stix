@@ -2,11 +2,8 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import dateutil
 import stix.bindings.incident as incident_binding
 from stix.common import DateTimeWithPrecision
-from datetime import datetime
-
 
 class Time(stix.Entity):
     _binding = incident_binding

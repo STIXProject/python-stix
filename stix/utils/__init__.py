@@ -8,7 +8,7 @@ import keyword
 
 # external
 import cybox
-import lxml
+import lxml.etree
 
 # internal
 import stix
@@ -117,7 +117,7 @@ def attr_name(name):
         name = name[1:]
 
     if name in _CONFLICTING_NAMES:
-        name = name + "_"
+        name += "_"
 
     return name
 

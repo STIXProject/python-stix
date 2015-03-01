@@ -146,8 +146,12 @@ class RelatedPackageRef(GenericRelationship):
         return d
 
     @classmethod
-    def from_obj(cls, obj):
-        return_obj = cls()
+    def from_obj(cls, obj, return_obj=None):
+        if not obj:
+            return None
+
+        if not return_obj:
+            return_obj = cls()
 
         super(RelatedPackageRef, cls).from_obj(obj, return_obj)
 
@@ -231,16 +235,18 @@ class GenericRelationshipList(stix.EntityList):
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
-        if not isinstance(dict_repr, dict):
+        if not dict_repr:
             return None
 
         if return_obj is None:
             return_obj = cls()
 
-        super(GenericRelationshipList, cls).from_dict(dict_repr,
-                return_obj=return_obj,
-                contained_type=cls._contained_type,
-                inner_name=cls._inner_name)
+        super(GenericRelationshipList, cls).from_dict(
+            dict_repr,
+            return_obj=return_obj,
+            contained_type=cls._contained_type,
+            inner_name=cls._inner_name
+        )
 
         return_obj.scope = dict_repr.get('scope')
 

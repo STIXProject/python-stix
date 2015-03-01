@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import stix
+import stix.utils as utils
 from stix.common import VocabString, Identity
 from cybox.core import Observables
 import stix.bindings.ttp as ttp_binding

@@ -4,9 +4,7 @@
 import unittest
 
 from stix.test import EntityTestCase
-
 from stix.data_marking import Marking, MarkingSpecification, MarkingStructure
-import stix.extensions.marking.tlp
 
 
 class MarkingTests(EntityTestCase, unittest.TestCase):

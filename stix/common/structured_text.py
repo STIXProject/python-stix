@@ -35,31 +35,33 @@ class StructuredText(stix.Entity):
         return d
 
     @classmethod
-    def from_obj(cls, text_obj):
-        if not text_obj:
+    def from_obj(cls, obj, return_obj=None):
+        if not obj:
             return None
 
-        text = StructuredText()
+        if not return_obj:
+            return_obj = cls()
 
-        text.value = text_obj.valueOf_
-        text.structuring_format = text_obj.structuring_format
+        return_obj.value = obj.valueOf_
+        return_obj.structuring_format = obj.structuring_format
 
-        return text
+        return return_obj
 
     @classmethod
-    def from_dict(cls, text_dict):
-        if text_dict is None:
+    def from_dict(cls, d, return_obj=None):
+        if not d:
             return None
 
-        text = StructuredText()
+        if not return_obj:
+            return_obj = cls()
 
-        if not isinstance(text_dict, dict):
-            text.value = text_dict
+        if not isinstance(d, dict):
+            return_obj.value = d
         else:
-            text.value = text_dict.get('value')
-            text.structuring_format = text_dict.get('structuring_format')
+            return_obj.value = d.get('value')
+            return_obj.structuring_format = d.get('structuring_format')
 
-        return text
+        return return_obj
     
     def __str__(self):
         return self.__unicode__().encode("utf-8")

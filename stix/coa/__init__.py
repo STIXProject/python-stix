@@ -1,29 +1,35 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-from datetime import datetime
-from stix.utils import dates
-from dateutil.tz import tzutc
+# external
 from cybox.core import Observables
+
+# internal
 import stix
-import stix.utils
-import stix.bindings.course_of_action as coa_binding
-from stix.common import StructuredText, VocabString, InformationSource, Statement
-from stix.common.related import (GenericRelationshipList, RelatedCOA,
-        RelatedPackageRefs)
+import stix.utils as utils
 from stix.data_marking import Marking
+from stix.common import (
+    vocabs, related, StructuredText, VocabString, InformationSource, Statement
+)
+import stix.bindings.course_of_action as coa_binding
+
+# relative
 from .objective import Objective
 
-from stix.common.vocabs import COAStage as Stage
-from stix.common.vocabs import CourseOfActionType as COAType
 
-class RelatedCOAs(GenericRelationshipList):
+# Redefines
+Stage = vocabs.COAStage
+COAType = vocabs.CourseOfActionType
+
+
+class RelatedCOAs(related.GenericRelationshipList):
     _namespace = "http://stix.mitre.org/CourseOfAction-1"
     _binding = coa_binding
     _binding_class = coa_binding.RelatedCOAsType
     _binding_var = "Related_COA"
-    _contained_type = RelatedCOA
+    _contained_type = related.RelatedCOA
     _inner_name = "coas"
+
 
 class CourseOfAction(stix.Entity):
     _binding = coa_binding
@@ -50,12 +56,12 @@ class CourseOfAction(stix.Entity):
         self.information_source = None
         self.handling = None
         self.related_coas = RelatedCOAs()
-        self.related_packages = RelatedPackageRefs()
+        self.related_packages = related.RelatedPackageRefs()
 
         if timestamp:
             self.timestamp = timestamp
         else:
-            self.timestamp = datetime.now(tzutc()) if not idref else None
+            self.timestamp = utils.dates.now() if not idref else None
 
     @property
     def id_(self):
@@ -102,7 +108,7 @@ class CourseOfAction(stix.Entity):
 
     @timestamp.setter
     def timestamp(self, value):
-        self._timestamp = dates.parse_value(value)
+        self._timestamp = utils.dates.parse_value(value)
 
     @property
     def title(self):
@@ -312,7 +318,7 @@ class CourseOfAction(stix.Entity):
             return_obj.related_coas = \
                     RelatedCOAs.from_obj(obj.Related_COAs)
             return_obj.related_packages = \
-                    RelatedPackageRefs.from_obj(obj.Related_Packages)
+                    related.RelatedPackageRefs.from_obj(obj.Related_Packages)
 
         return return_obj
 
@@ -386,7 +392,7 @@ class CourseOfAction(stix.Entity):
         return_obj.related_coas = \
                 RelatedCOAs.from_dict(dict_repr.get('related_coas'))
         return_obj.related_packages = \
-                RelatedPackageRefs.from_dict(dict_repr.get('related_packages'))
+                related.RelatedPackageRefs.from_dict(dict_repr.get('related_packages'))
 
         return return_obj
 

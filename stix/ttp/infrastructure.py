@@ -2,9 +2,9 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils
+import stix.utils as utils
 from stix.common import StructuredText, VocabString
-from cybox.core import Observables, Observable, Object
+from cybox.core import Observables
 import stix.bindings.ttp as ttp_binding
 from stix.common.vocabs import AttackerInfrastructureType
 

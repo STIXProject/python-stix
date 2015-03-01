@@ -8,36 +8,10 @@ import StringIO
 import json
 
 # external
-import lxml
+import lxml.etree
 
 # internal
-from . import bindings
-
-# lazy imports
-cybox = None
-cybox_common = None
-utils = None
-nsparser = None
-
-__LAZY_MODS_LOADED = False
-
-def _load_lazy_mods():
-    global cybox, cybox_common, utils, nsparser
-    global __LAZY_MODS_LOADED
-
-    if __LAZY_MODS_LOADED:
-        return
-
-    if not cybox:
-        import cybox
-    if not cybox_common:
-        import cybox.common as cybox_common
-    if not utils:
-        import stix.utils as utils
-    if not nsparser:
-        import stix.utils.nsparser as nsparser
-
-    __LAZY_MODS_LOADED = True
+from . import bindings, utils
 
 
 def _override(*args, **kwargs):
@@ -108,7 +82,8 @@ class Entity(object):
             :class:`Entity` instance. Default character encoding is ``utf-8``.
 
         """
-        _load_lazy_mods()
+
+        nsparser = utils.nsparser
         parser = nsparser.NamespaceParser()
 
         if auto_namespace:
@@ -197,8 +172,6 @@ class Entity(object):
         dictionary. This may be overridden by derived classes.
 
         """
-        _load_lazy_mods()
-
         d = {}
         for raw_key in self.__dict__.keys():
             raw_value = self.__dict__[raw_key]
@@ -244,7 +217,6 @@ class Entity(object):
         return cls.from_obj(entity_obj).to_dict()
 
     def walk(self):
-        _load_lazy_mods()
         return utils.walk.iterwalk(self)
 
     def find(self, id_):
@@ -371,7 +343,6 @@ class EntityList(collections.MutableSequence, Entity):
 
     @classmethod
     def from_list(cls, list_repr, return_obj=None, contained_type=None):
-        _load_lazy_mods()
 
         if not utils.is_sequence(list_repr):
             return None
@@ -416,7 +387,6 @@ class TypedList(collections.MutableSequence):
     _contained_type = _override
 
     def __init__(self, *args):
-        import stix.utils as utils
         self._inner = []
 
         for arg in args:
@@ -479,7 +449,6 @@ class TypedList(collections.MutableSequence):
 
     @classmethod
     def from_obj(cls, obj_list, contained_type=None):
-        import stix.utils as utils
 
         if not obj_list:
             return None
@@ -497,7 +466,7 @@ class TypedList(collections.MutableSequence):
 
     @classmethod
     def from_list(cls, list_repr, contained_type=None):
-        import stix.utils as utils
+
 
         if not utils.is_sequence(list_repr):
             return None

@@ -207,9 +207,9 @@ class MarkingStructure(stix.Entity):
 
     @staticmethod
     def from_obj(obj, partial=None):
-        from stix.extensions.marking.tlp import TLPMarkingStructure
-        from stix.extensions.marking.simple_marking import SimpleMarkingStructure
-        from stix.extensions.marking.terms_of_use_marking import TermsOfUseMarkingStructure
+        import stix.extensions.marking.tlp
+        import stix.extensions.marking.simple_marking
+        import stix.extensions.marking.terms_of_use_marking
         
         if not obj:
             return None
@@ -227,9 +227,9 @@ class MarkingStructure(stix.Entity):
 
     @staticmethod
     def from_dict(marking_dict, partial=None):
-        from stix.extensions.marking.tlp import TLPMarkingStructure
-        from stix.extensions.marking.simple_marking import SimpleMarkingStructure
-        from stix.extensions.marking.terms_of_use_marking import TermsOfUseMarkingStructure
+        import stix.extensions.marking.tlp
+        import stix.extensions.marking.simple_marking
+        import stix.extensions.marking.terms_of_use_marking
         
         if not marking_dict:
             return None

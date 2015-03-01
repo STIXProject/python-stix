@@ -3,6 +3,7 @@
 
 
 import stix
+import stix.utils as utils
 from stix.common import VocabString, StructuredText
 import stix.bindings.incident as incident_binding
 from .property_affected import PropertyAffected

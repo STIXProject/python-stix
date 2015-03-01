@@ -975,7 +975,7 @@ class PersonasType(GeneratedsSuper):
                 obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
 
             obj_.build(child_)
-            self.set_Identity(obj_)
+            self.set_Persona(obj_)
 # end class PersonasType
 
 class BehaviorType(GeneratedsSuper):

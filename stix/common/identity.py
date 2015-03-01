@@ -4,9 +4,8 @@
 from __future__ import absolute_import
 
 import stix
-import stix.bindings.stix_common as common_binding
-import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
 import stix.utils
+import stix.bindings.stix_common as common_binding
 
 # import of RelatedIdentity is below
 

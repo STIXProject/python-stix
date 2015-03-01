@@ -79,7 +79,7 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
                                                                                 'properties': {'hashes': [{'simple_hash_value': u'4EC0027BEF4D7E1786A04D021FA8A67F',
                                                                                                            'type': u'MD5'}],
                                                                                                'xsi:type': 'FileObjectType'}}},
-                                                      'producer': {'description': '',
+                                                      'producer': {'description': 'A sample description',
                                                                    'identity': {'id': 'example:Identity-1ae603ab-9b0b-11e3-980e-28cfe912ced8',
                                                                                 'specification': {'party_name': {'name_lines': [{'value': 'Foo'},
                                                                                                                                 {'value': 'Bar'}],

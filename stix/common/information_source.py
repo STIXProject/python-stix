@@ -79,13 +79,13 @@ class InformationSource(stix.Entity):
 
     @description.setter
     def description(self, value):
-        '''Sets the value of the description property.
+        """Sets the value of the description property.
 
         If the value is an instance of basestring, it will be coerced into an
         instance of StructuredText, with its 'text' property set to the input
         value.
-        '''
 
+        """
         if value and isinstance(value, basestring):
             st = StructuredText()
             st.value = value

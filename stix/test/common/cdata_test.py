@@ -2,20 +2,20 @@
 # See LICENSE.txt for complete terms.
 
 import unittest
-from lxml import etree
+
 import stix.utils as utils
 
 class CdataTests(unittest.TestCase):
     def test_strip_cdata(self):
         initial = "TESTTESTTEST"
-        wrapped = "<![CDATA[%s]]>" % (initial)
+        wrapped = "<![CDATA[%s]]>" % initial
         stripped = utils.strip_cdata(wrapped)
 
         self.assertEqual(stripped, initial)
 
     def test_wrap_cdata(self):
         initial = "TESTTESTTEST"
-        wrapped = "<![CDATA[%s]]>" % (initial)
+        wrapped = "<![CDATA[%s]]>" % initial
         cdata = utils.cdata(initial)
 
         self.assertEqual(wrapped, cdata)

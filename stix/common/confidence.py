@@ -3,11 +3,9 @@
 
 from __future__ import absolute_import
 
-from datetime import datetime
-import dateutil
-from dateutil.tz import tzutc
 
 import stix
+import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
 from .structured_text import StructuredText
@@ -19,7 +17,7 @@ class Confidence(stix.Entity):
     _binding_class = common_binding.ConfidenceType
 
     def __init__(self, value=None, timestamp=None, description=None, source=None):
-        self.timestamp = timestamp or datetime.now(tzutc())
+        self.timestamp = timestamp or utils.dates.now()
         self.timestamp_precision = "second"
         self.value = value
         self.description = description
@@ -33,12 +31,7 @@ class Confidence(stix.Entity):
 
     @timestamp.setter
     def timestamp(self, value):
-        if not value:
-            self._timestamp = None
-        elif isinstance(value, datetime):
-            self._timestamp =  value
-        else:
-            self._timestamp = dateutil.parser.parse(value)
+        self._timestamp = utils.dates.parse_value(value)
 
     @property
     def value(self):
@@ -110,7 +103,7 @@ class Confidence(stix.Entity):
     def to_dict(self):
         d = {}
         if self.timestamp:
-            d['timestamp'] = self.timestamp.isoformat()
+            d['timestamp'] = utils.dates.serialize_value(self.timestamp)
         if self.timestamp_precision != 'second':
             d['timestamp_precision'] = self.timestamp_precision
         if self.value:
@@ -122,37 +115,41 @@ class Confidence(stix.Entity):
             
         return d
 
-    @staticmethod
-    def from_obj(obj):
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
         from .information_source import InformationSource
         
         if not obj:
             return None
-        c = Confidence()
 
-        c.timestamp = obj.timestamp
-        c.timestamp_precision = obj.timestamp_precision
-        c.value = VocabString.from_obj(obj.Value)
-        c.description = StructuredText.from_obj(obj.Description)
-        c.source = InformationSource.from_obj(obj.Source)
+        if not return_obj:
+            return_obj = cls()
 
-        return c
+        return_obj.timestamp = obj.timestamp
+        return_obj.timestamp_precision = obj.timestamp_precision
+        return_obj.value = VocabString.from_obj(obj.Value)
+        return_obj.description = StructuredText.from_obj(obj.Description)
+        return_obj.source = InformationSource.from_obj(obj.Source)
 
-    @staticmethod
-    def from_dict(dict_):
+        return return_obj
+
+    @classmethod
+    def from_dict(cls, d, return_obj=None):
         from .information_source import InformationSource
         
-        if dict_ is None:
+        if not d:
             return None
-        c = Confidence()
+        
+        if not return_obj:
+            return_obj = cls()
 
-        c.timestamp = dict_.get('timestamp')
-        c.timestamp_precision = dict_.get('timestamp_precision', 'second')
-        c.value = VocabString.from_dict(dict_.get('value'))
-        c.description = StructuredText.from_dict(dict_.get('description'))
-        c.source = InformationSource.from_dict(dict_.get('source'))
+        return_obj.timestamp = d.get('timestamp')
+        return_obj.timestamp_precision = d.get('timestamp_precision', 'second')
+        return_obj.value = VocabString.from_dict(d.get('value'))
+        return_obj.description = StructuredText.from_dict(d.get('description'))
+        return_obj.source = InformationSource.from_dict(d.get('source'))
 
-        return c
+        return return_obj
 
 class ConfidenceAssertionChain(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-2'

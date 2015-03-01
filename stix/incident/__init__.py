@@ -5,16 +5,17 @@
 import stix
 import stix.utils as utils
 import stix.bindings.incident as incident_binding
-from stix.common import (Identity, Statement, StructuredText, VocabString, 
-                         InformationSource, Confidence)
-from stix.common.related import (GenericRelationshipList, RelatedIndicator,
-        RelatedThreatActor, RelatedTTP, RelatedObservable, RelatedIncident)
-from stix.indicator import Indicator
-from stix.threat_actor import ThreatActor
-from stix.ttp import TTP
+from stix.common import (
+    vocabs, Identity, Statement, StructuredText, VocabString,
+    InformationSource, Confidence
+)
+from stix.common.related import (
+    GenericRelationshipList, RelatedIndicator, RelatedThreatActor, RelatedTTP,
+    RelatedObservable, RelatedIncident
+)
 from stix.data_marking import Marking
-import stix.utils
-from stix.utils import dates
+
+# relative
 from .affected_asset import AffectedAsset
 from .property_affected import PropertyAffected
 from .time import Time
@@ -22,12 +23,7 @@ from .external_id import ExternalID
 from .impact_assessment import ImpactAssessment
 from .coa import COATaken, COATime, CourseOfAction
 from .history import History
-from stix.common.vocabs import (IncidentCategory, IntendedEffect, 
-                                DiscoveryMethod, SecurityCompromise, 
-                                IncidentStatus)
 
-from datetime import datetime
-from dateutil.tz import tzutc
 
 class Incident(stix.Entity):
     _binding = incident_binding
@@ -70,7 +66,7 @@ class Incident(stix.Entity):
         if timestamp:
             self.timestamp = timestamp
         else:
-            self.timestamp = datetime.now(tzutc()) if not idref else None
+            self.timestamp = utils.dates.now() if not idref else None
     
     @property
     def id_(self):
@@ -117,7 +113,7 @@ class Incident(stix.Entity):
     
     @timestamp.setter
     def timestamp(self, value):
-        self._timestamp = dates.parse_value(value)
+        self._timestamp = utils.dates.parse_value(value)
 
     @property
     def title(self):
@@ -166,7 +162,7 @@ class Incident(stix.Entity):
         elif isinstance(value, VocabString):
             self._status = value
         else:
-            self._status = IncidentStatus(value=value)
+            self._status = vocabs.IncidentStatus(value=value)
 
     @property
     def time(self):
@@ -212,7 +208,7 @@ class Incident(stix.Entity):
         elif isinstance(value, Statement):
             self.intended_effects.append(value)
         else:
-            intended_effect = IntendedEffect(value)
+            intended_effect = vocabs.IntendedEffect(value)
             self.intended_effects.append(Statement(value=intended_effect))
 
     @property
@@ -254,10 +250,10 @@ class Incident(stix.Entity):
             self.add_category(value)
 
     def add_category(self, category):
-        if isinstance(category, IncidentCategory):
+        if isinstance(category, vocabs.VocabString):
             self.categories.append(category)
         else:
-            cv_item = IncidentCategory(value=category)
+            cv_item = vocabs.IncidentCategory(value=category)
             self.categories.append(cv_item)
 
     @property
@@ -304,7 +300,7 @@ class Incident(stix.Entity):
         elif isinstance(value, VocabString):
             self.discovery_methods.append(value)
         else:
-            self.discovery_methods.append(DiscoveryMethod(value))
+            self.discovery_methods.append(vocabs.DiscoveryMethod(value))
 
     @property
     def reporter(self):
@@ -425,7 +421,7 @@ class Incident(stix.Entity):
         elif isinstance(value, VocabString):
             self._security_compromise = value
         else:
-            self._security_compromise = SecurityCompromise(value=value)
+            self._security_compromise = vocabs.SecurityCompromise(value=value)
 
     @property
     def confidence(self):
@@ -471,7 +467,7 @@ class Incident(stix.Entity):
 
         return_obj.id = self.id_
         return_obj.idref = self.idref
-        return_obj.timestamp = dates.serialize_value(self.timestamp)
+        return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
         return_obj.version = self.version
         return_obj.Title = self.title
         
@@ -550,13 +546,13 @@ class Incident(stix.Entity):
             if obj.Victim:
                 return_obj.victims = [Identity.from_obj(x) for x in obj.Victim]
             if obj.Categories:
-                return_obj.categories = [IncidentCategory.from_obj(x) for x in obj.Categories.Category]
+                return_obj.categories = [VocabString.from_obj(x) for x in obj.Categories.Category]
             if obj.Intended_Effect:
                 return_obj.intended_effects = [Statement.from_obj(x) for x in obj.Intended_Effect]
             if obj.Affected_Assets:
                 return_obj.affected_assets = [AffectedAsset.from_obj(x) for x in obj.Affected_Assets.Affected_Asset]
             if obj.Discovery_Method:
-                return_obj.discovery_methods = [DiscoveryMethod.from_obj(x) for x in obj.Discovery_Method]
+                return_obj.discovery_methods = [VocabString.from_obj(x) for x in obj.Discovery_Method]
             if obj.Reporter:
                 return_obj.reporter = InformationSource.from_obj(obj.Reporter)
             if obj.Responder:
@@ -570,7 +566,7 @@ class Incident(stix.Entity):
             if obj.Information_Source:
                 return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
             if obj.Security_Compromise:
-                return_obj.security_compromise = SecurityCompromise.from_obj(obj.Security_Compromise)
+                return_obj.security_compromise = VocabString.from_obj(obj.Security_Compromise)
             
             return_obj.coa_taken = [COATaken.from_obj(x) for x in obj.COA_Taken]
             return_obj.confidence = Confidence.from_obj(obj.Confidence)
@@ -592,7 +588,7 @@ class Incident(stix.Entity):
         if self.idref:
             d['idref'] = self.idref
         if self.timestamp:
-            d['timestamp'] = dates.serialize_value(self.timestamp)
+            d['timestamp'] = utils.dates.serialize_value(self.timestamp)
         if self.version:
             d['version'] = self.version
         if self.title:
@@ -666,7 +662,7 @@ class Incident(stix.Entity):
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
         return_obj.time = Time.from_dict(dict_repr.get('time'))
         return_obj.victims = [Identity.from_dict(x) for x in dict_repr.get('victims', [])]
-        return_obj.categories = [IncidentCategory.from_dict(x) for x in dict_repr.get('categories', [])]
+        return_obj.categories = [VocabString.from_dict(x) for x in dict_repr.get('categories', [])]
         return_obj.attributed_threat_actors = AttributedThreatActors.from_dict(dict_repr.get('attributed_threat_actors'))
         return_obj.related_indicators = RelatedIndicators.from_dict(dict_repr.get('related_indicators'))
         return_obj.related_observables = RelatedObservables.from_dict(dict_repr.get('related_observables'))
@@ -674,14 +670,14 @@ class Incident(stix.Entity):
         return_obj.intended_effects = [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
         return_obj.leveraged_ttps = LeveragedTTPs.from_dict(dict_repr.get('leveraged_ttps'))
         return_obj.affected_assets = [AffectedAsset.from_dict(x) for x in dict_repr.get('affected_assets', [])]
-        return_obj.discovery_methods = [DiscoveryMethod.from_dict(x) for x in dict_repr.get('discovery_methods', [])]
+        return_obj.discovery_methods = [VocabString.from_dict(x) for x in dict_repr.get('discovery_methods', [])]
         return_obj.reporter = InformationSource.from_dict(dict_repr.get('reporter'))
         return_obj.responders = [InformationSource.from_dict(x) for x in dict_repr.get('responders', [])]
         return_obj.coordinators = [InformationSource.from_dict(x) for x in dict_repr.get('coordinators', [])]
         return_obj.external_ids = [ExternalID.from_dict(x) for x in dict_repr.get('external_ids', [])]
         return_obj.impact_assessment = ImpactAssessment.from_dict(dict_repr.get('impact_assessment'))
         return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
-        return_obj.security_compromise = SecurityCompromise.from_dict(dict_repr.get('security_compromise'))
+        return_obj.security_compromise = VocabString.from_dict(dict_repr.get('security_compromise'))
         return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
         return_obj.coa_taken = [COATaken.from_dict(x) for x in dict_repr.get('coa_taken', [])]
         return_obj.status = VocabString.from_dict(dict_repr.get('status'))
@@ -741,7 +737,7 @@ class DiscoveryMethods(stix.EntityList):
     _contained_type = VocabString
 
     def _fix_value(self, value):
-        return DiscoveryMethod(value)
+        return vocabs.DiscoveryMethod(value)
 
 
 class IncidentCategories(stix.EntityList):
@@ -749,12 +745,12 @@ class IncidentCategories(stix.EntityList):
     _contained_type = VocabString
 
     def _fix_value(self, value):
-        return IncidentCategory(value)
+        return vocabs.IncidentCategory(value)
 
 class IntendedEffects(stix.EntityList):
     _namespace = "http://stix.mitre.org/Incident-1"
     _contained_type = Statement
 
     def _fix_value(self, value):
-        return Statement(value=IntendedEffect(value))
+        return Statement(value=vocabs.IntendedEffect(value))
 
