@@ -122,12 +122,15 @@ def attr_name(name):
     return name
 
 
-def is_sequence(value):
+def is_sequence(item):
     """Returns ``True`` if `value` is a sequence type (e.g., ``list``, or
-    ``tuple``).
+    ``tuple``). String types will return ``False``.
 
     """
-    return isinstance(value, collections.Sequence)
+    return (
+        hasattr(item, "__iter__") and
+        not isinstance(item, collections.Mapping)
+    )
 
 
 from .nsparser import *
