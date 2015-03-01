@@ -1371,7 +1371,7 @@ class CompositeIndicatorExpression(stix.EntityList):
         return return_obj
 
 
-class IndicatorTypes(stix.EntityList):
+class IndicatorTypes(stix.TypedList):
     """A :class:`stix.common.vocabs.VocabString` collection which defaults to
     :class:`stix.common.vocabs.IndicatorType`. This class implements methods
     found on ``collections.MutableSequence`` and as such can be interacted with
