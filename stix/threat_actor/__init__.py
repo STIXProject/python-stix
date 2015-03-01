@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import stix
+import stix.utils as utils
 import stix.bindings.threat_actor as threat_actor_binding
 from stix.common import (Confidence, Identity, InformationSource, Statement,
         StructuredText, VocabString)
@@ -9,11 +10,7 @@ from stix.common.related import (GenericRelationshipList, RelatedCampaign,
         RelatedPackageRefs, RelatedTTP, RelatedThreatActor)
 from stix.data_marking import Marking
 import stix.utils
-from stix.utils import dates
-from datetime import datetime
-from dateutil.tz import tzutc
-from stix.common.vocabs import (ThreatActorType, Motivation, ThreatActorSophistication,
-                                IntendedEffect, PlanningAndOperationalSupport)
+from stix.common import vocabs
 
 class ObservedTTPs(GenericRelationshipList):
     _namespace = 'http://stix.mitre.org/ThreatActor-1'
@@ -73,7 +70,7 @@ class ThreatActor(stix.Entity):
         if timestamp:
             self.timestamp = timestamp
         else:
-            self.timestamp = datetime.now(tzutc()) if not idref else None
+            self.timestamp = utils.dates.now() if not idref else None
 
     @property
     def id_(self):
@@ -120,7 +117,7 @@ class ThreatActor(stix.Entity):
 
     @timestamp.setter
     def timestamp(self, value):
-        self._timestamp = dates.parse_value(value)
+        self._timestamp = utils.dates.parse_value(value)
 
     @property
     def title(self):
@@ -180,7 +177,7 @@ class ThreatActor(stix.Entity):
         self._types = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_type(v)
         else:
@@ -192,7 +189,7 @@ class ThreatActor(stix.Entity):
         elif isinstance(value, Statement):
             self.types.append(value)
         else:
-            type_ = ThreatActorType(value)
+            type_ = vocabs.ThreatActorType(value)
             self.types.append(Statement(value=type_))
 
     @property
@@ -204,7 +201,7 @@ class ThreatActor(stix.Entity):
         self._motivations = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_motivation(v)
         else:
@@ -216,7 +213,7 @@ class ThreatActor(stix.Entity):
         elif isinstance(value, Statement):
             self.motivations.append(value)
         else:
-            motivation = Motivation(value)
+            motivation = vocabs.Motivation(value)
             self.motivations.append(Statement(value=motivation))
 
     @property
@@ -228,7 +225,7 @@ class ThreatActor(stix.Entity):
         self._sophistications = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_sophistication(v)
         else:
@@ -240,7 +237,7 @@ class ThreatActor(stix.Entity):
         elif isinstance(value, Statement):
             self.sophistications.append(value)
         else:
-            sophistication = ThreatActorSophistication(value)
+            sophistication = vocabs.ThreatActorSophistication(value)
             self.sophistications.append(Statement(value=sophistication))
 
     @property
@@ -252,7 +249,7 @@ class ThreatActor(stix.Entity):
         self._intended_effects = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_intended_effect(v)
         else:
@@ -264,7 +261,7 @@ class ThreatActor(stix.Entity):
         elif isinstance(value, Statement):
             self.intended_effects.append(value)
         else:
-            intended_effect = IntendedEffect(value)
+            intended_effect = vocabs.IntendedEffect(value)
             self.intended_effects.append(Statement(value=intended_effect))
 
     @property
@@ -276,7 +273,7 @@ class ThreatActor(stix.Entity):
         self._planning_and_operational_supports = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_planning_and_operational_support(v)
         else:
@@ -288,7 +285,7 @@ class ThreatActor(stix.Entity):
         elif isinstance(value, Statement):
             self.planning_and_operational_supports.append(value)
         else:
-            pos = PlanningAndOperationalSupport(value)
+            pos = vocabs.PlanningAndOperationalSupport(value)
             self.planning_and_operational_supports.append(Statement(value=pos))
 
     def to_obj(self, return_obj=None, ns_info=None):
@@ -300,7 +297,7 @@ class ThreatActor(stix.Entity):
         return_obj.id = self.id_
         return_obj.idref = self.idref
         if self.timestamp:
-            return_obj.timestamp = dates.serialize_value(self.timestamp)
+            return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
         return_obj.version = self.version
         return_obj.Title = self.title
         if self.description:
@@ -346,6 +343,7 @@ class ThreatActor(stix.Entity):
         return_obj.id_ = obj.id
         return_obj.idref = obj.idref
         return_obj.timestamp = obj.timestamp
+
         if isinstance(obj, cls._binding_class): # ThreatActorType properties
             return_obj.version = obj.version
             return_obj.title = obj.Title
@@ -374,7 +372,7 @@ class ThreatActor(stix.Entity):
         if self.idref:
             d['idref'] = self.idref
         if self.timestamp:
-            d['timestamp'] = dates.serialize_value(self.timestamp)
+            d['timestamp'] = utils.dates.serialize_value(self.timestamp)
         if self.version:
             d['version'] = self.version
         if self.title:

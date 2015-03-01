@@ -28,7 +28,7 @@ class Behavior(stix.Entity):
 
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_malware_instance(v)
         else:
@@ -52,7 +52,7 @@ class Behavior(stix.Entity):
 
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_attack_pattern(v)
         else:
@@ -76,7 +76,7 @@ class Behavior(stix.Entity):
 
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_exploit(v)
         else:

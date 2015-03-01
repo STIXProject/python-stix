@@ -1,21 +1,19 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-
-from dateutil.tz import tzutc
-from datetime import datetime
-
 import stix
-import stix.bindings.campaign as campaign_binding
-from stix.common import (Activity, Confidence, InformationSource, Statement,
-        StructuredText, VocabString)
-from stix.common.related import (GenericRelationshipList, RelatedCampaign,
-        RelatedIncident, RelatedIndicator, RelatedPackageRefs,
-        RelatedThreatActor, RelatedTTP)
+import stix.utils as utils
+from stix.common import vocabs
+from stix.common import (
+    Activity, Confidence, InformationSource, Statement, StructuredText,
+    VocabString
+)
+from stix.common.related import (
+    GenericRelationshipList, RelatedCampaign,RelatedIncident, RelatedIndicator,
+    RelatedPackageRefs, RelatedThreatActor, RelatedTTP
+)
 from stix.data_marking import Marking
-import stix.utils
-from stix.utils import dates
-from stix.common.vocabs import CampaignStatus, IntendedEffect
+import stix.bindings.campaign as campaign_binding
 
 
 class AssociatedCampaigns(GenericRelationshipList):
@@ -106,7 +104,7 @@ class Campaign(stix.Entity):
         if timestamp:
             self.timestamp = timestamp
         else:
-            self.timestamp = datetime.now(tzutc()) if not idref else None
+            self.timestamp = utils.dates.now() if not idref else None
 
     @property
     def id_(self):
@@ -153,7 +151,7 @@ class Campaign(stix.Entity):
 
     @timestamp.setter
     def timestamp(self, value):
-        self._timestamp = dates.parse_value(value)
+        self._timestamp = utils.dates.parse_value(value)
 
     @property
     def title(self):
@@ -200,7 +198,7 @@ class Campaign(stix.Entity):
         self._intended_effects = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_intended_effect(v)
         else:
@@ -212,7 +210,7 @@ class Campaign(stix.Entity):
         elif isinstance(value, Statement):
             self.intended_effects.append(value)
         else:
-            intended_effect = IntendedEffect(value)
+            intended_effect = vocabs.IntendedEffect(value)
             self.intended_effects.append(Statement(value=intended_effect))
 
     @property
@@ -226,7 +224,7 @@ class Campaign(stix.Entity):
         elif isinstance(value, VocabString):
             self._status = value
         else:
-            self._status = CampaignStatus(value)
+            self._status = vocabs.CampaignStatus(value)
 
     @property
     def attribution(self):
@@ -242,7 +240,7 @@ class Campaign(stix.Entity):
 
         if not value:
             return
-        elif hasattr(value, '__getitem__'):
+        elif utils.is_sequence(value):
             self._attribution = AttributionList(*value)
         else:
             self._attribution.append(value) # may raise a ValueError
@@ -340,7 +338,7 @@ class Campaign(stix.Entity):
         if self.idref:
             d['idref'] = self.idref
         if self.timestamp:
-            d['timestamp'] = self.timestamp.isoformat()
+            d['timestamp'] = utils.dates.serialize_value(self.timestamp)
         if self.version:
             d['version'] = self.version
         if self.title:

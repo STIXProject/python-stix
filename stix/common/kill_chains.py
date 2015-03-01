@@ -2,7 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils
+import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
 class KillChain(stix.Entity):
@@ -27,7 +27,7 @@ class KillChain(stix.Entity):
         self._kill_chain_phases = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_kill_chain_phase(v)
         else:

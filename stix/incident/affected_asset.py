@@ -112,7 +112,7 @@ class AffectedAsset(stix.Entity):
         self._nature_of_security_effect = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_property_affected(v)
         else:

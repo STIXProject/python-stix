@@ -3,6 +3,7 @@
 
 
 import stix
+import stix.utils as utils
 import stix.bindings.incident as incident_binding
 from stix.common import (Identity, Statement, StructuredText, VocabString, 
                          InformationSource, Confidence)
@@ -199,7 +200,7 @@ class Incident(stix.Entity):
         self._intended_effects = IntendedEffects()
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_intended_effect(v)
         else:
@@ -223,7 +224,7 @@ class Incident(stix.Entity):
         self._victims = []
         if not value:
             return None
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_victim(v)
         else:
@@ -246,7 +247,7 @@ class Incident(stix.Entity):
         self._categories = IncidentCategories()
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_category(v)
         else:
@@ -268,7 +269,7 @@ class Incident(stix.Entity):
         self._affected_assets = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_affected_asset(v)
         else:
@@ -291,7 +292,7 @@ class Incident(stix.Entity):
         self._discovery_methods = DiscoveryMethods()
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_discovery_method(v)
         else:
@@ -327,7 +328,7 @@ class Incident(stix.Entity):
         self._responders = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_responder(v)
         else:
@@ -350,7 +351,7 @@ class Incident(stix.Entity):
         self._coordinators = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_coordinator(v)
         else:
@@ -373,7 +374,7 @@ class Incident(stix.Entity):
         self._external_ids = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_external_id(v)
         else:
@@ -448,7 +449,7 @@ class Incident(stix.Entity):
         self._coa_taken = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_coa_taken(v)
         else:

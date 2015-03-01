@@ -21,7 +21,6 @@ nsparser = None
 
 __LAZY_MODS_LOADED = False
 
-
 def _load_lazy_mods():
     global cybox, cybox_common, utils, nsparser
     global __LAZY_MODS_LOADED
@@ -198,6 +197,8 @@ class Entity(object):
         dictionary. This may be overridden by derived classes.
 
         """
+        _load_lazy_mods()
+
         d = {}
         for raw_key in self.__dict__.keys():
             raw_value = self.__dict__[raw_key]
@@ -205,7 +206,7 @@ class Entity(object):
             if raw_value:
                 if isinstance(raw_value, Entity):
                     value = raw_value.to_dict()
-                elif isinstance(raw_value, collections.MutableSequence):
+                elif utils.is_sequence(raw_value):
                     value = []
                     for x in raw_value:
                         if isinstance(x, Entity):
@@ -271,7 +272,7 @@ class EntityList(collections.MutableSequence, Entity):
         self._inner = []
 
         for arg in args:
-            if isinstance(arg, list):
+            if utils.is_sequence(arg):
                 self.extend(arg)
             else:
                 self.append(arg)
@@ -370,8 +371,9 @@ class EntityList(collections.MutableSequence, Entity):
 
     @classmethod
     def from_list(cls, list_repr, return_obj=None, contained_type=None):
+        _load_lazy_mods()
 
-        if not isinstance(list_repr, list):
+        if not utils.is_sequence(list_repr):
             return None
 
         if return_obj is None:
@@ -414,10 +416,11 @@ class TypedList(collections.MutableSequence):
     _contained_type = _override
 
     def __init__(self, *args):
+        import stix.utils as utils
         self._inner = []
 
         for arg in args:
-            if isinstance(arg, list):
+            if utils.is_sequence(arg):
                 self.extend(arg)
             else:
                 self.append(arg)
@@ -476,6 +479,8 @@ class TypedList(collections.MutableSequence):
 
     @classmethod
     def from_obj(cls, obj_list, contained_type=None):
+        import stix.utils as utils
+
         if not obj_list:
             return None
 
@@ -484,7 +489,7 @@ class TypedList(collections.MutableSequence):
         if not contained_type:
             contained_type = cls._contained_type
 
-        if not isinstance(obj_list, (list, tuple)):
+        if not utils.is_sequence(obj_list):
             obj_list = [obj_list]
 
         return_obj.extend(contained_type.from_obj(x) for x in obj_list)
@@ -492,8 +497,9 @@ class TypedList(collections.MutableSequence):
 
     @classmethod
     def from_list(cls, list_repr, contained_type=None):
+        import stix.utils as utils
 
-        if not isinstance(list_repr, list):
+        if not utils.is_sequence(list_repr):
             return None
 
         return_obj = cls()

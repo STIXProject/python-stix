@@ -109,7 +109,7 @@ class STIXPackage(stix.Entity):
 
         if not value:
             return
-        elif isinstance(value, (list, tuple)):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_indicator(v)
         else:
@@ -137,7 +137,7 @@ class STIXPackage(stix.Entity):
 
         if not value:
             return
-        elif isinstance(value, (list, tuple)):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_campaign(v)
         else:
@@ -182,7 +182,7 @@ class STIXPackage(stix.Entity):
         
         if not value:
             return
-        elif isinstance(value, (list, tuple)):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_incident(v)
         else:
@@ -210,7 +210,7 @@ class STIXPackage(stix.Entity):
         
         if not value:
             return
-        elif isinstance(value, (list, tuple)):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_threat_actor(v)
         else:
@@ -238,7 +238,7 @@ class STIXPackage(stix.Entity):
         
         if not value:
             return
-        elif isinstance(value, (list, tuple)):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_course_of_action(v)
         else:
@@ -266,7 +266,7 @@ class STIXPackage(stix.Entity):
         
         if not value:
             return
-        elif isinstance(value, (list, tuple)):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_exploit_target(v)
         else:
@@ -292,7 +292,7 @@ class STIXPackage(stix.Entity):
 
         if not value:
             self._ttps = TTPs()
-        elif isinstance(value, (list, tuple)):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_ttp(v)
         else:

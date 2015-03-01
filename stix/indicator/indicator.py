@@ -1,25 +1,29 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from cybox.core import Observable, ObservableComposition
+from cybox.common import Time
+
+# internal
 import stix
 import stix.utils as utils
 from stix.common import (
     Identity, InformationSource, StructuredText, VocabString, Confidence,
     RelatedTTP, Statement
 )
-import stix.bindings.indicator as indicator_binding
-from .test_mechanism import _BaseTestMechanism, TestMechanisms
-from .sightings import Sightings
-from .valid_time import ValidTime, ValidTimePositions
 from stix.common.related import (
     GenericRelationshipList, RelatedCOA, RelatedIndicator
 )
 from stix.data_marking import Marking
 from stix.common.vocabs import IndicatorType
 from stix.common.kill_chains import KillChainPhasesReference
+import stix.bindings.indicator as indicator_binding
 
-from cybox.core import Observable, ObservableComposition
-from cybox.common import Time
+# relative
+from .test_mechanism import _BaseTestMechanism, TestMechanisms
+from .sightings import Sightings
+from .valid_time import ValidTime, ValidTimePositions
 
 
 class SuggestedCOAs(GenericRelationshipList):
@@ -436,8 +440,7 @@ class Indicator(stix.Entity):
     
     @observable.setter
     def observable(self, observable):
-        self._observables = []
-        self.add_observable(observable)
+        self._observables = _Observables(observable)
 
     @property
     def observables(self):
@@ -462,12 +465,51 @@ class Indicator(stix.Entity):
         return self._observables
 
     @observables.setter
-    def observables(self, valuelist):
-        self._observables = [] # initialize the variable
+    def observables(self, value):
+        if isinstance(value, _Observables):
+            self._observables = value
+            return
 
-        if valuelist:
-            for value in valuelist:
-                self.add_observable(value)
+        self._observables = _Observables()
+
+        if not value:
+            return
+        elif utils.is_sequence(value):
+            self._observables.extend(value)
+        else:
+            self._observables.append(value)
+
+    def add_observable(self, observable):
+        """Adds an observable to the ``observables`` list property of the
+        :class:`Indicator`.
+
+        If the `observable` parameter is ``None``, no item will be added
+        to the ``observables`` list.
+
+        Note:
+            The STIX Language dictates that an :class:`Indicator` can have only
+            one ``Observable`` under it. Because of this, the ``to_xml()``
+            method will convert the ``observables`` list into  an
+            ``cybox.core.ObservableComposition``  instance, in which each item
+            in the ``observables`` list will be added to the composition. By
+            default, the ``operator`` of the composition layer will be set to
+            ``"OR"``. The ``operator`` value can be changed via the
+            ``observable_composition_operator`` property.
+
+        Args:
+            observable: An instance of ``cybox.core.Observable`` or an object
+                type that can be converted into one.
+
+
+        Raises:
+            ValueError: If the `observable` param cannot be converted into an
+                instance of ``cybox.core.Observable``.
+
+        """
+        if not observable:
+            return
+
+        self.observables.append(observable)
                 
     @property
     def alternative_id(self):
@@ -490,7 +532,7 @@ class Indicator(stix.Entity):
         self._alternative_id = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_alternative_id(v)
         else:
@@ -540,7 +582,7 @@ class Indicator(stix.Entity):
 
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_valid_time_position(v)
         else:
@@ -593,11 +635,15 @@ class Indicator(stix.Entity):
 
     @indicator_types.setter
     def indicator_types(self, value):
-        if not value:
-            self._indicator_types = IndicatorTypes()
-        elif isinstance(value, IndicatorTypes):
+        if isinstance(value, IndicatorTypes):
             self._indicator_types = value
-        elif hasattr(value, "__getitem__"):
+            return
+
+        self._indicator_types = IndicatorTypes()
+
+        if not value:
+            return
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_indicator_type(v)
         else:
@@ -681,7 +727,7 @@ class Indicator(stix.Entity):
 
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_indicated_ttp(v)
         else:
@@ -732,7 +778,7 @@ class Indicator(stix.Entity):
 
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_test_mechanism(v)
         else:
@@ -789,13 +835,15 @@ class Indicator(stix.Entity):
 
     @related_indicators.setter
     def related_indicators(self, value):
+        if isinstance(value, RelatedIndicators):
+            self._related_indicators = value
+            return
+
         self._related_indicators = RelatedIndicators()
         
         if not value:
             return
-        elif isinstance(value, RelatedIndicators):
-            self._related_indicators = value
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_related_indicator(v)
         else:
@@ -936,8 +984,6 @@ class Indicator(stix.Entity):
             produced_time: An instance of ``str``,
                 ``datetime.datetime``, or ``cybox.common.DateTimeWithPrecision``.
 
-
-
         """
         if not self.producer:
             self.producer = InformationSource()
@@ -1001,51 +1047,16 @@ class Indicator(stix.Entity):
         """
         try:
             return self.producer.time.received_time
-        except:
+        except AttributeError:
             return None
 
-    def add_observable(self, observable):
-        """Adds an observable to the ``observables`` list property of the
-        :class:`Indicator`.
-
-        If the `observable` parameter is ``None``, no item will be added
-        to the ``observables`` list.
-
-        Note:
-            The STIX Language dictates that an :class:`Indicator` can have only
-            one ``Observable`` under it. Because of this, the ``to_xml()``
-            method will convert the ``observables`` list into  an
-            ``cybox.core.ObservableComposition``  instance, in which each item
-            in the ``observables`` list will be added to the composition. By
-            default, the ``operator`` of the composition layer will be set to
-            ``"OR"``. The ``operator`` value can be changed via the
-            ``observable_composition_operator`` property.
-
-        Args:
-            observable: An instance of ``cybox.core.Observable`` or an object
-                type that can be converted into one.
-
-
-        Raises:
-            ValueError: If the `observable` param cannot be converted into an
-                instance of ``cybox.core.Observable``.
-
-        """
-        if not observable:
-            return
-
-        if isinstance(observable, Observable):
-            self.observables.append(observable)
-        else:
-            # try to cast it to an Observable type
-            self.observables.append(Observable(observable))
 
     def _merge_observables(self, observables):
         observable_composition = ObservableComposition()
         observable_composition.operator = self.observable_composition_operator
 
-        for observable_ in observables:
-            observable_composition.add(observable_)
+        for observable in observables:
+            observable_composition.add(observable)
 
         root_observable = Observable()
         root_observable.observable_composition = observable_composition
@@ -1088,11 +1099,9 @@ class Indicator(stix.Entity):
         return_obj.idref = self.idref
         return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
         return_obj.Title = self.title
-        
-        if self.negate:
-            return_obj.negate = self._negate
-        if self.version:
-            return_obj.version = self._version
+        return_obj.negate = self._negate
+        return_obj.version = self._version
+
         if self.description:
             return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.short_description:
@@ -1165,11 +1174,7 @@ class Indicator(stix.Entity):
             return_obj.alternative_id = obj.Alternative_ID
             return_obj.indicated_ttps = IndicatedTTPs.from_obj(obj.Indicated_TTP)
             return_obj.valid_time_positions = ValidTimePositions.from_obj(obj.Valid_Time_Position)
-
-            if obj.Observable:
-                observable_obj = obj.Observable
-                observable = Observable.from_obj(observable_obj)
-                return_obj.observables.append(observable)
+            return_obj.observable = Observable.from_obj(obj.Observable)
             
         return return_obj
 
@@ -1413,3 +1418,6 @@ class IndicatorTypes(stix.EntityList):
 class IndicatedTTPs(stix.TypedList):
     _contained_type = RelatedTTP
 
+
+class _Observables(stix.TypedList):
+    _contained_type = Observable

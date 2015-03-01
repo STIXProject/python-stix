@@ -66,7 +66,7 @@ class Infrastructure(stix.Entity):
         self._types = InfraStructureTypes()
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_type(v)
         else:

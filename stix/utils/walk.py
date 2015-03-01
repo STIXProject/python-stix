@@ -8,7 +8,7 @@ import itertools
 from cybox.common import ObjectProperties
 
 # internal
-from . import is_entity, is_entitylist, attr_name
+from . import is_entity, is_entitylist, attr_name, is_sequence
 
 
 def _is_skippable(varname, owner):
@@ -46,7 +46,7 @@ def iterwalk(obj):
         if _is_skippable(varname, obj):
             continue
 
-        if isinstance(varobj, (list, tuple)):
+        if is_sequence(varobj):
             for item in varobj:
                 for descendant in yield_and_walk(item):
                     yield descendant
@@ -91,7 +91,7 @@ def iterpath(obj, path=None):
             for item in varobj:
                 for path_info in iterpath(item, path):
                     yield path_info
-        elif isinstance(varobj, (list, tuple)):
+        elif is_sequence(varobj):
             for item in varobj:
                 for path_info in yield_and_descend(varname, item):
                     yield path_info

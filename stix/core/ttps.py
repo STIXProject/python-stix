@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import stix
+import stix.utils as utils
 from stix.ttp import TTP
 
 import stix.bindings.stix_core as core_binding
@@ -31,7 +32,7 @@ class TTPs(stix.EntityList):
         self._inner = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_ttp(v)
         else:

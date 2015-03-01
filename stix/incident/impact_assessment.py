@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import stix
+import stix.utils as utils
 import stix.bindings.incident as incident_binding
 from stix.common import VocabString
 from stix.common.vocabs import ImpactQualification, IncidentEffect
@@ -32,7 +33,7 @@ class ImpactAssessment(stix.Entity):
         self._effects = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_effect(v)
         else:

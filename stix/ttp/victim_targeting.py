@@ -27,7 +27,7 @@ class VictimTargeting(stix.Entity):
         self._targeted_systems = TargetedSystems()
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_targeted_system(v)
         else:
@@ -50,7 +50,7 @@ class VictimTargeting(stix.Entity):
         self._targeted_information = TargetedInformation()
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_targeted_information(v)
         else:

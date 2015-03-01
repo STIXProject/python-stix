@@ -32,7 +32,7 @@ class SnortTestMechanism(_BaseTestMechanism):
         self._rules = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_rule(v)
         else:
@@ -55,7 +55,7 @@ class SnortTestMechanism(_BaseTestMechanism):
         self._event_filters = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_event_filter(v)
         else:
@@ -78,7 +78,7 @@ class SnortTestMechanism(_BaseTestMechanism):
         self._rate_filters = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_rate_filter(v)
         else:
@@ -101,7 +101,7 @@ class SnortTestMechanism(_BaseTestMechanism):
         self._event_suppressions = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_event_suppression(v)
         else:

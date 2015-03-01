@@ -2,9 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-
-from stix.bindings.data_marking import MarkingSpecificationType, MarkingStructureType, MarkingType
-from stix.common import StructuredText
+import stix.utils as utils
 import stix.bindings.data_marking as stix_data_marking_binding
 
 class Marking(stix.Entity):
@@ -25,7 +23,7 @@ class Marking(stix.Entity):
 
         if value is None:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for m in value:
                 self.add_marking(m)
         else:
@@ -80,7 +78,7 @@ class MarkingSpecification(stix.Entity):
         self.version = None
         self.controlled_structure = controlled_structure
 
-        if isinstance(marking_structures,list):
+        if utils.is_sequence(marking_structures):
             self.marking_structures = marking_structures
         elif marking_structures is None:
             self.marking_structures = []

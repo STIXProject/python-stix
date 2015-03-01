@@ -1,13 +1,18 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# stdlib
+import collections
 import contextlib
 import keyword
 
-from lxml import etree
-
-import stix
+# external
 import cybox
+import lxml
+
+# internal
+import stix
+
 
 CDATA_START = "<![CDATA["
 CDATA_END = "]]>"
@@ -41,7 +46,7 @@ def strip_cdata(text):
 
     """
     xml = "<e>%s</e>" % text
-    node = etree.fromstring(xml)
+    node = lxml.etree.fromstring(xml)
     return node.text
 
 
@@ -115,6 +120,15 @@ def attr_name(name):
         name = name + "_"
 
     return name
+
+
+def is_sequence(value):
+    """Returns ``True`` if `value` is a sequence type (e.g., ``list``, or
+    ``tuple``).
+
+    """
+    return isinstance(value, collections.Sequence)
+
 
 from .nsparser import *
 from .dates import *

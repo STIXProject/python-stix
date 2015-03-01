@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import stix
+import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.stix_core as stix_core_binding
 from stix.common import InformationSource, StructuredText, VocabString
@@ -98,7 +99,7 @@ class STIXHeader(stix.Entity):
         self._package_intents = PackageIntents()
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_package_intent(v)
         else:

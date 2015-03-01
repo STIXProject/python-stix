@@ -4,8 +4,8 @@
 import lxml.etree as et
 
 import stix
-import stix.common.identity
-from stix.common import Identity
+import stix.utils as utils
+import stix.common as common
 import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
 
 XML_NS_XPIL     = "urn:oasis:names:tc:ciq:xpil:3"
@@ -18,7 +18,7 @@ et.register_namespace('xnl', XML_NS_XNL)
 et.register_namespace('xal', XML_NS_XAL)
 et.register_namespace('ExtSch', XML_NS_STIX_EXT)
 
-class CIQIdentity3_0Instance(Identity):
+class CIQIdentity3_0Instance(common.Identity):
     _binding        = ciq_identity_binding
     _namespace      = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
     _XML_NS_PREFIX  = "ciqIdentity"
@@ -38,9 +38,11 @@ class CIQIdentity3_0Instance(Identity):
     def roles(self, valuelist):
         self._roles = []
 
-        if valuelist:
-            for role in valuelist:
-                self.add_role(role)
+        if not valuelist:
+            return
+
+        for role in valuelist:
+            self.add_role(role)
 
     def add_role(self, role):
         if not isinstance(role, basestring):
@@ -154,7 +156,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         self._addresses = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_address(v)
         else:
@@ -177,7 +179,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         self._languages = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_language(v)
         else:
@@ -213,7 +215,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         self._electronic_address_identifiers = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_electronic_address_identifier(v)
         else:
@@ -237,7 +239,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         self._free_text_lines = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_free_text_line(v)
         else:
@@ -260,7 +262,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         self._contact_numbers = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_contact_number(v)
         else:
@@ -472,7 +474,7 @@ class AdministrativeArea(stix.Entity):
         self._name_elements = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_name_element(v)
         else:
@@ -543,7 +545,7 @@ class Country(stix.Entity):
         self._name_elements = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_name_element(v)
         else:
@@ -652,7 +654,7 @@ class FreeTextAddress(stix.Entity):
         self._address_lines = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             self._address_lines = value
         else:
             self._address_lines.append(value)
@@ -995,7 +997,7 @@ class OrganisationName(stix.Entity):
         self._name_elements = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_organisation_name_element(v)
         else:
@@ -1018,7 +1020,7 @@ class OrganisationName(stix.Entity):
         self._subdivision_names = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_subdivision_name(v)
         else:
@@ -1571,7 +1573,7 @@ class ContactNumber(stix.Entity):
         self._contact_number_elements = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_contact_number_element(v)
         else:
@@ -1713,6 +1715,7 @@ class ContactNumberElement(stix.Entity):
         return_obj.type_ = d.get('type')
         return_obj.value = d.get('value')
         return return_obj
-    
 
+
+import stix.common.identity
 stix.common.identity.add_extension(CIQIdentity3_0Instance)

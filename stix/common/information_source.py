@@ -6,6 +6,7 @@ from __future__ import absolute_import
 import cybox.common
 
 import stix
+import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
 from stix.common import VocabString
 from stix.common.vocabs import InformationSourceRole
@@ -39,7 +40,7 @@ class InformationSource(stix.Entity):
             return
         elif isinstance(value, ContributingSources):
             self._contributing_sources = value
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_contributing_source(v)
         else:
@@ -60,7 +61,7 @@ class InformationSource(stix.Entity):
         self._references = []
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_reference(v)
         else:
@@ -139,7 +140,7 @@ class InformationSource(stix.Entity):
 
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_role(v)
         else:

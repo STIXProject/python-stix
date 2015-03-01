@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import stix
+import stix.utils as utils
 from stix.common import ToolInformation, Identity
 from .infrastructure import Infrastructure
 import stix.bindings.ttp as ttp_binding
@@ -26,7 +27,7 @@ class Resource(stix.Entity):
 
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_tool(v)
         else:
@@ -58,7 +59,7 @@ class Resource(stix.Entity):
 
         if not value:
             return
-        elif isinstance(value, list):
+        elif utils.is_sequence(value):
             for v in value:
                 self.add_persona(v)
         else:
