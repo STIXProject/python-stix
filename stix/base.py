@@ -408,5 +408,100 @@ class EntityList(collections.MutableSequence, Entity):
             return_obj.append(contained_type.from_dict(item))
 
         return return_obj
-    
 
+
+class TypedList(collections.MutableSequence):
+    _contained_type = _override
+
+    def __init__(self, *args):
+        self._inner = []
+
+        for arg in args:
+            if isinstance(arg, list):
+                self.extend(arg)
+            else:
+                self.append(arg)
+
+    def __nonzero__(self):
+        return bool(self._inner)
+
+    def __getitem__(self, key):
+        return self._inner.__getitem__(key)
+
+    def __setitem__(self, key, value):
+        if not self._is_valid(value):
+            value = self._fix_value(value)
+        self._inner.__setitem__(key, value)
+
+    def __delitem__(self, key):
+        self._inner.__delitem__(key)
+
+    def __len__(self):
+        return len(self._inner)
+
+    def insert(self, idx, value):
+        if not value:
+            return
+        if not self._is_valid(value):
+            value = self._fix_value(value)
+        self._inner.insert(idx, value)
+
+    def _is_valid(self, value):
+        """Check if this is a valid object to add to the list."""
+        # Subclasses can override this function, but if it becomes common, it's
+        # probably better to use self._contained_type.istypeof(value)
+        return isinstance(value, self._contained_type)
+
+    def _fix_value(self, value):
+        """Attempt to coerce value into the correct type.
+
+        Subclasses can override this function.
+        """
+        try:
+            new_value = self._contained_type(value)
+        except:
+            error = "Can't put '{0}' ({1}) into a {3}"
+            error = error.format(value, type(value), self.__class__)
+            raise ValueError(error)
+
+        return new_value
+
+    def to_obj(self, ns_info=None):
+        return [x.to_obj(ns_info=ns_info) for x in self]
+
+    def to_list(self):
+        return [h.to_dict() for h in self]
+
+    to_dict = to_list
+
+    @classmethod
+    def from_obj(cls, obj_list, contained_type=None):
+        if not obj_list:
+            return None
+
+        return_obj = cls()
+
+        if not contained_type:
+            contained_type = cls._contained_type
+
+        if not isinstance(obj_list, (list, tuple)):
+            obj_list = [obj_list]
+
+        return_obj.extend(contained_type.from_obj(x) for x in obj_list)
+        return return_obj
+
+    @classmethod
+    def from_list(cls, list_repr, contained_type=None):
+
+        if not isinstance(list_repr, list):
+            return None
+
+        return_obj = cls()
+
+        if not contained_type:
+            contained_type = cls._contained_type
+
+        return_obj.extend(contained_type.from_dict(x) for x in list_repr)
+        return return_obj
+
+    from_dict = from_list
