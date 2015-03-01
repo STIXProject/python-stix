@@ -11,8 +11,11 @@ from cybox.common import ObjectProperties
 from . import is_entity, is_entitylist, attr_name, is_sequence
 
 
-def _is_skippable(varname, owner):
-    if varname in ("_parent", "_fields") and isinstance(owner, ObjectProperties):
+def _is_skippable(owner, varname, varobj):
+    if varname == "_fields" and isinstance(varobj, dict):
+        return True
+
+    if varname == "_parent" and isinstance(owner, ObjectProperties):
         return True
 
     if varname in ("__input_namespaces__", "__input_schemalocations__"):
@@ -43,10 +46,10 @@ def iterwalk(obj):
             yield descendant
 
     for varname, varobj in _iter_vars(obj):
-        if _is_skippable(varname, obj):
+        if _is_skippable(obj, varname, varobj):
             continue
 
-        if is_sequence(varobj):
+        if is_sequence(varobj) and not is_entitylist(varobj):
             for item in varobj:
                 for descendant in yield_and_walk(item):
                     yield descendant
@@ -84,14 +87,15 @@ def iterpath(obj, path=None):
     path.append(obj)
 
     for varname, varobj in _iter_vars(obj):
-        if _is_skippable(varname, obj):
+        if _is_skippable(obj, varname, varobj):
+            print varname
             continue
 
         if varname == "_inner" and is_entitylist(obj):
             for item in varobj:
                 for path_info in iterpath(item, path):
                     yield path_info
-        elif is_sequence(varobj):
+        elif is_sequence(varobj) and not is_entitylist(varobj):
             for item in varobj:
                 for path_info in yield_and_descend(varname, item):
                     yield path_info
