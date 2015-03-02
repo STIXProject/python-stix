@@ -7,8 +7,8 @@ import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
+from . import vocabs, VocabString
 from .structured_text import StructuredText
-from .vocabs import VocabString, HighMediumLow
 
 
 class Confidence(stix.Entity):
@@ -44,7 +44,7 @@ class Confidence(stix.Entity):
         if isinstance(value, VocabString):
             self._value = value
         else:
-            self._value = HighMediumLow(value=value)
+            self._value = vocabs.HighMediumLow(value=value)
 
     @property
     def source(self):
@@ -151,36 +151,37 @@ class Confidence(stix.Entity):
 
         return return_obj
 
-class ConfidenceAssertionChain(stix.Entity):
-    _namespace = 'http://stix.mitre.org/common-2'
-    _binding = common_binding
 
-    def __init__(self):
-        self.confidence_assertions = []
-
-    def add_confidence_assertion(self, confidence_assertion):
-        if isinstance(confidence_assertion, Confidence):
-            self.confidence_assertions.append(confidence_assertion)
-        else:
-            tmp_confidence = Confidence(value=confidence_assertion)
-            self.confidence_assertions.append(tmp_confidence)
-
-    def to_obj(self, return_obj=None, ns_info=None):
-        super(ConfidenceAssertionChain, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
-        if not return_obj:
-            return_obj = self._binding.ConfidenceAssertionChainType()
-
-        return None
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        return None
-
-    def to_dict(self):
-        return {}
-
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        return None
+# class ConfidenceAssertionChain(stix.Entity):
+#     _namespace = 'http://stix.mitre.org/common-2'
+#     _binding = common_binding
+#
+#     def __init__(self):
+#         self.confidence_assertions = []
+#
+#     def add_confidence_assertion(self, confidence_assertion):
+#         if isinstance(confidence_assertion, Confidence):
+#             self.confidence_assertions.append(confidence_assertion)
+#         else:
+#             tmp_confidence = Confidence(value=confidence_assertion)
+#             self.confidence_assertions.append(tmp_confidence)
+#
+#     def to_obj(self, return_obj=None, ns_info=None):
+#         super(ConfidenceAssertionChain, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+#
+#         if not return_obj:
+#             return_obj = self._binding.ConfidenceAssertionChainType()
+#
+#         return None
+#
+#     @classmethod
+#     def from_obj(cls, obj, return_obj=None):
+#         return None
+#
+#     def to_dict(self):
+#         return {}
+#
+#     @classmethod
+#     def from_dict(cls, dict_repr, return_obj=None):
+#         return None
 
