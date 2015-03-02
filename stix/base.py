@@ -389,6 +389,10 @@ class TypedList(collections.MutableSequence):
     def __init__(self, *args):
         self._inner = []
 
+        # Check if it was initialized with args=None
+        if not any(args):
+            return
+
         for arg in args:
             if utils.is_sequence(arg):
                 self.extend(arg)

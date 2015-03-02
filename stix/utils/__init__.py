@@ -149,6 +149,24 @@ def is_sequence(item):
     )
 
 
+def check_version(expected, found):
+    """Raises ValueError if `found` is not equal to or found within
+    `expected`.
+
+    """
+    if is_sequence(expected):
+        good = found in expected
+    else:
+        good = (found == expected)
+
+    if good:
+        return
+
+    error = "Version '{0}' is invalid. Expected {1}."
+    error = error.format(found, expected)
+    raise ValueError(error)
+
+
 from .nsparser import *
 from .dates import *
 from .idgen import *

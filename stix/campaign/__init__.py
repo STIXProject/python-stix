@@ -3,7 +3,6 @@
 
 import stix
 import stix.utils as utils
-from stix.common import vocabs
 from stix.common import (
     Activity, Confidence, InformationSource, Statement, StructuredText,
     VocabString
@@ -12,6 +11,7 @@ from stix.common.related import (
     GenericRelationshipList, RelatedCampaign,RelatedIncident, RelatedIndicator,
     RelatedPackageRefs, RelatedThreatActor, RelatedTTP
 )
+from stix.common import vocabs
 from stix.data_marking import Marking
 import stix.bindings.campaign as campaign_binding
 
@@ -88,7 +88,7 @@ class Campaign(stix.Entity):
         self.description = description
         self.short_description = short_description
         self.names = None
-        self.intended_effects = None
+        self.intended_effects = IntendedEffects()
         self.status = None
         self.related_ttps = RelatedTTPs()
         self.related_incidents = RelatedIncidents()
@@ -96,7 +96,7 @@ class Campaign(stix.Entity):
         self.attribution = AttributionList()
         self.associated_campaigns = AssociatedCampaigns()
         self.confidence = None
-        self.activity = []
+        self.activity = Activities()
         self.information_source = None
         self.handling = None
         self.related_packages = RelatedPackageRefs()
@@ -109,7 +109,7 @@ class Campaign(stix.Entity):
     @property
     def id_(self):
         return self._id
-    
+
     @id_.setter
     def id_(self, value):
         if not value:
@@ -117,26 +117,23 @@ class Campaign(stix.Entity):
         else:
             self._id = value
             self.idref = None
-    
+
     @property
     def version(self):
         return self._version
-    
+
     @version.setter
     def version(self, value):
         if not value:
             self._version = None
         else:
-            if value not in self._ALL_VERSIONS:
-                msg = ("Version must be one of %s. Found '%s'" %
-                      (self._ALL_VERSIONS, value))
-                raise ValueError(msg)
+            utils.check_version(self._ALL_VERSIONS, value)
             self._version = value
-    
+
     @property
     def idref(self):
         return self._idref
-    
+
     @idref.setter
     def idref(self, value):
         if not value:
@@ -144,7 +141,7 @@ class Campaign(stix.Entity):
         else:
             self._idref = value
             self.id_ = None # unset id_ if idref is present
-    
+
     @property
     def timestamp(self):
         return self._timestamp
@@ -192,18 +189,14 @@ class Campaign(stix.Entity):
     @property
     def intended_effects(self):
         return self._intended_effects
-    
+
     @intended_effects.setter
     def intended_effects(self, value):
-        self._intended_effects = []
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_intended_effect(v)
+        if isinstance(value, IntendedEffects):
+            self._intended_effects = value
         else:
-            self.add_intended_effect(value)
-    
+            self._intended_effects = IntendedEffects(value)
+
     def add_intended_effect(self, value):
         if not value:
             return
@@ -214,9 +207,23 @@ class Campaign(stix.Entity):
             self.intended_effects.append(Statement(value=intended_effect))
 
     @property
+    def activity(self):
+        return self._activity
+
+    @activity.setter
+    def activity(self, value):
+        if isinstance(value, Activities):
+            self._activity = value
+        else:
+            self._activity = Activities(value)
+
+    def add_activity(self, value):
+        self.activity.append(value)
+
+    @property
     def status(self):
         return self._status
-    
+
     @status.setter
     def status(self, value):
         if not value:
@@ -254,10 +261,10 @@ class Campaign(stix.Entity):
 
         return_obj.id = self.id_
         return_obj.idref = self.idref
-        if self.timestamp:
-            return_obj.timestamp = self.timestamp.isoformat()
+        return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
         return_obj.version = self.version
         return_obj.Title = self.title
+
         if self.description:
             return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.short_description:
@@ -265,7 +272,7 @@ class Campaign(stix.Entity):
         if self.names:
             return_obj.Names = self.names.to_obj(ns_info=ns_info)
         if self.intended_effects:
-            return_obj.Intended_Effect = [x.to_obj(ns_info=ns_info) for x in self.intended_effects]
+            return_obj.Intended_Effect = self.intended_effects.to_obj(ns_info=ns_info)
         if self.status:
             return_obj.Status = self.status.to_obj(ns_info=ns_info)
         if self.related_ttps:
@@ -281,7 +288,7 @@ class Campaign(stix.Entity):
         if self.confidence:
             return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
         if self.activity:
-            return_obj.Activity = [x.to_obj(ns_info=ns_info) for x in self.activity]
+            return_obj.Activity = self.activity.to_obj(ns_info=ns_info)
         if self.information_source:
             return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
         if self.handling:
@@ -301,7 +308,7 @@ class Campaign(stix.Entity):
         return_obj.id_ = obj.id
         return_obj.idref = obj.idref
         return_obj.timestamp = obj.timestamp
-        
+
         if isinstance(obj, cls._binding_class):
             return_obj.version = obj.version
             return_obj.title = obj.Title
@@ -310,7 +317,7 @@ class Campaign(stix.Entity):
                     StructuredText.from_obj(obj.Short_Description)
             return_obj.names = Names.from_obj(obj.Names)
             return_obj.intended_effects = \
-                    [Statement.from_obj(x) for x in obj.Intended_Effect]
+                    IntendedEffects.from_obj(obj.Intended_Effect)
             return_obj.status = VocabString.from_obj(obj.Status)
             return_obj.related_ttps = RelatedTTPs.from_obj(obj.Related_TTPs)
             return_obj.related_incidents = \
@@ -321,8 +328,7 @@ class Campaign(stix.Entity):
             return_obj.associated_campaigns = \
                     AssociatedCampaigns.from_obj(obj.Associated_Campaigns)
             return_obj.confidence = Confidence.from_obj(obj.Confidence)
-            return_obj.activity = \
-                    [Activity.from_obj(x) for x in obj.Activity]
+            return_obj.activity = Activities.from_obj(obj.Activity)
             return_obj.information_source = \
                     InformationSource.from_obj(obj.Information_Source)
             return_obj.handling = Marking.from_obj(obj.Handling)
@@ -350,7 +356,7 @@ class Campaign(stix.Entity):
         if self.names:
             d['names'] = self.names.to_dict()
         if self.intended_effects:
-            d['intended_effects'] = [x.to_dict() for x in self.intended_effects]
+            d['intended_effects'] = self.intended_effects.to_dict()
         if self.status:
             d['status'] = self.status.to_dict()
         if self.related_ttps:
@@ -366,7 +372,7 @@ class Campaign(stix.Entity):
         if self.confidence:
             d['confidence'] = self.confidence.to_dict()
         if self.activity:
-            d['activity'] = [x.to_dict() for x in self.activity]
+            d['activity'] = self.activity.to_dict()
         if self.information_source:
             d['information_source'] = self.information_source.to_dict()
         if self.handling:
@@ -384,37 +390,48 @@ class Campaign(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = dict_repr.get('id')
-        return_obj.idref = dict_repr.get('idref')
-        return_obj.timestamp = dict_repr.get('timestamp')
-        return_obj.version = dict_repr.get('version')
-        return_obj.title = dict_repr.get('title')
-        return_obj.description = \
-                StructuredText.from_dict(dict_repr.get('description'))
+        get = dict_repr.get  # PEP 8 line lengths
+
+        return_obj.id_ = get('id')
+        return_obj.idref = get('idref')
+        return_obj.timestamp = get('timestamp')
+        return_obj.version = get('version')
+        return_obj.title = get('title')
+        return_obj.description = StructuredText.from_dict(get('description'))
         return_obj.short_description = \
-                StructuredText.from_dict(dict_repr.get('short_description'))
-        return_obj.names = Names.from_dict(dict_repr.get('names'))
+                StructuredText.from_dict(get('short_description'))
+        return_obj.names = Names.from_dict(get('names'))
         return_obj.intended_effects = \
-                [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
-        return_obj.status = VocabString.from_dict(dict_repr.get('status'))
+            IntendedEffects.from_dict(get('intended_effects'))
+        return_obj.status = VocabString.from_dict(get('status'))
         return_obj.related_ttps = \
-                RelatedTTPs.from_dict(dict_repr.get('related_ttps'))
+                RelatedTTPs.from_dict(get('related_ttps'))
         return_obj.related_incidents = \
-                RelatedIncidents.from_dict(dict_repr.get('related_incidents'))
+                RelatedIncidents.from_dict(get('related_incidents'))
         return_obj.related_indicators = \
-                RelatedIndicators.from_dict(dict_repr.get('related_indicators'))
-        return_obj.attribution = AttributionList.from_list(dict_repr.get('attribution'))
+                RelatedIndicators.from_dict(get('related_indicators'))
+        return_obj.attribution = AttributionList.from_list(get('attribution'))
         return_obj.associated_campaigns = \
-                AssociatedCampaigns.from_dict(dict_repr.get('associated_campaigns'))
+                AssociatedCampaigns.from_dict(get('associated_campaigns'))
         return_obj.confidence = \
-                Confidence.from_dict(dict_repr.get('confidence'))
-        return_obj.activity = \
-                [Activity.from_dict(x) for x in dict_repr.get('activity', [])]
+                Confidence.from_dict(get('confidence'))
+        return_obj.activity = Activities.from_dict(get('activity'))
         return_obj.information_source = \
-                InformationSource.from_dict(dict_repr.get('information_source'))
-        return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
+                InformationSource.from_dict(get('information_source'))
+        return_obj.handling = Marking.from_dict(get('handling'))
         return_obj.related_packages = \
-                RelatedPackageRefs.from_dict(dict_repr.get('related_packages'))
+                RelatedPackageRefs.from_dict(get('related_packages'))
 
         return return_obj
 
+
+class Activities(stix.TypedList):
+    _contained_type = Activity
+
+
+class IntendedEffects(stix.TypedList):
+    _contained_type = Statement
+
+    def _fix_value(self, value):
+        intended_effect = vocabs.IntendedEffect(value)
+        return Statement(value=intended_effect)

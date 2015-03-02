@@ -12,7 +12,7 @@ class Marking(stix.Entity):
     _namespace = 'http://data-marking.mitre.org/Marking-1'
 
     def __init__(self, markings=None):
-        self.markings = markings
+        self.markings = MarkingSpecifications(markings)
 
     @property
     def markings(self):
@@ -20,19 +20,12 @@ class Marking(stix.Entity):
 
     @markings.setter
     def markings(self, value):
-        self._markings = []
-
-        if value is None:
-            return
-        elif utils.is_sequence(value):
-            for m in value:
-                self.add_marking(m)
+        if isinstance(value, MarkingSpecifications):
+            self._markings = value
         else:
-            self.add_marking(value)
+            self._markings = MarkingSpecifications(value)
 
     def add_marking(self, value):
-        if not isinstance(value, MarkingSpecification):
-            raise ValueError('value must be instance of MarkingSpecification')
         self._markings.append(value)
 
     def to_obj(self, return_obj=None, ns_info=None):
@@ -42,27 +35,39 @@ class Marking(stix.Entity):
         )
 
         obj = self._binding_class()
-        obj.Marking = [x.to_obj(ns_info=ns_info) for x in self.markings]
+
+        if self.markings:
+            obj.Marking = self.markings.to_obj(ns_info=ns_info)
+
         return obj
 
     def to_list(self):
-        return [x.to_dict() for x in self.markings]
+        return self.markings.to_list() if self.markings else []
 
-    @staticmethod
-    def from_obj(obj):
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
 
-        mlist = [MarkingSpecification.from_obj(x) for x in obj.Marking]
-        return Marking(mlist)
+        if not return_obj:
+            return_obj = cls()
 
-    @staticmethod
-    def from_list(markings_list):
+        return_obj.markings = MarkingSpecifications.from_obj(obj.Marking)
+
+        return return_obj
+
+    @classmethod
+    def from_list(cls, markings_list, return_obj=None):
         if not markings_list:
             return None
 
-        mlist = [MarkingSpecification.from_dict(x) for x in markings_list]
-        return Marking(mlist)
+        if not return_obj:
+            return_obj = cls()
+
+        mlist = MarkingSpecifications.from_list(markings_list)
+        return_obj.markings = mlist
+
+        return return_obj
 
     to_dict = to_list
     from_dict = from_list
@@ -78,15 +83,21 @@ class MarkingSpecification(stix.Entity):
         self.idref = None
         self.version = None
         self.controlled_structure = controlled_structure
-
-        if utils.is_sequence(marking_structures):
-            self.marking_structures = marking_structures
-        elif marking_structures is None:
-            self.marking_structures = []
-        else:
-            raise TypeError('marking_structures must be a list, or None')
-
+        self.marking_structures = MarkingStructures(marking_structures)
         # TODO: add Information_Source
+
+
+    @property
+    def marking_structures(self):
+        return self._marking_structures
+
+    @marking_structures.setter
+    def marking_structures(self, value):
+        if isinstance(value, MarkingStructures):
+            self._marking_structures = value
+        else:
+            self._marking_structures = MarkingStructures(value)
+
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(MarkingSpecification, self).to_obj(
@@ -100,9 +111,7 @@ class MarkingSpecification(stix.Entity):
         obj.idref = self.idref
         obj.version = self.version
         obj.Controlled_Structure = self.controlled_structure
-        obj.Marking_Structure = [
-            x.to_obj(ns_info=ns_info) for x in self.marking_structures
-        ]
+        obj.Marking_Structure = self.marking_structures.to_obj(ns_info=ns_info)
 
         return obj
 
@@ -117,46 +126,38 @@ class MarkingSpecification(stix.Entity):
         if self.controlled_structure:
             d['controlled_structure'] = self.controlled_structure
         if self.marking_structures:
-            d['marking_structures'] = [
-                x.to_dict() for x in self.marking_structures
-            ]
+            d['marking_structures'] = self.marking_structures.to_dict()
 
         return d
 
-    @staticmethod
-    def from_obj(obj):
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
 
-        m = MarkingSpecification()
-
+        m = return_obj if return_obj else cls()
         m.id_ = obj.id
         m.idref = obj.idref
         m.version = obj.version
         m.controlled_structure = obj.Controlled_Structure
-        m.marking_structures = [
-            MarkingStructure.from_obj(x) for x in obj.Marking_Structure
-        ]
+        m.marking_structures = MarkingStructures.from_obj(obj.Marking_Structure)
 
         return m
 
-    @staticmethod
-    def from_dict(marking_dict):
+    @classmethod
+    def from_dict(cls, marking_dict, return_obj=None):
         if not marking_dict:
             return None
 
-
-
         get = marking_dict.get  # PEP8 line length fix
-        m = MarkingSpecification()
-
+        m = return_obj if return_obj else cls()
         m.id_ = get('id')
         m.idref = get('idref')
         m.version = get('version')
         m.controlled_structure = get('controlled_structure')
-        m.marking_structures = [
-            MarkingStructure.from_dict(x) for x in get('marking_structures', [])
-        ]
+        m.marking_structures = MarkingStructures.from_dict(
+            get('marking_structures')
+        )
 
         return m
 
@@ -247,8 +248,18 @@ class MarkingStructure(stix.Entity):
         return m
 
 
+
+class MarkingSpecifications(stix.TypedList):
+    _contained_type = MarkingSpecification
+
+
+class MarkingStructures(stix.TypedList):
+    _contained_type = MarkingStructure
+
+
 #: Mapping of marking extension types to classes
 _EXTENSION_MAP = {}
 def add_extension(cls):
     _EXTENSION_MAP[cls._XSI_TYPE] = cls
+
 
