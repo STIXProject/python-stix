@@ -34,22 +34,10 @@ class InformationSource(stix.Entity):
     
     @contributing_sources.setter
     def contributing_sources(self, value):
-        self._contributing_sources = ContributingSources()
-        if not value:
-            return
-        elif isinstance(value, ContributingSources):
-            self._contributing_sources = value
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_contributing_source(v)
-        else:
-            self.add_contributing_source(value)
+        self._contributing_sources = ContributingSources(value)
     
     def add_contributing_source(self, value):
-        if not value:
-            return
-        else:
-            self.contributing_sources.append(value) # input checks performed by stix.EntityList
+        self.contributing_sources.append(value)
     
     @property
     def references(self):
@@ -125,7 +113,8 @@ class InformationSource(stix.Entity):
     @tools.setter
     def tools(self, value):
         if value and not isinstance(value, cybox.common.ToolInformationList):
-            raise ValueError('value must be instance of cybox.common.ToolInformationList')
+            error = 'value must be instance of cybox.common.ToolInformationList'
+            raise ValueError(error)
 
         self._tools = value
 
@@ -135,27 +124,16 @@ class InformationSource(stix.Entity):
 
     @roles.setter
     def roles(self, value):
-        self._roles = Roles()
-
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_role(v)
-        else:
-            self.add_role(value)
+        self._roles = Roles(value)
 
     def add_role(self, value):
-        if not value:
-            return
-        elif isinstance(value, VocabString):
-            self.roles.append(value)
-        else:
-            role = vocabs.InformationSourceRole(value)
-            self.roles.append(value=role)
+        self.roles.append(value)
 
     def to_obj(self, return_obj=None, ns_info=None):
-        super(InformationSource, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+        super(InformationSource, self).to_obj(
+            return_obj=return_obj,
+            ns_info=ns_info
+        )
 
         if not return_obj:
             return_obj = self._binding_class()
@@ -163,8 +141,7 @@ class InformationSource(stix.Entity):
         if self.description is not None:
             return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.references:
-            references_obj = stix_common_binding.ReferencesType(Reference=self.references)
-            return_obj.References = references_obj
+             return_obj.References = stix_common_binding.ReferencesType(Reference=self.references)
         if self.contributing_sources:
             return_obj.Contributing_Sources = self.contributing_sources.to_obj(ns_info=ns_info)
         if self.identity:
@@ -174,7 +151,8 @@ class InformationSource(stix.Entity):
         if self.tools:
             return_obj.Tools = self.tools.to_obj(ns_info=ns_info)
         if self.roles:
-            return_obj.Role = [x.to_obj(ns_info=ns_info) for x in self.roles]
+            return_obj.Role = self.roles.to_obj(ns_info=ns_info)
+
         return return_obj
 
     @classmethod
@@ -187,16 +165,15 @@ class InformationSource(stix.Entity):
         return_obj.description = StructuredText.from_obj(obj.Description)
         return_obj.identity = Identity.from_obj(obj.Identity)
         return_obj.contributing_sources = ContributingSources.from_obj(obj.Contributing_Sources)
-        
+        return_obj.roles = Roles.from_obj(obj.Role)
+
         if obj.References:
             return_obj.references = obj.References.Reference
         if obj.Time:
             return_obj.time = cybox.common.Time.from_obj(obj.Time)
         if obj.Tools:
             return_obj.tools = cybox.common.ToolInformationList.from_obj(obj.Tools)
-        if obj.Role:
-            return_obj.roles = [VocabString.from_obj(x) for x in obj.Role]
-        
+
         return return_obj
 
     @classmethod
@@ -209,13 +186,14 @@ class InformationSource(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
-        return_obj.references = dict_repr.get('references')
-        return_obj.contributing_sources = ContributingSources.from_dict(dict_repr.get('contributing_sources'))
-        return_obj.identity = Identity.from_dict(dict_repr.get('identity'))
-        return_obj.time = cybox.common.Time.from_dict(dict_repr.get('time'))
-        return_obj.tools = cybox.common.ToolInformationList.from_list(dict_repr.get('tools'))
-        return_obj.roles = [VocabString.from_dict(x) for x in dict_repr.get('roles', [])]
+        get = dict_repr.get
+        return_obj.description = StructuredText.from_dict(get('description'))
+        return_obj.references = get('references')
+        return_obj.contributing_sources = ContributingSources.from_dict(get('contributing_sources'))
+        return_obj.identity = Identity.from_dict(get('identity'))
+        return_obj.time = cybox.common.Time.from_dict(get('time'))
+        return_obj.tools = cybox.common.ToolInformationList.from_list(get('tools'))
+        return_obj.roles = Roles.from_dict(get('roles'))
 
         return return_obj
 
@@ -234,7 +212,8 @@ class InformationSource(stix.Entity):
         if self.contributing_sources:
             d['contributing_sources'] = self.contributing_sources.to_dict()
         if self.roles:
-            d['roles'] = [x.to_dict() for x in self.roles]
+            d['roles'] = self.roles.to_list()
+
         return d
 
 class ContributingSources(stix.EntityList):
@@ -246,8 +225,7 @@ class ContributingSources(stix.EntityList):
     _inner_name = "sources"
 
 
-class Roles(stix.EntityList):
-    _namespace = "http://stix.mitre.org/common-1"
+class Roles(stix.TypedList):
     _contained_type = VocabString
 
     def _fix_value(self, value):

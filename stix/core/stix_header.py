@@ -8,6 +8,7 @@ import stix.bindings.stix_core as stix_core_binding
 from stix.common import vocabs, InformationSource, StructuredText, VocabString
 from stix.data_marking import Marking
 
+
 class STIXHeader(stix.Entity):
     _binding = stix_core_binding
     _namespace = 'http://stix.mitre.org/stix-1'
@@ -94,23 +95,11 @@ class STIXHeader(stix.Entity):
 
     @package_intents.setter
     def package_intents(self, value):
-        self._package_intents = PackageIntents()
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_package_intent(v)
-        else:
-            self.add_package_intent(value)
+        self._package_intents = PackageIntents(value)
 
     def add_package_intent(self, package_intent):
-        if not package_intent:
-            return
-        elif isinstance(package_intent, VocabString):
-            self.package_intents.append(package_intent)
-        else:
-            tmp_package_intent = vocabs.PackageIntent(value=package_intent)
-            self.package_intents.append(tmp_package_intent)
+        self.package_intents.append(package_intent)
+
 
     @property
     def information_source(self):
@@ -140,11 +129,8 @@ class STIXHeader(stix.Entity):
         return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
         return_obj.handling = Marking.from_obj(obj.Handling)
         return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
-
-        if obj.Package_Intent:
-            return_obj.package_intents = [VocabString.from_obj(x) for x in obj.Package_Intent]
-        if obj.Profiles:
-            return_obj.profiles = obj.Profiles.Profile
+        return_obj.package_intents = PackageIntents.from_obj(obj.Package_Intent)
+        return_obj.profiles = obj.Profiles.Profile if obj.Profiles else []
 
         return return_obj
 
@@ -157,7 +143,7 @@ class STIXHeader(stix.Entity):
         if self.title:
             return_obj.Title = self.title
         if self.package_intents:
-            return_obj.Package_Intent = [x.to_obj(ns_info=ns_info) for x in self.package_intents]
+            return_obj.Package_Intent = PackageIntents.to_obj(ns_info=ns_info)
         if self.description:
             return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.short_description:
@@ -180,13 +166,15 @@ class STIXHeader(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.title = dict_repr.get('title')
-        return_obj.package_intents = [VocabString.from_dict(x) for x in dict_repr.get('package_intents', [])]
-        return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
-        return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
-        return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
-        return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
-        return_obj.profiles = dict_repr.get('profiles')
+        get = dict_repr.get
+        
+        return_obj.title = get('title')
+        return_obj.package_intents = PackageIntents.from_list(get('package_intents'))
+        return_obj.description = StructuredText.from_dict(get('description'))
+        return_obj.short_description = StructuredText.from_dict(get('short_description'))
+        return_obj.handling = Marking.from_dict(get('handling'))
+        return_obj.information_source = InformationSource.from_dict(get('information_source'))
+        return_obj.profiles = get('profiles')
 
         return return_obj
 
@@ -195,7 +183,7 @@ class STIXHeader(stix.Entity):
         if self.title:
             d['title'] = self.title
         if self.package_intents:
-            d['package_intents'] = [x.to_dict() for x in self.package_intents]
+            d['package_intents'] =  self.package_intents.to_list()
         if self.description:
             d['description'] = self.description.to_dict()
         if self.short_description:
@@ -210,8 +198,7 @@ class STIXHeader(stix.Entity):
         return d
 
 
-class PackageIntents(stix.EntityList):
-    _namespace = "http://stix.mitre.org/stix-1"
+class PackageIntents(stix.TypedList):
     _contained_type = VocabString
 
     def _fix_value(self, value):
