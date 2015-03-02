@@ -338,7 +338,7 @@ class RelatedPackageType(stix_common_binding.GenericRelationshipType):
     def exportAttributes(self, lwrite, level, already_processed, namespace_='stix:', name_='RelatedPackageType'):
         super(RelatedPackageType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedPackageType')
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedPackageType', fromsubclass_=False, pretty_print=True):
-        super(RelatedPackageType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+        super(RelatedPackageType, self).exportChildren(lwrite, level, nsmap, stix_common_binding.XML_NS, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:
