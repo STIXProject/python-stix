@@ -109,15 +109,30 @@ def attr_name(name):
     Example:
         >>> attr_name("id")
         'id_'
-        >>> attr_name("title")
+        >>> attr_name("Title")
         'title
 
     """
+    name = name.lower()
+
     if name.startswith("_"):
         name = name[1:]
 
     if name in _CONFLICTING_NAMES:
         name += "_"
+
+    return name
+
+
+def key_name(name):
+    """Converts the input attribute name `name` into a key to be
+    used in `to_dict()` return dictionaries.
+
+    """
+    name = attr_name(name)
+
+    if name.endswith("_"):
+        return name[:-1]
 
     return name
 
