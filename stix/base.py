@@ -243,6 +243,9 @@ class EntityList(collections.MutableSequence, Entity):
         super(EntityList, self).__init__()
         self._inner = []
 
+        if not any(args):
+            return
+
         for arg in args:
             if utils.is_sequence(arg):
                 self.extend(arg)
