@@ -10,14 +10,21 @@ from lxml import etree
 # internal
 import stix
 import stix.xmlconst as xmlconst
-from stix.utils import ignored
+
+# relative
+from . import ignored
 
 
 class UnknownVersionError(Exception):
+    """Raised when a parsed STIX document contains no version information."""
     pass
 
 
 class UnsupportedVersionError(Exception):
+    """Raised when a parsed STIX document contains a version that is
+    not supported by this verison of python-stix.
+
+    """
     def __init__(self, message, expected=None, found=None):
         super(UnsupportedVersionError, self).__init__(message)
         self.expected = expected
@@ -25,6 +32,10 @@ class UnsupportedVersionError(Exception):
 
 
 class UnsupportedRootElementError(Exception):
+    """Raised when an input STIX document does not contain a supported root-
+    level element.
+
+    """
     def __init__(self, message, expected=None, found=None):
         super(UnsupportedRootElementError, self).__init__(message)
         self.expected = expected
@@ -94,6 +105,28 @@ def get_schemaloc_pairs(node):
     return zip(l[::2], l[1::2])
 
 
+def get_document_version(doc):
+    root = get_etree_root(doc)
+
+    if 'version' in root.attrib:
+        return root.attrib['version']
+
+    raise UnknownVersionError(
+        "Unable to determine the version if the input STIX document: no "
+        "version attribute found on the root element."
+    )
+
+
+def root_tag(doc):
+    root = get_etree_root(doc)
+    return root.tag
+
+
+def is_stix(doc):
+    root = root_tag(doc)
+    return root == xmlconst.TAG_STIX_PACKAGE
+
+
 class EntityParser(object):
     def __init__(self):
         pass
@@ -103,43 +136,33 @@ class EntityParser(object):
         by python-stix.
 
         """
-        root = get_etree_root(tree)
+        document_version = get_document_version(tree)
+        supported = stix.supported_stix_version()
 
-        if 'version' not in root.attrib:
-            raise UnknownVersionError(
-                "No version attribute set on root STIX_Package element. "
-                "Unable to determine version compatibility with python-stix."
-            )
+        if StrictVersion(supported) == StrictVersion(document_version):
+            return
 
-        python_stix_version = stix.__version__ # ex: '1.1.0.0'
-        supported_stix_version = python_stix_version[:-2] # ex: '1.1.0'
-        document_version = root.attrib['version']
+        error = (
+            "Your python-stix library supports STIX %s. Document version was "
+            "%s" % (supported, document_version)
+        )
 
-        if StrictVersion(supported_stix_version) != StrictVersion(document_version):
-            error = (
-                "Your python-stix library supports STIX %s. Document "
-                "version was %s" % (supported_stix_version, document_version),
-            )
-            raise UnsupportedVersionError(
-                message=error,
-                expected=supported_stix_version,
-                found=document_version
-            )
-
-        return True
+        raise UnsupportedVersionError(
+            message=error,
+            expected=supported,
+            found=document_version
+        )
 
     def _check_root(self, tree):
-        root = get_etree_root(tree)
-        expected_tag = "{http://stix.mitre.org/stix-1}STIX_Package"
+        if is_stix(tree):
+            return
 
-        if root.tag != expected_tag:
-            raise UnsupportedRootElement(
-                "Document root element must be an instance of STIX_Package",
-                expected=expected_tag,
-                found=root.tag
-            )
-
-        return True
+        error = "Document root element must be an instance of STIX_Package"
+        raise UnsupportedRootElement(
+            message=error,
+            expected=xmlconst.TAG_STIX_PACKAGE,
+            found=root_tag(tree),
+        )
 
     def _apply_input_namespaces(self, tree, entity):
         root = get_etree_root(tree)

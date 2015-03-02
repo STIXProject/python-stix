@@ -3,6 +3,12 @@
 
 __version__ = "1.1.1.3"
 
+
+def supported_stix_version():
+    lib_version = __version__
+    return lib_version[:-2]
+
+
 from .base import Entity, EntityList, TypedList
 
 # Make sure common gets imported before anything else.

@@ -19,6 +19,7 @@ CDATA_END = "]]>"
 
 _CONFLICTING_NAMES = keyword.kwlist + ['id', 'type','range']
 
+
 @contextlib.contextmanager
 def ignored(*exceptions):
     """Allows you to ignore exceptions cleanly using context managers. This
