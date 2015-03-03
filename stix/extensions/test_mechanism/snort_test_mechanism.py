@@ -77,15 +77,10 @@ class SnortTestMechanism(_BaseTestMechanism):
         super(SnortTestMechanism, cls).from_obj(obj, return_obj)
         return_obj.product_name = obj.Product_Name
         return_obj.version = obj.Version
-        
-        if obj.Rule:
-            return_obj.rules = EncodedCDATAs.from_obj(obj.Rule)
-        if obj.Event_Filter:
-            return_obj.event_filters = EncodedCDATAs.from_obj(obj.Event_Filter)
-        if obj.Rate_Filter:
-            return_obj.rate_filters = EncodedCDATAs.from_obj(obj.Rate_Filter)
-        if obj.Event_Suppression:
-            return_obj.event_suppressions = EncodedCDATAs.from_obj(obj.Event_Suppression)
+        return_obj.rules = EncodedCDATAs.from_obj(obj.Rule)
+        return_obj.event_filters = EncodedCDATAs.from_obj(obj.Event_Filter)
+        return_obj.rate_filters = EncodedCDATAs.from_obj(obj.Rate_Filter)
+        return_obj.event_suppressions = EncodedCDATAs.from_obj(obj.Event_Suppression)
         
         return return_obj
     
@@ -118,7 +113,6 @@ class SnortTestMechanism(_BaseTestMechanism):
             
         super(SnortTestMechanism, cls).from_dict(d, return_obj)
 
-
         get = d.get
         return_obj.product_name = get('product_name')
         return_obj.version = get('version')
@@ -132,20 +126,6 @@ class SnortTestMechanism(_BaseTestMechanism):
 
     def to_dict(self):
         d = super(SnortTestMechanism, self).to_dict()
-
-        if self.product_name:
-            d['product_name'] = self.product_name
-        if self.version:
-            d['version'] = self.version
-        if self.rules:
-            d['rules'] = self.rules.to_dict()
-        if self.event_filters:
-            d['event_filters'] = self.event_filters.to_dict()
-        if self.rate_filters:
-            d['rate_filters'] = self.rate_filters.to_dict()
-        if self.event_suppressions:
-            d['event_suppressions'] = self.event_suppressions.to_dict()
-
         return d
 
 
