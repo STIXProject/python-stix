@@ -410,7 +410,7 @@ class STIXPackage(stix.Entity):
         if obj.Observables:
             return_obj.observables = Observables.from_obj(obj.Observables)
         if obj.Incidents:
-            return_obj.incidents = Incident.from_obj(obj.Incidents)
+            return_obj.incidents = Incidents.from_obj(obj.Incidents)
         if obj.Threat_Actors:
             return_obj.threat_actors = ThreatActors.from_obj(obj.Threat_Actors)
         if obj.TTPs:
