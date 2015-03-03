@@ -46,7 +46,10 @@ class NonPublicDataCompromised(VocabString):
         super(NonPublicDataCompromised, cls).from_dict(d, return_obj=return_obj)
         return_obj.data_encrypted = d.get('data_encrypted')
         return return_obj
-    
+
+    def is_plain(self):
+        return False
+
     def to_dict(self):
         d = super(NonPublicDataCompromised, self).to_dict()
         if self.data_encrypted:

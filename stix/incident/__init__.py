@@ -471,7 +471,7 @@ class Incident(stix.Entity):
             return_obj = cls()
 
         get = dict_repr.get
-        
+
         return_obj.id_ = get('id')
         return_obj.idref = get('idref')
         return_obj.timestamp = get('timestamp')
@@ -599,7 +599,7 @@ class IncidentCategories(stix.EntityList):
 
 class AffectedAssets(stix.EntityList):
     _namespace = "http://stix.mitre.org/Incident-1"
-    _contained_type = VocabString
+    _contained_type = AffectedAsset
     _binding_class = incident_binding.AffectedAssetsType
     _binding_var = "Affected_Asset"
     _inner_name = "affected_assets"

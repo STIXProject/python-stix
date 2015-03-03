@@ -113,9 +113,58 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
                   'name': "Ms. Good",
               },
           },
-'security_compromise': {"value": "Suspected", "xsi:type":"stixVocabs:SecurityCompromiseVocab-1.0"},
-'history': {'history_items':[{'journal_entry': {'value': 'hi',
-                                                'author': 'Paul'}}]}
+'security_compromise': {
+    "value": "Suspected",
+    "xsi:type":"stixVocabs:SecurityCompromiseVocab-1.0"
+},
+'history': {
+    'history_items':
+        [
+            {
+                'journal_entry': {
+                    'value': 'hi',
+                    'author': 'Paul'
+                }
+            }
+        ]
+},
+'affected_assets': [
+    {
+        'business_function_or_role': 'Foobar',
+        'description': 'Foobar',
+        'location_class': {
+            'value': 'Unknown',
+            'xsi:type': 'stixVocabs:LocationClassVocab-1.0'
+        },
+        'management_class': {
+            'value': 'Unknown',
+            'xsi:type': 'stixVocabs:ManagementClassVocab-1.0'
+        },
+        'nature_of_security_effect': [
+            {
+                'description_of_effect': 'Foobar',
+                'duration_of_availability_loss': {
+                    'value': 'Days',
+                    'xsi:type': 'stixVocabs:LossDurationVocab-1.0'
+                },
+                'non_public_data_compromised': {
+                    'value': 'Yes',
+                    'xsi:type': 'stixVocabs:SecurityCompromiseVocab-1.0',
+                    'data_encrypted': True
+                },
+                'type_of_availability_loss': {
+                    'value': 'Loss',
+                    'xsi:type': 'stixVocabs:AvailabilityLossTypeVocab-1.1.1'
+                }
+            }
+        ],
+        'ownership_class': {
+            'value': 'Unknown',
+            'xsi:type': 'stixVocabs:OwnershipClassVocab-1.0'
+        },
+        'type': {'value': 'Foobar'}
+    }
+]
 }
 
 

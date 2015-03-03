@@ -14,8 +14,6 @@ import stix.bindings.incident as incident_binding
 from .property_affected import PropertyAffected
 
 
-
-
 class AffectedAsset(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding = incident_binding
@@ -116,22 +114,10 @@ class AffectedAsset(stix.Entity):
     
     @nature_of_security_effect.setter
     def nature_of_security_effect(self, value):
-        self._nature_of_security_effect = []
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_property_affected(v)
-        else:
-            self.add_property_affected(value)
-            
+        self._nature_of_security_effect = NatureOfSecurityEffect(value)
+
     def add_property_affected(self, v):
-        if not v:
-            return
-        elif isinstance(v, PropertyAffected):
-            self.nature_of_security_effect.append(v)
-        else:
-            raise ValueError('Cannot add type %s to nature_of_security_effect list' % type(v))
+        self.nature_of_security_effect.append(v)
     
     @property
     def structured_description(self):
@@ -201,39 +187,22 @@ class AffectedAsset(stix.Entity):
             return None
         if not return_obj:
             return_obj = cls()
-        
-        return_obj.type_ = AssetType.from_dict(d.get('type'))
-        return_obj.description = StructuredText.from_dict(d.get('description'))
-        return_obj.business_function_or_role = StructuredText.from_dict(d.get('business_function_or_role'))
-        return_obj.ownership_class = VocabString.from_dict(d.get('ownership_class'))
-        return_obj.management_class = VocabString.from_dict(d.get('management_class'))
-        return_obj.location_class = VocabString.from_dict(d.get('location_class'))
-        #return_obj.location = Location.from_dict(d.get('location'))
-        return_obj.nature_of_security_effect = [PropertyAffected.from_dict(x) for x in d.get('nature_of_security_effect')]
-        return_obj.structured_description = Observables.from_dict(d.get('structured_description'))
+
+        get = d.get
+        return_obj.type_ = AssetType.from_dict(get('type'))
+        return_obj.description = StructuredText.from_dict(get('description'))
+        return_obj.business_function_or_role = StructuredText.from_dict(get('business_function_or_role'))
+        return_obj.ownership_class = VocabString.from_dict(get('ownership_class'))
+        return_obj.management_class = VocabString.from_dict(get('management_class'))
+        return_obj.location_class = VocabString.from_dict(get('location_class'))
+        #return_obj.location = Location.from_dict(get('location'))
+        return_obj.nature_of_security_effect = NatureOfSecurityEffect.from_dict(get('nature_of_security_effect'))
+        return_obj.structured_description = Observables.from_dict(get('structured_description'))
         return return_obj
     
     def to_dict(self):
-        d = {}
-        if self.type_:
-            d['type'] = self.type_.to_dict()
-        if self.description:
-            d['description'] = self.description.to_dict()
-        if self.business_function_or_role:
-            d['business_function_or_role'] = self.business_function_or_role.to_dict()
-        if self.ownership_class:
-            d['ownership_class'] = self.ownership_class.to_dict()
-        if self.management_class:
-            d['management_class'] = self.management_class.to_dict()
-        if self.location_class:
-            d['location_class'] = self.location_class.to_dict()
-#         if self.location:
-#             d['location'] = self.location.to_dict()
-        if self.nature_of_security_effect:
-            d['nature_of_security_effect'] = [x.to_dict() for x in self.nature_of_security_effect]
-        if self.structured_description:
-            d['structured_description'] = self.structured_description.to_dict()
-        return d
+        return super(AffectedAsset, self).to_dict()
+
     
 #from stix.common.vocabs import AssetType as DefaultAssetType
 
@@ -298,4 +267,11 @@ class AssetType(VocabString):
             d['count_affected'] = self.count_affected
         return d
         
-        
+
+class NatureOfSecurityEffect(stix.EntityList):
+    _namespace = "http://stix.mitre.org/Incident-1"
+    _contained_type = PropertyAffected
+    _binding_class = incident_binding.NatureOfSecurityEffectType
+    _binding_var = "Property_Affected"
+    _inner_name = "nature_of_security_effect"
+    _dict_as_list = True
