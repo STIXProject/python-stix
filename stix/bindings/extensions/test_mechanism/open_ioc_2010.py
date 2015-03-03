@@ -65,14 +65,14 @@ class OpenIOC2010TestMechanismType(indicator_binding.TestMechanismType):
             lwrite('/>%s' % (eol_, ))
     def exportAttributes(self, lwrite, level, already_processed, namespace_='', name_='OpenIOC2010TestMechanismType'):
         super(OpenIOC2010TestMechanismType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='OpenIOC2010TestMechanismType')
-        if 'xmlns' not in already_processed:
-            already_processed.add('xmlns')
-            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
-            lwrite(xmlns)
-        if 'xsi:type' not in already_processed:
-            already_processed.add('xsi:type')
-            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
-            lwrite(xsi_type)
+        # if 'xmlns' not in already_processed:
+        #     already_processed.add('xmlns')
+        #     xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+        #     lwrite(xmlns)
+        # if 'xsi:type' not in already_processed:
+        #     already_processed.add('xsi:type')
+        #     xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+        #     lwrite(xsi_type)
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='OpenIOC2010TestMechanismType', fromsubclass_=False, pretty_print=True):
         super(OpenIOC2010TestMechanismType, self).exportChildren(lwrite, level, nsmap, indicator_binding.XML_NS, name_, True, pretty_print=pretty_print)
         if pretty_print:
