@@ -24,22 +24,10 @@ class KillChain(stix.Entity):
     
     @kill_chain_phases.setter
     def kill_chain_phases(self, value):
-        self._kill_chain_phases = []
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_kill_chain_phase(v)
-        else:
-            self.add_kill_chain_phase(value)
+        self._kill_chain_phases = KillChainPhases(value)
     
     def add_kill_chain_phase(self, value):
-        if not value:
-            return
-        elif isinstance(value, KillChainPhase):
-            self.kill_chain_phases.append(value)
-        else:
-            raise ValueError('value must be instance of KillChainPhase')
+        self.kill_chain_phases.append(value)
             
     
     def to_obj(self, return_obj=None, ns_info=None):
@@ -53,9 +41,7 @@ class KillChain(stix.Entity):
         return_obj.definer = self.definer
         return_obj.reference = self.reference
         return_obj.number_of_phases = self.number_of_phases
-        
-        if self.kill_chain_phases:
-            return_obj.Kill_Chain_Phase = [x.to_obj(ns_info=ns_info) for x in self.kill_chain_phases]
+        return_obj.Kill_Chain_Phase = self.kill_chain_phases.to_obj(ns_info=ns_info)
     
         return return_obj
     
@@ -71,9 +57,7 @@ class KillChain(stix.Entity):
         return_obj.definer = obj.definer
         return_obj.reference = obj.reference
         return_obj.number_of_phases = obj.number_of_phases
-        
-        if obj.Kill_Chain_Phase:
-            return_obj.kill_chain_phases = [KillChainPhase.from_obj(x) for x in obj.Kill_Chain_Phase]
+        return_obj.kill_chain_phases = KillChainPhases.from_obj(obj.Kill_Chain_Phase)
     
         return return_obj
     
@@ -83,15 +67,18 @@ class KillChain(stix.Entity):
             return None
         if not return_obj:
             return_obj = cls()
-    
-        return_obj.id_ = d.get('id')
-        return_obj.name = d.get('name')
-        return_obj.definer = d.get('definer')
-        return_obj.reference = d.get('reference')
-        return_obj.number_of_phases = d.get('number_of_phases')
-        return_obj.kill_chain_phases = [KillChainPhase.from_dict(x) for x in d.get('kill_chain_phases', [])]
+
+        get = d.get
+        return_obj.id_ = get('id')
+        return_obj.name = get('name')
+        return_obj.definer = get('definer')
+        return_obj.reference = get('reference')
+        return_obj.number_of_phases = get('number_of_phases')
+        return_obj.kill_chain_phases = \
+            KillChainPhases.from_dict(get('kill_chain_phases'))
     
         return return_obj
+
 
 class KillChains(stix.EntityList):
     _binding = common_binding
@@ -161,6 +148,11 @@ class KillChainPhase(stix.Entity):
         
         return return_obj
 
+
+class KillChainPhases(stix.TypedList):
+    _contained_type = KillChainPhase
+
+
 class KillChainPhaseReference(KillChainPhase):
     _binding = common_binding
     _namespace = 'http://stix.mitre.org/common-1'
@@ -213,6 +205,7 @@ class KillChainPhaseReference(KillChainPhase):
         return_obj.kill_chain_id = d.get('kill_chain_id')
         return_obj.kill_chain_name = d.get('kill_chain_name')
         return return_obj
+
 
 class KillChainPhasesReference(stix.EntityList):
     _binding = common_binding
