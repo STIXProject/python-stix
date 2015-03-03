@@ -63,10 +63,7 @@ class TTP(stix.Entity):
         if not value:
             self._version = None
         else:
-            if value not in self._ALL_VERSIONS:
-                msg = ("Version must be one of %s. Found '%s'" %
-                      (self._ALL_VERSIONS, value))
-                raise ValueError(msg)
+            utils.check_version(self._ALL_VERSIONS, value)
             self._version = value
     
     @property
@@ -184,24 +181,10 @@ class TTP(stix.Entity):
 
     @intended_effects.setter
     def intended_effects(self, value):
-        self._intended_effects = []
-
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_intended_effect(v)
-        else:
-            self.add_intended_effect(value)
+        self._intended_effects = IntendedEffects(value)
 
     def add_intended_effect(self, value):
-        if not value:
-            return
-        elif isinstance(value, Statement):
-            self.intended_effects.append(value)
-        else:
-            intended_effect = vocabs.IntendedEffect(value)
-            self.intended_effects.append(Statement(value=intended_effect))
+        self.intended_effects.append(value)
 
     @property
     def resources(self):
@@ -265,7 +248,7 @@ class TTP(stix.Entity):
         if self.information_source:
             return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
         if self.intended_effects:
-            return_obj.Intended_Effect = [x.to_obj(ns_info=ns_info) for x in self.intended_effects]
+            return_obj.Intended_Effect = self.intended_effects.to_obj(ns_info=ns_info)
         if self.resources:
             return_obj.Resources = self.resources.to_obj(ns_info=ns_info)
         if self.victim_targeting:
@@ -298,46 +281,12 @@ class TTP(stix.Entity):
             return_obj.resources = Resource.from_obj(obj.Resources)
             return_obj.victim_targeting = VictimTargeting.from_obj(obj.Victim_Targeting)
             return_obj.handling = Marking.from_obj(obj.Handling)
-
-            if obj.Intended_Effect:
-                return_obj.intended_effects = [Statement.from_obj(x) for x in obj.Intended_Effect]
+            return_obj.intended_effects = IntendedEffects.from_obj(obj.Intended_Effect)
 
         return return_obj
 
     def to_dict(self):
-        d = {}
-        if self.id_:
-            d['id'] = self.id_
-        if self.idref:
-            d['idref'] = self.idref
-        if self.timestamp:
-            d['timestamp'] = utils.dates.serialize_value(self.timestamp)
-        if self.version:
-            d['version'] = self.version
-        if self.title:
-            d['title'] = self.title
-        if self.description:
-            d['description'] = self.description.to_dict()
-        if self.short_description:
-            d['short_description'] = self.short_description.to_dict()
-        if self.behavior:
-            d['behavior'] = self.behavior.to_dict()
-        if self.related_ttps:
-            d['related_ttps'] = self.related_ttps.to_dict()
-        if self.exploit_targets:
-            d['exploit_targets'] = self.exploit_targets.to_dict()
-        if self.information_source:
-            d['information_source'] = self.information_source.to_dict()
-        if self.intended_effects:
-            d['intended_effects'] = [x.to_dict() for x in self.intended_effects]
-        if self.resources:
-            d['resources'] = self.resources.to_dict()
-        if self.victim_targeting:
-            d['victim_targeting'] = self.victim_targeting.to_dict()
-        if self.handling:
-            d['handling'] = self.handling.to_dict()
-
-        return d
+        return super(TTP, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
@@ -346,23 +295,33 @@ class TTP(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = dict_repr.get('id')
-        return_obj.idref = dict_repr.get('idref')
-        return_obj.timestamp = dict_repr.get('timestamp')
-        return_obj.version = dict_repr.get('version')
-        return_obj.title = dict_repr.get('title')
-        return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
-        return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
-        return_obj.behavior = Behavior.from_dict(dict_repr.get('behavior'))
-        return_obj.related_ttps = RelatedTTPs.from_dict(dict_repr.get('related_ttps'))
-        return_obj.exploit_targets = ExploitTargets.from_dict(dict_repr.get('exploit_targets'))
-        return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
-        return_obj.intended_effects = [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
-        return_obj.resources = Resource.from_dict(dict_repr.get('resources'))
-        return_obj.victim_targeting = VictimTargeting.from_dict(dict_repr.get('victim_targeting'))
-        return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
+        get = dict_repr.get
+        
+        return_obj.id_ = get('id')
+        return_obj.idref = get('idref')
+        return_obj.timestamp = get('timestamp')
+        return_obj.version = get('version')
+        return_obj.title = get('title')
+        return_obj.description = StructuredText.from_dict(get('description'))
+        return_obj.short_description = StructuredText.from_dict(get('short_description'))
+        return_obj.behavior = Behavior.from_dict(get('behavior'))
+        return_obj.related_ttps = RelatedTTPs.from_dict(get('related_ttps'))
+        return_obj.exploit_targets = ExploitTargets.from_dict(get('exploit_targets'))
+        return_obj.information_source = InformationSource.from_dict(get('information_source'))
+        return_obj.intended_effects = IntendedEffects.from_dict(get('intended_effects'))
+        return_obj.resources = Resource.from_dict(get('resources'))
+        return_obj.victim_targeting = VictimTargeting.from_dict(get('victim_targeting'))
+        return_obj.handling = Marking.from_dict(get('handling'))
 
         return return_obj
+
+
+class IntendedEffects(stix.TypedList):
+    _contained_type = Statement
+
+    def _fix_value(self, value):
+        intended_effect = vocabs.IntendedEffect(value)
+        return Statement(value=intended_effect)
 
 
 # Avoid circular imports
