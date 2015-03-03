@@ -89,10 +89,7 @@ class Incident(stix.Entity):
         if not value:
             self._version = None
         else:
-            if value not in self._ALL_VERSIONS:
-                msg = ("Version must be one of %s. Found '%s'" %
-                      (self._ALL_VERSIONS, value))
-                raise ValueError(msg)
+            utils.check_version(self._ALL_VERSIONS, value)
             self._version = value
     
     @property
@@ -193,23 +190,10 @@ class Incident(stix.Entity):
 
     @intended_effects.setter
     def intended_effects(self, value):
-        self._intended_effects = IntendedEffects()
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_intended_effect(v)
-        else:
-            self.add_intended_effect(value)
+        self._intended_effects = IntendedEffects(value)
 
     def add_intended_effect(self, value):
-        if not value:
-            return
-        elif isinstance(value, Statement):
-            self.intended_effects.append(value)
-        else:
-            intended_effect = vocabs.IntendedEffect(value)
-            self.intended_effects.append(Statement(value=intended_effect))
+        self.intended_effects.append(value)
 
     @property
     def victims(self):
@@ -217,22 +201,10 @@ class Incident(stix.Entity):
 
     @victims.setter
     def victims(self, value):
-        self._victims = []
-        if not value:
-            return None
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_victim(v)
-        else:
-            self.add_victim(value)
+        self._victims = Victims(value)
 
     def add_victim(self, victim):
-        if not victim:
-            return
-        elif isinstance(victim, Identity):
-            self.victims.append(victim)
-        else:
-            self.victims.append(Identity(name=victim))
+        self._victims.append(victim)
 
     @property
     def categories(self):
@@ -240,21 +212,10 @@ class Incident(stix.Entity):
 
     @categories.setter
     def categories(self, value):
-        self._categories = IncidentCategories()
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_category(v)
-        else:
-            self.add_category(value)
+        self._categories = IncidentCategories(value)
 
     def add_category(self, category):
-        if isinstance(category, vocabs.VocabString):
-            self.categories.append(category)
-        else:
-            cv_item = vocabs.IncidentCategory(value=category)
-            self.categories.append(cv_item)
+        self.categories.append(category)
 
     @property
     def affected_assets(self):
@@ -262,22 +223,10 @@ class Incident(stix.Entity):
     
     @affected_assets.setter
     def affected_assets(self, value):
-        self._affected_assets = []
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_affected_asset(v)
-        else:
-            self.add_affected_asset(value)
+        self._affected_assets = AffectedAssets(value)
     
     def add_affected_asset(self, v):
-        if not v:
-            return
-        elif isinstance(v, AffectedAsset):
-            self.affected_assets.append(v)
-        else:
-            raise ValueError('Cannot add type %s to affected asset list' % type(v))
+       self.affected_assets.append(v)
 
     @property
     def discovery_methods(self):
@@ -285,22 +234,10 @@ class Incident(stix.Entity):
 
     @discovery_methods.setter
     def discovery_methods(self, value):
-        self._discovery_methods = DiscoveryMethods()
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_discovery_method(v)
-        else:
-            self.add_discovery_method(value)
+        self._discovery_methods = DiscoveryMethods(value)
 
     def add_discovery_method(self, value):
-        if not value:
-            return
-        elif isinstance(value, VocabString):
-            self.discovery_methods.append(value)
-        else:
-            self.discovery_methods.append(vocabs.DiscoveryMethod(value))
+        self.discovery_methods.append(value)
 
     @property
     def reporter(self):
@@ -321,22 +258,10 @@ class Incident(stix.Entity):
 
     @responders.setter
     def responders(self, value):
-        self._responders = []
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_responder(v)
-        else:
-            self.add_responder(value)
+        self._responders = InformationSources(value)
 
     def add_responder(self, value):
-        if not value:
-            return
-        elif isinstance(value, InformationSource):
-            self.responders.append(value)
-        else:
-            raise ValueError('value must be instance of InformationSource')
+        self.responders.append(value)
 
     @property
     def coordinators(self):
@@ -344,22 +269,10 @@ class Incident(stix.Entity):
 
     @coordinators.setter
     def coordinators(self, value):
-        self._coordinators = []
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_coordinator(v)
-        else:
-            self.add_coordinator(value)
+        self._coordinators = InformationSources(value)
 
     def add_coordinator(self, value):
-        if not value:
-            return
-        elif isinstance(value, InformationSource):
-            self.coordinators.append(value)
-        else:
-            raise ValueError('value must be instance of InformationSource')
+        self.coordinators.append(value)
 
     @property
     def external_ids(self):
@@ -367,22 +280,10 @@ class Incident(stix.Entity):
 
     @external_ids.setter
     def external_ids(self, value):
-        self._external_ids = []
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_external_id(v)
-        else:
-            self.add_external_id(value)
+        self._external_ids = ExternalIDs(value)
 
     def add_external_id(self, value):
-        if not value:
-            return
-        elif isinstance(value, ExternalID):
-            self.external_ids.append(value)
-        else:
-            raise ValueError('value must be instance of ExternalID')
+        self.external_ids.append(value)
 
     @property
     def impact_assessment(self):
@@ -442,22 +343,10 @@ class Incident(stix.Entity):
     
     @coa_taken.setter
     def coa_taken(self, value):
-        self._coa_taken = []
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_coa_taken(v)
-        else:
-            self.add_coa_taken(value)
+        self._coa_taken = COAsTaken(value)
 
     def add_coa_taken(self, value):
-        if isinstance(value, COATaken):
-            self.coa_taken.append(value)
-        elif isinstance(value, CourseOfAction):
-            self.coa_taken.append(COATaken(course_of_action=value))
-        else:
-            raise ValueError("Cannot add coa_taken of type %s" % type(value))
+        self.coa_taken.append(value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(Incident, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -470,7 +359,7 @@ class Incident(stix.Entity):
         return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
         return_obj.version = self.version
         return_obj.Title = self.title
-        
+
         if self.description:
             return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.short_description:
@@ -478,7 +367,7 @@ class Incident(stix.Entity):
         if self.time:
             return_obj.Time = self.time.to_obj(ns_info=ns_info)
         if self.victims:
-            return_obj.Victim = [x.to_obj(ns_info=ns_info) for x in self.victims]
+            return_obj.Victim = self.victims.to_obj(ns_info=ns_info)
         if self.attributed_threat_actors:
             return_obj.Attributed_Threat_Actors = self.attributed_threat_actors.to_obj(ns_info=ns_info)
         if self.related_indicators:
@@ -488,24 +377,23 @@ class Incident(stix.Entity):
         if self.related_incidents:
             return_obj.Related_Incidents = self.related_incidents.to_obj(ns_info=ns_info)
         if self.categories:
-            return_obj.Categories = self._binding.CategoriesType(Category=[x.to_obj(ns_info=ns_info) for x in self.categories])
+            return_obj.Categories = self.categories.to_obj(ns_info=ns_info)
         if self.intended_effects:
-            return_obj.Intended_Effect = [x.to_obj(ns_info=ns_info) for x in self.intended_effects]
+            return_obj.Intended_Effect = self.intended_effects.to_obj(ns_info=ns_info)
         if self.leveraged_ttps:
             return_obj.Leveraged_TTPs = self.leveraged_ttps.to_obj(ns_info=ns_info)
         if self.affected_assets:
-            a = self._binding.AffectedAssetsType(Affected_Asset=[x.to_obj(ns_info=ns_info) for x in self.affected_assets])
-            return_obj.Affected_Assets = a
+            return_obj.Affected_Assets = self.affected_assets.to_obj(ns_info=ns_info)
         if self.discovery_methods:
-            return_obj.Discovery_Method = [x.to_obj(ns_info=ns_info) for x in self.discovery_methods]
+            return_obj.Discovery_Method = self.discovery_methods.to_obj(ns_info=ns_info)
         if self.reporter:
             return_obj.Reporter = self.reporter.to_obj(ns_info=ns_info)
         if self.responders:
-            return_obj.Responder = [x.to_obj(ns_info=ns_info) for x in self.responders]
+            return_obj.Responder = self.responders.to_obj(ns_info=ns_info)
         if self.coordinators:
-            return_obj.Coordinator = [x.to_obj(ns_info=ns_info) for x in self.coordinators]
+            return_obj.Coordinator = self.coordinators.to_obj(ns_info=ns_info)
         if self.external_ids:
-            return_obj.External_ID = [x.to_obj(ns_info=ns_info) for x in self.external_ids]
+            return_obj.External_ID = self.external_ids.to_obj(ns_info=ns_info)
         if self.impact_assessment:
             return_obj.Impact_Assessment = self.impact_assessment.to_obj(ns_info=ns_info)
         if self.information_source:
@@ -515,7 +403,7 @@ class Incident(stix.Entity):
         if self.confidence:
             return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
         if self.coa_taken:
-            return_obj.COA_Taken = [x.to_obj(ns_info=ns_info) for x in self.coa_taken]
+            return_obj.COA_Taken = self.coa_taken.to_obj(ns_info=ns_info)
         if self.status:
             return_obj.Status = self.status.to_obj(ns_info=ns_info)
         if self.handling:
@@ -542,33 +430,12 @@ class Incident(stix.Entity):
             return_obj.description = StructuredText.from_obj(obj.Description)
             return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
             return_obj.time = Time.from_obj(obj.Time)
-    
-            if obj.Victim:
-                return_obj.victims = [Identity.from_obj(x) for x in obj.Victim]
-            if obj.Categories:
-                return_obj.categories = [VocabString.from_obj(x) for x in obj.Categories.Category]
-            if obj.Intended_Effect:
-                return_obj.intended_effects = [Statement.from_obj(x) for x in obj.Intended_Effect]
-            if obj.Affected_Assets:
-                return_obj.affected_assets = [AffectedAsset.from_obj(x) for x in obj.Affected_Assets.Affected_Asset]
-            if obj.Discovery_Method:
-                return_obj.discovery_methods = [VocabString.from_obj(x) for x in obj.Discovery_Method]
-            if obj.Reporter:
-                return_obj.reporter = InformationSource.from_obj(obj.Reporter)
-            if obj.Responder:
-                return_obj.responders = [InformationSource.from_obj(x) for x in obj.Responder]
-            if obj.Coordinator:
-                return_obj.coordinators = [InformationSource.from_obj(x) for x in obj.Coordinator]
-            if obj.External_ID:
-                return_obj.external_ids = [ExternalID.from_obj(x) for x in obj.External_ID]
-            if obj.Impact_Assessment:
-                return_obj.impact_assessment = ImpactAssessment.from_obj(obj.Impact_Assessment)
-            if obj.Information_Source:
-                return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
-            if obj.Security_Compromise:
-                return_obj.security_compromise = VocabString.from_obj(obj.Security_Compromise)
-            
-            return_obj.coa_taken = [COATaken.from_obj(x) for x in obj.COA_Taken]
+            return_obj.victims = Victims.from_obj(obj.Victim)
+            return_obj.categories = IncidentCategories.from_obj(obj.Categories)
+            return_obj.intended_effects = IntendedEffects.from_obj(obj.Intended_Effect)
+            return_obj.affected_assets = AffectedAssets.from_obj(obj.Affected_Assets)
+            return_obj.discovery_methods = DiscoveryMethods.from_obj(obj.Discovery_Method)
+            return_obj.coa_taken = COAsTaken.from_obj(obj.COA_Taken)
             return_obj.confidence = Confidence.from_obj(obj.Confidence)
             return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.Attributed_Threat_Actors)
             return_obj.related_indicators = RelatedIndicators.from_obj(obj.Related_Indicators)
@@ -578,73 +445,23 @@ class Incident(stix.Entity):
             return_obj.status = VocabString.from_obj(obj.Status)
             return_obj.handling = Marking.from_obj(obj.Handling)
             return_obj.history = History.from_obj(obj.History)
+            return_obj.responders = InformationSources.from_obj(obj.Responder)
+            return_obj.coordinators = InformationSources.from_obj(obj.Coordinator)
+            return_obj.external_ids = ExternalIDs.from_obj(obj.External_ID)
+
+            if obj.Reporter:
+                return_obj.reporter = InformationSource.from_obj(obj.Reporter)
+            if obj.Impact_Assessment:
+                return_obj.impact_assessment = ImpactAssessment.from_obj(obj.Impact_Assessment)
+            if obj.Information_Source:
+                return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
+            if obj.Security_Compromise:
+                return_obj.security_compromise = VocabString.from_obj(obj.Security_Compromise)
             
         return return_obj
 
     def to_dict(self):
-        d = {}
-        if self.id_:
-            d['id'] = self.id_
-        if self.idref:
-            d['idref'] = self.idref
-        if self.timestamp:
-            d['timestamp'] = utils.dates.serialize_value(self.timestamp)
-        if self.version:
-            d['version'] = self.version
-        if self.title:
-            d['title'] = self.title
-        if self.description:
-            d['description'] = self.description.to_dict()
-        if self.short_description:
-            d['short_description'] = self.short_description.to_dict()
-        if self.time:
-            d['time'] = self.time.to_dict()
-        if self.victims:
-            d['victims'] = [x.to_dict() for x in self.victims]
-        if self.categories:
-            d['categories'] = [x.to_dict() for x in self.categories]
-        if self.attributed_threat_actors:
-            d['attributed_threat_actors'] = self.attributed_threat_actors.to_dict()
-        if self.related_indicators:
-            d['related_indicators'] = self.related_indicators.to_dict()
-        if self.related_observables:
-            d['related_observables'] = self.related_observables.to_dict()
-        if self.related_incidents:
-            d['related_incidents'] = self.related_incidents.to_dict()
-        if self.intended_effects:
-            d['intended_effects'] = [x.to_dict() for x in self.intended_effects]
-        if self.leveraged_ttps:
-            d['leveraged_ttps'] = self.leveraged_ttps.to_dict()
-        if self.affected_assets:
-            d['affected_assets'] = [x.to_dict() for x in self.affected_assets]
-        if self.discovery_methods:
-            d['discovery_methods'] = [x.to_dict() for x in self.discovery_methods]
-        if self.reporter:
-            d['reporter'] = self.reporter.to_dict()
-        if self.responders:
-            d['responders'] = [x.to_dict() for x in self.responders]
-        if self.coordinators:
-            d['coordinators'] = [x.to_dict() for x in self.coordinators]
-        if self.external_ids:
-            d['external_ids'] = [x.to_dict() for x in self.external_ids]
-        if self.impact_assessment:
-            d['impact_assessment'] = self.impact_assessment.to_dict()
-        if self.information_source:
-            d['information_source'] = self.information_source.to_dict()
-        if self.security_compromise:
-            d['security_compromise'] = self.security_compromise.to_dict()
-        if self.confidence:
-            d['confidence'] = self.confidence.to_dict()
-        if self.coa_taken:
-            d['coa_taken'] = [x.to_dict() for x in self.coa_taken]
-        if self.status:
-            d['status'] = self.status.to_dict()
-        if self.handling:
-            d['handling'] = self.handling.to_dict()
-        if self.history:
-            d['history'] = self.history.to_dict()
-        
-        return d
+        return super(Incident, self).to_dict() # unnecessary but whatever.
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
@@ -653,38 +470,66 @@ class Incident(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = dict_repr.get('id')
-        return_obj.idref = dict_repr.get('idref')
-        return_obj.timestamp = dict_repr.get('timestamp')
-        return_obj.version = dict_repr.get('version')
-        return_obj.title = dict_repr.get('title')
-        return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
-        return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
-        return_obj.time = Time.from_dict(dict_repr.get('time'))
-        return_obj.victims = [Identity.from_dict(x) for x in dict_repr.get('victims', [])]
-        return_obj.categories = [VocabString.from_dict(x) for x in dict_repr.get('categories', [])]
-        return_obj.attributed_threat_actors = AttributedThreatActors.from_dict(dict_repr.get('attributed_threat_actors'))
-        return_obj.related_indicators = RelatedIndicators.from_dict(dict_repr.get('related_indicators'))
-        return_obj.related_observables = RelatedObservables.from_dict(dict_repr.get('related_observables'))
-        return_obj.related_incidents = RelatedIncidents.from_dict(dict_repr.get('related_incidents'))
-        return_obj.intended_effects = [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
-        return_obj.leveraged_ttps = LeveragedTTPs.from_dict(dict_repr.get('leveraged_ttps'))
-        return_obj.affected_assets = [AffectedAsset.from_dict(x) for x in dict_repr.get('affected_assets', [])]
-        return_obj.discovery_methods = [VocabString.from_dict(x) for x in dict_repr.get('discovery_methods', [])]
-        return_obj.reporter = InformationSource.from_dict(dict_repr.get('reporter'))
-        return_obj.responders = [InformationSource.from_dict(x) for x in dict_repr.get('responders', [])]
-        return_obj.coordinators = [InformationSource.from_dict(x) for x in dict_repr.get('coordinators', [])]
-        return_obj.external_ids = [ExternalID.from_dict(x) for x in dict_repr.get('external_ids', [])]
-        return_obj.impact_assessment = ImpactAssessment.from_dict(dict_repr.get('impact_assessment'))
-        return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
-        return_obj.security_compromise = VocabString.from_dict(dict_repr.get('security_compromise'))
-        return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
-        return_obj.coa_taken = [COATaken.from_dict(x) for x in dict_repr.get('coa_taken', [])]
-        return_obj.status = VocabString.from_dict(dict_repr.get('status'))
-        return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
-        return_obj.history = History.from_dict(dict_repr.get('history'))
+        get = dict_repr.get
+        
+        return_obj.id_ = get('id')
+        return_obj.idref = get('idref')
+        return_obj.timestamp = get('timestamp')
+        return_obj.version = get('version')
+        return_obj.title = get('title')
+        return_obj.description = StructuredText.from_dict(get('description'))
+        return_obj.short_description = StructuredText.from_dict(get('short_description'))
+        return_obj.time = Time.from_dict(get('time'))
+        return_obj.victims = Victims.from_dict(get('victims'))
+        return_obj.categories = IncidentCategories.from_dict(get('categories'))
+        return_obj.attributed_threat_actors = AttributedThreatActors.from_dict(get('attributed_threat_actors'))
+        return_obj.related_indicators = RelatedIndicators.from_dict(get('related_indicators'))
+        return_obj.related_observables = RelatedObservables.from_dict(get('related_observables'))
+        return_obj.related_incidents = RelatedIncidents.from_dict(get('related_incidents'))
+        return_obj.intended_effects = IntendedEffects.from_list(get('intended_effects'))
+        return_obj.leveraged_ttps = LeveragedTTPs.from_dict(get('leveraged_ttps'))
+        return_obj.affected_assets = AffectedAssets.from_dict(get('affected_assets'))
+        return_obj.discovery_methods = DiscoveryMethods.from_dict(get('discovery_methods'))
+        return_obj.reporter = InformationSource.from_dict(get('reporter'))
+        return_obj.responders = InformationSources.from_dict(get('responders'))
+        return_obj.coordinators = InformationSources.from_dict(get('coordinators'))
+        return_obj.external_ids = ExternalIDs.from_dict(get('external_ids'))
+        return_obj.impact_assessment = ImpactAssessment.from_dict(get('impact_assessment'))
+        return_obj.information_source = InformationSource.from_dict(get('information_source'))
+        return_obj.security_compromise = VocabString.from_dict(get('security_compromise'))
+        return_obj.confidence = Confidence.from_dict(get('confidence'))
+        return_obj.coa_taken = COAsTaken.from_dict(get('coa_taken'))
+        return_obj.status = VocabString.from_dict(get('status'))
+        return_obj.handling = Marking.from_dict(get('handling'))
+        return_obj.history = History.from_dict(get('history'))
         
         return return_obj
+
+
+class COAsTaken(stix.TypedList):
+    _contained_type =  COATaken
+
+
+class ExternalIDs(stix.TypedList):
+    _contained_type = ExternalID
+
+
+class InformationSources(stix.TypedList):
+    _contained_type = InformationSource
+
+
+class Victims(stix.TypedList):
+    _contained_type = Identity
+
+    def _fix_value(self, value):
+        return Identity(name=value)
+
+
+class IntendedEffects(stix.TypedList):
+    _contained_type = Statement
+
+    def _fix_value(self, value):
+        return Statement(value=vocabs.IntendedEffect(value))
 
 
 class AttributedThreatActors(GenericRelationshipList):
@@ -743,14 +588,22 @@ class DiscoveryMethods(stix.EntityList):
 class IncidentCategories(stix.EntityList):
     _namespace = "http://stix.mitre.org/Incident-1"
     _contained_type = VocabString
+    _binding_class = incident_binding.CategoriesType
+    _binding_var = "Category"
+    _inner_name = "categories"
+    _dict_as_list = True
 
     def _fix_value(self, value):
         return vocabs.IncidentCategory(value)
 
-class IntendedEffects(stix.EntityList):
-    _namespace = "http://stix.mitre.org/Incident-1"
-    _contained_type = Statement
 
-    def _fix_value(self, value):
-        return Statement(value=vocabs.IntendedEffect(value))
+class AffectedAssets(stix.EntityList):
+    _namespace = "http://stix.mitre.org/Incident-1"
+    _contained_type = VocabString
+    _binding_class = incident_binding.AffectedAssetsType
+    _binding_var = "Affected_Asset"
+    _inner_name = "affected_assets"
+    _dict_as_list = True
+
+
 
