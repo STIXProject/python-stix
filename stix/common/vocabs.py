@@ -124,6 +124,7 @@ class VocabString(stix.Entity):
         return_obj.value = vocab_obj.valueOf_
         return_obj.vocab_name = vocab_obj.vocab_name
         return_obj.vocab_reference = vocab_obj.vocab_reference
+        return_obj.xsi_type = vocab_obj.xsi_type
 
         return return_obj
 
@@ -148,6 +149,7 @@ class VocabString(stix.Entity):
             return_obj.value = vocab_dict.get('value')
             return_obj.vocab_name = vocab_dict.get('vocab_name')
             return_obj.vocab_reference = vocab_dict.get('vocab_reference')
+            return_obj.xsi_type = vocab_dict.get('xsi:type')
 
         return return_obj
 
