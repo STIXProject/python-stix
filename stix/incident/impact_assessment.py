@@ -33,23 +33,11 @@ class ImpactAssessment(stix.Entity):
     
     @effects.setter
     def effects(self, value):
-        self._effects = []
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_effect(v)
-        else:
-            self.add_effect(value)
+        self._effects = Effects(value)
+
     
     def add_effect(self, value):
-        if not value:
-            return
-        elif isinstance(value, VocabString):
-            self.effects.append(value)
-        else:
-            effect = vocabs.IncidentEffect(value)
-            self.effects.append(effect)
+        self.effects.append(value)
 
     @property
     def direct_impact_summary(self):
@@ -108,6 +96,7 @@ class ImpactAssessment(stix.Entity):
         super(ImpactAssessment, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         obj = self._binding_class()
+
         if self.direct_impact_summary:
             obj.Direct_Impact_Summary = self.direct_impact_summary.to_obj(ns_info=ns_info)
         if self.indirect_impact_summary:
@@ -117,8 +106,8 @@ class ImpactAssessment(stix.Entity):
         if self.impact_qualification:
             obj.Impact_Qualification = self.impact_qualification.to_obj(ns_info=ns_info)
         if self.effects:
-            effects_obj = self._binding.EffectsType(Effect=[x.to_obj(ns_info=ns_info) for x in self.effects])
-            obj.Effects = effects_obj
+            obj.Effects = self.effects.to_obj(ns_info=ns_info)
+
         return obj
 
     @classmethod
@@ -132,37 +121,40 @@ class ImpactAssessment(stix.Entity):
         return_obj.indirect_impact_summary = IndirectImpactSummary.from_obj(obj.Indirect_Impact_Summary)
         return_obj.total_loss_estimation = TotalLossEstimation.from_obj(obj.Total_Loss_Estimation)
         return_obj.impact_qualification = VocabString.from_obj(obj.Impact_Qualification)
-        
-        if obj.Effects:
-            return_obj.effects = [VocabString.from_obj(x) for x in obj.Effects.Effect]
+        return_obj.effects = Effects.from_obj(obj.Effects)
+
         return return_obj
 
     def to_dict(self):    
-        d  = {}
-        if self.direct_impact_summary:
-            d['direct_impact_summary'] = self.direct_impact_summary.to_dict()
-        if self.indirect_impact_summary:
-            d['indirect_impact_summary'] = self.indirect_impact_summary.to_dict()
-        if self.total_loss_estimation:
-            d['total_loss_estimation'] = self.total_loss_estimation.to_dict()
-        if self.impact_qualification:
-            d['impact_qualification'] = self.impact_qualification.to_dict()
-        if self.effects:
-            d['effects'] = [x.to_dict() for x in self.effects]
-        return d
+        return super(ImpactAssessment, self).to_dict()
 
     @classmethod
-    def from_dict(cls, dict_, return_obj=None):
-        if not dict_:
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not dict_repr:
             return None
 
         if not return_obj:
             return_obj = cls()
 
-        return_obj.direct_impact_summary = DirectImpactSummary.from_dict(dict_.get('direct_impact_summary'))
-        return_obj.indirect_impact_summary = IndirectImpactSummary.from_dict(dict_.get('indirect_impact_summary'))
-        return_obj.total_loss_estimation = TotalLossEstimation.from_dict(dict_.get('total_loss_estimation'))
-        return_obj.impact_qualification = VocabString.from_dict(dict_.get('impact_qualification'))
-        return_obj.effects = [VocabString.from_dict(x) for x in dict_.get('effects', [])]
+        
+        get = dict_repr.get
+        return_obj.direct_impact_summary = DirectImpactSummary.from_dict(get('direct_impact_summary'))
+        return_obj.indirect_impact_summary = IndirectImpactSummary.from_dict(get('indirect_impact_summary'))
+        return_obj.total_loss_estimation = TotalLossEstimation.from_dict(get('total_loss_estimation'))
+        return_obj.impact_qualification = VocabString.from_dict(get('impact_qualification'))
+        return_obj.effects = Effects.from_dict(get('effects'))
 
         return return_obj
+
+
+
+class Effects(stix.EntityList):
+    _namespace = "http://stix.mitre.org/Incident-1"
+    _contained_type = VocabString
+    _binding_class = incident_binding.EffectsType
+    _inner_name = "effects"
+    _binding_var = "Effect"
+    _dict_as_list = True
+
+    def _fix_value(self, value):
+        return vocabs.IncidentEffect(value=value)
