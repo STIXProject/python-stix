@@ -143,7 +143,7 @@ class STIXHeader(stix.Entity):
         if self.title:
             return_obj.Title = self.title
         if self.package_intents:
-            return_obj.Package_Intent = PackageIntents.to_obj(ns_info=ns_info)
+            return_obj.Package_Intent = self.package_intents.to_obj(ns_info=ns_info)
         if self.description:
             return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.short_description:
