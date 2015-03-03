@@ -5,7 +5,8 @@ import stix
 import stix.utils as utils
 import stix.bindings.threat_actor as threat_actor_binding
 from stix.common import (
-    vocabs, Confidence, Identity, InformationSource, Statement, StructuredText
+    vocabs, Confidence, Identity, InformationSource, Statement,
+    StructuredText
 )
 from stix.common.related import (
     GenericRelationshipList, RelatedCampaign, RelatedPackageRefs, RelatedTTP,
@@ -94,10 +95,7 @@ class ThreatActor(stix.Entity):
         if not value:
             self._version = None
         else:
-            if value not in self._ALL_VERSIONS:
-                msg = ("Version must be one of %s. Found '%s'" %
-                      (self._ALL_VERSIONS, value))
-                raise ValueError(msg)
+            utils.check_version(self._ALL_VERSIONS, value)
             self._version = value
     
     @property
@@ -175,23 +173,10 @@ class ThreatActor(stix.Entity):
     
     @types.setter
     def types(self, value):
-        self._types = []
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_type(v)
-        else:
-            self.add_type(value)
+        self._types = Types(value)
             
     def add_type(self, value):
-        if not value:
-            return
-        elif isinstance(value, Statement):
-            self.types.append(value)
-        else:
-            type_ = vocabs.ThreatActorType(value)
-            self.types.append(Statement(value=type_))
+        self.types.append(value)
 
     @property
     def motivations(self):
@@ -199,23 +184,10 @@ class ThreatActor(stix.Entity):
     
     @motivations.setter
     def motivations(self, value):
-        self._motivations = []
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_motivation(v)
-        else:
-            self.add_motivation(value)
+        self._motivations = Motivations(value)
             
     def add_motivation(self, value):
-        if not value:
-            return
-        elif isinstance(value, Statement):
-            self.motivations.append(value)
-        else:
-            motivation = vocabs.Motivation(value)
-            self.motivations.append(Statement(value=motivation))
+        self.motivations.append(value)
 
     @property
     def sophistications(self):
@@ -223,23 +195,10 @@ class ThreatActor(stix.Entity):
     
     @sophistications.setter
     def sophistications(self, value):
-        self._sophistications = []
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_sophistication(v)
-        else:
-            self.add_sophistication(value)
+        self._sophistications = Sophistications(value)
             
     def add_sophistication(self, value):
-        if not value:
-            return
-        elif isinstance(value, Statement):
-            self.sophistications.append(value)
-        else:
-            sophistication = vocabs.ThreatActorSophistication(value)
-            self.sophistications.append(Statement(value=sophistication))
+        self._sophistications.append(value)
 
     @property
     def intended_effects(self):
@@ -247,23 +206,10 @@ class ThreatActor(stix.Entity):
     
     @intended_effects.setter
     def intended_effects(self, value):
-        self._intended_effects = []
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_intended_effect(v)
-        else:
-            self.add_intended_effect(value)
+        self._intended_effects = IntendedEffects(value)
             
     def add_intended_effect(self, value):
-        if not value:
-            return
-        elif isinstance(value, Statement):
-            self.intended_effects.append(value)
-        else:
-            intended_effect = vocabs.IntendedEffect(value)
-            self.intended_effects.append(Statement(value=intended_effect))
+        self.intended_effects.append(value)
 
     @property
     def planning_and_operational_supports(self):
@@ -271,23 +217,10 @@ class ThreatActor(stix.Entity):
     
     @planning_and_operational_supports.setter
     def planning_and_operational_supports(self, value):
-        self._planning_and_operational_supports = []
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_planning_and_operational_support(v)
-        else:
-            self.add_planning_and_operational_support(value)
+        self._planning_and_operational_supports = PlanningAndOperationalSupports(value)
             
     def add_planning_and_operational_support(self, value):
-        if not value:
-            return
-        elif isinstance(value, Statement):
-            self.planning_and_operational_supports.append(value)
-        else:
-            pos = vocabs.PlanningAndOperationalSupport(value)
-            self.planning_and_operational_supports.append(Statement(value=pos))
+        self.planning_and_operational_supports.append(value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(ThreatActor, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -297,10 +230,11 @@ class ThreatActor(stix.Entity):
 
         return_obj.id = self.id_
         return_obj.idref = self.idref
-        if self.timestamp:
-            return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
         return_obj.version = self.version
         return_obj.Title = self.title
+
+        if self.timestamp:
+            return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
         if self.description:
             return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.short_description:
@@ -308,15 +242,16 @@ class ThreatActor(stix.Entity):
         if self.identity:
             return_obj.Identity = self.identity.to_obj(ns_info=ns_info)
         if self.types:
-            return_obj.Type = [x.to_obj(ns_info=ns_info) for x in self.types]
+            return_obj.Type = self.types.to_obj(ns_info=ns_info)
         if self.motivations:
-            return_obj.Motivation = [x.to_obj(ns_info=ns_info) for x in self.motivations]
+            return_obj.Motivation = self.motivations.to_obj(ns_info=ns_info)
         if self.sophistications:
-            return_obj.Sophistication = [x.to_obj(ns_info=ns_info) for x in self.sophistications]
+            return_obj.Sophistication = self.sophistications.to_obj(ns_info=ns_info)
         if self.intended_effects:
-            return_obj.Intended_Effect = [x.to_obj(ns_info=ns_info) for x in self.intended_effects]
+            return_obj.Intended_Effect = self.intended_effects.to_obj(ns_info=ns_info)
         if self.planning_and_operational_supports:
-            return_obj.Planning_And_Operational_Support = [x.to_obj(ns_info=ns_info) for x in self.planning_and_operational_supports]
+            return_obj.Planning_And_Operational_Support = \
+                self.planning_and_operational_supports.to_obj(ns_info=ns_info)
         if self.observed_ttps:
             return_obj.Observed_TTPs = self.observed_ttps.to_obj(ns_info=ns_info)
         if self.associated_campaigns:
@@ -351,11 +286,12 @@ class ThreatActor(stix.Entity):
             return_obj.description = StructuredText.from_obj(obj.Description)
             return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
             return_obj.identity = Identity.from_obj(obj.Identity)
-            return_obj.types = [Statement.from_obj(x) for x in obj.Type]
-            return_obj.motivations = [Statement.from_obj(x) for x in obj.Motivation]
-            return_obj.sophistications = [Statement.from_obj(x) for x in obj.Sophistication]
-            return_obj.intended_effects = [Statement.from_obj(x) for x in obj.Intended_Effect]
-            return_obj.planning_and_operational_supports = [Statement.from_obj(x) for x in obj.Planning_And_Operational_Support]
+            return_obj.types = Types.from_obj(obj.Type)
+            return_obj.motivations = Motivations.from_obj(obj.Motivation)
+            return_obj.sophistications = Sophistications.from_obj(obj.Sophistication)
+            return_obj.intended_effects = IntendedEffects.from_obj( obj.Intended_Effect)
+            return_obj.planning_and_operational_supports = \
+                PlanningAndOperationalSupports.from_obj(obj.Planning_And_Operational_Support)
             return_obj.observed_ttps = ObservedTTPs.from_obj(obj.Observed_TTPs)
             return_obj.associated_campaigns = AssociatedCampaigns.from_obj(obj.Associated_Campaigns)
             return_obj.associated_actors = AssociatedActors.from_obj(obj.Associated_Actors)
@@ -367,50 +303,7 @@ class ThreatActor(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        if self.id_:
-            d['id'] = self.id_
-        if self.idref:
-            d['idref'] = self.idref
-        if self.timestamp:
-            d['timestamp'] = utils.dates.serialize_value(self.timestamp)
-        if self.version:
-            d['version'] = self.version
-        if self.title:
-            d['title'] = self.title
-        if self.description:
-            d['description'] = self.description.to_dict()
-        if self.short_description:
-            d['short_description'] = self.short_description.to_dict()
-        if self.identity:
-            d['identity'] = self.identity.to_dict()
-        if self.types:
-            d['types'] = [x.to_dict() for x in self.types]
-        if self.motivations:
-            d['motivations'] = [x.to_dict() for x in self.motivations]
-        if self.sophistications:
-            d['sophistications'] = [x.to_dict() for x in self.sophistications]
-        if self.intended_effects:
-            d['intended_effects'] = [x.to_dict() for x in self.intended_effects]
-        if self.planning_and_operational_supports:
-            d['planning_and_operational_supports'] = [x.to_dict()
-                    for x in self.planning_and_operational_supports]
-        if self.observed_ttps:
-            d['observed_ttps'] = self.observed_ttps.to_dict()
-        if self.associated_campaigns:
-            d['associated_campaigns'] = self.associated_campaigns.to_dict()
-        if self.associated_actors:
-            d['associated_actors'] = self.associated_actors.to_dict()
-        if self.handling:
-            d['handling'] = self.handling.to_dict()
-        if self.confidence:
-            d['confidence'] = self.confidence.to_dict()
-        if self.information_source:
-            d['information_source'] = self.information_source.to_dict()
-        if self.related_packages:
-            d['related_packages'] = self.related_packages.to_dict()
-
-        return d
+        return super(ThreatActor, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
@@ -419,27 +312,70 @@ class ThreatActor(stix.Entity):
 
         if not return_obj:
             return_obj = cls()
+            
+        get = dict_repr.get
 
-        return_obj.id_ = dict_repr.get('id')
-        return_obj.idref = dict_repr.get('idref')
-        return_obj.timestamp = dict_repr.get('timestamp')
-        return_obj.version = dict_repr.get('version')
-        return_obj.title = dict_repr.get('title')
-        return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
-        return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
-        return_obj.identity = Identity.from_dict(dict_repr.get('identity'))
-        return_obj.types = [Statement.from_dict(x) for x in dict_repr.get('types', [])]
-        return_obj.motivations = [Statement.from_dict(x) for x in dict_repr.get('motivations', [])]
-        return_obj.sophistications = [Statement.from_dict(x) for x in dict_repr.get('sophistications', [])]
-        return_obj.intended_effects = [Statement.from_dict(x) for x in dict_repr.get('intended_effects', [])]
-        return_obj.planning_and_operational_supports = [Statement.from_dict(x)
-                for x in dict_repr.get('planning_and_operational_supports', [])]
-        return_obj.observed_ttps = ObservedTTPs.from_dict(dict_repr.get('observed_ttps'))
-        return_obj.associated_campaigns = AssociatedCampaigns.from_dict(dict_repr.get('associated_campaigns'))
-        return_obj.associated_actors = AssociatedActors.from_dict(dict_repr.get('associated_actors'))
-        return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
-        return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
-        return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
-        return_obj.related_packages = RelatedPackageRefs.from_dict(dict_repr.get('related_packages'))
+        return_obj.id_ = get('id')
+        return_obj.idref = get('idref')
+        return_obj.timestamp = get('timestamp')
+        return_obj.version = get('version')
+        return_obj.title = get('title')
+        return_obj.description = StructuredText.from_dict(get('description'))
+        return_obj.short_description = StructuredText.from_dict(get('short_description'))
+        return_obj.identity = Identity.from_dict(get('identity'))
+        return_obj.types = Types.from_dict(get('types'))
+        return_obj.motivations = Motivations.from_dict(get('motivations'))
+        return_obj.sophistications = Sophistications.from_dict(get('sophistications'))
+        return_obj.intended_effects = IntendedEffects.from_dict(get('intended_effects'))
+        return_obj.planning_and_operational_supports = \
+            PlanningAndOperationalSupports.from_dict(get('planning_and_operational_supports'))
+        return_obj.observed_ttps = ObservedTTPs.from_dict(get('observed_ttps'))
+        return_obj.associated_campaigns = AssociatedCampaigns.from_dict(get('associated_campaigns'))
+        return_obj.associated_actors = AssociatedActors.from_dict(get('associated_actors'))
+        return_obj.handling = Marking.from_dict(get('handling'))
+        return_obj.confidence = Confidence.from_dict(get('confidence'))
+        return_obj.information_source = InformationSource.from_dict(get('information_source'))
+        return_obj.related_packages = RelatedPackageRefs.from_dict(get('related_packages'))
 
         return return_obj
+
+
+class Sophistications(stix.TypedList):
+    _contained_type = Statement
+
+    def _fix_value(self, value):
+        sophistication = vocabs.ThreatActorSophistication(value)
+        return Statement(value=sophistication)
+
+
+class Motivations(stix.TypedList):
+    _contained_type = Statement
+
+    def _fix_value(self, value):
+        motivation = vocabs.Motivation(value)
+        return Statement(value=motivation)
+
+
+class IntendedEffects(stix.TypedList):
+    _contained_type = Statement
+
+    def _fix_value(self, value):
+        intended_effect = vocabs.IntendedEffect(value)
+        return Statement(value=intended_effect)
+
+
+class PlanningAndOperationalSupports(stix.TypedList):
+    _contained_type = Statement
+
+    def _fix_value(self, value):
+        pos = vocabs.PlanningAndOperationalSupport(value)
+        return Statement(value=pos)
+
+
+class Types(stix.TypedList):
+    _contained_type = Statement
+
+    def _fix_value(self, value):
+        type_ = vocabs.ThreatActorType(value)
+        return Statement(value=type_)
+
