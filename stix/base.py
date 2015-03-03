@@ -282,8 +282,10 @@ class EntityList(collections.MutableSequence, Entity):
         try:
             new_value = self._contained_type(value)
         except:
-            raise ValueError("Can't put '%s' (%s) into a %s" %
-                (value, type(value), self.__class__))
+            error = "Can't put '{0}' ({1}) into a {2}. Expected {3} instance."
+            error = error.format(value, type(value), type(self), type(self._contained_type))
+            raise ValueError(error)
+
         return new_value
 
     # The next four functions can be overridden, but otherwise define the
@@ -432,8 +434,8 @@ class TypedList(collections.MutableSequence):
         try:
             new_value = self._contained_type(value)
         except:
-            error = "Can't put '{0}' ({1}) into a {3}"
-            error = error.format(value, type(value), self.__class__)
+            error = "Can't put '{0}' ({1}) into a {2}. Expected {3} instance."
+            error = error.format(value, type(value), type(self), type(self._contained_type))
             raise ValueError(error)
 
         return new_value
