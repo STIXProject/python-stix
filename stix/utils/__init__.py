@@ -32,6 +32,13 @@ def ignored(*exceptions):
         pass
 
 
+def is_cdata(text):
+    if not text:
+        return False
+
+    return CDATA_START in text
+
+
 def strip_cdata(text):
     """Removes all CDATA blocks from `text` if it contains them.
 
@@ -46,7 +53,10 @@ def strip_cdata(text):
         An XML unescaped string with CDATA block qualifiers removed.
 
     """
-    xml = "<e>%s</e>" % text
+    if not is_cdata(text):
+        return text
+
+    xml = "<e>{0}</e>".format(text)
     node = lxml.etree.fromstring(xml)
     return node.text
 
@@ -67,7 +77,7 @@ def cdata(text):
     if not text:
         return
 
-    if CDATA_START in text:
+    if is_cdata(text):
         text = strip_cdata(text)
 
     escaped = "{0}{1}{2}".format(CDATA_START, text, CDATA_END)
@@ -190,7 +200,6 @@ def is_timestamp(obj):
 
 def is_etree(obj):
     return isinstance(obj, lxml.etree._Element)
-
 
 
 from .nsparser import *
