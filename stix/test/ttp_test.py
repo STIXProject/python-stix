@@ -17,6 +17,11 @@ class TTPTests(EntityTestCase, unittest.TestCase):
             'tools': [
                 {'title': "Tool"}
             ],
+            'personas': [
+                {
+                    'name': "Foobar"
+                }
+            ],
             'infrastructure': {'title': "Infrastructure"},
         },
         'handling': [
