@@ -172,33 +172,25 @@ class Entity(object):
         dictionary. This may be overridden by derived classes.
 
         """
+        def dict_iter(items):
+            return [x.to_dict() if utils.is_dictable(x) else x for x in items]
+
         d = {}
-        for raw_key in self.__dict__.keys():
-            raw_value = self.__dict__[raw_key]
-            
-            if raw_value:
-                if isinstance(raw_value, Entity):
-                    value = raw_value.to_dict()
-                elif utils.is_sequence(raw_value):
-                    value = []
-                    for x in raw_value:
-                        if isinstance(x, Entity):
-                            value.append(x.to_dict())
-                        else:
-                            value.append(x)
-                elif isinstance(raw_value, lxml.etree._ElementTree):
-                    value = lxml.etree.tostring(raw_value)
-                else:
-                    value = raw_value
-                
-                if raw_key.startswith("_"):
-                    key = raw_key[1:]
-                elif raw_key.endswith("_"):
-                    key = raw_key[:-1]
-                else:
-                    key = raw_key
-            
-                d[key] = value
+
+        for name, field in utils.iter_vars(self):
+            key = utils.key_name(name)
+
+            if utils.is_dictable(field):
+                d[key] = field.to_dict()
+            elif utils.is_timestamp(field):
+                d[key] = utils.dates.serialize_value(field)
+            elif utils.is_etree(field):
+                d[key] = lxml.etree.tostring(field)
+            elif utils.is_sequence(field):
+                d[key] = dict_iter(field)
+            else:
+                d[key] = field
+
         return d
 
     @classmethod

@@ -100,6 +100,13 @@ def is_entitylist(entity):
     return isinstance(entity, (cybox.EntityList, stix.EntityList))
 
 
+def is_typedlist(entity):
+    """Returns true if `entity` is an instance of :class:`stix.TypedList`
+
+    """
+    return isinstance(entity, stix.TypedList)
+
+
 def attr_name(name):
     """Converts `name` into the form expected for python-stix and
     python-cybox properties.
@@ -165,6 +172,25 @@ def check_version(expected, found):
     error = "Version '{0}' is invalid. Expected {1}."
     error = error.format(found, expected)
     raise ValueError(error)
+
+
+def iter_vars(obj):
+    return dict(
+        (attr_name(x), y) for x, y in obj.__dict__.iteritems() if y
+    ).iteritems()
+
+
+def is_dictable(obj):
+    return hasattr(obj, "to_dict") and hasattr(obj, "from_dict")
+
+
+def is_timestamp(obj):
+    return isinstance(obj, datetime.datetime)
+
+
+def is_etree(obj):
+    return isinstance(obj, lxml.etree._Element)
+
 
 
 from .nsparser import *
