@@ -1,7 +1,6 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 import stix
-import stix.utils as utils
 import stix.bindings.ttp as ttp_binding
 
 from .malware_instance import MalwareInstance
@@ -25,23 +24,10 @@ class Behavior(stix.Entity):
 
     @malware_instances.setter
     def malware_instances(self, value):
-        self._malware_instances = []
-
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_malware_instance(v)
-        else:
-            self.add_malware_instance(value)
+        self._malware_instances = MalwareInstances(value)
 
     def add_malware_instance(self, malware):
-        if not malware:
-            return
-        elif isinstance(malware, MalwareInstance):
-            self._malware_instances.append(malware)
-        else:
-            raise ValueError("Unable to add item to malware instance list: %s" % type(malware))
+        self.malware_instances.append(malware)
 
     @property
     def attack_patterns(self):
@@ -49,23 +35,10 @@ class Behavior(stix.Entity):
 
     @attack_patterns.setter
     def attack_patterns(self, value):
-        self._attack_patterns = []
-
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_attack_pattern(v)
-        else:
-            self.add_attack_pattern(value)
+        self._attack_patterns = AttackPatterns(value)
 
     def add_attack_pattern(self, attack_pattern):
-        if not attack_pattern:
-            return
-        elif isinstance(attack_pattern, AttackPattern):
-            self.attack_patterns.append(attack_pattern)
-        else:
-            raise ValueError("Unable to add item to attack pattern list: %s" % type(attack_pattern))
+        self.attack_patterns.append(attack_pattern)
 
     @property
     def exploits(self):
@@ -73,23 +46,10 @@ class Behavior(stix.Entity):
 
     @exploits.setter
     def exploits(self, value):
-        self._exploits = []
-
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_exploit(v)
-        else:
-            self.add_exploit(value)
+        self._exploits = Exploits(value)
 
     def add_exploit(self, exploit):
-        if not exploit:
-            return
-        elif isinstance(exploit, Exploit):
-            self._exploits.append(exploit)
-        else:
-            raise ValueError("Unable to add item to exploit list: %s" % type(exploit))
+        self.exploits.append(exploit)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(Behavior, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -98,14 +58,11 @@ class Behavior(stix.Entity):
             return_obj = self._binding_class()
 
         if self.malware_instances:
-            malware_obj = self._binding.MalwareType(Malware_Instance=[x.to_obj(ns_info=ns_info) for x in self.malware_instances])
-            return_obj.Malware = malware_obj
+            return_obj.Malware = self.malware_instances.to_obj(ns_info=ns_info)
         if self.exploits:
-            exploits_obj = self._binding.ExploitsType(Exploit=[x.to_obj(ns_info=ns_info) for x in self.exploits])
-            return_obj.Exploits = exploits_obj
+            return_obj.Exploits = self.exploits.to_obj(ns_info=ns_info)
         if self.attack_patterns:
-            attack_patterns_obj = self._binding.AttackPatternsType(Attack_Pattern=[x.to_obj(ns_info=ns_info) for x in self.attack_patterns])
-            return_obj.Attack_Patterns = attack_patterns_obj
+            return_obj.Attack_Patterns= self.attack_patterns.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -113,26 +70,18 @@ class Behavior(stix.Entity):
     def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
+
         if not return_obj:
             return_obj = cls()
 
-        if obj.Malware:
-            return_obj.malware_instances = [MalwareInstance.from_obj(x) for x in obj.Malware.Malware_Instance]
-        if obj.Exploits:
-            return_obj.exploits = [Exploit.from_obj(x) for x in obj.Exploits.Exploit]
-        if obj.Attack_Patterns:
-            return_obj.attack_patterns = [AttackPattern.from_obj(x) for x in obj.Attack_Patterns.Attack_Pattern]
+        return_obj.malware_instances = MalwareInstances.from_obj(obj.Malware)
+        return_obj.exploits = Exploits.from_obj(obj.Exploits)
+        return_obj.attack_patterns = AttackPatterns.from_obj(obj.Attack_Patterns)
+
         return return_obj
 
     def to_dict(self):
-        d = {}
-        if self.malware_instances:
-            d['malware_instances'] = [x.to_dict() for x in self.malware_instances]
-        if self.exploits:
-            d['exploits'] = [x.to_dict() for x in self.exploits]
-        if self.attack_patterns:
-            d['attack_patterns'] = [x.to_dict() for x in self.attack_patterns]
-        return d
+        return super(Behavior, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
@@ -141,7 +90,37 @@ class Behavior(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.malware_instances = [MalwareInstance.from_dict(x) for x in dict_repr.get('malware_instances', [])]
-        return_obj.exploits = [Exploit.from_dict(x) for x in dict_repr.get('exploits', [])]
-        return_obj.attack_patterns = [AttackPattern.from_dict(x) for x in dict_repr.get('attack_patterns', [])]
+        get = dict_repr.get
+
+        return_obj.malware_instances = MalwareInstances.from_dict(get('malware_instances'))
+        return_obj.exploits = Exploits.from_dict(get('exploits'))
+        return_obj.attack_patterns = AttackPatterns.from_dict(get('attack_patterns'))
+
         return return_obj
+
+
+class Exploits(stix.EntityList):
+    _namespace = "http://stix.mitre.org/TTP-1"
+    _contained_type = Exploit
+    _binding_class = ttp_binding.ExploitsType
+    _binding_var = "Exploit"
+    _inner_name = "exploits"
+    _dict_as_list = True
+
+
+class MalwareInstances(stix.EntityList):
+    _namespace = "http://stix.mitre.org/TTP-1"
+    _contained_type = MalwareInstance
+    _binding_class = ttp_binding.MalwareType
+    _binding_var = "Malware_Instance"
+    _inner_name = "malware_instances"
+    _dict_as_list = True
+
+
+class AttackPatterns(stix.EntityList):
+    _namespace = "http://stix.mitre.org/TTP-1"
+    _contained_type = AttackPattern
+    _binding_class = ttp_binding.AttackPatternsType
+    _binding_var = "Attack_Pattern"
+    _inner_name = "attack_patterns"
+    _dict_as_list = True
