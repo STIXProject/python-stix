@@ -124,7 +124,7 @@ class InformationSource(stix.Entity):
 
     @roles.setter
     def roles(self, value):
-        self._roles = Roles(value)
+        self._roles = _Roles(value)
 
     def add_role(self, value):
         self.roles.append(value)
@@ -165,7 +165,7 @@ class InformationSource(stix.Entity):
         return_obj.description = StructuredText.from_obj(obj.Description)
         return_obj.identity = Identity.from_obj(obj.Identity)
         return_obj.contributing_sources = ContributingSources.from_obj(obj.Contributing_Sources)
-        return_obj.roles = Roles.from_obj(obj.Role)
+        return_obj.roles = _Roles.from_obj(obj.Role)
 
         if obj.References:
             return_obj.references = obj.References.Reference
@@ -193,7 +193,7 @@ class InformationSource(stix.Entity):
         return_obj.identity = Identity.from_dict(get('identity'))
         return_obj.time = cybox.common.Time.from_dict(get('time'))
         return_obj.tools = cybox.common.ToolInformationList.from_list(get('tools'))
-        return_obj.roles = Roles.from_dict(get('roles'))
+        return_obj.roles = _Roles.from_dict(get('roles'))
 
         return return_obj
 
@@ -225,7 +225,8 @@ class ContributingSources(stix.EntityList):
     _inner_name = "sources"
 
 
-class Roles(stix.TypedList):
+# NOT AN ACTUAL STIX TYPE!
+class _Roles(stix.TypedList):
     _contained_type = VocabString
 
     def _fix_value(self, value):

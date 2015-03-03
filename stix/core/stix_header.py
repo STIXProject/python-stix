@@ -2,7 +2,6 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.stix_core as stix_core_binding
 from stix.common import vocabs, InformationSource, StructuredText, VocabString
@@ -95,7 +94,7 @@ class STIXHeader(stix.Entity):
 
     @package_intents.setter
     def package_intents(self, value):
-        self._package_intents = PackageIntents(value)
+        self._package_intents = _PackageIntents(value)
 
     def add_package_intent(self, package_intent):
         self.package_intents.append(package_intent)
@@ -129,7 +128,7 @@ class STIXHeader(stix.Entity):
         return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
         return_obj.handling = Marking.from_obj(obj.Handling)
         return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
-        return_obj.package_intents = PackageIntents.from_obj(obj.Package_Intent)
+        return_obj.package_intents = _PackageIntents.from_obj(obj.Package_Intent)
         return_obj.profiles = obj.Profiles.Profile if obj.Profiles else []
 
         return return_obj
@@ -169,7 +168,7 @@ class STIXHeader(stix.Entity):
         get = dict_repr.get
         
         return_obj.title = get('title')
-        return_obj.package_intents = PackageIntents.from_list(get('package_intents'))
+        return_obj.package_intents = _PackageIntents.from_list(get('package_intents'))
         return_obj.description = StructuredText.from_dict(get('description'))
         return_obj.short_description = StructuredText.from_dict(get('short_description'))
         return_obj.handling = Marking.from_dict(get('handling'))
@@ -198,7 +197,8 @@ class STIXHeader(stix.Entity):
         return d
 
 
-class PackageIntents(stix.TypedList):
+# NOT AN ACTUAL STIX TYPE!
+class _PackageIntents(stix.TypedList):
     _contained_type = VocabString
 
     def _fix_value(self, value):

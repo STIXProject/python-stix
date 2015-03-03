@@ -23,7 +23,7 @@ import stix.bindings.indicator as indicator_binding
 # relative
 from .test_mechanism import _BaseTestMechanism, TestMechanisms
 from .sightings import Sightings
-from .valid_time import ValidTime, ValidTimePositions
+from .valid_time import ValidTime, _ValidTimePositions
 
 
 class SuggestedCOAs(GenericRelationshipList):
@@ -87,9 +87,7 @@ class SuggestedCOAs(GenericRelationshipList):
     _inner_name = "suggested_coas"
 
     def __init__(self, suggested_coas=None, scope=None):
-         if suggested_coas is None:
-             suggested_coas = []
-         super(SuggestedCOAs, self).__init__(scope, *suggested_coas)
+        super(SuggestedCOAs, self).__init__(scope, suggested_coas)
 
 
 class RelatedIndicators(GenericRelationshipList):
@@ -153,9 +151,8 @@ class RelatedIndicators(GenericRelationshipList):
     _inner_name = "related_indicators"
 
     def __init__(self, related_indicators=None, scope=None):
-        if related_indicators is None:
-            related_indicators = []
-        super(RelatedIndicators, self).__init__(scope, *related_indicators)
+        super(RelatedIndicators, self).__init__(scope, related_indicators)
+
 
 class Indicator(stix.Entity):
     """Implementation of the STIX ``IndicatorType``.
@@ -191,7 +188,7 @@ class Indicator(stix.Entity):
         self.short_description = short_description
         self.indicator_types = IndicatorTypes()
         self.confidence = None
-        self.indicated_ttps = IndicatedTTPs()
+        self.indicated_ttps = _IndicatedTTPs()
         self.test_mechanisms = TestMechanisms()
         self.alternative_id = None
         self.suggested_coas = SuggestedCOAs()
@@ -199,7 +196,7 @@ class Indicator(stix.Entity):
         self.composite_indicator_expression = None
         self.handling = None
         self.kill_chain_phases = KillChainPhasesReference()
-        self.valid_time_positions = ValidTimePositions()
+        self.valid_time_positions = _ValidTimePositions()
         self.related_indicators = None
         self.observable_composition_operator = "OR"
         self.likely_impact = None
@@ -571,11 +568,11 @@ class Indicator(stix.Entity):
 
     @valid_time_positions.setter
     def valid_time_positions(self, value):
-        if isinstance(value, ValidTimePositions):
+        if isinstance(value, _ValidTimePositions):
             self._valid_time_positions = value
             return
 
-        self._valid_time_positions = ValidTimePositions()
+        self._valid_time_positions = _ValidTimePositions()
 
         if not value:
             return
@@ -716,11 +713,11 @@ class Indicator(stix.Entity):
     
     @indicated_ttps.setter
     def indicated_ttps(self, value):
-        if isinstance(value, IndicatedTTPs):
+        if isinstance(value, _IndicatedTTPs):
             self._indicated_ttps = value
             return
 
-        self._indicated_ttps = IndicatedTTPs()
+        self._indicated_ttps = _IndicatedTTPs()
 
         if not value:
             return
@@ -1169,8 +1166,8 @@ class Indicator(stix.Entity):
             return_obj.test_mechanisms = TestMechanisms.from_obj(obj.Test_Mechanisms)
             return_obj.suggested_coas = SuggestedCOAs.from_obj(obj.Suggested_COAs)
             return_obj.alternative_id = obj.Alternative_ID
-            return_obj.indicated_ttps = IndicatedTTPs.from_obj(obj.Indicated_TTP)
-            return_obj.valid_time_positions = ValidTimePositions.from_obj(obj.Valid_Time_Position)
+            return_obj.indicated_ttps = _IndicatedTTPs.from_obj(obj.Indicated_TTP)
+            return_obj.valid_time_positions = _ValidTimePositions.from_obj(obj.Valid_Time_Position)
             return_obj.observable = Observable.from_obj(obj.Observable)
             
         return return_obj
@@ -1246,7 +1243,7 @@ class Indicator(stix.Entity):
         return_obj.alternative_id = dict_repr.get('alternative_id')
         return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
-        return_obj.indicated_ttps =  IndicatedTTPs.from_dict(dict_repr.get('indicated_ttps'))
+        return_obj.indicated_ttps =  _IndicatedTTPs.from_dict(dict_repr.get('indicated_ttps'))
         return_obj.test_mechanisms = TestMechanisms.from_list(dict_repr.get('test_mechanisms'))
         return_obj.suggested_coas = SuggestedCOAs.from_dict(dict_repr.get('suggested_coas'))
         return_obj.sightings = Sightings.from_dict(dict_repr.get('sightings'))
@@ -1257,7 +1254,7 @@ class Indicator(stix.Entity):
         return_obj.likely_impact = Statement.from_dict(dict_repr.get('likely_impact'))
         return_obj.indicator_types = IndicatorTypes.from_list(dict_repr.get('indicator_types'))
         return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
-        return_obj.valid_time_positions = ValidTimePositions.from_dict(dict_repr.get('valid_time_positions'))
+        return_obj.valid_time_positions = _ValidTimePositions.from_dict(dict_repr.get('valid_time_positions'))
         return_obj.observable = Observable.from_dict(dict_repr.get('observable'))
         return_obj.producer = InformationSource.from_dict(dict_repr.get('producer'))
 
@@ -1368,6 +1365,7 @@ class CompositeIndicatorExpression(stix.EntityList):
         return return_obj
 
 
+# NOT ACTUAL STIX TYPES!
 class IndicatorTypes(stix.TypedList):
     """A :class:`stix.common.vocabs.VocabString` collection which defaults to
     :class:`stix.common.vocabs.IndicatorType`. This class implements methods
@@ -1412,7 +1410,7 @@ class IndicatorTypes(stix.TypedList):
         return IndicatorType(value)
 
 
-class IndicatedTTPs(stix.TypedList):
+class _IndicatedTTPs(stix.TypedList):
     _contained_type = RelatedTTP
 
 

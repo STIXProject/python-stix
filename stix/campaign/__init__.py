@@ -34,10 +34,6 @@ class Attribution(GenericRelationshipList):
     _inner_name = "threat_actors"
 
 
-class AttributionList(stix.TypedList):
-    _contained_type = Attribution
-
-
 class RelatedIncidents(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Campaign-1"
     _binding = campaign_binding
@@ -88,15 +84,15 @@ class Campaign(stix.Entity):
         self.description = description
         self.short_description = short_description
         self.names = None
-        self.intended_effects = IntendedEffects()
+        self.intended_effects = _IntendedEffects()
         self.status = None
         self.related_ttps = RelatedTTPs()
         self.related_incidents = RelatedIncidents()
         self.related_indicators = RelatedIndicators()
-        self.attribution = AttributionList()
+        self.attribution = _AttributionList()
         self.associated_campaigns = AssociatedCampaigns()
         self.confidence = None
-        self.activity = Activities()
+        self.activity = _Activities()
         self.information_source = None
         self.handling = None
         self.related_packages = RelatedPackageRefs()
@@ -192,19 +188,10 @@ class Campaign(stix.Entity):
 
     @intended_effects.setter
     def intended_effects(self, value):
-        if isinstance(value, IntendedEffects):
-            self._intended_effects = value
-        else:
-            self._intended_effects = IntendedEffects(value)
+       self._intended_effects = _IntendedEffects(value)
 
     def add_intended_effect(self, value):
-        if not value:
-            return
-        elif isinstance(value, Statement):
-            self.intended_effects.append(value)
-        else:
-            intended_effect = vocabs.IntendedEffect(value)
-            self.intended_effects.append(Statement(value=intended_effect))
+        self.intended_effects.append(value)
 
     @property
     def activity(self):
@@ -212,10 +199,7 @@ class Campaign(stix.Entity):
 
     @activity.setter
     def activity(self, value):
-        if isinstance(value, Activities):
-            self._activity = value
-        else:
-            self._activity = Activities(value)
+        self._activity = _Activities(value)
 
     def add_activity(self, value):
         self.activity.append(value)
@@ -239,19 +223,7 @@ class Campaign(stix.Entity):
 
     @attribution.setter
     def attribution(self, value):
-        if isinstance(value, AttributionList):
-            self._attribution = value
-            return
-
-        self._attribution = AttributionList()
-
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            self._attribution = AttributionList(*value)
-        else:
-            self._attribution.append(value) # may raise a ValueError
-
+        self._attribution = _AttributionList(value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(Campaign, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -317,18 +289,18 @@ class Campaign(stix.Entity):
                     StructuredText.from_obj(obj.Short_Description)
             return_obj.names = Names.from_obj(obj.Names)
             return_obj.intended_effects = \
-                    IntendedEffects.from_obj(obj.Intended_Effect)
+                    _IntendedEffects.from_obj(obj.Intended_Effect)
             return_obj.status = VocabString.from_obj(obj.Status)
             return_obj.related_ttps = RelatedTTPs.from_obj(obj.Related_TTPs)
             return_obj.related_incidents = \
                     RelatedIncidents.from_obj(obj.Related_Incidents)
             return_obj.related_indicators = \
                     RelatedIndicators.from_obj(obj.Related_Indicators)
-            return_obj.attribution = AttributionList.from_obj(obj.Attribution)
+            return_obj.attribution = _AttributionList.from_obj(obj.Attribution)
             return_obj.associated_campaigns = \
                     AssociatedCampaigns.from_obj(obj.Associated_Campaigns)
             return_obj.confidence = Confidence.from_obj(obj.Confidence)
-            return_obj.activity = Activities.from_obj(obj.Activity)
+            return_obj.activity = _Activities.from_obj(obj.Activity)
             return_obj.information_source = \
                     InformationSource.from_obj(obj.Information_Source)
             return_obj.handling = Marking.from_obj(obj.Handling)
@@ -402,7 +374,7 @@ class Campaign(stix.Entity):
                 StructuredText.from_dict(get('short_description'))
         return_obj.names = Names.from_dict(get('names'))
         return_obj.intended_effects = \
-            IntendedEffects.from_dict(get('intended_effects'))
+            _IntendedEffects.from_dict(get('intended_effects'))
         return_obj.status = VocabString.from_dict(get('status'))
         return_obj.related_ttps = \
                 RelatedTTPs.from_dict(get('related_ttps'))
@@ -410,12 +382,12 @@ class Campaign(stix.Entity):
                 RelatedIncidents.from_dict(get('related_incidents'))
         return_obj.related_indicators = \
                 RelatedIndicators.from_dict(get('related_indicators'))
-        return_obj.attribution = AttributionList.from_list(get('attribution'))
+        return_obj.attribution = _AttributionList.from_list(get('attribution'))
         return_obj.associated_campaigns = \
                 AssociatedCampaigns.from_dict(get('associated_campaigns'))
         return_obj.confidence = \
                 Confidence.from_dict(get('confidence'))
-        return_obj.activity = Activities.from_dict(get('activity'))
+        return_obj.activity = _Activities.from_dict(get('activity'))
         return_obj.information_source = \
                 InformationSource.from_dict(get('information_source'))
         return_obj.handling = Marking.from_dict(get('handling'))
@@ -425,11 +397,16 @@ class Campaign(stix.Entity):
         return return_obj
 
 
-class Activities(stix.TypedList):
+# Not Actual STIX Types!
+class _AttributionList(stix.TypedList):
+    _contained_type = Attribution
+
+
+class _Activities(stix.TypedList):
     _contained_type = Activity
 
 
-class IntendedEffects(stix.TypedList):
+class _IntendedEffects(stix.TypedList):
     _contained_type = Statement
 
     def _fix_value(self, value):

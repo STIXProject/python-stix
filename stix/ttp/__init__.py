@@ -181,7 +181,7 @@ class TTP(stix.Entity):
 
     @intended_effects.setter
     def intended_effects(self, value):
-        self._intended_effects = IntendedEffects(value)
+        self._intended_effects = _IntendedEffects(value)
 
     def add_intended_effect(self, value):
         self.intended_effects.append(value)
@@ -281,7 +281,7 @@ class TTP(stix.Entity):
             return_obj.resources = Resource.from_obj(obj.Resources)
             return_obj.victim_targeting = VictimTargeting.from_obj(obj.Victim_Targeting)
             return_obj.handling = Marking.from_obj(obj.Handling)
-            return_obj.intended_effects = IntendedEffects.from_obj(obj.Intended_Effect)
+            return_obj.intended_effects = _IntendedEffects.from_obj(obj.Intended_Effect)
 
         return return_obj
 
@@ -308,15 +308,15 @@ class TTP(stix.Entity):
         return_obj.related_ttps = RelatedTTPs.from_dict(get('related_ttps'))
         return_obj.exploit_targets = ExploitTargets.from_dict(get('exploit_targets'))
         return_obj.information_source = InformationSource.from_dict(get('information_source'))
-        return_obj.intended_effects = IntendedEffects.from_dict(get('intended_effects'))
+        return_obj.intended_effects = _IntendedEffects.from_dict(get('intended_effects'))
         return_obj.resources = Resource.from_dict(get('resources'))
         return_obj.victim_targeting = VictimTargeting.from_dict(get('victim_targeting'))
         return_obj.handling = Marking.from_dict(get('handling'))
 
         return return_obj
 
-
-class IntendedEffects(stix.TypedList):
+# NOT ACTUAL STIX TYPE
+class _IntendedEffects(stix.TypedList):
     _contained_type = Statement
 
     def _fix_value(self, value):

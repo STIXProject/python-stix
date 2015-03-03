@@ -192,8 +192,10 @@ class GenericRelationshipList(stix.EntityList):
         self.scope = scope
 
     def __nonzero__(self):
-        return super(GenericRelationshipList, self).__nonzero__() \
-                or bool(self.scope)
+        return (
+            super(GenericRelationshipList, self).__nonzero__() or
+            bool(self.scope)
+        )
 
     @property
     def scope(self):
@@ -228,10 +230,12 @@ class GenericRelationshipList(stix.EntityList):
         if return_obj is None:
             return_obj = cls()
 
-        super(GenericRelationshipList, cls).from_obj(obj,
-                return_obj=return_obj,
-                contained_type=cls._contained_type,
-                binding_var=cls._binding_var)
+        super(GenericRelationshipList, cls).from_obj(
+            obj,
+            return_obj=return_obj,
+            contained_type=cls._contained_type,
+            binding_var=cls._binding_var
+        )
 
         return_obj.scope = obj.scope
 

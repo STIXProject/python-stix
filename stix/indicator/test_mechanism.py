@@ -72,7 +72,8 @@ class _BaseTestMechanism(stix.Entity):
         
         return_obj.id = self.id_
         return_obj.idref = self.idref
-        
+        return_obj.xsi_type = self._XSI_TYPE
+
         if self.efficacy:
             return_obj.Efficacy = self.efficacy.to_obj(ns_info=ns_info)
         if self.producer:

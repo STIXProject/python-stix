@@ -83,5 +83,6 @@ class ValidTime(stix.Entity):
         return return_obj
 
 
-class ValidTimePositions(stix.TypedList):
+# NOT AN ACTUAL STIX TYPE
+class _ValidTimePositions(stix.TypedList):
     _contained_type = ValidTime

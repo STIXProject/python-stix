@@ -4,9 +4,8 @@
 from __future__ import absolute_import
 
 import stix
-import stix.utils
+import stix.utils as utils
 import stix.bindings.stix_common as common_binding
-
 
 class Identity(stix.Entity):
     _binding = common_binding
@@ -16,7 +15,7 @@ class Identity(stix.Entity):
         self.id_ = id_
         self.idref = idref
         self.name = name
-        self.related_identities = RelatedIdentities()
+        self.related_identities = related_identities
 
     @property
     def id_(self):
@@ -51,6 +50,14 @@ class Identity(stix.Entity):
         self._name = value if value else None
 
 
+    @property
+    def related_identities(self):
+        return self._related_identities
+
+    @related_identities.setter
+    def related_identities(self, value):
+        self._related_identities = RelatedIdentities(value)
+
     def to_obj(self, return_obj=None, ns_info=None):
         super(Identity, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
@@ -63,7 +70,8 @@ class Identity(stix.Entity):
         if self.name:
             return_obj.Name = self.name
         if self.related_identities:
-            return_obj.Related_Identities = self.related_identities.to_obj(ns_info=ns_info)
+            return_obj.Related_Identities = \
+                self.related_identities.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -96,7 +104,8 @@ class Identity(stix.Entity):
             return_obj.id_ = obj.id
             return_obj.idref = obj.idref
             return_obj.name = obj.Name
-            return_obj.related_identities = RelatedIdentities.from_obj(obj.Related_Identities)
+            return_obj.related_identities = \
+                RelatedIdentities.from_obj(obj.Related_Identities)
 
         return return_obj
 
@@ -138,7 +147,6 @@ class Identity(stix.Entity):
 
 # We can't import RelatedIdentity until we have defined the Identity class.
 from stix.common.related import RelatedIdentity
-
 
 class RelatedIdentities(stix.EntityList):
     _namespace = 'http://stix.mitre.org/common-1'
