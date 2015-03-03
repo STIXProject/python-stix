@@ -4,7 +4,6 @@
 from __future__ import absolute_import
 
 import stix
-import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
 class Identity(stix.Entity):
@@ -129,18 +128,21 @@ class Identity(stix.Entity):
         if not dict_repr:
             return None
 
+        get = dict_repr.get
+
         if not return_obj:
-            xsi_type = dict_repr.get('xsi:type')
+            xsi_type = get('xsi:type')
             if xsi_type:
-                klass = Identity.lookup_class(dict_repr.get('xsi:type'))
+                klass = Identity.lookup_class(get('xsi:type'))
                 return_obj = klass.from_dict(dict_repr)
             else:
                 return_obj = Identity.from_dict(dict_repr, cls())
         else:
-            return_obj.name = dict_repr.get('name')
-            return_obj.id_ = dict_repr.get('id')
-            return_obj.idref = dict_repr.get('idref')
-            return_obj.related_identities = RelatedIdentities.from_dict(dict_repr.get('related_identities'))
+            return_obj.name = get('name')
+            return_obj.id_ = get('id')
+            return_obj.idref = get('idref')
+            return_obj.related_identities = \
+                RelatedIdentities.from_dict(get('related_identities'))
 
         return return_obj
 

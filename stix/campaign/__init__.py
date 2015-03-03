@@ -188,7 +188,7 @@ class Campaign(stix.Entity):
 
     @intended_effects.setter
     def intended_effects(self, value):
-       self._intended_effects = _IntendedEffects(value)
+        self._intended_effects = _IntendedEffects(value)
 
     def add_intended_effect(self, value):
         self.intended_effects.append(value)
