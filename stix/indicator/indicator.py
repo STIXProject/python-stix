@@ -344,13 +344,11 @@ class Indicator(stix.Entity):
 
     @description.setter
     def description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._description = value
-            else:
-                self._description = StructuredText(value=value)
-        else:
-            self._description = None
+        self._set_var(
+            name='_description',
+            item=value,
+            klass=StructuredText
+        )
 
     @property
     def short_description(self):
@@ -373,13 +371,11 @@ class Indicator(stix.Entity):
 
     @short_description.setter
     def short_description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._short_description = value
-            else:
-                self._short_description = StructuredText(value=value)
-        else:
-            self._short_description = None
+         self._set_var(
+             name='_short_description',
+             item=value,
+             klass=StructuredText
+         )
 
     @property
     def producer(self):
@@ -401,10 +397,12 @@ class Indicator(stix.Entity):
 
     @producer.setter
     def producer(self, value):
-        if value and not isinstance(value, InformationSource):
-            raise ValueError('value must be instance of InformationSource')
-
-        self._producer = value
+        self._set_var(
+            name='_producer',
+            item=value,
+            klass=InformationSource,
+            try_cast=False
+        )
 
     @property
     def observable(self):

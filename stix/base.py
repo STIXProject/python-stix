@@ -30,6 +30,22 @@ class Entity(object):
         ns_info.collect(self)
 
 
+    def _set_var(self, name, item, klass, init_argname='value', try_cast=True):
+        if not item:
+            setattr(self, name, None)
+        elif isinstance(item, klass):
+            setattr(self, name, item)
+        elif try_cast:
+            kwarg = {init_argname: item}    # kwarg dict
+            promoted = klass(**kwarg)       # klass(value='foobar')
+            setattr(self, name, promoted)
+        else:
+            attr_name = utils.attr_name(name)
+            error = "The '{0}' field expects an instance of {1}. Received: {2}."
+            error = error.format(attr_name, klass, type(item))
+            raise TypeError(error)
+
+
     def to_obj(self, return_obj=None, ns_info=None):
         """Converts an `Entity` into a binding object.
 

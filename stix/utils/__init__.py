@@ -192,7 +192,6 @@ def is_etree(obj):
     return isinstance(obj, lxml.etree._Element)
 
 
-
 from .nsparser import *
 from .dates import *
 from .idgen import *
