@@ -11,7 +11,3 @@ Classes
 .. autoclass:: Confidence
 	:show-inheritance:
 	:members:
-
-.. autoclass:: ConfidenceAssertionChain
-	:show-inheritance:
-	:members:
