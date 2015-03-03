@@ -84,10 +84,7 @@ class CourseOfAction(stix.Entity):
         if not value:
             self._version = None
         else:
-            if value not in self._ALL_VERSIONS:
-                msg = ("Version must be one of %s. Found '%s'" %
-                      (self._ALL_VERSIONS, value))
-                raise ValueError(msg)
+            utils.check_version(self._ALL_VERSIONS, value)
             self._version = value
     
     @property
