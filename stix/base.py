@@ -7,9 +7,6 @@ import collections
 import itertools
 import StringIO
 
-# external
-import lxml.etree
-
 # internal
 from . import bindings, utils
 
@@ -431,7 +428,6 @@ class TypedList(collections.MutableSequence):
 
     @classmethod
     def from_obj(cls, obj_list, contained_type=None):
-
         if not obj_list:
             return None
 
@@ -448,7 +444,6 @@ class TypedList(collections.MutableSequence):
 
     @classmethod
     def from_list(cls, list_repr, contained_type=None):
-
 
         if not utils.is_sequence(list_repr):
             return None
