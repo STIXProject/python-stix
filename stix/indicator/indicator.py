@@ -175,6 +175,7 @@ class Indicator(stix.Entity):
     _namespace = 'http://stix.mitre.org/Indicator-2'
     _version = "2.1.1"
     _ALL_VERSIONS = ("2.0", "2.0.1", "2.1", "2.1.1")
+    _ALLOWED_COMPOSITION_OPERATORS = ('AND', 'OR')
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
@@ -460,18 +461,8 @@ class Indicator(stix.Entity):
 
     @observables.setter
     def observables(self, value):
-        if isinstance(value, _Observables):
-            self._observables = value
-            return
+        self._observables = _Observables(value)
 
-        self._observables = _Observables()
-
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            self._observables.extend(value)
-        else:
-            self._observables.append(value)
 
     def add_observable(self, observable):
         """Adds an observable to the ``observables`` list property of the
@@ -500,9 +491,6 @@ class Indicator(stix.Entity):
                 instance of ``cybox.core.Observable``.
 
         """
-        if not observable:
-            return
-
         self.observables.append(observable)
                 
     @property
@@ -527,10 +515,9 @@ class Indicator(stix.Entity):
         if not value:
             return
         elif utils.is_sequence(value):
-            for v in value:
-                self.add_alternative_id(v)
+            self._alternative_id.extend(x for x in value if x)
         else:
-            self.add_alternative_id(value)
+            self._alternative_id.append(value)
 
     def add_alternative_id(self, value):
         """Adds an alternative id to the ``alternative_id`` list property.
@@ -545,8 +532,8 @@ class Indicator(stix.Entity):
         """
         if not value:
             return
-        else:
-            self.alternative_id.append(value)
+
+        self.alternative_id.append(value)
                 
     @property
     def valid_time_positions(self):
@@ -568,19 +555,7 @@ class Indicator(stix.Entity):
 
     @valid_time_positions.setter
     def valid_time_positions(self, value):
-        if isinstance(value, _ValidTimePositions):
-            self._valid_time_positions = value
-            return
-
-        self._valid_time_positions = _ValidTimePositions()
-
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_valid_time_position(v)
-        else:
-            self.add_valid_time_position(value)
+        self._valid_time_positions = _ValidTimePositions(value)
 
     def add_valid_time_position(self, value):
         """Adds an valid time position to the ``valid_time_positions`` property
@@ -596,12 +571,7 @@ class Indicator(stix.Entity):
             ValueError: If the `value` argument is not an instance of
                 :class:`stix.indicator.valid_time.ValidTime`.
         """
-        if not value:
-            return
-        elif isinstance(value, ValidTime):
-            self.valid_time_positions.append(value)
-        else:
-            raise ValueError("value must be instance of ValidTime")
+        self.valid_time_positions.append(value)
 
     @property
     def indicator_types(self):
@@ -629,19 +599,7 @@ class Indicator(stix.Entity):
 
     @indicator_types.setter
     def indicator_types(self, value):
-        if isinstance(value, IndicatorTypes):
-            self._indicator_types = value
-            return
-
-        self._indicator_types = IndicatorTypes()
-
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_indicator_type(v)
-        else:
-            self.add_indicator_type(value)
+        self._indicator_types = IndicatorTypes(value)
 
     def add_indicator_type(self, value):
         """Adds a value to the ``indicator_types`` list property.
@@ -663,13 +621,8 @@ class Indicator(stix.Entity):
                 be converted into an instance of
                 :class:`stix.common.vocabs.IndicatorType`.
         """
-        if not value:
-            return
-        elif isinstance(value, VocabString):
-            self.indicator_types.append(value)
-        else:
-            tmp_indicator_type = IndicatorType(value=value)
-            self.indicator_types.append(tmp_indicator_type)
+        self.indicator_types.append(value)
+
     
     @property
     def confidence(self):
@@ -713,20 +666,8 @@ class Indicator(stix.Entity):
     
     @indicated_ttps.setter
     def indicated_ttps(self, value):
-        if isinstance(value, _IndicatedTTPs):
-            self._indicated_ttps = value
-            return
+        self._indicated_ttps = _IndicatedTTPs(value)
 
-        self._indicated_ttps = _IndicatedTTPs()
-
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_indicated_ttp(v)
-        else:
-            self.add_indicated_ttp(value)
-            
     def add_indicated_ttp(self, v):
         """Adds an Indicated TTP to the ``indicated_ttps`` list property
         of this :class:`Indicator`.
@@ -751,32 +692,15 @@ class Indicator(stix.Entity):
                 instance of :class:`stix.common.related.RelatedTTP`
 
         """
-        if not v:
-            return
-        elif isinstance(v, RelatedTTP):
-            self.indicated_ttps.append(v)
-        else:
-            self.indicated_ttps.append(RelatedTTP(v))
-        
+        self.indicated_ttps.append(v)
+
     @property
     def test_mechanisms(self):
         return self._test_mechanisms
     
     @test_mechanisms.setter
     def test_mechanisms(self, value):
-        if isinstance(value, TestMechanisms):
-            self._test_mechanisms = value
-            return
-
-        self._test_mechanisms = TestMechanisms()
-
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_test_mechanism(v)
-        else:
-            self.add_test_mechanism(value)
+        self._test_mechanisms = TestMechanisms(value)
             
     def add_test_mechanism(self, tm):
         """Adds an Test Mechanism to the ``test_mechanisms`` list property
@@ -803,12 +727,8 @@ class Indicator(stix.Entity):
                 :class:`stix.indicator.test_mechanism._BaseTestMechanism`
 
         """
-        if not tm:
-            return
-        elif isinstance(tm, _BaseTestMechanism):
-            self.test_mechanisms.append(tm)
-        else:
-            raise ValueError('Cannot add type %s to test_mechanisms list' % type(tm))
+        self.test_mechanisms.append(tm)
+
 
     @property
     def handling(self):
@@ -829,20 +749,8 @@ class Indicator(stix.Entity):
 
     @related_indicators.setter
     def related_indicators(self, value):
-        if isinstance(value, RelatedIndicators):
-            self._related_indicators = value
-            return
+        self._related_indicators = RelatedIndicators(value)
 
-        self._related_indicators = RelatedIndicators()
-        
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_related_indicator(v)
-        else:
-            self.add_related_indicator(value)
-    
     def add_related_indicator(self, indicator):
         """Adds an Related Indicator to the ``related_indicators`` list
         property of this :class:`Indicator`.
@@ -874,12 +782,7 @@ class Indicator(stix.Entity):
                 an instance of :class:`stix.common.related.RelatedIndicator`
 
         """
-        if not indicator:
-            return
-        elif isinstance(indicator, RelatedIndicator):
-            self.related_indicators.append(indicator)
-        else:
-            self.related_indicators.append(RelatedIndicator(indicator))
+        self.related_indicators.append(indicator)
 
     @property
     def observable_composition_operator(self):
@@ -887,12 +790,15 @@ class Indicator(stix.Entity):
 
     @observable_composition_operator.setter
     def observable_composition_operator(self, value):
-        if value not in ("AND", "OR"):
-            error = "observable_composition_operator must be 'AND' or 'OR'"
-            raise ValueError(error)
+        if value in self._ALLOWED_COMPOSITION_OPERATORS:
+            self._observable_composition_operator = value
+            return
+
+        error = "observable_composition_operator must one of {0}"
+        error = error.format(self._ALLOWED_COMPOSITION_OPERATORS)
+        raise ValueError(error)
         
-        self._observable_composition_operator = value
-    
+
     @property
     def likely_impact(self):
         return self._likely_impact
@@ -912,10 +818,7 @@ class Indicator(stix.Entity):
     
     @negate.setter
     def negate(self, value):
-        if value in (1, True, '1'):
-            self._negate = True
-        else:  # set to None so that binding will not output negate attribute
-            self._negate = None
+       self._negate = True if value in (1, True, '1') else None
     
     def set_producer_identity(self, identity):
         """Sets the name of the producer of this indicator.
