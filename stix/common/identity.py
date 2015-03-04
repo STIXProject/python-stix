@@ -78,6 +78,7 @@ class Identity(stix.Entity):
     def lookup_class(xsi_type):
         if not xsi_type:
             raise ValueError("xsi:type is required")
+
         for (k, v) in _EXTENSION_MAP.iteritems():
             # TODO: for now we ignore the prefix and just check for
             # a partial match
@@ -94,10 +95,10 @@ class Identity(stix.Entity):
             return None
 
         if not return_obj:
-            try:
+            if hasattr(obj, 'xml_type'):
                 klass = Identity.lookup_class(obj.xml_type)
                 return_obj = klass.from_obj(obj)
-            except AttributeError:
+            else:
                 return_obj = Identity.from_obj(obj, cls())
         else:
             return_obj.id_ = obj.id
@@ -149,6 +150,7 @@ class Identity(stix.Entity):
 
 # We can't import RelatedIdentity until we have defined the Identity class.
 from stix.common.related import RelatedIdentity
+
 
 class RelatedIdentities(stix.EntityList):
     _namespace = 'http://stix.mitre.org/common-1'

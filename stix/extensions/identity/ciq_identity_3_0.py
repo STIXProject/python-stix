@@ -6,6 +6,7 @@ import lxml.etree as et
 import stix
 import stix.utils as utils
 import stix.common as common
+import stix.common.identity as identity
 import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
 
 
@@ -22,6 +23,7 @@ et.register_namespace('ExtSch', XML_NS_STIX_EXT)
 
 class CIQIdentity3_0Instance(common.Identity):
     _binding        = ciq_identity_binding
+    _binding_class  = _binding.CIQIdentity3_0InstanceType
     _namespace      = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
     _XML_NS_PREFIX  = "ciqIdentity"
     _XML_TYPE       = "CIQIdentity3.0InstanceType"
@@ -66,12 +68,13 @@ class CIQIdentity3_0Instance(common.Identity):
 
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
-            return_obj = self._binding.CIQIdentity3_0InstanceType()
+            return_obj = self._binding_class()
 
         super(CIQIdentity3_0Instance, self).to_obj(return_obj)
 
         #return_obj.id = self.id_
         #return_obj.idref = self.idref_
+        return_obj.xsi_type = self._XSI_TYPE
 
         if self.roles:
             for role in self.roles:
@@ -105,7 +108,7 @@ class CIQIdentity3_0Instance(common.Identity):
 
     def to_dict(self):
         d = super(CIQIdentity3_0Instance, self).to_dict()
-        d['xsi:type'] = "%s:%s" % (CIQIdentity3_0Instance._XML_NS_PREFIX, CIQIdentity3_0Instance._XML_TYPE)
+        d['xsi:type'] = self._XSI_TYPE
         
         if self.roles:
             d['roles'] = [str(x) for x in self.roles]
@@ -1737,5 +1740,5 @@ class ContactNumberElement(stix.Entity):
         return return_obj
 
 
-import stix.common.identity
-stix.common.identity.add_extension(CIQIdentity3_0Instance)
+# Register the extension
+identity.add_extension(CIQIdentity3_0Instance)
