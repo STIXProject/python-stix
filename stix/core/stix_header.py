@@ -76,7 +76,6 @@ class STIXHeader(stix.Entity):
         else:
             self._short_description = None
 
-
     @property
     def handling(self):
         return self._handling
@@ -98,7 +97,6 @@ class STIXHeader(stix.Entity):
 
     def add_package_intent(self, package_intent):
         self.package_intents.append(package_intent)
-
 
     @property
     def information_source(self):
@@ -152,8 +150,8 @@ class STIXHeader(stix.Entity):
         if self.information_source:
             return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
         if self.profiles:
-            profiles_obj = stix_common_binding.ProfilesType(Profile=self.profiles)
-            return_obj.Profiles = profiles_obj
+            return_obj.Profiles = stix_common_binding.ProfilesType(Profile=self.profiles)
+
 
         return return_obj
 
@@ -178,23 +176,7 @@ class STIXHeader(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        if self.title:
-            d['title'] = self.title
-        if self.package_intents:
-            d['package_intents'] =  self.package_intents.to_list()
-        if self.description:
-            d['description'] = self.description.to_dict()
-        if self.short_description:
-            d['short_description'] = self.short_description.to_dict()
-        if self.handling:
-            d['handling'] = self.handling.to_dict()
-        if self.information_source:
-            d['information_source'] = self.information_source.to_dict()
-        if self.profiles:
-            d['profiles'] = self.profiles
-
-        return d
+        return super(STIXHeader, self).to_dict()
 
 
 # NOT AN ACTUAL STIX TYPE!
