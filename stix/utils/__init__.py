@@ -185,9 +185,12 @@ def check_version(expected, found):
 
 
 def iter_vars(obj):
-    return dict(
-        (attr_name(x), y) for x, y in obj.__dict__.iteritems() if y
-    ).iteritems()
+    def is_good(x):
+        inputs = ('__input_namespaces__', '__input_schemalocations__')
+        return x and (x not in inputs)
+
+    vars = obj.__dict__.iteritems()
+    return dict((attr_name(x), y) for x, y in vars if is_good(y)).iteritems()
 
 
 def is_dictable(obj):
