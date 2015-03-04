@@ -341,11 +341,7 @@ class Indicator(stix.Entity):
 
     @description.setter
     def description(self, value):
-        self._set_var(
-            name='_description',
-            item=value,
-            klass=StructuredText
-        )
+        self._set_var(StructuredText, _description=value)
 
     @property
     def short_description(self):
@@ -368,11 +364,7 @@ class Indicator(stix.Entity):
 
     @short_description.setter
     def short_description(self, value):
-         self._set_var(
-             name='_short_description',
-             item=value,
-             klass=StructuredText
-         )
+         self._set_var(StructuredText, _short_description=value)
 
     @property
     def producer(self):
@@ -394,12 +386,7 @@ class Indicator(stix.Entity):
 
     @producer.setter
     def producer(self, value):
-        self._set_var(
-            name='_producer',
-            item=value,
-            klass=InformationSource,
-            try_cast=False
-        )
+        self._set_var(InformationSource, try_cast=False, _producer=value)
 
     @property
     def observable(self):

@@ -117,6 +117,13 @@ def is_typedlist(entity):
     return isinstance(entity, stix.TypedList)
 
 
+def private_name(name):
+    if name.startswith("_"):
+        return name
+
+    return "_" + name
+
+
 def attr_name(name):
     """Converts `name` into the form expected for python-stix and
     python-cybox properties.

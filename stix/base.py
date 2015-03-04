@@ -30,13 +30,16 @@ class Entity(object):
         ns_info.collect(self)
 
 
-    def _set_var(self, name, item, klass, init_argname='value', try_cast=True):
+    def _set_var(self, klass, arg='value', try_cast=True, **kwargs):
+        name = kwargs.iterkeys().next()
+        item = kwargs.itervalues().next()
+
         if not item:
             setattr(self, name, None)
         elif isinstance(item, klass):
             setattr(self, name, item)
         elif try_cast:
-            kwarg = {init_argname: item}    # kwarg dict
+            kwarg = {arg: item}    # kwarg dict
             promoted = klass(**kwarg)       # klass(value='foobar')
             setattr(self, name, promoted)
         else:
