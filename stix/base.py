@@ -261,7 +261,7 @@ class EntityList(collections.MutableSequence, Entity):
             new_value = self._contained_type(value)
         except:
             error = "Can't put '{0}' ({1}) into a {2}. Expected {3} instance."
-            error = error.format(value, type(value), type(self), type(self._contained_type))
+            error = error.format(value, type(value), type(self), self._contained_type)
             raise ValueError(error)
 
         return new_value

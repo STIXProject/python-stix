@@ -1197,7 +1197,7 @@ class RelatedCampaignReferencesType(stix_common_binding.GenericRelationshipListT
     def exportAttributes(self, lwrite, level, already_processed, namespace_='indicator:', name_='RelatedCampaignReferencesType'):
         super(RelatedCampaignReferencesType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedCampaignReferencesType')
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedCampaignReferencesType', fromsubclass_=False, pretty_print=True):
-        super(RelatedCampaignReferencesType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+        super(RelatedCampaignReferencesType, self).exportChildren(lwrite, level, nsmap, stix_common_binding.XML_NS, name_, True, pretty_print=pretty_print)
         if pretty_print:
             eol_ = '\n'
         else:

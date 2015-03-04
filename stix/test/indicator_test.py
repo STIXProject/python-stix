@@ -62,6 +62,21 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
             },
             'time': {'produced_time': '2014-02-21T10:16:14.947201'}
         },
+        'related_campaigns': {
+            'scope': 'inclusive',
+            'related_campaigns': [
+                {
+                    'campaign': {
+                        'idref': 'example:Campaign-2f193992-d1c9-45a4-9db6-edbe9f7109cb'
+                    }
+                },
+                {
+                    'campaign': {
+                        'idref': 'example:Campaign-2f193992-d1c9-45a4-9db6-edbe9f7109cb'
+                    }
+                }
+            ]
+        },
         'title': 'File Hash Example',
         'version': '2.1.1'
     }

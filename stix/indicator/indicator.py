@@ -8,12 +8,13 @@ from cybox.common import Time
 # internal
 import stix
 import stix.utils as utils
+import stix.xmlconst as xmlconst
 from stix.common import (
     Identity, InformationSource, StructuredText, VocabString, Confidence,
-    RelatedTTP, Statement
+    RelatedTTP, Statement, CampaignRef
 )
 from stix.common.related import (
-    GenericRelationshipList, RelatedCOA, RelatedIndicator
+    GenericRelationshipList, RelatedCOA, RelatedIndicator, RelatedCampaignRef
 )
 from stix.data_marking import Marking
 from stix.common.vocabs import IndicatorType
@@ -179,6 +180,7 @@ class Indicator(stix.Entity):
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
+
         self.id_ = id_ or stix.utils.create_id("indicator")
         self.idref = idref
         self.version = None # self._version
@@ -199,6 +201,7 @@ class Indicator(stix.Entity):
         self.kill_chain_phases = KillChainPhasesReference()
         self.valid_time_positions = _ValidTimePositions()
         self.related_indicators = None
+        self.related_campaigns = RelatedCampaignRefs()
         self.observable_composition_operator = "OR"
         self.likely_impact = None
         self.negate = None
@@ -749,7 +752,10 @@ class Indicator(stix.Entity):
 
     @related_indicators.setter
     def related_indicators(self, value):
-        self._related_indicators = RelatedIndicators(value)
+        if isinstance(value, RelatedIndicators):
+            self._related_indicators = value
+        else:
+            self._related_indicators = RelatedIndicators(value)
 
     def add_related_indicator(self, indicator):
         """Adds an Related Indicator to the ``related_indicators`` list
@@ -785,6 +791,20 @@ class Indicator(stix.Entity):
         self.related_indicators.append(indicator)
 
     @property
+    def related_campaigns(self):
+        return self._related_campaigns
+
+    @related_campaigns.setter
+    def related_campaigns(self, value):
+        if isinstance(value, RelatedCampaignRefs):
+            self._related_campaigns = value
+        else:
+            self._related_campaigns = RelatedCampaignRefs(value)
+
+    def add_related_campaign(self, value):
+        self.related_campaigns.append(value)
+
+    @property
     def observable_composition_operator(self):
         return self._observable_composition_operator
 
@@ -817,7 +837,7 @@ class Indicator(stix.Entity):
     
     @negate.setter
     def negate(self, value):
-       self._negate = True if value in (1, True, '1') else None
+       self._negate = True if value in xmlconst.TRUE else None
 
     @property
     def kill_chain_phases(self):
@@ -1046,6 +1066,8 @@ class Indicator(stix.Entity):
             return_obj.Kill_Chain_Phases = self.kill_chain_phases.to_obj(ns_info=ns_info)
         if self.related_indicators:
             return_obj.Related_Indicators = self.related_indicators.to_obj(ns_info=ns_info)
+        if self.related_campaigns:
+            return_obj.Related_Campaigns = self.related_campaigns.to_obj(ns_info=ns_info)
         if self.observables:
             if len(self.observables) > 1:
                 root_observable = self._merge_observables(self.observables)
@@ -1087,6 +1109,7 @@ class Indicator(stix.Entity):
             return_obj.indicated_ttps = _IndicatedTTPs.from_obj(obj.Indicated_TTP)
             return_obj.valid_time_positions = _ValidTimePositions.from_obj(obj.Valid_Time_Position)
             return_obj.observable = Observable.from_obj(obj.Observable)
+            return_obj.related_campaigns = RelatedCampaignRefs.from_obj(obj.Related_Campaigns)
             
         return return_obj
 
@@ -1135,6 +1158,7 @@ class Indicator(stix.Entity):
         return_obj.valid_time_positions = _ValidTimePositions.from_dict(get('valid_time_positions'))
         return_obj.observable = Observable.from_dict(get('observable'))
         return_obj.producer = InformationSource.from_dict(get('producer'))
+        return_obj.related_campaigns = RelatedCampaignRefs.from_dict(get('related_campaigns'))
 
         return return_obj
 
@@ -1241,6 +1265,26 @@ class CompositeIndicatorExpression(stix.EntityList):
         super(CompositeIndicatorExpression, cls).from_dict(dict_repr, return_obj=return_obj)
         return_obj.operator = dict_repr.get('operator')
         return return_obj
+
+
+class RelatedCampaignRefs(GenericRelationshipList):
+    _namespace = "http://stix.mitre.org/Indicator-2"
+    _binding = indicator_binding
+    _binding_class = _binding.RelatedCampaignReferencesType
+    _binding_var = 'Related_Campaign'
+    _contained_type = RelatedCampaignRef
+    _inner_name = "related_campaigns"
+
+    def __init__(self, related_campaign_refs=None, scope=None):
+        super(RelatedCampaignRefs, self).__init__(scope, related_campaign_refs)
+
+    def _fix_value(self, value):
+        from stix.campaign import Campaign
+
+        if isinstance(value, Campaign) and value.id_:
+            return RelatedCampaignRef(CampaignRef(idref=value.id_))
+        else:
+            return super(RelatedCampaignRefs, self)._fix_value(value)
 
 
 # NOT ACTUAL STIX TYPES!
