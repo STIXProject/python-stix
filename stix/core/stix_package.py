@@ -116,7 +116,7 @@ class STIXPackage(stix.Entity):
         self._campaigns = Campaigns(value)
 
     def add_campaign(self, campaign):
-       self.campaigns.append(campaign)
+        self.campaigns.append(campaign)
 
     @property
     def observables(self):
@@ -199,7 +199,7 @@ class STIXPackage(stix.Entity):
         top-level collection.
 
         """
-         # Enables the `add()` method
+        # Enables the `add()` method
         tlo_adds = {
             Campaign: self.add_campaign,
             CourseOfAction: self.add_course_of_action,
