@@ -5,6 +5,7 @@ from __future__ import absolute_import
 
 # internal
 import stix
+import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 import stix.bindings.stix_core as core_binding
 
@@ -217,10 +218,7 @@ class GenericRelationshipList(stix.EntityList):
         return list_obj
 
     def to_dict(self):
-        d = super(GenericRelationshipList, self).to_dict()
-        if self.scope:
-            d['scope'] = self.scope
-        return d
+        return super(GenericRelationshipList, self).to_dict()
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -295,8 +293,11 @@ class _BaseRelated(GenericRelationship):
 
     def __init__(self, item=None, confidence=None,
                        information_source=None, relationship=None):
-        super(_BaseRelated, self).__init__(confidence, information_source,
-                                           relationship)
+        super(_BaseRelated, self).__init__(
+            confidence,
+            information_source,
+            relationship
+        )
         self.item = item
 
     @property
@@ -306,8 +307,8 @@ class _BaseRelated(GenericRelationship):
     @item.setter
     def item(self, value):
         if value and not isinstance(value, self._base_type):
-            raise ValueError("Value must be instance of %s" %
-                             self._base_type.__name__)
+            error =  "Value must be instance of %s" % self._base_type.__name__
+            raise ValueError(error)
 
         self._item = value
 
@@ -323,9 +324,11 @@ class _BaseRelated(GenericRelationship):
         return return_obj
 
     def to_dict(self):
-        d = super(_BaseRelated, self).to_dict()
+        d = utils.to_dict(self, skip=('item',))
+
         if self.item:
             d[self._inner_var.lower()] = self.item.to_dict()
+
         return d
 
     @classmethod

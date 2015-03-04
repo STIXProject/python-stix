@@ -110,17 +110,7 @@ class Identity(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        if self.name:
-            d['name'] = self.name
-        if self.id_:
-            d['id'] = self.id_
-        if self.idref:
-            d['idref'] = self.idref
-        if self.related_identities:
-            d['related_identities'] = self.related_identities.to_dict()
-
-        return d
+        return super(Identity, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):

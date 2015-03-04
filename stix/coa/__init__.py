@@ -320,47 +320,7 @@ class CourseOfAction(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        if self.id_:
-            d['id'] = self.id_
-        if self.idref:
-            d['idref'] = self.idref
-        if self.timestamp:
-            d['timestamp'] = self.timestamp.isoformat()
-        if self.version:
-            d['version'] = self.version
-        if self.title:
-            d['title'] = self.title
-        if self.stage:
-            d['stage'] = self.stage.to_dict()
-        if self.type_:
-            d['type'] = self.type_.to_dict()
-        if self.description:
-            d['description'] = self.description.to_dict()
-        if self.short_description:
-            d['short_description'] = self.short_description.to_dict()
-        if self.objective:
-            d['objective'] = self.objective.to_dict()
-        if self.parameter_observables:
-            d['parameter_observables'] = self.parameter_observables.to_dict()
-        if self.impact:
-            d['impact'] = self.impact.to_dict()
-        if self.cost:
-            d['cost'] = self.cost.to_dict()
-        if self.efficacy:
-            d['efficacy'] = self.efficacy.to_dict()
-        if self.type_:
-            d['type'] = self.type_.to_dict()
-        if self.information_source:
-            d['information_source'] = self.information_source.to_dict()
-        if self.handling:
-            d['handling'] = self.handling.to_dict()
-        if self.related_coas:
-            d['related_coas'] = self.related_coas.to_dict()
-        if self.related_packages:
-            d['related_packages'] = self.related_packages.to_dict()
-
-        return d
+        return super(CourseOfAction, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):

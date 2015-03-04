@@ -110,7 +110,10 @@ class STIXHeader(stix.Entity):
         self._information_source = value
 
     def add_profile(self, profile):
-        """Adds a profile to the STIX Header. A Profile is represented by a string URI"""
+        """Adds a profile to the STIX Header. A Profile is represented by a
+        string URI.
+
+        """
         self.profiles.append(profile)
 
     @classmethod

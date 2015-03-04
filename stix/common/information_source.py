@@ -198,23 +198,7 @@ class InformationSource(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        if self.description:
-            d['description'] = self.description.to_dict()
-        if self.identity:
-            d['identity'] = self.identity.to_dict()
-        if self.time:
-            d['time']  = self.time.to_dict()
-        if self.tools:
-            d['tools'] = self.tools.to_list()
-        if self.references:
-            d['references'] = self.references
-        if self.contributing_sources:
-            d['contributing_sources'] = self.contributing_sources.to_dict()
-        if self.roles:
-            d['roles'] = self.roles.to_list()
-
-        return d
+        return super(InformationSource, self).to_dict()
 
 class ContributingSources(stix.EntityList):
     _namespace = "http://stix.mitre.org/common-1"

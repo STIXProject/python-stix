@@ -291,7 +291,7 @@ class EntityList(collections.MutableSequence, Entity):
         if self._dict_as_list:
             return self.to_list()
 
-        d = {}
+        d = utils.to_dict(self, skip=('inner',))
 
         if self._inner:
             d[self._inner_name] = [h.to_dict() for h in self]
