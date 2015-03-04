@@ -53,18 +53,6 @@ class STIXPackage(stix.Entity):
         else:
             self.timestamp = utils.dates.now() if not idref else None
 
-        # Enables the `add()` method
-        self.__tlo_adds = {
-            Campaign: self.add_campaign,
-            CourseOfAction: self.add_course_of_action,
-            ExploitTarget: self.add_exploit_target,
-            Incident: self.add_incident,
-            Indicator: self.add_indicator,
-            Observable: self.add_observable,
-            ThreatActor: self.add_threat_actor,
-            TTP: self.add_threat_actor
-        }
-
     @property
     def id_(self):
         return self._id
@@ -208,8 +196,20 @@ class STIXPackage(stix.Entity):
         top-level collection.
 
         """
+         # Enables the `add()` method
+        tlo_adds = {
+            Campaign: self.add_campaign,
+            CourseOfAction: self.add_course_of_action,
+            ExploitTarget: self.add_exploit_target,
+            Incident: self.add_incident,
+            Indicator: self.add_indicator,
+            Observable: self.add_observable,
+            ThreatActor: self.add_threat_actor,
+            TTP: self.add_threat_actor
+        }
+
         try:
-            add = self.__tlo_adds[entity.__class__]
+            add = tlo_adds[entity.__class__]
             add(entity)
         except KeyError:
             raise TypeError("Cannot add type '{0}' to a top-level collection")
