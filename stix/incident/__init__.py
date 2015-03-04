@@ -448,20 +448,15 @@ class Incident(stix.Entity):
             return_obj.responders = _InformationSources.from_obj(obj.Responder)
             return_obj.coordinators = _InformationSources.from_obj(obj.Coordinator)
             return_obj.external_ids = _ExternalIDs.from_obj(obj.External_ID)
-
-            if obj.Reporter:
-                return_obj.reporter = InformationSource.from_obj(obj.Reporter)
-            if obj.Impact_Assessment:
-                return_obj.impact_assessment = ImpactAssessment.from_obj(obj.Impact_Assessment)
-            if obj.Information_Source:
-                return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
-            if obj.Security_Compromise:
-                return_obj.security_compromise = VocabString.from_obj(obj.Security_Compromise)
+            return_obj.reporter = InformationSource.from_obj(obj.Reporter)
+            return_obj.impact_assessment = ImpactAssessment.from_obj(obj.Impact_Assessment)
+            return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
+            return_obj.security_compromise = VocabString.from_obj(obj.Security_Compromise)
             
         return return_obj
 
     def to_dict(self):
-        return super(Incident, self).to_dict() # unnecessary but whatever.
+        return super(Incident, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):

@@ -13,6 +13,8 @@ import lxml.etree
 # internal
 import stix
 
+from . import dates
+
 
 CDATA_START = "<![CDATA["
 CDATA_END = "]]>"
@@ -203,6 +205,32 @@ def is_timestamp(obj):
 
 def is_etree(obj):
     return isinstance(obj, lxml.etree._Element)
+
+
+def to_dict(entity, skip=()):
+    def dict_iter(items):
+        return [x.to_dict() if is_dictable(x) else x for x in items]
+
+    d = {}
+
+    for name, field in iter_vars(entity):
+        key = key_name(name)
+
+        if key in skip:
+            continue
+
+        if is_dictable(field):
+            d[key] = field.to_dict()
+        elif is_timestamp(field):
+            d[key] = dates.serialize_value(field)
+        elif is_etree(field):
+            d[key] = lxml.etree.tostring(field)
+        elif is_sequence(field):
+            d[key] = dict_iter(field)
+        else:
+            d[key] = field
+
+    return d
 
 
 from .nsparser import *

@@ -1081,7 +1081,7 @@ class Indicator(stix.Entity):
 
     def to_dict(self):
         skip = ('observables', 'observable_composition_operator')
-        d = stix.Entity.to_dict(self, skip=skip)
+        d = utils.to_dict(self, skip=skip)
 
         if self.observables:
             if len(self.observables) == 1:
@@ -1099,29 +1099,31 @@ class Indicator(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_       = dict_repr.get('id')
-        return_obj.idref     = dict_repr.get('idref')
-        return_obj.timestamp = dict_repr.get('timestamp')
-        return_obj.title     = dict_repr.get('title')
-        return_obj.negate    = dict_repr.get('negate')
-        return_obj.version   = dict_repr.get('version')
-        return_obj.alternative_id = dict_repr.get('alternative_id')
-        return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
-        return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
-        return_obj.indicated_ttps =  _IndicatedTTPs.from_dict(dict_repr.get('indicated_ttps'))
-        return_obj.test_mechanisms = TestMechanisms.from_list(dict_repr.get('test_mechanisms'))
-        return_obj.suggested_coas = SuggestedCOAs.from_dict(dict_repr.get('suggested_coas'))
-        return_obj.sightings = Sightings.from_dict(dict_repr.get('sightings'))
-        return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_dict(dict_repr.get('composite_indicator_expression'))
-        return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
-        return_obj.kill_chain_phases = KillChainPhasesReference.from_dict(dict_repr.get('kill_chain_phases'))
-        return_obj.related_indicators = RelatedIndicators.from_dict(dict_repr.get('related_indicators'))
-        return_obj.likely_impact = Statement.from_dict(dict_repr.get('likely_impact'))
-        return_obj.indicator_types = IndicatorTypes.from_list(dict_repr.get('indicator_types'))
-        return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
-        return_obj.valid_time_positions = _ValidTimePositions.from_dict(dict_repr.get('valid_time_positions'))
-        return_obj.observable = Observable.from_dict(dict_repr.get('observable'))
-        return_obj.producer = InformationSource.from_dict(dict_repr.get('producer'))
+        get = dict_repr.get
+
+        return_obj.id_       = get('id')
+        return_obj.idref     = get('idref')
+        return_obj.timestamp = get('timestamp')
+        return_obj.title     = get('title')
+        return_obj.negate    = get('negate')
+        return_obj.version   = get('version')
+        return_obj.alternative_id = get('alternative_id')
+        return_obj.description = StructuredText.from_dict(get('description'))
+        return_obj.short_description = StructuredText.from_dict(get('short_description'))
+        return_obj.indicated_ttps =  _IndicatedTTPs.from_dict(get('indicated_ttps'))
+        return_obj.test_mechanisms = TestMechanisms.from_list(get('test_mechanisms'))
+        return_obj.suggested_coas = SuggestedCOAs.from_dict(get('suggested_coas'))
+        return_obj.sightings = Sightings.from_dict(get('sightings'))
+        return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_dict(get('composite_indicator_expression'))
+        return_obj.handling = Marking.from_dict(get('handling'))
+        return_obj.kill_chain_phases = KillChainPhasesReference.from_dict(get('kill_chain_phases'))
+        return_obj.related_indicators = RelatedIndicators.from_dict(get('related_indicators'))
+        return_obj.likely_impact = Statement.from_dict(get('likely_impact'))
+        return_obj.indicator_types = IndicatorTypes.from_list(get('indicator_types'))
+        return_obj.confidence = Confidence.from_dict(get('confidence'))
+        return_obj.valid_time_positions = _ValidTimePositions.from_dict(get('valid_time_positions'))
+        return_obj.observable = Observable.from_dict(get('observable'))
+        return_obj.producer = InformationSource.from_dict(get('producer'))
 
         return return_obj
 

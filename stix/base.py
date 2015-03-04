@@ -167,34 +167,12 @@ class Entity(object):
 
         return cls.from_dict(d)
 
-    def to_dict(self, skip=()):
+    def to_dict(self):
         """Converts a STIX :class:`Entity` implementation into a Python
         dictionary. This may be overridden by derived classes.
 
         """
-        def dict_iter(items):
-            return [x.to_dict() if utils.is_dictable(x) else x for x in items]
-
-        d = {}
-
-        for name, field in utils.iter_vars(self):
-            key = utils.key_name(name)
-
-            if key in skip:
-                continue
-
-            if utils.is_dictable(field):
-                d[key] = field.to_dict()
-            elif utils.is_timestamp(field):
-                d[key] = utils.dates.serialize_value(field)
-            elif utils.is_etree(field):
-                d[key] = lxml.etree.tostring(field)
-            elif utils.is_sequence(field):
-                d[key] = dict_iter(field)
-            else:
-                d[key] = field
-
-        return d
+        return utils.to_dict(self)
 
     @classmethod
     def from_dict(cls, d, return_obj=None):
