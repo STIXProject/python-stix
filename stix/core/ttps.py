@@ -2,7 +2,6 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils as utils
 from stix.ttp import TTP
 from stix.bindings import stix_core as core_binding
 from stix.common.kill_chains import KillChains
@@ -30,21 +29,10 @@ class TTPs(stix.EntityList):
     @ttps.setter
     def ttps(self, value):
         self._inner = []
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_ttp(v)
-        else:
-            self.add_ttp(value)
-    
+        self.append(value)
+
     def add_ttp(self, ttp):
-        if not ttp:
-            return
-        elif isinstance(ttp, TTP):
-            self.ttps.append(ttp)
-        else:
-            raise ValueError('Cannot add type %s to ttp list' % type(ttp))
+        self.ttps.append(ttp)
         
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
