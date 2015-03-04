@@ -2,7 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # external
-from cybox.core import Observables
+from cybox.core import Observable, Observables
 
 # internal
 import stix
@@ -15,6 +15,7 @@ from stix.exploit_target import ExploitTarget
 from stix.indicator import Indicator
 from stix.incident import Incident
 from stix.threat_actor import ThreatActor
+from stix.ttp import TTP
 from stix.common.related import RelatedPackages
 
 # relative imports
@@ -51,7 +52,19 @@ class STIXPackage(stix.Entity):
             self.timestamp = timestamp
         else:
             self.timestamp = utils.dates.now() if not idref else None
-    
+
+        # Enables the `add()` method
+        self.__tlo_adds = {
+            Campaign: self.add_campaign,
+            CourseOfAction: self.add_course_of_action,
+            ExploitTarget: self.add_exploit_target,
+            Incident: self.add_incident,
+            Indicator: self.add_indicator,
+            Observable: self.add_observable,
+            ThreatActor: self.add_threat_actor,
+            TTP: self.add_threat_actor
+        }
+
     @property
     def id_(self):
         return self._id
@@ -101,27 +114,10 @@ class STIXPackage(stix.Entity):
 
     @indicators.setter
     def indicators(self, value):
-        if isinstance(value, Indicators):
-            self._indicators = value
-            return
-
-        self._indicators = Indicators()
-
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_indicator(v)
-        else:
-            self.add_indicator(value)
+        self._indicators = Indicators(value)
 
     def add_indicator(self, indicator):
-        if not indicator:
-            return
-        elif isinstance(indicator, Indicator):
-            self.indicators.append(indicator)
-        else:
-            raise ValueError('indicator must be instance of stix.indicator.Indicator')
+        self.indicators.append(indicator)
 
     @property
     def campaigns(self):
@@ -129,27 +125,10 @@ class STIXPackage(stix.Entity):
 
     @campaigns.setter
     def campaigns(self, value):
-        if isinstance(value, Campaigns):
-            self._campaigns = value
-            return
-
-        self._campaigns = Campaigns()
-
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_campaign(v)
-        else:
-            self.add_campaign(value)
+        self._campaigns = Campaigns(value)
 
     def add_campaign(self, campaign):
-        if not campaign:
-            return
-        elif isinstance(campaign, Campaign):
-            self.campaigns.append(campaign)
-        else:
-            raise ValueError('indicator must be instance of stix.campaign.Campaign')
+       self.campaigns.append(campaign)
 
     @property
     def observables(self):
@@ -174,27 +153,10 @@ class STIXPackage(stix.Entity):
     
     @incidents.setter
     def incidents(self, value):
-        if isinstance(value, Incidents):
-            self._incidents = value
-            return
-
-        self._incidents = Incidents()
-        
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_incident(v)
-        else:
-            self.add_incident(value)
+        self._incidents = Incidents(value)
     
     def add_incident(self, incident):
-        if not incident:
-            return
-        elif isinstance(incident, Incident):
-            self.incidents.append(incident)
-        else:
-            raise ValueError('Cannot add %s to incident list' % type(incident))
+        self.incidents.append(incident)
 
     @property
     def threat_actors(self):
@@ -202,27 +164,10 @@ class STIXPackage(stix.Entity):
     
     @threat_actors.setter
     def threat_actors(self, value):
-        if isinstance(value, ThreatActors):
-            self._threat_actors = value
-            return
-
-        self._threat_actors = ThreatActors()
-        
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_threat_actor(v)
-        else:
-            self.add_threat_actor(value)
+        self._threat_actors = ThreatActors(value)
 
     def add_threat_actor(self, threat_actor):
-        if not threat_actor:
-            return
-        elif isinstance(threat_actor, ThreatActor):
-            self._threat_actors.append(threat_actor)
-        else:
-            raise ValueError('Cannot add %s to threat actor list' % type(threat_actor))
+        self._threat_actors.append(threat_actor)
 
     @property
     def courses_of_action(self):
@@ -230,27 +175,10 @@ class STIXPackage(stix.Entity):
     
     @courses_of_action.setter
     def courses_of_action(self, value):
-        if isinstance(value, CoursesOfAction):
-            self._courses_of_action = value
-            return
-
-        self._courses_of_action = CoursesOfAction()
-        
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_course_of_action(v)
-        else:
-            self.add_course_of_action(value)
+        self._courses_of_action = CoursesOfAction(value)
 
     def add_course_of_action(self, course_of_action):
-        if not course_of_action:
-            return
-        elif isinstance(course_of_action, CourseOfAction):
-            self._courses_of_action.append(course_of_action)
-        else:
-            raise ValueError('Cannot add %s to course of action list' % type(course_of_action))
+        self._courses_of_action.append(course_of_action)
 
     @property
     def exploit_targets(self):
@@ -258,27 +186,10 @@ class STIXPackage(stix.Entity):
     
     @exploit_targets.setter
     def exploit_targets(self, value):
-        if isinstance(value, ExploitTargets):
-            self._exploit_targets = value
-            return
-
-        self._exploit_targets = ExploitTargets()
-        
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_exploit_target(v)
-        else:
-            self.add_exploit_target(value)
+        self._exploit_targets = ExploitTargets(value)
 
     def add_exploit_target(self, exploit_target):
-        if not exploit_target:
-            return
-        elif isinstance(exploit_target, ExploitTarget):
-            self._exploit_targets.append(exploit_target)
-        else:
-            raise ValueError('Cannot add %s to exploit target list' % type(exploit_target))
+        self._exploit_targets.append(exploit_target)
 
     @property
     def ttps(self):
@@ -286,26 +197,22 @@ class STIXPackage(stix.Entity):
     
     @ttps.setter
     def ttps(self, value):
-        if isinstance(value, TTPs):
-            self._ttps = value
-            return
-
-        if not value:
-            self._ttps = TTPs()
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_ttp(v)
-        else:
-            self.add_ttp(value)
+        self._ttps = TTPs(value)
     
     def add_ttp(self, ttp):
-        if not ttp:
-            return 
-        if not self.ttps:
-            self.ttps = TTPs()
-        
         self.ttps.append(ttp)
-   
+
+    def add(self, entity):
+        """Adds `entity` to a top-level collection. For example, if `entity` is
+        an Indicator object, the `entity` will be added to the ``indicators``
+        top-level collection.
+
+        """
+        try:
+            add = self.__tlo_adds[entity.__class__]
+            add(entity)
+        except KeyError:
+            raise TypeError("Cannot add type '{0}' to a top-level collection")
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(STIXPackage, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -351,40 +258,7 @@ class STIXPackage(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-
-        if self.id_:
-            d['id'] = self.id_
-        if self.idref:
-            d['idref'] = self.idref
-        if self.version:
-            d['version'] = self.version
-        if self.idref:
-            d['idref'] = self.idref
-        if self.timestamp:
-            d['timestamp'] = utils.dates.serialize_value(self.timestamp)
-        if self.stix_header:
-            d['stix_header'] = self.stix_header.to_dict()
-        if self.campaigns:
-            d['campaigns'] = self.campaigns.to_dict()
-        if self.courses_of_action:
-            d['courses_of_action'] = self.courses_of_action.to_dict()
-        if self.exploit_targets:
-            d['exploit_targets'] = self.exploit_targets.to_dict()
-        if self.indicators:
-            d['indicators'] = self.indicators.to_dict()
-        if self.observables:
-            d['observables'] = self.observables.to_dict()
-        if self.incidents:
-            d['incidents'] = self.incidents.to_dict()
-        if self.threat_actors:
-            d['threat_actors'] = self.threat_actors.to_dict()
-        if self.ttps:
-            d['ttps'] = self.ttps.to_dict()
-        if self.related_packages:
-            d['related_packages'] = self.related_packages.to_dict()
-
-        return d
+        return super(STIXPackage, self).to_dict()
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
