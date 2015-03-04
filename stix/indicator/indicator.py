@@ -21,9 +21,9 @@ from stix.common.kill_chains import KillChainPhasesReference
 import stix.bindings.indicator as indicator_binding
 
 # relative
-from .test_mechanism import _BaseTestMechanism, TestMechanisms
+from .test_mechanism import TestMechanisms
 from .sightings import Sightings
-from .valid_time import ValidTime, _ValidTimePositions
+from .valid_time import  _ValidTimePositions
 
 
 class SuggestedCOAs(GenericRelationshipList):
@@ -797,7 +797,6 @@ class Indicator(stix.Entity):
         error = "observable_composition_operator must one of {0}"
         error = error.format(self._ALLOWED_COMPOSITION_OPERATORS)
         raise ValueError(error)
-        
 
     @property
     def likely_impact(self):
@@ -844,11 +843,15 @@ class Indicator(stix.Entity):
                 ``stix.common.identity.Identity``.
 
         """
-        if not identity:
+        def unset_producer_identity():
             try:
                 self.producer.identity.name = None
             except AttributeError:
                 pass
+
+
+        if not identity:
+            unset_producer_identity()
             return
 
         if not self.producer:
@@ -856,11 +859,12 @@ class Indicator(stix.Entity):
 
         if isinstance(identity, Identity):
             self.producer.identity = identity
-        else:
-            if not self.producer.identity:
-                self.producer.identity = Identity()
+            return
 
-            self.producer.identity.name = str(identity)
+        if not self.producer.identity:
+            self.producer.identity = Identity()
+
+        self.producer.identity.name = str(identity)
 
     def set_produced_time(self, produced_time):
         """Sets the ``produced_time`` property of the ``producer`` property
@@ -1076,51 +1080,9 @@ class Indicator(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        if self.id_:
-            d['id'] = self.id_
-        if self.idref:
-            d['idref'] = self.idref
-        if self.timestamp:
-            d['timestamp'] = utils.dates.serialize_value(self.timestamp)
-        if self.negate:
-            d['negate'] = self.negate
-        if self.version:
-            d['version'] = self.version
-        if self.producer:
-            d['producer'] = self.producer.to_dict()
-        if self.title:
-            d['title'] = self.title
-        if self.description:
-            d['description'] = self.description.to_dict()
-        if self.short_description:
-            d['short_description'] = self.short_description.to_dict()
-        if self.indicator_types:
-            d['indicator_types'] = self.indicator_types.to_list()
-        if self.confidence:
-            d['confidence'] = self.confidence.to_dict()
-        if self.indicated_ttps:
-            d['indicated_ttps'] = self.indicated_ttps.to_list()
-        if self.test_mechanisms:
-            d['test_mechanisms'] = self.test_mechanisms.to_list()
-        if self.likely_impact:
-            d['likely_impact'] = self.likely_impact.to_dict()
-        if self.alternative_id:
-            d['alternative_id'] = self.alternative_id
-        if self.valid_time_positions:
-            d['valid_time_positions'] = self.valid_time_positions.to_list()
-        if self.suggested_coas:
-            d['suggested_coas'] = self.suggested_coas.to_dict()
-        if self.sightings:
-            d['sightings'] = self.sightings.to_dict()
-        if self.composite_indicator_expression:
-            d['composite_indicator_expression'] = self.composite_indicator_expression.to_dict()
-        if self.handling:
-            d['handling'] = self.handling.to_dict()
-        if self.kill_chain_phases:
-            d['kill_chain_phases'] = self.kill_chain_phases.to_dict()
-        if self.related_indicators:
-            d['related_indicators'] = self.related_indicators.to_dict()
+        skip = ('observables', 'observable_composition_operator')
+        d = stix.Entity.to_dict(self, skip=skip)
+
         if self.observables:
             if len(self.observables) == 1:
                 d['observable'] = self.observables[0].to_dict()

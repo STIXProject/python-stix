@@ -167,7 +167,7 @@ class Entity(object):
 
         return cls.from_dict(d)
 
-    def to_dict(self):
+    def to_dict(self, skip=()):
         """Converts a STIX :class:`Entity` implementation into a Python
         dictionary. This may be overridden by derived classes.
 
@@ -179,6 +179,9 @@ class Entity(object):
 
         for name, field in utils.iter_vars(self):
             key = utils.key_name(name)
+
+            if key in skip:
+                continue
 
             if utils.is_dictable(field):
                 d[key] = field.to_dict()
