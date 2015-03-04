@@ -12,6 +12,7 @@ import lxml.etree
 
 # internal
 import stix
+import stix.xmlconst as xmlconst
 
 from . import dates
 
@@ -187,12 +188,16 @@ def check_version(expected, found):
 
 
 def iter_vars(obj):
-    def is_good(x):
+    def is_good(key, val):
+        if val is None:
+            return False
+
         inputs = ('__input_namespaces__', '__input_schemalocations__')
-        return x and (x not in inputs)
+        has_value = bool(val) or is_bool(val)
+        return has_value and (key not in inputs)
 
     vars = obj.__dict__.iteritems()
-    return dict((attr_name(x), y) for x, y in vars if is_good(y)).iteritems()
+    return dict((attr_name(x), y) for x, y in vars if is_good(x,y)).iteritems()
 
 
 def is_dictable(obj):
@@ -201,6 +206,10 @@ def is_dictable(obj):
 
 def is_timestamp(obj):
     return isinstance(obj, datetime.datetime)
+
+
+def is_bool(obj):
+    return isinstance(obj, bool)
 
 
 def is_etree(obj):
@@ -231,6 +240,19 @@ def to_dict(entity, skip=()):
             d[key] = field
 
     return d
+
+
+def xml_bool(item):
+    if item is None:
+        return None
+
+    if item in xmlconst.FALSE:
+        return False
+    elif item in xmlconst.TRUE:
+        return True
+
+    error = "Unable to determine the boolean value of '{0}'".format(item)
+    raise ValueError(error)
 
 
 from .nsparser import *
