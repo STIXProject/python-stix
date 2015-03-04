@@ -6,7 +6,6 @@ from stix.ttp import TTP
 from stix.bindings import stix_core as core_binding
 from stix.common.kill_chains import KillChains
 
-
 class TTPs(stix.EntityList):
     _binding = core_binding
     _binding_class = _binding.TTPsType
@@ -21,7 +20,7 @@ class TTPs(stix.EntityList):
 
     def __nonzero__(self):
         return super(TTPs, self).__nonzero__() or bool(self.kill_chains)
-        
+
     @property
     def ttps(self):
         return self._inner
@@ -52,8 +51,10 @@ class TTPs(stix.EntityList):
         if not return_obj:
             return_obj = cls()
         
-        super(TTPs, cls).from_obj(obj, return_obj)
+        super(TTPs, cls).from_obj(obj, return_obj=return_obj)
+
         return_obj.kill_chains = KillChains.from_obj(obj.Kill_Chains)
+
         return return_obj
     
     def to_dict(self):

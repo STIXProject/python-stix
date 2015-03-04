@@ -185,7 +185,10 @@ class STIXPackage(stix.Entity):
     
     @ttps.setter
     def ttps(self, value):
-        self._ttps = TTPs(value)
+        if isinstance(value, TTPs):
+            self._ttps = value
+        else:
+            self._ttps = TTPs(value)
     
     def add_ttp(self, ttp):
         self.ttps.append(ttp)
@@ -227,31 +230,22 @@ class STIXPackage(stix.Entity):
 
         if self.stix_header:
             return_obj.STIX_Header = self.stix_header.to_obj(ns_info=ns_info)
-
         if self.campaigns:
             return_obj.Campaigns = self.campaigns.to_obj(ns_info=ns_info)
-            
         if self.courses_of_action:
             return_obj.Courses_Of_Action = self.courses_of_action.to_obj(ns_info=ns_info)
-        
         if self.exploit_targets:
             return_obj.Exploit_Targets = self.exploit_targets.to_obj(ns_info=ns_info)
-            
         if self.indicators:
             return_obj.Indicators = self.indicators.to_obj(ns_info=ns_info)
-
         if self.observables:
             return_obj.Observables = self.observables.to_obj(ns_info=ns_info)
-
         if self.incidents:
             return_obj.Incidents = self.incidents.to_obj(ns_info=ns_info)
-
         if self.threat_actors:
             return_obj.Threat_Actors = self.threat_actors.to_obj(ns_info=ns_info)
-        
         if self.ttps:
             return_obj.TTPs = self.ttps.to_obj(ns_info=ns_info)
-           
         if self.related_packages:
             return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
              
@@ -269,27 +263,20 @@ class STIXPackage(stix.Entity):
         return_obj.idref = obj.idref
         return_obj.timestamp = obj.timestamp
         return_obj.stix_header = STIXHeader.from_obj(obj.STIX_Header)
+        return_obj.campaigns = Campaigns.from_obj(obj.Campaigns)
+        return_obj.courses_of_action = CoursesOfAction.from_obj(obj.Courses_Of_Action)
+        return_obj.exploit_targets = ExploitTargets.from_obj(obj.Exploit_Targets)
+        return_obj.indicators = Indicators.from_obj(obj.Indicators)
+        return_obj.observables = Observables.from_obj(obj.Observables)
+        return_obj.incidents = Incidents.from_obj(obj.Incidents)
+        return_obj.threat_actors = ThreatActors.from_obj(obj.Threat_Actors)
+        return_obj.ttps = TTPs.from_obj(obj.TTPs)
         return_obj.related_packages = RelatedPackages.from_obj(obj.Related_Packages)
 
+        # Don't overwrite unless a version is passed in
         if obj.version:
             return_obj.version = obj.version
-        if obj.Campaigns:
-            return_obj.campaigns = Campaigns.from_obj(obj.Campaigns)
-        if obj.Courses_Of_Action:
-            return_obj.courses_of_action = CoursesOfAction.from_obj(obj.Courses_Of_Action)
-        if obj.Exploit_Targets:
-            return_obj.exploit_targets = ExploitTargets.from_obj(obj.Exploit_Targets)
-        if obj.Indicators:
-            return_obj.indicators = Indicators.from_obj(obj.Indicators)
-        if obj.Observables:
-            return_obj.observables = Observables.from_obj(obj.Observables)
-        if obj.Incidents:
-            return_obj.incidents = Incidents.from_obj(obj.Incidents)
-        if obj.Threat_Actors:
-            return_obj.threat_actors = ThreatActors.from_obj(obj.Threat_Actors)
-        if obj.TTPs:
-            return_obj.ttps = TTPs.from_obj(obj.TTPs)
-            
+
         return return_obj
 
     @classmethod
