@@ -2,13 +2,11 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils as utils
-import stix.indicator.test_mechanism
 from stix.common import EncodedCDATA
-from stix.indicator.test_mechanism import _BaseTestMechanism
+from stix.indicator import test_mechanism
 import stix.bindings.extensions.test_mechanism.snort as snort_tm_binding
 
-class SnortTestMechanism(_BaseTestMechanism):
+class SnortTestMechanism(test_mechanism._BaseTestMechanism):
     _namespace = "http://stix.mitre.org/extensions/TestMechanism#Snort-1"
     _binding = snort_tm_binding
     _binding_class = _binding.SnortTestMechanismType
@@ -29,7 +27,7 @@ class SnortTestMechanism(_BaseTestMechanism):
     
     @rules.setter
     def rules(self, value):
-        self._rules = EncodedCDATAs(value)
+        self._rules = _EncodedCDATAs(value)
     
     def add_rule(self, rule):
         self.rules.append(rule)
@@ -40,7 +38,7 @@ class SnortTestMechanism(_BaseTestMechanism):
     
     @event_filters.setter
     def event_filters(self, value):
-        self._event_filters = EncodedCDATAs(value)
+        self._event_filters = _EncodedCDATAs(value)
     
     def add_event_filter(self, item):
         self.event_filters.append(item)
@@ -51,7 +49,7 @@ class SnortTestMechanism(_BaseTestMechanism):
     
     @rate_filters.setter
     def rate_filters(self, value):
-        self._rate_filters = EncodedCDATAs(value)
+        self._rate_filters = _EncodedCDATAs(value)
     
     def add_rate_filter(self, item):
         self.rate_filters.append(item)
@@ -62,7 +60,7 @@ class SnortTestMechanism(_BaseTestMechanism):
     
     @event_suppressions.setter
     def event_suppressions(self, value):
-        self._event_suppressions = EncodedCDATAs(value)
+        self._event_suppressions = _EncodedCDATAs(value)
     
     def add_event_suppression(self, item):
         self.event_suppressions.append(item)
@@ -77,15 +75,10 @@ class SnortTestMechanism(_BaseTestMechanism):
         super(SnortTestMechanism, cls).from_obj(obj, return_obj)
         return_obj.product_name = obj.Product_Name
         return_obj.version = obj.Version
-        
-        if obj.Rule:
-            return_obj.rules = EncodedCDATAs.from_obj(obj.Rule)
-        if obj.Event_Filter:
-            return_obj.event_filters = EncodedCDATAs.from_obj(obj.Event_Filter)
-        if obj.Rate_Filter:
-            return_obj.rate_filters = EncodedCDATAs.from_obj(obj.Rate_Filter)
-        if obj.Event_Suppression:
-            return_obj.event_suppressions = EncodedCDATAs.from_obj(obj.Event_Suppression)
+        return_obj.rules = _EncodedCDATAs.from_obj(obj.Rule)
+        return_obj.event_filters = _EncodedCDATAs.from_obj(obj.Event_Filter)
+        return_obj.rate_filters = _EncodedCDATAs.from_obj(obj.Rate_Filter)
+        return_obj.event_suppressions = _EncodedCDATAs.from_obj(obj.Event_Suppression)
         
         return return_obj
     
@@ -118,39 +111,25 @@ class SnortTestMechanism(_BaseTestMechanism):
             
         super(SnortTestMechanism, cls).from_dict(d, return_obj)
 
-
         get = d.get
         return_obj.product_name = get('product_name')
         return_obj.version = get('version')
-        return_obj.rules = EncodedCDATAs.from_dict(get('rules'))
-        return_obj.event_filters = EncodedCDATAs.from_dict(get('event_filters'))
-        return_obj.rate_filters = EncodedCDATAs.from_dict(get('rate_filters'))
-        return_obj.event_suppressions = EncodedCDATAs.from_dict(get('event_suppressions'))
+        return_obj.rules = _EncodedCDATAs.from_dict(get('rules'))
+        return_obj.event_filters = _EncodedCDATAs.from_dict(get('event_filters'))
+        return_obj.rate_filters = _EncodedCDATAs.from_dict(get('rate_filters'))
+        return_obj.event_suppressions = _EncodedCDATAs.from_dict(get('event_suppressions'))
         
         return return_obj
 
 
     def to_dict(self):
-        d = super(SnortTestMechanism, self).to_dict()
-
-        if self.product_name:
-            d['product_name'] = self.product_name
-        if self.version:
-            d['version'] = self.version
-        if self.rules:
-            d['rules'] = self.rules.to_dict()
-        if self.event_filters:
-            d['event_filters'] = self.event_filters.to_dict()
-        if self.rate_filters:
-            d['rate_filters'] = self.rate_filters.to_dict()
-        if self.event_suppressions:
-            d['event_suppressions'] = self.event_suppressions.to_dict()
-
-        return d
+        return super(SnortTestMechanism, self).to_dict()
 
 
-class EncodedCDATAs(stix.TypedList):
+# Not an actual STIX data type!
+class _EncodedCDATAs(stix.TypedList):
     _contained_type = EncodedCDATA
 
 
-stix.indicator.test_mechanism.add_extension(SnortTestMechanism)
+# Register this extension
+test_mechanism.add_extension(SnortTestMechanism)

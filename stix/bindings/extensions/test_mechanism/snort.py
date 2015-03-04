@@ -105,14 +105,14 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
             lwrite('/>%s' % (eol_, ))
     def exportAttributes(self, lwrite, level, already_processed, namespace_='snortTM:', name_='SnortTestMechanismType'):
         super(SnortTestMechanismType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='SnortTestMechanismType')
-        if 'xmlns' not in already_processed:
-            already_processed.add('xmlns')
-            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
-            lwrite(xmlns)
-        if 'xsi:type' not in already_processed:
-            already_processed.add('xsi:type')
-            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
-            lwrite(xsi_type)
+        # if 'xmlns' not in already_processed:
+        #     already_processed.add('xmlns')
+        #     xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+        #     lwrite(xmlns)
+        # if 'xsi:type' not in already_processed:
+        #     already_processed.add('xsi:type')
+        #     xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+        #     lwrite(xsi_type)
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='SnortTestMechanismType', fromsubclass_=False, pretty_print=True):
         super(SnortTestMechanismType, self).exportChildren(lwrite, level, nsmap, indicator_binding.XML_NS, name_, True, pretty_print=pretty_print)
         if pretty_print:
@@ -236,11 +236,10 @@ def parseString(inString):
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
     doc = None
-    sys.stdout.write('<?xml version="1.0" ?>\n')
-    rootObj.export(sys.stdout, 0, name_="SnortTestMechanismType",
-        namespacedef_='')
+    # sys.stdout.write('<?xml version="1.0" ?>\n')
+    # rootObj.export(sys.stdout, 0, name_="Indicator",
+    #     namespacedef_='')
     return rootObj
-
 def main():
     args = sys.argv[1:]
     if len(args) == 1:

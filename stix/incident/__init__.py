@@ -21,7 +21,7 @@ from .property_affected import PropertyAffected
 from .time import Time
 from .external_id import ExternalID
 from .impact_assessment import ImpactAssessment
-from .coa import COATaken, COATime, CourseOfAction
+from .coa import COATaken, COATime
 from .history import History
 
 
@@ -190,7 +190,7 @@ class Incident(stix.Entity):
 
     @intended_effects.setter
     def intended_effects(self, value):
-        self._intended_effects = IntendedEffects(value)
+        self._intended_effects = _IntendedEffects(value)
 
     def add_intended_effect(self, value):
         self.intended_effects.append(value)
@@ -201,7 +201,7 @@ class Incident(stix.Entity):
 
     @victims.setter
     def victims(self, value):
-        self._victims = Victims(value)
+        self._victims = _Victims(value)
 
     def add_victim(self, victim):
         self._victims.append(victim)
@@ -258,7 +258,7 @@ class Incident(stix.Entity):
 
     @responders.setter
     def responders(self, value):
-        self._responders = InformationSources(value)
+        self._responders = _InformationSources(value)
 
     def add_responder(self, value):
         self.responders.append(value)
@@ -269,7 +269,7 @@ class Incident(stix.Entity):
 
     @coordinators.setter
     def coordinators(self, value):
-        self._coordinators = InformationSources(value)
+        self._coordinators = _InformationSources(value)
 
     def add_coordinator(self, value):
         self.coordinators.append(value)
@@ -280,7 +280,7 @@ class Incident(stix.Entity):
 
     @external_ids.setter
     def external_ids(self, value):
-        self._external_ids = ExternalIDs(value)
+        self._external_ids = _ExternalIDs(value)
 
     def add_external_id(self, value):
         self.external_ids.append(value)
@@ -343,7 +343,7 @@ class Incident(stix.Entity):
     
     @coa_taken.setter
     def coa_taken(self, value):
-        self._coa_taken = COAsTaken(value)
+        self._coa_taken = _COAsTaken(value)
 
     def add_coa_taken(self, value):
         self.coa_taken.append(value)
@@ -430,12 +430,12 @@ class Incident(stix.Entity):
             return_obj.description = StructuredText.from_obj(obj.Description)
             return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
             return_obj.time = Time.from_obj(obj.Time)
-            return_obj.victims = Victims.from_obj(obj.Victim)
+            return_obj.victims = _Victims.from_obj(obj.Victim)
             return_obj.categories = IncidentCategories.from_obj(obj.Categories)
-            return_obj.intended_effects = IntendedEffects.from_obj(obj.Intended_Effect)
+            return_obj.intended_effects = _IntendedEffects.from_obj(obj.Intended_Effect)
             return_obj.affected_assets = AffectedAssets.from_obj(obj.Affected_Assets)
             return_obj.discovery_methods = DiscoveryMethods.from_obj(obj.Discovery_Method)
-            return_obj.coa_taken = COAsTaken.from_obj(obj.COA_Taken)
+            return_obj.coa_taken = _COAsTaken.from_obj(obj.COA_Taken)
             return_obj.confidence = Confidence.from_obj(obj.Confidence)
             return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.Attributed_Threat_Actors)
             return_obj.related_indicators = RelatedIndicators.from_obj(obj.Related_Indicators)
@@ -445,9 +445,9 @@ class Incident(stix.Entity):
             return_obj.status = VocabString.from_obj(obj.Status)
             return_obj.handling = Marking.from_obj(obj.Handling)
             return_obj.history = History.from_obj(obj.History)
-            return_obj.responders = InformationSources.from_obj(obj.Responder)
-            return_obj.coordinators = InformationSources.from_obj(obj.Coordinator)
-            return_obj.external_ids = ExternalIDs.from_obj(obj.External_ID)
+            return_obj.responders = _InformationSources.from_obj(obj.Responder)
+            return_obj.coordinators = _InformationSources.from_obj(obj.Coordinator)
+            return_obj.external_ids = _ExternalIDs.from_obj(obj.External_ID)
 
             if obj.Reporter:
                 return_obj.reporter = InformationSource.from_obj(obj.Reporter)
@@ -480,56 +480,30 @@ class Incident(stix.Entity):
         return_obj.description = StructuredText.from_dict(get('description'))
         return_obj.short_description = StructuredText.from_dict(get('short_description'))
         return_obj.time = Time.from_dict(get('time'))
-        return_obj.victims = Victims.from_dict(get('victims'))
+        return_obj.victims = _Victims.from_dict(get('victims'))
         return_obj.categories = IncidentCategories.from_dict(get('categories'))
         return_obj.attributed_threat_actors = AttributedThreatActors.from_dict(get('attributed_threat_actors'))
         return_obj.related_indicators = RelatedIndicators.from_dict(get('related_indicators'))
         return_obj.related_observables = RelatedObservables.from_dict(get('related_observables'))
         return_obj.related_incidents = RelatedIncidents.from_dict(get('related_incidents'))
-        return_obj.intended_effects = IntendedEffects.from_list(get('intended_effects'))
+        return_obj.intended_effects = _IntendedEffects.from_list(get('intended_effects'))
         return_obj.leveraged_ttps = LeveragedTTPs.from_dict(get('leveraged_ttps'))
         return_obj.affected_assets = AffectedAssets.from_dict(get('affected_assets'))
         return_obj.discovery_methods = DiscoveryMethods.from_dict(get('discovery_methods'))
         return_obj.reporter = InformationSource.from_dict(get('reporter'))
-        return_obj.responders = InformationSources.from_dict(get('responders'))
-        return_obj.coordinators = InformationSources.from_dict(get('coordinators'))
-        return_obj.external_ids = ExternalIDs.from_dict(get('external_ids'))
+        return_obj.responders = _InformationSources.from_dict(get('responders'))
+        return_obj.coordinators = _InformationSources.from_dict(get('coordinators'))
+        return_obj.external_ids = _ExternalIDs.from_dict(get('external_ids'))
         return_obj.impact_assessment = ImpactAssessment.from_dict(get('impact_assessment'))
         return_obj.information_source = InformationSource.from_dict(get('information_source'))
         return_obj.security_compromise = VocabString.from_dict(get('security_compromise'))
         return_obj.confidence = Confidence.from_dict(get('confidence'))
-        return_obj.coa_taken = COAsTaken.from_dict(get('coa_taken'))
+        return_obj.coa_taken = _COAsTaken.from_dict(get('coa_taken'))
         return_obj.status = VocabString.from_dict(get('status'))
         return_obj.handling = Marking.from_dict(get('handling'))
         return_obj.history = History.from_dict(get('history'))
         
         return return_obj
-
-
-class COAsTaken(stix.TypedList):
-    _contained_type =  COATaken
-
-
-class ExternalIDs(stix.TypedList):
-    _contained_type = ExternalID
-
-
-class InformationSources(stix.TypedList):
-    _contained_type = InformationSource
-
-
-class Victims(stix.TypedList):
-    _contained_type = Identity
-
-    def _fix_value(self, value):
-        return Identity(name=value)
-
-
-class IntendedEffects(stix.TypedList):
-    _contained_type = Statement
-
-    def _fix_value(self, value):
-        return Statement(value=vocabs.IntendedEffect(value))
 
 
 class AttributedThreatActors(GenericRelationshipList):
@@ -606,4 +580,28 @@ class AffectedAssets(stix.EntityList):
     _dict_as_list = True
 
 
+# NOT ACTUAL STIX TYPES!
+class _COAsTaken(stix.TypedList):
+    _contained_type =  COATaken
 
+
+class _ExternalIDs(stix.TypedList):
+    _contained_type = ExternalID
+
+
+class _InformationSources(stix.TypedList):
+    _contained_type = InformationSource
+
+
+class _Victims(stix.TypedList):
+    _contained_type = Identity
+
+    def _fix_value(self, value):
+        return Identity(name=value)
+
+
+class _IntendedEffects(stix.TypedList):
+    _contained_type = Statement
+
+    def _fix_value(self, value):
+        return Statement(value=vocabs.IntendedEffect(value))

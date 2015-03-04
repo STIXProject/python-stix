@@ -173,7 +173,7 @@ class ThreatActor(stix.Entity):
     
     @types.setter
     def types(self, value):
-        self._types = Types(value)
+        self._types = _Types(value)
             
     def add_type(self, value):
         self.types.append(value)
@@ -184,7 +184,7 @@ class ThreatActor(stix.Entity):
     
     @motivations.setter
     def motivations(self, value):
-        self._motivations = Motivations(value)
+        self._motivations = _Motivations(value)
             
     def add_motivation(self, value):
         self.motivations.append(value)
@@ -195,7 +195,7 @@ class ThreatActor(stix.Entity):
     
     @sophistications.setter
     def sophistications(self, value):
-        self._sophistications = Sophistications(value)
+        self._sophistications = _Sophistications(value)
             
     def add_sophistication(self, value):
         self._sophistications.append(value)
@@ -206,7 +206,7 @@ class ThreatActor(stix.Entity):
     
     @intended_effects.setter
     def intended_effects(self, value):
-        self._intended_effects = IntendedEffects(value)
+        self._intended_effects = _IntendedEffects(value)
             
     def add_intended_effect(self, value):
         self.intended_effects.append(value)
@@ -217,7 +217,7 @@ class ThreatActor(stix.Entity):
     
     @planning_and_operational_supports.setter
     def planning_and_operational_supports(self, value):
-        self._planning_and_operational_supports = PlanningAndOperationalSupports(value)
+        self._planning_and_operational_supports = _PlanningAndOperationalSupports(value)
             
     def add_planning_and_operational_support(self, value):
         self.planning_and_operational_supports.append(value)
@@ -286,12 +286,12 @@ class ThreatActor(stix.Entity):
             return_obj.description = StructuredText.from_obj(obj.Description)
             return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
             return_obj.identity = Identity.from_obj(obj.Identity)
-            return_obj.types = Types.from_obj(obj.Type)
-            return_obj.motivations = Motivations.from_obj(obj.Motivation)
-            return_obj.sophistications = Sophistications.from_obj(obj.Sophistication)
-            return_obj.intended_effects = IntendedEffects.from_obj( obj.Intended_Effect)
+            return_obj.types = _Types.from_obj(obj.Type)
+            return_obj.motivations = _Motivations.from_obj(obj.Motivation)
+            return_obj.sophistications = _Sophistications.from_obj(obj.Sophistication)
+            return_obj.intended_effects = _IntendedEffects.from_obj( obj.Intended_Effect)
             return_obj.planning_and_operational_supports = \
-                PlanningAndOperationalSupports.from_obj(obj.Planning_And_Operational_Support)
+                _PlanningAndOperationalSupports.from_obj(obj.Planning_And_Operational_Support)
             return_obj.observed_ttps = ObservedTTPs.from_obj(obj.Observed_TTPs)
             return_obj.associated_campaigns = AssociatedCampaigns.from_obj(obj.Associated_Campaigns)
             return_obj.associated_actors = AssociatedActors.from_obj(obj.Associated_Actors)
@@ -323,12 +323,12 @@ class ThreatActor(stix.Entity):
         return_obj.description = StructuredText.from_dict(get('description'))
         return_obj.short_description = StructuredText.from_dict(get('short_description'))
         return_obj.identity = Identity.from_dict(get('identity'))
-        return_obj.types = Types.from_dict(get('types'))
-        return_obj.motivations = Motivations.from_dict(get('motivations'))
-        return_obj.sophistications = Sophistications.from_dict(get('sophistications'))
-        return_obj.intended_effects = IntendedEffects.from_dict(get('intended_effects'))
+        return_obj.types = _Types.from_dict(get('types'))
+        return_obj.motivations = _Motivations.from_dict(get('motivations'))
+        return_obj.sophistications = _Sophistications.from_dict(get('sophistications'))
+        return_obj.intended_effects = _IntendedEffects.from_dict(get('intended_effects'))
         return_obj.planning_and_operational_supports = \
-            PlanningAndOperationalSupports.from_dict(get('planning_and_operational_supports'))
+            _PlanningAndOperationalSupports.from_dict(get('planning_and_operational_supports'))
         return_obj.observed_ttps = ObservedTTPs.from_dict(get('observed_ttps'))
         return_obj.associated_campaigns = AssociatedCampaigns.from_dict(get('associated_campaigns'))
         return_obj.associated_actors = AssociatedActors.from_dict(get('associated_actors'))
@@ -340,7 +340,8 @@ class ThreatActor(stix.Entity):
         return return_obj
 
 
-class Sophistications(stix.TypedList):
+# NOT ACTUAL STIX TYPES!
+class _Sophistications(stix.TypedList):
     _contained_type = Statement
 
     def _fix_value(self, value):
@@ -348,7 +349,7 @@ class Sophistications(stix.TypedList):
         return Statement(value=sophistication)
 
 
-class Motivations(stix.TypedList):
+class _Motivations(stix.TypedList):
     _contained_type = Statement
 
     def _fix_value(self, value):
@@ -356,7 +357,7 @@ class Motivations(stix.TypedList):
         return Statement(value=motivation)
 
 
-class IntendedEffects(stix.TypedList):
+class _IntendedEffects(stix.TypedList):
     _contained_type = Statement
 
     def _fix_value(self, value):
@@ -364,7 +365,7 @@ class IntendedEffects(stix.TypedList):
         return Statement(value=intended_effect)
 
 
-class PlanningAndOperationalSupports(stix.TypedList):
+class _PlanningAndOperationalSupports(stix.TypedList):
     _contained_type = Statement
 
     def _fix_value(self, value):
@@ -372,7 +373,7 @@ class PlanningAndOperationalSupports(stix.TypedList):
         return Statement(value=pos)
 
 
-class Types(stix.TypedList):
+class _Types(stix.TypedList):
     _contained_type = Statement
 
     def _fix_value(self, value):

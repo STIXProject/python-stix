@@ -2,7 +2,6 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
 class KillChain(stix.Entity):
@@ -24,11 +23,10 @@ class KillChain(stix.Entity):
     
     @kill_chain_phases.setter
     def kill_chain_phases(self, value):
-        self._kill_chain_phases = KillChainPhases(value)
+        self._kill_chain_phases = _KillChainPhases(value)
     
     def add_kill_chain_phase(self, value):
         self.kill_chain_phases.append(value)
-            
     
     def to_obj(self, return_obj=None, ns_info=None):
         super(KillChain, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -57,7 +55,7 @@ class KillChain(stix.Entity):
         return_obj.definer = obj.definer
         return_obj.reference = obj.reference
         return_obj.number_of_phases = obj.number_of_phases
-        return_obj.kill_chain_phases = KillChainPhases.from_obj(obj.Kill_Chain_Phase)
+        return_obj.kill_chain_phases = _KillChainPhases.from_obj(obj.Kill_Chain_Phase)
     
         return return_obj
     
@@ -75,7 +73,7 @@ class KillChain(stix.Entity):
         return_obj.reference = get('reference')
         return_obj.number_of_phases = get('number_of_phases')
         return_obj.kill_chain_phases = \
-            KillChainPhases.from_dict(get('kill_chain_phases'))
+            _KillChainPhases.from_dict(get('kill_chain_phases'))
     
         return return_obj
 
@@ -111,11 +109,11 @@ class KillChainPhase(stix.Entity):
             self._ordinality = None
     
     def to_obj(self, return_obj=None, ns_info=None):
-        super(KillChainPhase, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
         if not return_obj:
             return_obj = self._binding_class()
-    
+
+        super(KillChainPhase, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+
         return_obj.phase_id = self.phase_id
         return_obj.name = self.name
         return_obj.ordinality = self.ordinality
@@ -126,6 +124,7 @@ class KillChainPhase(stix.Entity):
     def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
+
         if not return_obj:
             return_obj = cls()
     
@@ -149,10 +148,6 @@ class KillChainPhase(stix.Entity):
         return return_obj
 
 
-class KillChainPhases(stix.TypedList):
-    _contained_type = KillChainPhase
-
-
 class KillChainPhaseReference(KillChainPhase):
     _binding = common_binding
     _namespace = 'http://stix.mitre.org/common-1'
@@ -164,8 +159,6 @@ class KillChainPhaseReference(KillChainPhase):
         self.kill_chain_name = kill_chain_name
 
     def to_obj(self, return_obj=None, ns_info=None):
-        super(KillChainPhaseReference, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
         if not return_obj:
             return_obj = self._binding_class()
     
@@ -182,6 +175,7 @@ class KillChainPhaseReference(KillChainPhase):
             return_obj = cls()
     
         super(KillChainPhaseReference, cls).from_obj(obj, return_obj=return_obj)
+
         return_obj.kill_chain_id = obj.kill_chain_id
         return_obj.kill_chain_name = obj.kill_chain_name
         return return_obj
@@ -214,4 +208,8 @@ class KillChainPhasesReference(stix.EntityList):
     _contained_type = KillChainPhaseReference
     _binding_var = "Kill_Chain_Phase"
     _inner_name = "kill_chain_phases"
-    
+
+
+# NOT AN ACTUAL STIX TYPE!
+class _KillChainPhases(stix.TypedList):
+    _contained_type = KillChainPhase

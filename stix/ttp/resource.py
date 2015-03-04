@@ -3,7 +3,6 @@
 
 # internal
 import stix
-import stix.utils as utils
 from stix.common import ToolInformation, Identity
 import stix.bindings.ttp as ttp_binding
 

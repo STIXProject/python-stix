@@ -2,7 +2,6 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils as utils
 import stix.bindings.data_marking as stix_data_marking_binding
 
 
@@ -12,7 +11,7 @@ class Marking(stix.Entity):
     _namespace = 'http://data-marking.mitre.org/Marking-1'
 
     def __init__(self, markings=None):
-        self.markings = MarkingSpecifications(markings)
+        self.markings = _MarkingSpecifications(markings)
 
     @property
     def markings(self):
@@ -20,10 +19,10 @@ class Marking(stix.Entity):
 
     @markings.setter
     def markings(self, value):
-        if isinstance(value, MarkingSpecifications):
+        if isinstance(value, _MarkingSpecifications):
             self._markings = value
         else:
-            self._markings = MarkingSpecifications(value)
+            self._markings = _MarkingSpecifications(value)
 
     def add_marking(self, value):
         self._markings.append(value)
@@ -52,7 +51,7 @@ class Marking(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.markings = MarkingSpecifications.from_obj(obj.Marking)
+        return_obj.markings = _MarkingSpecifications.from_obj(obj.Marking)
 
         return return_obj
 
@@ -64,7 +63,7 @@ class Marking(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        mlist = MarkingSpecifications.from_list(markings_list)
+        mlist = _MarkingSpecifications.from_list(markings_list)
         return_obj.markings = mlist
 
         return return_obj
@@ -83,7 +82,7 @@ class MarkingSpecification(stix.Entity):
         self.idref = None
         self.version = None
         self.controlled_structure = controlled_structure
-        self.marking_structures = MarkingStructures(marking_structures)
+        self.marking_structures = _MarkingStructures(marking_structures)
         # TODO: add Information_Source
 
 
@@ -93,10 +92,10 @@ class MarkingSpecification(stix.Entity):
 
     @marking_structures.setter
     def marking_structures(self, value):
-        if isinstance(value, MarkingStructures):
+        if isinstance(value, _MarkingStructures):
             self._marking_structures = value
         else:
-            self._marking_structures = MarkingStructures(value)
+            self._marking_structures = _MarkingStructures(value)
 
 
     def to_obj(self, return_obj=None, ns_info=None):
@@ -116,19 +115,8 @@ class MarkingSpecification(stix.Entity):
         return obj
 
     def to_dict(self):
-        d = {}
-        if self.id_:
-            d['id'] = self.id_
-        if self.idref:
-            d['idref'] = self.idref
-        if self.version:
-            d['version'] = self.version
-        if self.controlled_structure:
-            d['controlled_structure'] = self.controlled_structure
-        if self.marking_structures:
-            d['marking_structures'] = self.marking_structures.to_dict()
+        return super(MarkingSpecification, self).to_dict()
 
-        return d
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -140,7 +128,7 @@ class MarkingSpecification(stix.Entity):
         m.idref = obj.idref
         m.version = obj.version
         m.controlled_structure = obj.Controlled_Structure
-        m.marking_structures = MarkingStructures.from_obj(obj.Marking_Structure)
+        m.marking_structures = _MarkingStructures.from_obj(obj.Marking_Structure)
 
         return m
 
@@ -155,7 +143,7 @@ class MarkingSpecification(stix.Entity):
         m.idref = get('idref')
         m.version = get('version')
         m.controlled_structure = get('controlled_structure')
-        m.marking_structures = MarkingStructures.from_dict(
+        m.marking_structures = _MarkingStructures.from_dict(
             get('marking_structures')
         )
 
@@ -248,12 +236,12 @@ class MarkingStructure(stix.Entity):
         return m
 
 
-
-class MarkingSpecifications(stix.TypedList):
+# Not Actual STIX Types!
+class _MarkingSpecifications(stix.TypedList):
     _contained_type = MarkingSpecification
 
 
-class MarkingStructures(stix.TypedList):
+class _MarkingStructures(stix.TypedList):
     _contained_type = MarkingStructure
 
 

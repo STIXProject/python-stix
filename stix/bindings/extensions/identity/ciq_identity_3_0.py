@@ -30,6 +30,7 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
         self.xmlns          = XML_NS
         self.xmlns_prefix   = "stix-ciqidentity"
         self.xml_type       = "CIQIdentity3.0InstanceType"
+        self.xsi_type       = None
         self.Specification = Specification
         if Role is None:
             self.Role = []
@@ -78,10 +79,12 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
 #             already_processed.add('xmlns')
 #             xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
 #             lwrite(xmlns)
-        if 'xsi:type' not in already_processed:
-            already_processed.add('xsi:type')
-            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
-            lwrite(xsi_type)
+#         if 'xsi:type' not in already_processed:
+#             already_processed.add('xsi:type')
+#             xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+#             lwrite(xsi_type)
+        if self.xsi_type is not None:
+            lwrite(' xsi:type=%s' % quote_attrib(self.xsi_type))
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='CIQIdentity3.0InstanceType', fromsubclass_=False, pretty_print=True):
         super(CIQIdentity3_0InstanceType, self).exportChildren(lwrite, level, nsmap, stix_common_binding.XML_NS, name_, True, pretty_print=pretty_print)
         if pretty_print:

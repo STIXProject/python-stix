@@ -85,10 +85,22 @@ class EncodedCDATA(stix.Entity):
         if not return_obj:
             return_obj = cls()
             
-        return_obj.value = d.get('value')
+        return_obj.value = utils.strip_cdata(d.get('value'))
         return_obj.encoded = bool(d.get('encoded') )
         return return_obj
-    
+
+
+    def to_dict(self):
+        d = {}
+
+        if not self.value:
+            return d
+
+        d['value'] = utils.strip_cdata(self.value)
+        d['encoded'] = bool(self.encoded)
+
+        return d
+
     def __str__(self):
         return self.__unicode__().encode("utf-8")
 

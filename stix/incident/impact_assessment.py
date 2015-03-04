@@ -3,7 +3,6 @@
 
 # internal
 import stix
-import stix.utils as utils
 import stix.bindings.incident as incident_binding
 from stix.common import vocabs, VocabString
 

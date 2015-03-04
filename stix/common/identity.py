@@ -4,9 +4,7 @@
 from __future__ import absolute_import
 
 import stix
-import stix.utils
 import stix.bindings.stix_common as common_binding
-
 
 class Identity(stix.Entity):
     _binding = common_binding
@@ -16,7 +14,7 @@ class Identity(stix.Entity):
         self.id_ = id_
         self.idref = idref
         self.name = name
-        self.related_identities = RelatedIdentities()
+        self.related_identities = related_identities
 
     @property
     def id_(self):
@@ -51,6 +49,14 @@ class Identity(stix.Entity):
         self._name = value if value else None
 
 
+    @property
+    def related_identities(self):
+        return self._related_identities
+
+    @related_identities.setter
+    def related_identities(self, value):
+        self._related_identities = RelatedIdentities(value)
+
     def to_obj(self, return_obj=None, ns_info=None):
         super(Identity, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
@@ -63,7 +69,8 @@ class Identity(stix.Entity):
         if self.name:
             return_obj.Name = self.name
         if self.related_identities:
-            return_obj.Related_Identities = self.related_identities.to_obj(ns_info=ns_info)
+            return_obj.Related_Identities = \
+                self.related_identities.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -71,6 +78,7 @@ class Identity(stix.Entity):
     def lookup_class(xsi_type):
         if not xsi_type:
             raise ValueError("xsi:type is required")
+
         for (k, v) in _EXTENSION_MAP.iteritems():
             # TODO: for now we ignore the prefix and just check for
             # a partial match
@@ -87,16 +95,17 @@ class Identity(stix.Entity):
             return None
 
         if not return_obj:
-            try:
+            if hasattr(obj, 'xml_type'):
                 klass = Identity.lookup_class(obj.xml_type)
                 return_obj = klass.from_obj(obj)
-            except AttributeError:
+            else:
                 return_obj = Identity.from_obj(obj, cls())
         else:
             return_obj.id_ = obj.id
             return_obj.idref = obj.idref
             return_obj.name = obj.Name
-            return_obj.related_identities = RelatedIdentities.from_obj(obj.Related_Identities)
+            return_obj.related_identities = \
+                RelatedIdentities.from_obj(obj.Related_Identities)
 
         return return_obj
 
@@ -120,18 +129,21 @@ class Identity(stix.Entity):
         if not dict_repr:
             return None
 
+        get = dict_repr.get
+
         if not return_obj:
-            xsi_type = dict_repr.get('xsi:type')
+            xsi_type = get('xsi:type')
             if xsi_type:
-                klass = Identity.lookup_class(dict_repr.get('xsi:type'))
+                klass = Identity.lookup_class(get('xsi:type'))
                 return_obj = klass.from_dict(dict_repr)
             else:
                 return_obj = Identity.from_dict(dict_repr, cls())
         else:
-            return_obj.name = dict_repr.get('name')
-            return_obj.id_ = dict_repr.get('id')
-            return_obj.idref = dict_repr.get('idref')
-            return_obj.related_identities = RelatedIdentities.from_dict(dict_repr.get('related_identities'))
+            return_obj.name = get('name')
+            return_obj.id_ = get('id')
+            return_obj.idref = get('idref')
+            return_obj.related_identities = \
+                RelatedIdentities.from_dict(get('related_identities'))
 
         return return_obj
 
