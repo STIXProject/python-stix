@@ -818,7 +818,18 @@ class Indicator(stix.Entity):
     @negate.setter
     def negate(self, value):
        self._negate = True if value in (1, True, '1') else None
-    
+
+    @property
+    def kill_chain_phases(self):
+        return self._kill_chain_phases
+
+    @kill_chain_phases.setter
+    def kill_chain_phases(self, value):
+        self._kill_chain_phases = KillChainPhasesReference(value)
+
+    def add_kill_chain_phase(self, value):
+        self.kill_chain_phases.append(value)
+
     def set_producer_identity(self, identity):
         """Sets the name of the producer of this indicator.
 
