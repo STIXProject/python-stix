@@ -13,7 +13,7 @@ import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_bindin
 XML_NS_XPIL     = "urn:oasis:names:tc:ciq:xpil:3"
 XML_NS_XNL      = "urn:oasis:names:tc:ciq:xnl:3"
 XML_NS_XAL      = "urn:oasis:names:tc:ciq:xal:3"
-XML_NS_STIX_EXT ="http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
+XML_NS_STIX_EXT = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
 
 et.register_namespace('xpil', XML_NS_XPIL)
 et.register_namespace('xnl', XML_NS_XNL)
