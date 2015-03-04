@@ -67,12 +67,14 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
             'related_campaigns': [
                 {
                     'campaign': {
-                        'idref': 'example:Campaign-2f193992-d1c9-45a4-9db6-edbe9f7109cb'
+                        'idref': 'example:Campaign-2f193992-d1c9-45a4-9db6-edbe9f7109cb',
+                        'names': ['foo', 'bar']
                     }
                 },
                 {
                     'campaign': {
-                        'idref': 'example:Campaign-2f193992-d1c9-45a4-9db6-edbe9f7109cb'
+                        'idref': 'example:Campaign-2f193992-d1c9-45a4-9db6-edbe9f7109cb',
+                        'names': ['foo', 'bar']
                     }
                 }
             ]
