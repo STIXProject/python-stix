@@ -44,28 +44,16 @@ class Entity(object):
             error = error.format(attr_name, klass, type(item))
             raise TypeError(error)
 
-    def _set_vocab(self, klass=None, try_cast=True, **kwargs):
+    def _set_vocab(self, klass=None, **kwargs):
         from stix.common import VocabString
 
-        if not klass:
+        klass = klass or VocabString
+        item  = kwargs.itervalues().next()
+
+        if isinstance(item, VocabString):
             self._set_var(VocabString, **kwargs)
-            return
-
-        name = utils.private_name(kwargs.iterkeys().next())
-        item = kwargs.itervalues().next()
-
-        if not item:
-            setattr(self, name, None)
-        elif isinstance(item, VocabString):
-            setattr(self, name, item)
-        elif try_cast:
-            promoted = utils.cast_var(item, klass)
-            setattr(self, name, promoted)
         else:
-            attr_name = utils.attr_name(name)
-            error = "The '{0}' field expects an instance of {1}. Received: {2}."
-            error = error.format(attr_name, klass, type(item))
-            raise TypeError(error)
+            self._set_var(klass, **kwargs)
 
     def to_obj(self, return_obj=None, ns_info=None):
         """Converts an `Entity` into a binding object.

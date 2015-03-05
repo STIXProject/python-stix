@@ -228,7 +228,6 @@ def to_dict(entity, skip=()):
         return [x.to_dict() if is_dictable(x) else x for x in items]
 
     d = {}
-
     for name, field in iter_vars(entity):
         key = key_name(name)
 
