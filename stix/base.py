@@ -154,7 +154,8 @@ class Entity(object):
                 a readable object or a JSON string.
 
         Returns:
-            An implementation of :class:`.Entity` (e.g., :class:`.STIXPackage`).
+            An implementation of :class:`.Entity` (e.g.,
+            :class:`.STIXPackage`).
 
         """
         try:
@@ -173,7 +174,10 @@ class Entity(object):
 
     @classmethod
     def from_dict(cls, d, return_obj=None):
-        """Convert from dict representation to object representation. This should be overriden by a subclass"""
+        """Convert from dict representation to object representation.
+        This should be overriden by a subclass
+
+        """
         raise NotImplementedError()
             
     @classmethod
@@ -260,8 +264,13 @@ class EntityList(collections.MutableSequence, Entity):
         try:
             new_value = self._contained_type(value)
         except:
-            error = "Can't put '{0}' ({1}) into a {2}. Expected {3} instance."
-            error = error.format(value, type(value), type(self), self._contained_type)
+            error = "Can't put '{0}' ({1}) into a {2}. Expected a {3} object."
+            error = error.format(
+                value,                  # Input value
+                type(value),            # Type of input value
+                type(self),             # Type of collection
+                self._contained_type    # Expected type of input value
+            )
             raise ValueError(error)
 
         return new_value
@@ -280,7 +289,8 @@ class EntityList(collections.MutableSequence, Entity):
         if not return_obj:
             return_obj = self._binding_class()
 
-        setattr(return_obj, self._binding_var, [x.to_obj(ns_info=ns_info) for x in self])
+        objlist = [x.to_obj(ns_info=ns_info) for x in self]
+        setattr(return_obj, self._binding_var, objlist)
 
         return return_obj
 
@@ -400,8 +410,8 @@ class TypedList(collections.MutableSequence):
 
     def _is_valid(self, value):
         """Check if this is a valid object to add to the list."""
-        # Subclasses can override this function, but if it becomes common, it's
-        # probably better to use self._contained_type.istypeof(value)
+        # Subclasses can override this function, but if it becomes common,
+        # it's probably better to use self._contained_type.istypeof(value)
         return isinstance(value, self._contained_type)
 
     def _fix_value(self, value):
@@ -412,8 +422,13 @@ class TypedList(collections.MutableSequence):
         try:
             new_value = self._contained_type(value)
         except:
-            error = "Can't put '{0}' ({1}) into a {2}. Expected {3} instance."
-            error = error.format(value, type(value), type(self), type(self._contained_type))
+            error = "Can't put '{0}' ({1}) into a {2}. Expected a {3} object."
+            error = error.format(
+                value,                  # Input value
+                type(value),            # Type of input value
+                type(self),             # Type of collection
+                self._contained_type    # Expected type of input value
+            )
             raise ValueError(error)
 
         return new_value
