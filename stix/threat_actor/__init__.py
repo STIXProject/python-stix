@@ -2,17 +2,13 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils as utils
+from stix.data_marking import Marking
 import stix.bindings.threat_actor as threat_actor_binding
-from stix.common import (
-    vocabs, Confidence, Identity, InformationSource, Statement,
-    StructuredText
-)
+from stix.common import vocabs, Confidence, Identity, Statement
 from stix.common.related import (
     GenericRelationshipList, RelatedCampaign, RelatedPackageRefs, RelatedTTP,
     RelatedThreatActor
 )
-from stix.data_marking import Marking
 
 class ObservedTTPs(GenericRelationshipList):
     _namespace = 'http://stix.mitre.org/ThreatActor-1'
@@ -41,20 +37,26 @@ class AssociatedCampaigns(GenericRelationshipList):
     _inner_name = "campaigns"
 
 
-class ThreatActor(stix.Entity):
+class ThreatActor(stix._BaseCoreComponent):
     _binding = threat_actor_binding
     _binding_class = threat_actor_binding.ThreatActorType
     _namespace = 'http://stix.mitre.org/ThreatActor-1'
     _version = "1.1.1"
     _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1")
+    _ID_PREFIX = 'threatactor'
 
-    def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
-        self.id_ = id_ or stix.utils.create_id("threatactor")
-        self.idref = idref
-        self.version = None
-        self.title = title
-        self.description = description
-        self.short_description = short_description
+    def __init__(self, id_=None, idref=None, timestamp=None, title=None,
+                 description=None, short_description=None):
+
+        super(ThreatActor, self).__init__(
+            id_=id_,
+            idref=idref,
+            timestamp=timestamp,
+            title=title,
+            description=description,
+            short_description=short_description
+        )
+
         self.identity = None
         self.types = None
         self.motivations = None
@@ -63,96 +65,10 @@ class ThreatActor(stix.Entity):
         self.planning_and_operational_supports = None
         self.handling = None
         self.confidence = None
-        self.information_source = None
         self.observed_ttps = ObservedTTPs()
         self.associated_campaigns = AssociatedCampaigns()
         self.associated_actors = AssociatedActors()
         self.related_packages = RelatedPackageRefs()
-
-        if timestamp:
-            self.timestamp = timestamp
-        else:
-            self.timestamp = utils.dates.now() if not idref else None
-
-    @property
-    def id_(self):
-        return self._id
-    
-    @id_.setter
-    def id_(self, value):
-        if not value:
-            self._id = None
-        else:
-            self._id = value
-            self.idref = None
-    
-    @property
-    def version(self):
-        return self._version
-    
-    @version.setter
-    def version(self, value):
-        if not value:
-            self._version = None
-        else:
-            utils.check_version(self._ALL_VERSIONS, value)
-            self._version = value
-    
-    @property
-    def idref(self):
-        return self._idref
-    
-    @idref.setter
-    def idref(self, value):
-        if not value:
-            self._idref = None
-        else:
-            self._idref = value
-            self.id_ = None # unset id_ if idref is present
-    
-    @property
-    def timestamp(self):
-        return self._timestamp
-
-    @timestamp.setter
-    def timestamp(self, value):
-        self._timestamp = utils.dates.parse_value(value)
-
-    @property
-    def title(self):
-        return self._title
-
-    @title.setter
-    def title(self, value):
-        self._title = value
-
-    @property
-    def description(self):
-        return self._description
-
-    @description.setter
-    def description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._description = value
-            else:
-                self._description = StructuredText(value=value)
-        else:
-            self._description = None
-
-    @property
-    def short_description(self):
-        return self._short_description
-
-    @short_description.setter
-    def short_description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._short_description = value
-            else:
-                self._short_description = StructuredText(value=value)
-        else:
-            self._short_description = None
 
     @property
     def identity(self):
@@ -223,22 +139,11 @@ class ThreatActor(stix.Entity):
         self.planning_and_operational_supports.append(value)
 
     def to_obj(self, return_obj=None, ns_info=None):
-        super(ThreatActor, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
         if not return_obj:
             return_obj = self._binding_class()
 
-        return_obj.id = self.id_
-        return_obj.idref = self.idref
-        return_obj.version = self.version
-        return_obj.Title = self.title
+        super(ThreatActor, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
-        if self.timestamp:
-            return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
-        if self.description:
-            return_obj.Description = self.description.to_obj(ns_info=ns_info)
-        if self.short_description:
-            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
         if self.identity:
             return_obj.Identity = self.identity.to_obj(ns_info=ns_info)
         if self.types:
@@ -262,8 +167,6 @@ class ThreatActor(stix.Entity):
             return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
         if self.confidence:
             return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
-        if self.information_source:
-            return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
         if self.related_packages:
             return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
 
@@ -276,15 +179,9 @@ class ThreatActor(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = obj.id
-        return_obj.idref = obj.idref
-        return_obj.timestamp = obj.timestamp
+        super(ThreatActor, cls).from_obj(obj, return_obj=return_obj)
 
         if isinstance(obj, cls._binding_class): # ThreatActorType properties
-            return_obj.version = obj.version
-            return_obj.title = obj.Title
-            return_obj.description = StructuredText.from_obj(obj.Description)
-            return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
             return_obj.identity = Identity.from_obj(obj.Identity)
             return_obj.types = _Types.from_obj(obj.Type)
             return_obj.motivations = _Motivations.from_obj(obj.Motivation)
@@ -297,7 +194,6 @@ class ThreatActor(stix.Entity):
             return_obj.associated_actors = AssociatedActors.from_obj(obj.Associated_Actors)
             return_obj.handling = Marking.from_obj(obj.Handling)
             return_obj.confidence = Confidence.from_obj(obj.Confidence)
-            return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
             return_obj.related_packages = RelatedPackageRefs.from_obj(obj.Related_Packages)
 
         return return_obj
@@ -312,16 +208,10 @@ class ThreatActor(stix.Entity):
 
         if not return_obj:
             return_obj = cls()
-            
-        get = dict_repr.get
 
-        return_obj.id_ = get('id')
-        return_obj.idref = get('idref')
-        return_obj.timestamp = get('timestamp')
-        return_obj.version = get('version')
-        return_obj.title = get('title')
-        return_obj.description = StructuredText.from_dict(get('description'))
-        return_obj.short_description = StructuredText.from_dict(get('short_description'))
+        super(ThreatActor, cls).from_dict(dict_repr, return_obj=return_obj)
+
+        get = dict_repr.get
         return_obj.identity = Identity.from_dict(get('identity'))
         return_obj.types = _Types.from_dict(get('types'))
         return_obj.motivations = _Motivations.from_dict(get('motivations'))
@@ -334,7 +224,6 @@ class ThreatActor(stix.Entity):
         return_obj.associated_actors = AssociatedActors.from_dict(get('associated_actors'))
         return_obj.handling = Marking.from_dict(get('handling'))
         return_obj.confidence = Confidence.from_dict(get('confidence'))
-        return_obj.information_source = InformationSource.from_dict(get('information_source'))
         return_obj.related_packages = RelatedPackageRefs.from_dict(get('related_packages'))
 
         return return_obj

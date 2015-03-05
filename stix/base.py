@@ -457,3 +457,304 @@ class TypedList(collections.MutableSequence):
         return return_obj
 
     from_dict = from_list
+
+
+class _BaseCoreComponent(Entity):
+    _ALL_VERSIONS = ()
+    _ID_PREFIX = None
+
+    def __init__(self, id_=None, idref=None, timestamp=None, title=None,
+                 description=None, short_description=None):
+
+        self.id_ = id_ or utils.create_id(self._ID_PREFIX)
+        self.idref = idref
+        self.title = title
+        self.description = description
+        self.short_description = short_description
+        self.version = None
+
+        if timestamp:
+            self.timestamp = timestamp
+        else:
+            self.timestamp = utils.dates.now() if not idref else None
+
+    @property
+    def id_(self):
+        """The ``id_`` property serves as an identifier. This is
+        automatically set during ``__init__()``.
+
+        Default Value: ``None``
+
+        Note:
+            Both the ``id_`` and ``idref`` properties cannot be set at the
+            same time. **Setting one will unset the other!**
+
+        Returns:
+            A string id.
+
+        """
+        return self._id
+
+    @id_.setter
+    def id_(self, value):
+        if not value:
+            self._id = None
+        else:
+            self._id = value
+            self.idref = None
+
+    @property
+    def version(self):
+        """The schematic version of this component. This property
+        will always return ``None`` unless it is set to a value different than
+        ``self.__class__._version``.
+
+        Note:
+            This property refers to the version of the schema component
+            type and should not be used for the purpose of content versioning.
+
+        Default Value: ``None``
+
+        Returns:
+            The value of the ``version`` property if set to a value different
+            than ``self.__class__._version``
+
+        """
+        return self._version
+
+    @version.setter
+    def version(self, value):
+        if not value:
+            self._version = None
+        else:
+            utils.check_version(self._ALL_VERSIONS, value)
+            self._version = value
+
+    @property
+    def idref(self):
+        """The ``idref`` property must be set to the ``id_`` value of another
+        object instance of the same type. An idref does not need to resolve to
+        a local object instance.
+
+        Default Value: ``None``.
+
+        Note:
+            Both the ``id_`` and ``idref`` properties cannot be set at the
+            same time. **Setting one will unset the other!**
+
+        Returns:
+            The value of the ``idref`` property
+
+        """
+        return self._idref
+
+    @idref.setter
+    def idref(self, value):
+        if not value:
+            self._idref = None
+        else:
+            self._idref = value
+            self.id_ = None # unset id_ if idref is present
+
+    @property
+    def timestamp(self):
+        """The timestam property declares the time of creation and is
+        automatically set in ``__init__()``.
+
+        This property can accept ``datetime.datetime`` or ``str`` values.
+        If an ``str`` value is supplied, a best-effort attempt is made to
+        parse it into an instance of ``datetime.datetime``.
+
+        Default Value: A ``datetime.dateime`` instance with a value of the
+        date/time when ``__init__()`` was called.
+
+        Note:
+            If an ``idref`` is set during ``__init__()``, the value of
+            ``timestamp`` will not automatically generated and instead default
+            to the ``timestamp`` parameter, which has a default value of
+            ``None``.
+
+        Returns:
+            An instance of ``datetime.datetime``.
+
+        """
+        return self._timestamp
+
+    @timestamp.setter
+    def timestamp(self, value):
+        self._timestamp = utils.dates.parse_value(value)
+
+    @property
+    def title(self):
+        return self._title
+
+    @title.setter
+    def title(self, value):
+        self._title = value
+
+    @property
+    def description(self):
+        """A description about the contents or purpose of this object.
+
+        Default Value: ``None``
+
+        Note:
+            If set to a value that is not an instance of
+            :class:`.StructuredText`, an attempt to will be made to convert
+            the value into an instance of :class:`.StructuredText`.
+
+        Returns:
+            An instance of
+            :class:`.StructuredText`
+
+        """
+        return self._description
+
+    @description.setter
+    def description(self, value):
+        from stix.common import StructuredText
+
+        if not value:
+            self._description = None
+        elif isinstance(value, StructuredText):
+            self._description = value
+        else:
+            self._description = StructuredText(value=value)
+
+    @property
+    def short_description(self):
+        """A short description about the contents or purpose of this object.
+
+        Default Value: ``None``
+
+        Note:
+            If set to a value that is not an instance of
+            :class:`.StructuredText`, an attempt to will be made to convert
+            the value into an instance of :class:`.StructuredText`.
+
+        Returns:
+            An instance of
+            :class:`.StructuredText`
+
+        """
+        return self._short_description
+
+    @short_description.setter
+    def short_description(self, value):
+        from stix.common import StructuredText
+
+        if not value:
+            self._short_description = None
+        elif isinstance(value, StructuredText):
+            self._short_description = value
+        else:
+            self._short_description = StructuredText(value=value)
+
+    @property
+    def information_source(self):
+        """Contains information about the source of this object.
+
+        Default Value: ``None``
+
+        Returns:
+            An instance of
+            :class:`.InformationSource`
+
+        Raises:
+            ValueError: If set to a value that is not ``None`` and not an
+                instance of
+                :class:`.InformationSource`
+
+        """
+        return self._information_source
+
+    @information_source.setter
+    def information_source(self, value):
+        from stix.common import InformationSource
+
+        if not value:
+            self._information_source = None
+        elif isinstance(value, InformationSource):
+            self._information_source = value
+        else:
+            error = "Cannot set property. Expected '{0}' but received '{1}'"
+            error = error.format(InformationSource, type(value))
+            raise ValueError(error)
+
+    @classmethod
+    def from_obj(cls, obj, return_obj):
+        from stix.common import StructuredText, InformationSource
+
+        if not return_obj:
+            raise ValueError("Must provide a return_obj argument")
+
+        if not obj:
+            raise ValueError("Must provide an obj argument")
+
+        return_obj.id_ = obj.id
+        return_obj.idref = obj.idref
+        return_obj.timestamp = obj.timestamp
+
+        # These may not be found on the input obj if it isn't a full
+        # type definition (e.g., used as a reference)
+        return_obj.version = getattr(obj, 'version', None)
+        return_obj.title = getattr(obj, 'Title', None)
+        return_obj.description = \
+            StructuredText.from_obj(getattr(obj, 'Description', None))
+        return_obj.short_description = \
+            StructuredText.from_obj(getattr(obj, 'Short_Description', None))
+        return_obj.information_source = \
+            InformationSource.from_obj(getattr(obj, 'Information_Source', None))
+
+
+        return return_obj
+
+    def to_obj(self, return_obj=None, ns_info=None):
+        if not return_obj:
+            raise ValueError("Must provide a return_obj argument")
+
+        super(_BaseCoreComponent, self).to_obj(
+            return_obj=return_obj,
+            ns_info=ns_info
+        )
+
+        return_obj.id = self.id_
+        return_obj.idref = self.idref
+        return_obj.version = self.version
+        return_obj.Title = self.title
+
+        if self.timestamp:
+            return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
+        if self.description:
+            return_obj.Description = self.description.to_obj(ns_info=ns_info)
+        if self.short_description:
+            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
+        if self.information_source:
+            return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
+
+        return return_obj
+
+    @classmethod
+    def from_dict(cls, d, return_obj=None):
+        from stix.common import StructuredText, InformationSource
+
+        if not return_obj:
+            raise ValueError("Must provide a return_obj argument")
+
+        get = d.get
+        return_obj.id_ = get('id')
+        return_obj.idref = get('idref')
+        return_obj.timestamp = get('timestamp')
+        return_obj.version = get('version')
+        return_obj.title = get('title')
+        return_obj.description = \
+            StructuredText.from_dict(get('description'))
+        return_obj.short_description = \
+            StructuredText.from_dict(get('short_description'))
+        return_obj.information_source = \
+            InformationSource.from_dict(get('information_source'))
+
+        return return_obj
+
+    def to_dict(self):
+        return super(_BaseCoreComponent, self).to_dict()

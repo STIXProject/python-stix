@@ -155,7 +155,7 @@ class RelatedIndicators(GenericRelationshipList):
         super(RelatedIndicators, self).__init__(scope, related_indicators)
 
 
-class Indicator(stix.Entity):
+class Indicator(stix._BaseCoreComponent):
     """Implementation of the STIX ``IndicatorType``.
 
     Args:
@@ -177,18 +177,22 @@ class Indicator(stix.Entity):
     _version = "2.1.1"
     _ALL_VERSIONS = ("2.0", "2.0.1", "2.1", "2.1.1")
     _ALLOWED_COMPOSITION_OPERATORS = ('AND', 'OR')
+    _ID_PREFIX = "indicator"
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
 
-        self.id_ = id_ or stix.utils.create_id("indicator")
-        self.idref = idref
-        self.version = None # self._version
+        super(Indicator, self).__init__(
+            id_=id_,
+            idref=idref,
+            timestamp=timestamp,
+            title=title,
+            description=description,
+            short_description=short_description
+        )
+
         self.producer = None
         self.observables = None
-        self.title = title
-        self.description = description
-        self.short_description = short_description
         self.indicator_types = IndicatorTypes()
         self.confidence = None
         self.indicated_ttps = _IndicatedTTPs()
@@ -205,182 +209,6 @@ class Indicator(stix.Entity):
         self.observable_composition_operator = "OR"
         self.likely_impact = None
         self.negate = None
-    
-        if timestamp:
-            self.timestamp = timestamp
-        else:
-            self.timestamp = utils.dates.now() if not idref else None
-    
-    @property
-    def id_(self):
-        """The ``id_`` property for this :class:`Indicator` which serves as
-        an identifier. This is automatically set during ``__init__()``.
-
-        Default Value: ``None``
-
-        Note:
-            The :class:`Indicator` class cannot have both its ``id_`` and
-            ``idref`` properties set at the same time. As such, setting the
-            ``idref`` property will unset the ``id_`` property and setting
-            the ``id_`` property will unset the ``idref`` property.
-
-        Returns:
-            A string id.
-
-        """
-        return self._id
-    
-    @id_.setter
-    def id_(self, value):
-        if not value:
-            self._id = None
-        else:
-            self._id = value
-            self.idref = None
-    
-    @property
-    def version(self):
-        """The ``version`` property of this :class:`Indicator`. This property
-        will always return ``None`` unless it is set to a value different than
-        ``Indicator._version``.
-
-        Note:
-            This property refers to the version of the ``Indicator`` schema
-            type and should not be used for the purpose of content versioning.
-
-        Default Value: ``None``
-
-        Returns:
-            The value of the ``version`` property if set to a value different
-            than ``Indicator._version``
-
-        """
-        return self._version
-    
-    @version.setter
-    def version(self, value):
-        if not value:
-            self._version = None
-        else:
-            utils.check_version(self._ALL_VERSIONS, value)
-            self._version = value
-    
-    @property
-    def idref(self):
-        """The ``idref`` property for this :class:`Indicator`.
-
-        The ``idref`` property must be set to the ``id_`` value of another
-        :class:`Indicator` instance. An idref does not need to resolve to a
-        local :class`Indicator` instance.
-
-        Default Value: ``None``.
-
-        Note:
-            The :class:`Indicator` class cannot have both its ``id_`` and
-            ``idref`` properties set at the same time. As such, setting the
-            ``idref`` property will unset the ``id_`` property and setting
-            the ``id_`` property will unset the ``idref`` property.
-
-        Returns:
-            The value of the ``idref`` property
-
-        """
-        return self._idref
-    
-    @idref.setter
-    def idref(self, value):
-        if not value:
-            self._idref = None
-        else:
-            self._idref = value
-            self.id_ = None # unset id_ if idref is present
-    
-    @property
-    def timestamp(self):
-        """The ``timestamp`` propety for this :class:`Indicator` instance. This
-        property declares the time of creation and is automatically set in
-        ``__init__()``.
-
-        This property can accept ``datetime.datetime`` or ``str`` values.
-        If an ``str`` value is supplied, a best-effort attempt is made to
-        parse it into an instance of ``datetime.datetime``.
-
-        Default Value: A ``datetime.dateime`` instance with a value of the
-        date/time when ``__init__()`` was called.
-
-        Note:
-            If an ``idref`` is set during ``__init__()``, the value of
-            ``timestamp`` will not automatically generated and instead default
-            to the ``timestamp`` parameter, which has a default value of
-            ``None``.
-
-        Returns:
-            An instance of ``datetime.datetime``.
-
-        """
-        return self._timestamp
-
-    @timestamp.setter
-    def timestamp(self, value):
-        self._timestamp = utils.dates.parse_value(value)
-
-    @property
-    def description(self):
-        """The ``description`` property for this :class:`Indicator`.
-
-        Default Value: ``None``
-
-        Note:
-            If set to a value that is not an instance of
-            :class:`stix.common.structured_text.StructuredText`, an attempt to
-            will be made to convert the value into an instance of
-            :class:`stix.common.structured_text.StructuredText`.
-
-        Returns:
-            An instance of
-            :class:`stix.common.structured_text.StructuredText`
-
-        """
-        return self._description
-
-    @description.setter
-    def description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._description = value
-            else:
-                self._description = StructuredText(value=value)
-        else:
-            self._description = None
-
-    @property
-    def short_description(self):
-        """The ``short_description`` property for this :class:`Indicator`.
-
-        Default Value: ``None``
-
-        Note:
-            If set to a value that is not an instance of
-            :class:`stix.common.structured_text.StructuredText`, an attempt to
-            will be made to convert the value into an instance of
-            :class:`stix.common.structured_text.StructuredText`.
-
-        Returns:
-            An instance of
-            :class:`stix.common.structured_text.StructuredText`
-
-        """
-        return self._short_description
-
-    @short_description.setter
-    def short_description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._short_description = value
-            else:
-                self._short_description = StructuredText(value=value)
-        else:
-            self._short_description = None
 
     @property
     def producer(self):
@@ -1022,22 +850,13 @@ class Indicator(stix.Entity):
         self.add_observable(observable)
 
     def to_obj(self, return_obj=None, ns_info=None):
-        super(Indicator, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
         if not return_obj:
             return_obj = self._binding_class()
 
-        return_obj.id = self.id_
-        return_obj.idref = self.idref
-        return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
-        return_obj.Title = self.title
-        return_obj.negate = self._negate
-        return_obj.version = self._version
+        super(Indicator, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
-        if self.description:
-            return_obj.Description = self.description.to_obj(ns_info=ns_info)
-        if self.short_description:
-            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
+        return_obj.negate = self._negate
+
         if self.confidence:
             return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
         if self.indicator_types:
@@ -1084,16 +903,10 @@ class Indicator(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_              = obj.id
-        return_obj.idref            = obj.idref
-        return_obj.timestamp        = obj.timestamp
-        
+        super(Indicator, cls).from_obj(obj, return_obj=return_obj)
+
         if isinstance(obj, cls._binding_class):
             return_obj.negate = obj.negate
-            return_obj.version = obj.version
-            return_obj.title            = obj.Title
-            return_obj.description      = StructuredText.from_obj(obj.Description)
-            return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
             return_obj.producer         = InformationSource.from_obj(obj.Producer)
             return_obj.confidence       = Confidence.from_obj(obj.Confidence)
             return_obj.sightings        = Sightings.from_obj(obj.Sightings)
@@ -1133,17 +946,11 @@ class Indicator(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        get = dict_repr.get
+        super(Indicator, cls).from_dict(dict_repr, return_obj=return_obj)
 
-        return_obj.id_       = get('id')
-        return_obj.idref     = get('idref')
-        return_obj.timestamp = get('timestamp')
-        return_obj.title     = get('title')
+        get = dict_repr.get
         return_obj.negate    = get('negate')
-        return_obj.version   = get('version')
         return_obj.alternative_id = get('alternative_id')
-        return_obj.description = StructuredText.from_dict(get('description'))
-        return_obj.short_description = StructuredText.from_dict(get('short_description'))
         return_obj.indicated_ttps =  _IndicatedTTPs.from_dict(get('indicated_ttps'))
         return_obj.test_mechanisms = TestMechanisms.from_list(get('test_mechanisms'))
         return_obj.suggested_coas = SuggestedCOAs.from_dict(get('suggested_coas'))
