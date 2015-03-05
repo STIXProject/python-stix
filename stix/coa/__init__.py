@@ -253,8 +253,7 @@ class CourseOfAction(stix.Entity):
 
         return_obj.id = self.id_
         return_obj.idref = self.idref
-        if self.timestamp:
-            return_obj.timestamp = self.timestamp.isoformat()
+        return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
         return_obj.version = self.version
         return_obj.Title = self.title
         if self.stage:
@@ -329,27 +328,28 @@ class CourseOfAction(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = dict_repr.get('id')
-        return_obj.idref = dict_repr.get('idref')
-        return_obj.timestamp = dict_repr.get('timestamp')
-        return_obj.version = dict_repr.get('version')
-        return_obj.title = dict_repr.get('title')
-        return_obj.stage = VocabString.from_dict(dict_repr.get('stage'))
-        return_obj.type_ = VocabString.from_dict(dict_repr.get('type'))
-        return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
-        return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
-        return_obj.objective = Objective.from_dict(dict_repr.get('objective'))
+        get = dict_repr.get
+        return_obj.id_ = get('id')
+        return_obj.idref = get('idref')
+        return_obj.timestamp = utils.dates.parse_value(get('timestamp'))
+        return_obj.version = get('version')
+        return_obj.title = get('title')
+        return_obj.stage = VocabString.from_dict(get('stage'))
+        return_obj.type_ = VocabString.from_dict(get('type'))
+        return_obj.description = StructuredText.from_dict(get('description'))
+        return_obj.short_description = StructuredText.from_dict(get('short_description'))
+        return_obj.objective = Objective.from_dict(get('objective'))
         return_obj.parameter_observables = \
-                Observables.from_dict(dict_repr.get('parameter_observables'))
-        return_obj.impact = Statement.from_dict(dict_repr.get('impact'))
-        return_obj.cost = Statement.from_dict(dict_repr.get('cost'))
-        return_obj.efficacy = Statement.from_dict(dict_repr.get('efficacy'))
-        return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
-        return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
+                Observables.from_dict(get('parameter_observables'))
+        return_obj.impact = Statement.from_dict(get('impact'))
+        return_obj.cost = Statement.from_dict(get('cost'))
+        return_obj.efficacy = Statement.from_dict(get('efficacy'))
+        return_obj.information_source = InformationSource.from_dict(get('information_source'))
+        return_obj.handling = Marking.from_dict(get('handling'))
         return_obj.related_coas = \
-                RelatedCOAs.from_dict(dict_repr.get('related_coas'))
+                RelatedCOAs.from_dict(get('related_coas'))
         return_obj.related_packages = \
-                related.RelatedPackageRefs.from_dict(dict_repr.get('related_packages'))
+                related.RelatedPackageRefs.from_dict(get('related_packages'))
 
         return return_obj
 

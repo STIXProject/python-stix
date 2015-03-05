@@ -141,13 +141,10 @@ class TTP(stix.Entity):
 
     @related_ttps.setter
     def related_ttps(self, value):
-
-        if not value:
-            self._related_ttps = RelatedTTPs()
-        elif isinstance(value, RelatedTTPs):
+        if isinstance(value, RelatedTTPs):
             self._related_ttps = value
         else:
-            raise ValueError("value must be RelatedTTPs instance")
+            self._related_ttps = RelatedTTPs(value)
 
     @property
     def exploit_targets(self):
@@ -155,12 +152,10 @@ class TTP(stix.Entity):
 
     @exploit_targets.setter
     def exploit_targets(self, value):
-        if not value:
-            self._exploit_targets = ExploitTargets()
-        elif isinstance(value, ExploitTargets):
+        if isinstance(value, ExploitTargets):
             self._exploit_targets = value
         else:
-            raise ValueError("value must be ExploitTargets instance")
+            self._exploit_targets = ExploitTargets(value)
 
     @property
     def information_source(self):

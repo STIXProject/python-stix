@@ -87,10 +87,9 @@ class Confidence(stix.Entity):
         super(Confidence, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         obj = self._binding_class()
-
-        if self.timestamp:
-            obj.timestamp = self.timestamp.isoformat()
+        obj.timestamp = utils.dates.serialize_value(self.timestamp)
         obj.timestamp_precision = self.timestamp_precision
+
         if self.value:
             obj.Value = self.value.to_obj(ns_info=ns_info)
         if self.description:
