@@ -88,7 +88,6 @@ def iterpath(obj, path=None):
 
     for varname, varobj in _iter_vars(obj):
         if _is_skippable(obj, varname, varobj):
-            print varname
             continue
 
         if varname == "_inner" and is_entitylist(obj):

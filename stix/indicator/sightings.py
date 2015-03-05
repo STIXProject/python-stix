@@ -93,28 +93,13 @@ class Sighting(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        if self.timestamp:
-            d['timestamp'] = utils.dates.serialize_value(self.timestamp)
-        if self.timestamp_precision:
-            d['timestamp_precision'] = str(self.timestamp_precision)
-        if self.source:
-            d['source'] = self.source.to_dict()
-        if self.reference:
-            d['reference'] = str(self.reference)
-        if self.confidence:
-            d['confidence'] = self.confidence.to_dict()
-        if self.description:
-            d['description'] = self.description.to_dict()
-        if self.related_observables:
-            d['related_observables'] = self.related_observables.to_dict()
-         
-        return d
+        return super(Sighting, self).to_dict()
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
+
         if return_obj is None:
             return_obj = cls()
         

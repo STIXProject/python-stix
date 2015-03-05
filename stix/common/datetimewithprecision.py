@@ -36,7 +36,8 @@ class DateTimeWithPrecision(stix.Entity):
     @precision.setter
     def precision(self, value):
         if value not in DATETIME_PRECISION_VALUES:
-            raise ValueError("value must be one of [%s]" % ", ".join(x for x in DATETIME_PRECISION_VALUES))
+            error = "value must be one of %s" % (DATE_PRECISION_VALUES,)
+            raise ValueError(error)
 
         self._precision = value
 
@@ -60,7 +61,7 @@ class DateTimeWithPrecision(stix.Entity):
         return_obj.precision = obj.precision
         return return_obj
 
-    def to_dict(self):    
+    def to_dict(self):
         if self.precision == 'second':
             return utils.dates.serialize_value(self.value)
        

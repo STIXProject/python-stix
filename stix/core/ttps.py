@@ -70,7 +70,8 @@ class TTPs(stix.EntityList):
             return None
         if not return_obj:
             return_obj = cls()
-        
+
+        get = dict_repr.get
         super(TTPs, cls).from_dict(dict_repr, return_obj)
-        return_obj.kill_chains = KillChains.from_dict(dict_repr.get('kill_chains'))
+        return_obj.kill_chains = KillChains.from_dict(get('kill_chains'))
         return return_obj

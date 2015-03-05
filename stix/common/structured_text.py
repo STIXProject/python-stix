@@ -14,7 +14,10 @@ class StructuredText(stix.Entity):
         self.structuring_format = None
 
     def to_obj(self, return_obj=None, ns_info=None):
-        super(StructuredText, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+        super(StructuredText, self).to_obj(
+            return_obj=return_obj,
+            ns_info=ns_info
+        )
 
         text_obj = self._binding.StructuredTextType()
 
@@ -27,12 +30,8 @@ class StructuredText(stix.Entity):
         # Return a plain string if there is no format specified.
         if self.structuring_format is None:
             return self.value
-
-        d = {}
-        d['value'] = self.value
-        d['structuring_format'] = self.structuring_format
-
-        return d
+        else:
+            return super(StructuredText, self).to_dict()
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):

@@ -12,6 +12,9 @@ import lxml.etree
 
 # internal
 import stix
+import stix.xmlconst as xmlconst
+
+from . import dates
 
 
 CDATA_START = "<![CDATA["
@@ -192,9 +195,16 @@ def check_version(expected, found):
 
 
 def iter_vars(obj):
-    return dict(
-        (attr_name(x), y) for x, y in obj.__dict__.iteritems() if y
-    ).iteritems()
+    def is_good(key, val):
+        if val is None:
+            return False
+
+        inputs = ('__input_namespaces__', '__input_schemalocations__')
+        has_value = bool(val) or is_bool(val)
+        return has_value and (key not in inputs)
+
+    vars = obj.__dict__.iteritems()
+    return dict((attr_name(x), y) for x, y in vars if is_good(x,y)).iteritems()
 
 
 def is_dictable(obj):
@@ -205,8 +215,51 @@ def is_timestamp(obj):
     return isinstance(obj, datetime.datetime)
 
 
+def is_bool(obj):
+    return isinstance(obj, bool)
+
+
 def is_etree(obj):
     return isinstance(obj, lxml.etree._Element)
+
+
+def to_dict(entity, skip=()):
+    def dict_iter(items):
+        return [x.to_dict() if is_dictable(x) else x for x in items]
+
+    d = {}
+
+    for name, field in iter_vars(entity):
+        key = key_name(name)
+
+        if key in skip:
+            continue
+
+        if is_dictable(field):
+            d[key] = field.to_dict()
+        elif is_timestamp(field):
+            d[key] = dates.serialize_value(field)
+        elif is_etree(field):
+            d[key] = lxml.etree.tostring(field)
+        elif is_sequence(field):
+            d[key] = dict_iter(field)
+        else:
+            d[key] = field
+
+    return d
+
+
+def xml_bool(item):
+    if item is None:
+        return None
+
+    if item in xmlconst.FALSE:
+        return False
+    elif item in xmlconst.TRUE:
+        return True
+
+    error = "Unable to determine the boolean value of '{0}'".format(item)
+    raise ValueError(error)
 
 
 from .nsparser import *

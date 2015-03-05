@@ -85,15 +85,7 @@ class Objective(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        if self.description:
-            d['description'] = self.description.to_dict()
-        if self.short_description:
-            d['short_description'] = self.short_description.to_dict()
-        if self.applicability_confidence:
-            d['applicability_confidence'] = self.applicability_confidence.to_dict()
-
-        return d
+        return super(Objective, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):

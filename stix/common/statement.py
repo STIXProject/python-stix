@@ -17,7 +17,8 @@ class Statement(stix.Entity):
     _binding = common_binding
     _binding_class = common_binding.StatementType
 
-    def __init__(self, value=None, timestamp=None, description=None, source=None):
+    def __init__(self, value=None, timestamp=None, description=None,
+                 source=None):
         self.timestamp = timestamp or utils.dates.now()
         self.timestamp_precision = "second"
         self.value = value
@@ -96,21 +97,10 @@ class Statement(stix.Entity):
         return obj
 
     def to_dict(self):
-        d = {}
-        if self.timestamp:
-            d['timestamp'] = utils.dates.serialize_value(self.timestamp)
+        d = utils.to_dict(self, skip=('timestamp_precision',))
+
         if self.timestamp_precision != 'second':
             d['timestamp_precision'] = self.timestamp_precision
-        if self.value:
-            d['value'] = self.value.to_dict()
-        if self.description:
-            d['description'] = self.description.to_dict()
-        if self.source:
-            d['source'] = self.source.to_dict()
-        if self.source:
-            d['source'] = self.source.to_dict()
-        if self.confidence:
-            d['confidence'] = self.confidence.to_dict()
 
         return d
 

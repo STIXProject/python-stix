@@ -3,10 +3,9 @@
 
 
 import stix
-import stix.utils as utils
 import stix.bindings.incident as incident_binding
 from stix.common import (
-    vocabs, Identity, Statement, StructuredText, VocabString,
+    vocabs, Identity, Statement, VocabString,
     InformationSource, Confidence
 )
 from stix.common.related import (
@@ -25,20 +24,24 @@ from .coa import COATaken, COATime
 from .history import History
 
 
-class Incident(stix.Entity):
+class Incident(stix.BaseCoreComponent):
     _binding = incident_binding
     _binding_class = _binding.IncidentType
     _namespace = "http://stix.mitre.org/Incident-1"
     _version = "1.1.1"
     _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1")
+    _ID_PREFIX = 'incident'
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
-        self.id_ = id_ or stix.utils.create_id("incident")
-        self.idref = idref
-        self.version = None # self._version
-        self.description = description
-        self.short_description = short_description
-        self.title = title
+        super(Incident, self).__init__(
+            id_=id_,
+            idref=idref,
+            timestamp=timestamp,
+            title=title,
+            description=description,
+            short_description=short_description
+        )
+
         self.status = None
         self.time = None
         self.victims = None
@@ -56,97 +59,11 @@ class Incident(stix.Entity):
         self.coordinators = None
         self.external_ids = None
         self.impact_assessment = None
-        self.information_source = None
         self.security_compromise = None
         self.confidence = None
         self.coa_taken = None
         self.handling = None
         self.history = History()
-    
-        if timestamp:
-            self.timestamp = timestamp
-        else:
-            self.timestamp = utils.dates.now() if not idref else None
-    
-    @property
-    def id_(self):
-        return self._id
-    
-    @id_.setter
-    def id_(self, value):
-        if not value:
-            self._id = None
-        else:
-            self._id = value
-            self.idref = None
-    
-    @property
-    def version(self):
-        return self._version
-    
-    @version.setter
-    def version(self, value):
-        if not value:
-            self._version = None
-        else:
-            utils.check_version(self._ALL_VERSIONS, value)
-            self._version = value
-    
-    @property
-    def idref(self):
-        return self._idref
-    
-    @idref.setter
-    def idref(self, value):
-        if not value:
-            self._idref = None
-        else:
-            self._idref = value
-            self.id_ = None # unset id_ if idref is present
-    
-    @property
-    def timestamp(self):
-        return self._timestamp
-    
-    @timestamp.setter
-    def timestamp(self, value):
-        self._timestamp = utils.dates.parse_value(value)
-
-    @property
-    def title(self):
-        return self._title
-
-    @title.setter
-    def title(self, value):
-        self._title = value
-
-    @property
-    def description(self):
-        return self._description
-
-    @description.setter
-    def description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._description = value
-            else:
-                self._description = StructuredText(value=value)
-        else:
-            self._description = None
-
-    @property
-    def short_description(self):
-        return self._short_description
-
-    @short_description.setter
-    def short_description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._short_description = value
-            else:
-                self._short_description = StructuredText(value=value)
-        else:
-            self._short_description = None
 
     @property
     def status(self):
@@ -299,19 +216,6 @@ class Incident(stix.Entity):
             raise ValueError('value must be instance of ImpactAssessment')
 
     @property
-    def information_source(self):
-        return self._information_source
-
-    @information_source.setter
-    def information_source(self, value):
-        if not value:
-            self._information_source = None
-        elif isinstance(value, InformationSource):
-            self._information_source = value
-        else:
-            raise ValueError('value must be instance of InformationSource')
-
-    @property
     def security_compromise(self):
         return self._security_compromise
 
@@ -349,21 +253,11 @@ class Incident(stix.Entity):
         self.coa_taken.append(value)
 
     def to_obj(self, return_obj=None, ns_info=None):
-        super(Incident, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
         if not return_obj:
             return_obj = self._binding_class()
 
-        return_obj.id = self.id_
-        return_obj.idref = self.idref
-        return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
-        return_obj.version = self.version
-        return_obj.Title = self.title
+        super(Incident, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
-        if self.description:
-            return_obj.Description = self.description.to_obj(ns_info=ns_info)
-        if self.short_description:
-            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
         if self.time:
             return_obj.Time = self.time.to_obj(ns_info=ns_info)
         if self.victims:
@@ -396,8 +290,6 @@ class Incident(stix.Entity):
             return_obj.External_ID = self.external_ids.to_obj(ns_info=ns_info)
         if self.impact_assessment:
             return_obj.Impact_Assessment = self.impact_assessment.to_obj(ns_info=ns_info)
-        if self.information_source:
-            return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
         if self.security_compromise:
             return_obj.Security_Compromise = self.security_compromise.to_obj(ns_info=ns_info)
         if self.confidence:
@@ -417,18 +309,13 @@ class Incident(stix.Entity):
     def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
+
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = obj.id
-        return_obj.idref = obj.idref
-        return_obj.timestamp = obj.timestamp
-        
+        super(Incident, cls).from_obj(obj, return_obj=return_obj)
+
         if isinstance(obj, cls._binding_class):
-            return_obj.version = obj.version
-            return_obj.title = obj.Title
-            return_obj.description = StructuredText.from_obj(obj.Description)
-            return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
             return_obj.time = Time.from_obj(obj.Time)
             return_obj.victims = _Victims.from_obj(obj.Victim)
             return_obj.categories = IncidentCategories.from_obj(obj.Categories)
@@ -448,37 +335,26 @@ class Incident(stix.Entity):
             return_obj.responders = _InformationSources.from_obj(obj.Responder)
             return_obj.coordinators = _InformationSources.from_obj(obj.Coordinator)
             return_obj.external_ids = _ExternalIDs.from_obj(obj.External_ID)
-
-            if obj.Reporter:
-                return_obj.reporter = InformationSource.from_obj(obj.Reporter)
-            if obj.Impact_Assessment:
-                return_obj.impact_assessment = ImpactAssessment.from_obj(obj.Impact_Assessment)
-            if obj.Information_Source:
-                return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
-            if obj.Security_Compromise:
-                return_obj.security_compromise = VocabString.from_obj(obj.Security_Compromise)
+            return_obj.reporter = InformationSource.from_obj(obj.Reporter)
+            return_obj.impact_assessment = ImpactAssessment.from_obj(obj.Impact_Assessment)
+            return_obj.security_compromise = VocabString.from_obj(obj.Security_Compromise)
             
         return return_obj
 
     def to_dict(self):
-        return super(Incident, self).to_dict() # unnecessary but whatever.
+        return super(Incident, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
         if not dict_repr:
             return None
+
         if not return_obj:
             return_obj = cls()
 
-        get = dict_repr.get
+        super(Incident, cls).from_dict(dict_repr, return_obj=return_obj)
 
-        return_obj.id_ = get('id')
-        return_obj.idref = get('idref')
-        return_obj.timestamp = get('timestamp')
-        return_obj.version = get('version')
-        return_obj.title = get('title')
-        return_obj.description = StructuredText.from_dict(get('description'))
-        return_obj.short_description = StructuredText.from_dict(get('short_description'))
+        get = dict_repr.get
         return_obj.time = Time.from_dict(get('time'))
         return_obj.victims = _Victims.from_dict(get('victims'))
         return_obj.categories = IncidentCategories.from_dict(get('categories'))
@@ -495,7 +371,6 @@ class Incident(stix.Entity):
         return_obj.coordinators = _InformationSources.from_dict(get('coordinators'))
         return_obj.external_ids = _ExternalIDs.from_dict(get('external_ids'))
         return_obj.impact_assessment = ImpactAssessment.from_dict(get('impact_assessment'))
-        return_obj.information_source = InformationSource.from_dict(get('information_source'))
         return_obj.security_compromise = VocabString.from_dict(get('security_compromise'))
         return_obj.confidence = Confidence.from_dict(get('confidence'))
         return_obj.coa_taken = _COAsTaken.from_dict(get('coa_taken'))

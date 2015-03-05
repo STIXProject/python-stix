@@ -8,12 +8,13 @@ from cybox.common import Time
 # internal
 import stix
 import stix.utils as utils
+import stix.xmlconst as xmlconst
 from stix.common import (
-    Identity, InformationSource, StructuredText, VocabString, Confidence,
-    RelatedTTP, Statement
+    Identity, InformationSource, VocabString, Confidence,
+    RelatedTTP, Statement, CampaignRef
 )
 from stix.common.related import (
-    GenericRelationshipList, RelatedCOA, RelatedIndicator
+    GenericRelationshipList, RelatedCOA, RelatedIndicator, RelatedCampaignRef
 )
 from stix.data_marking import Marking
 from stix.common.vocabs import IndicatorType
@@ -21,9 +22,9 @@ from stix.common.kill_chains import KillChainPhasesReference
 import stix.bindings.indicator as indicator_binding
 
 # relative
-from .test_mechanism import _BaseTestMechanism, TestMechanisms
+from .test_mechanism import TestMechanisms
 from .sightings import Sightings
-from .valid_time import ValidTime, _ValidTimePositions
+from .valid_time import  _ValidTimePositions
 
 
 class SuggestedCOAs(GenericRelationshipList):
@@ -154,7 +155,7 @@ class RelatedIndicators(GenericRelationshipList):
         super(RelatedIndicators, self).__init__(scope, related_indicators)
 
 
-class Indicator(stix.Entity):
+class Indicator(stix.BaseCoreComponent):
     """Implementation of the STIX ``IndicatorType``.
 
     Args:
@@ -175,17 +176,23 @@ class Indicator(stix.Entity):
     _namespace = 'http://stix.mitre.org/Indicator-2'
     _version = "2.1.1"
     _ALL_VERSIONS = ("2.0", "2.0.1", "2.1", "2.1.1")
+    _ALLOWED_COMPOSITION_OPERATORS = ('AND', 'OR')
+    _ID_PREFIX = "indicator"
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
-        self.id_ = id_ or stix.utils.create_id("indicator")
-        self.idref = idref
-        self.version = None # self._version
+
+        super(Indicator, self).__init__(
+            id_=id_,
+            idref=idref,
+            timestamp=timestamp,
+            title=title,
+            description=description,
+            short_description=short_description
+        )
+
         self.producer = None
         self.observables = None
-        self.title = title
-        self.description = description
-        self.short_description = short_description
         self.indicator_types = IndicatorTypes()
         self.confidence = None
         self.indicated_ttps = _IndicatedTTPs()
@@ -198,173 +205,10 @@ class Indicator(stix.Entity):
         self.kill_chain_phases = KillChainPhasesReference()
         self.valid_time_positions = _ValidTimePositions()
         self.related_indicators = None
+        self.related_campaigns = RelatedCampaignRefs()
         self.observable_composition_operator = "OR"
         self.likely_impact = None
         self.negate = None
-    
-        if timestamp:
-            self.timestamp = timestamp
-        else:
-            self.timestamp = utils.dates.now() if not idref else None
-    
-    @property
-    def id_(self):
-        """The ``id_`` property for this :class:`Indicator` which serves as
-        an identifier. This is automatically set during ``__init__()``.
-
-        Default Value: ``None``
-
-        Note:
-            The :class:`Indicator` class cannot have both its ``id_`` and
-            ``idref`` properties set at the same time. As such, setting the
-            ``idref`` property will unset the ``id_`` property and setting
-            the ``id_`` property will unset the ``idref`` property.
-
-        Returns:
-            A string id.
-
-        """
-        return self._id
-    
-    @id_.setter
-    def id_(self, value):
-        if not value:
-            self._id = None
-        else:
-            self._id = value
-            self.idref = None
-    
-    @property
-    def version(self):
-        """The ``version`` property of this :class:`Indicator`. This property
-        will always return ``None`` unless it is set to a value different than
-        ``Indicator._version``.
-
-        Note:
-            This property refers to the version of the ``Indicator`` schema
-            type and should not be used for the purpose of content versioning.
-
-        Default Value: ``None``
-
-        Returns:
-            The value of the ``version`` property if set to a value different
-            than ``Indicator._version``
-
-        """
-        return self._version
-    
-    @version.setter
-    def version(self, value):
-        if not value:
-            self._version = None
-        else:
-            utils.check_version(self._ALL_VERSIONS, value)
-            self._version = value
-    
-    @property
-    def idref(self):
-        """The ``idref`` property for this :class:`Indicator`.
-
-        The ``idref`` property must be set to the ``id_`` value of another
-        :class:`Indicator` instance. An idref does not need to resolve to a
-        local :class`Indicator` instance.
-
-        Default Value: ``None``.
-
-        Note:
-            The :class:`Indicator` class cannot have both its ``id_`` and
-            ``idref`` properties set at the same time. As such, setting the
-            ``idref`` property will unset the ``id_`` property and setting
-            the ``id_`` property will unset the ``idref`` property.
-
-        Returns:
-            The value of the ``idref`` property
-
-        """
-        return self._idref
-    
-    @idref.setter
-    def idref(self, value):
-        if not value:
-            self._idref = None
-        else:
-            self._idref = value
-            self.id_ = None # unset id_ if idref is present
-    
-    @property
-    def timestamp(self):
-        """The ``timestamp`` propety for this :class:`Indicator` instance. This
-        property declares the time of creation and is automatically set in
-        ``__init__()``.
-
-        This property can accept ``datetime.datetime`` or ``str`` values.
-        If an ``str`` value is supplied, a best-effort attempt is made to
-        parse it into an instance of ``datetime.datetime``.
-
-        Default Value: A ``datetime.dateime`` instance with a value of the
-        date/time when ``__init__()`` was called.
-
-        Note:
-            If an ``idref`` is set during ``__init__()``, the value of
-            ``timestamp`` will not automatically generated and instead default
-            to the ``timestamp`` parameter, which has a default value of
-            ``None``.
-
-        Returns:
-            An instance of ``datetime.datetime``.
-
-        """
-        return self._timestamp
-
-    @timestamp.setter
-    def timestamp(self, value):
-        self._timestamp = utils.dates.parse_value(value)
-
-    @property
-    def description(self):
-        """The ``description`` property for this :class:`Indicator`.
-
-        Default Value: ``None``
-
-        Note:
-            If set to a value that is not an instance of
-            :class:`stix.common.structured_text.StructuredText`, an attempt to
-            will be made to convert the value into an instance of
-            :class:`stix.common.structured_text.StructuredText`.
-
-        Returns:
-            An instance of
-            :class:`stix.common.structured_text.StructuredText`
-
-        """
-        return self._description
-
-    @description.setter
-    def description(self, value):
-        self._set_var(StructuredText, _description=value)
-
-    @property
-    def short_description(self):
-        """The ``short_description`` property for this :class:`Indicator`.
-
-        Default Value: ``None``
-
-        Note:
-            If set to a value that is not an instance of
-            :class:`stix.common.structured_text.StructuredText`, an attempt to
-            will be made to convert the value into an instance of
-            :class:`stix.common.structured_text.StructuredText`.
-
-        Returns:
-            An instance of
-            :class:`stix.common.structured_text.StructuredText`
-
-        """
-        return self._short_description
-
-    @short_description.setter
-    def short_description(self, value):
-         self._set_var(StructuredText, _short_description=value)
 
     @property
     def producer(self):
@@ -445,18 +289,8 @@ class Indicator(stix.Entity):
 
     @observables.setter
     def observables(self, value):
-        if isinstance(value, _Observables):
-            self._observables = value
-            return
+        self._observables = _Observables(value)
 
-        self._observables = _Observables()
-
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            self._observables.extend(value)
-        else:
-            self._observables.append(value)
 
     def add_observable(self, observable):
         """Adds an observable to the ``observables`` list property of the
@@ -485,9 +319,6 @@ class Indicator(stix.Entity):
                 instance of ``cybox.core.Observable``.
 
         """
-        if not observable:
-            return
-
         self.observables.append(observable)
                 
     @property
@@ -512,10 +343,9 @@ class Indicator(stix.Entity):
         if not value:
             return
         elif utils.is_sequence(value):
-            for v in value:
-                self.add_alternative_id(v)
+            self._alternative_id.extend(x for x in value if x)
         else:
-            self.add_alternative_id(value)
+            self._alternative_id.append(value)
 
     def add_alternative_id(self, value):
         """Adds an alternative id to the ``alternative_id`` list property.
@@ -530,8 +360,8 @@ class Indicator(stix.Entity):
         """
         if not value:
             return
-        else:
-            self.alternative_id.append(value)
+
+        self.alternative_id.append(value)
                 
     @property
     def valid_time_positions(self):
@@ -553,19 +383,7 @@ class Indicator(stix.Entity):
 
     @valid_time_positions.setter
     def valid_time_positions(self, value):
-        if isinstance(value, _ValidTimePositions):
-            self._valid_time_positions = value
-            return
-
-        self._valid_time_positions = _ValidTimePositions()
-
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_valid_time_position(v)
-        else:
-            self.add_valid_time_position(value)
+        self._valid_time_positions = _ValidTimePositions(value)
 
     def add_valid_time_position(self, value):
         """Adds an valid time position to the ``valid_time_positions`` property
@@ -581,12 +399,7 @@ class Indicator(stix.Entity):
             ValueError: If the `value` argument is not an instance of
                 :class:`stix.indicator.valid_time.ValidTime`.
         """
-        if not value:
-            return
-        elif isinstance(value, ValidTime):
-            self.valid_time_positions.append(value)
-        else:
-            raise ValueError("value must be instance of ValidTime")
+        self.valid_time_positions.append(value)
 
     @property
     def indicator_types(self):
@@ -614,19 +427,7 @@ class Indicator(stix.Entity):
 
     @indicator_types.setter
     def indicator_types(self, value):
-        if isinstance(value, IndicatorTypes):
-            self._indicator_types = value
-            return
-
-        self._indicator_types = IndicatorTypes()
-
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_indicator_type(v)
-        else:
-            self.add_indicator_type(value)
+        self._indicator_types = IndicatorTypes(value)
 
     def add_indicator_type(self, value):
         """Adds a value to the ``indicator_types`` list property.
@@ -648,13 +449,8 @@ class Indicator(stix.Entity):
                 be converted into an instance of
                 :class:`stix.common.vocabs.IndicatorType`.
         """
-        if not value:
-            return
-        elif isinstance(value, VocabString):
-            self.indicator_types.append(value)
-        else:
-            tmp_indicator_type = IndicatorType(value=value)
-            self.indicator_types.append(tmp_indicator_type)
+        self.indicator_types.append(value)
+
     
     @property
     def confidence(self):
@@ -698,20 +494,8 @@ class Indicator(stix.Entity):
     
     @indicated_ttps.setter
     def indicated_ttps(self, value):
-        if isinstance(value, _IndicatedTTPs):
-            self._indicated_ttps = value
-            return
+        self._indicated_ttps = _IndicatedTTPs(value)
 
-        self._indicated_ttps = _IndicatedTTPs()
-
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_indicated_ttp(v)
-        else:
-            self.add_indicated_ttp(value)
-            
     def add_indicated_ttp(self, v):
         """Adds an Indicated TTP to the ``indicated_ttps`` list property
         of this :class:`Indicator`.
@@ -736,32 +520,15 @@ class Indicator(stix.Entity):
                 instance of :class:`stix.common.related.RelatedTTP`
 
         """
-        if not v:
-            return
-        elif isinstance(v, RelatedTTP):
-            self.indicated_ttps.append(v)
-        else:
-            self.indicated_ttps.append(RelatedTTP(v))
-        
+        self.indicated_ttps.append(v)
+
     @property
     def test_mechanisms(self):
         return self._test_mechanisms
     
     @test_mechanisms.setter
     def test_mechanisms(self, value):
-        if isinstance(value, TestMechanisms):
-            self._test_mechanisms = value
-            return
-
-        self._test_mechanisms = TestMechanisms()
-
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_test_mechanism(v)
-        else:
-            self.add_test_mechanism(value)
+        self._test_mechanisms = TestMechanisms(value)
             
     def add_test_mechanism(self, tm):
         """Adds an Test Mechanism to the ``test_mechanisms`` list property
@@ -788,12 +555,8 @@ class Indicator(stix.Entity):
                 :class:`stix.indicator.test_mechanism._BaseTestMechanism`
 
         """
-        if not tm:
-            return
-        elif isinstance(tm, _BaseTestMechanism):
-            self.test_mechanisms.append(tm)
-        else:
-            raise ValueError('Cannot add type %s to test_mechanisms list' % type(tm))
+        self.test_mechanisms.append(tm)
+
 
     @property
     def handling(self):
@@ -816,18 +579,9 @@ class Indicator(stix.Entity):
     def related_indicators(self, value):
         if isinstance(value, RelatedIndicators):
             self._related_indicators = value
-            return
-
-        self._related_indicators = RelatedIndicators()
-        
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_related_indicator(v)
         else:
-            self.add_related_indicator(value)
-    
+            self._related_indicators = RelatedIndicators(value)
+
     def add_related_indicator(self, indicator):
         """Adds an Related Indicator to the ``related_indicators`` list
         property of this :class:`Indicator`.
@@ -859,12 +613,21 @@ class Indicator(stix.Entity):
                 an instance of :class:`stix.common.related.RelatedIndicator`
 
         """
-        if not indicator:
-            return
-        elif isinstance(indicator, RelatedIndicator):
-            self.related_indicators.append(indicator)
+        self.related_indicators.append(indicator)
+
+    @property
+    def related_campaigns(self):
+        return self._related_campaigns
+
+    @related_campaigns.setter
+    def related_campaigns(self, value):
+        if isinstance(value, RelatedCampaignRefs):
+            self._related_campaigns = value
         else:
-            self.related_indicators.append(RelatedIndicator(indicator))
+            self._related_campaigns = RelatedCampaignRefs(value)
+
+    def add_related_campaign(self, value):
+        self.related_campaigns.append(value)
 
     @property
     def observable_composition_operator(self):
@@ -872,12 +635,14 @@ class Indicator(stix.Entity):
 
     @observable_composition_operator.setter
     def observable_composition_operator(self, value):
-        if value not in ("AND", "OR"):
-            error = "observable_composition_operator must be 'AND' or 'OR'"
-            raise ValueError(error)
-        
-        self._observable_composition_operator = value
-    
+        if value in self._ALLOWED_COMPOSITION_OPERATORS:
+            self._observable_composition_operator = value
+            return
+
+        error = "observable_composition_operator must one of {0}"
+        error = error.format(self._ALLOWED_COMPOSITION_OPERATORS)
+        raise ValueError(error)
+
     @property
     def likely_impact(self):
         return self._likely_impact
@@ -897,11 +662,19 @@ class Indicator(stix.Entity):
     
     @negate.setter
     def negate(self, value):
-        if value in (1, True, '1'):
-            self._negate = True
-        else:  # set to None so that binding will not output negate attribute
-            self._negate = None
-    
+       self._negate = True if value in xmlconst.TRUE else None
+
+    @property
+    def kill_chain_phases(self):
+        return self._kill_chain_phases
+
+    @kill_chain_phases.setter
+    def kill_chain_phases(self, value):
+        self._kill_chain_phases = KillChainPhasesReference(value)
+
+    def add_kill_chain_phase(self, value):
+        self.kill_chain_phases.append(value)
+
     def set_producer_identity(self, identity):
         """Sets the name of the producer of this indicator.
 
@@ -926,11 +699,15 @@ class Indicator(stix.Entity):
                 ``stix.common.identity.Identity``.
 
         """
-        if not identity:
+        def unset_producer_identity():
             try:
                 self.producer.identity.name = None
             except AttributeError:
                 pass
+
+
+        if not identity:
+            unset_producer_identity()
             return
 
         if not self.producer:
@@ -938,11 +715,12 @@ class Indicator(stix.Entity):
 
         if isinstance(identity, Identity):
             self.producer.identity = identity
-        else:
-            if not self.producer.identity:
-                self.producer.identity = Identity()
+            return
 
-            self.producer.identity.name = str(identity)
+        if not self.producer.identity:
+            self.producer.identity = Identity()
+
+        self.producer.identity.name = str(identity)
 
     def set_produced_time(self, produced_time):
         """Sets the ``produced_time`` property of the ``producer`` property
@@ -1069,22 +847,13 @@ class Indicator(stix.Entity):
         self.add_observable(observable)
 
     def to_obj(self, return_obj=None, ns_info=None):
-        super(Indicator, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
         if not return_obj:
             return_obj = self._binding_class()
 
-        return_obj.id = self.id_
-        return_obj.idref = self.idref
-        return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
-        return_obj.Title = self.title
-        return_obj.negate = self._negate
-        return_obj.version = self._version
+        super(Indicator, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
-        if self.description:
-            return_obj.Description = self.description.to_obj(ns_info=ns_info)
-        if self.short_description:
-            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
+        return_obj.negate = self._negate
+
         if self.confidence:
             return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
         if self.indicator_types:
@@ -1113,6 +882,8 @@ class Indicator(stix.Entity):
             return_obj.Kill_Chain_Phases = self.kill_chain_phases.to_obj(ns_info=ns_info)
         if self.related_indicators:
             return_obj.Related_Indicators = self.related_indicators.to_obj(ns_info=ns_info)
+        if self.related_campaigns:
+            return_obj.Related_Campaigns = self.related_campaigns.to_obj(ns_info=ns_info)
         if self.observables:
             if len(self.observables) > 1:
                 root_observable = self._merge_observables(self.observables)
@@ -1129,16 +900,10 @@ class Indicator(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_              = obj.id
-        return_obj.idref            = obj.idref
-        return_obj.timestamp        = obj.timestamp
-        
+        super(Indicator, cls).from_obj(obj, return_obj=return_obj)
+
         if isinstance(obj, cls._binding_class):
             return_obj.negate = obj.negate
-            return_obj.version = obj.version
-            return_obj.title            = obj.Title
-            return_obj.description      = StructuredText.from_obj(obj.Description)
-            return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
             return_obj.producer         = InformationSource.from_obj(obj.Producer)
             return_obj.confidence       = Confidence.from_obj(obj.Confidence)
             return_obj.sightings        = Sightings.from_obj(obj.Sightings)
@@ -1154,55 +919,14 @@ class Indicator(stix.Entity):
             return_obj.indicated_ttps = _IndicatedTTPs.from_obj(obj.Indicated_TTP)
             return_obj.valid_time_positions = _ValidTimePositions.from_obj(obj.Valid_Time_Position)
             return_obj.observable = Observable.from_obj(obj.Observable)
+            return_obj.related_campaigns = RelatedCampaignRefs.from_obj(obj.Related_Campaigns)
             
         return return_obj
 
     def to_dict(self):
-        d = {}
-        if self.id_:
-            d['id'] = self.id_
-        if self.idref:
-            d['idref'] = self.idref
-        if self.timestamp:
-            d['timestamp'] = utils.dates.serialize_value(self.timestamp)
-        if self.negate:
-            d['negate'] = self.negate
-        if self.version:
-            d['version'] = self.version
-        if self.producer:
-            d['producer'] = self.producer.to_dict()
-        if self.title:
-            d['title'] = self.title
-        if self.description:
-            d['description'] = self.description.to_dict()
-        if self.short_description:
-            d['short_description'] = self.short_description.to_dict()
-        if self.indicator_types:
-            d['indicator_types'] = self.indicator_types.to_list()
-        if self.confidence:
-            d['confidence'] = self.confidence.to_dict()
-        if self.indicated_ttps:
-            d['indicated_ttps'] = self.indicated_ttps.to_list()
-        if self.test_mechanisms:
-            d['test_mechanisms'] = self.test_mechanisms.to_list()
-        if self.likely_impact:
-            d['likely_impact'] = self.likely_impact.to_dict()
-        if self.alternative_id:
-            d['alternative_id'] = self.alternative_id
-        if self.valid_time_positions:
-            d['valid_time_positions'] = self.valid_time_positions.to_list()
-        if self.suggested_coas:
-            d['suggested_coas'] = self.suggested_coas.to_dict()
-        if self.sightings:
-            d['sightings'] = self.sightings.to_dict()
-        if self.composite_indicator_expression:
-            d['composite_indicator_expression'] = self.composite_indicator_expression.to_dict()
-        if self.handling:
-            d['handling'] = self.handling.to_dict()
-        if self.kill_chain_phases:
-            d['kill_chain_phases'] = self.kill_chain_phases.to_dict()
-        if self.related_indicators:
-            d['related_indicators'] = self.related_indicators.to_dict()
+        skip = ('observables', 'observable_composition_operator')
+        d = utils.to_dict(self, skip=skip)
+
         if self.observables:
             if len(self.observables) == 1:
                 d['observable'] = self.observables[0].to_dict()
@@ -1219,29 +943,26 @@ class Indicator(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_       = dict_repr.get('id')
-        return_obj.idref     = dict_repr.get('idref')
-        return_obj.timestamp = dict_repr.get('timestamp')
-        return_obj.title     = dict_repr.get('title')
-        return_obj.negate    = dict_repr.get('negate')
-        return_obj.version   = dict_repr.get('version')
-        return_obj.alternative_id = dict_repr.get('alternative_id')
-        return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
-        return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
-        return_obj.indicated_ttps =  _IndicatedTTPs.from_dict(dict_repr.get('indicated_ttps'))
-        return_obj.test_mechanisms = TestMechanisms.from_list(dict_repr.get('test_mechanisms'))
-        return_obj.suggested_coas = SuggestedCOAs.from_dict(dict_repr.get('suggested_coas'))
-        return_obj.sightings = Sightings.from_dict(dict_repr.get('sightings'))
-        return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_dict(dict_repr.get('composite_indicator_expression'))
-        return_obj.handling = Marking.from_dict(dict_repr.get('handling'))
-        return_obj.kill_chain_phases = KillChainPhasesReference.from_dict(dict_repr.get('kill_chain_phases'))
-        return_obj.related_indicators = RelatedIndicators.from_dict(dict_repr.get('related_indicators'))
-        return_obj.likely_impact = Statement.from_dict(dict_repr.get('likely_impact'))
-        return_obj.indicator_types = IndicatorTypes.from_list(dict_repr.get('indicator_types'))
-        return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
-        return_obj.valid_time_positions = _ValidTimePositions.from_dict(dict_repr.get('valid_time_positions'))
-        return_obj.observable = Observable.from_dict(dict_repr.get('observable'))
-        return_obj.producer = InformationSource.from_dict(dict_repr.get('producer'))
+        super(Indicator, cls).from_dict(dict_repr, return_obj=return_obj)
+
+        get = dict_repr.get
+        return_obj.negate    = get('negate')
+        return_obj.alternative_id = get('alternative_id')
+        return_obj.indicated_ttps =  _IndicatedTTPs.from_dict(get('indicated_ttps'))
+        return_obj.test_mechanisms = TestMechanisms.from_list(get('test_mechanisms'))
+        return_obj.suggested_coas = SuggestedCOAs.from_dict(get('suggested_coas'))
+        return_obj.sightings = Sightings.from_dict(get('sightings'))
+        return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_dict(get('composite_indicator_expression'))
+        return_obj.handling = Marking.from_dict(get('handling'))
+        return_obj.kill_chain_phases = KillChainPhasesReference.from_dict(get('kill_chain_phases'))
+        return_obj.related_indicators = RelatedIndicators.from_dict(get('related_indicators'))
+        return_obj.likely_impact = Statement.from_dict(get('likely_impact'))
+        return_obj.indicator_types = IndicatorTypes.from_list(get('indicator_types'))
+        return_obj.confidence = Confidence.from_dict(get('confidence'))
+        return_obj.valid_time_positions = _ValidTimePositions.from_dict(get('valid_time_positions'))
+        return_obj.observable = Observable.from_dict(get('observable'))
+        return_obj.producer = InformationSource.from_dict(get('producer'))
+        return_obj.related_campaigns = RelatedCampaignRefs.from_dict(get('related_campaigns'))
 
         return return_obj
 
@@ -1348,6 +1069,26 @@ class CompositeIndicatorExpression(stix.EntityList):
         super(CompositeIndicatorExpression, cls).from_dict(dict_repr, return_obj=return_obj)
         return_obj.operator = dict_repr.get('operator')
         return return_obj
+
+
+class RelatedCampaignRefs(GenericRelationshipList):
+    _namespace = "http://stix.mitre.org/Indicator-2"
+    _binding = indicator_binding
+    _binding_class = _binding.RelatedCampaignReferencesType
+    _binding_var = 'Related_Campaign'
+    _contained_type = RelatedCampaignRef
+    _inner_name = "related_campaigns"
+
+    def __init__(self, related_campaign_refs=None, scope=None):
+        super(RelatedCampaignRefs, self).__init__(scope, related_campaign_refs)
+
+    def _fix_value(self, value):
+        from stix.campaign import Campaign
+
+        if isinstance(value, Campaign) and value.id_:
+            return RelatedCampaignRef(CampaignRef(idref=value.id_))
+        else:
+            return super(RelatedCampaignRefs, self)._fix_value(value)
 
 
 # NOT ACTUAL STIX TYPES!

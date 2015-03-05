@@ -9,7 +9,7 @@ def supported_stix_version():
     return lib_version[:-2]
 
 
-from .base import Entity, EntityList, TypedList
+from .base import Entity, EntityList, TypedList, BaseCoreComponent
 
 # Make sure common gets imported before anything else.
 from . import common

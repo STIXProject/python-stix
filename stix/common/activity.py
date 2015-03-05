@@ -70,14 +70,7 @@ class Activity(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-
-        if self.date_time:
-            d['date_time'] = self.date_time.to_dict()
-        if self.description:
-            d['description'] = self.description.to_dict()
-
-        return d
+        return super(Activity, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):

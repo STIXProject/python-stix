@@ -12,11 +12,13 @@ from .identity import Identity
 from .information_source import InformationSource
 from .statement import Statement
 from .tools import ToolInformation
+from .names import Names
+from .campaign_reference import CampaignRef
 
 from .related import (GenericRelationshipList, RelatedCampaign, RelatedCOA,
         RelatedExploitTarget, RelatedIdentity, RelatedIncident, 
         RelatedIndicator, RelatedObservable, RelatedThreatActor, RelatedTTP,
-        RelatedPackage, RelatedPackages)
+        RelatedPackage, RelatedPackages, RelatedCampaignRef)
 
 # Patch in base types of Related* types
 from stix.core import STIXPackage
@@ -39,6 +41,7 @@ RelatedThreatActor._base_type = ThreatActor
 RelatedTTP._base_type = TTP
 RelatedObservable._base_type = Observable
 RelatedPackage._base_type = STIXPackage
+RelatedCampaignRef._base_type = CampaignRef
 
 # Path the RelatedPackages _contained_type
 RelatedPackages._contained_type = RelatedPackage
@@ -106,4 +109,6 @@ class EncodedCDATA(stix.Entity):
 
     def __unicode__(self):
         return unicode(self.value)
+
+
 

@@ -2,11 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils as utils
-from stix.common import (
-    Activity, Confidence, InformationSource, Statement, StructuredText,
-    VocabString
-)
+from stix.common import Activity, Confidence, Statement, VocabString
 from stix.common.related import (
     GenericRelationshipList, RelatedCampaign,RelatedIncident, RelatedIndicator,
     RelatedPackageRefs, RelatedThreatActor, RelatedTTP
@@ -69,20 +65,26 @@ class Names(stix.EntityList):
     _inner_name = "names"
 
 
-class Campaign(stix.Entity):
+class Campaign(stix.BaseCoreComponent):
     _binding = campaign_binding
     _binding_class = _binding.CampaignType
     _namespace = "http://stix.mitre.org/Campaign-1"
     _version = "1.1.1"
     _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1")
+    _ID_PREFIX = 'campaign'
 
-    def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
-        self.id_ = id_ or stix.utils.create_id("Campaign")
-        self.idref = idref
-        self.version = None # self._version
-        self.title = title
-        self.description = description
-        self.short_description = short_description
+    def __init__(self, id_=None, idref=None, timestamp=None, title=None,
+                 description=None, short_description=None):
+
+        super(Campaign, self).__init__(
+            id_=id_,
+            idref=idref,
+            timestamp=timestamp,
+            title=title,
+            description=description,
+            short_description=short_description
+        )
+
         self.names = None
         self.intended_effects = _IntendedEffects()
         self.status = None
@@ -93,94 +95,8 @@ class Campaign(stix.Entity):
         self.associated_campaigns = AssociatedCampaigns()
         self.confidence = None
         self.activity = _Activities()
-        self.information_source = None
         self.handling = None
         self.related_packages = RelatedPackageRefs()
-
-        if timestamp:
-            self.timestamp = timestamp
-        else:
-            self.timestamp = utils.dates.now() if not idref else None
-
-    @property
-    def id_(self):
-        return self._id
-
-    @id_.setter
-    def id_(self, value):
-        if not value:
-            self._id = None
-        else:
-            self._id = value
-            self.idref = None
-
-    @property
-    def version(self):
-        return self._version
-
-    @version.setter
-    def version(self, value):
-        if not value:
-            self._version = None
-        else:
-            utils.check_version(self._ALL_VERSIONS, value)
-            self._version = value
-
-    @property
-    def idref(self):
-        return self._idref
-
-    @idref.setter
-    def idref(self, value):
-        if not value:
-            self._idref = None
-        else:
-            self._idref = value
-            self.id_ = None # unset id_ if idref is present
-
-    @property
-    def timestamp(self):
-        return self._timestamp
-
-    @timestamp.setter
-    def timestamp(self, value):
-        self._timestamp = utils.dates.parse_value(value)
-
-    @property
-    def title(self):
-        return self._title
-
-    @title.setter
-    def title(self, value):
-        self._title = value
-
-    @property
-    def description(self):
-        return self._description
-
-    @description.setter
-    def description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._description = value
-            else:
-                self._description = StructuredText(value=value)
-        else:
-            self._description = None
-
-    @property
-    def short_description(self):
-        return self._short_description
-
-    @short_description.setter
-    def short_description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._short_description = value
-            else:
-                self._short_description = StructuredText(value=value)
-        else:
-            self._short_description = None
 
     @property
     def intended_effects(self):
@@ -226,21 +142,11 @@ class Campaign(stix.Entity):
         self._attribution = _AttributionList(value)
 
     def to_obj(self, return_obj=None, ns_info=None):
-        super(Campaign, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
         if not return_obj:
             return_obj = self._binding_class()
 
-        return_obj.id = self.id_
-        return_obj.idref = self.idref
-        return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
-        return_obj.version = self.version
-        return_obj.Title = self.title
+        super(Campaign, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
-        if self.description:
-            return_obj.Description = self.description.to_obj(ns_info=ns_info)
-        if self.short_description:
-            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
         if self.names:
             return_obj.Names = self.names.to_obj(ns_info=ns_info)
         if self.intended_effects:
@@ -261,8 +167,6 @@ class Campaign(stix.Entity):
             return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
         if self.activity:
             return_obj.Activity = self.activity.to_obj(ns_info=ns_info)
-        if self.information_source:
-            return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
         if self.handling:
             return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
         if self.related_packages:
@@ -274,19 +178,13 @@ class Campaign(stix.Entity):
     def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
+
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = obj.id
-        return_obj.idref = obj.idref
-        return_obj.timestamp = obj.timestamp
+        super(Campaign, cls).from_obj(obj, return_obj=return_obj)
 
         if isinstance(obj, cls._binding_class):
-            return_obj.version = obj.version
-            return_obj.title = obj.Title
-            return_obj.description = StructuredText.from_obj(obj.Description)
-            return_obj.short_description = \
-                    StructuredText.from_obj(obj.Short_Description)
             return_obj.names = Names.from_obj(obj.Names)
             return_obj.intended_effects = \
                     _IntendedEffects.from_obj(obj.Intended_Effect)
@@ -301,8 +199,6 @@ class Campaign(stix.Entity):
                     AssociatedCampaigns.from_obj(obj.Associated_Campaigns)
             return_obj.confidence = Confidence.from_obj(obj.Confidence)
             return_obj.activity = _Activities.from_obj(obj.Activity)
-            return_obj.information_source = \
-                    InformationSource.from_obj(obj.Information_Source)
             return_obj.handling = Marking.from_obj(obj.Handling)
             return_obj.related_packages = \
                     RelatedPackageRefs.from_obj(obj.Related_Packages)
@@ -310,49 +206,7 @@ class Campaign(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        if self.id_:
-            d['id'] = self.id_
-        if self.idref:
-            d['idref'] = self.idref
-        if self.timestamp:
-            d['timestamp'] = utils.dates.serialize_value(self.timestamp)
-        if self.version:
-            d['version'] = self.version
-        if self.title:
-            d['title'] = self.title
-        if self.description:
-            d['description'] = self.description.to_dict()
-        if self.short_description:
-            d['short_description'] = self.short_description.to_dict()
-        if self.names:
-            d['names'] = self.names.to_dict()
-        if self.intended_effects:
-            d['intended_effects'] = self.intended_effects.to_dict()
-        if self.status:
-            d['status'] = self.status.to_dict()
-        if self.related_ttps:
-            d['related_ttps'] = self.related_ttps.to_dict()
-        if self.related_incidents:
-            d['related_incidents'] = self.related_incidents.to_dict()
-        if self.related_indicators:
-            d['related_indicators'] = self.related_indicators.to_dict()
-        if self.attribution:
-            d['attribution'] = self.attribution.to_list()
-        if self.associated_campaigns:
-            d['associated_campaigns'] = self.associated_campaigns.to_dict()
-        if self.confidence:
-            d['confidence'] = self.confidence.to_dict()
-        if self.activity:
-            d['activity'] = self.activity.to_dict()
-        if self.information_source:
-            d['information_source'] = self.information_source.to_dict()
-        if self.handling:
-            d['handling'] = self.handling.to_dict()
-        if self.related_packages:
-            d['related_packages'] = self.related_packages.to_dict()
-
-        return d
+        return super(Campaign, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
@@ -362,16 +216,9 @@ class Campaign(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        get = dict_repr.get  # PEP 8 line lengths
+        super(Campaign, cls).from_dict(dict_repr, return_obj=return_obj)
 
-        return_obj.id_ = get('id')
-        return_obj.idref = get('idref')
-        return_obj.timestamp = get('timestamp')
-        return_obj.version = get('version')
-        return_obj.title = get('title')
-        return_obj.description = StructuredText.from_dict(get('description'))
-        return_obj.short_description = \
-                StructuredText.from_dict(get('short_description'))
+        get = dict_repr.get  # PEP 8 line lengths
         return_obj.names = Names.from_dict(get('names'))
         return_obj.intended_effects = \
             _IntendedEffects.from_dict(get('intended_effects'))
@@ -388,8 +235,6 @@ class Campaign(stix.Entity):
         return_obj.confidence = \
                 Confidence.from_dict(get('confidence'))
         return_obj.activity = _Activities.from_dict(get('activity'))
-        return_obj.information_source = \
-                InformationSource.from_dict(get('information_source'))
         return_obj.handling = Marking.from_dict(get('handling'))
         return_obj.related_packages = \
                 RelatedPackageRefs.from_dict(get('related_packages'))

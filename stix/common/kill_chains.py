@@ -181,12 +181,7 @@ class KillChainPhaseReference(KillChainPhase):
         return return_obj
     
     def to_dict(self):
-        d = super(KillChainPhaseReference, self).to_dict()
-        if self.kill_chain_id:
-            d['kill_chain_id'] = self.kill_chain_id
-        if self.kill_chain_name:
-            d['kill_chain_name'] = self.kill_chain_name
-        return d
+        return super(KillChainPhaseReference, self).to_dict()
     
     @classmethod
     def from_dict(cls, d, return_obj=None):

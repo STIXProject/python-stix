@@ -5,6 +5,7 @@ from __future__ import absolute_import
 
 # internal
 import stix
+import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 import stix.bindings.stix_core as core_binding
 
@@ -12,7 +13,6 @@ import stix.bindings.stix_core as core_binding
 from .vocabs import VocabString
 from .information_source import InformationSource
 from .confidence import Confidence
-
 
 class GenericRelationship(stix.Entity):
     _namespace = "http://stix.mitre.org/common-1"
@@ -129,7 +129,12 @@ class RelatedPackageRef(GenericRelationship):
         self.idref = None
         self.timestamp = None
 
+
+
     def to_obj(self, return_obj=None, ns_info=None):
+        if not return_obj:
+            return_obj = self._binding_class()
+
         return_obj = super(RelatedPackageRef, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if self.idref:
@@ -139,13 +144,21 @@ class RelatedPackageRef(GenericRelationship):
 
         return return_obj
 
+    @property
+    def timestamp(self):
+        return self._timestamp
+
+    @timestamp.setter
+    def timestamp(self, value):
+        self._timestamp = utils.dates.parse_value(value)
+
     def to_dict(self):
         d = super(RelatedPackageRef, self).to_dict()
 
         if self.idref:
             d['idref'] = self.idref
         if self.timestamp:
-            d['timestamp'] = self.timestamp
+            d['timestamp'] = utils.dates.serialize_value(self.timestamp)
 
         return d
 
@@ -203,24 +216,26 @@ class GenericRelationshipList(stix.EntityList):
 
     @scope.setter
     def scope(self, value):
-        if not value:
-            self._scope = None
-        else:
-            if value not in self._ALLOWED_SCOPE:
-                msg = "Scope must be one of [%s]" % (", ".join(self._ALLOWED_SCOPE))
-                raise ValueError(msg)
+        if value is None or value in self._ALLOWED_SCOPE:
             self._scope = value
+            return
+
+        msg = "Scope must be one of {0}. Received '{1}'"
+        msg = msg.format(self._ALLOWED_SCOPE, value)
+        raise ValueError(msg)
+
 
     def to_obj(self, return_obj=None, ns_info=None):
-        list_obj = super(GenericRelationshipList, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+        list_obj = super(GenericRelationshipList, self).to_obj(
+            return_obj=return_obj,
+            ns_info=ns_info
+        )
+
         list_obj.scope = self.scope
         return list_obj
 
     def to_dict(self):
-        d = super(GenericRelationshipList, self).to_dict()
-        if self.scope:
-            d['scope'] = self.scope
-        return d
+        return super(GenericRelationshipList, self).to_dict()
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -295,8 +310,11 @@ class _BaseRelated(GenericRelationship):
 
     def __init__(self, item=None, confidence=None,
                        information_source=None, relationship=None):
-        super(_BaseRelated, self).__init__(confidence, information_source,
-                                           relationship)
+        super(_BaseRelated, self).__init__(
+            confidence,
+            information_source,
+            relationship
+        )
         self.item = item
 
     @property
@@ -305,9 +323,12 @@ class _BaseRelated(GenericRelationship):
 
     @item.setter
     def item(self, value):
+        self._set_item(value)
+
+    def _set_item(self, value):
         if value and not isinstance(value, self._base_type):
-            raise ValueError("Value must be instance of %s" %
-                             self._base_type.__name__)
+            error =  "Value must be instance of %s" % self._base_type.__name__
+            raise ValueError(error)
 
         self._item = value
 
@@ -323,9 +344,11 @@ class _BaseRelated(GenericRelationship):
         return return_obj
 
     def to_dict(self):
-        d = super(_BaseRelated, self).to_dict()
+        d = utils.to_dict(self, skip=('item',))
+
         if self.item:
             d[self._inner_var.lower()] = self.item.to_dict()
+
         return d
 
     @classmethod
@@ -437,4 +460,12 @@ class RelatedPackage(_BaseRelated):
     _binding_class = core_binding.RelatedPackageType
     # _base_type is set in common/__init__.py
     _inner_var = "Package"
+
+
+class RelatedCampaignRef(_BaseRelated):
+    _namespace = "http://stix.mitre.org/common-1"
+    _binding = common_binding
+    _binding_class = _binding.RelatedCampaignReferenceType
+    # _base_type is set in common/__init__.py
+    _inner_var = "Campaign"
 
