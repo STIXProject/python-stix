@@ -23,12 +23,7 @@ class _BaseTestMechanism(stix.Entity):
     
     @efficacy.setter
     def efficacy(self, value):
-        if not value:
-            self._efficacy = None
-        elif isinstance(value, Statement):
-            self._efficacy = value
-        else:
-            self._efficacy = Statement(value=value)
+        self._set_var(Statement, efficacy=value)
     
     @property
     def producer(self):
@@ -36,13 +31,8 @@ class _BaseTestMechanism(stix.Entity):
     
     @producer.setter
     def producer(self, value):
-        if not value:
-            self._producer = None
-        elif isinstance(value, InformationSource):
-            self._producer = value
-        else:
-            raise ValueError('Cannot set producer to type %s' % type(value))
-    
+       self._set_var(InformationSource, try_cast=False, producer=value)
+
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:

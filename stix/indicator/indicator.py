@@ -481,12 +481,7 @@ class Indicator(stix.BaseCoreComponent):
     
     @confidence.setter
     def confidence(self, value):
-        if not value:
-            self._confidence = None
-        elif isinstance(value, Confidence):
-            self._confidence = value
-        else:
-            self._confidence = Confidence(value=value)
+        self._set_var(Confidence, confidence=value)
 
     @property
     def indicated_ttps(self):
@@ -564,12 +559,7 @@ class Indicator(stix.BaseCoreComponent):
     
     @handling.setter
     def handling(self, value):
-        if not value:
-            self._handling = None
-        elif isinstance(value, Marking):
-            self._handling = value
-        else:
-            raise ValueError('unable to set handling to type %s' % type(value))
+        self._set_var(Marking, handling=value)
 
     @property
     def related_indicators(self):
@@ -649,12 +639,7 @@ class Indicator(stix.BaseCoreComponent):
     
     @likely_impact.setter
     def likely_impact(self, value):
-        if not value:
-            self._likely_impact = None
-        elif isinstance(value, Statement):
-            self._likely_impact = value
-        else:
-            self._likely_impact = Statement(value=value)
+        self._set_var(Statement, likely_impact=value)
             
     @property
     def negate(self):

@@ -23,13 +23,7 @@ class Activity(stix.Entity):
 
     @date_time.setter
     def date_time(self, value):
-        if value:
-            if isinstance(value, DateTimeWithPrecision):
-                self._date_time = value
-            else:
-                self._date_time = DateTimeWithPrecision(value=value)
-        else:
-            self._date_time = None
+        self._set_var(DateTimeWithPrecision, date_time=value)
 
     @property
     def description(self):
@@ -37,10 +31,7 @@ class Activity(stix.Entity):
 
     @description.setter
     def description(self, value):
-        if isinstance(value, StructuredText):
-            self._description = value
-        else:
-            self._description = StructuredText(value=value)
+        self._set_var(StructuredText, description=value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(Activity, self).to_obj(return_obj=return_obj, ns_info=ns_info)

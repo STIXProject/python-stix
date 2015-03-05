@@ -35,12 +35,7 @@ class AffectedAsset(stix.Entity):
     
     @type_.setter
     def type_(self, value):
-        if not value:
-            self._type = None
-        elif isinstance(value, AssetType):
-            self._type = value
-        else:
-            self._type = AssetType(value=value)
+        self._set_var(AssetType, type=value)
     
     @property
     def description(self):
@@ -48,12 +43,7 @@ class AffectedAsset(stix.Entity):
     
     @description.setter
     def description(self, value):
-        if not value:
-            self._description = None
-        elif isinstance(value, StructuredText):
-            self._description = value
-        else:
-            self._description = StructuredText(value)
+        self._set_var(StructuredText, description=value)
     
     @property
     def business_function_or_role(self):
@@ -61,12 +51,7 @@ class AffectedAsset(stix.Entity):
     
     @business_function_or_role.setter
     def business_function_or_role(self, value):
-        if not value:
-            self._business_function_or_role = None
-        elif isinstance(value, StructuredText):
-            self._business_function_or_role = value
-        else:
-            self._business_function_or_role = StructuredText(value)
+        self._set_var(StructuredText, business_function_or_role=value)
             
     @property
     def ownership_class(self):
@@ -74,25 +59,15 @@ class AffectedAsset(stix.Entity):
     
     @ownership_class.setter
     def ownership_class(self, value):
-        if not value:
-            self._ownership_class = None
-        elif isinstance(value, VocabString):
-            self._ownership_class = value
-        else:
-            self._ownership_class = vocabs.OwnershipClass(value)
-    
+        self._set_vocab(vocabs.OwnershipClass, ownership_class=value)
+
     @property
     def management_class(self):
         return self._management_class
     
     @management_class.setter
     def management_class(self, value):
-        if not value:
-            self._management_class = None
-        elif isinstance(value, VocabString):
-            self._management_class = value
-        else:
-            self._management_class = vocabs.ManagementClass(value)
+        self._set_vocab(vocabs.ManagementClass, management_class=value)
     
     @property
     def location_class(self):
@@ -100,12 +75,7 @@ class AffectedAsset(stix.Entity):
     
     @location_class.setter
     def location_class(self, value):
-        if not value:
-            self._location_class = None
-        elif isinstance(value, VocabString):
-            self._location_class = value
-        else:
-            self._location_class = vocabs.LocationClass(value)
+         self._set_vocab(vocabs.LocationClass, location_class=value)
     
     @property
     def nature_of_security_effect(self):
@@ -124,12 +94,7 @@ class AffectedAsset(stix.Entity):
     
     @structured_description.setter
     def structured_description(self, value):
-        if not value:
-            self._structured_description = None
-        elif isinstance(value, Observables):
-            self._structured_description = value
-        else:
-            self._structured_description = Observables(value)
+        self._set_var(Observables, structured_description=value)
     
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -224,11 +189,7 @@ class AssetType(VocabString):
 
     @count_affected.setter
     def count_affected(self, value):
-        if value is None:
-            self._count_affected = None
-            return
-
-        self._count_affected = int(value)
+        self._set_var(int, count_affected=value)
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):

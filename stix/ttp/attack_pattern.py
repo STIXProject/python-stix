@@ -32,13 +32,7 @@ class AttackPattern(stix.Entity):
 
     @description.setter
     def description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._description = value
-            else:
-                self._description = StructuredText(value=value)
-        else:
-            self._description = None
+        self._set_var(StructuredText, description=value)
 
     @property
     def short_description(self):
@@ -46,13 +40,7 @@ class AttackPattern(stix.Entity):
 
     @short_description.setter
     def short_description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._short_description = value
-            else:
-                self._short_description = StructuredText(value=value)
-        else:
-            self._short_description = None
+       self._set_var(StructuredText, short_description=value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(AttackPattern, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -87,19 +75,7 @@ class AttackPattern(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        if self.id_:
-            d['id'] = self.id_
-        if self.capec_id:
-            d['capec_id'] = self.capec_id
-        if self.title:
-            d['title'] = self.title
-        if self.description:
-            d['description'] = self.description.to_dict()
-        if self.short_description:
-            d['short_description'] = self.short_description.to_dict()
-
-        return d
+        return super(AttackPattern, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):

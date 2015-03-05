@@ -76,12 +76,7 @@ class ThreatActor(stix.BaseCoreComponent):
     
     @identity.setter
     def identity(self, value):
-        if not value:
-            self._identity = None
-        elif isinstance(value, Identity):
-            self._identity = value
-        else:
-            raise ValueError("identity must be instance of stix.common.Identity")
+        self._set_var(Identity, try_cast=False, identity=value)
 
     @property
     def types(self):

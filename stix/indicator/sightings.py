@@ -38,25 +38,15 @@ class Sighting(stix.Entity):
     
     @description.setter
     def description(self, value):
-        if not value:
-            self._description = None
-        elif isinstance(value, StructuredText):
-            self._description = value
-        else:
-            self._description = StructuredText(value)
-            
+        self._set_var(StructuredText, description=value)
+
     @property
     def source(self):
         return self._source
     
     @source.setter
     def source(self, value):
-        if value is None:
-            self._source = None
-        elif isinstance(value, InformationSource):
-            self._source = value
-        else:
-            raise ValueError("source must be of type InformationSource")
+        self._set_var(InformationSource, try_cast=False, source=value)
 
     @property
     def confidence(self):
@@ -64,12 +54,7 @@ class Sighting(stix.Entity):
     
     @confidence.setter
     def confidence(self, value):
-        if not value:
-            self._confidence = None
-        elif isinstance(value, Confidence):
-            self._confidence = value
-        else:
-            self._confidence = Confidence(value)
+        self._set_var(Confidence, confidence=value)
     
     def to_obj(self, return_obj=None, ns_info=None):
         super(Sighting, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -143,6 +128,14 @@ class Sightings(stix.EntityList):
 
     def __nonzero__(self):
         return super(Sightings, self).__nonzero__() or bool(self.sightings_count)
+
+    @property
+    def sightings_count(self):
+        return self._sightings_count
+
+    @sightings_count.setter
+    def sightings_count(self, value):
+        self._set_var(int, sightings_count=value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         list_obj = super(Sightings, self).to_obj(return_obj=return_obj, ns_info=ns_info)

@@ -3,9 +3,9 @@
 
 # internal
 import stix
+import stix.utils as utils
 import stix.bindings.incident as incident_binding
 from stix.common.datetimewithprecision import DATETIME_PRECISION_VALUES
-from stix.utils.dates import parse_value, serialize_value
 
 # relative
 from .coa import COATaken
@@ -28,7 +28,7 @@ class JournalEntry(stix.Entity):
     
     @time.setter
     def time(self, value):
-        self._time = parse_value(value)
+        self._time = utils.dates.parse_value(value)
         
     @property
     def time_precision(self):
@@ -37,7 +37,10 @@ class JournalEntry(stix.Entity):
     @time_precision.setter
     def time_precision(self, value):
         if value and (value not in DATETIME_PRECISION_VALUES):
-            raise ValueError("value must be one of [%s]" % ", ".join(x for x in DATETIME_PRECISION_VALUES))
+            error = "time_precision must be one of {0}. Received '{1}'"
+            error = error.format(DATETIME_PRECISION_VALUES, value)
+            raise ValueError(error)
+
         self._time_precision = value
     
     def to_obj(self, return_obj=None, ns_info=None):
@@ -48,7 +51,7 @@ class JournalEntry(stix.Entity):
         
         return_obj.valueOf_ = self.value
         return_obj.author = self.author
-        return_obj.time = serialize_value(self.time)
+        return_obj.time = utils.dates.serialize_value(self.time)
         return_obj.time_precision = self.time_precision
         
         return return_obj
@@ -69,18 +72,7 @@ class JournalEntry(stix.Entity):
         return return_obj
         
     def to_dict(self):
-        d = {}
-        
-        if self.value:
-            d['value'] = self.value
-        if self.author:
-            d['author'] = self.author
-        if self.time:
-            d['time'] = serialize_value(self.time)
-        if self.time_precision:
-            d['time_precision'] = self.time_precision
-            
-        return d
+        return super(JournalEntry, self).to_dict()
 
     @classmethod
     def from_dict(cls, d, return_obj=None):
@@ -112,25 +104,15 @@ class HistoryItem(stix.Entity):
     
     @action_entry.setter
     def action_entry(self, value):
-        if not value:
-            self._action_entry = None
-        elif isinstance(value, COATaken):
-            self._action_entry = value
-        else:
-            raise ValueError('value must be instance of stix.incident.COATaken')
-    
+        self._set_var(COATaken, try_cast=False, action_entry=value)
+
     @property
     def journal_entry(self):
         return self._journal_entry
     
     @journal_entry.setter
     def journal_entry(self, value):
-        if not value:
-            self._journal_entry = None
-        elif isinstance(value, JournalEntry):
-            self._journal_entry = value
-        else:
-            self._journal_entry = JournalEntry(value)
+        self._set_var(JournalEntry, journal_entry=value)
             
     def to_obj(self, return_obj=None, ns_info=None):
         super(HistoryItem, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -159,14 +141,7 @@ class HistoryItem(stix.Entity):
         return return_obj
             
     def to_dict(self):
-        d = {}
-        
-        if self.journal_entry:
-            d['journal_entry'] = self.journal_entry.to_dict()
-        if self.action_entry:
-            d['action_entry'] = self.action_entry.to_dict()
-        
-        return d
+        return super(HistoryItem, self).to_dict()
     
     @classmethod
     def from_dict(cls, d, return_obj=None):

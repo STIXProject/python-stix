@@ -47,12 +47,7 @@ class TTP(stix.BaseCoreComponent):
 
     @behavior.setter
     def behavior(self, value):
-        if not value:
-            self._behavior = None
-        elif isinstance(value, Behavior):
-            self._behavior = value
-        else:
-            raise ValueError('Value must be a Behavior instance')
+        self._set_var(Behavior, try_cast=False, behavior=value)
 
     @property
     def related_ttps(self):
@@ -93,12 +88,7 @@ class TTP(stix.BaseCoreComponent):
 
     @resources.setter
     def resources(self, value):
-        if not value:
-            self._resources = None
-        elif isinstance(value, Resource):
-            self._resources = value
-        else:
-            raise ValueError('value must be instance of Resource')
+        self._set_var(Resource, resources=value)
 
     @property
     def victim_targeting(self):
@@ -106,12 +96,7 @@ class TTP(stix.BaseCoreComponent):
 
     @victim_targeting.setter
     def victim_targeting(self, value):
-        if not value:
-            self._victim_targeting = None
-        elif isinstance(value, VictimTargeting):
-            self._victim_targeting = value
-        else:
-            raise ValueError('value must be instance of VictimTargeting')
+        self._set_var(VictimTargeting, try_cast=False, victim_targeting=value)
 
     @property
     def handling(self):
@@ -119,10 +104,7 @@ class TTP(stix.BaseCoreComponent):
 
     @handling.setter
     def handling(self, value):
-        if value and not isinstance(value, Marking):
-            raise ValueError('value must be instance of Marking')
-
-        self._handling = value
+        self._set_var(Marking, try_cast=False, handling=value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:

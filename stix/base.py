@@ -26,9 +26,15 @@ class Entity(object):
             return
         ns_info.collect(self)
 
+    def _cast_var(self, item, klass, arg=None):
+        if not arg:
+            return klass(item)
 
-    def _set_var(self, klass, arg='value', try_cast=True, **kwargs):
-        name = kwargs.iterkeys().next()
+        kwarg = {arg: item}     # kwarg dict
+        return klass(**kwarg)   # klass(value='foobar')
+
+    def _set_var(self, klass, try_cast=True, arg=None, **kwargs):
+        name = utils.private_name(kwargs.iterkeys().next())
         item = kwargs.itervalues().next()
 
         if not item:
@@ -36,8 +42,7 @@ class Entity(object):
         elif isinstance(item, klass):
             setattr(self, name, item)
         elif try_cast:
-            kwarg = {arg: item}    # kwarg dict
-            promoted = klass(**kwarg)       # klass(value='foobar')
+            promoted = self._cast_var(item, klass, arg=arg)
             setattr(self, name, promoted)
         else:
             attr_name = utils.attr_name(name)
@@ -45,6 +50,28 @@ class Entity(object):
             error = error.format(attr_name, klass, type(item))
             raise TypeError(error)
 
+    def _set_vocab(self, klass=None, try_cast=True, **kwargs):
+        from stix.common import VocabString
+
+        if not klass:
+            self._set_var(VocabString, **kwargs)
+            return
+
+        name = utils.private_name(kwargs.iterkeys().next())
+        item = kwargs.itervalues().next()
+
+        if not item:
+            setattr(self, name, None)
+        elif isinstance(item, VocabString):
+            setattr(self, name, item)
+        elif try_cast:
+            promoted = self._cast_var(item, klass)
+            setattr(self, name, promoted)
+        else:
+            attr_name = utils.attr_name(name)
+            error = "The '{0}' field expects an instance of {1}. Received: {2}."
+            error = error.format(attr_name, klass, type(item))
+            raise TypeError(error)
 
     def to_obj(self, return_obj=None, ns_info=None):
         """Converts an `Entity` into a binding object.
@@ -648,13 +675,7 @@ class BaseCoreComponent(Entity):
     @description.setter
     def description(self, value):
         from stix.common import StructuredText
-
-        if not value:
-            self._description = None
-        elif isinstance(value, StructuredText):
-            self._description = value
-        else:
-            self._description = StructuredText(value=value)
+        self._set_var(StructuredText, description=value)
 
     @property
     def short_description(self):
@@ -677,13 +698,7 @@ class BaseCoreComponent(Entity):
     @short_description.setter
     def short_description(self, value):
         from stix.common import StructuredText
-
-        if not value:
-            self._short_description = None
-        elif isinstance(value, StructuredText):
-            self._short_description = value
-        else:
-            self._short_description = StructuredText(value=value)
+        self._set_var(StructuredText, short_description=value)
 
     @property
     def information_source(self):
@@ -706,15 +721,7 @@ class BaseCoreComponent(Entity):
     @information_source.setter
     def information_source(self, value):
         from stix.common import InformationSource
-
-        if not value:
-            self._information_source = None
-        elif isinstance(value, InformationSource):
-            self._information_source = value
-        else:
-            error = "Cannot set property. Expected '{0}' but received '{1}'"
-            error = error.format(InformationSource, type(value))
-            raise ValueError(error)
+        self._set_var(InformationSource, try_cast=False, information_source=value)
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):

@@ -39,13 +39,7 @@ class Infrastructure(stix.Entity):
 
     @description.setter
     def description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._description = value
-            else:
-                self._description = StructuredText(value=value)
-        else:
-            self._description = None
+        self._set_var(StructuredText, description=value)
 
     @property
     def short_description(self):
@@ -53,13 +47,7 @@ class Infrastructure(stix.Entity):
 
     @short_description.setter
     def short_description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._short_description = value
-            else:
-                self._short_description = StructuredText(value=value)
-        else:
-            self._short_description = None
+        self._set_var(StructuredText, short_description=value)
 
     @property
     def types(self):
@@ -67,22 +55,10 @@ class Infrastructure(stix.Entity):
 
     @types.setter
     def types(self, value):
-        self._types = InfraStructureTypes()
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_type(v)
-        else:
-            self.add_type(value)
+        self._types = InfraStructureTypes(value)
 
     def add_type(self, type_):
-        if not type_:
-            return
-        elif isinstance(type_, VocabString):
-            self._types.append(type_)
-        else:
-            self._types.append(AttackerInfrastructureType(value=type_))
+        self.types.append(type_)
 
     @property
     def observable_characterization(self):
@@ -90,12 +66,7 @@ class Infrastructure(stix.Entity):
 
     @observable_characterization.setter
     def observable_characterization(self, value):
-        if not value:
-            self._observable_characterization = None
-        elif isinstance(value, Observables):
-            self._observable_characterization = value
-        else:
-            self._observable_characterization = Observables(observables=[value])
+        self._set_var(Observables, observable_characterization=value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(Infrastructure, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -136,21 +107,7 @@ class Infrastructure(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        if self.id_:
-            d['id'] = self.id_
-        if self.title:
-            d['title'] = self.title
-        if self.description:
-            d['description'] = self.description.to_dict()
-        if self.short_description:
-            d['short_description'] = self.short_description.to_dict()
-        if self.types:
-            d['types'] = [x.to_dict() for x in self.types]
-        if self.observable_characterization:
-            d['observable_characterization'] = self.observable_characterization.to_dict()
-
-        return d
+        return super(Infrastructure, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
@@ -172,6 +129,7 @@ class Infrastructure(stix.Entity):
 class InfraStructureTypes(stix.EntityList):
     _namespace = "http://stix.mitre.org/TTP-1"
     _contained_type = VocabString
+    _dict_as_list = True
 
     def _fix_value(self, value):
         return AttackerInfrastructureType(value)

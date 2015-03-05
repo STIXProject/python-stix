@@ -31,13 +31,7 @@ class GenericRelationship(stix.Entity):
 
     @confidence.setter
     def confidence(self, value):
-        if value:
-            if isinstance(value, Confidence):
-                self._confidence = value
-            else:
-                self._confidence = Confidence(value=value)
-        else:
-            self._confidence = None
+        self._set_var(Confidence, confidence=value)
 
     @property
     def information_source(self):
@@ -45,10 +39,7 @@ class GenericRelationship(stix.Entity):
 
     @information_source.setter
     def information_source(self, value):
-        if value and not isinstance(value, InformationSource):
-            raise ValueError('value must be instance of InformationSource')
-
-        self._information_source = value
+        self._set_var(InformationSource, try_cast=False, information_source=value)
 
     @property
     def relationship(self):
@@ -56,13 +47,7 @@ class GenericRelationship(stix.Entity):
 
     @relationship.setter
     def relationship(self, value):
-        if value:
-            if isinstance(value, VocabString):
-                self._relationship = value
-            else:
-                self._relationship = VocabString(value=value)
-        else:
-            self._relationship = None
+        self._set_vocab(relationship=value)
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -128,8 +113,6 @@ class RelatedPackageRef(GenericRelationship):
         super(RelatedPackageRef, self).__init__(**kwargs)
         self.idref = None
         self.timestamp = None
-
-
 
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:

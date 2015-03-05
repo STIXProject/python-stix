@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import stix
+import stix.utils as utils
 from stix.ttp import TTP
 from stix.bindings import stix_core as core_binding
 from stix.common.kill_chains import KillChains
@@ -58,20 +59,19 @@ class TTPs(stix.EntityList):
         return return_obj
     
     def to_dict(self):
-        d = super(TTPs, self).to_dict()
-        if self.kill_chains:
-            d['kill_chains'] = self.kill_chains.to_dict()
-        
-        return d
-    
+        return super(TTPs, self).to_dict()
+
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
         if not dict_repr:
             return None
+
         if not return_obj:
             return_obj = cls()
 
-        get = dict_repr.get
         super(TTPs, cls).from_dict(dict_repr, return_obj)
+
+        get = dict_repr.get
         return_obj.kill_chains = KillChains.from_dict(get('kill_chains'))
+
         return return_obj

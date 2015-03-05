@@ -46,6 +46,7 @@ class InformationSource(stix.Entity):
     @references.setter
     def references(self, value):
         self._references = []
+
         if not value:
             return
         elif utils.is_sequence(value):
@@ -73,16 +74,7 @@ class InformationSource(stix.Entity):
         value.
 
         """
-        if value and isinstance(value, basestring):
-            st = StructuredText()
-            st.value = value
-            self._description = st
-        elif isinstance(value, StructuredText):
-            self._description = value
-        elif not value:
-            self._description = None
-        else:
-            raise ValueError('value must be instance of StructuredText or basestring')
+        self._set_var(StructuredText, description=value)
 
     @property
     def identity(self):
@@ -90,10 +82,7 @@ class InformationSource(stix.Entity):
 
     @identity.setter
     def identity(self, value):
-        if value and not isinstance(value, Identity):
-            raise ValueError('value must be instance of Identity')
-
-        self._identity = value
+        self._set_var(Identity, try_cast=False, identity=value)
 
     @property
     def time(self):
@@ -101,10 +90,7 @@ class InformationSource(stix.Entity):
 
     @time.setter
     def time(self, value):
-        if value and not isinstance(value, cybox.common.Time):
-            raise ValueError('value must be instance of Time')
-
-        self._time = value
+        self._set_var(cybox.common.Time, try_cast=False, time=value)
 
     @property
     def tools(self):
@@ -112,11 +98,7 @@ class InformationSource(stix.Entity):
 
     @tools.setter
     def tools(self, value):
-        if value and not isinstance(value, cybox.common.ToolInformationList):
-            error = 'value must be instance of cybox.common.ToolInformationList'
-            raise ValueError(error)
-
-        self._tools = value
+        self._set_var(cybox.common.ToolInformationList, try_cast=False, tools=value)
 
     @property
     def roles(self):

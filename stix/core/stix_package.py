@@ -95,10 +95,7 @@ class STIXPackage(stix.Entity):
 
     @stix_header.setter
     def stix_header(self, value):
-        if value and not isinstance(value, STIXHeader):
-            raise ValueError('value must be instance of STIXHeader')
-
-        self._stix_header = value
+        self._set_var(STIXHeader, try_cast=False, stix_header=value)
 
     @property
     def indicators(self):
@@ -128,10 +125,7 @@ class STIXPackage(stix.Entity):
 
     @observables.setter
     def observables(self, value):
-        if value and not isinstance(value, Observables):
-            raise ValueError('value must be instance of cybox.core.Observables')
-
-        self._observables = value
+        self._set_var(Observables, observables=value)
 
     def add_observable(self, observable):
         if not self.observables:

@@ -33,13 +33,12 @@ class ToolInformation(cybox.common.ToolInformation):
 
     @short_description.setter
     def short_description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._short_description = value
-            else:
-                self._short_description = StructuredText(value=value)
-        else:
+        if not value:
             self._short_description = None
+        elif isinstance(value, StructuredText):
+            self._short_description = value
+        else:
+            self._short_description = StructuredText(value=value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
@@ -47,7 +46,8 @@ class ToolInformation(cybox.common.ToolInformation):
 
         super(ToolInformation, self).to_obj(return_obj=return_obj, ns_info=ns_info)
         
-        return_obj.Title = self.title        
+        return_obj.Title = self.title
+
         if self.short_description:
             return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
 

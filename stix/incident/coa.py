@@ -23,12 +23,7 @@ class COATaken(stix.Entity):
         self.contributors = Contributors()
         
     def add_contributor(self, value):
-        if not value:
-            return
-        elif isinstance(value, Contributor):
-            self.contributors.append(value)
-        else:
-            raise ValueError("Cannot add type %s to contributors" % type(value))
+        self.contributors.append(value)
     
     @property
     def time(self):
@@ -36,12 +31,7 @@ class COATaken(stix.Entity):
     
     @time.setter
     def time(self, value):
-        if not value:
-            self._time = None
-        elif isinstance(value, COATime):
-            self._time = value
-        else:
-            raise ValueError("Cannot set time to type %s" % type(value))
+        self._set_var(COATime, try_cast=False, time=value)
     
     @property
     def course_of_action(self):
@@ -49,12 +39,7 @@ class COATaken(stix.Entity):
     
     @course_of_action.setter
     def course_of_action(self, value):
-        if not value:
-            self._course_of_action = None
-        elif isinstance(value, CourseOfAction):
-            self._course_of_action = value
-        else:
-            raise ValueError("Cannot set course_of_action to type %s" % type(value))
+        self._set_var(CourseOfAction, try_cast=False, course_of_action=value)
     
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -125,12 +110,7 @@ class COATime(stix.Entity):
     
     @start.setter
     def start(self, value):
-        if not value:
-            self._start = None
-        elif isinstance(value, DateTimeWithPrecision):
-            self._start = value
-        else:
-            self._start = DateTimeWithPrecision(value)
+        self._set_var(DateTimeWithPrecision, start=value)
     
     @property
     def end(self):
@@ -138,12 +118,7 @@ class COATime(stix.Entity):
     
     @end.setter
     def end(self, value):
-        if not value:
-            self._end = None
-        elif isinstance(value, DateTimeWithPrecision):
-            self._end = value
-        else:
-            self._end = DateTimeWithPrecision(value)
+        self._set_var(DateTimeWithPrecision, end=value)
     
     @classmethod
     def from_obj(cls, obj, return_obj=None):

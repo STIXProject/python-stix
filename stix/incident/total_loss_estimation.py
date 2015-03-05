@@ -25,12 +25,7 @@ class TotalLossEstimation(stix.Entity):
 
     @initial_reported_total_loss_estimation.setter
     def initial_reported_total_loss_estimation(self, value):
-        if not value:
-            self._initial_reported_total_loss_estimation = None
-        elif isinstance(value, LossEstimation):
-            self._initial_reported_total_loss_estimation = value
-        else:
-            raise ValueError("value must be LossEstimation instance")
+        self._set_var(LossEstimation, initial_reported_total_loss_estimation=value)
 
     @property
     def actual_total_loss_estimation(self):
@@ -38,12 +33,7 @@ class TotalLossEstimation(stix.Entity):
 
     @actual_total_loss_estimation.setter
     def actual_total_loss_estimation(self, value):
-        if not value:
-            self._actual_total_loss_estimation = None
-        elif isinstance(value, LossEstimation):
-            self._actual_total_loss_estimation = value
-        else:
-            raise ValueError("value must be LossEstimation instance")
+        self._set_var(LossEstimation, actual_total_loss_estimation=value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(TotalLossEstimation, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -68,12 +58,7 @@ class TotalLossEstimation(stix.Entity):
         return return_obj
 
     def to_dict(self):    
-        d  = {}
-        if self.initial_reported_total_loss_estimation:
-            d['initial_reported_total_loss_estimation'] = self.initial_reported_total_loss_estimation.to_dict()
-        if self.actual_total_loss_estimation:
-            d['actual_total_loss_estimation'] = self.actual_total_loss_estimation.to_dict()
-        return d
+        return super(TotalLossEstimation, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_, return_obj=None):
