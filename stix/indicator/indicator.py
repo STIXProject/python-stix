@@ -647,7 +647,7 @@ class Indicator(stix.BaseCoreComponent):
     
     @negate.setter
     def negate(self, value):
-       self._negate = True if value in xmlconst.TRUE else None
+        self._negate = True if value in xmlconst.TRUE else None
 
     @property
     def kill_chain_phases(self):

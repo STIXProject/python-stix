@@ -36,7 +36,7 @@ class Time(stix.Entity):
 
     @initial_compromise.setter
     def initial_compromise(self, value):
-       self._set_var(DateTimeWithPrecision, initial_compromise=value)
+        self._set_var(DateTimeWithPrecision, initial_compromise=value)
 
     @property
     def first_data_exfiltration(self):

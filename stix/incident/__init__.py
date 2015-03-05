@@ -87,7 +87,7 @@ class Incident(stix.BaseCoreComponent):
     
     @handling.setter
     def handling(self, value):
-       self._set_var(Marking, try_cast=False, handling=value)
+        self._set_var(Marking, try_cast=False, handling=value)
 
     @property
     def intended_effects(self):

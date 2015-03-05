@@ -203,8 +203,8 @@ def iter_vars(obj):
         has_value = bool(val) or is_bool(val)
         return has_value and (key not in inputs)
 
-    vars = obj.__dict__.iteritems()
-    return dict((attr_name(x), y) for x, y in vars if is_good(x,y)).iteritems()
+    vars_ = obj.__dict__.iteritems()
+    return dict((attr_name(x), y) for x, y in vars_ if is_good(x,y)).iteritems()
 
 
 def is_dictable(obj):
@@ -260,6 +260,14 @@ def xml_bool(item):
 
     error = "Unable to determine the boolean value of '{0}'".format(item)
     raise ValueError(error)
+
+
+def cast_var(item, klass, arg=None):
+    if not arg:
+        return klass(item)
+
+    kwarg = {arg: item}     # kwarg dict
+    return klass(**kwarg)   # klass(value='foobar')
 
 
 from .nsparser import *

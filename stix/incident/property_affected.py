@@ -5,7 +5,6 @@
 import stix
 from stix.common import vocabs, VocabString, StructuredText
 import stix.bindings.incident as incident_binding
-from stix.common.vocabs import AvailabilityLossType as AvailabilityLoss
 
 
 class NonPublicDataCompromised(VocabString):
@@ -152,7 +151,7 @@ class PropertyAffected(stix.Entity):
         if not return_obj:
             return_obj = cls()
             
-        return_obj.property_ = VocabString.from_dict(d.get(('property')))
+        return_obj.property_ = VocabString.from_dict(d.get('property'))
         return_obj.description_of_effect = StructuredText.from_dict(d.get('description_of_effect'))
         return_obj.type_of_availability_loss = VocabString.from_dict(d.get('type_of_availability_loss'))
         return_obj.duration_of_availability_loss = VocabString.from_dict(d.get('duration_of_availability_loss'))

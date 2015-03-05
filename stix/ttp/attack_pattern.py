@@ -40,7 +40,7 @@ class AttackPattern(stix.Entity):
 
     @short_description.setter
     def short_description(self, value):
-       self._set_var(StructuredText, short_description=value)
+        self._set_var(StructuredText, short_description=value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(AttackPattern, self).to_obj(return_obj=return_obj, ns_info=ns_info)

@@ -6,7 +6,6 @@ from cybox.core import Observables
 
 # internal
 import stix
-import stix.utils as utils
 from stix.common import StructuredText, VocabString
 import stix.bindings.ttp as ttp_binding
 from stix.common.vocabs import AttackerInfrastructureType

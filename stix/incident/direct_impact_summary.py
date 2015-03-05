@@ -40,7 +40,7 @@ class DirectImpactSummary(stix.Entity):
 
     @response_and_recovery_costs.setter
     def response_and_recovery_costs(self, value):
-       self._set_vocab(ImpactRating, response_and_recovery_costs=value)
+        self._set_vocab(ImpactRating, response_and_recovery_costs=value)
             
     def to_obj(self, return_obj=None, ns_info=None):
         super(DirectImpactSummary, self).to_obj(return_obj=return_obj, ns_info=ns_info)

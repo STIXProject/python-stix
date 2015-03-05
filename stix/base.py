@@ -26,12 +26,6 @@ class Entity(object):
             return
         ns_info.collect(self)
 
-    def _cast_var(self, item, klass, arg=None):
-        if not arg:
-            return klass(item)
-
-        kwarg = {arg: item}     # kwarg dict
-        return klass(**kwarg)   # klass(value='foobar')
 
     def _set_var(self, klass, try_cast=True, arg=None, **kwargs):
         name = utils.private_name(kwargs.iterkeys().next())
@@ -42,7 +36,7 @@ class Entity(object):
         elif isinstance(item, klass):
             setattr(self, name, item)
         elif try_cast:
-            promoted = self._cast_var(item, klass, arg=arg)
+            promoted = utils.cast_var(item, klass, arg=arg)
             setattr(self, name, promoted)
         else:
             attr_name = utils.attr_name(name)
@@ -65,7 +59,7 @@ class Entity(object):
         elif isinstance(item, VocabString):
             setattr(self, name, item)
         elif try_cast:
-            promoted = self._cast_var(item, klass)
+            promoted = utils.cast_var(item, klass)
             setattr(self, name, promoted)
         else:
             attr_name = utils.attr_name(name)

@@ -75,7 +75,7 @@ class AffectedAsset(stix.Entity):
     
     @location_class.setter
     def location_class(self, value):
-         self._set_vocab(vocabs.LocationClass, location_class=value)
+        self._set_vocab(vocabs.LocationClass, location_class=value)
     
     @property
     def nature_of_security_effect(self):
@@ -180,7 +180,7 @@ class AssetType(VocabString):
         super(AssetType, self).__init__(value)
     
     def is_plain(self):
-        '''Override VocabString.is_plain()'''
+        """Override VocabString.is_plain()"""
         return False
 
     @property

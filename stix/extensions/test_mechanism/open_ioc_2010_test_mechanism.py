@@ -46,7 +46,7 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
                              'or lxml.etree._ElementTree')
         
         root = tree.getroot()
-        expected_node_tag = "{%s}ioc" % (self._namespace)
+        expected_node_tag = "{%s}ioc" % self._namespace
         if root.tag != expected_node_tag:
             ns_ioc = "http://schemas.mandiant.com/2010/ioc"
             node_ns = etree.QName(root).namespace

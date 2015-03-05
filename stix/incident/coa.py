@@ -9,7 +9,7 @@ from stix.common import DateTimeWithPrecision
 from stix.coa import CourseOfAction
 
 # relative
-from .contributors import Contributors, Contributor
+from .contributors import Contributors
 
 
 class COATaken(stix.Entity):
@@ -21,10 +21,7 @@ class COATaken(stix.Entity):
         self.time = None
         self.course_of_action = course_of_action
         self.contributors = Contributors()
-        
-    def add_contributor(self, value):
-        self.contributors.append(value)
-    
+
     @property
     def time(self):
         return self._time
@@ -40,7 +37,18 @@ class COATaken(stix.Entity):
     @course_of_action.setter
     def course_of_action(self, value):
         self._set_var(CourseOfAction, try_cast=False, course_of_action=value)
-    
+
+    @property
+    def contributors(self):
+        return self._contributors
+
+    @contributors.setter
+    def contributors(self, value):
+        self._contributors = Contributors(value)
+
+    def add_contributor(self, value):
+        self.contributors.append(value)
+
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:
@@ -83,18 +91,9 @@ class COATaken(stix.Entity):
         return return_obj
     
     def to_dict(self):
-        d = {}
+        return super(COATaken, self).to_dict()
 
-        if self.time:
-            d['time'] = self.time.to_dict()
-        if self.contributors:
-            d['contributors'] = self.contributors.to_dict()
-        if self.course_of_action:
-            d['course_of_action'] = self.course_of_action.to_dict()
 
-        return d
-    
-    
 class COATime(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding = incident_binding
