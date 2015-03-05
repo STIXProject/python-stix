@@ -37,7 +37,7 @@ class AssociatedCampaigns(GenericRelationshipList):
     _inner_name = "campaigns"
 
 
-class ThreatActor(stix._BaseCoreComponent):
+class ThreatActor(stix.BaseCoreComponent):
     _binding = threat_actor_binding
     _binding_class = threat_actor_binding.ThreatActorType
     _namespace = 'http://stix.mitre.org/ThreatActor-1'

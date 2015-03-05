@@ -24,7 +24,7 @@ from .coa import COATaken, COATime
 from .history import History
 
 
-class Incident(stix._BaseCoreComponent):
+class Incident(stix.BaseCoreComponent):
     _binding = incident_binding
     _binding_class = _binding.IncidentType
     _namespace = "http://stix.mitre.org/Incident-1"
@@ -33,6 +33,15 @@ class Incident(stix._BaseCoreComponent):
     _ID_PREFIX = 'incident'
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
+        super(Incident, self).__init__(
+            id_=id_,
+            idref=idref,
+            timestamp=timestamp,
+            title=title,
+            description=description,
+            short_description=short_description
+        )
+
         self.status = None
         self.time = None
         self.victims = None

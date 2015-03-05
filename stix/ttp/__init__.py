@@ -13,7 +13,7 @@ from .resource import Resource
 from .victim_targeting import VictimTargeting
 
 
-class TTP(stix._BaseCoreComponent):
+class TTP(stix.BaseCoreComponent):
     _binding = ttp_binding
     _binding_class = _binding.TTPType
     _namespace = "http://stix.mitre.org/TTP-1"

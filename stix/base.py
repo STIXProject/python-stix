@@ -459,7 +459,7 @@ class TypedList(collections.MutableSequence):
     from_dict = from_list
 
 
-class _BaseCoreComponent(Entity):
+class BaseCoreComponent(Entity):
     _ALL_VERSIONS = ()
     _ID_PREFIX = None
 
@@ -472,6 +472,7 @@ class _BaseCoreComponent(Entity):
         self.description = description
         self.short_description = short_description
         self.version = None
+        self.information_source = None
 
         if timestamp:
             self.timestamp = timestamp
@@ -504,6 +505,32 @@ class _BaseCoreComponent(Entity):
             self.idref = None
 
     @property
+    def idref(self):
+        """The ``idref`` property must be set to the ``id_`` value of another
+        object instance of the same type. An idref does not need to resolve to
+        a local object instance.
+
+        Default Value: ``None``.
+
+        Note:
+            Both the ``id_`` and ``idref`` properties cannot be set at the
+            same time. **Setting one will unset the other!**
+
+        Returns:
+            The value of the ``idref`` property
+
+        """
+        return self._idref
+
+    @idref.setter
+    def idref(self, value):
+        if not value:
+            self._idref = None
+        else:
+            self._idref = value
+            self.id_ = None # unset id_ if idref is present
+
+    @property
     def version(self):
         """The schematic version of this component. This property
         will always return ``None`` unless it is set to a value different than
@@ -529,32 +556,6 @@ class _BaseCoreComponent(Entity):
         else:
             utils.check_version(self._ALL_VERSIONS, value)
             self._version = value
-
-    @property
-    def idref(self):
-        """The ``idref`` property must be set to the ``id_`` value of another
-        object instance of the same type. An idref does not need to resolve to
-        a local object instance.
-
-        Default Value: ``None``.
-
-        Note:
-            Both the ``id_`` and ``idref`` properties cannot be set at the
-            same time. **Setting one will unset the other!**
-
-        Returns:
-            The value of the ``idref`` property
-
-        """
-        return self._idref
-
-    @idref.setter
-    def idref(self, value):
-        if not value:
-            self._idref = None
-        else:
-            self._idref = value
-            self.id_ = None # unset id_ if idref is present
 
     @property
     def timestamp(self):
@@ -682,7 +683,7 @@ class _BaseCoreComponent(Entity):
             raise ValueError(error)
 
     @classmethod
-    def from_obj(cls, obj, return_obj):
+    def from_obj(cls, obj, return_obj=None):
         from stix.common import StructuredText, InformationSource
 
         if not return_obj:
@@ -713,7 +714,7 @@ class _BaseCoreComponent(Entity):
         if not return_obj:
             raise ValueError("Must provide a return_obj argument")
 
-        super(_BaseCoreComponent, self).to_obj(
+        super(BaseCoreComponent, self).to_obj(
             return_obj=return_obj,
             ns_info=ns_info
         )
@@ -757,4 +758,4 @@ class _BaseCoreComponent(Entity):
         return return_obj
 
     def to_dict(self):
-        return super(_BaseCoreComponent, self).to_dict()
+        return super(BaseCoreComponent, self).to_dict()

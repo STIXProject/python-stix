@@ -65,7 +65,7 @@ class Names(stix.EntityList):
     _inner_name = "names"
 
 
-class Campaign(stix._BaseCoreComponent):
+class Campaign(stix.BaseCoreComponent):
     _binding = campaign_binding
     _binding_class = _binding.CampaignType
     _namespace = "http://stix.mitre.org/Campaign-1"

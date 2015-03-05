@@ -10,7 +10,7 @@ import stix
 import stix.utils as utils
 import stix.xmlconst as xmlconst
 from stix.common import (
-    Identity, InformationSource, StructuredText, VocabString, Confidence,
+    Identity, InformationSource, VocabString, Confidence,
     RelatedTTP, Statement, CampaignRef
 )
 from stix.common.related import (
@@ -155,7 +155,7 @@ class RelatedIndicators(GenericRelationshipList):
         super(RelatedIndicators, self).__init__(scope, related_indicators)
 
 
-class Indicator(stix._BaseCoreComponent):
+class Indicator(stix.BaseCoreComponent):
     """Implementation of the STIX ``IndicatorType``.
 
     Args:
