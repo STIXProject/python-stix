@@ -240,6 +240,7 @@ def parseString(inString):
     # rootObj.export(sys.stdout, 0, name_="Indicator",
     #     namespacedef_='')
     return rootObj
+
 def main():
     args = sys.argv[1:]
     if len(args) == 1:

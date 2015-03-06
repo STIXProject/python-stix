@@ -1,6 +1,9 @@
 # vim swap files
 *.swp
 
+# python stackdumps
+*.stackdump
+
 # compiled python modules
 *.py[co]
 

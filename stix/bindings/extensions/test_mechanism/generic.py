@@ -195,7 +195,7 @@ def parseString(inString):
     # sys.stdout.write('<?xml version="1.0" ?>\n')
     # rootObj.export(sys.stdout, 0, name_="GenericTestMechanismType",
     #     namespacedef_='')
-    # return rootObj
+    return rootObj
 
 def main():
     args = sys.argv[1:]
