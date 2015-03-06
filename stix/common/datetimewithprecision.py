@@ -36,7 +36,7 @@ class DateTimeWithPrecision(stix.Entity):
     @precision.setter
     def precision(self, value):
         if value not in DATETIME_PRECISION_VALUES:
-            error = "value must be one of %s" % (DATE_PRECISION_VALUES,)
+            error = "value must be one of %s" % (DATETIME_PRECISION_VALUES,)
             raise ValueError(error)
 
         self._precision = value
