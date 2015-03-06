@@ -9,15 +9,21 @@ from stix.test import EntityTestCase, round_trip, round_trip_dict
 class IndicatorTest(EntityTestCase, unittest.TestCase):
     klass = Indicator
     _full_dict = {
-        'id': 'example:indicator-1ae45e9c-9b0b-11e3-ada0-28cfe912ced6',
+        'id': 'example:test-1',
         # no idref because we can't have both an id and idref
-        'version': '2.1.1',
-        'negate': True,
-        'title': 'File Hash Example',
-        'description': 'An indicator containing a File observable with an associated hash',
-        'short_description': "A short description",
-        'timestamp': '2015-03-06T14:35:23.375304+00:00',
     }
+
+    def test_base(self):
+        d = {
+            'version': '2.1.1',
+            'negate': True,
+            'title': 'File Hash Example',
+            'description': 'An indicator containing a File observable with an associated hash',
+            'short_description': "A short description",
+            'timestamp': '2015-03-06T14:35:23.375304+00:00',
+        }
+        self._test_partial_dict(d)
+
 
     def test_indicator_types(self):
         d = {
@@ -226,6 +232,173 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
         }
         self._test_partial_dict(d)
 
+
+    def test_likely_impact(self):
+        d = {
+            'likely_impact': {
+                'timestamp': "2014-01-31T06:14:46",
+                'timestamp_precision': 'day',
+                'value': "Something strange is going on",
+                'description': "An amazing source",
+                'source': { 'description': "An amazing source",
+                            'identity': {'name': "Spiderman",}
+                           },
+                'confidence': {
+                    'value': {'value': "Low", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'},
+                },
+            }
+        }
+        self._test_partial_dict(d)
+
+    def test_suggested_coas(self):
+        d = {
+            'suggested_coas': {
+                'suggested_coas': [
+                    {
+                        'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
+                        'information_source': {
+                            'description': "Source of the relationship",
+                        },
+                        'relationship': "Associated",
+                        'course_of_action': {
+                            'id': 'example:bar-1',
+                            'title': 'Test'
+                        }
+                    }
+                ]
+            }
+        }
+
+        self._test_partial_dict(d)
+
+    def test_handling(self):
+        d = {
+            'handling': [
+                {
+                    'marking_structures': [
+                        {
+                            'marking_model_name': 'TLP',
+                            'color': "WHITE",
+                            'xsi:type': "tlpMarking:TLPMarkingStructureType",
+                        }
+                    ]
+                }
+            ]
+        }
+        self._test_partial_dict(d)
+
+    def test_confidence(self):
+        d = {
+            'confidence': {
+                'timestamp': "2014-01-31T06:14:46",
+                'timestamp_precision': 'day',
+                'value': {'value': "High", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'},
+                'description': "An amazing source",
+                'source': {
+                    'description': "An amazing source",
+                    'identity': {'name': "Spiderman",}
+                }
+            }
+        }
+        self._test_partial_dict(d)
+
+    def test_sightings(self):
+        d = {
+            'sightings': {
+                'sightings_count': 2,
+                'sightings': [
+                    {
+                        'timestamp': "2014-01-31T06:14:46",
+                        'timestamp_precision': 'day',
+                        'source': {
+                            'description': "An amazing source",
+                            'identity': {'name': "Spiderman",}
+                        },
+                        'reference': 'foobar',
+                        'confidence': {
+                            'timestamp': "2014-01-31T06:14:46",
+                            'timestamp_precision': 'day',
+                            'value': {'value': "High", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'},
+                            'description': "An amazing source",
+                            'source': {
+                                'description': "An amazing source",
+                                'identity': {'name': "Spiderman",}
+                            }
+                        },
+                        'description': "Test",
+                        'related_observables': {
+                            'observables': [
+                                {
+                                    'relationship': "Associated",
+                                    'observable': {
+                                        'id': 'example:bar-1',
+                                        'title': 'Test'
+                                    }
+                                },
+                                {
+                                    'relationship': "Associated",
+                                    'observable': {
+                                        'id': 'example:bar-2',
+                                        'title': 'Test'
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+
+        self._test_partial_dict(d)
+
+    def test_related_indicators(self):
+        d = {
+            'related_indicators': {
+                'related_indicators': [
+                    {
+                        'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
+                        'information_source': {
+                            'description': "Source of the relationship",
+                        },
+                        'relationship': "Associated",
+                        'indicator': {
+                            'id': 'example:bar-1',
+                            'title': 'Test'
+                        }
+                    }
+                ]
+            }
+        }
+
+        self._test_partial_dict(d)
+
+    def test_related_packages(self):
+        d = {
+            'related_packages': {
+                'packages': [
+                    {
+                        'idref': "example:foo-1",
+                        'timestamp': "2014-01-31T06:14:46",
+                        'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
+                        'information_source': {
+                            'description': "Source of the relationship",
+                        },
+                        'relationship': "Associated"
+                    },
+                    {
+                        'idref': "example:foo--2",
+                        'timestamp': "2014-01-31T06:14:46",
+                        'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
+                        'information_source': {
+                            'description': "Source of the relationship",
+                        },
+                        'relationship': "Associated"
+                    }
+                ]
+            }
+        }
+
+        self._test_partial_dict(d)
 
 if __name__ == "__main__":
     unittest.main()

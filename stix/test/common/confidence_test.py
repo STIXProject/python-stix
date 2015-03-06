@@ -15,9 +15,10 @@ class ConfidenceTests(EntityTestCase, unittest.TestCase):
         'timestamp_precision': 'day',
         'value': {'value': "High", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'},
         'description': "An amazing source",
-        'source': { 'description': "An amazing source",
-                    'identity': {'name': "Spiderman",}
-                   }
+        'source': {
+            'description': "An amazing source",
+            'identity': {'name': "Spiderman",}
+        }
     }
 
 
