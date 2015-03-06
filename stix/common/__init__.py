@@ -58,7 +58,20 @@ class EncodedCDATA(stix.Entity):
     def __init__(self, value=None, encoded=None):
         self.value = value
         self.encoded = encoded
-    
+
+    @property
+    def value(self):
+        return self._value
+
+    @value.setter
+    def value(self, value):
+        self._value = utils.strip_cdata(value)
+
+    @property
+    def cdata(self):
+        return utils.cdata(self.value)
+
+
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:
