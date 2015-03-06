@@ -78,7 +78,7 @@ def cdata(text):
 
     """
     if not text:
-        return
+        return text
 
     if is_cdata(text):
         text = strip_cdata(text)
