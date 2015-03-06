@@ -55,5 +55,23 @@ class EncodedCDATATests(EntityTestCase, unittest.TestCase):
         ecdata = EncodedCDATA.from_dict(d)
         self.assertEqual(ecdata.value, stripped)
 
+    def test_set_value(self):
+        stripped = "TESTTEST"
+        wrapped = '<![CDATA[%s]]>' % stripped
+
+        ecdata = EncodedCDATA()
+        ecdata.value = wrapped
+
+        self.assertEqual(ecdata.value, stripped)
+        self.assertEqual(ecdata.cdata, wrapped)
+
+    def test_set_none(self):
+        ecdata = EncodedCDATA()
+        ecdata.value = None
+
+        self.assertTrue(ecdata.value is None)
+        self.assertTrue(ecdata.cdata is None)
+
+
 if __name__ == '__main__':
     unittest.main()
