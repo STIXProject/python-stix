@@ -71,7 +71,6 @@ class EncodedCDATA(stix.Entity):
     def cdata(self):
         return utils.cdata(self.value)
 
-
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:
