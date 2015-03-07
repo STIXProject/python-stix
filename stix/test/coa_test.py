@@ -3,10 +3,9 @@
 
 import unittest
 
-from stix.test import EntityTestCase, TypedListTestCase, data_marking_test
+from stix.test import EntityTestCase, data_marking_test
 from stix.test.common import (
     confidence_test, information_source_test, statement_test, related_test,
-    activity_test
 )
 
 import stix.coa as coa
