@@ -7,10 +7,8 @@ import StringIO
 from cybox.common import StructuredText
 
 from stix.test import EntityTestCase, TypedListTestCase
-from stix.test.common.information_source_test import InformationSourceTests
-from stix.test.common.related_test import (
-    RelatedIndicatorTests, RelatedThreatActorTests, RelatedTTPTests,
-    RelatedObservableTests
+from stix.test.common import (
+    confidence_test, information_source_test, statement_test, related_test
 )
 
 import stix.common.vocabs as vocabs
@@ -110,7 +108,7 @@ class AttributedThreatActorsTest(EntityTestCase, unittest.TestCase):
     _full_dict = {
         'scope': 'exclusive',
         'threat_actors': [
-            RelatedThreatActorTests._full_dict,
+            related_test.RelatedThreatActorTests._full_dict,
         ]
     }
 
@@ -121,7 +119,7 @@ class RelatedIndicatorsTest(EntityTestCase, unittest.TestCase):
     _full_dict = {
         'scope': 'exclusive',
         'indicators': [
-            RelatedIndicatorTests._full_dict,
+            related_test.RelatedIndicatorTests._full_dict,
         ]
     }
 
@@ -132,7 +130,7 @@ class LeveragedTTPsTest(EntityTestCase, unittest.TestCase):
     _full_dict = {
         'scope': 'exclusive',
         'ttps': [
-            RelatedTTPTests._full_dict,
+            related_test.RelatedTTPTests._full_dict,
         ]
     }
 
@@ -360,6 +358,46 @@ class AffectedAssetsTest(EntityTestCase, unittest.TestCase):
     ]
 
 
+class RelatedObservablesTest(EntityTestCase, unittest.TestCase):
+    klass = incident.RelatedObservables
+
+    _full_dict = {
+        'scope': 'inclusive',
+        'observables': [
+            related_test.RelatedObservableTests._full_dict
+        ]
+    }
+
+
+class RelatedIncidentsTests(EntityTestCase, unittest.TestCase):
+    klass = incident.RelatedIncidents
+
+    _full_dict = {
+        'incidents': [
+            related_test.RelatedIncidentTests._full_dict
+        ]
+    }
+
+
+class IntendedEffectsTests(TypedListTestCase, unittest.TestCase):
+    klass = incident._IntendedEffects
+
+    _full_dict = [
+        statement_test.StatementTests._full_dict
+    ]
+
+
+class DiscoveryMethodsTests(TypedListTestCase, unittest.TestCase):
+    klass = incident.DiscoveryMethods
+
+    _full_dict = [
+        {
+            'value': 'Unknown',
+            'xsi:type': 'stixVocabs:LocationClassVocab-1.0'
+        }
+    ]
+
+
 class IncidentTest(EntityTestCase, unittest.TestCase):
     klass = incident.Incident
     _full_dict = {
@@ -377,17 +415,22 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
         'impact_assessment': ImpactAssessmentTest._full_dict,
         'leveraged_ttps': LeveragedTTPsTest._full_dict,
         'related_indicators': RelatedIndicatorsTest._full_dict,
-        'reporter': InformationSourceTests._full_dict,
+        'reporter': information_source_test.InformationSourceTests._full_dict,
         'responders': InformationSourcesTest._full_dict,
         'time': TimeTest._full_dict,
         'victims': VictimsTest._full_dict,
-        'information_source': InformationSourceTests._full_dict,
+        'information_source': information_source_test.InformationSourceTests._full_dict,
         'security_compromise': {
             "value": "Suspected",
             "xsi:type":"stixVocabs:SecurityCompromiseVocab-1.0"
         },
         'history': HistoryTest._full_dict,
-        'affected_assets': AffectedAssetsTest._full_dict
+        'affected_assets': AffectedAssetsTest._full_dict,
+        'related_observables': RelatedObservablesTest._full_dict,
+        'related_incidents': RelatedIncidentsTests._full_dict,
+        'intended_effects': IntendedEffectsTests._full_dict,
+        'discovery_methods': DiscoveryMethodsTests._full_dict,
+        'confidence': confidence_test.ConfidenceTests._full_dict
     }
 
     def test_parse_category(self):
