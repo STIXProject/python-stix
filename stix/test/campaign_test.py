@@ -2,123 +2,134 @@
 # See LICENSE.txt for complete terms.
 
 import unittest
+import StringIO
 
-from stix.campaign import Campaign
-from stix.test import EntityTestCase
+from cybox.common import StructuredText
+
+from stix.test import EntityTestCase, TypedListTestCase, data_marking_test
+from stix.test.common import (
+    confidence_test, information_source_test, statement_test, related_test,
+    activity_test
+)
+
+import stix.campaign as campaign
+
+
+class NamesTests(EntityTestCase, unittest.TestCase):
+    klass = campaign.Names
+
+    _full_dict = {
+        'names': [
+            "Dancing Hippos",
+            "Crazy Squirrels",
+            {
+                'value': "Medium",
+                'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'
+            }
+        ]
+    }
+
+class IntendedEffectsTests(TypedListTestCase, unittest.TestCase):
+    klass = campaign._IntendedEffects
+
+    _full_dict = [
+        statement_test.StatementTests._full_dict
+    ]
+
+
+class RelatedTTPsTest(EntityTestCase, unittest.TestCase):
+    klass = campaign.RelatedTTPs
+
+    _full_dict = {
+        'scope': 'exclusive',
+        'ttps': [
+            related_test.RelatedTTPTests._full_dict,
+        ]
+    }
+
+
+class RelatedIncidentsTests(EntityTestCase, unittest.TestCase):
+    klass = campaign.RelatedIncidents
+
+    _full_dict = {
+        'incidents': [
+            related_test.RelatedIncidentTests._full_dict
+        ]
+    }
+
+
+class RelatedIndicatorsTests(EntityTestCase, unittest.TestCase):
+    klass = campaign.RelatedIndicators
+
+    _full_dict = {
+        'indicators': [
+            related_test.RelatedIndicatorTests._full_dict
+        ]
+    }
+
+class AttributionTests(EntityTestCase, unittest.TestCase):
+    klass = campaign.Attribution
+
+    _full_dict = {
+        'scope': 'exclusive',
+        'threat_actors': [
+            related_test.RelatedThreatActorTests._full_dict,
+        ]
+    }
+
+
+class AttributionListTests(TypedListTestCase, unittest.TestCase):
+    klass = campaign._AttributionList
+
+    _full_dict = [
+        AttributionTests._full_dict
+    ]
+
+
+class AssociatedCampaignsTests(EntityTestCase, unittest.TestCase):
+    klass = campaign.AssociatedCampaigns
+
+    _full_dict = {
+        'scope': 'inclusive',
+        'campaigns': [
+            related_test.RelatedCampaignTests._full_dict
+        ]
+    }
+
+
+class ActivitiesTests(TypedListTestCase, unittest.TestCase):
+    klass = campaign._Activities
+
+    _full_dict = [
+        activity_test.ActivityTests._full_dict
+    ]
 
 
 class CampaignTest(EntityTestCase, unittest.TestCase):
-    klass = Campaign
+    klass = campaign.Campaign
     _full_dict = {
-        'id': "example:Campaign-341",
+        'id': "example:test-1",
         'timestamp': "2014-01-31T06:14:46",
         'version': '1.1.1',
         'title': 'Purple Elephant',
         'description': 'A pretty novice set of actors.',
         'short_description': 'novices',
-        'names': {
-            'names': [
-                "Dancing Hippos",
-                "Crazy Squirrels",
-                {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}
-            ],
+        'names': NamesTests._full_dict,
+        'intended_effects': IntendedEffectsTests._full_dict,
+        'status': {
+            'value': "Ongoing",
+            'xsi:type':'stixVocabs:CampaignStatusVocab-1.0'
         },
-        'intended_effects': [
-            {
-                'timestamp': "2014-03-11T06:24:26",
-                'value': "Doing bad stuff",
-            },
-            {
-                'timestamp': "2014-03-21T06:24:26",
-                'value': "Doing really bad stuff",
-            }
-        ],
-        'status': {'value': "Ongoing", 'xsi:type':'stixVocabs:CampaignStatusVocab-1.0'},
-        'related_ttps': {
-            'scope': "exclusive",
-            'ttps': [
-                {
-                    'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
-                    'ttp': {'title': "Stealth", 'version': '1.1.1'},
-                }
-            ]
-        },
-        'related_incidents': {
-            'scope': "inclusive",
-            'incidents': [
-                {
-                    'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
-                    'incident': {'idref': "example:Incident-2",
-                                 'version': '1.1.1'},
-                }
-            ]
-        },
-        'related_indicators': {
-            'scope': "inclusive",
-            'indicators': [
-                {
-                    'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
-                    'indicator': {'idref': "example:Indicator-77",
-                                  'version': '2.1.1'},
-                }
-            ]
-        },
-        'attribution': [{
-            'scope': "inclusive",
-            'threat_actors': [
-                {
-                    'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
-                    'threat_actor': {'title': "Campaign Actor #1",
-                                     'version': '1.1.1'},
-                },
-                {
-                    'threat_actor': {'idref': "example:ThreatActor-111",
-                                     'version': '1.1.1'},
-                },
-            ],
-        }],
-        'associated_campaigns': {
-            'scope': "inclusive",
-            'campaigns': [
-                {
-                    'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
-                    'information_source': {'description': "Threat Feed"},
-                    'campaign': {'title': "Baby Elephant", 'version': '1.1.1'},
-                }
-            ],
-        },
-        'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
-        'activity': [
-                {
-                    'date_time': "2012-01-01T08:45:31",
-                    'description': "The first bad thing"
-                },
-                {
-                    'date_time': "2012-01-02T08:45:31",
-                    'description': "Another bad thing"
-                },
-        ],
-        'information_source': {
-            'description': "A former member of the campaign.",
-            'identity': {
-                'name': "Mr. D. Fector",
-            },
-        },
-        'handling': [
-            {
-                'marking_structures': [{
-                    'marking_model_name': 'TLP',
-                    'color': "RED",
-                    'xsi:type': "tlpMarking:TLPMarkingStructureType",
-                }]
-            }
-        ],
-        'related_packages': {
-            'packages': [
-                {'idref': "example:Package-AB", 'relationship': "Parent"},
-                {'idref': "example:Package-CD", 'relationship': "Child"}
-            ]
-        }
+        'related_ttps': RelatedTTPsTest._full_dict,
+        'related_incidents': RelatedIncidentsTests._full_dict,
+        'related_indicators': RelatedIndicatorsTests._full_dict,
+        'attribution': AttributionListTests._full_dict,
+        'associated_campaigns': AssociatedCampaignsTests._full_dict,
+        'confidence': confidence_test.ConfidenceTests._full_dict,
+        'activity': ActivitiesTests._full_dict,
+        'information_source': information_source_test.InformationSourceTests._full_dict,
+        'handling': data_marking_test.MarkingTests._full_dict,
+        'related_packages': related_test.RelatedPackageRefsTests._full_dict
     }
 
 
