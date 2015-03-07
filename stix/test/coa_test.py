@@ -2,26 +2,53 @@
 # See LICENSE.txt for complete terms.
 
 import unittest
-from stix.test import EntityTestCase
-from stix.coa import CourseOfAction
+
+from stix.test import EntityTestCase, TypedListTestCase, data_marking_test
+from stix.test.common import (
+    confidence_test, information_source_test, statement_test, related_test,
+    activity_test
+)
+
+import stix.coa as coa
+import stix.coa.objective as objective
+
+
+class RelatedCOAsTests(EntityTestCase, unittest.TestCase):
+    klass = coa.RelatedCOAs
+
+    _full_dict = {
+        'coas': [
+            related_test.RelatedCOATests._full_dict
+        ]
+    }
+
+class ObjectiveTests(EntityTestCase, unittest.TestCase):
+    klass = objective.Objective
+
+    _full_dict = {
+        'description': 'Test',
+        'short_description': 'Short Description Test',
+        'applicability_confidence': confidence_test.ConfidenceTests._full_dict
+    }
 
 class COATests(EntityTestCase, unittest.TestCase):
-    klass = CourseOfAction
+    klass = coa.CourseOfAction
     _full_dict = {
-        'id': 'example:coa-1',
+        'id': 'example:test-1',
         'timestamp': "2014-03-20T04:35:12",
         'version': '1.1',
         'title': "COA1",
-        'stage':  {'value': 'Remedy', 'xsi:type': 'stixVocabs:COAStageVocab-1.0'},
-        'type': {'value': 'Redirection', 'xsi:type': 'stixVocabs:CourseOfActionTypeVocab-1.0'},
         'description': "This is a long description about a course of action",
         'short_description': "a COA",
-        'objective': {
-            'description': "This is why we're taking this action",
-            'short_description': "Stop the bad stuff",
-            'applicability_confidence': {'value': {'value': 'Medium', 
-                                                   'xsi:type': 'stixVocabs:HighMediumLowVocab-1.0'}},
+        'stage':  {
+            'value': 'Remedy',
+            'xsi:type': 'stixVocabs:COAStageVocab-1.0'
         },
+        'type': {
+            'value': 'Redirection',
+            'xsi:type': 'stixVocabs:CourseOfActionTypeVocab-1.0'
+        },
+        'objective': ObjectiveTests._full_dict,
         'parameter_observables': {
             'major_version': 2,
             'minor_version': 1,
@@ -32,43 +59,13 @@ class COATests(EntityTestCase, unittest.TestCase):
                 }
             ]
         },
-        'impact': {'value': {'value': 'Medium', 
-                             'xsi:type': 'stixVocabs:HighMediumLowVocab-1.0'}},
-        'cost': {'value': {'value': 'Medium', 
-                           'xsi:type': 'stixVocabs:HighMediumLowVocab-1.0'}},
-        'efficacy': {'value': {'value': 'Medium', 
-                               'xsi:type': 'stixVocabs:HighMediumLowVocab-1.0'}},
-        'information_source': {
-            'description': "Mr. Evil's enemy",
-            'identity': {
-                'name': "Ms. Good",
-            },
-        },
-        'handling': [
-            {
-                'marking_structures': [{
-                    'marking_model_name': 'TLP',
-                    'color': "GREEN",
-                    'xsi:type': "tlpMarking:TLPMarkingStructureType",
-                }]
-            }
-        ],
-        'related_coas': {
-            'scope': "exclusive",
-            'coas': [
-                {
-                    'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
-                    'course_of_action': {'idref': "example:COA-52",
-                                         'version': '1.1.1'},
-                }
-            ]
-        },
-        'related_packages': {
-            'packages': [
-                {'idref': "example:Package-AB", 'relationship': "Parent"},
-                {'idref': "example:Package-CD", 'relationship': "Child"}
-            ]
-        },
+        'impact': statement_test.StatementTests._full_dict,
+        'cost': statement_test.StatementTests._full_dict,
+        'efficacy': statement_test.StatementTests._full_dict,
+        'information_source': information_source_test.InformationSourceTests._full_dict,
+        'handling': data_marking_test.MarkingTests._full_dict,
+        'related_coas': RelatedCOAsTests._full_dict,
+        'related_packages': related_test.RelatedPackageRefsTests._full_dict
     }
 
 

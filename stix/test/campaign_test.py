@@ -2,9 +2,6 @@
 # See LICENSE.txt for complete terms.
 
 import unittest
-import StringIO
-
-from cybox.common import StructuredText
 
 from stix.test import EntityTestCase, TypedListTestCase, data_marking_test
 from stix.test.common import (
