@@ -3,9 +3,9 @@
 
 # internal
 import stix
+import stix.utils as utils
 import stix.bindings.incident as incident_binding
 from stix.common.datetimewithprecision import DATETIME_PRECISION_VALUES
-from stix.utils.dates import parse_value, serialize_value
 
 # relative
 from .coa import COATaken
@@ -28,7 +28,7 @@ class JournalEntry(stix.Entity):
     
     @time.setter
     def time(self, value):
-        self._time = parse_value(value)
+        self._time = utils.dates.parse_value(value)
         
     @property
     def time_precision(self):
@@ -48,7 +48,7 @@ class JournalEntry(stix.Entity):
         
         return_obj.valueOf_ = self.value
         return_obj.author = self.author
-        return_obj.time = serialize_value(self.time)
+        return_obj.time = utils.dates.serialize_value(self.time)
         return_obj.time_precision = self.time_precision
         
         return return_obj
@@ -76,7 +76,7 @@ class JournalEntry(stix.Entity):
         if self.author:
             d['author'] = self.author
         if self.time:
-            d['time'] = serialize_value(self.time)
+            d['time'] = utils.dates.serialize_value(self.time)
         if self.time_precision:
             d['time_precision'] = self.time_precision
             

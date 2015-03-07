@@ -150,7 +150,8 @@ class ImpactAssessment(stix.Entity):
 class Effects(stix.EntityList):
     _namespace = "http://stix.mitre.org/Incident-1"
     _contained_type = VocabString
-    _binding_class = incident_binding.EffectsType
+    _binding = incident_binding
+    _binding_class = _binding.EffectsType
     _inner_name = "effects"
     _binding_var = "Effect"
     _dict_as_list = True
