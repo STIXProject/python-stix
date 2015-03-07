@@ -1,8 +1,10 @@
+# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# See LICENSE.txt for complete terms.
+
 import unittest
-
 from stix.extensions.test_mechanism.snort_test_mechanism import SnortTestMechanism
-
 from stix.test import EntityTestCase
+
 
 class SnortTestMechanismTests(EntityTestCase, unittest.TestCase):
     klass = SnortTestMechanism
