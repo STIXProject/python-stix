@@ -3,24 +3,12 @@
 
 import unittest
 
+import stix.data_marking as dm
 from stix.test import EntityTestCase
-from stix.data_marking import Marking, MarkingSpecification, MarkingStructure
-
-
-class MarkingTests(EntityTestCase, unittest.TestCase):
-    klass = Marking
-    _full_dict = [
-        {
-            'id': "foo",
-        },
-        {
-            'id': "bar",
-        },
-    ]
 
 
 class MarkingSpecificationTests(EntityTestCase, unittest.TestCase):
-    klass = MarkingSpecification
+    klass = dm.MarkingSpecification
     _full_dict = {
         'id': "foo",
         'idref': "foo_ref",
@@ -43,7 +31,7 @@ class MarkingStructureTests(unittest.TestCase):
         }
 
         # If there's not an xsi:type in the dict, this will raise an error.
-        self.assertRaises(ValueError, MarkingStructure.from_dict, d)
+        self.assertRaises(ValueError, dm.MarkingStructure.from_dict, d)
 
     def test_xsi_type_required(self):
         d = {
@@ -51,8 +39,19 @@ class MarkingStructureTests(unittest.TestCase):
             'xsi:type': "UNKNOWN_XSI_TYPE",
         }
 
-        self.assertRaises(ValueError, MarkingStructure.from_dict, d)
+        self.assertRaises(ValueError, dm.MarkingStructure.from_dict, d)
 
+
+class MarkingTests(EntityTestCase, unittest.TestCase):
+    klass = dm.Marking
+    _full_dict = [
+        {
+            'id': "foo",
+        },
+        {
+            'id': "bar",
+        },
+    ]
 
 
 if __name__ == "__main__":

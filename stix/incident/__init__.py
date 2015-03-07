@@ -394,14 +394,6 @@ class RelatedIncidents(GenericRelationshipList):
     _inner_name = "incidents"
 
 
-class DiscoveryMethods(stix.EntityList):
-    _namespace = "http://stix.mitre.org/Incident-1"
-    _contained_type = VocabString
-
-    def _fix_value(self, value):
-        return vocabs.DiscoveryMethod(value)
-
-
 class IncidentCategories(stix.EntityList):
     _namespace = "http://stix.mitre.org/Incident-1"
     _contained_type = VocabString
@@ -426,6 +418,14 @@ class AffectedAssets(stix.EntityList):
 
 
 # NOT ACTUAL STIX TYPES!
+
+class DiscoveryMethods(stix.TypedList):
+    _contained_type = VocabString
+
+    def _fix_value(self, value):
+        return vocabs.DiscoveryMethod(value)
+
+
 class _COAsTaken(stix.TypedList):
     _contained_type =  COATaken
 

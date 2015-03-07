@@ -138,3 +138,13 @@ class EntityTestCase(object):
     def _test_partial_dict(self, partial):
         d = self._combine(partial)
         self._test_round_trip_dict(d)
+
+
+class TypedListTestCase(object):
+    def test_round_trip_rt(self):
+        if type(self) == type(TypedListTestCase):
+            return
+
+        obj = self.klass.from_dict(self._full_dict)
+        dict2 = obj.to_dict()
+        self.assertEqual(self._full_dict, dict2)

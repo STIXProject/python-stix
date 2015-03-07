@@ -231,7 +231,8 @@ class AssetType(VocabString):
 class NatureOfSecurityEffect(stix.EntityList):
     _namespace = "http://stix.mitre.org/Incident-1"
     _contained_type = PropertyAffected
-    _binding_class = incident_binding.NatureOfSecurityEffectType
+    _binding = incident_binding
+    _binding_class = _binding.NatureOfSecurityEffectType
     _binding_var = "Property_Affected"
     _inner_name = "nature_of_security_effect"
     _dict_as_list = True

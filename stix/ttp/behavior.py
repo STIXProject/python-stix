@@ -102,7 +102,8 @@ class Behavior(stix.Entity):
 class Exploits(stix.EntityList):
     _namespace = "http://stix.mitre.org/TTP-1"
     _contained_type = Exploit
-    _binding_class = ttp_binding.ExploitsType
+    _binding = ttp_binding
+    _binding_class = _binding.ExploitsType
     _binding_var = "Exploit"
     _inner_name = "exploits"
     _dict_as_list = True
@@ -111,7 +112,8 @@ class Exploits(stix.EntityList):
 class MalwareInstances(stix.EntityList):
     _namespace = "http://stix.mitre.org/TTP-1"
     _contained_type = MalwareInstance
-    _binding_class = ttp_binding.MalwareType
+    _binding = ttp_binding
+    _binding_class = _binding.MalwareType
     _binding_var = "Malware_Instance"
     _inner_name = "malware_instances"
     _dict_as_list = True
@@ -120,7 +122,8 @@ class MalwareInstances(stix.EntityList):
 class AttackPatterns(stix.EntityList):
     _namespace = "http://stix.mitre.org/TTP-1"
     _contained_type = AttackPattern
-    _binding_class = ttp_binding.AttackPatternsType
+    _binding = ttp_binding
+    _binding_class = _binding.AttackPatternsType
     _binding_var = "Attack_Pattern"
     _inner_name = "attack_patterns"
     _dict_as_list = True

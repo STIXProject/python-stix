@@ -102,7 +102,8 @@ class Resource(stix.Entity):
 class Personas(stix.EntityList):
     _namespace = "http://stix.mitre.org/TTP-1"
     _contained_type = Identity
-    _binding_class = ttp_binding.PersonasType
+    _binding = ttp_binding
+    _binding_class = _binding.PersonasType
     _binding_var = "Persona"
     _inner_name = "personas"
     _dict_as_list = True
@@ -114,7 +115,8 @@ class Personas(stix.EntityList):
 class Tools(stix.EntityList):
     _namespace = "http://stix.mitre.org/TTP-1"
     _contained_type = ToolInformation
-    _binding_class = ttp_binding.ToolsType
+    _binding = ttp_binding
+    _binding_class = _binding.ToolsType
     _binding_var = "Tool"
     _inner_name = "tools"
     _dict_as_list = True
