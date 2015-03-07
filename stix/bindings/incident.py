@@ -552,7 +552,7 @@ class COATakenType(GeneratedsSuper):
             self.extensiontype_ = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Time':
-            obj_ = TimeType.factory()
+            obj_ = COATimeType.factory()
             obj_.build(child_)
             self.set_Time(obj_)
         elif nodeName_ == 'Contributors':
