@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # external
+import stix
 import cybox.common
 
 # internal
@@ -9,7 +10,7 @@ from stix.common import StructuredText
 import stix.bindings.stix_common as common_binding
 
 
-class ToolInformation(cybox.common.ToolInformation):
+class ToolInformation(stix.Entity, cybox.common.ToolInformation):
     _namespace = 'http://stix.mitre.org/common-1'
     _binding = common_binding
     _binding_class = common_binding.ToolInformationType
@@ -45,8 +46,14 @@ class ToolInformation(cybox.common.ToolInformation):
         if not return_obj:
             return_obj = self._binding_class()
 
-        super(ToolInformation, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-        
+
+        stix.Entity.to_obj(self, return_obj=return_obj, ns_info=ns_info)
+        cybox.common.ToolInformation.to_obj(
+            self,
+            return_obj=return_obj,
+            ns_info=ns_info
+        )
+
         return_obj.Title = self.title        
         if self.short_description:
             return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
@@ -60,7 +67,7 @@ class ToolInformation(cybox.common.ToolInformation):
         if not return_obj:
             return_obj = cls()
 
-        super(ToolInformation, cls).from_obj(obj, return_obj)
+        cybox.common.ToolInformation.from_obj(obj, return_obj)
         
         return_obj.title = obj.Title
         return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
@@ -68,7 +75,7 @@ class ToolInformation(cybox.common.ToolInformation):
         return return_obj
 
     def to_dict(self):
-        d = super(ToolInformation, self).to_dict()
+        d = cybox.common.ToolInformation.to_dict(self)
         
         if self.title:
             d['title'] = self.title
@@ -84,7 +91,7 @@ class ToolInformation(cybox.common.ToolInformation):
         if not return_obj:
             return_obj = cls()
 
-        super(ToolInformation, cls).from_dict(dict_repr, return_obj)
+        cybox.common.ToolInformation.from_dict(dict_repr, return_obj)
         return_obj.title = dict_repr.get('title')
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
         
