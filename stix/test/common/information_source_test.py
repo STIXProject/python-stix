@@ -15,17 +15,6 @@ class InformationSourceTests(EntityTestCase, unittest.TestCase):
         'identity': {
             'name': "Spiderman",
         },
-        'references' : ['http://example.com'],
-        'time': {
-            'start_time': "2010-11-12T01:02:03",
-            'end_time': "2013-12-11T03:02:01",
-        },
-        'tools': [
-            {
-                'name': "Web",
-                'description': "Superwebs",
-            },
-        ],
         'roles': [
             {
                 'value': 'Initial Author',
@@ -35,6 +24,43 @@ class InformationSourceTests(EntityTestCase, unittest.TestCase):
                 'value': 'Transformer/Translator',
                 'xsi:type': 'stixVocabs:InformationSourceRoleVocab-1.0'
             }
+        ],
+        'contributing_sources': {
+            'sources': [
+                {
+                    'identity': {
+                        'name': "Batman",
+                    },
+                    'description': 'Source #1'
+                },
+                {
+                    'identity': {
+                        'name': "Superman",
+                    },
+                    'description': 'Source #2'
+               }
+            ]
+        },
+        'references' : ['http://example.com'],
+        'time': {
+            'start_time': "2010-11-12T01:02:03",
+            'end_time': "2013-12-11T03:02:01",
+            'produced_time': "2013-12-11T03:02:01",
+            'received_time': "2013-12-11T03:02:01",
+        },
+        'tools': [
+            {
+                'name': "Web",
+                'description': "Superwebs",
+            },
+            {
+                'name': "Tubes",
+                'description': "Supertubes",
+            },
+        ],
+        'references': [
+            'http://example.com',
+            'http://example.com'
         ]
     }
 

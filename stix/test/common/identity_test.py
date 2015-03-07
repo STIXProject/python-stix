@@ -18,6 +18,10 @@ class IdentityTests(EntityTestCase, unittest.TestCase):
             'identities': [
                 {
                     'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
+                    'identity': {'id': "foo1"}
+                },
+                {
+                    'confidence': {'value': 'Sorta, kinda confident'},
                     'identity': {'id': "foo2"}
                 }
             ]

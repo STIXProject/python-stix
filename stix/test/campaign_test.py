@@ -17,7 +17,11 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
         'description': 'A pretty novice set of actors.',
         'short_description': 'novices',
         'names': {
-            'names': ["Dancing Hippos", "Crazy Squirrels"],
+            'names': [
+                "Dancing Hippos",
+                "Crazy Squirrels",
+                {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}
+            ],
         },
         'intended_effects': [
             {
@@ -29,7 +33,7 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
                 'value': "Doing really bad stuff",
             }
         ],
-        'status': "Ongoing",
+        'status': {'value': "Ongoing", 'xsi:type':'stixVocabs:CampaignStatusVocab-1.0'},
         'related_ttps': {
             'scope': "exclusive",
             'ttps': [

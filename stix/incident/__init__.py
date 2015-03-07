@@ -379,7 +379,7 @@ class RelatedObservables(GenericRelationshipList):
 class LeveragedTTPs(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding = incident_binding
-    _binding_class = incident_binding.LeveragedTTPsType
+    _binding_class = _binding.LeveragedTTPsType
     _binding_var = "Leveraged_TTP"
     _contained_type = RelatedTTP
     _inner_name = "ttps"
@@ -405,7 +405,8 @@ class DiscoveryMethods(stix.EntityList):
 class IncidentCategories(stix.EntityList):
     _namespace = "http://stix.mitre.org/Incident-1"
     _contained_type = VocabString
-    _binding_class = incident_binding.CategoriesType
+    _binding = incident_binding
+    _binding_class = _binding.CategoriesType
     _binding_var = "Category"
     _inner_name = "categories"
     _dict_as_list = True
@@ -417,7 +418,8 @@ class IncidentCategories(stix.EntityList):
 class AffectedAssets(stix.EntityList):
     _namespace = "http://stix.mitre.org/Incident-1"
     _contained_type = AffectedAsset
-    _binding_class = incident_binding.AffectedAssetsType
+    _binding = incident_binding
+    _binding_class = _binding.AffectedAssetsType
     _binding_var = "Affected_Asset"
     _inner_name = "affected_assets"
     _dict_as_list = True

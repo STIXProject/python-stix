@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import json
+import itertools
 
 import cybox.utils
 
@@ -100,7 +101,7 @@ class EntityTestCase(object):
         self.assertNotEqual(self.klass, None)
         self.assertNotEqual(self._full_dict, None)
 
-    def test_round_trip_dict(self):
+    def test_round_trip_full_dict(self):
         # Don't run this test on the base class
         if type(self) == type(EntityTestCase):
             return
@@ -109,7 +110,15 @@ class EntityTestCase(object):
         self.maxDiff = None
         self.assertEqual(self._full_dict, dict2)
 
-    def test_round_trip(self):
+    def _combine(self, d):
+        items = itertools.chain(
+            self._full_dict.iteritems(),
+            d.iteritems()
+        )
+
+        return dict(items)
+
+    def test_round_trip_full(self):
         # Don't run this test on the base class
         if type(self) == type(EntityTestCase):
             return
@@ -119,3 +128,13 @@ class EntityTestCase(object):
 
         #TODO: eventually we want to test the objects are the same, but for
         # now, just make sure there aren't any errors.
+
+    def _test_round_trip_dict(self, input):
+        dict2 = round_trip_dict(self.klass, input)
+
+        self.maxDiff = None
+        self.assertEqual(input, dict2)
+
+    def _test_partial_dict(self, partial):
+        d = self._combine(partial)
+        self._test_round_trip_dict(d)

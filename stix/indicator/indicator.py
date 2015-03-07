@@ -14,7 +14,8 @@ from stix.common import (
     RelatedTTP, Statement, CampaignRef
 )
 from stix.common.related import (
-    GenericRelationshipList, RelatedCOA, RelatedIndicator, RelatedCampaignRef
+    GenericRelationshipList, RelatedCOA, RelatedIndicator, RelatedCampaignRef,
+    RelatedPackageRefs
 )
 from stix.data_marking import Marking
 from stix.common.vocabs import IndicatorType
@@ -209,6 +210,7 @@ class Indicator(stix.BaseCoreComponent):
         self.observable_composition_operator = "OR"
         self.likely_impact = None
         self.negate = None
+        self.related_packages = RelatedPackageRefs()
 
     @property
     def producer(self):
@@ -660,6 +662,17 @@ class Indicator(stix.BaseCoreComponent):
     def add_kill_chain_phase(self, value):
         self.kill_chain_phases.append(value)
 
+    @property
+    def related_packages(self):
+        return self._related_packages
+
+    @related_packages.setter
+    def related_packages(self, value):
+        self._related_packages = RelatedPackageRefs(value)
+
+    def add_related_package(self, value):
+        self.related_packages.append(value)
+
     def set_producer_identity(self, identity):
         """Sets the name of the producer of this indicator.
 
@@ -869,6 +882,8 @@ class Indicator(stix.BaseCoreComponent):
             return_obj.Related_Indicators = self.related_indicators.to_obj(ns_info=ns_info)
         if self.related_campaigns:
             return_obj.Related_Campaigns = self.related_campaigns.to_obj(ns_info=ns_info)
+        if self.related_packages:
+            return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
         if self.observables:
             if len(self.observables) > 1:
                 root_observable = self._merge_observables(self.observables)
@@ -905,6 +920,7 @@ class Indicator(stix.BaseCoreComponent):
             return_obj.valid_time_positions = _ValidTimePositions.from_obj(obj.Valid_Time_Position)
             return_obj.observable = Observable.from_obj(obj.Observable)
             return_obj.related_campaigns = RelatedCampaignRefs.from_obj(obj.Related_Campaigns)
+            return_obj.related_packages = RelatedPackageRefs.from_obj(obj.Related_Packages)
             
         return return_obj
 
@@ -948,6 +964,7 @@ class Indicator(stix.BaseCoreComponent):
         return_obj.observable = Observable.from_dict(get('observable'))
         return_obj.producer = InformationSource.from_dict(get('producer'))
         return_obj.related_campaigns = RelatedCampaignRefs.from_dict(get('related_campaigns'))
+        return_obj.related_packages = RelatedPackageRefs.from_dict(get('related_packages'))
 
         return return_obj
 

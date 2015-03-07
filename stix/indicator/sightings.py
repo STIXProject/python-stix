@@ -91,7 +91,7 @@ class Sighting(stix.Entity):
         return_obj.timestamp = obj.timestamp
         return_obj.timestamp_precision = obj.timestamp_precision
         return_obj.source = InformationSource.from_obj(obj.Source)
-        return_obj.refernce = obj.Reference
+        return_obj.reference = obj.Reference
         return_obj.confidence = Confidence.from_obj(obj.Confidence)
         return_obj.description = StructuredText.from_obj(obj.Description)
         return_obj.related_observables = RelatedObservables.from_obj(obj.Related_Observables)
