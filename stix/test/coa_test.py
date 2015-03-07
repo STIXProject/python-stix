@@ -31,6 +31,7 @@ class ObjectiveTests(EntityTestCase, unittest.TestCase):
         'applicability_confidence': confidence_test.ConfidenceTests._full_dict
     }
 
+
 class COATests(EntityTestCase, unittest.TestCase):
     klass = coa.CourseOfAction
     _full_dict = {
