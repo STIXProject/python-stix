@@ -4,10 +4,7 @@
 import unittest
 
 from stix.test import EntityTestCase, data_marking_test
-from stix.test.common import (
-    confidence_test, information_source_test, statement_test, related_test,
-    identity_test
-)
+from stix.test.common import related_test, identity_test
 
 import stix.ttp as ttp
 from stix.ttp import (
