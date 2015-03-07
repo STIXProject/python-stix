@@ -6,7 +6,7 @@ import StringIO
 
 from cybox.common import StructuredText
 
-from stix.test import EntityTestCase, TypedListTestCase
+from stix.test import EntityTestCase, TypedListTestCase, data_marking_test
 from stix.test.common import (
     confidence_test, information_source_test, statement_test, related_test
 )
@@ -407,6 +407,7 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
         'title': 'Test Title',
         'description': 'The Datacenter was broken into.',
         'short_description': 'Short Description Title',
+        'handling': data_marking_test.MarkingTests._full_dict,
         'external_ids': ExternalIDsTest._full_dict,
         'attributed_threat_actors': AttributedThreatActorsTest._full_dict,
         'categories': CategoriesTest._full_dict,
@@ -423,6 +424,10 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
         'security_compromise': {
             "value": "Suspected",
             "xsi:type":"stixVocabs:SecurityCompromiseVocab-1.0"
+        },
+        'status':  {
+            "value": "New",
+            "xsi:type": 'stixVocabs:IncidentStatusVocab-1.0'
         },
         'history': HistoryTest._full_dict,
         'affected_assets': AffectedAssetsTest._full_dict,
