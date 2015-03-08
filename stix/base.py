@@ -28,23 +28,59 @@ class Entity(object):
 
 
     def _set_var(self, klass, try_cast=True, arg=None, **kwargs):
-        name = utils.private_name(kwargs.iterkeys().next())
-        item = kwargs.itervalues().next()
+        """Sets an instance property value.
 
-        if not item:
-            setattr(self, name, None)
+        * If the input value is ``None``, the property is set to ``None``.
+        * If the input value is an instance of `klass`, the property is set
+          the input value.
+        * If the input value is not an instance of `klass` and `try_cast` is
+          ``True``, an attempt will be made to cast the input value to an
+          instance of `klass`.
+
+        Args:
+            klass: The expected input value class.
+            try_cast: If ``True`` attempt to cast the input value to `klass`
+                if it is not an instance of `klass`.
+            arg: The __init__ parameter name to use when casting the input
+                value to `klass`. E.g., StructuredText(value=input), the `arg`
+                is `value`. If ``None``, it is assumed that the first
+                __init__ parameter will accept the value.
+            **kwargs: The field name and value. The field name is the key
+                and the field value is the value.
+
+        """
+        name, item = kwargs.iteritems().next()
+        attr = utils.private_name(name)  # 'title' => '_title'
+
+        if item is None:
+            setattr(self, attr, None)
         elif isinstance(item, klass):
-            setattr(self, name, item)
+            setattr(self, attr, item)
         elif try_cast:
             promoted = utils.cast_var(item, klass, arg=arg)
-            setattr(self, name, promoted)
+            setattr(self, attr, promoted)
         else:
-            attr_name = utils.attr_name(name)
-            error = "The '{0}' field expects an instance of {1}. Received: {2}."
-            error = error.format(attr_name, klass, type(item))
+            error = "'{0}' expects an instance of {1}. Received: {2}."
+            error = error.format(name, klass, type(item))
             raise TypeError(error)
 
     def _set_vocab(self, klass=None, **kwargs):
+        """Sets a controlled vocabulary property value.
+
+        * If the input value is ``None``, the property is set to ``None``.
+        * If the input value is an instance of ``VocabString``, the property
+          is set to the input value.
+        * If the input value is not an instance of ``VocabString``, an attempt
+          will be made to cast the input to an instance of `klass`. If `klass`
+          is ``None``, ``VocabString`` will be used.
+
+        Args:
+            klass: The VocabString impl to cast the input value to. If ``None``
+                ``VocabString`` will be assumed.
+            **kwargs: The field name, value pair. The field name is the key
+                and the field value is the value.
+
+        """
         from stix.common import VocabString
 
         klass = klass or VocabString
