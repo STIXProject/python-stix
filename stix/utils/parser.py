@@ -59,6 +59,17 @@ def get_xml_parser(encoding=None):
     return parser
 
 
+def get_etree(doc, encoding=None):
+    if isinstance(doc, etree._Element):
+        return etree.ElementTree(doc)
+
+    if isinstance(doc, etree._ElementTree):
+        return doc
+
+    parser = get_xml_parser(encoding=encoding)
+    return etree.parse(doc, parser=parser)
+
+
 def get_etree_root(doc, encoding=None):
     """Returns an instance of lxml.etree._Element for the given `doc` input.
 
