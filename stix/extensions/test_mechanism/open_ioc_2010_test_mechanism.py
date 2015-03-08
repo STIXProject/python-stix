@@ -9,8 +9,8 @@ from lxml import etree
 
 # internal
 import stix
-import stix.utils
-import stix.utils.parser
+import stix.utils as utils
+import stix.utils.parser as parser
 import stix.indicator.test_mechanism
 from stix.indicator.test_mechanism import _BaseTestMechanism
 import stix.bindings.extensions.test_mechanism.open_ioc_2010 as open_ioc_tm_binding
@@ -22,11 +22,14 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
     _binding_class = _binding.OpenIOC2010TestMechanismType
     _xml_ns_prefix = "stix-openioc"
     _XSI_TYPE = "stix-openioc:OpenIOC2010TestMechanismType"
+    _TAG_IOC = "{%s}ioc" % _namespace
 
     def __init__(self, id_=None, idref=None):
         super(OpenIOCTestMechanism, self).__init__(id_=id_, idref=idref)
         self.ioc = None
-    
+        self.__input_namespaces__ = None
+        self.__input_schemalocations__ = None
+
     @property
     def ioc(self):
         return self._ioc
@@ -37,42 +40,40 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
             self._ioc = None
             return
 
-        elif isinstance(value, etree._ElementTree):
-            tree = value
-        elif isinstance(value, etree._Element):
-            tree = etree.ElementTree(value)
-        else:
-            raise ValueError('ioc must be instance of lxml.etree._Element '
-                             'or lxml.etree._ElementTree')
-        
-        root = tree.getroot()
-        expected_node_tag = "{%s}ioc" % (self._namespace)
-        if root.tag != expected_node_tag:
-            ns_ioc = "http://schemas.mandiant.com/2010/ioc"
-            node_ns = etree.QName(root).namespace
+        tree = parser.get_etree(value)
+        root = parser.get_etree_root(tree)
 
-            if node_ns == ns_ioc:
-                # attempt to cast
-                etree.register_namespace(self._xml_ns_prefix, self._namespace)
-                root.tag = expected_node_tag
-            else:
-                raise ValueError(
-                    "Cannot set ioc property. Expected tag %s found %s" %
-                    (expected_node_tag, root.tag)
-                )
-        
-        self.__input_namespaces__ = {}
-        for alias,ns in root.nsmap.iteritems():
-            self.__input_namespaces__[ns] = alias
+        if root.tag != self._TAG_IOC:
+            self._cast_ioc(root)
 
+        self._collect_namespaces(root)
+        self._collect_schemalocs(root)
+        self._ioc = tree
+
+    def _collect_schemalocs(self, node):
         try:
-            schemaloc = stix.utils.parser.get_schemaloc_pairs(root)
+            schemaloc = parser.get_schemaloc_pairs(node)
             self.__input_schemalocations__ = dict(schemaloc)
         except KeyError:
             self.__input_schemalocations__ = {}
-        
-        self._ioc = tree
-        
+
+    def _collect_namespaces(self, node):
+        self.__input_namespaces__ = {}
+        for alias,ns in node.nsmap.iteritems():
+            self.__input_namespaces__[ns] = alias
+
+    def _cast_ioc(self, node):
+        ns_ioc = "http://schemas.mandiant.com/2010/ioc"
+        node_ns = etree.QName(node).namespace
+
+        if node_ns == ns_ioc:
+            etree.register_namespace(self._xml_ns_prefix, self._namespace)
+            node.tag = self._TAG_IOC
+        else:
+            error = "Cannot set ioc. Expected tag '{0}' found '{1}'."
+            error = error.format(self._TAG_IOC, node.tag)
+            raise ValueError(error)
+
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:
