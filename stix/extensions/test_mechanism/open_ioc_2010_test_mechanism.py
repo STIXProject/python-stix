@@ -9,7 +9,6 @@ from lxml import etree
 
 # internal
 import stix
-import stix.utils as utils
 import stix.utils.parser as parser
 import stix.indicator.test_mechanism
 from stix.indicator.test_mechanism import _BaseTestMechanism
