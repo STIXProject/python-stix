@@ -219,8 +219,12 @@ def is_bool(obj):
     return isinstance(obj, bool)
 
 
-def is_etree(obj):
+def is_element(obj):
     return isinstance(obj, lxml.etree._Element)
+
+
+def is_etree(obj):
+    return isinstance(obj, lxml.etree._ElementTree)
 
 
 def to_dict(entity, skip=()):
@@ -238,7 +242,7 @@ def to_dict(entity, skip=()):
             d[key] = field.to_dict()
         elif is_timestamp(field):
             d[key] = dates.serialize_value(field)
-        elif is_etree(field):
+        elif is_element(field):
             d[key] = lxml.etree.tostring(field)
         elif is_sequence(field):
             d[key] = dict_iter(field)
