@@ -5,6 +5,7 @@
 import collections
 import contextlib
 import keyword
+import warnings
 
 # external
 import cybox
@@ -199,8 +200,11 @@ def iter_vars(obj):
         if val is None:
             return False
 
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            has_value = bool(val) or is_bool(val)
+
         inputs = ('__input_namespaces__', '__input_schemalocations__')
-        has_value = bool(val) or is_bool(val)
         return has_value and (key not in inputs)
 
     vars_ = obj.__dict__.iteritems()
@@ -242,7 +246,7 @@ def to_dict(entity, skip=()):
             d[key] = field.to_dict()
         elif is_timestamp(field):
             d[key] = dates.serialize_value(field)
-        elif is_element(field):
+        elif is_element(field) or is_etree(field):
             d[key] = lxml.etree.tostring(field)
         elif is_sequence(field):
             d[key] = dict_iter(field)

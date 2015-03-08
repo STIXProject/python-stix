@@ -49,7 +49,6 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
         self._collect_namespaces(root)
         self._collect_schemalocs(root)
         self._ioc = tree
->>>>>>> origin/master
 
     def _collect_schemalocs(self, node):
         try:
