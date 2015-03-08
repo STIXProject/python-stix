@@ -232,7 +232,7 @@ class Indicator(stix.BaseCoreComponent):
 
     @producer.setter
     def producer(self, value):
-        self._set_var(InformationSource, try_cast=False, _producer=value)
+        self._set_var(InformationSource, try_cast=False, producer=value)
 
     @property
     def observable(self):
@@ -649,7 +649,7 @@ class Indicator(stix.BaseCoreComponent):
     
     @negate.setter
     def negate(self, value):
-        self._negate = True if value in xmlconst.TRUE else None
+        self._negate = utils.xml_bool(value)
 
     @property
     def kill_chain_phases(self):
@@ -850,7 +850,7 @@ class Indicator(stix.BaseCoreComponent):
 
         super(Indicator, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
-        return_obj.negate = self._negate
+        return_obj.negate = True if self.negate else None
 
         if self.confidence:
             return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
@@ -925,8 +925,11 @@ class Indicator(stix.BaseCoreComponent):
         return return_obj
 
     def to_dict(self):
-        skip = ('observables', 'observable_composition_operator')
+        skip = ('observables', 'observable_composition_operator', 'negate')
         d = utils.to_dict(self, skip=skip)
+
+        if self.negate:
+            d['negate'] = True
 
         if self.observables:
             if len(self.observables) == 1:

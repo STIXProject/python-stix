@@ -254,7 +254,8 @@ def xml_bool(item):
 
     if item in xmlconst.FALSE:
         return False
-    elif item in xmlconst.TRUE:
+
+    if item in xmlconst.TRUE:
         return True
 
     error = "Unable to determine the boolean value of '{0}'".format(item)
