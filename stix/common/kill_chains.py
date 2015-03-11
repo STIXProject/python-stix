@@ -1,7 +1,12 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# stdlib
+import functools
+
+# internal
 import stix
+import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
 class KillChain(stix.Entity):
@@ -208,3 +213,72 @@ class KillChainPhasesReference(stix.EntityList):
 # NOT AN ACTUAL STIX TYPE!
 class _KillChainPhases(stix.TypedList):
     _contained_type = KillChainPhase
+
+
+class LMCOKillChain(object):
+    """A helper class that makes use of the Lockheed Martin Kill Chain a
+    bit easier than having to build one manually.
+
+    """
+    def __init__(self):
+        with utils.temp_id_namespace({'http://stix.mitre.org':'stix'}):
+            self.__recon    = self._create_phase(name="Reconnaissance", ordinality="1")
+            self.__weapon   = self._create_phase(name="Weaponization", ordinality="2")
+            self.__deliver  = self._create_phase(name="Delivery", ordinality="3")
+            self.__exploit  = self._create_phase(name="Exploitation", ordinality="4")
+            self.__install  = self._create_phase(name="Installation", ordinality="5")
+            self.__control  = self._create_phase(name="Command and Control", ordinality="6")
+            self.__action   = self._create_phase(name="Actions on Objectives", ordinality="7")
+
+            self.__kill_chain = KillChain(id_=utils.create_id('TTP'), name="LMCO Cyber Kill Chain")
+            self.__kill_chain.kill_chain_phases = (
+                self.__recon,
+                self.__weapon,
+                self.__deliver,
+                self.__exploit,
+                self.__install,
+                self.__control,
+                self.__action
+            )
+
+    def _create_phase(self, name, ordinality):
+        id_ = utils.create_id('TTP')
+        return KillChainPhase(phase_id=id_, name=name, ordinality=ordinality)
+
+    @property
+    def kill_chain(self):
+        return self.__kill_chain
+
+    @property
+    def phase_reconnaissance(self):
+        return self.__recon
+
+    @property
+    def phase_weaponize(self):
+        return self.__weapon
+
+    @property
+    def phase_deliery(self):
+        return self.__deliver
+
+    @property
+    def phase_exploitation(self):
+        return self.__exploit
+
+    @property
+    def phase_installation(self):
+        return self.__install
+
+    @property
+    def phase_command_and_control(self):
+        return self.__control
+
+    @property
+    def phase_actions_and_objectives(self):
+        return self.__action
+
+    def to_dict(self):
+        return self.__kill_chain.to_dict()
+
+    def to_xml(self):
+        return self.__kill_chain.to_xml()
