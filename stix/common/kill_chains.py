@@ -1,9 +1,6 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# stdlib
-import functools
-
 # internal
 import stix
 import stix.bindings.stix_common as common_binding
