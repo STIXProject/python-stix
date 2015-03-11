@@ -126,12 +126,7 @@ class Campaign(stix.BaseCoreComponent):
 
     @status.setter
     def status(self, value):
-        if not value:
-            self._status = None
-        elif isinstance(value, VocabString):
-            self._status = value
-        else:
-            self._status = vocabs.CampaignStatus(value)
+        self._set_vocab(vocabs.CampaignStatus, status=value)
 
     @property
     def attribution(self):

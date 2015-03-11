@@ -39,12 +39,7 @@ class Confidence(stix.Entity):
 
     @value.setter
     def value(self, value):
-        if value is None:
-            self._value = None
-        if isinstance(value, VocabString):
-            self._value = value
-        else:
-            self._value = vocabs.HighMediumLow(value=value)
+        self._set_vocab(vocabs.HighMediumLow, value=value)
 
     @property
     def source(self):
@@ -53,13 +48,7 @@ class Confidence(stix.Entity):
     @source.setter
     def source(self, value):
         from .information_source import InformationSource
-        
-        if value is None:
-            self._source = None
-        elif isinstance(value, InformationSource):
-            self._source = value
-        else:
-            raise ValueError("source must be of type InformationSource")
+        self._set_var(InformationSource, try_cast=False, source=value)
 
     @property
     def description(self):
@@ -67,12 +56,7 @@ class Confidence(stix.Entity):
 
     @description.setter
     def description(self, value):
-        if not value:
-            self._description = None
-        elif isinstance(value, StructuredText):
-            self._description = value
-        else:
-            self._description = StructuredText(value=value)
+        self._set_var(StructuredText, description=value)
 
     # @property
     # def confidence_assertion_chain(self):

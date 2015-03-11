@@ -71,12 +71,7 @@ class Incident(stix.BaseCoreComponent):
     
     @status.setter
     def status(self, value):
-        if not value:
-            self._status = None
-        elif isinstance(value, VocabString):
-            self._status = value
-        else:
-            self._status = vocabs.IncidentStatus(value=value)
+        self._set_vocab(vocabs.IncidentStatus, status=value)
 
     @property
     def time(self):
@@ -84,10 +79,7 @@ class Incident(stix.BaseCoreComponent):
 
     @time.setter
     def time(self, value):
-        if value and not isinstance(value, Time):
-            raise ValueError("value must be instance of stix.incident.time.Time")
-
-        self._time = value
+        self._set_var(Time, try_cast=False, time=value)
 
     @property
     def handling(self):
@@ -95,12 +87,8 @@ class Incident(stix.BaseCoreComponent):
     
     @handling.setter
     def handling(self, value):
-        if not value:
-            self._handling = None
-        elif isinstance(value, Marking):
-            self._handling = value
-        else:
-            raise ValueError('unable to set handling to type %s' % type(value))
+        self._set_var(Marking, try_cast=False, handling=value)
+
     @property
     def intended_effects(self):
         return self._intended_effects
@@ -162,12 +150,7 @@ class Incident(stix.BaseCoreComponent):
 
     @reporter.setter
     def reporter(self, value):
-        if not value:
-            self._reporter = None
-        elif isinstance(value, InformationSource):
-            self._reporter = value
-        else:
-            raise ValueError('value must be instance of InformationSource')
+        self._set_var(InformationSource, try_cast=False, reporter=value)
 
     @property
     def responders(self):
@@ -208,12 +191,7 @@ class Incident(stix.BaseCoreComponent):
 
     @impact_assessment.setter
     def impact_assessment(self, value):
-        if not value:
-            self._impact_assessment = None
-        elif isinstance(value, ImpactAssessment):
-            self._impact_assessment = value
-        else:
-            raise ValueError('value must be instance of ImpactAssessment')
+        self._set_var(ImpactAssessment, try_cast=False, impact_assessment=value)
 
     @property
     def security_compromise(self):
@@ -221,12 +199,7 @@ class Incident(stix.BaseCoreComponent):
 
     @security_compromise.setter
     def security_compromise(self, value):
-        if not value:
-            self._security_compromise = None
-        elif isinstance(value, VocabString):
-            self._security_compromise = value
-        else:
-            self._security_compromise = vocabs.SecurityCompromise(value=value)
+        self._set_vocab(vocabs.SecurityCompromise, security_compromise=value)
 
     @property
     def confidence(self):
@@ -234,12 +207,7 @@ class Incident(stix.BaseCoreComponent):
     
     @confidence.setter
     def confidence(self, value):
-        if not value:
-            self._confidence = None
-        elif isinstance(value, Confidence):
-            self._confidence = value
-        else:
-            self._confidence = Confidence(value)
+        self._set_var(Confidence, confidence=value)
 
     @property
     def coa_taken(self):

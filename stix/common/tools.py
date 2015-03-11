@@ -34,18 +34,11 @@ class ToolInformation(stix.Entity, cybox.common.ToolInformation):
 
     @short_description.setter
     def short_description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._short_description = value
-            else:
-                self._short_description = StructuredText(value=value)
-        else:
-            self._short_description = None
+        self._set_var(StructuredText, short_description=value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
-
 
         stix.Entity.to_obj(self, return_obj=return_obj, ns_info=ns_info)
         cybox.common.ToolInformation.to_obj(

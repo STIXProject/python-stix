@@ -19,10 +19,7 @@ class Marking(stix.Entity):
 
     @markings.setter
     def markings(self, value):
-        if isinstance(value, _MarkingSpecifications):
-            self._markings = value
-        else:
-            self._markings = _MarkingSpecifications(value)
+        self._markings = _MarkingSpecifications(value)
 
     def add_marking(self, value):
         self._markings.append(value)
@@ -92,11 +89,7 @@ class MarkingSpecification(stix.Entity):
 
     @marking_structures.setter
     def marking_structures(self, value):
-        if isinstance(value, _MarkingStructures):
-            self._marking_structures = value
-        else:
-            self._marking_structures = _MarkingStructures(value)
-
+        self._marking_structures = _MarkingStructures(value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(MarkingSpecification, self).to_obj(

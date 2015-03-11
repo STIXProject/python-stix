@@ -24,12 +24,7 @@ class DirectImpactSummary(stix.Entity):
 
     @asset_losses.setter
     def asset_losses(self, value):
-        if not value:
-            self._asset_losses = None
-        elif isinstance(value, VocabString):
-            self._asset_losses = value
-        else:
-            self._asset_losses = ImpactRating(value=value)
+        self._set_vocab(ImpactRating, asset_losses=value)
 
     @property
     def business_mission_disruption(self):
@@ -37,12 +32,7 @@ class DirectImpactSummary(stix.Entity):
 
     @business_mission_disruption.setter
     def business_mission_disruption(self, value):
-        if not value:
-            self._business_mission_disruption = None
-        elif isinstance(value, VocabString):
-            self._business_mission_disruption = value
-        else:
-            self._business_mission_disruption = ImpactRating(value=value)
+        self._set_vocab(ImpactRating, business_mission_disruption=value)
 
     @property
     def response_and_recovery_costs(self):
@@ -50,12 +40,7 @@ class DirectImpactSummary(stix.Entity):
 
     @response_and_recovery_costs.setter
     def response_and_recovery_costs(self, value):
-        if not value:
-            self._response_and_recovery_costs = None
-        elif isinstance(value, VocabString):
-            self._response_and_recovery_costs = value
-        else:
-            self._response_and_recovery_costs = ImpactRating(value=value)
+        self._set_vocab(ImpactRating, response_and_recovery_costs=value)
             
     def to_obj(self, return_obj=None, ns_info=None):
         super(DirectImpactSummary, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -83,14 +68,7 @@ class DirectImpactSummary(stix.Entity):
         return return_obj
 
     def to_dict(self):    
-        d  = {}
-        if self.asset_losses:
-            d['asset_losses'] = self.asset_losses.to_dict()
-        if self.business_mission_disruption:
-            d['business_mission_disruption'] = self.business_mission_disruption.to_dict()
-        if self.response_and_recovery_costs:
-            d['response_and_recovery_costs'] = self.response_and_recovery_costs.to_dict()
-        return d
+        return super(DirectImpactSummary, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_, return_obj=None):

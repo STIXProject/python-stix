@@ -28,22 +28,10 @@ class VictimTargeting(stix.Entity):
 
     @targeted_systems.setter
     def targeted_systems(self, value):
-        self._targeted_systems = TargetedSystems()
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_targeted_system(v)
-        else:
-            self.add_targeted_system(value)
+        self._targeted_systems = TargetedSystems(value)
 
     def add_targeted_system(self, system):
-        if not system:
-            return
-        elif isinstance(system, VocabString):
-            self._targeted_systems.append(system)
-        else:
-            self._targeted_systems.append(vocabs.SystemType(value=system))
+        self._targeted_systems.append(system)
 
     @property
     def targeted_information(self):
@@ -51,22 +39,10 @@ class VictimTargeting(stix.Entity):
 
     @targeted_information.setter
     def targeted_information(self, value):
-        self._targeted_information = TargetedInformation()
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_targeted_information(v)
-        else:
-            self.add_targeted_information(value)
+        self._targeted_information = TargetedInformation(value)
 
     def add_targeted_information(self, targeted_information):
-        if not targeted_information:
-            return
-        elif isinstance(targeted_information, VocabString):
-            self._targeted_information.append(targeted_information)
-        else:
-            self._targeted_information.append(vocabs.InformationType(value=targeted_information))
+        self._targeted_information.append(targeted_information)
 
     @property
     def targeted_technical_details(self):
@@ -74,12 +50,7 @@ class VictimTargeting(stix.Entity):
 
     @targeted_technical_details.setter
     def targeted_technical_details(self, value):
-        if not value:
-            self._targeted_technical_details = None
-        elif isinstance(value, Observables):
-            self._targeted_technical_details = value
-        else:
-            self._targeted_technical_details = Observables(observables=[value])
+        self._set_var(Observables, targeted_technical_details=value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(VictimTargeting, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -90,9 +61,9 @@ class VictimTargeting(stix.Entity):
         if self.identity:
             return_obj.Identity = self.identity.to_obj(ns_info=ns_info)
         if self.targeted_information:
-            return_obj.Targeted_Information = [x.to_obj(ns_info=ns_info) for x in self.targeted_information]
+            return_obj.Targeted_Information = self.targeted_information.to_obj(ns_info=ns_info)
         if self.targeted_systems:
-            return_obj.Targeted_Systems = [x.to_obj(ns_info=ns_info) for x in self.targeted_systems]
+            return_obj.Targeted_Systems = self.targeted_systems.to_obj(ns_info=ns_info)
         if self.targeted_technical_details:
             return_obj.Targeted_Technical_Details = self.targeted_technical_details.to_obj(ns_info=ns_info)
 
@@ -107,52 +78,39 @@ class VictimTargeting(stix.Entity):
 
         return_obj.identity = Identity.from_obj(obj.Identity)
         return_obj.targeted_technical_details = Observables.from_obj(obj.Targeted_Technical_Details)
-
-        if obj.Targeted_Systems:
-            return_obj.targeted_systems = [VocabString.from_obj(x) for x in obj.Targeted_Systems]
-        if obj.Targeted_Information:
-            return_obj.targeted_information = [VocabString.from_obj(x) for x in obj.Targeted_Information]
+        return_obj.targeted_systems = TargetedSystems.from_obj(obj.Targeted_Systems)
+        return_obj.targeted_information = TargetedInformation.from_obj(obj.Targeted_Information)
 
         return return_obj
 
     def to_dict(self):
-        d = {}
-        if self.identity:
-            d['identity'] = self.identity.to_dict()
-        if self.targeted_systems:
-            d['targeted_systems']  = [x.to_dict() for x in self.targeted_systems]
-        if self.targeted_information:
-            d['targeted_information'] = [x.to_dict() for x in self.targeted_information]
-        if self.targeted_technical_details:
-            d['targeted_technical_details'] = self.targeted_technical_details.to_dict()
-
-        return d
+        return super(VictimTargeting, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
         if not dict_repr:
             return None
+
         if not return_obj:
             return_obj = cls()
 
-        return_obj.identity = Identity.from_dict(dict_repr.get('identity'))
-        return_obj.targeted_systems = [VocabString.from_dict(x) for x in dict_repr.get('targeted_systems', [])]
-        return_obj.targeted_information = [VocabString.from_dict(x) for x in dict_repr.get('targeted_information', [])]
-        return_obj.targeted_technical_details = Observables.from_dict(dict_repr.get('targeted_technical_details'))
+        get = dict_repr.get
+        return_obj.identity = Identity.from_dict(get('identity'))
+        return_obj.targeted_systems = TargetedSystems.from_dict(get('targeted_systems'))
+        return_obj.targeted_information = TargetedInformation.from_dict(get('targeted_information'))
+        return_obj.targeted_technical_details = Observables.from_dict(get('targeted_technical_details'))
 
         return return_obj
 
 
-class TargetedSystems(stix.EntityList):
-    _namespace = "http://stix.mitre.org/TTP-1"
+class TargetedSystems(stix.TypedList):
     _contained_type = VocabString
 
     def _fix_value(self, value):
         return vocabs.SystemType(value)
 
 
-class TargetedInformation(stix.EntityList):
-    _namespace = "http://stix.mitre.org/TTP-1"
+class TargetedInformation(stix.TypedList):
     _contained_type = VocabString
 
     def _fix_value(self, value):

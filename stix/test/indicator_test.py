@@ -13,16 +13,25 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
         # no idref because we can't have both an id and idref
     }
 
+    _base_dict = {
+        'version': '2.1.1',
+        'negate': True,
+        'title': 'File Hash Example',
+        'description': 'An indicator containing a File observable with an associated hash',
+        'short_description': "A short description",
+        'timestamp': '2015-03-06T14:35:23.375304+00:00',
+    }
+
     def test_base(self):
-        d = {
-            'version': '2.1.1',
-            'negate': True,
-            'title': 'File Hash Example',
-            'description': 'An indicator containing a File observable with an associated hash',
-            'short_description': "A short description",
-            'timestamp': '2015-03-06T14:35:23.375304+00:00',
-        }
-        self._test_partial_dict(d)
+        self._test_partial_dict(self._base_dict)
+
+
+    def test_negate(self):
+        d = dict(self._base_dict.items())
+        d['negate'] = False
+
+        d2 = self.klass.from_dict(d).to_dict()
+        self.assertTrue('negate' not in d2)
 
 
     def test_indicator_types(self):

@@ -33,7 +33,6 @@ class ImpactAssessment(stix.Entity):
     @effects.setter
     def effects(self, value):
         self._effects = Effects(value)
-
     
     def add_effect(self, value):
         self.effects.append(value)
@@ -44,12 +43,7 @@ class ImpactAssessment(stix.Entity):
 
     @direct_impact_summary.setter
     def direct_impact_summary(self, value):
-        if not value:
-            self._direct_impact_summary = None
-        elif isinstance(value, DirectImpactSummary):
-            self._direct_impact_summary = value
-        else:
-            raise ValueError('Value must be a DirectImpactSummary instance')
+        self._set_var(DirectImpactSummary, try_cast=False, direct_impact_summary=value)
 
     @property
     def indirect_impact_summary(self):
@@ -57,12 +51,7 @@ class ImpactAssessment(stix.Entity):
 
     @indirect_impact_summary.setter
     def indirect_impact_summary(self, value):
-        if not value:
-            self._indirect_impact_summary = None
-        elif isinstance(value, IndirectImpactSummary):
-            self._indirect_impact_summary = value
-        else:
-            raise ValueError('Value must be a IndirectImpactSummary instance')
+        self._set_var(IndirectImpactSummary, try_cast=False, indirect_impact_summary=value)
 
     @property
     def total_loss_estimation(self):
@@ -70,12 +59,7 @@ class ImpactAssessment(stix.Entity):
 
     @total_loss_estimation.setter
     def total_loss_estimation(self, value):
-        if not value:
-            self._total_loss_estimation = None
-        elif isinstance(value, TotalLossEstimation):
-            self._total_loss_estimation = value
-        else:
-            raise ValueError('Value must be a TotalLossEstimation instance')
+        self._set_var(TotalLossEstimation, try_cast=False, total_loss_estimation=value)
 
     @property
     def impact_qualification(self):
@@ -83,13 +67,7 @@ class ImpactAssessment(stix.Entity):
 
     @impact_qualification.setter
     def impact_qualification(self, value):
-        if value:
-            if isinstance(value, VocabString):
-                self._impact_qualification = value
-            else:
-                self._impact_qualification = vocabs.ImpactQualification(value=value)
-        else:
-            self._impact_qualification = None
+        self._set_vocab(vocabs.ImpactQualification, impact_qualification=value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(ImpactAssessment, self).to_obj(return_obj=return_obj, ns_info=ns_info)

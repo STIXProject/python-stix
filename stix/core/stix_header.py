@@ -36,16 +36,7 @@ class STIXHeader(stix.Entity):
         value.
 
         """
-        if value and isinstance(value, basestring):
-            st = StructuredText()
-            st.value = value
-            self._description = st
-        elif isinstance(value, StructuredText):
-            self._description = value
-        elif not value:
-            self._description = None
-        else:
-            raise ValueError('value must be instance of StructuredText or basestring')
+        self._set_var(StructuredText, description=value)
 
     @property
     def short_description(self):
@@ -68,13 +59,7 @@ class STIXHeader(stix.Entity):
 
     @short_description.setter
     def short_description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._short_description = value
-            else:
-                self._short_description = StructuredText(value=value)
-        else:
-            self._short_description = None
+        self._set_var(StructuredText, short_description=value)
 
     @property
     def handling(self):
@@ -82,10 +67,7 @@ class STIXHeader(stix.Entity):
 
     @handling.setter
     def handling(self, value):
-        if value and not isinstance(value, Marking):
-            raise ValueError('value must be instance of Marking')
-
-        self._handling = value
+        self._set_var(Marking, try_cast=False, handling=value)
 
     @property
     def package_intents(self):
@@ -104,10 +86,7 @@ class STIXHeader(stix.Entity):
 
     @information_source.setter
     def information_source(self, value):
-        if value and not isinstance(value, InformationSource):
-            raise ValueError('value must instance of InformationSource')
-
-        self._information_source = value
+        self._set_var(InformationSource, try_cast=False, information_source=value)
 
     def add_profile(self, profile):
         """Adds a profile to the STIX Header. A Profile is represented by a

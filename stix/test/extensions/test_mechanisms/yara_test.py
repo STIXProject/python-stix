@@ -1,5 +1,7 @@
-import unittest
+# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# See LICENSE.txt for complete terms.
 
+import unittest
 from stix.test import EntityTestCase
 from stix.extensions.test_mechanism.yara_test_mechanism import YaraTestMechanism
 

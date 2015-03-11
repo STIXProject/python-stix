@@ -37,11 +37,11 @@ class VocabString(stix.Entity):
         if not v:
             self._value = None
         elif allowed and (v not in allowed):
-            raise ValueError(
-                'Value must be one of %s. Received "%s"' % (allowed, v)
-            )
-        
-        self._value = v
+            error = "Value must be one of {0}. Received '{1}'"
+            error = error.format(allowed, v)
+            raise ValueError(error)
+        else:
+            self._value = v
 
     def __str__(self):
         return str(self.value)

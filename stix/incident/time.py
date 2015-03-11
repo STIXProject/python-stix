@@ -28,13 +28,7 @@ class Time(stix.Entity):
 
     @first_malicious_action.setter
     def first_malicious_action(self, value):
-        if value:
-            if isinstance(value, DateTimeWithPrecision):
-                self._first_malicious_action = value
-            else:
-                self._first_malicious_action = DateTimeWithPrecision(value=value)
-        else:
-            self._first_malicious_action = None
+        self._set_var(DateTimeWithPrecision, first_malicious_action=value)
 
     @property
     def initial_compromise(self):
@@ -42,13 +36,7 @@ class Time(stix.Entity):
 
     @initial_compromise.setter
     def initial_compromise(self, value):
-        if value:
-            if isinstance(value, DateTimeWithPrecision):
-                self._initial_compromise = value
-            else:
-                self._initial_compromise = DateTimeWithPrecision(value=value)
-        else:
-            self._initial_compromise = None
+        self._set_var(DateTimeWithPrecision, initial_compromise=value)
 
     @property
     def first_data_exfiltration(self):
@@ -56,13 +44,7 @@ class Time(stix.Entity):
 
     @first_data_exfiltration.setter
     def first_data_exfiltration(self, value):
-        if value:
-            if isinstance(value, DateTimeWithPrecision):
-                self._first_data_exfiltration = value
-            else:
-                self._first_data_exfiltration = DateTimeWithPrecision(value=value)
-        else:
-            self._first_data_exfiltration = None
+        self._set_var(DateTimeWithPrecision, first_data_exfiltration=value)
 
     @property
     def incident_discovery(self):
@@ -70,13 +52,7 @@ class Time(stix.Entity):
 
     @incident_discovery.setter
     def incident_discovery(self, value):
-        if value:
-            if isinstance(value, DateTimeWithPrecision):
-                self._incident_discovery = value
-            else:
-                self._incident_discovery = DateTimeWithPrecision(value=value)
-        else:
-            self._incident_discovery = None
+        self._set_var(DateTimeWithPrecision, incident_discovery=value)
 
     @property
     def incident_opened(self):
@@ -84,13 +60,7 @@ class Time(stix.Entity):
 
     @incident_opened.setter
     def incident_opened(self, value):
-        if value:
-            if isinstance(value, DateTimeWithPrecision):
-                self._incident_opened = value
-            else:
-                self._incident_opened = DateTimeWithPrecision(value=value)
-        else:
-            self._incident_opened = None
+        self._set_var(DateTimeWithPrecision, incident_opened=value)
 
     @property
     def containment_achieved(self):
@@ -98,13 +68,7 @@ class Time(stix.Entity):
 
     @containment_achieved.setter
     def containment_achieved(self, value):
-        if value:
-            if isinstance(value, DateTimeWithPrecision):
-                self._containment_achieved = value
-            else:
-                self._containment_achieved = DateTimeWithPrecision(value=value)
-        else:
-            self._containment_achieved = None
+        self._set_var(DateTimeWithPrecision, containment_achieved=value)
 
     @property
     def restoration_achieved(self):
@@ -112,13 +76,7 @@ class Time(stix.Entity):
 
     @restoration_achieved.setter
     def restoration_achieved(self, value):
-        if value:
-            if isinstance(value, DateTimeWithPrecision):
-                self._restoration_achieved = value
-            else:
-                self._restoration_achieved = DateTimeWithPrecision(value=value)
-        else:
-            self._restoration_achieved = None
+        self._set_var(DateTimeWithPrecision, restoration_achieved=value)
 
     @property
     def incident_reported(self):
@@ -126,13 +84,7 @@ class Time(stix.Entity):
 
     @incident_reported.setter
     def incident_reported(self, value):
-        if value:
-            if isinstance(value, DateTimeWithPrecision):
-                self._incident_reported = value
-            else:
-                self._incident_reported = DateTimeWithPrecision(value=value)
-        else:
-            self._incident_reported = None
+        self._set_var(DateTimeWithPrecision, incident_reported=value)
 
     @property
     def incident_closed(self):
@@ -140,14 +92,7 @@ class Time(stix.Entity):
 
     @incident_closed.setter
     def incident_closed(self, value):
-        if value:
-            if isinstance(value, DateTimeWithPrecision):
-                self._incident_closed = value
-            else:
-                self._incident_closed = DateTimeWithPrecision(value=value)
-        else:
-            self._incident_closed = None
-
+        self._set_var(DateTimeWithPrecision, incident_closed=value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(Time, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -197,27 +142,7 @@ class Time(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        if self.first_malicious_action:
-            d['first_malicious_action'] = self.first_malicious_action.to_dict()
-        if self.initial_compromise:
-            d['initial_compromise'] = self.initial_compromise.to_dict()
-        if self.first_data_exfiltration:
-            d['first_data_exfiltration'] = self.first_data_exfiltration.to_dict()
-        if self.incident_discovery:
-            d['incident_discovery'] = self.incident_discovery.to_dict()
-        if self.incident_opened:
-            d['incident_opened'] = self.incident_opened.to_dict()
-        if self.containment_achieved:
-            d['containment_achieved'] = self.containment_achieved.to_dict()
-        if self.restoration_achieved:
-            d['restoration_achieved'] = self.restoration_achieved.to_dict()
-        if self.incident_reported:
-            d['incident_reported'] = self.incident_reported.to_dict()
-        if self.incident_closed:
-            d['incident_closed'] = self.incident_closed.to_dict()
-
-        return d
+        return super(Time, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):

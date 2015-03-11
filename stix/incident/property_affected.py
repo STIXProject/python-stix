@@ -5,7 +5,6 @@
 import stix
 from stix.common import vocabs, VocabString, StructuredText
 import stix.bindings.incident as incident_binding
-from stix.common.vocabs import AvailabilityLossType as AvailabilityLoss
 
 
 class NonPublicDataCompromised(VocabString):
@@ -21,6 +20,7 @@ class NonPublicDataCompromised(VocabString):
     def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
+
         if not return_obj:
             return_obj = cls()
         
@@ -40,6 +40,7 @@ class NonPublicDataCompromised(VocabString):
     def from_dict(cls, d, return_obj=None):
         if not d:
             return None
+
         if not return_obj:
             return_obj = cls()
             
@@ -52,8 +53,10 @@ class NonPublicDataCompromised(VocabString):
 
     def to_dict(self):
         d = super(NonPublicDataCompromised, self).to_dict()
+
         if self.data_encrypted:
             d['data_encrypted'] = self.data_encrypted
+
         return d
 
 class PropertyAffected(stix.Entity):
@@ -74,25 +77,15 @@ class PropertyAffected(stix.Entity):
     
     @property_.setter
     def property_(self, value):
-        if not value:
-            self._property = None
-        elif isinstance(value, VocabString):
-            self._property = value
-        else:
-            self._property = vocabs.LossProperty(value)
-        
+        self._set_vocab(vocabs.LossProperty, property=value)
+
     @property
     def description_of_effect(self):
         return self._description_of_effect
     
     @description_of_effect.setter
     def description_of_effect(self, value):
-        if not value:
-            self._description_of_effect = None
-        elif isinstance(value, StructuredText):
-            self._description_of_effect = value
-        else:
-            self._description_of_effect = StructuredText(value)
+        self._set_var(StructuredText, description_of_effect=value)
 
     @property
     def type_of_availability_loss(self):
@@ -100,12 +93,7 @@ class PropertyAffected(stix.Entity):
     
     @type_of_availability_loss.setter
     def type_of_availability_loss(self, value):
-        if not value:
-            self._type_of_availability_loss = None
-        elif isinstance(value, VocabString):
-            self._type_of_availability_loss = value
-        else:
-            self._type_of_availability_loss = AvailabilityLoss(value)
+        self._set_vocab(vocabs.AvailabilityLossType, type_of_availability_loss=value)
             
     @property
     def duration_of_availability_loss(self):
@@ -113,12 +101,7 @@ class PropertyAffected(stix.Entity):
     
     @duration_of_availability_loss.setter
     def duration_of_availability_loss(self, value):
-        if not value:
-            self._duration_of_availability_loss = None
-        elif isinstance(value, VocabString):
-            self._duration_of_availability_loss = value
-        else:
-            self._duration_of_availability_loss = vocabs.LossDuration(value)
+        self._set_vocab(vocabs.LossDuration, duration_of_availability_loss=value)
     
     @property
     def non_public_data_compromised(self):
@@ -126,12 +109,7 @@ class PropertyAffected(stix.Entity):
     
     @non_public_data_compromised.setter
     def non_public_data_compromised(self, value):
-        if not value:
-            self._non_public_data_compromised = None
-        elif isinstance(value, NonPublicDataCompromised):
-            self._non_public_data_compromised = value
-        else:
-            self._non_public_data_compromised = NonPublicDataCompromised(value)
+        self._set_var(NonPublicDataCompromised, non_public_data_compromised=value)
     
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -173,7 +151,7 @@ class PropertyAffected(stix.Entity):
         if not return_obj:
             return_obj = cls()
             
-        return_obj.property_ = VocabString.from_dict(d.get(('property')))
+        return_obj.property_ = VocabString.from_dict(d.get('property'))
         return_obj.description_of_effect = StructuredText.from_dict(d.get('description_of_effect'))
         return_obj.type_of_availability_loss = VocabString.from_dict(d.get('type_of_availability_loss'))
         return_obj.duration_of_availability_loss = VocabString.from_dict(d.get('duration_of_availability_loss'))
@@ -182,16 +160,5 @@ class PropertyAffected(stix.Entity):
         return return_obj
     
     def to_dict(self):
-        d = {}
-        if self.property_:
-            d['property'] = self.property_.to_dict()
-        if self.description_of_effect:
-            d['description_of_effect'] = self.description_of_effect.to_dict()
-        if self.type_of_availability_loss:
-            d['type_of_availability_loss'] = self.type_of_availability_loss.to_dict()
-        if self.duration_of_availability_loss:
-            d['duration_of_availability_loss'] = self.duration_of_availability_loss.to_dict()
-        if self.non_public_data_compromised:
-            d['non_public_data_compromised'] = self.non_public_data_compromised.to_dict()
-        return d
+        return super(PropertyAffected, self).to_dict()
     

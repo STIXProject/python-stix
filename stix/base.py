@@ -27,6 +27,70 @@ class Entity(object):
         ns_info.collect(self)
 
 
+    def _set_var(self, klass, try_cast=True, arg=None, **kwargs):
+        """Sets an instance property value.
+
+        * If the input value is ``None``, the property is set to ``None``.
+        * If the input value is an instance of `klass`, the property is set
+          the input value.
+        * If the input value is not an instance of `klass` and `try_cast` is
+          ``True``, an attempt will be made to cast the input value to an
+          instance of `klass`.
+
+        Args:
+            klass: The expected input value class.
+            try_cast: If ``True`` attempt to cast the input value to `klass`
+                if it is not an instance of `klass`.
+            arg: The __init__ parameter name to use when casting the input
+                value to `klass`. E.g., StructuredText(value=input), the `arg`
+                is `value`. If ``None``, it is assumed that the first
+                __init__ parameter will accept the value.
+            **kwargs: The field name and value. The field name is the key
+                and the field value is the value.
+
+        """
+        name, item = kwargs.iteritems().next()
+        attr = utils.private_name(name)  # 'title' => '_title'
+
+        if item is None:
+            setattr(self, attr, None)
+        elif isinstance(item, klass):
+            setattr(self, attr, item)
+        elif try_cast:
+            promoted = utils.cast_var(item, klass, arg=arg)
+            setattr(self, attr, promoted)
+        else:
+            error = "'{0}' expects an instance of {1}. Received: {2}."
+            error = error.format(name, klass, type(item))
+            raise TypeError(error)
+
+    def _set_vocab(self, klass=None, **kwargs):
+        """Sets a controlled vocabulary property value.
+
+        * If the input value is ``None``, the property is set to ``None``.
+        * If the input value is an instance of ``VocabString``, the property
+          is set to the input value.
+        * If the input value is not an instance of ``VocabString``, an attempt
+          will be made to cast the input to an instance of `klass`. If `klass`
+          is ``None``, ``VocabString`` will be used.
+
+        Args:
+            klass: The VocabString impl to cast the input value to. If ``None``
+                ``VocabString`` will be assumed.
+            **kwargs: The field name, value pair. The field name is the key
+                and the field value is the value.
+
+        """
+        from stix.common import VocabString
+
+        klass = klass or VocabString
+        item  = kwargs.itervalues().next()
+
+        if isinstance(item, VocabString):
+            self._set_var(VocabString, **kwargs)
+        else:
+            self._set_var(klass, **kwargs)
+
     def to_obj(self, return_obj=None, ns_info=None):
         """Converts an `Entity` into a binding object.
 
@@ -639,13 +703,7 @@ class BaseCoreComponent(Entity):
     @description.setter
     def description(self, value):
         from stix.common import StructuredText
-
-        if not value:
-            self._description = None
-        elif isinstance(value, StructuredText):
-            self._description = value
-        else:
-            self._description = StructuredText(value=value)
+        self._set_var(StructuredText, description=value)
 
     @property
     def short_description(self):
@@ -668,13 +726,7 @@ class BaseCoreComponent(Entity):
     @short_description.setter
     def short_description(self, value):
         from stix.common import StructuredText
-
-        if not value:
-            self._short_description = None
-        elif isinstance(value, StructuredText):
-            self._short_description = value
-        else:
-            self._short_description = StructuredText(value=value)
+        self._set_var(StructuredText, short_description=value)
 
     @property
     def information_source(self):
@@ -697,15 +749,7 @@ class BaseCoreComponent(Entity):
     @information_source.setter
     def information_source(self, value):
         from stix.common import InformationSource
-
-        if not value:
-            self._information_source = None
-        elif isinstance(value, InformationSource):
-            self._information_source = value
-        else:
-            error = "Cannot set property. Expected '{0}' but received '{1}'"
-            error = error.format(InformationSource, type(value))
-            raise ValueError(error)
+        self._set_var(InformationSource, try_cast=False, information_source=value)
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):

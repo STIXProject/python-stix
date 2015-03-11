@@ -3,10 +3,7 @@
 
 import unittest
 
-from stix.test import (
-    EntityTestCase, campaign_test, coa_test, exploit_target_test,
-    incident_test, indicator_test, threat_actor_test, ttp_test
-)
+from stix.test import EntityTestCase
 from stix.test.common import kill_chains_test
 
 from . import stix_header_test
@@ -19,7 +16,7 @@ class CampaignsTests(EntityTestCase, unittest.TestCase):
     klass = stix_package.Campaigns
 
     _full_dict = [
-        campaign_test.CampaignTest._full_dict
+        {'idref': 'example:test-1'}
     ]
 
 
@@ -27,28 +24,28 @@ class COAsTests(EntityTestCase, unittest.TestCase):
     klass = stix_package.CoursesOfAction
 
     _full_dict = [
-        coa_test.COATests._full_dict
+        {'idref': 'example:test-1'}
     ]
 
 class ExploitTargetsTests(EntityTestCase, unittest.TestCase):
     klass = stix_package.ExploitTargets
 
     _full_dict = [
-        exploit_target_test.ExploitTargetTests._full_dict
+        {'idref': 'example:test-1'}
     ]
 
 class IncidentsTests(EntityTestCase, unittest.TestCase):
     klass = stix_package.Incidents
 
     _full_dict = [
-        incident_test.IncidentTest._full_dict
+        {'idref': 'example:test-1'}
     ]
 
 class IndicatorsTests(EntityTestCase, unittest.TestCase):
     klass = stix_package.Indicators
 
     _full_dict = [
-        indicator_test.IndicatorTest._full_dict
+        {'idref': 'example:test-1'}
     ]
 
 
@@ -56,7 +53,7 @@ class ThreatActorsTests(EntityTestCase, unittest.TestCase):
     klass = stix_package.ThreatActors
 
     _full_dict = [
-        threat_actor_test.ThreatActorTests._full_dict
+        {'idref': 'example:test-1'}
     ]
 
 class TTPsTests(EntityTestCase, unittest.TestCase):
@@ -65,7 +62,7 @@ class TTPsTests(EntityTestCase, unittest.TestCase):
     _full_dict = {
         'kill_chains': kill_chains_test.KillChainsTests._full_dict,
         'ttps': [
-            ttp_test.TTPTests._full_dict
+            {'idref': 'example:test-1'}
         ]
     }
 

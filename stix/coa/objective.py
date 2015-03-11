@@ -22,13 +22,7 @@ class Objective(stix.Entity):
 
     @description.setter
     def description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._description = value
-            else:
-                self._description = StructuredText(value=value)
-        else:
-            self._description = None
+        self._set_var(StructuredText, description=value)
 
     @property
     def short_description(self):
@@ -36,13 +30,15 @@ class Objective(stix.Entity):
 
     @short_description.setter
     def short_description(self, value):
-        if value:
-            if isinstance(value, StructuredText):
-                self._short_description = value
-            else:
-                self._short_description = StructuredText(value=value)
-        else:
-            self._short_description = None
+        self._set_var(StructuredText, short_description=value)
+
+    @property
+    def applicability_confidence(self):
+        return self._applicability_confidence
+    
+    @applicability_confidence.setter
+    def applicability_confidence(self, value):
+        self._set_var(Confidence, try_cast=False, applicability_confidence=value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(Objective, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -58,19 +54,6 @@ class Objective(stix.Entity):
             return_obj.Applicability_Confidence = self.applicability_confidence.to_obj(ns_info=ns_info)
 
         return return_obj
-
-    @property
-    def applicability_confidence(self):
-        return self._applicability_confidence
-    
-    @applicability_confidence.setter
-    def applicability_confidence(self, value):
-        if not value:
-            self._applicability_confidence = None
-        elif isinstance(value, Confidence):
-            self._applicability_confidence = value
-        else:
-            raise ValueError('Cannot set applicability_confidence to type %s' % type(value))
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):

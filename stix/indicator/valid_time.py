@@ -21,10 +21,7 @@ class ValidTime(stix.Entity):
 
     @start_time.setter
     def start_time(self, value):
-        if isinstance(value, DateTimeWithPrecision):
-            self._start_time = value
-        else:
-            self._start_time = DateTimeWithPrecision(value)
+        self._set_var(DateTimeWithPrecision, start_time=value)
 
     @property
     def end_time(self):
@@ -32,10 +29,7 @@ class ValidTime(stix.Entity):
 
     @end_time.setter
     def end_time(self, value):
-        if isinstance(value, DateTimeWithPrecision):
-            self._end_time = value
-        else:
-            self._end_time = DateTimeWithPrecision(value)
+        self._set_var(DateTimeWithPrecision, end_time=value)
     
     def to_obj(self, return_obj=None, ns_info=None):
         super(ValidTime, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -51,13 +45,7 @@ class ValidTime(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        if self.start_time:
-            d['start_time'] = self.start_time.to_dict()
-        if self.end_time:
-            d['end_time'] = self.end_time.to_dict()
-         
-        return d
+        return super(ValidTime, self).to_dict()
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):

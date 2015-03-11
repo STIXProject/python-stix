@@ -67,25 +67,15 @@ class CourseOfAction(stix.BaseCoreComponent):
 
     @stage.setter
     def stage(self, value):
-        if not value:
-            self._stage = None
-        elif isinstance(value, VocabString):
-            self._stage = value
-        else:
-            self._stage = Stage(value=value)
+        self._set_vocab(Stage, stage=value)
 
     @property
     def type_(self):
-        return self._type_
+        return self._type
 
     @type_.setter
     def type_(self, value):
-        if not value:
-            self._type_ = None
-        elif isinstance(value, VocabString):
-            self._type_ = value
-        else:
-            self._type_ = COAType(value=value)
+        self._set_vocab(COAType, type=value)
 
     @property
     def objective(self):
@@ -93,51 +83,31 @@ class CourseOfAction(stix.BaseCoreComponent):
 
     @objective.setter
     def objective(self, value):
-        if not value:
-            self._objective = None
-        elif isinstance(value, Objective):
-            self._objective = value
-        else:
-            raise ValueError('Cannot set objective to type %s' % type(value))
+        self._set_var(Objective, try_cast=False, objective=value)
 
     @property
     def impact(self):
         return self._impact
 
     @impact.setter
-    def impact(self, impact):
-        if not impact:
-            self._impact = None
-        elif isinstance(impact, Statement):
-            self._impact = impact
-        else:
-            self._impact = Statement(value=impact)
+    def impact(self, value):
+        self._set_var(Statement, impact=value)
 
     @property
     def cost(self):
         return self._cost
 
     @cost.setter
-    def cost(self, cost):
-        if not cost:
-            self._cost = None
-        elif isinstance(cost, Statement):
-            self._cost = cost
-        else:
-            self._cost = Statement(value=cost)
+    def cost(self, value):
+        self._set_var(Statement, cost=value)
 
     @property
     def efficacy(self):
         return self._efficacy
 
     @efficacy.setter
-    def efficacy(self, efficacy):
-        if not efficacy:
-            self._efficacy = None
-        elif isinstance(efficacy, Statement):
-            self._efficacy = efficacy
-        else:
-            self._efficacy = Statement(value=efficacy)
+    def efficacy(self, value):
+        self._set_var(Statement, efficacy=value)
 
     @property
     def handling(self):
@@ -145,10 +115,7 @@ class CourseOfAction(stix.BaseCoreComponent):
 
     @handling.setter
     def handling(self, value):
-        if value and not isinstance(value, Marking):
-            raise ValueError('value must be instance of Marking')
-
-        self._handling = value
+        self._set_var(Marking, try_cast=False, handling=value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:

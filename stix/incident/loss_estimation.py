@@ -54,12 +54,7 @@ class LossEstimation(stix.Entity):
         return return_obj
 
     def to_dict(self):    
-        d  = {}
-        if self.amount:
-            d['amount'] = self.amount
-        if self.iso_currency_code:
-            d['iso_currency_code'] = self.iso_currency_code
-        return d
+        return super(LossEstimation, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_, return_obj=None):

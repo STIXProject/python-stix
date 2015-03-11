@@ -1122,7 +1122,10 @@ class OrganisationName(stix.Entity):
     
 
 class _BaseNameElement(stix.Entity):
-    '''Do not instantiate directly: use PersonNameElement or OrganisationNameElement'''
+    """Do not instantiate directly: use PersonNameElement or
+    OrganisationNameElement
+
+    """
     def __init__(self, value=None):
         self.value = value
 

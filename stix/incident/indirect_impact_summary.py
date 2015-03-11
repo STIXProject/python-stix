@@ -23,12 +23,7 @@ class IndirectImpactSummary(stix.Entity):
 
     @loss_of_competitive_advantage.setter
     def loss_of_competitive_advantage(self, value):
-        if not value:
-            self._loss_of_competitive_advantage = None
-        elif isinstance(value, VocabString):
-            self._loss_of_competitive_advantage = value
-        else:
-            self._loss_of_competitive_advantage = vocabs.SecurityCompromise(value=value)
+        self._set_vocab(vocabs.SecurityCompromise, loss_of_competitive_advantage=value)
 
     @property
     def brand_and_market_damage(self):
@@ -36,12 +31,7 @@ class IndirectImpactSummary(stix.Entity):
 
     @brand_and_market_damage.setter
     def brand_and_market_damage(self, value):
-        if not value:
-            self._brand_and_market_damage = None
-        elif isinstance(value, VocabString):
-            self._brand_and_market_damage = value
-        else:
-            self._brand_and_market_damage = vocabs.SecurityCompromise(value=value)
+        self._set_vocab(vocabs.SecurityCompromise, brand_and_market_damage=value)
 
     @property
     def increased_operating_costs(self):
@@ -49,12 +39,7 @@ class IndirectImpactSummary(stix.Entity):
 
     @increased_operating_costs.setter
     def increased_operating_costs(self, value):
-        if not value:
-            self._increased_operating_costs = None
-        elif isinstance(value, VocabString):
-            self._increased_operating_costs = value
-        else:
-            self._increased_operating_costs = vocabs.SecurityCompromise(value=value)
+        self._set_vocab(vocabs.SecurityCompromise, increased_operating_costs=value)
 
     @property
     def legal_and_regulatory_costs(self):
@@ -62,12 +47,7 @@ class IndirectImpactSummary(stix.Entity):
 
     @legal_and_regulatory_costs.setter
     def legal_and_regulatory_costs(self, value):
-        if not value:
-            self._legal_and_regulatory_costs = None
-        elif isinstance(value, VocabString):
-            self._legal_and_regulatory_costs = value
-        else:
-            self._legal_and_regulatory_costs = vocabs.SecurityCompromise(value=value)
+        self._set_vocab(vocabs.SecurityCompromise, legal_and_regulatory_costs=value)
             
     def to_obj(self, return_obj=None, ns_info=None):
         super(IndirectImpactSummary, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -98,16 +78,7 @@ class IndirectImpactSummary(stix.Entity):
         return return_obj
 
     def to_dict(self):    
-        d  = {}
-        if self.loss_of_competitive_advantage:
-            d['loss_of_competitive_advantage'] = self.loss_of_competitive_advantage.to_dict()
-        if self.brand_and_market_damage:
-            d['brand_and_market_damage'] = self.brand_and_market_damage.to_dict()
-        if self.increased_operating_costs:
-            d['increased_operating_costs'] = self.increased_operating_costs.to_dict()
-        if self.legal_and_regulatory_costs:
-            d['legal_and_regulatory_costs'] = self.legal_and_regulatory_costs.to_dict()
-        return d
+        return super(IndirectImpactSummary, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_, return_obj=None):

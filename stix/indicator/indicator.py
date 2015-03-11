@@ -232,10 +232,7 @@ class Indicator(stix.BaseCoreComponent):
 
     @producer.setter
     def producer(self, value):
-        if value and not isinstance(value, InformationSource):
-            raise ValueError('value must be instance of InformationSource')
-
-        self._producer = value
+        self._set_var(InformationSource, try_cast=False, producer=value)
 
     @property
     def observable(self):
@@ -486,12 +483,7 @@ class Indicator(stix.BaseCoreComponent):
     
     @confidence.setter
     def confidence(self, value):
-        if not value:
-            self._confidence = None
-        elif isinstance(value, Confidence):
-            self._confidence = value
-        else:
-            self._confidence = Confidence(value=value)
+        self._set_var(Confidence, confidence=value)
 
     @property
     def indicated_ttps(self):
@@ -569,12 +561,7 @@ class Indicator(stix.BaseCoreComponent):
     
     @handling.setter
     def handling(self, value):
-        if not value:
-            self._handling = None
-        elif isinstance(value, Marking):
-            self._handling = value
-        else:
-            raise ValueError('unable to set handling to type %s' % type(value))
+        self._set_var(Marking, handling=value)
 
     @property
     def related_indicators(self):
@@ -654,12 +641,7 @@ class Indicator(stix.BaseCoreComponent):
     
     @likely_impact.setter
     def likely_impact(self, value):
-        if not value:
-            self._likely_impact = None
-        elif isinstance(value, Statement):
-            self._likely_impact = value
-        else:
-            self._likely_impact = Statement(value=value)
+        self._set_var(Statement, likely_impact=value)
             
     @property
     def negate(self):
@@ -667,7 +649,7 @@ class Indicator(stix.BaseCoreComponent):
     
     @negate.setter
     def negate(self, value):
-       self._negate = True if value in xmlconst.TRUE else None
+        self._negate = utils.xml_bool(value)
 
     @property
     def kill_chain_phases(self):
@@ -868,7 +850,7 @@ class Indicator(stix.BaseCoreComponent):
 
         super(Indicator, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
-        return_obj.negate = self._negate
+        return_obj.negate = True if self.negate else None
 
         if self.confidence:
             return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
@@ -943,8 +925,11 @@ class Indicator(stix.BaseCoreComponent):
         return return_obj
 
     def to_dict(self):
-        skip = ('observables', 'observable_composition_operator')
+        skip = ('observables', 'observable_composition_operator', 'negate')
         d = utils.to_dict(self, skip=skip)
+
+        if self.negate:
+            d['negate'] = True
 
         if self.observables:
             if len(self.observables) == 1:
