@@ -14,6 +14,7 @@ import stix.bindings.course_of_action as coa_binding
 
 # relative
 from .objective import Objective
+from .structured_coa import _BaseStructuredCOA
 
 # Redefines
 Stage = vocabs.COAStage
@@ -53,7 +54,7 @@ class CourseOfAction(stix.BaseCoreComponent):
         self.type_ = None
         self.objective = None
         self.parameter_observables = None
-        # self.structured_coa = None
+        self.structured_coa = None
         self.impact = None
         self.cost = None
         self.efficacy = None
@@ -117,6 +118,14 @@ class CourseOfAction(stix.BaseCoreComponent):
     def handling(self, value):
         self._set_var(Marking, try_cast=False, handling=value)
 
+    @property
+    def structured_coa(self):
+        return self._structured_coa
+
+    @structured_coa.setter
+    def structured_coa(self, value):
+        self._set_var(_BaseStructuredCOA, try_cast=False, structured_coa=value)
+
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -143,6 +152,8 @@ class CourseOfAction(stix.BaseCoreComponent):
             return_obj.Related_COAs = self.related_coas.to_obj(ns_info=ns_info)
         if self.related_packages:
             return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
+        if self.structured_coa:
+            return_obj.Structured_COA = self.structured_coa.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -171,6 +182,8 @@ class CourseOfAction(stix.BaseCoreComponent):
                     RelatedCOAs.from_obj(obj.Related_COAs)
             return_obj.related_packages = \
                     related.RelatedPackageRefs.from_obj(obj.Related_Packages)
+            return_obj.structured_coa = \
+                _BaseStructuredCOA.from_obj(obj.Structured_COA)
 
         return return_obj
 
@@ -191,15 +204,17 @@ class CourseOfAction(stix.BaseCoreComponent):
         return_obj.type_ = VocabString.from_dict(get('type'))
         return_obj.objective = Objective.from_dict(get('objective'))
         return_obj.parameter_observables = \
-                Observables.from_dict(get('parameter_observables'))
+            Observables.from_dict(get('parameter_observables'))
         return_obj.impact = Statement.from_dict(get('impact'))
         return_obj.cost = Statement.from_dict(get('cost'))
         return_obj.efficacy = Statement.from_dict(get('efficacy'))
         return_obj.handling = Marking.from_dict(get('handling'))
         return_obj.related_coas = \
-                RelatedCOAs.from_dict(get('related_coas'))
+            RelatedCOAs.from_dict(get('related_coas'))
         return_obj.related_packages = \
-                related.RelatedPackageRefs.from_dict(get('related_packages'))
+            related.RelatedPackageRefs.from_dict(get('related_packages'))
+        return_obj.structured_coa = \
+            _BaseStructuredCOA.from_dict(get('structured_coa'))
 
         return return_obj
 

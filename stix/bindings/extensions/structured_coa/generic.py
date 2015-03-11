@@ -77,14 +77,14 @@ class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
             lwrite('/>%s' % (eol_, ))
     def exportAttributes(self, lwrite, level, already_processed, namespace_='genericStructuredCOA:', name_='GenericStructuredCOAType'):
         super(GenericStructuredCOAType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='GenericStructuredCOAType')
-        if 'xmlns' not in already_processed:
-            already_processed.add('xmlns')
-            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
-            lwrite(xmlns)
-        if 'xsi:type' not in already_processed:
-            already_processed.add('xsi:type')
-            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
-            lwrite(xsi_type)
+        # if 'xmlns' not in already_processed:
+        #     already_processed.add('xmlns')
+        #     xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+        #     lwrite(xmlns)
+        # if 'xsi:type' not in already_processed:
+        #     already_processed.add('xsi:type')
+        #     xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+        #     lwrite(xsi_type)
         if self.reference_location is not None and 'reference_location' not in already_processed:
             already_processed.add('reference_location')
             lwrite(' reference_location=%s' % (quote_attrib(self.reference_location), ))
@@ -162,23 +162,6 @@ def parse(inFileName):
         pretty_print=True)
     return rootObj
 
-def parseEtree(inFileName):
-    doc = parsexml_(inFileName)
-    rootNode = doc.getroot()
-    rootTag, rootClass = get_root_tag(rootNode)
-    if rootClass is None:
-        rootTag = 'GenericStructuredCOAType'
-        rootClass = GenericStructuredCOAType
-    rootObj = rootClass.factory()
-    rootObj.build(rootNode)
-    # Enable Python to collect the space used by the DOM.
-    doc = None
-    rootElement = rootObj.to_etree(None, name_=rootTag)
-    content = etree_.tostring(rootElement, pretty_print=True,
-        xml_declaration=True, encoding="utf-8")
-    sys.stdout.write(content)
-    sys.stdout.write('\n')
-    return rootObj, rootElement
 
 def parseString(inString):
     from StringIO import StringIO

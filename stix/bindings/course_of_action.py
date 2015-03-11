@@ -82,10 +82,10 @@ class StructuredCOAType(GeneratedsSuper):
         else:
             lwrite('/>%s' % (eol_, ))
     def exportAttributes(self, lwrite, level, already_processed, namespace_='coa:', name_='StructuredCOAType'):
-        if 'xmlns' not in already_processed:
-            already_processed.add('xmlns')
-            xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
-            lwrite(xmlns)
+        # if 'xmlns' not in already_processed:
+        #     already_processed.add('xmlns')
+        #     xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
+        #     lwrite(xmlns)
         if 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
             xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)

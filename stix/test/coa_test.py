@@ -7,7 +7,7 @@ from stix.test import EntityTestCase, data_marking_test
 from stix.test.common import (
     confidence_test, information_source_test, statement_test, related_test,
 )
-
+from stix.test.extensions.structured_coa import generic_test
 import stix.coa as coa
 import stix.coa.objective as objective
 
@@ -65,10 +65,30 @@ class COATests(EntityTestCase, unittest.TestCase):
         'information_source': information_source_test.InformationSourceTests._full_dict,
         'handling': data_marking_test.MarkingTests._full_dict,
         'related_coas': RelatedCOAsTests._full_dict,
-        'related_packages': related_test.RelatedPackageRefsTests._full_dict
+        'related_packages': related_test.RelatedPackageRefsTests._full_dict,
+        'structured_coa': generic_test.GenericStructuredCOATests._full_dict
     }
 
 
+
+    def test_structured_coa(self):
+        coa_ = coa.CourseOfAction()
+
+        def should_fail():
+            coa_.structured_coa = "ERROR"
+
+        self.assertRaises(
+            TypeError,
+            should_fail
+        )
+
+        from stix.extensions.structured_coa.generic_structured_coa import GenericStructuredCOA
+
+        struct_coa = GenericStructuredCOA()
+        struct_coa.description = "SUCCESS"
+        coa_.structured_coa = struct_coa
+
+        self.assertTrue(str(coa_.structured_coa.description) == "SUCCESS")
 
 
 if __name__ == "__main__":
