@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import uuid
+import contextlib
 import cybox.utils
 
 #: Default "example" namespace used for identifiers when no other namespace is
@@ -122,3 +123,14 @@ def create_id(prefix=None):
         return _get_generator().create_id()
     else:
         return _get_generator().create_id(prefix)
+
+
+@contextlib.contextmanager
+def temp_id_namespace(namespace):
+    try:
+        saved_id_namespace = {get_id_namespace(): get_id_namespace_alias()}
+        set_id_namespace(namespace)
+        yield
+    finally:
+        set_id_namespace(saved_id_namespace)
+
