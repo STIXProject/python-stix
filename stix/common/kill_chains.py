@@ -6,7 +6,6 @@ import functools
 
 # internal
 import stix
-import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
 class KillChain(stix.Entity):
@@ -14,11 +13,11 @@ class KillChain(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
     _binding_class = _binding.KillChainType
     
-    def __init__(self, id_=None, name=None):
+    def __init__(self, id_=None, name=None, definer=None, reference=None):
         self.id_ = id_
         self.name = name
-        self.definer = None
-        self.reference = None
+        self.definer = definer
+        self.reference = reference
         self.number_of_phases = None # can we just do len(self.kill_chain_phases)?
         self.kill_chain_phases = None
     
@@ -47,7 +46,19 @@ class KillChain(stix.Entity):
         return_obj.Kill_Chain_Phase = self.kill_chain_phases.to_obj(ns_info=ns_info)
     
         return return_obj
-    
+
+    def __eq__(self, other):
+        if self is other:
+            return True
+
+        if not isinstance(other, self.__class__):
+            return False
+
+        return other.to_dict() == self.to_dict()
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:
@@ -124,7 +135,23 @@ class KillChainPhase(stix.Entity):
         return_obj.ordinality = self.ordinality
     
         return return_obj
-    
+
+    def __eq__(self, other):
+        if other is self:
+            return True
+
+        if not isinstance(other, KillChainPhase):
+            return False
+
+        return other.to_dict() == self.to_dict()
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+
+    def __hash__(self):
+        return hash(tuple(sorted(self.to_dict().items())))
+
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:
@@ -151,6 +178,9 @@ class KillChainPhase(stix.Entity):
         return_obj.ordinality = d.get('ordinality')
         
         return return_obj
+
+    def to_dict(self):
+        return super(KillChainPhase, self).to_dict()
 
 
 class KillChainPhaseReference(KillChainPhase):
@@ -215,39 +245,34 @@ class _KillChainPhases(stix.TypedList):
     _contained_type = KillChainPhase
 
 
-class LMCOKillChain(object):
+class LMCOKillChain(KillChain):
     """A helper class that makes use of the Lockheed Martin Kill Chain a
     bit easier than having to build one manually.
 
+    This STIX Kill Chain is defined here:
+    http://stix.mitre.org/language/version1.1.1/stix_v1.1.1_lmco_killchain.xml
+
     """
+    # LMCO Kill Chain Phases
+    __recon     = KillChainPhase(phase_id="stix:TTP-af1016d6-a744-4ed7-ac91-00fe2272185a", name="Reconnaissance", ordinality="1")
+    __weapon    = KillChainPhase(phase_id="stix:TTP-445b4827-3cca-42bd-8421-f2e947133c16", name="Weaponization", ordinality="2")
+    __deliver   = KillChainPhase(phase_id="stix:TTP-79a0e041-9d5f-49bb-ada4-8322622b162d", name="Delivery", ordinality="3")
+    __exploit   = KillChainPhase(phase_id="stix:TTP-f706e4e7-53d8-44ef-967f-81535c9db7d0", name="Exploitation", ordinality="4")
+    __install   = KillChainPhase(phase_id="stix:TTP-e1e4e3f7-be3b-4b39-b80a-a593cfd99a4f", name="Installation", ordinality="5")
+    __control   = KillChainPhase(phase_id="stix:TTP-d6dc32b9-2538-4951-8733-3cb9ef1daae2", name="Command and Control", ordinality="6")
+    __action    = KillChainPhase(phase_id="stix:TTP-786ca8f9-2d9a-4213-b38e-399af4a2e5d6", name="Actions on Objectives", ordinality="7")
+    __phases    = (__recon, __weapon, __deliver, __exploit, __install, __control, __action)
+
     def __init__(self):
-        with utils.temp_id_namespace({'http://stix.mitre.org':'stix'}):
-            self.__recon    = self._create_phase(name="Reconnaissance", ordinality="1")
-            self.__weapon   = self._create_phase(name="Weaponization", ordinality="2")
-            self.__deliver  = self._create_phase(name="Delivery", ordinality="3")
-            self.__exploit  = self._create_phase(name="Exploitation", ordinality="4")
-            self.__install  = self._create_phase(name="Installation", ordinality="5")
-            self.__control  = self._create_phase(name="Command and Control", ordinality="6")
-            self.__action   = self._create_phase(name="Actions on Objectives", ordinality="7")
+        super(LMCOKillChain, self).__init__(
+            id_="stix:TTP-af3e707f-2fb9-49e5-8c37-14026ca0a5ff",
+            name="LM Cyber Kill Chain",
+            definer="LMCO",
+            reference="http://www.lockheedmartin.com/content/dam/lockheed/data/corporate/documents/LM-White-Paper-Intel-Driven-Defense.pdf"
+        )
 
-            self.__kill_chain = KillChain(id_=utils.create_id('TTP'), name="LMCO Cyber Kill Chain")
-            self.__kill_chain.kill_chain_phases = (
-                self.__recon,
-                self.__weapon,
-                self.__deliver,
-                self.__exploit,
-                self.__install,
-                self.__control,
-                self.__action
-            )
-
-    def _create_phase(self, name, ordinality):
-        id_ = utils.create_id('TTP')
-        return KillChainPhase(phase_id=id_, name=name, ordinality=ordinality)
-
-    @property
-    def kill_chain(self):
-        return self.__kill_chain
+        # Add LMCO Kill Chain Phases
+        self.kill_chain_phases.extend(self.__phases)
 
     @property
     def phase_reconnaissance(self):
@@ -258,7 +283,7 @@ class LMCOKillChain(object):
         return self.__weapon
 
     @property
-    def phase_deliery(self):
+    def phase_delivery(self):
         return self.__deliver
 
     @property
@@ -277,8 +302,12 @@ class LMCOKillChain(object):
     def phase_actions_and_objectives(self):
         return self.__action
 
-    def to_dict(self):
-        return self.__kill_chain.to_dict()
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
+        """Forbidden: use KillChain.from_dict()"""
+        raise NotImplementedError()
 
-    def to_xml(self):
-        return self.__kill_chain.to_xml()
+    @classmethod
+    def from_dict(cls, d, return_obj=None):
+        """Forbidden: use KillChain.from_dict()"""
+        raise NotImplementedError()
