@@ -24,5 +24,28 @@ def serialize_value(value):
     return value.isoformat()
 
 
+def parse_date(value):
+    if not value:
+        return None
+    elif isinstance(value, datetime.date):
+        return value
+    elif isinstance(value, datetime.datetime):
+        return value.date()
+    else:
+        return dateutil.parser.parse(value).date()
+
+
+def serialize_date(value):
+    if not value:
+        return None
+    elif isinstance(value, datetime.date):
+        return value.isoformat()
+    elif isinstance(value, datetime.datetime):
+        return value.date().isoformat()
+    else:
+        return parse_date(value).isoformat()
+
+
+
 def now():
     return datetime.datetime.now(tz=dateutil.tz.tzutc())
