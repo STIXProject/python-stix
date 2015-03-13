@@ -126,11 +126,11 @@ class MarkingSpecification(stix.Entity):
         return m
 
     @classmethod
-    def from_dict(cls, marking_dict, return_obj=None):
-        if not marking_dict:
+    def from_dict(cls, d, return_obj=None):
+        if not d:
             return None
 
-        get = marking_dict.get  # PEP8 line length fix
+        get = d.get  # PEP8 line length fix
         m = return_obj if return_obj else cls()
         m.id_ = get('id')
         m.idref = get('idref')
@@ -168,7 +168,9 @@ class MarkingStructure(stix.Entity):
 
     def to_dict(self):
         d = {}
+
         d['xsi:type'] = self._XSI_TYPE
+
         if self.marking_model_name:
             d['marking_model_name'] = self.marking_model_name
         if self.marking_model_ref:
@@ -188,8 +190,8 @@ class MarkingStructure(stix.Entity):
 
         raise ValueError("Unregistered xsi:type %s" % xsi_type)
 
-    @staticmethod
-    def from_obj(obj, partial=None):
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
         import stix.extensions.marking.tlp
         import stix.extensions.marking.simple_marking
         import stix.extensions.marking.terms_of_use_marking
@@ -197,34 +199,34 @@ class MarkingStructure(stix.Entity):
         if not obj:
             return None
 
-        if partial:
-            m = partial
+        if return_obj:
+            m = return_obj
             m.marking_model_name = obj.marking_model_name
             m.marking_model_ref = obj.marking_model_ref
 
         else:
-            cls = MarkingStructure.lookup_class(obj.xml_type)
-            m = cls.from_obj(obj)
+            klass = MarkingStructure.lookup_class(obj.xml_type)
+            m = klass.from_obj(obj)
 
         return m
 
-    @staticmethod
-    def from_dict(marking_dict, partial=None):
+    @classmethod
+    def from_dict(cls, d, return_obj=None):
         import stix.extensions.marking.tlp
         import stix.extensions.marking.simple_marking
         import stix.extensions.marking.terms_of_use_marking
         
-        if not marking_dict:
+        if not d:
             return None
 
-        if partial is not None:
-            m = partial
-            m.marking_model_name = marking_dict.get('marking_model_name')
-            m.marking_model_ref = marking_dict.get('marking_model_ref')
+        if return_obj is not None:
+            m = return_obj
+            m.marking_model_name = d.get('marking_model_name')
+            m.marking_model_ref = d.get('marking_model_ref')
 
         else:
-            cls = MarkingStructure.lookup_class(marking_dict.get('xsi:type'))
-            m = cls.from_dict(marking_dict)
+            cls = MarkingStructure.lookup_class(d.get('xsi:type'))
+            m = cls.from_dict(d)
 
         return m
 

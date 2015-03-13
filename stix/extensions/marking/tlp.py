@@ -19,13 +19,13 @@ class TLPMarkingStructure(MarkingStructure):
     def to_obj(self, return_obj=None, ns_info=None):
         super(TLPMarkingStructure, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
-        obj = self._binding_class()
+        if not return_obj:
+            return_obj = self._binding_class()
 
-        MarkingStructure.to_obj(self, return_obj=obj, ns_info=ns_info)
+        MarkingStructure.to_obj(self, return_obj=return_obj, ns_info=ns_info)
+        return_obj.color = self.color
 
-        obj.color = self.color
-
-        return obj
+        return return_obj
 
     def to_dict(self):
         d = MarkingStructure.to_dict(self)
@@ -34,27 +34,31 @@ class TLPMarkingStructure(MarkingStructure):
 
         return d
 
-    @staticmethod
-    def from_obj(obj):
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
 
-        m = TLPMarkingStructure()
-        MarkingStructure.from_obj(obj, m)
-        m.color = obj.color
+        if not return_obj:
+            return_obj = cls()
 
-        return m
+        MarkingStructure.from_obj(obj, return_obj=return_obj)
+        return_obj.color = obj.color
 
-    @staticmethod
-    def from_dict(marking_dict):
-        if not marking_dict:
+        return return_obj
+
+    @classmethod
+    def from_dict(cls, d, return_obj=None):
+        if not d:
             return None
 
-        m = TLPMarkingStructure()
-        MarkingStructure.from_dict(marking_dict, m)
-        m.color = marking_dict.get('color')
+        if not return_obj:
+            return_obj = cls()
 
-        return m
+        MarkingStructure.from_dict(d, return_obj)
+        return_obj.color = d.get('color')
+
+        return return_obj
 
 
 stix.data_marking.add_extension(TLPMarkingStructure)
