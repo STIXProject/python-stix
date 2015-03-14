@@ -7,7 +7,7 @@ from stix.test import EntityTestCase
 
 from stix.common.kill_chains import (
     KillChain, KillChainPhase,  KillChainPhaseReference,
-    KillChainPhasesReference, KillChains, LMCOKillChain
+    KillChainPhasesReference, KillChains
 )
 
 class KillChainTests(EntityTestCase, unittest.TestCase):
@@ -112,15 +112,6 @@ class KillChainPhaseReferencesTests(EntityTestCase, unittest.TestCase):
             },
         ]
     }
-
-
-class LMCOTests(unittest.TestCase):
-    def setUp(self):
-        self.LMCO = LMCOKillChain()
-
-    def test_equal(self):
-        local = LMCOKillChain()
-        self.assertEqual(local, self.LMCO)
 
 
 if __name__ == "__main__":
