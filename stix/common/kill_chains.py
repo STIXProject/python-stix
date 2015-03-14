@@ -5,6 +5,7 @@
 import stix
 import stix.bindings.stix_common as common_binding
 
+
 class KillChain(stix.Entity):
     _binding = common_binding
     _namespace = 'http://stix.mitre.org/common-1'
@@ -242,69 +243,76 @@ class _KillChainPhases(stix.TypedList):
     _contained_type = KillChainPhase
 
 
-class LMCOKillChain(KillChain):
-    """A helper class that makes use of the Lockheed Martin Kill Chain a
-    bit easier than having to build one manually.
+LMCO_KILL_CHAIN = None
 
-    This STIX Kill Chain is defined here:
-    http://stix.mitre.org/language/version1.1.1/stix_v1.1.1_lmco_killchain.xml
 
-    """
-    # LMCO Kill Chain Phases
-    __recon     = KillChainPhase(phase_id="stix:TTP-af1016d6-a744-4ed7-ac91-00fe2272185a", name="Reconnaissance", ordinality="1")
-    __weapon    = KillChainPhase(phase_id="stix:TTP-445b4827-3cca-42bd-8421-f2e947133c16", name="Weaponization", ordinality="2")
-    __deliver   = KillChainPhase(phase_id="stix:TTP-79a0e041-9d5f-49bb-ada4-8322622b162d", name="Delivery", ordinality="3")
-    __exploit   = KillChainPhase(phase_id="stix:TTP-f706e4e7-53d8-44ef-967f-81535c9db7d0", name="Exploitation", ordinality="4")
-    __install   = KillChainPhase(phase_id="stix:TTP-e1e4e3f7-be3b-4b39-b80a-a593cfd99a4f", name="Installation", ordinality="5")
-    __control   = KillChainPhase(phase_id="stix:TTP-d6dc32b9-2538-4951-8733-3cb9ef1daae2", name="Command and Control", ordinality="6")
-    __action    = KillChainPhase(phase_id="stix:TTP-786ca8f9-2d9a-4213-b38e-399af4a2e5d6", name="Actions on Objectives", ordinality="7")
-    __phases    = (__recon, __weapon, __deliver, __exploit, __install, __control, __action)
+def __create_lmco():
+    global LMCO_KILL_CHAIN
+    global PHASE_RECONAISSANCE, PHASE_WEAPONZE, PHASE_DELIVERY
+    global PHASE_EXPLOITATION, PHASE_INSTALLATION, PHASE_COMMAND_AND_CONTROL
+    global PHASE_ACTIONS_AND_OBJECTIVES
 
-    def __init__(self):
-        super(LMCOKillChain, self).__init__(
-            id_="stix:TTP-af3e707f-2fb9-49e5-8c37-14026ca0a5ff",
-            name="LM Cyber Kill Chain",
-            definer="LMCO",
-            reference="http://www.lockheedmartin.com/content/dam/lockheed/data/corporate/documents/LM-White-Paper-Intel-Driven-Defense.pdf"
-        )
+    if LMCO_KILL_CHAIN:
+        return
 
-        # Add LMCO Kill Chain Phases
-        self.kill_chain_phases.extend(self.__phases)
+    PHASE_RECONAISSANCE = KillChainPhase(
+        phase_id="stix:TTP-af1016d6-a744-4ed7-ac91-00fe2272185a",
+        name="Reconnaissance",
+        ordinality="1"
+    )
 
-    @property
-    def phase_reconnaissance(self):
-        return self.__recon
+    PHASE_WEAPONZE = KillChainPhase(
+        phase_id="stix:TTP-445b4827-3cca-42bd-8421-f2e947133c16",
+        name="Weaponization",
+        ordinality="2"
+    )
 
-    @property
-    def phase_weaponize(self):
-        return self.__weapon
+    PHASE_DELIVERY  = KillChainPhase(
+        phase_id="stix:TTP-79a0e041-9d5f-49bb-ada4-8322622b162d",
+        name="Delivery",
+        ordinality="3"
+    )
 
-    @property
-    def phase_delivery(self):
-        return self.__deliver
+    PHASE_EXPLOITATION = KillChainPhase(
+        phase_id="stix:TTP-f706e4e7-53d8-44ef-967f-81535c9db7d0",
+        name="Exploitation",
+        ordinality="4"
+    )
 
-    @property
-    def phase_exploitation(self):
-        return self.__exploit
+    PHASE_INSTALLATION  = KillChainPhase(
+        phase_id="stix:TTP-e1e4e3f7-be3b-4b39-b80a-a593cfd99a4f",
+        name="Installation",
+        ordinality="5"
+    )
 
-    @property
-    def phase_installation(self):
-        return self.__install
+    PHASE_COMMAND_AND_CONTROL = KillChainPhase(
+        phase_id="stix:TTP-d6dc32b9-2538-4951-8733-3cb9ef1daae2",
+        name="Command and Control",
+        ordinality="6"
 
-    @property
-    def phase_command_and_control(self):
-        return self.__control
+    )
 
-    @property
-    def phase_actions_and_objectives(self):
-        return self.__action
+    PHASE_ACTIONS_AND_OBJECTIVES  = KillChainPhase(
+        phase_id="stix:TTP-786ca8f9-2d9a-4213-b38e-399af4a2e5d6",
+        name="Actions on Objectives",
+        ordinality="7"
+    )
 
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        """Forbidden: use KillChain.from_dict()"""
-        raise NotImplementedError()
+    lmco_phases = (
+        PHASE_RECONAISSANCE, PHASE_WEAPONZE, PHASE_DELIVERY,
+        PHASE_EXPLOITATION, PHASE_INSTALLATION, PHASE_COMMAND_AND_CONTROL,
+        PHASE_ACTIONS_AND_OBJECTIVES
+    )
 
-    @classmethod
-    def from_dict(cls, d, return_obj=None):
-        """Forbidden: use KillChain.from_dict()"""
-        raise NotImplementedError()
+    LMCO_KILL_CHAIN = KillChain(
+        id_="stix:TTP-af3e707f-2fb9-49e5-8c37-14026ca0a5ff",
+        name="LM Cyber Kill Chain",
+        definer="LMCO",
+        reference="http://www.lockheedmartin.com/content/dam/lockheed/data/corporate/documents/LM-White-Paper-Intel-Driven-Defense.pdf"
+    )
+
+    LMCO_KILL_CHAIN.kill_chain_phases.extend(lmco_phases)
+
+
+# Set the module-level LMCO Kill Chain object
+__create_lmco()
