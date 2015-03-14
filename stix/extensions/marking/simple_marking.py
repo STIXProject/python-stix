@@ -19,13 +19,13 @@ class SimpleMarkingStructure(MarkingStructure):
     def to_obj(self, return_obj=None, ns_info=None):
         super(SimpleMarkingStructure, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
-        obj = self._binding_class()
+        if not return_obj:
+            return_obj = self._binding_class()
 
-        MarkingStructure.to_obj(self, return_obj=obj, ns_info=ns_info)
+        MarkingStructure.to_obj(self, return_obj=return_obj, ns_info=ns_info)
+        return_obj.Statement = self.statement
 
-        obj.Statement = self.statement
-
-        return obj
+        return return_obj
 
     def to_dict(self):
         d = MarkingStructure.to_dict(self)
@@ -34,27 +34,31 @@ class SimpleMarkingStructure(MarkingStructure):
 
         return d
 
-    @staticmethod
-    def from_obj(obj):
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
 
-        m = SimpleMarkingStructure()
-        MarkingStructure.from_obj(obj, m)
-        m.statement = obj.Statement
+        if not return_obj:
+            return_obj = cls()
 
-        return m
+        MarkingStructure.from_obj(obj, return_obj)
+        return_obj.statement = obj.Statement
 
-    @staticmethod
-    def from_dict(marking_dict):
-        if not marking_dict:
+        return return_obj
+
+    @classmethod
+    def from_dict(cls, d, return_obj=None):
+        if not d:
             return None
 
-        m = SimpleMarkingStructure()
-        MarkingStructure.from_dict(marking_dict, m)
-        m.statement = marking_dict.get('statement')
+        if not return_obj:
+            return_obj = cls()
 
-        return m
+        MarkingStructure.from_dict(d, return_obj=return_obj)
+        return_obj.statement = d.get('statement')
+
+        return return_obj
 
 
 stix.data_marking.add_extension(SimpleMarkingStructure)

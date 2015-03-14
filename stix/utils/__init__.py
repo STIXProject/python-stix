@@ -213,11 +213,15 @@ def iter_vars(obj):
 
 
 def is_dictable(obj):
-    return hasattr(obj, "to_dict") and hasattr(obj, "from_dict")
+    return hasattr(obj, "to_dict")
 
 
 def is_timestamp(obj):
     return isinstance(obj, datetime.datetime)
+
+
+def is_date(obj):
+    return isinstance(obj, datetime.date)
 
 
 def is_bool(obj):
@@ -247,6 +251,8 @@ def to_dict(entity, skip=()):
             d[key] = field.to_dict()
         elif is_timestamp(field):
             d[key] = dates.serialize_value(field)
+        elif is_date(field):
+            d[key] = dates.serialize_date(field)
         elif is_element(field) or is_etree(field):
             d[key] = lxml.etree.tostring(field)
         elif is_sequence(field):

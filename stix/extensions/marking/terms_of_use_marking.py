@@ -19,43 +19,47 @@ class TermsOfUseMarkingStructure(MarkingStructure):
     def to_obj(self, return_obj=None, ns_info=None):
         super(TermsOfUseMarkingStructure, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
-        obj = self._binding_class()
+        if not return_obj:
+            return_obj = self._binding_class()
 
-        MarkingStructure.to_obj(self, return_obj=obj, ns_info=ns_info)
+        MarkingStructure.to_obj(self, return_obj=return_obj, ns_info=ns_info)
+        return_obj.Terms_Of_Use = self.terms_of_use
 
-        obj.Terms_Of_Use = self.terms_of_use
-
-        return obj
+        return return_obj
 
     def to_dict(self):
         d = MarkingStructure.to_dict(self)
+
         if self.terms_of_use:
             d['terms_of_use'] = self.terms_of_use
 
         return d
 
-    @staticmethod
-    def from_obj(obj):
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
 
-        m = TermsOfUseMarkingStructure()
-        MarkingStructure.from_obj(obj, m)
-        m.terms_of_use = obj.Terms_Of_Use
+        if not return_obj:
+            return_obj = cls()
 
-        return m
+        MarkingStructure.from_obj(obj, return_obj=return_obj)
+        return_obj.terms_of_use = obj.Terms_Of_Use
 
-    @staticmethod
-    def from_dict(marking_dict):
-        if not marking_dict:
+        return return_obj
+
+    @classmethod
+    def from_dict(cls, d, return_obj=None):
+        if not d:
             return None
 
-        m = TermsOfUseMarkingStructure()
-        MarkingStructure.from_dict(marking_dict, m)
-        m.terms_of_use = marking_dict.get('terms_of_use')
+        if not return_obj:
+            return_obj = cls()
 
-        return m
+        MarkingStructure.from_dict(d, return_obj)
+        return_obj.terms_of_use = d.get('terms_of_use')
+
+        return return_obj
 
 
 stix.data_marking.add_extension(TermsOfUseMarkingStructure)
-
