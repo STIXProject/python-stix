@@ -22,14 +22,17 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
     """The SimpleMarkingStructureType is a basic implementation of the data
     marking schema that allows for a string statement to be
     associated with the data being marked. One example might be the
-    application of a copyright statement to some data set."""
+    application of a copyright statement to some data set.
+
+    """
+    xmlns          = XML_NS
+    xmlns_prefix   = "simpleMarking"
+    xml_type       = "SimpleMarkingStructureType"
+
     subclass = None
     superclass = data_marking_binding.MarkingStructureType
     def __init__(self, marking_model_ref=None, marking_model_name=None, Statement=None):
         super(SimpleMarkingStructureType, self).__init__(marking_model_ref=marking_model_ref, marking_model_name=marking_model_name)
-        self.xmlns          = XML_NS
-        self.xmlns_prefix   = "simpleMarking"
-        self.xml_type       = "SimpleMarkingStructureType"
         self.Statement = Statement
     def factory(*args_, **kwargs_):
         if SimpleMarkingStructureType.subclass:
@@ -97,6 +100,8 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
             self.Statement = Statement_
         super(SimpleMarkingStructureType, self).buildChildren(child_, node, nodeName_, True)
 # end class SimpleMarkingStructureType
+
+data_marking_binding.add_extension(SimpleMarkingStructureType)
 
 GDSClassesMapping = {}
 

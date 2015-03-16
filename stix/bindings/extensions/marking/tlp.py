@@ -23,14 +23,17 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
     schema that allows for a TLP Designation to be attached to an
     identified XML structure. Information about TLP is available
     here: http://www.us-cert.gov/tlp.The TLP color designation of
-    the marked structure."""
+    the marked structure.
+
+    """
+    xmlns          = XML_NS
+    xmlns_prefix   = "tlpMarking"
+    xml_type       = "TLPMarkingStructureType"
+
     subclass = None
     superclass = data_marking_binding.MarkingStructureType
     def __init__(self, marking_model_ref=None, marking_model_name=None, color=None):
         super(TLPMarkingStructureType, self).__init__(marking_model_ref=marking_model_ref, marking_model_name=marking_model_name)
-        self.xmlns          = XML_NS
-        self.xmlns_prefix   = "tlpMarking"
-        self.xml_type       = "TLPMarkingStructureType"
         self.color = _cast(None, color)
         pass
     def factory(*args_, **kwargs_):
@@ -95,6 +98,8 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
         super(TLPMarkingStructureType, self).buildChildren(child_, node, nodeName_, True)
         pass
 # end class TLPMarkingStructureType
+
+data_marking_binding.add_extension(TLPMarkingStructureType)
 
 GDSClassesMapping = {}
 
