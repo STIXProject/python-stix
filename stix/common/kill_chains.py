@@ -237,6 +237,18 @@ class KillChainPhasesReference(stix.EntityList):
     _binding_var = "Kill_Chain_Phase"
     _inner_name = "kill_chain_phases"
 
+    def _fix_value(self, value):
+        def is_lmco(phase):
+            return phase.phase_id in LMCO_KILL_CHAIN_PHASES_DICT
+
+        if isinstance(value, KillChainPhase) and is_lmco(value):
+            return KillChainPhaseReference(
+                phase_id=value.phase_id,
+                kill_chain_id=LMCO_KILL_CHAIN.id_
+            )
+
+        return super(KillChainPhasesReference, self)._fix_value(value)
+
 
 # NOT AN ACTUAL STIX TYPE!
 class _KillChainPhases(stix.TypedList):
@@ -244,11 +256,12 @@ class _KillChainPhases(stix.TypedList):
 
 
 LMCO_KILL_CHAIN = None
-
+LMCO_KILL_CHAIN_PHASES = None
+LMCO_KILL_CHAIN_PHASES_DICT = None
 
 def __create_lmco():
-    global LMCO_KILL_CHAIN
-    global PHASE_RECONNAISSANCE, PHASE_WEAPONZE, PHASE_DELIVERY
+    global LMCO_KILL_CHAIN, LMCO_KILL_CHAIN_PHASES, LMCO_KILL_CHAIN_PHASES_DICT
+    global PHASE_RECONNAISSANCE, PHASE_WEAPONIZE, PHASE_DELIVERY
     global PHASE_EXPLOITATION, PHASE_INSTALLATION, PHASE_COMMAND_AND_CONTROL
     global PHASE_ACTIONS_AND_OBJECTIVES
 
@@ -261,7 +274,7 @@ def __create_lmco():
         ordinality="1"
     )
 
-    PHASE_WEAPONZE = KillChainPhase(
+    PHASE_WEAPONIZE = KillChainPhase(
         phase_id="stix:TTP-445b4827-3cca-42bd-8421-f2e947133c16",
         name="Weaponization",
         ordinality="2"
@@ -298,8 +311,8 @@ def __create_lmco():
         ordinality="7"
     )
 
-    lmco_phases = (
-        PHASE_RECONNAISSANCE, PHASE_WEAPONZE, PHASE_DELIVERY,
+    LMCO_KILL_CHAIN_PHASES = (
+        PHASE_RECONNAISSANCE, PHASE_WEAPONIZE, PHASE_DELIVERY,
         PHASE_EXPLOITATION, PHASE_INSTALLATION, PHASE_COMMAND_AND_CONTROL,
         PHASE_ACTIONS_AND_OBJECTIVES
     )
@@ -311,8 +324,11 @@ def __create_lmco():
         reference="http://www.lockheedmartin.com/content/dam/lockheed/data/corporate/documents/LM-White-Paper-Intel-Driven-Defense.pdf"
     )
 
-    LMCO_KILL_CHAIN.kill_chain_phases.extend(lmco_phases)
+    LMCO_KILL_CHAIN.kill_chain_phases.extend(LMCO_KILL_CHAIN_PHASES)
 
+    LMCO_KILL_CHAIN_PHASES_DICT = dict(
+        (x.phase_id, x) for x in LMCO_KILL_CHAIN_PHASES
+    )
 
 # Set the module-level LMCO Kill Chain object
 __create_lmco()
