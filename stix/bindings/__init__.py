@@ -1,20 +1,24 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-import base64
-from datetime import datetime, tzinfo, timedelta
 import re
-from xml.sax import saxutils
+import base64
+import collections
 import contextlib
-from lxml import etree as etree_
+from xml.sax import saxutils
+from datetime import datetime, tzinfo, timedelta
 
+from lxml import etree as etree_
 import cybox.bindings as cybox_bindings
+
+from stix import xmlconst
 
 try:
     import maec.bindings as maec_bindings
     _MAEC_INSTALLED = True
 except ImportError:
     _MAEC_INSTALLED = False
+
 
 CDATA_START = "<![CDATA["
 CDATA_END = "]]>"
@@ -385,12 +389,31 @@ def _cast(typ, value):
         return value
     return typ(value)
 
+
+TypeInfo = collections.namedtuple("TypeInfo", ('ns', 'typename'))
+
+
+def get_type_info(node):
+    xsi_type = node.attrib[xmlconst.TAG_XSI_TYPE]
+    typeinfo = xsi_type.split(":")
+
+    if len(typeinfo) == 2:
+        prefix, typename = typeinfo
+    else:
+        typename = typeinfo
+        prefix = None
+
+    ns = node.nsmap[prefix]
+    return TypeInfo(ns=ns, typename=typename)
+
+
 __all__ = [
     '_cast',
     'etree_',
     'ExternalEncoding',
     'find_attr_value_',
     'get_all_text_',
+    'get_type_info',
     'parsexml_',
     'quote_xml',
     'quote_attrib',
@@ -400,5 +423,6 @@ __all__ = [
     'Tag_pattern_',
     'GeneratedsSuper',
     'CDATA_START',
-    'CDATA_END'
+    'CDATA_END',
+    'TypeInfo'
 ]
