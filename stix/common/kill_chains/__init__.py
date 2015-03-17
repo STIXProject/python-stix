@@ -248,7 +248,10 @@ class KillChainPhasesReference(stix.EntityList):
 
     def _fix_value(self, value):
         if isinstance(value, KillChainPhase):
-            return KillChainPhaseReference(phase_id=value.phase_id)
+            if value.phase_id:
+                return KillChainPhaseReference(phase_id=value.phase_id)
+            
+            raise ValueError("KillChainPhase must have a phase_id set.")
 
         return super(KillChainPhasesReference, self)._fix_value(value)
 
