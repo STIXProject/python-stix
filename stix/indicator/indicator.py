@@ -8,7 +8,6 @@ from cybox.common import Time
 # internal
 import stix
 import stix.utils as utils
-import stix.xmlconst as xmlconst
 from stix.common import (
     Identity, InformationSource, VocabString, Confidence,
     RelatedTTP, Statement, CampaignRef
