@@ -147,8 +147,11 @@ class MarkingStructure(stix.Entity):
     _binding = stix_data_marking_binding
     _binding_class = stix_data_marking_binding.MarkingStructureType
     _namespace = 'http://data-marking.mitre.org/Marking-1'
+    _XSI_TYPE = None  # overridden by subclasses
 
     def __init__(self):
+        self.id_ = None
+        self.idref = None
         self.marking_model_name = None
         self.marking_model_ref = None
 
@@ -161,6 +164,8 @@ class MarkingStructure(stix.Entity):
         if not return_obj:
             return_obj = self._binding_class()
 
+        return_obj.id = self.id_
+        return_obj.idref = self.idref
         return_obj.marking_model_name = self.marking_model_name
         return_obj.marking_model_ref = self.marking_model_ref
 
@@ -169,8 +174,13 @@ class MarkingStructure(stix.Entity):
     def to_dict(self):
         d = {}
 
-        d['xsi:type'] = self._XSI_TYPE
+        if self._XSI_TYPE:
+            d['xsi:type'] = self._XSI_TYPE
 
+        if self.id_:
+            d['id'] = self.id_
+        if self.idref:
+            d['idref'] = self.idref
         if self.marking_model_name:
             d['marking_model_name'] = self.marking_model_name
         if self.marking_model_ref:
@@ -181,7 +191,8 @@ class MarkingStructure(stix.Entity):
     @staticmethod
     def lookup_class(xsi_type):
         if not xsi_type:
-            raise ValueError("xsi:type is required")
+            return MarkingStructure
+
         for (k, v) in _EXTENSION_MAP.iteritems():
             # TODO: for now we ignore the prefix and just check for
             # a partial match
@@ -201,12 +212,17 @@ class MarkingStructure(stix.Entity):
 
         if return_obj:
             m = return_obj
+            m.id_ = obj.id
+            m.idref = obj.idref
             m.marking_model_name = obj.marking_model_name
             m.marking_model_ref = obj.marking_model_ref
 
         else:
-            klass = MarkingStructure.lookup_class(obj.xml_type)
-            m = klass.from_obj(obj)
+            if hasattr(obj, 'xml_type'):
+                klass = MarkingStructure.lookup_class(obj.xml_type)
+                m = klass.from_obj(obj)
+            else:
+                m = cls.from_obj(obj, cls())
 
         return m
 
@@ -221,12 +237,16 @@ class MarkingStructure(stix.Entity):
 
         if return_obj is not None:
             m = return_obj
+            m.id_ = d.get('id')
+            m.idref = d.get('idref')
             m.marking_model_name = d.get('marking_model_name')
             m.marking_model_ref = d.get('marking_model_ref')
-
         else:
-            cls = MarkingStructure.lookup_class(d.get('xsi:type'))
-            m = cls.from_dict(d)
+            if 'xsi:type' in d:
+                cls = MarkingStructure.lookup_class(d.get('xsi:type'))
+                m = cls.from_dict(d)
+            else:
+                m = cls.from_dict(d, cls())
 
         return m
 

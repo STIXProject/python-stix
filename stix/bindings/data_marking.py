@@ -9,6 +9,7 @@
 #
 
 import sys
+from stix import xmlconst
 from stix.bindings import *
 import stix.bindings.stix_common as stix_common_binding
 
@@ -17,6 +18,7 @@ XML_NS  = "http://data-marking.mitre.org/Marking-1"
 #
 # Data representation classes.
 #
+
 
 class MarkingType(GeneratedsSuper):
     """MarkingType specifies a structure for marking information to be
@@ -328,37 +330,43 @@ class MarkingSpecificationType(GeneratedsSuper):
             Controlled_Structure_ = self.gds_validate_string(Controlled_Structure_, node, 'Controlled_Structure')
             self.Controlled_Structure = Controlled_Structure_
         elif nodeName_ == 'Marking_Structure':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
 
-                if type_name_ == "SimpleMarkingStructureType":
-                    import stix.bindings.extensions.marking.simple_marking as simple_marking_binding
-                    obj_ = simple_marking_binding.SimpleMarkingStructureType.factory()
-                elif type_name_ == "TLPMarkingStructureType":
-                    import stix.bindings.extensions.marking.tlp as tlp_marking_binding
-                    obj_ = tlp_marking_binding.TLPMarkingStructureType.factory()
-                elif type_name_ == "TermsOfUseMarkingStructureType":
-                    import stix.bindings.extensions.marking.terms_of_use_marking as tou_marking_binding
-                    obj_ = tou_marking_binding.TermsOfUseMarkingStructureType.factory()
-                else:
-                    raise NotImplementedError('Marking structure type not implemented ' + type_name_)
-            else:
-                raise NotImplementedError('Marking structure type not declared: no xsi_type found')
+            import stix.bindings.extensions.marking.simple_marking as simple_marking_binding
+            import stix.bindings.extensions.marking.tlp as tlp_marking_binding
+            import stix.bindings.extensions.marking.terms_of_use_marking as tou_marking_binding
 
+            # Look for xsi:type. If not there, build an instance of
+            # MarkingStructureType
+            if xmlconst.TAG_XSI_TYPE not in child_.attrib:
+                ref = MarkingStructureType.factory()
+                ref.build(child_)
+                self.Marking_Structure.append(ref)
+                return
+
+            # Extract the xsi:type associated type namespace and type name
+            typeinfo = get_type_info(child_)
+
+            if typeinfo not in _EXTENSION_MAP:
+                raise NotImplementedError('Marking structure type not implemented ' + typeinfo.typename)
+
+            klass = _EXTENSION_MAP[typeinfo]
+            obj_ = klass.factory()
             obj_.build(child_)
             self.Marking_Structure.append(obj_)
+
         elif nodeName_ == 'Information_Source':
             obj_ = stix_common_binding.InformationSourceType.factory()
             obj_.build(child_)
             self.set_Information_Source(obj_)
 # end class MarkingSpecificationType
+
+
+_EXTENSION_MAP = {}
+
+def add_extension(klass):
+    typeinfo = TypeInfo(ns=klass.xmlns, typename=klass.xml_type)
+    _EXTENSION_MAP[typeinfo] = klass
+
 
 GDSClassesMapping = {}
 
@@ -440,8 +448,11 @@ if __name__ == '__main__':
     #import pdb; pdb.set_trace()
     main()
 
+
 __all__ = [
     "MarkingType",
     "MarkingStructureType",
-    "MarkingSpecificationType"
-    ]
+    "MarkingSpecificationType",
+    "ExtensionMap",
+    "add_extension"
+]

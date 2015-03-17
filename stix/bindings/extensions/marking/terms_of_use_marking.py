@@ -27,14 +27,19 @@ class TermsOfUseMarkingStructureType(data_marking_binding.MarkingStructureType):
     Marking statements apply. Its up to the organization adding an
     additional Term Of User Marking statement to ensure that it's
     Terms Of Use does not conflict with any previously applied Terms
-    Of Use Marking Statement."""
+    Of Use Marking Statement.
+
+    """
     subclass = None
     superclass = data_marking_binding.MarkingStructureType
+
+    xmlns          = XML_NS
+    xmlns_prefix   = "TOUMarking"
+    xml_type       = "TermsOfUseMarkingStructureType"
+
     def __init__(self, idref=None, marking_model_ref=None, marking_model_name=None, id=None, Terms_Of_Use=None):
         super(TermsOfUseMarkingStructureType, self).__init__(idref=idref, marking_model_ref=marking_model_ref, marking_model_name=marking_model_name, id=id)
-        self.xmlns          = XML_NS
-        self.xmlns_prefix   = "TOUMarking"
-        self.xml_type       = "TermsOfUseMarkingStructureType"
+
         self.Terms_Of_Use = Terms_Of_Use
     def factory(*args_, **kwargs_):
         if TermsOfUseMarkingStructureType.subclass:
@@ -99,7 +104,7 @@ class TermsOfUseMarkingStructureType(data_marking_binding.MarkingStructureType):
         super(TermsOfUseMarkingStructureType, self).buildChildren(child_, node, nodeName_, True)
 # end class TermsOfUseMarkingStructureType
 
-
+data_marking_binding.add_extension(TermsOfUseMarkingStructureType)
 
 GDSClassesMapping = {}
 
