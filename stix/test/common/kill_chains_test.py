@@ -4,41 +4,47 @@
 import unittest
 
 from stix.test import EntityTestCase
-import stix.common.kill_chains as kill_chains
-import stix.common.kill_chains.lmco as lmco
+from stix.common.kill_chains import (
+    KillChain, KillChainPhase, KillChainPhaseReference,
+    KillChainPhasesReference, KillChains, lmco
+)
 
 
 class KillChainTests(EntityTestCase, unittest.TestCase):
-    klass = kill_chains.KillChain
+    klass = KillChain
     _full_dict = {
         'definer': 'Myself',
         'kill_chain_phases': [
             {'name': 'Infect Machine'},
             {'name': 'Exfiltrate Data'}
         ],
-       'name': 'Organization-specific Kill Chain'
+        'name': 'Organization-specific Kill Chain'
     }
 
     def test_equal(self):
-        chain1 = kill_chains.KillChain(id_="test", name="foo", definer="bar", reference="foobar.com")
-        chain2 = kill_chains.KillChain(id_="test", name="foo", definer="bar", reference="foobar.com")
+        chain1 = KillChain(id_="test", name="foo", definer="bar",
+                           reference="foobar.com")
+        chain2 = KillChain(id_="test", name="foo", definer="bar",
+                           reference="foobar.com")
 
         self.assertEqual(chain1, chain2)
 
-        chain1.kill_chain_phases.append(kill_chains.KillChainPhase(phase_id="test"))
-        chain2.kill_chain_phases.append(kill_chains.KillChainPhase(phase_id="test"))
+        chain1.kill_chain_phases.append(KillChainPhase(phase_id="test"))
+        chain2.kill_chain_phases.append(KillChainPhase(phase_id="test"))
 
         self.assertEqual(chain1, chain2)
 
     def test_not_equal(self):
-        chain1 = kill_chains.KillChain(id_="test", name="foo", definer="bar", reference="foobar.com")
-        chain2 = kill_chains.KillChain(id_="TEST", name="FOO", definer="BAR", reference="FOOBAR.ORG")
+        chain1 = KillChain(id_="test", name="foo", definer="bar",
+                           reference="foobar.com")
+        chain2 = KillChain(id_="TEST", name="FOO", definer="BAR",
+                           reference="FOOBAR.ORG")
 
         self.assertNotEqual(chain1, chain2)
 
 
 class KillChainsTests(EntityTestCase, unittest.TestCase):
-    klass = kill_chains.KillChains
+    klass = KillChains
     _full_dict = {
         'kill_chains': [
             {
@@ -57,13 +63,12 @@ class KillChainsTests(EntityTestCase, unittest.TestCase):
                     {'name': 'Import Data'}
                 ],
             },
-
         ]
     }
 
 
 class KillChainPhaseTests(EntityTestCase, unittest.TestCase):
-    klass = kill_chains.KillChainPhase
+    klass = KillChainPhase
     _full_dict = {
         'name': 'Reconnaissance',
         'ordinality': 1,
@@ -71,23 +76,27 @@ class KillChainPhaseTests(EntityTestCase, unittest.TestCase):
     }
 
     def test_equal(self):
-        phase1 = kill_chains.KillChainPhase(phase_id='stix:test-1', ordinality=1, name='Reconnaissance')
-        phase2 = kill_chains.KillChainPhase(phase_id='stix:test-1', ordinality=1, name='Reconnaissance')
+        phase1 = KillChainPhase(phase_id='stix:test-1', ordinality=1,
+                                name='Reconnaissance')
+        phase2 = KillChainPhase(phase_id='stix:test-1', ordinality=1,
+                                name='Reconnaissance')
         self.assertEqual(phase1, phase2)
 
-        phase1 = kill_chains.KillChainPhase.from_dict(phase1.to_dict())
-        phase2 = kill_chains.KillChainPhase.from_dict(phase2.to_dict())
+        phase1 = KillChainPhase.from_dict(phase1.to_dict())
+        phase2 = KillChainPhase.from_dict(phase2.to_dict())
         self.assertEqual(phase1, phase2)
 
     def test_not_equal(self):
-        phase1 = kill_chains.KillChainPhase(phase_id='stix:test-1', ordinality=1, name='Reconnaissance')
-        phase2 = kill_chains.KillChainPhase(phase_id='stix:test-2', ordinality=2, name='Weaponize')
+        phase1 = KillChainPhase(phase_id='stix:test-1', ordinality=1,
+                                name='Reconnaissance')
+        phase2 = KillChainPhase(phase_id='stix:test-2', ordinality=2,
+                                name='Weaponize')
 
         self.assertNotEqual(phase1, phase2)
 
 
 class KillChainPhaseReferenceTests(EntityTestCase, unittest.TestCase):
-    klass = kill_chains.KillChainPhaseReference
+    klass = KillChainPhaseReference
 
     _full_dict = {
         'kill_chain_id': 'stix:TTP-af3e707f-2fb9-49e5-8c37-14026ca0a5ff',
@@ -96,16 +105,18 @@ class KillChainPhaseReferenceTests(EntityTestCase, unittest.TestCase):
 
 
 class KillChainPhasesReferenceTests(EntityTestCase, unittest.TestCase):
-    klass = kill_chains.KillChainPhasesReference
+    klass = KillChainPhasesReference
 
     _full_dict = {
         'kill_chain_phases': [
             {
-                'kill_chain_id': 'stix:TTP-af3e707f-2fb9-49e5-8c37-14026ca0a5ff',
+                'kill_chain_id':
+                    'stix:TTP-af3e707f-2fb9-49e5-8c37-14026ca0a5ff',
                 'phase_id': 'stix:TTP-786ca8f9-2d9a-4213-b38e-399af4a2e5d6'
             },
             {
-                'kill_chain_id': 'stix:TTP-af3e707f-2fb9-49e5-8c37-14026ca0a5ff',
+                'kill_chain_id':
+                    'stix:TTP-af3e707f-2fb9-49e5-8c37-14026ca0a5ff',
                 'phase_id': 'stix:TTP-786ca8f9-2d9a-4213-b38e-399af4a2e5d6'
             },
         ]
@@ -113,11 +124,12 @@ class KillChainPhasesReferenceTests(EntityTestCase, unittest.TestCase):
 
     def test_add_phase(self):
         phase = lmco.PHASE_DELIVERY
-        refs = kill_chains.KillChainPhasesReference()
+        refs = KillChainPhasesReference()
         refs.append(phase)
 
-        self.assertTrue(isinstance(refs[0], kill_chains.KillChainPhaseReference))
+        self.assertTrue(isinstance(refs[0], KillChainPhaseReference))
         self.assertTrue(refs[0].phase_id, lmco.PHASE_DELIVERY.phase_id)
+
 
 if __name__ == "__main__":
     unittest.main()
