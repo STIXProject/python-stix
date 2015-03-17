@@ -659,6 +659,14 @@ class Indicator(stix.BaseCoreComponent):
         self._kill_chain_phases = KillChainPhasesReference(value)
 
     def add_kill_chain_phase(self, value):
+        """Add a new Kill Chain Phase reference to this Indicator.
+
+        Args:
+            value: a :class:`stix.common.kill_chains.KillChainPhase` or a `str`
+                representing the phase_id of. Note that you if you are defining
+                a custom Kill Chain, you need to add it to the STIX package
+                separately.
+        """
         self.kill_chain_phases.append(value)
 
     @property
