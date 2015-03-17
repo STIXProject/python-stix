@@ -4,7 +4,8 @@
 import unittest
 
 from stix.test import EntityTestCase
-from stix.common import kill_chains
+import stix.common.kill_chains as kill_chains
+import stix.common.kill_chains.lmco as lmco
 
 
 class KillChainTests(EntityTestCase, unittest.TestCase):
@@ -111,12 +112,12 @@ class KillChainPhasesReferenceTests(EntityTestCase, unittest.TestCase):
     }
 
     def test_add_phase(self):
-        phase = kill_chains.PHASE_DELIVERY
+        phase = lmco.PHASE_DELIVERY
         refs = kill_chains.KillChainPhasesReference()
         refs.append(phase)
 
         self.assertTrue(isinstance(refs[0], kill_chains.KillChainPhaseReference))
-        self.assertTrue(refs[0].phase_id, kill_chains.PHASE_DELIVERY.phase_id)
+        self.assertTrue(refs[0].phase_id, lmco.PHASE_DELIVERY.phase_id)
 
 if __name__ == "__main__":
     unittest.main()
