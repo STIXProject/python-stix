@@ -110,7 +110,15 @@ class KillChainPhase(stix.Entity):
         self.phase_id = phase_id
         self.name = name
         self.ordinality = ordinality
-    
+
+    @property
+    def phase_id(self):
+        return self._phase_id
+
+    @phase_id.setter
+    def phase_id(self, value):
+        self._set_var(basestring, try_cast=False, phase_id=value)
+
     @property
     def ordinality(self):
         return self._ordinality
@@ -237,11 +245,11 @@ class KillChainPhasesReference(stix.EntityList):
     _binding_var = "Kill_Chain_Phase"
     _inner_name = "kill_chain_phases"
 
-    def _fix_value(self, value):
-        def is_lmco(phase):
-            return phase.phase_id in LMCO_KILL_CHAIN_PHASES_DICT
+    def _is_lmco(self, value):
+        return any(value.phase_id == x.phase_id for x in LMCO_KILL_CHAIN_PHASES)
 
-        if isinstance(value, KillChainPhase) and is_lmco(value):
+    def _fix_value(self, value):
+        if isinstance(value, KillChainPhase) and self._is_lmco(value):
             return KillChainPhaseReference(
                 phase_id=value.phase_id,
                 kill_chain_id=LMCO_KILL_CHAIN.id_
@@ -257,10 +265,17 @@ class _KillChainPhases(stix.TypedList):
 
 LMCO_KILL_CHAIN = None
 LMCO_KILL_CHAIN_PHASES = None
-LMCO_KILL_CHAIN_PHASES_DICT = None
+PHASE_RECONNAISSANCE = None
+PHASE_WEAPONIZE = None
+PHASE_DELIVERY = None
+PHASE_EXPLOITATION = None
+PHASE_INSTALLATION = None
+PHASE_COMMAND_AND_CONTROL = None
+PHASE_ACTIONS_AND_OBJECTIVES = None
+
 
 def __create_lmco():
-    global LMCO_KILL_CHAIN, LMCO_KILL_CHAIN_PHASES, LMCO_KILL_CHAIN_PHASES_DICT
+    global LMCO_KILL_CHAIN, LMCO_KILL_CHAIN_PHASES
     global PHASE_RECONNAISSANCE, PHASE_WEAPONIZE, PHASE_DELIVERY
     global PHASE_EXPLOITATION, PHASE_INSTALLATION, PHASE_COMMAND_AND_CONTROL
     global PHASE_ACTIONS_AND_OBJECTIVES
@@ -326,9 +341,6 @@ def __create_lmco():
 
     LMCO_KILL_CHAIN.kill_chain_phases.extend(LMCO_KILL_CHAIN_PHASES)
 
-    LMCO_KILL_CHAIN_PHASES_DICT = dict(
-        (x.phase_id, x) for x in LMCO_KILL_CHAIN_PHASES
-    )
 
 # Set the module-level LMCO Kill Chain object
 __create_lmco()
