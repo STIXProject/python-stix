@@ -58,7 +58,7 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
 
     def _collect_namespaces(self, node):
         self.__input_namespaces__ = {}
-        for alias,ns in node.nsmap.iteritems():
+        for alias, ns in node.nsmap.iteritems():
             self.__input_namespaces__[ns] = alias
 
     def _cast_ioc(self, node):

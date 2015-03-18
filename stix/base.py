@@ -224,7 +224,7 @@ class Entity(object):
         """
         try:
             d = json.load(json_doc)
-        except AttributeError: # catch the read() error
+        except AttributeError:  # catch the read() error
             d = json.loads(json_doc)
 
         return cls.from_dict(d)
@@ -617,7 +617,7 @@ class BaseCoreComponent(Entity):
             self._idref = None
         else:
             self._idref = value
-            self.id_ = None # unset id_ if idref is present
+            self.id_ = None  # unset id_ if idref is present
 
     @property
     def version(self):

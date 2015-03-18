@@ -14,4 +14,3 @@ class Contributors(stix.EntityList):
     _contained_type = Contributor
     _binding_var = "Contributor"
     _inner_name = "contributors"
-    

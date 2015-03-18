@@ -174,6 +174,7 @@ class TTP(stix.BaseCoreComponent):
 
         return return_obj
 
+
 # NOT ACTUAL STIX TYPE
 class _IntendedEffects(stix.TypedList):
     _contained_type = Statement

@@ -5,6 +5,7 @@ import stix
 import stix.bindings.incident as incident_binding
 from stix.common import vocabs, VocabString
 
+
 class IndirectImpactSummary(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding  = incident_binding

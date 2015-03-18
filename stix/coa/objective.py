@@ -6,6 +6,7 @@ import stix.utils
 from stix.common import StructuredText, Confidence
 import stix.bindings.course_of_action as coa_binding
 
+
 class Objective(stix.Entity):
     _binding = coa_binding
     _binding_class = coa_binding.ObjectiveType

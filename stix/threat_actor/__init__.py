@@ -10,6 +10,7 @@ from stix.common.related import (
     RelatedThreatActor
 )
 
+
 class ObservedTTPs(GenericRelationshipList):
     _namespace = 'http://stix.mitre.org/ThreatActor-1'
     _binding = threat_actor_binding
@@ -176,12 +177,12 @@ class ThreatActor(stix.BaseCoreComponent):
 
         super(ThreatActor, cls).from_obj(obj, return_obj=return_obj)
 
-        if isinstance(obj, cls._binding_class): # ThreatActorType properties
+        if isinstance(obj, cls._binding_class):  # ThreatActorType properties
             return_obj.identity = Identity.from_obj(obj.Identity)
             return_obj.types = _Types.from_obj(obj.Type)
             return_obj.motivations = _Motivations.from_obj(obj.Motivation)
             return_obj.sophistications = _Sophistications.from_obj(obj.Sophistication)
-            return_obj.intended_effects = _IntendedEffects.from_obj( obj.Intended_Effect)
+            return_obj.intended_effects = _IntendedEffects.from_obj(obj.Intended_Effect)
             return_obj.planning_and_operational_supports = \
                 _PlanningAndOperationalSupports.from_obj(obj.Planning_And_Operational_Support)
             return_obj.observed_ttps = ObservedTTPs.from_obj(obj.Observed_TTPs)
@@ -263,4 +264,3 @@ class _Types(stix.TypedList):
     def _fix_value(self, value):
         type_ = vocabs.ThreatActorType(value)
         return Statement(value=type_)
-

@@ -24,7 +24,7 @@ class ImpactAssessment(stix.Entity):
         self.total_loss_estimation = None
         self.impact_qualification = None
         self.effects = None
-        #self.external_impact_assessment_model = None
+        # self.external_impact_assessment_model = None
 
     @property
     def effects(self):

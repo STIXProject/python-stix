@@ -6,6 +6,7 @@ from stix.ttp import TTP
 from stix.bindings import stix_core as core_binding
 from stix.common.kill_chains import KillChains
 
+
 class TTPs(stix.EntityList):
     _binding = core_binding
     _binding_class = _binding.TTPsType

@@ -16,11 +16,11 @@ from stix.data_marking import Marking
 
 # relative
 from .affected_asset import AffectedAsset
-from .property_affected import PropertyAffected
+from .property_affected import PropertyAffected  # noqa
 from .time import Time
 from .external_id import ExternalID
 from .impact_assessment import ImpactAssessment
-from .coa import COATaken, COATime
+from .coa import COATaken, COATime  # noqa
 from .history import History
 
 
@@ -131,7 +131,7 @@ class Incident(stix.BaseCoreComponent):
         self._affected_assets = AffectedAssets(value)
     
     def add_affected_asset(self, v):
-       self.affected_assets.append(v)
+        self.affected_assets.append(v)
 
     @property
     def discovery_methods(self):
@@ -427,7 +427,7 @@ class DiscoveryMethods(stix.TypedList):
 
 
 class _COAsTaken(stix.TypedList):
-    _contained_type =  COATaken
+    _contained_type = COATaken
 
 
 class _ExternalIDs(stix.TypedList):

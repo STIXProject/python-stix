@@ -5,9 +5,11 @@ import uuid
 import contextlib
 import cybox.utils
 
+
 #: Default "example" namespace used for identifiers when no other namespace is
 #: defined.
-EXAMPLE_NAMESPACE = {'http://example.com' : 'example'}
+EXAMPLE_NAMESPACE = {'http://example.com': 'example'}
+
 
 class InvalidMethodError(ValueError):
     def __init__(self, method):
@@ -90,7 +92,7 @@ def _get_generator():
 
 def _set_cybox_namespace(namespace):
     uri = namespace.iterkeys().next()
-    prefix  =  namespace.itervalues().next()
+    prefix = namespace.itervalues().next()
 
     ns = cybox.utils.Namespace(uri, prefix)
     cybox.utils.set_id_namespace(ns)
@@ -133,4 +135,3 @@ def temp_id_namespace(namespace):
         yield
     finally:
         set_id_namespace(saved_id_namespace)
-

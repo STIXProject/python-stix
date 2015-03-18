@@ -61,5 +61,5 @@ class SimpleMarkingStructure(MarkingStructure):
         return return_obj
 
 
+# Register extension
 stix.data_marking.add_extension(SimpleMarkingStructure)
-

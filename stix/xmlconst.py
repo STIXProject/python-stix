@@ -12,4 +12,4 @@ TAG_SCHEMALOCATION = "{%s}schemaLocation" % NS_XSI
 TAG_STIX_PACKAGE = "{http://stix.mitre.org/stix-1}STIX_Package"
 
 FALSE = (False, 'false', 0, '0')
-TRUE  = (True, 'true', 1, '1' )
+TRUE  = (True, 'true', 1, '1')

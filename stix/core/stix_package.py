@@ -79,7 +79,7 @@ class STIXPackage(stix.Entity):
             self._idref = None
         else:
             self._idref = value
-            self.id_ = None # unset id_ if idref is present
+            self.id_ = None  # unset id_ if idref is present
     
     @property
     def timestamp(self):
@@ -377,4 +377,3 @@ class ThreatActors(stix.EntityList):
     _binding_var = "Threat_Actor"
     _inner_name = "threat_actors"
     _dict_as_list = True
-

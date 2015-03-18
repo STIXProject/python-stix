@@ -7,9 +7,7 @@ from cybox.core import Observables
 # internal
 import stix
 from stix.data_marking import Marking
-from stix.common import (
-    vocabs, related, VocabString,  Statement
-)
+from stix.common import vocabs, related, VocabString, Statement
 import stix.bindings.course_of_action as coa_binding
 
 # relative
@@ -167,21 +165,21 @@ class CourseOfAction(stix.BaseCoreComponent):
 
         super(CourseOfAction, cls).from_obj(obj, return_obj=return_obj)
 
-        if isinstance(obj, cls._binding_class): # CourseOfActionType properties
+        if isinstance(obj, cls._binding_class):  # CourseOfActionType properties
             return_obj.title = obj.Title
             return_obj.stage = VocabString.from_obj(obj.Stage)
             return_obj.type_ = VocabString.from_obj(obj.Type)
             return_obj.objective = Objective.from_obj(obj.Objective)
             return_obj.parameter_observables = \
-                    Observables.from_obj(obj.Parameter_Observables)
+                Observables.from_obj(obj.Parameter_Observables)
             return_obj.impact = Statement.from_obj(obj.Impact)
             return_obj.cost = Statement.from_obj(obj.Cost)
             return_obj.efficacy = Statement.from_obj(obj.Efficacy)
             return_obj.handling = Marking.from_obj(obj.Handling)
             return_obj.related_coas = \
-                    RelatedCOAs.from_obj(obj.Related_COAs)
+                RelatedCOAs.from_obj(obj.Related_COAs)
             return_obj.related_packages = \
-                    related.RelatedPackageRefs.from_obj(obj.Related_Packages)
+                related.RelatedPackageRefs.from_obj(obj.Related_Packages)
             return_obj.structured_coa = \
                 _BaseStructuredCOA.from_obj(obj.Structured_COA)
 

@@ -25,9 +25,9 @@ class AffectedAsset(stix.Entity):
         self.ownership_class = None
         self.management_class = None
         self.location_class = None
-        #self.location = None
+        # self.location = None
         self.nature_of_security_effect = None
-        self.structured_description =  None
+        self.structured_description = None
         
     @property
     def type_(self):
@@ -109,11 +109,12 @@ class AffectedAsset(stix.Entity):
         return_obj.ownership_class = VocabString.from_obj(obj.Ownership_Class)
         return_obj.management_class = VocabString.from_obj(obj.Management_Class)
         return_obj.location_class = VocabString.from_obj(obj.Location_Class)
-        #return_obj.location = None 
+        # return_obj.location = None
         
         if obj.Nature_Of_Security_Effect:
             n = obj.Nature_Of_Security_Effect
             return_obj.nature_of_security_effect = [PropertyAffected.from_obj(x) for x in n.Property_Affected]
+
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):
@@ -134,8 +135,8 @@ class AffectedAsset(stix.Entity):
             return_obj.Management_Class = self.management_class.to_obj(ns_info=ns_info)
         if self.location_class:
             return_obj.Location_Class = self.location_class.to_obj(ns_info=ns_info)
-#         if self.location:
-#             return_obj.Location = self.location.to_obj(ns_info=ns_info)
+        # if self.location:
+        #     return_obj.Location = self.location.to_obj(ns_info=ns_info)
         if self.nature_of_security_effect:
             property_affected_list = [x.to_obj(ns_info=ns_info) for x in self.nature_of_security_effect]
             n = self._binding.NatureOfSecurityEffectType(Property_Affected=property_affected_list)
@@ -159,7 +160,7 @@ class AffectedAsset(stix.Entity):
         return_obj.ownership_class = VocabString.from_dict(get('ownership_class'))
         return_obj.management_class = VocabString.from_dict(get('management_class'))
         return_obj.location_class = VocabString.from_dict(get('location_class'))
-        #return_obj.location = Location.from_dict(get('location'))
+        # return_obj.location = Location.from_dict(get('location'))
         return_obj.nature_of_security_effect = NatureOfSecurityEffect.from_dict(get('nature_of_security_effect'))
         return_obj.structured_description = Observables.from_dict(get('structured_description'))
         return return_obj
@@ -167,8 +168,6 @@ class AffectedAsset(stix.Entity):
     def to_dict(self):
         return super(AffectedAsset, self).to_dict()
 
-    
-#from stix.common.vocabs import AssetType as DefaultAssetType
 
 class AssetType(VocabString):
     _namespace = "http://stix.mitre.org/Incident-1"

@@ -8,6 +8,7 @@ from stix.common import EncodedCDATA
 from stix.indicator.test_mechanism import _BaseTestMechanism
 import stix.bindings.extensions.test_mechanism.yara as yara_tm_binding
 
+
 class YaraTestMechanism(_BaseTestMechanism):
     _namespace = "http://stix.mitre.org/extensions/TestMechanism#YARA-1"
     _binding = yara_tm_binding

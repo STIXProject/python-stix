@@ -72,8 +72,8 @@ class CIQIdentity3_0Instance(common.Identity):
 
         super(CIQIdentity3_0Instance, self).to_obj(return_obj)
 
-        #return_obj.id = self.id_
-        #return_obj.idref = self.idref_
+        # return_obj.id = self.id_
+        # return_obj.idref = self.idref_
         return_obj.xsi_type = self._XSI_TYPE
 
         if self.roles:
@@ -402,7 +402,7 @@ class Address(stix.Entity):
     _namespace = XML_NS_XPIL
     XML_TAG = "{%s}Address" % _namespace
     
-    def __init__(self, free_text_address=None,  country=None, administrative_area=None):
+    def __init__(self, free_text_address=None, country=None, administrative_area=None):
         self.free_text_address = free_text_address
         self.country = country
         self.administrative_area = administrative_area
@@ -885,7 +885,7 @@ class NameLine(stix.Entity):
         return return_obj
 
     @classmethod
-    def from_obj (cls, obj, return_obj=None):
+    def from_obj(cls, obj, return_obj=None):
         if obj is None:
             return None
 
@@ -1135,7 +1135,7 @@ class _BaseNameElement(stix.Entity):
 
     @value.setter
     def value(self, value):
-        #if not value:
+        # if not value:
         #    raise ValueError('value cannot be None')
 
         self._value = value
@@ -1193,7 +1193,7 @@ class PersonNameElement(_BaseNameElement):
     @element_type.setter
     def element_type(self, value):
         if value and value not in self.TYPES:
-            raise ValueError('value must be one of %s: ' % ' '.join(self.TYPES) )
+            raise ValueError('value must be one of %s: ' % (self.TYPES,))
 
         self._element_type = value    
 
@@ -1268,7 +1268,7 @@ class OrganisationNameElement(_BaseNameElement):
     @element_type.setter
     def element_type(self, value):
         if value and value not in self.TYPES:
-            raise ValueError('value must be one of: %s ' % ' '.join(self.TYPES) )
+            raise ValueError('value must be one of: %s ' % (self.TYPES,))
 
         self._element_type = value
 
@@ -1370,7 +1370,7 @@ class SubDivisionName(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.type= obj.get('Type')    
+        return_obj.type = obj.get('Type')
         return_obj.value = obj.text
 
         return return_obj

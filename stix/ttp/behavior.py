@@ -62,7 +62,7 @@ class Behavior(stix.Entity):
         if self.exploits:
             return_obj.Exploits = self.exploits.to_obj(ns_info=ns_info)
         if self.attack_patterns:
-            return_obj.Attack_Patterns= self.attack_patterns.to_obj(ns_info=ns_info)
+            return_obj.Attack_Patterns = self.attack_patterns.to_obj(ns_info=ns_info)
 
         return return_obj
 

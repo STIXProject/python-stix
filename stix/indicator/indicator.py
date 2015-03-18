@@ -24,7 +24,7 @@ import stix.bindings.indicator as indicator_binding
 # relative
 from .test_mechanism import TestMechanisms
 from .sightings import Sightings
-from .valid_time import  _ValidTimePositions
+from .valid_time import _ValidTimePositions
 
 
 class SuggestedCOAs(GenericRelationshipList):
@@ -959,7 +959,7 @@ class Indicator(stix.BaseCoreComponent):
         get = dict_repr.get
         return_obj.negate    = get('negate')
         return_obj.alternative_id = get('alternative_id')
-        return_obj.indicated_ttps =  _IndicatedTTPs.from_dict(get('indicated_ttps'))
+        return_obj.indicated_ttps = _IndicatedTTPs.from_dict(get('indicated_ttps'))
         return_obj.test_mechanisms = TestMechanisms.from_list(get('test_mechanisms'))
         return_obj.suggested_coas = SuggestedCOAs.from_dict(get('suggested_coas'))
         return_obj.sightings = Sightings.from_dict(get('sightings'))

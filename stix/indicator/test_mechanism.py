@@ -31,7 +31,7 @@ class _BaseTestMechanism(stix.Entity):
     
     @producer.setter
     def producer(self, value):
-       self._set_var(InformationSource, try_cast=False, producer=value)
+        self._set_var(InformationSource, try_cast=False, producer=value)
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -106,7 +106,7 @@ class _BaseTestMechanism(stix.Entity):
     
     def to_dict(self):
         d = super(_BaseTestMechanism, self).to_dict()
-        d['xsi:type'] = self._XSI_TYPE # added by subclass
+        d['xsi:type'] = self._XSI_TYPE  # added by subclass
         return d
 
 
@@ -122,5 +122,7 @@ class TestMechanisms(stix.EntityList):
 
 #: Mapping of test mechanism extension types to classes
 _EXTENSION_MAP = {}
+
+
 def add_extension(cls):
     _EXTENSION_MAP[cls._XSI_TYPE] = cls

@@ -59,6 +59,7 @@ class NonPublicDataCompromised(VocabString):
 
         return d
 
+
 class PropertyAffected(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding = incident_binding
@@ -161,4 +162,3 @@ class PropertyAffected(stix.Entity):
     
     def to_dict(self):
         return super(PropertyAffected, self).to_dict()
-    

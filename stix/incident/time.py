@@ -17,7 +17,7 @@ class Time(stix.Entity):
         self.first_data_exfiltration = None
         self.incident_discovery = None
         self.incident_opened = None
-        self.containment_achieved  = None
+        self.containment_achieved = None
         self.restoration_achieved = None
         self.incident_reported = None
         self.incident_closed = None
@@ -163,4 +163,3 @@ class Time(stix.Entity):
         return_obj.incident_closed = DateTimeWithPrecision.from_dict(dict_repr.get('incident_closed'))
 
         return return_obj
-

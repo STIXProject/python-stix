@@ -6,6 +6,7 @@ from stix.common import EncodedCDATA
 from stix.indicator import test_mechanism
 import stix.bindings.extensions.test_mechanism.snort as snort_tm_binding
 
+
 class SnortTestMechanism(test_mechanism._BaseTestMechanism):
     _namespace = "http://stix.mitre.org/extensions/TestMechanism#Snort-1"
     _binding = snort_tm_binding

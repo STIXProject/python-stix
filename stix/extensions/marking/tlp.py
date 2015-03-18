@@ -61,5 +61,5 @@ class TLPMarkingStructure(MarkingStructure):
         return return_obj
 
 
+# Register extension
 stix.data_marking.add_extension(TLPMarkingStructure)
-

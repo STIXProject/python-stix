@@ -104,4 +104,3 @@ def iterpath(obj, path=None):
                 yield path_info
 
     path.pop()
-

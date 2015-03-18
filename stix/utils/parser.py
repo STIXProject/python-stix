@@ -42,7 +42,8 @@ class UnsupportedRootElementError(Exception):
         self.found = found
 
 
-UnsupportedRootElement = UnsupportedRootElementError # for backwards compatibility
+# Alias for backwards compatibility
+UnsupportedRootElement = UnsupportedRootElementError
 
 
 def get_xml_parser(encoding=None):
@@ -262,7 +263,7 @@ class EntityParser(object):
             encoding=encoding
         )
         
-        from stix.core import STIXPackage # resolve circular dependencies
+        from stix.core import STIXPackage  # resolve circular dependencies
         stix_package = STIXPackage().from_obj(stix_package_obj)
 
         self._apply_input_namespaces(root, stix_package)

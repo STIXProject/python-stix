@@ -13,12 +13,12 @@ class STIXHeader(stix.Entity):
     _namespace = 'http://stix.mitre.org/stix-1'
 
     def __init__(self, package_intents=None, description=None, handling=None,
-        information_source=None, title=None, short_description=None):
+                 information_source=None, title=None, short_description=None):
 
         self.package_intents = package_intents
         self.title = title
         self.description = description
-        self.short_description=short_description
+        self.short_description = short_description
         self.handling = handling
         self.information_source = information_source
         self.profiles = []

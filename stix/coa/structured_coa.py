@@ -75,11 +75,13 @@ class _BaseStructuredCOA(stix.Entity):
 
     def to_dict(self):
         d = super(_BaseStructuredCOA, self).to_dict()
-        d['xsi:type'] = self._XSI_TYPE # added by subclass
+        d['xsi:type'] = self._XSI_TYPE  # added by subclass
         return d
 
 
 #: Mapping of structured coa extension types to classes
 _EXTENSION_MAP = {}
+
+
 def add_extension(cls):
     _EXTENSION_MAP[cls._XSI_TYPE] = cls

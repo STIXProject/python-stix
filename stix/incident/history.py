@@ -19,7 +19,7 @@ class JournalEntry(stix.Entity):
     def __init__(self, value=None):
         self.value = value
         self.author = None
-        self.time = None # consider 
+        self.time = None
         self.time_precision = 'second'
         
     @property
@@ -89,6 +89,7 @@ class JournalEntry(stix.Entity):
         
         return return_obj
 
+
 class HistoryItem(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding = incident_binding
@@ -155,7 +156,8 @@ class HistoryItem(stix.Entity):
         return_obj.journal_entry = JournalEntry.from_dict(d.get('journal_entry'))
         
         return return_obj
-    
+
+
 class History(stix.EntityList):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding = incident_binding
