@@ -59,5 +59,5 @@ LMCO_KILL_CHAIN = KillChain(
     definer="LMCO",
     reference="http://www.lockheedmartin.com/content/dam/lockheed/data/corporate/documents/LM-White-Paper-Intel-Driven-Defense.pdf"
 )
-LMCO_KILL_CHAIN.kill_chain_phases.extend(LMCO_KILL_CHAIN_PHASES)
 
+LMCO_KILL_CHAIN.kill_chain_phases.extend(LMCO_KILL_CHAIN_PHASES)

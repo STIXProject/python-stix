@@ -14,13 +14,13 @@ from .vocabs import VocabString
 from .information_source import InformationSource
 from .confidence import Confidence
 
+
 class GenericRelationship(stix.Entity):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.GenericRelationshipType
 
     def __init__(self, confidence=None, information_source=None, relationship=None):
-        
         self.confidence = confidence
         self.information_source = information_source
         self.relationship = relationship
@@ -292,7 +292,7 @@ class _BaseRelated(GenericRelationship):
     _inner_var = None
 
     def __init__(self, item=None, confidence=None,
-                       information_source=None, relationship=None):
+                 information_source=None, relationship=None):
         super(_BaseRelated, self).__init__(
             confidence,
             information_source,
@@ -310,7 +310,7 @@ class _BaseRelated(GenericRelationship):
 
     def _set_item(self, value):
         if value and not isinstance(value, self._base_type):
-            error =  "Value must be instance of %s" % self._base_type.__name__
+            error = "Value must be instance of %s" % self._base_type.__name__
             raise ValueError(error)
 
         self._item = value
@@ -451,4 +451,3 @@ class RelatedCampaignRef(_BaseRelated):
     _binding_class = _binding.RelatedCampaignReferenceType
     # _base_type is set in common/__init__.py
     _inner_var = "Campaign"
-

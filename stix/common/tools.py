@@ -89,6 +89,3 @@ class ToolInformation(stix.Entity, cybox.common.ToolInformation):
         return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
         
         return return_obj
-
-    
-

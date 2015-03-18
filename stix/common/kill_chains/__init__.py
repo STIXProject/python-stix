@@ -16,7 +16,7 @@ class KillChain(stix.Entity):
         self.name = name
         self.definer = definer
         self.reference = reference
-        self.number_of_phases = None # can we just do len(self.kill_chain_phases)?
+        self.number_of_phases = None  # can we just do len(self.kill_chain_phases)?
         self.kill_chain_phases = None
 
     @property

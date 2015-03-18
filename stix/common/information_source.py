@@ -123,7 +123,7 @@ class InformationSource(stix.Entity):
         if self.description is not None:
             return_obj.Description = self.description.to_obj(ns_info=ns_info)
         if self.references:
-             return_obj.References = stix_common_binding.ReferencesType(Reference=self.references)
+            return_obj.References = stix_common_binding.ReferencesType(Reference=self.references)
         if self.contributing_sources:
             return_obj.Contributing_Sources = self.contributing_sources.to_obj(ns_info=ns_info)
         if self.identity:
@@ -181,6 +181,7 @@ class InformationSource(stix.Entity):
 
     def to_dict(self):
         return super(InformationSource, self).to_dict()
+
 
 class ContributingSources(stix.EntityList):
     _namespace = "http://stix.mitre.org/common-1"

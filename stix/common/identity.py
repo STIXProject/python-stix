@@ -6,6 +6,7 @@ from __future__ import absolute_import
 import stix
 import stix.bindings.stix_common as common_binding
 
+
 class Identity(stix.Entity):
     _binding = common_binding
     _namespace = 'http://stix.mitre.org/common-1'
@@ -38,7 +39,7 @@ class Identity(stix.Entity):
             self._idref = None
         else:
             self._idref = value
-            self.id_ = None # unset id_ if idref is present
+            self.id_ = None  # unset id_ if idref is present
 
     @property
     def name(self):
@@ -47,7 +48,6 @@ class Identity(stix.Entity):
     @name.setter
     def name(self, value):
         self._name = value if value else None
-
 
     @property
     def related_identities(self):
@@ -153,6 +153,7 @@ class RelatedIdentities(stix.EntityList):
 
 #: Mapping of identity extension types to classes
 _EXTENSION_MAP = {}
+
+
 def add_extension(cls):
     _EXTENSION_MAP[cls._XSI_TYPE] = cls
-

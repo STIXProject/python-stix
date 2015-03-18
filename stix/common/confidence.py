@@ -22,8 +22,8 @@ class Confidence(stix.Entity):
         self.value = value
         self.description = description
         self.source = source
-        #TODO: support confidence_assertion_chain
-        #self.confidence_assertion_chain = None
+        # TODO: support confidence_assertion_chain
+        # self.confidence_assertion_chain = None
 
     @property
     def timestamp(self):
@@ -160,4 +160,3 @@ class Confidence(stix.Entity):
 #     @classmethod
 #     def from_dict(cls, dict_repr, return_obj=None):
 #         return None
-

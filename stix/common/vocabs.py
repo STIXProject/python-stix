@@ -5,8 +5,8 @@ import stix
 import stix.bindings.stix_common as stix_common_binding
 
 
-#TODO: handle normalization
-#from cybox.utils import normalize_to_xml, denormalize_from_xml
+# TODO: handle normalization
+# from cybox.utils import normalize_to_xml, denormalize_from_xml
 
 
 class VocabString(stix.Entity):
@@ -80,8 +80,8 @@ class VocabString(stix.Entity):
         if not return_obj:
             return_obj = self._binding_class()
 
-        #TODO: handle normalization
-        #vocab_obj.valueOf_ = normalize_to_xml(self.value)
+        # TODO: handle normalization
+        # vocab_obj.valueOf_ = normalize_to_xml(self.value)
         return_obj.valueOf_ = self.value
         return_obj.xsi_type = self.xsi_type
 
@@ -119,8 +119,8 @@ class VocabString(stix.Entity):
            
         # xsi_type should be set automatically by the class's constructor.
         
-        #TODO: handle denormalization
-        #vocab_str.value = denormalize_from_xml(vocab_obj.valueOf_)
+        # TODO: handle denormalization
+        # vocab_str.value = denormalize_from_xml(vocab_obj.valueOf_)
         return_obj.value = vocab_obj.valueOf_
         return_obj.vocab_name = vocab_obj.vocab_name
         return_obj.vocab_reference = vocab_obj.vocab_reference
@@ -1209,6 +1209,8 @@ class InformationSourceRole(VocabString):
 
 #: Mapping of Controlled Vocabulary xsi:type's to their class implementations.
 _VOCAB_MAP = {}
+
+
 def add_vocab(cls):
     _VOCAB_MAP[cls._XSI_TYPE] = cls
 
