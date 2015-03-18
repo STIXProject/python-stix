@@ -4,7 +4,7 @@
 import stix
 from stix.common import Activity, Confidence, Statement, VocabString
 from stix.common.related import (
-    GenericRelationshipList, RelatedCampaign,RelatedIncident, RelatedIndicator,
+    GenericRelationshipList, RelatedCampaign, RelatedIncident, RelatedIndicator,
     RelatedPackageRefs, RelatedThreatActor, RelatedTTP
 )
 from stix.common import vocabs
@@ -55,6 +55,7 @@ class RelatedTTPs(GenericRelationshipList):
     _binding_var = "Related_TTP"
     _contained_type = RelatedTTP
     _inner_name = "ttps"
+
 
 class Names(stix.EntityList):
     _namespace = "http://stix.mitre.org/Campaign-1"
@@ -182,21 +183,21 @@ class Campaign(stix.BaseCoreComponent):
         if isinstance(obj, cls._binding_class):
             return_obj.names = Names.from_obj(obj.Names)
             return_obj.intended_effects = \
-                    _IntendedEffects.from_obj(obj.Intended_Effect)
+                _IntendedEffects.from_obj(obj.Intended_Effect)
             return_obj.status = VocabString.from_obj(obj.Status)
             return_obj.related_ttps = RelatedTTPs.from_obj(obj.Related_TTPs)
             return_obj.related_incidents = \
-                    RelatedIncidents.from_obj(obj.Related_Incidents)
+                RelatedIncidents.from_obj(obj.Related_Incidents)
             return_obj.related_indicators = \
-                    RelatedIndicators.from_obj(obj.Related_Indicators)
+                RelatedIndicators.from_obj(obj.Related_Indicators)
             return_obj.attribution = _AttributionList.from_obj(obj.Attribution)
             return_obj.associated_campaigns = \
-                    AssociatedCampaigns.from_obj(obj.Associated_Campaigns)
+                AssociatedCampaigns.from_obj(obj.Associated_Campaigns)
             return_obj.confidence = Confidence.from_obj(obj.Confidence)
             return_obj.activity = _Activities.from_obj(obj.Activity)
             return_obj.handling = Marking.from_obj(obj.Handling)
             return_obj.related_packages = \
-                    RelatedPackageRefs.from_obj(obj.Related_Packages)
+                RelatedPackageRefs.from_obj(obj.Related_Packages)
 
         return return_obj
 
@@ -219,20 +220,20 @@ class Campaign(stix.BaseCoreComponent):
             _IntendedEffects.from_dict(get('intended_effects'))
         return_obj.status = VocabString.from_dict(get('status'))
         return_obj.related_ttps = \
-                RelatedTTPs.from_dict(get('related_ttps'))
+            RelatedTTPs.from_dict(get('related_ttps'))
         return_obj.related_incidents = \
-                RelatedIncidents.from_dict(get('related_incidents'))
+            RelatedIncidents.from_dict(get('related_incidents'))
         return_obj.related_indicators = \
-                RelatedIndicators.from_dict(get('related_indicators'))
+            RelatedIndicators.from_dict(get('related_indicators'))
         return_obj.attribution = _AttributionList.from_list(get('attribution'))
         return_obj.associated_campaigns = \
-                AssociatedCampaigns.from_dict(get('associated_campaigns'))
+            AssociatedCampaigns.from_dict(get('associated_campaigns'))
         return_obj.confidence = \
-                Confidence.from_dict(get('confidence'))
+            Confidence.from_dict(get('confidence'))
         return_obj.activity = _Activities.from_dict(get('activity'))
         return_obj.handling = Marking.from_dict(get('handling'))
         return_obj.related_packages = \
-                RelatedPackageRefs.from_dict(get('related_packages'))
+            RelatedPackageRefs.from_dict(get('related_packages'))
 
         return return_obj
 
