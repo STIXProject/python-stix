@@ -54,8 +54,7 @@ class Activity(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.date_time = \
-                DateTimeWithPrecision.from_obj(obj.Date_Time)
+        return_obj.date_time = DateTimeWithPrecision.from_obj(obj.Date_Time)
         return_obj.description = StructuredText.from_obj(obj.Description)
 
         return return_obj
@@ -71,10 +70,8 @@ class Activity(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.date_time = \
-                DateTimeWithPrecision.from_dict(dict_repr.get('date_time'))
-        return_obj.description = \
-                StructuredText.from_dict(dict_repr.get('description'))
+        get = dict_repr.get
+        return_obj.date_time = DateTimeWithPrecision.from_dict(get('date_time'))
+        return_obj.description = StructuredText.from_dict(get('description'))
 
         return return_obj
-
