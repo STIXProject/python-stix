@@ -22,7 +22,7 @@ from . import dates
 CDATA_START = "<![CDATA["
 CDATA_END = "]]>"
 
-_CONFLICTING_NAMES = keyword.kwlist + ['id', 'type','range']
+_CONFLICTING_NAMES = keyword.kwlist + ['id', 'type', 'range']
 
 
 @contextlib.contextmanager
@@ -123,6 +123,11 @@ def is_typedlist(entity):
 
 
 def private_name(name):
+    """Returns the internal, private name used when setting Entity property
+    values. Basically, it appends a "_" to `name` if there isn't already
+    one there.
+
+    """
     if name.startswith("_"):
         return name
 
@@ -184,100 +189,148 @@ def check_version(expected, found):
 
     """
     if is_sequence(expected):
-        good = found in expected
+        is_good = found in expected
     else:
-        good = (found == expected)
+        is_good = (found == expected)
 
-    if good:
-        return
-
-    error = "Version '{0}' is invalid. Expected {1}."
-    error = error.format(found, expected)
-    raise ValueError(error)
+    if not is_good:
+        error = "Version '{0}' is invalid. Expected {1}."
+        error = error.format(found, expected)
+        raise ValueError(error)
 
 
 def iter_vars(obj):
-    def is_good(key, val):
-        if val is None:
-            return False
+    """Returns a generator which yields a ``(property name, property value)``
+    tuple with each iteration.
 
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
-            has_value = bool(val) or is_bool(val)
+    Note:
+        This will not yield vars that are attached during parse, such as
+        ``__input_schemalocations__`` and ``__input_namespaces__``.
 
-        inputs = ('__input_namespaces__', '__input_schemalocations__')
-        return has_value and (key not in inputs)
+    """
+    def check(name):
+        return name not in ('__input_namespaces__', '__input_schemalocations__')
 
-    vars_ = obj.__dict__.iteritems()
-    return dict((attr_name(x), y) for x, y in vars_ if is_good(x,y)).iteritems()
+    instance_vars = obj.__dict__.iteritems()
+    return ((attr_name(name), val) for name, val in instance_vars if check(name))
 
 
 def is_dictable(obj):
+    """Returns ``True`` if `obj` has a ``to_dict()`` method."""
     return hasattr(obj, "to_dict")
 
 
 def is_timestamp(obj):
+    """Returns ``True`` if `obj` is an instance of ``datetime.datetime``."""
     return isinstance(obj, datetime.datetime)
 
 
 def is_date(obj):
+    """Returns ``True`` if `obj` is an instance of ``datetime.date``."""
     return isinstance(obj, datetime.date)
 
 
 def is_bool(obj):
+    """Returns ``True`` if `obj` is a ``bool``."""
     return isinstance(obj, bool)
 
 
 def is_element(obj):
+    """Returns ``True`` if `obj` is an lxml ``Element``."""
     return isinstance(obj, lxml.etree._Element)
 
 
 def is_etree(obj):
+    """Returns ``True`` if `obj` is an lxml ``ElementTree``."""
     return isinstance(obj, lxml.etree._ElementTree)
 
 
+def has_value(var):
+    """Returns ``True`` if `var` is not ``None`` and not empty."""
+    if var is None:
+        return
+
+    return bool(var) or (var in (False, 0))
+
+
 def to_dict(entity, skip=()):
+    """Returns a dictionary representation of `entity`. This will iterate over
+    the instance vars of `entity` and construct keys and values from those
+    variable names and values.
+
+    Args:
+        entity: A ``stix.Entity`` object.
+        skip: An iterable containing keys to exclude from the dictionary. These
+            should be the dictionary key names, and not the instance variable
+            name (e.g., 'id' and NOT 'id_').
+
+    Returns:
+        A dictionary representation of the input `entity`.
+
+    """
     def dict_iter(items):
         return [x.to_dict() if is_dictable(x) else x for x in items]
 
+    def dictify(entity):
+        d = {}
+        for name, field in iter_vars(entity):
+            key = key_name(name)
+
+            if key in skip or not has_value(field):
+                continue
+
+            if is_dictable(field):
+                d[key] = field.to_dict()
+            elif is_timestamp(field):
+                d[key] = dates.serialize_value(field)
+            elif is_date(field):
+                d[key] = dates.serialize_date(field)
+            elif is_element(field) or is_etree(field):
+                d[key] = lxml.etree.tostring(field)
+            elif is_sequence(field):
+                d[key] = dict_iter(field)
+            else:
+                d[key] = field
+
+        return d
+
     d = {}
-    for name, field in iter_vars(entity):
-        key = key_name(name)
-
-        if key in skip:
-            continue
-
-        if is_dictable(field):
-            d[key] = field.to_dict()
-        elif is_timestamp(field):
-            d[key] = dates.serialize_value(field)
-        elif is_date(field):
-            d[key] = dates.serialize_date(field)
-        elif is_element(field) or is_etree(field):
-            d[key] = lxml.etree.tostring(field)
-        elif is_sequence(field):
-            d[key] = dict_iter(field)
-        else:
-            d[key] = field
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        d = dictify(entity)
 
     return d
 
 
-def xml_bool(item):
-    if item is None:
+def xml_bool(value):
+    """Returns ``True`` if `value` is an acceptable xs:boolean ``True`` value.
+    Returns ``False`` if `value` is an acceptable xs:boolean ``False`` value.
+    If `value` is ``None``, this function will return ``None``.
+
+    """
+    if value is None:
         return None
 
-    if item in xmlconst.FALSE:
+    if value in xmlconst.FALSE:
         return False
 
-    if item in xmlconst.TRUE:
+    if value in xmlconst.TRUE:
         return True
 
-    error = "Unable to determine the boolean value of '{0}'".format(item)
+    error = "Unable to determine the xml boolean value of '{0}'".format(value)
     raise ValueError(error)
 
 
 def cast_var(item, klass, arg=None):
+    """Attempt to cast `item` to an instance of `klass`.
+
+    Args:
+        item: The object to cast.
+        klass: The class to cast to.
+        arg: The kwarg name to use for the `klass` ``__init__()`` parameter. If
+            ``None``, a positional argument will be used.
+
+    """
     if not arg:
         return klass(item)
 
@@ -285,6 +338,7 @@ def cast_var(item, klass, arg=None):
     return klass(**kwarg)   # klass(value='foobar')
 
 
+# Namespace flattening
 from .nsparser import *  # noqa
 from .dates import *  # noqa
 from .idgen import *  # noqa
