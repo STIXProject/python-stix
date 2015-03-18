@@ -19,7 +19,7 @@ class _BaseStructuredCOA(stix.Entity):
         if not obj:
             return None
 
-        from stix.extensions.structured_coa.generic_structured_coa import GenericStructuredCOA
+        from stix.extensions.structured_coa.generic_structured_coa import GenericStructuredCOA   # noqa
 
         if not return_obj:
             klass = _BaseStructuredCOA.lookup_class(obj.xml_type)
@@ -62,7 +62,7 @@ class _BaseStructuredCOA(stix.Entity):
         if not d:
             return None
 
-        from stix.extensions.structured_coa.generic_structured_coa import GenericStructuredCOA
+        from stix.extensions.structured_coa.generic_structured_coa import GenericStructuredCOA   # noqa
 
         if not return_obj:
             klass = _BaseStructuredCOA.lookup_class(d.get('xsi:type'))

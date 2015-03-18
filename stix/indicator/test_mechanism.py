@@ -38,10 +38,10 @@ class _BaseTestMechanism(stix.Entity):
         if not obj:
             return None
         
-        from stix.extensions.test_mechanism.snort_test_mechanism import SnortTestMechanism
-        from stix.extensions.test_mechanism.open_ioc_2010_test_mechanism import OpenIOCTestMechanism
-        from stix.extensions.test_mechanism.yara_test_mechanism import YaraTestMechanism
-        from stix.extensions.test_mechanism.generic_test_mechanism import GenericTestMechanism
+        from stix.extensions.test_mechanism.snort_test_mechanism import SnortTestMechanism   # noqa
+        from stix.extensions.test_mechanism.open_ioc_2010_test_mechanism import OpenIOCTestMechanism   # noqa
+        from stix.extensions.test_mechanism.yara_test_mechanism import YaraTestMechanism   # noqa
+        from stix.extensions.test_mechanism.generic_test_mechanism import GenericTestMechanism   # noqa
         
         if not return_obj:
             klass = _BaseTestMechanism.lookup_class(obj.xml_type)
@@ -88,10 +88,10 @@ class _BaseTestMechanism(stix.Entity):
         if not d:
             return None
         
-        from stix.extensions.test_mechanism.snort_test_mechanism import SnortTestMechanism
-        from stix.extensions.test_mechanism.open_ioc_2010_test_mechanism import OpenIOCTestMechanism
-        from stix.extensions.test_mechanism.yara_test_mechanism import YaraTestMechanism
-        from stix.extensions.test_mechanism.generic_test_mechanism import GenericTestMechanism
+        from stix.extensions.test_mechanism.snort_test_mechanism import SnortTestMechanism   # noqa
+        from stix.extensions.test_mechanism.open_ioc_2010_test_mechanism import OpenIOCTestMechanism   # noqa
+        from stix.extensions.test_mechanism.yara_test_mechanism import YaraTestMechanism   # noqa
+        from stix.extensions.test_mechanism.generic_test_mechanism import GenericTestMechanism   # noqa
         
         if not return_obj:
             klass = _BaseTestMechanism.lookup_class(d.get('xsi:type'))

@@ -89,7 +89,7 @@ class Identity(stix.Entity):
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
-        import stix.extensions.identity.ciq_identity_3_0
+        import stix.extensions.identity.ciq_identity_3_0  # noqa
         
         if not obj:
             return None
@@ -114,7 +114,7 @@ class Identity(stix.Entity):
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
-        import stix.extensions.identity.ciq_identity_3_0
+        import stix.extensions.identity.ciq_identity_3_0  # noqa
         
         if not dict_repr:
             return None

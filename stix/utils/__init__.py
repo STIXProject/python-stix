@@ -285,8 +285,8 @@ def cast_var(item, klass, arg=None):
     return klass(**kwarg)   # klass(value='foobar')
 
 
-from .nsparser import *
-from .dates import *
-from .idgen import *
-from .nsparser import *
-from .walk import *
+from .nsparser import *  # noqa
+from .dates import *  # noqa
+from .idgen import *  # noqa
+from .nsparser import *  # noqa
+from .walk import *  # noqa
