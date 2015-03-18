@@ -32,24 +32,25 @@ from stix.indicator import Indicator
 from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
 
-RelatedCampaign._base_type = Campaign
-RelatedCOA._base_type = CourseOfAction
-RelatedExploitTarget._base_type = ExploitTarget
-RelatedIdentity._base_type = Identity
-RelatedIncident._base_type = Incident
-RelatedIndicator._base_type = Indicator
-RelatedThreatActor._base_type = ThreatActor
-RelatedTTP._base_type = TTP
-RelatedObservable._base_type = Observable
-RelatedPackage._base_type = STIXPackage
-RelatedCampaignRef._base_type = CampaignRef
+RelatedCampaign._base_type = Campaign  # noqa
+RelatedCOA._base_type = CourseOfAction  # noqa
+RelatedExploitTarget._base_type = ExploitTarget  # noqa
+RelatedIdentity._base_type = Identity  # noqa
+RelatedIncident._base_type = Incident  # noqa
+RelatedIndicator._base_type = Indicator  # noqa
+RelatedThreatActor._base_type = ThreatActor  # noqa
+RelatedTTP._base_type = TTP  # noqa
+RelatedObservable._base_type = Observable  # noqa
+RelatedPackage._base_type = STIXPackage  # noqa
+RelatedCampaignRef._base_type = CampaignRef  # noqa
 
 # Path the RelatedPackages _contained_type
-RelatedPackages._contained_type = RelatedPackage
+RelatedPackages._contained_type = RelatedPackage  # noqa
 
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
+
 
 class EncodedCDATA(stix.Entity):
     _namespace = "http://stix.mitre.org/common-1"
@@ -76,11 +77,13 @@ class EncodedCDATA(stix.Entity):
     def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
+
         if not return_obj:
             return_obj = cls()
         
-        return_obj.value =  obj.valueOf_
+        return_obj.value = obj.valueOf_
         return_obj.encoded = obj.encoded
+
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):
@@ -98,11 +101,13 @@ class EncodedCDATA(stix.Entity):
     def from_dict(cls, d, return_obj=None):
         if not d:
             return None
+
         if not return_obj:
             return_obj = cls()
             
         return_obj.value = utils.strip_cdata(d.get('value'))
-        return_obj.encoded = bool(d.get('encoded') )
+        return_obj.encoded = bool(d.get('encoded'))
+
         return return_obj
 
 
@@ -122,6 +127,3 @@ class EncodedCDATA(stix.Entity):
 
     def __unicode__(self):
         return unicode(self.value)
-
-
-
