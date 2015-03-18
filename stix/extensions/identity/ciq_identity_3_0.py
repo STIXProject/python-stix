@@ -1344,7 +1344,7 @@ class SubDivisionName(stix.Entity):
     @type.setter
     def type(self, value):
         if value and value not in self.TYPES:
-            raise ValueError('value must be one of: %s' % ' '.join(self.TYPES))
+            raise ValueError('value must be one of: %s' % (self.TYPES,))
 
         self._type = value
 
@@ -1621,7 +1621,7 @@ class ContactNumber(stix.Entity):
         if not value:
             self._communication_media_type = None
         elif value not in self.ALLOWED_COM_MEDIA_TYPES:
-            raise ValueError('value must be one of [%s]' % (", ".join(self.ALLOWED_COM_MEDIA_TYPES)))
+            raise ValueError('value must be one of %s' % (self.ALLOWED_COM_MEDIA_TYPES,))
         else:
             self._communication_media_type = value
         
@@ -1699,7 +1699,7 @@ class ContactNumberElement(stix.Entity):
         if not value:
             self._type_ = None
         elif value not in self.ALLOWED_TYPES:
-            raise ValueError('value must be one of [%s]' % (", ".join(self.ALLOWED_TYPES)))
+            raise ValueError('value must be one of %s' % (self.ALLOWED_TYPES,))
         else:
             self._type_ = value
         

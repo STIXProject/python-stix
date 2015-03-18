@@ -1042,7 +1042,7 @@ class CompositeIndicatorExpression(stix.EntityList):
         if not value:
             raise ValueError("operator must not be None or empty")
         elif value not in self.OPERATORS:
-            raise ValueError("operator must be one of: %s" % ",".join(self.OPERATORS))
+            raise ValueError("operator must be one of: %s" % (self.OPERATORS,))
         else:
             self._operator = value
             
