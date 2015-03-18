@@ -8,7 +8,7 @@ from stix.bindings import course_of_action as coa_binding
 class _BaseStructuredCOA(stix.Entity):
     _namespace = "http://stix.mitre.org/CourseOfAction-1"
     _binding = coa_binding
-    _binding_class = coa_binding
+    _binding_class = coa_binding.StructuredCOAType
 
     def __init__(self, id_=None, idref=None):
         self.id_ = id_
