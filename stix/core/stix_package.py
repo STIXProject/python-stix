@@ -198,7 +198,10 @@ class STIXPackage(stix.Entity):
         top-level collection.
 
         """
-        # Enables the `add()` method
+        if utils.is_cybox(entity):
+            self.add_observable(entity)
+            return
+
         tlo_adds = {
             Campaign: self.add_campaign,
             CourseOfAction: self.add_course_of_action,
@@ -209,10 +212,6 @@ class STIXPackage(stix.Entity):
             TTP: self.add_threat_actor,
             Observable: self.add_observable,
         }
-
-        if utils.is_cybox(entity):
-            self.add_observable(entity)
-            return
 
         try:
             add = tlo_adds[entity.__class__]
