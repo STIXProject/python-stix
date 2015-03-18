@@ -2,7 +2,8 @@
 # See LICENSE.txt for complete terms.
 
 # external
-from cybox.core import Observable, Observables
+from cybox.core import Observable, Observables, Object
+from cybox.common import ObjectProperties
 
 # internal
 import stix
@@ -204,16 +205,22 @@ class STIXPackage(stix.Entity):
             ExploitTarget: self.add_exploit_target,
             Incident: self.add_incident,
             Indicator: self.add_indicator,
-            Observable: self.add_observable,
             ThreatActor: self.add_threat_actor,
-            TTP: self.add_threat_actor
+            TTP: self.add_threat_actor,
+            Observable: self.add_observable,
         }
+
+        if utils.is_cybox(entity):
+            self.add_observable(entity)
+            return
 
         try:
             add = tlo_adds[entity.__class__]
             add(entity)
         except KeyError:
-            raise TypeError("Cannot add type '{0}' to a top-level collection")
+            error = "Cannot add type '{0}' to a top-level collection"
+            error = error.format(type(entity))
+            raise TypeError(error)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(STIXPackage, self).to_obj(return_obj=return_obj, ns_info=ns_info)
