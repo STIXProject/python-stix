@@ -122,13 +122,18 @@ class KillChainPhasesReferenceTests(EntityTestCase, unittest.TestCase):
         ]
     }
 
-    def test_add_phase(self):
+    def test_add_lmco_phase(self):
         phase = lmco.PHASE_DELIVERY
         refs = KillChainPhasesReference()
         refs.append(phase)
 
         self.assertTrue(isinstance(refs[0], KillChainPhaseReference))
         self.assertTrue(refs[0].phase_id, lmco.PHASE_DELIVERY.phase_id)
+
+    def test_add_no_id_phase(self):
+        refs = KillChainPhasesReference()
+        phase = KillChainPhase()
+        self.assertRaises(ValueError, refs.append, phase)
 
 
 if __name__ == "__main__":
