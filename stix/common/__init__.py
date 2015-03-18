@@ -3,22 +3,23 @@
 
 from __future__ import absolute_import
 
-from .structured_text import StructuredText
-from .vocabs import VocabString
-from .datetimewithprecision import DateTimeWithPrecision
-from .activity import Activity
-from .confidence import Confidence
-from .identity import Identity
-from .information_source import InformationSource
-from .statement import Statement
-from .tools import ToolInformation
-from .names import Names
-from .campaign_reference import CampaignRef
-
-from .related import (GenericRelationshipList, RelatedCampaign, RelatedCOA,
-        RelatedExploitTarget, RelatedIdentity, RelatedIncident, 
-        RelatedIndicator, RelatedObservable, RelatedThreatActor, RelatedTTP,
-        RelatedPackage, RelatedPackages, RelatedCampaignRef)
+from .structured_text import StructuredText  # noqa
+from .vocabs import VocabString   # noqa
+from .datetimewithprecision import DateTimeWithPrecision  # noqa
+from .activity import Activity  # noqa
+from .confidence import Confidence  # noqa
+from .identity import Identity  # noqa
+from .information_source import InformationSource  # noqa
+from .statement import Statement  # noqa
+from .tools import ToolInformation  # noqa
+from .names import Names  # noqa
+from .campaign_reference import CampaignRef  # noqa
+from .related import (   # noqa
+    GenericRelationshipList, RelatedCampaign, RelatedCOA,
+    RelatedExploitTarget, RelatedIdentity, RelatedIncident,
+    RelatedIndicator, RelatedObservable, RelatedThreatActor, RelatedTTP,
+    RelatedPackage, RelatedPackages, RelatedCampaignRef
+)
 
 # Patch in base types of Related* types
 from stix.core import STIXPackage
