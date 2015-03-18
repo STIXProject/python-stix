@@ -9,15 +9,14 @@ Description: Demonstrates the setting of the `affected_software` property
 on the stix.exploit_target.vulnerability.Vulnerability class.
 
 """
+# python-cybox
+from cybox.core import Observable
+from cybox.objects.product_object import Product
 
-# python-stix imports
+# python-stix
 from stix.core import STIXPackage
 from stix.exploit_target import ExploitTarget
 from stix.exploit_target.vulnerability import Vulnerability
-
-# python-cybox imports
-from cybox.core import Observable
-from cybox.objects.product_object import Product
 
 
 # Build a Product Object that characterizes our affected software
