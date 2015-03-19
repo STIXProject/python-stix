@@ -380,6 +380,7 @@ class STIXCIQIdentity3_0(stix.Entity):
 
     def to_dict(self):
         d = {}
+
         if self.party_name:
             d['party_name'] = self.party_name.to_dict()
         if self.languages:
@@ -392,6 +393,7 @@ class STIXCIQIdentity3_0(stix.Entity):
             d['free_text_lines'] = [x.to_dict() for x in self.free_text_lines]
         if self.contact_numbers:
             d['contact_numbers'] = [x.to_dict() for x in self.contact_numbers]
+
         return d
 
 
@@ -403,7 +405,31 @@ class Address(stix.Entity):
         self.free_text_address = free_text_address
         self.country = country
         self.administrative_area = administrative_area
-    
+
+    @property
+    def country(self):
+        return self._country
+
+    @country.setter
+    def country(self, value):
+        self._set_var(Country, country=value)
+
+    @property
+    def administrative_area(self):
+        return self._administrative_area
+
+    @administrative_area.setter
+    def administrative_area(self, value):
+        self._set_var(AdministrativeArea, administrative_area=value)
+
+    @property
+    def free_text_address(self):
+        return self._free_text_address
+
+    @free_text_address.setter
+    def free_text_address(self, value):
+        self._set_var(FreeTextAddress, free_text_address=value)
+
     def to_obj(self, return_obj=None, ns_info=None):
         super(Address, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
@@ -436,7 +462,7 @@ class Address(stix.Entity):
         if not return_obj:
             return_obj = cls()
             
-        free_text_address = obj.findall("{%s}FreeTextLines" % XML_NS_XAL)
+        free_text_address = obj.findall("{%s}FreeTextAddress" % XML_NS_XAL)
         if len(free_text_address) > 0:
             return_obj.free_text_address = FreeTextAddress.from_obj(free_text_address[0])
         
@@ -660,7 +686,8 @@ class FreeTextAddress(stix.Entity):
     @address_lines.setter
     def address_lines(self, value):
         self._address_lines = []
-        if not value:
+
+        if value is None or len(value) == 0:
             return
         elif utils.is_sequence(value):
             self._address_lines = value
@@ -669,7 +696,7 @@ class FreeTextAddress(stix.Entity):
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
-        if not obj:
+        if obj is None or len(obj) == 0:
             return None
         if not return_obj:
             return_obj = cls()
@@ -699,6 +726,7 @@ class FreeTextAddress(stix.Entity):
     def from_dict(cls, d, return_obj=None):
         if not d:
             return None
+
         if not return_obj:
             return_obj = cls()
             
@@ -1271,7 +1299,7 @@ class OrganisationNameElement(_BaseNameElement):
         super(OrganisationNameElement, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if self.element_type:
-            return_obj.attrib['ElementType'] = self.element_type
+            return_obj.attrib['{%s}ElementType' % XML_NS_XNL] = self.element_type
 
         return return_obj
 
@@ -1283,7 +1311,7 @@ class OrganisationNameElement(_BaseNameElement):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.element_type = obj.get('ElementType')    
+        return_obj.element_type = obj.get('{%s}ElementType' % XML_NS_XNL)
         return_obj.value = obj.text
 
         return return_obj
@@ -1350,7 +1378,7 @@ class SubDivisionName(stix.Entity):
             return_obj = et.Element(root_tag)
 
         if self.type:
-            return_obj.attrib['Type'] = self.type
+            return_obj.attrib['{%s}Type' % XML_NS_XNL] = self.type
 
         return_obj.text = self.value
         return return_obj
@@ -1363,7 +1391,7 @@ class SubDivisionName(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.type = obj.get('Type')
+        return_obj.type = obj.get('{%s}Type' % XML_NS_XNL)
         return_obj.value = obj.text
 
         return return_obj
@@ -1443,7 +1471,7 @@ class ElectronicAddressIdentifier(stix.Entity):
         return_obj.text = self.value
         
         if self.type_:
-            return_obj.attrib['Type'] = self.type_
+            return_obj.attrib['{%s}Type' % XML_NS_XPIL] = self.type_
         
         return return_obj
     
@@ -1453,7 +1481,7 @@ class ElectronicAddressIdentifier(stix.Entity):
             return None
         
         return_obj = cls()
-        return_obj.type_ = obj.attrib.get('Type')
+        return_obj.type_ = obj.attrib.get('{%s}Type' % XML_NS_XPIL)
         return_obj.value = obj.text
         return return_obj
     
@@ -1676,8 +1704,11 @@ class ContactNumberElement(stix.Entity):
     TYPE_NATIONAL_NUMBER = "NationalNumber"
     TYPE_INTERNATIONAL_NUMBER = "InternationalNumber"
     
-    ALLOWED_TYPES = (TYPE_AREA_CODE, TYPE_COUNTRY_CODE, TYPE_EXTENSION, TYPE_INTERNATIONAL_NUMBER,
-                     TYPE_LOCAL_NUMBER, TYPE_NATIONAL_NUMBER, TYPE_SEPARATOR)
+    ALLOWED_TYPES = (
+        TYPE_AREA_CODE, TYPE_COUNTRY_CODE, TYPE_EXTENSION,
+        TYPE_INTERNATIONAL_NUMBER, TYPE_LOCAL_NUMBER, TYPE_NATIONAL_NUMBER,
+        TYPE_SEPARATOR, TYPE_PIN
+    )
     
     def __init__(self, value=None, type_=None):
         self.value = value
@@ -1685,16 +1716,16 @@ class ContactNumberElement(stix.Entity):
     
     @property
     def type_(self):
-        return self._type_
+        return self._type
     
     @type_.setter
     def type_(self, value):
         if not value:
-            self._type_ = None
+            self._type = None
         elif value not in self.ALLOWED_TYPES:
             raise ValueError('value must be one of %s' % (self.ALLOWED_TYPES,))
         else:
-            self._type_ = value
+            self._type = value
         
     def to_obj(self, return_obj=None, ns_info=None):
         super(ContactNumberElement, self).to_obj(return_obj=return_obj, ns_info=ns_info)
