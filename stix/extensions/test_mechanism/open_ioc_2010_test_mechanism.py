@@ -26,8 +26,8 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
     def __init__(self, id_=None, idref=None):
         super(OpenIOCTestMechanism, self).__init__(id_=id_, idref=idref)
         self.ioc = None
-        self.__input_namespaces__ = None
-        self.__input_schemalocations__ = None
+        self.__input_namespaces__ = {}
+        self.__input_schemalocations__ = {}
 
     @property
     def ioc(self):

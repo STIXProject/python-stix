@@ -26,6 +26,10 @@ class NamespaceInfo(object):
         self.input_namespaces = {}
         self.input_schemalocs = {}
 
+        # A list of classes that have been visited/seen during the namespace
+        # collection process. This speeds up the collect() method.
+        self.__visited = []
+
     def update(self, ns_info):
         self.namespaces.update(ns_info.namespaces)
         self.input_namespaces.update(ns_info.input_namespaces)
@@ -157,10 +161,20 @@ class NamespaceInfo(object):
 
     def collect(self, entity):
         # Traverse the MRO so we can collect _namespace attributes on Entity
-        # derivations (e.g., WinFile extends File).
+        # derivations (e.g., WinFile extends File). If we've already seen this
+        # class before, just break out.
         for klass in entity.__class__.__mro__:
-            if klass in (stix.Entity, cybox.Entity, cybox.common.VocabString):
+            stop = (
+                klass in self.__visited or
+                klass in (stix.Entity, cybox.Entity, cybox.common.VocabString)
+            )
+
+            if stop:
                 break
+
+            # Append the class to the list of visited klasses, so we don't
+            # process it again.
+            self.__visited.append(klass)
 
             # Prevents exception being raised if/when
             # collections.MutableSequence or another base class appears in the
@@ -190,13 +204,11 @@ class NamespaceInfo(object):
             else:
                 self.namespaces[ns] = None
 
-        input_ns = getattr(entity, "__input_namespaces__", None)
-        if input_ns is not None:
-            self.input_namespaces.update(input_ns)
+        if hasattr(entity, "__input_namespaces__"):
+            self.input_namespaces.update(entity.__input_namespaces__)
 
-        input_locs = getattr(entity, "__input_schemalocations__", None)
-        if input_locs is not None:
-            self.input_schemalocs.update(input_locs)
+        if hasattr(entity, "__input_schemalocations__"):
+            self.input_schemalocs.update(entity.__input_schemalocations__)
 
     def __setitem__(self, key, value):
         self.namespaces[key] = value
