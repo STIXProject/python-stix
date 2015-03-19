@@ -1,3 +1,18 @@
+Version 1.1.1.4
+2015-03-19
+- #75 Added support for non-list iterable collections in many add_foo()
+  methods and/or property setters.
+- #197 Created a TypedList abstraction for non-STIX collection objects.
+- #137 Added STIXPackage.add() method which adds input to the appropriate
+  top-level collection.
+- #192 Added support for Related Campaigns on Indicator
+- #224 Added support for additional entries in the ns_dict parater on to_xml()
+- #164 stix.utils.set_id_namespace() also sets the python-cybox id namespace.
+- #44 Added StructuredCOA support. This completes the COA structure.
+- #240 Added support for references field on Vulnerability
+- #90 Fixed Campaign.status bug which raised a TypeError
+- #189 The ns_dict parameter cannot alter default STIX/CybOX namespace mappings.
+
 Version 1.1.1.3
 2014-12-22
 - #194, #220, #230 Standardized character encodings.
