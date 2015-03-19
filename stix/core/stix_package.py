@@ -2,8 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # external
-from cybox.core import Observable, Observables, Object
-from cybox.common import ObjectProperties
+from cybox.core import Observable, Observables
 
 # internal
 import stix

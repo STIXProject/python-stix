@@ -292,7 +292,6 @@ class Indicator(stix.BaseCoreComponent):
     def observables(self, value):
         self._observables = _Observables(value)
 
-
     def add_observable(self, observable):
         """Adds an observable to the ``observables`` list property of the
         :class:`Indicator`.
@@ -452,7 +451,6 @@ class Indicator(stix.BaseCoreComponent):
         """
         self.indicator_types.append(value)
 
-    
     @property
     def confidence(self):
         """The confidence for this :class:`Indicator`.
@@ -552,7 +550,6 @@ class Indicator(stix.BaseCoreComponent):
 
         """
         self.test_mechanisms.append(tm)
-
 
     @property
     def handling(self):
@@ -710,7 +707,6 @@ class Indicator(stix.BaseCoreComponent):
             except AttributeError:
                 pass
 
-
         if not identity:
             unset_producer_identity()
             return
@@ -811,7 +807,6 @@ class Indicator(stix.BaseCoreComponent):
             return self.producer.time.received_time
         except AttributeError:
             return None
-
 
     def _merge_observables(self, observables):
         observable_composition = ObservableComposition()

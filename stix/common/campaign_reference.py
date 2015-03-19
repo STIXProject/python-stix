@@ -62,7 +62,6 @@ class CampaignRef(stix.Entity):
     def to_dict(self):
         return super(CampaignRef, self).to_dict()
 
-
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:

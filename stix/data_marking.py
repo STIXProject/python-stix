@@ -82,7 +82,6 @@ class MarkingSpecification(stix.Entity):
         self.marking_structures = _MarkingStructures(marking_structures)
         # TODO: add Information_Source
 
-
     @property
     def marking_structures(self):
         return self._marking_structures
@@ -109,7 +108,6 @@ class MarkingSpecification(stix.Entity):
 
     def to_dict(self):
         return super(MarkingSpecification, self).to_dict()
-
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):

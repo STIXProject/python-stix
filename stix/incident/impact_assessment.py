@@ -112,7 +112,6 @@ class ImpactAssessment(stix.Entity):
 
         if not return_obj:
             return_obj = cls()
-
         
         get = dict_repr.get
         return_obj.direct_impact_summary = DirectImpactSummary.from_dict(get('direct_impact_summary'))
@@ -122,7 +121,6 @@ class ImpactAssessment(stix.Entity):
         return_obj.effects = Effects.from_dict(get('effects'))
 
         return return_obj
-
 
 
 class Effects(stix.EntityList):

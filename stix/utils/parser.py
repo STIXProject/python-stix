@@ -183,7 +183,6 @@ class EntityParser(object):
         for alias, ns in root.nsmap.iteritems():
             entity.__input_namespaces__[ns] = alias
 
-
     def _apply_input_schemalocations(self, tree, entity):
         """Attaches an __input_schemalocations__ dictionary to the input entity.
 

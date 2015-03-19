@@ -134,7 +134,6 @@ class STIXHeader(stix.Entity):
         if self.profiles:
             return_obj.Profiles = stix_common_binding.ProfilesType(Profile=self.profiles)
 
-
         return return_obj
 
     @classmethod

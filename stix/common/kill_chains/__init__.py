@@ -154,7 +154,6 @@ class KillChainPhase(stix.Entity):
     def __ne__(self, other):
         return not self.__eq__(other)
 
-
     def __hash__(self):
         return hash(tuple(sorted(self.to_dict().items())))
 
@@ -244,7 +243,6 @@ class KillChainPhasesReference(stix.EntityList):
     _contained_type = KillChainPhaseReference
     _binding_var = "Kill_Chain_Phase"
     _inner_name = "kill_chain_phases"
-
 
     def _fix_value(self, value):
         if not isinstance(value, KillChainPhase):

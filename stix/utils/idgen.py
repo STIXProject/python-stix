@@ -70,7 +70,6 @@ class IDGenerator(object):
         return "%s:%s-%s" % (ns_prefix, prefix, id_)
 
 
-
 #: Singleton instance within this module. It is lazily instantiated, so simply
 #: importing the utils module will not create the object.
 __generator = None

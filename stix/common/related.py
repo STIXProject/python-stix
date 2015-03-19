@@ -207,7 +207,6 @@ class GenericRelationshipList(stix.EntityList):
         msg = msg.format(self._ALLOWED_SCOPE, value)
         raise ValueError(msg)
 
-
     def to_obj(self, return_obj=None, ns_info=None):
         list_obj = super(GenericRelationshipList, self).to_obj(
             return_obj=return_obj,

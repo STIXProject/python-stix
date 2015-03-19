@@ -98,7 +98,6 @@ class NamespaceInfo(object):
         if all(examples):
             del ns_dict['http://example.com/']
 
-
         # Attempt to identify duplicate namespace aliases. This will render
         # an invalid XML document. Raise a Python warning if duplicates are
         # found.
@@ -112,7 +111,6 @@ class NamespaceInfo(object):
                 message = "namespace alias '{0}' mapped to '{1}' and '{2}'"
                 message = message.format(alias, ns, aliases[alias])
                 warnings.warn(message)
-
 
         # Build our schemalocation dictionary.
         #
@@ -200,7 +198,6 @@ class NamespaceInfo(object):
         if input_locs is not None:
             self.input_schemalocs.update(input_locs)
 
-
     def __setitem__(self, key, value):
         self.namespaces[key] = value
 
@@ -218,7 +215,6 @@ class NamespaceParser(object):
         ns_info.finalize(ns_dict=ns_dict)
         return ns_info.finalized_namespaces
 
-
     def get_namespace_schemalocation_dict(self, entity, ns_dict=None, schemaloc_dict=None):
         ns_info = NamespaceInfo()
 
@@ -228,13 +224,11 @@ class NamespaceParser(object):
         ns_info.finalize(ns_dict=ns_dict, schemaloc_dict=schemaloc_dict)
         return ns_info.finalized_schemalocs
 
-
     def get_xmlns_str(self, ns_dict):
         pairs = sorted(ns_dict.iteritems())
         return "\n\t".join(
             'xmlns:%s="%s"' % (alias, ns) for ns, alias in pairs
         )
-
 
     def get_schemaloc_str(self, schemaloc_dict):
         if not schemaloc_dict:
@@ -250,7 +244,6 @@ class NamespaceParser(object):
 
         return schemaloc_str_start + schemaloc_str_content + schemaloc_str_end
 
-
     def get_namespace_def_str(self, namespaces, schemaloc_dict):
         if not any((namespaces, schemaloc_dict)):
             return ""
@@ -261,7 +254,6 @@ class NamespaceParser(object):
         )
 
         return "\n\t".join(parts)
-
 
 
 #: Schema locations for standard XML namespaces

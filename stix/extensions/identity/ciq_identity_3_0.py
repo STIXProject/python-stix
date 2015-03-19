@@ -63,8 +63,7 @@ class CIQIdentity3_0Instance(common.Identity):
         if value and not isinstance(value, STIXCIQIdentity3_0):
             raise ValueError('value not instance of STIXCIQIdentity3_0Type')
 
-        self._specification = value        
-
+        self._specification = value
 
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
@@ -235,7 +234,6 @@ class STIXCIQIdentity3_0(stix.Entity):
         else:
             self.electronic_address_identifiers.append(ElectronicAddressIdentifier(value))
 
-
     @property
     def free_text_lines(self):
         return self._free_text_lines
@@ -281,7 +279,6 @@ class STIXCIQIdentity3_0(stix.Entity):
             self.contact_numbers.append(value)
         else:
             self.contact_numbers.append(ContactNumber(value))
-
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -897,7 +894,6 @@ class NameLine(stix.Entity):
 
         return return_obj
 
-
     def to_dict(self):
         d = {}
         d['value'] = self.value
@@ -951,7 +947,6 @@ class PersonName(stix.Entity):
             return_obj.append(name_element.to_obj(ns_info=ns_info))
 
         return return_obj
-
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -1047,7 +1042,6 @@ class OrganisationName(stix.Entity):
 
         self.subdivision_names.append(value)
 
-
     def to_obj(self, return_obj=None, ns_info=None):
         super(OrganisationName, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
@@ -1110,7 +1104,6 @@ class OrganisationName(stix.Entity):
 
         ne_dicts = dict_repr.get('name_elements', [])
         sn_dicts = dict_repr.get('subdivision_names', [])
-
 
         return_obj.type_ = dict_repr.get('type')
         for ne_dict in ne_dicts:
@@ -1175,20 +1168,19 @@ class PersonNameElement(_BaseNameElement):
     TYPE_GENERATION_IDENTIFIER = 'GenerationIdentifier'
     TYPE_DEGREE = 'Degree'
 
-    TYPES = (TYPE_TITLE, TYPE_PRECEDING_TITLE, TYPE_FIRST_NAME, TYPE_LAST_NAME,
-             TYPE_MIDDLE_NAME, TYPE_OTHER_NAME, TYPE_ALIAS, TYPE_GENERATION_IDENTIFIER,
-             TYPE_DEGREE)
-
+    TYPES = (
+        TYPE_TITLE, TYPE_PRECEDING_TITLE, TYPE_FIRST_NAME, TYPE_LAST_NAME,
+        TYPE_MIDDLE_NAME, TYPE_OTHER_NAME, TYPE_ALIAS,
+        TYPE_GENERATION_IDENTIFIER, TYPE_DEGREE
+    )
 
     def __init__(self, value=None, element_type=None):
         super(PersonNameElement, self).__init__(value)
         self.element_type = element_type
 
-
     @property
     def element_type(self):
         return self._element_type
-
 
     @element_type.setter
     def element_type(self, value):
@@ -1264,7 +1256,6 @@ class OrganisationNameElement(_BaseNameElement):
     def element_type(self):
         return self._element_type
 
-
     @element_type.setter
     def element_type(self, value):
         if value and value not in self.TYPES:
@@ -1331,7 +1322,10 @@ class SubDivisionName(stix.Entity):
     TYPE_SCHOOL = 'School'
     TYPE_SECTION = 'Section'
 
-    TYPES = (TYPE_DEPARTMENT, TYPE_DIVISION, TYPE_BRANCH, TYPE_BUSINESS_UNIT, TYPE_SCHOOL, TYPE_SECTION)
+    TYPES = (
+        TYPE_DEPARTMENT, TYPE_DIVISION, TYPE_BRANCH, TYPE_BUSINESS_UNIT,
+        TYPE_SCHOOL, TYPE_SECTION
+    )
 
     def __init__(self, value=None, type_=None):
         self.value = value
@@ -1360,7 +1354,6 @@ class SubDivisionName(stix.Entity):
 
         return_obj.text = self.value
         return return_obj
-
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):

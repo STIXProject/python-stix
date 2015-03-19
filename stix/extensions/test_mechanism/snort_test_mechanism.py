@@ -122,7 +122,6 @@ class SnortTestMechanism(test_mechanism._BaseTestMechanism):
         
         return return_obj
 
-
     def to_dict(self):
         return super(SnortTestMechanism, self).to_dict()
 

@@ -3,8 +3,10 @@
 # See LICENSE.txt for complete terms.
 
 """
-Description: An example of how to add CIQ Identity information to a STIX Indicator
+Description: An example of how to add CIQ Identity information to a STIX
+Indicator.
 """
+
 # python-cybox
 from cybox.objects.file_object import File
 

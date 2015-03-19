@@ -110,7 +110,6 @@ class EncodedCDATA(stix.Entity):
 
         return return_obj
 
-
     def to_dict(self):
         d = {}
 

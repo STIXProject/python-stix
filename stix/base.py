@@ -20,12 +20,10 @@ class Entity(object):
     _namespace = None
     _XSI_TYPE = None
 
-
     def _collect_ns_info(self, ns_info=None):
         if not ns_info:
             return
         ns_info.collect(self)
-
 
     def _set_var(self, klass, try_cast=True, arg=None, **kwargs):
         """Sets an instance property value.
@@ -101,12 +99,10 @@ class Entity(object):
         self._collect_ns_info(ns_info)
         return return_obj
 
-
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         """Create an object from a binding object"""
         raise NotImplementedError()
-
 
     def to_xml(self, include_namespaces=True, include_schemalocs=True,
                ns_dict=None, schemaloc_dict=None, pretty=True,
@@ -206,7 +202,6 @@ class Entity(object):
 
     def to_json(self):
         return json.dumps(self.to_dict())
-
 
     @classmethod
     def from_json(cls, json_doc):
@@ -414,7 +409,6 @@ class EntityList(collections.MutableSequence, Entity):
                 return_obj=return_obj,
                 contained_type=contained_type,
             )
-
 
         if not isinstance(dict_repr, dict):
             return None
@@ -775,7 +769,6 @@ class BaseCoreComponent(Entity):
             StructuredText.from_obj(getattr(obj, 'Short_Description', None))
         return_obj.information_source = \
             InformationSource.from_obj(getattr(obj, 'Information_Source', None))
-
 
         return return_obj
 
