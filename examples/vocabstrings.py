@@ -11,9 +11,6 @@ from stix.core import STIXHeader
 from stix.common.vocabs import VocabString, PackageIntent
 
 def main():
-    # Adding a Package_Intent field to a STIX_Header.
-
-
     # Create STIXHeader instance
     header = STIXHeader()
     header.package_intents.append(PackageIntent.TERM_INDICATORS)
