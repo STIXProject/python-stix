@@ -9,10 +9,10 @@ from lxml import etree
 
 # internal
 import stix
-import stix.xmlconst as xmlconst
 
 # relative
 from . import ignored
+from .. import xmlconst
 
 
 class UnknownVersionError(Exception):

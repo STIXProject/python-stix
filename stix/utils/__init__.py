@@ -13,10 +13,10 @@ import lxml.etree
 
 # internal
 import stix
-import stix.xmlconst as xmlconst
 
 # relative
 from . import dates
+from .. import xmlconst
 
 
 CDATA_START = "<![CDATA["
