@@ -6,6 +6,8 @@
 Description: An example of how to add CIQ Identity information to a STIX
 Indicator.
 """
+# stdlib
+from pprint import pprint
 
 # python-cybox
 from cybox.objects.file_object import File
@@ -46,6 +48,14 @@ def main():
     ident_spec.add_free_text_line("Demonstrating Free Text!")
     ident_spec.add_contact_number("555-555-5555")
     ident_spec.add_contact_number("555-555-5556")
+
+    # Build and add a CIQ Address
+    addr = stix_ciq.Address(
+        free_text_address='1234 Example Lane.',
+        country='USA',
+        administrative_area='An Admin Area'
+    )
+    ident_spec.add_address(addr)
     identity = stix_ciq.CIQIdentity3_0Instance(specification=ident_spec)
 
     # Set the Indicator producer identity to our CIQ Identity
@@ -68,6 +78,8 @@ def main():
     # Print the XML!
     print(stix_package.to_xml())
 
+    # Print a dictionary!
+    pprint(stix_package.to_dict())
 
 if __name__ == '__main__':
     main()
