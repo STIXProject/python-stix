@@ -51,7 +51,11 @@ Parsing STIX XML
 Examples
 --------
 
-The python-stix GitHub repository contains several example scripts that help illustrate the capabilities of the APIs. These examples can be found `here`_. These scripts are simple command line utilities that can be executed by passing the name of the script to a Python interpreter.
+The python-stix GitHub repository contains several example scripts that help illustrate the capabilities of the APIs. These examples can be found `here`_. 
+Accompanying walkthrough `slides`_ are available.
+These scripts are simple command line utilities that can be executed by passing the name of the script to a Python interpreter.
+
+.. _slides: http://tiny.cc/pystixpreso
 
 .. _here: https://github.com/STIXProject/python-stix/tree/master/examples
 
