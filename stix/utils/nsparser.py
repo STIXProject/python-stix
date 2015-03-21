@@ -21,21 +21,112 @@ from .idgen import get_id_namespace, get_id_namespace_alias
 
 
 class NamespaceInfo(object):
+    # These appear in every exported document
+    _DEFAULT_NAMESPACES = {
+        'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
+        'http://stix.mitre.org/stix-1': 'stix',
+        'http://stix.mitre.org/common-1': 'stixCommon',
+        'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
+        'http://cybox.mitre.org/cybox-2': 'cybox',
+        'http://cybox.mitre.org/common-2': 'cyboxCommon',
+        'http://cybox.mitre.org/default_vocabularies-2': 'cyboxVocabs',
+    }
+
     def __init__(self):
-        self.namespaces = {}
+        # Namespaces that are "collected" from the Python objects during
+        # serialization.
+        self.collected_namespaces = {}
+
+        # Namespaces and schemalocations that are attached to STIX/CybOX
+        # entities when parsed from an external source.
         self.input_namespaces = {}
         self.input_schemalocs = {}
 
+        # Namespaces and schemalocations that will appear in the output
+        # XML document.
+        self.finalized_namespaces = None
+        self.finalized_schemalocs = None
+
         # A list of classes that have been visited/seen during the namespace
         # collection process. This speeds up the collect() method.
-        self.__visited = []
+        self.__collected_classes = set()
 
     def update(self, ns_info):
-        self.namespaces.update(ns_info.namespaces)
+        self.collected_namespaces.update(ns_info.collected_namespaces)
         self.input_namespaces.update(ns_info.input_namespaces)
         self.input_schemalocs.update(ns_info.input_schemalocs)
 
-    def finalize(self, ns_dict=None, schemaloc_dict=None):
+    def _parse_collected_classes(self):
+        collected = self.__collected_classes
+        entity_klasses = (stix.Entity, cybox.Entity)
+
+        # Generator which yields all stix.Entity and cybox.Entity subclasses
+        # that were collected.
+        entity_subclasses = (
+            klass for klass in collected if issubclass(klass, entity_klasses)
+        )
+
+        for klass in entity_subclasses:
+            # Prevents exception being raised if/when
+            # collections.MutableSequence or another base class appears in the
+            # MRO.
+            ns = getattr(klass, "_namespace", None)
+            if not ns:
+                continue
+
+            # cybox.objects.* ObjectPropreties derivations have an _XSI_NS
+            # class-level attribute which holds the namespace alias to be
+            # used for its namespace.
+            alias = getattr(klass, "_XSI_NS", None)
+            if alias:
+                self.collected_namespaces[ns] = alias
+                continue
+
+            xsi_type = getattr(klass, "_XSI_TYPE", None)
+            if not xsi_type:
+                self.collected_namespaces[ns] = None
+                continue
+
+            # Attempt to split the xsi:type attribute value into the ns alias
+            # and the typename.
+            typeinfo = xsi_type.split(":")
+            if len(typeinfo) == 2:
+                self.collected_namespaces[ns] = typeinfo[0]
+            else:
+                self.collected_namespaces[ns] = None
+
+    def _fix_example_namespace(self, ns_dict):
+        """Attempts to resolve issues where our samples use
+        'http://example.com/' for our example namespace but python-stix uses
+        'http://example.com' by removing the former.
+
+        """
+        examples = (
+            ('http://example.com/' in ns_dict),
+            ('http://example.com' in ns_dict)
+        )
+
+        # If we found both example namespaces, remove the one with a slash
+        # at the end, because our default ID namespace doesn't have a slash.
+        if all(examples):
+            del ns_dict['http://example.com/']
+
+    def _validate_namespaces(self, ns_dict):
+        # Attempt to identify duplicate namespace aliases. This will render
+        # an invalid XML document. Raise a Python warning if duplicates are
+        # found.
+        aliases = {}
+        for ns, alias in ns_dict.iteritems():
+            if alias not in aliases:
+                aliases[alias] = ns
+            else:
+                # TODO: Should we just throw an exception here?
+                # The XML will be invalid if there is a duplicate ns alias
+                message = "namespace alias '{0}' mapped to '{1}' and '{2}'"
+                message = message.format(alias, ns, alias)
+                warnings.warn(message)
+
+    def _finalize_namespaces(self, ns_dict=None):
         # If ns_dict was passed in, make a copy so we don't mistakenly modify
         # the original.
         if ns_dict:
@@ -43,39 +134,26 @@ class NamespaceInfo(object):
         else:
             ns_dict = {}
 
-        # If schemaloc_dict was passed in, make a copy so we don't mistakenly
-        # modify the original.
-        if schemaloc_dict:
-            schemaloc_dict = dict(schemaloc_dict.iteritems())
-        else:
-            schemaloc_dict = {}
-
+        # Get our id namespaces
         id_ns = get_id_namespace()
         id_ns_alias = get_id_namespace_alias()
 
         # Baseline namespaces: these appear in every document
-        d_ns = {
-            'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
-            'http://stix.mitre.org/stix-1': 'stix',
-            'http://stix.mitre.org/common-1': 'stixCommon',
-            'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
-            'http://cybox.mitre.org/cybox-2': 'cybox',
-            'http://cybox.mitre.org/common-2': 'cyboxCommon',
-            'http://cybox.mitre.org/default_vocabularies-2': 'cyboxVocabs',
-            id_ns: id_ns_alias
-        }
+        d_ns = dict(self._DEFAULT_NAMESPACES.iteritems())
+        d_ns[id_ns] = id_ns_alias
 
         # Iterate over the namespaces collected during a parse of the package.
         # If a namespace is not a STIX/CybOX/MAEC/XML namespace, include
         # the namespace->alias mapping.
         for ns, alias in self.input_namespaces.iteritems():
-            if ns not in DEFAULT_STIX_NAMESPACES:
-                d_ns[ns] = alias
+            if ns in DEFAULT_STIX_NAMESPACES:
+                continue
+            d_ns[ns] = alias
 
         # Iterate over the 'collected' namespaces which were found on every
         # python-stix|cybox|maec object in this package. If it has an alias
         # defined, use it. Otherwise, look up the alias in our default dicts.
-        for ns, alias in self.namespaces.iteritems():
+        for ns, alias in self.collected_namespaces.iteritems():
             if alias:
                 d_ns[ns] = alias
             else:
@@ -89,34 +167,28 @@ class NamespaceInfo(object):
         # This will be our finalized_namespaces value.
         ns_dict.update(d_ns)
 
-        # Attempts to resolve issues where our samples use
-        # 'http://example.com/' for our example namespace but python-stix uses
-        # 'http://example.com' by removing the former.
-        examples = (
-            ('http://example.com/' in ns_dict),
-            ('http://example.com' in ns_dict)
-        )
+        # Fix issues with the example namespaces used in the STIX samples
+        # and used in the API
+        self._fix_example_namespace(ns_dict)
 
-        # If we found both example namespaces, remove the one with a slash
-        # at the end, because our default ID namespace doesn't have a slash.
-        if all(examples):
-            del ns_dict['http://example.com/']
+        # Check that our namespace dictionary is sane and warn if there are
+        # any issues that may render an invalid XML document.
+        self._validate_namespaces(ns_dict)
 
-        # Attempt to identify duplicate namespace aliases. This will render
-        # an invalid XML document. Raise a Python warning if duplicates are
-        # found.
-        aliases = {}
-        for ns, alias in ns_dict.iteritems():
-            if alias not in aliases:
-                aliases[alias] = ns
-            else:
-                # TODO: Should we just throw an exception here?
-                # The XML will be invalid if there is a duplicate ns alias
-                message = "namespace alias '{0}' mapped to '{1}' and '{2}'"
-                message = message.format(alias, ns, aliases[alias])
-                warnings.warn(message)
+        return ns_dict
 
-        # Build our schemalocation dictionary.
+    def _finalize_schemalocs(self, schemaloc_dict=None):
+        # If schemaloc_dict was passed in, make a copy so we don't mistakenly
+        # modify the original.
+        if schemaloc_dict:
+            schemaloc_dict = dict(schemaloc_dict.iteritems())
+        else:
+            schemaloc_dict = {}
+
+        # Get our id namespace
+        id_ns = get_id_namespace()
+
+        # Build our schemalocation dictionary!
         #
         # Initialize it from values found in the parsed, input schemalocations
         # (if there are any) and the schemaloc_dict parameter values (if there
@@ -124,89 +196,43 @@ class NamespaceInfo(object):
         #
         # If there is a schemalocation found in both the parsed schemalocs and
         # the schema_loc dict, use the schemaloc_dict value.
-        d_sl = {}
         for ns, loc in self.input_schemalocs.iteritems():
-            d_sl[ns] = loc if ns not in schemaloc_dict else schemaloc_dict[ns]
+            if ns in schemaloc_dict:
+                continue
+            schemaloc_dict[ns] = loc
 
-        # Iterate over input/discovered namespaces for document and attempt
+        # Iterate over the finalized namespaces for a document and attempt
         # to map them to schemalocations. Warn if the namespace should have a
         # schemalocation and we can't find it anywhere.
-        for ns, _ in ns_dict.iteritems():
+        for ns in self.finalized_namespaces.iterkeys():
             if ns in DEFAULT_STIX_SCHEMALOCATIONS:
-                schemalocation = DEFAULT_STIX_SCHEMALOCATIONS[ns]
-                d_sl[ns] = schemalocation
+                 schemaloc_dict[ns] = DEFAULT_STIX_SCHEMALOCATIONS[ns]
+            elif ns in schemaloc_dict:
+                continue
+            elif (ns == id_ns) or (ns in XML_NAMESPACES):
+                continue
             else:
-                unmappable = (
-                    (ns == id_ns),
-                    (ns in schemaloc_dict),
-                    (ns in self.input_schemalocs),
-                    (ns in XML_NAMESPACES)
-                )
+                error = "Unable to map namespace '{0}' to schemaLocation"
+                warnings.warn(error.format(ns))
 
-                if any(unmappable):
-                    continue
+        return schemaloc_dict
 
-                warnings.warn(
-                    "Unable to map namespace '%s' to schemaLocation" % ns
-                )
-
-        # Update our schemalocation dictionary with the schemalocs found in
-        # the 'collect' phase. This will overwrite input schemalocs and
-        # schemaloc_dict entries if there are collisions.
-        schemaloc_dict.update(d_sl)
-
-        # Set the finalized attributes
-        self.finalized_namespaces = ns_dict
-        self.finalized_schemalocs = schemaloc_dict
+    def finalize(self, ns_dict=None, schemaloc_dict=None):
+        self._parse_collected_classes()
+        self.finalized_namespaces = self._finalize_namespaces(ns_dict)
+        self.finalized_schemalocs = self._finalize_schemalocs(schemaloc_dict)
 
     def collect(self, entity):
-        # Traverse the MRO so we can collect _namespace attributes on Entity
-        # derivations (e.g., WinFile extends File). If we've already seen this
-        # class before, just break out.
-        for klass in entity.__class__.__mro__:
-            stop = (
-                klass in self.__visited or
-                klass in (stix.Entity, cybox.Entity, cybox.common.VocabString)
-            )
+        # Collect all the classes we need to inspect for namespace information
+        self.__collected_classes.update(entity.__class__.__mro__)
 
-            if stop:
-                break
-
-            # Append the class to the list of visited klasses, so we don't
-            # process it again.
-            self.__visited.append(klass)
-
-            # Prevents exception being raised if/when
-            # collections.MutableSequence or another base class appears in the
-            # MRO.
-            ns = getattr(klass, "_namespace", None)
-            if not ns:
-                continue
-
-            # cybox.objects.* ObjectPropreties derivations have an _XSI_NS
-            # class-level attribute which holds the namespace alias to be
-            # used for its namespace.
-            alias = getattr(klass, "_XSI_NS", None)
-            if alias:
-                self.namespaces[ns] = alias
-                continue
-
-            xsi_type = getattr(klass, "_XSI_TYPE", None)
-            if not xsi_type:
-                self.namespaces[ns] = None
-                continue
-
-            # Attempt to split the xsi:type attribute value into the ns alias
-            # and the typename.
-            typeinfo = xsi_type.split(":")
-            if len(typeinfo) == 2:
-                self.namespaces[ns] = typeinfo[0]
-            else:
-                self.namespaces[ns] = None
-
+        # Collect the input namespaces if this entity came from some external
+        # source.
         if hasattr(entity, "__input_namespaces__"):
             self.input_namespaces.update(entity.__input_namespaces__)
 
+        # Collect the input schemalocation information if this entity came
+        # from some external source.
         if hasattr(entity, "__input_schemalocations__"):
             self.input_schemalocs.update(entity.__input_schemalocations__)
 
