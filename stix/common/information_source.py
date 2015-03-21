@@ -3,13 +3,16 @@
 
 from __future__ import absolute_import
 
+# external
 import cybox.common
 
+# internal
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
-from stix.common import vocabs, VocabString
 
+# relative
+from . import vocabs, VocabString
 from .identity import Identity
 from .structured_text import StructuredText
 

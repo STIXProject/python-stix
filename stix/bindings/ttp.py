@@ -727,8 +727,8 @@ class MalwareType(GeneratedsSuper):
                     type_name_ = type_names_[1]
 
                 if type_name_ == "MAEC4.1InstanceType":
-                    import stix.bindings.extensions.malware.maec_4_1 as maec_4_1_binding
-                    obj_ = maec_4_1_binding.MAEC4_1InstanceType.factory()
+                    from .extensions.malware import maec_4_1
+                    obj_ = maec_4_1.MAEC4_1InstanceType.factory()
             else:
                 obj_ = MalwareInstanceType.factory() # MalwareInstanceType is not abstract
 
@@ -807,8 +807,8 @@ class AttackPatternsType(GeneratedsSuper):
                     type_name_ = type_names_[1]
 
                 if type_name_ == "CAPEC2.7InstanceType":
-                    import stix.bindings.extensions.attack_pattern.capec_2_7 as capec_2_7_binding
-                    obj_ = capec_2_7_binding.CAPEC2_7InstanceType.factory()
+                    from .extensions.attack_pattern import capec_2_7
+                    obj_ = capec_2_7.CAPEC2_7InstanceType.factory()
                 else:
                     raise NotImplementedError('No implementation for type: ' + type_name_)
             else:
@@ -969,8 +969,8 @@ class PersonasType(GeneratedsSuper):
                     type_name_ = type_names_[1]
 
                 if type_name_ == "CIQIdentity3.0InstanceType":
-                    import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
-                    obj_ = ciq_identity_binding.CIQIdentity3_0InstanceType.factory()
+                    from .extensions.identity import ciq_identity_3_0
+                    obj_ = ciq_identity_3_0.CIQIdentity3_0InstanceType.factory()
             else:
                 obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
 
@@ -1153,8 +1153,8 @@ class VictimTargetingType(GeneratedsSuper):
                     type_name_ = type_names_[1]
 
                 if type_name_ == "CIQIdentity3.0InstanceType":
-                    import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
-                    obj_ = ciq_identity_binding.CIQIdentity3_0InstanceType.factory()
+                    from .extensions.identity import ciq_identity_3_0
+                    obj_ = ciq_identity_3_0.CIQIdentity3_0InstanceType.factory()
             else:
                 obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
 

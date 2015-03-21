@@ -2,13 +2,14 @@
 # See LICENSE.txt for complete terms.
 
 # external
-import stix
 import cybox.common
 
 # internal
-from stix.common import StructuredText
+import stix
 import stix.bindings.stix_common as common_binding
 
+# relative
+from .structured_text import StructuredText
 
 class ToolInformation(stix.Entity, cybox.common.ToolInformation):
     _namespace = 'http://stix.mitre.org/common-1'

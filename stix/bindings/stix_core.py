@@ -1012,8 +1012,8 @@ def get_root_tag(node):
 
 def parse(inFileName, nsmap=None):
     if not nsmap:
-        import stix.utils.nsparser
-        nsmap = stix.utils.nsparser.DEFAULT_STIX_NS_TO_PREFIX
+        from stix.utils.nsparser import DEFAULT_STIX_NS_TO_PREFIX
+        nsmap = DEFAULT_STIX_NS_TO_PREFIX
 
     doc = parsexml_(inFileName)
     rootNode = doc.getroot()

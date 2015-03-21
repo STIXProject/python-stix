@@ -2,7 +2,6 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils
 from stix.common import StructuredText, Confidence
 import stix.bindings.course_of_action as coa_binding
 
@@ -78,8 +77,9 @@ class Objective(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.description = StructuredText.from_dict(dict_repr.get('description'))
-        return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
-        return_obj.applicability_confidence = Confidence.from_dict(dict_repr.get('applicability_confidence'))
+        get = dict_repr.get
+        return_obj.description = StructuredText.from_dict(get('description'))
+        return_obj.short_description = StructuredText.from_dict(get('short_description'))
+        return_obj.applicability_confidence = Confidence.from_dict(get('applicability_confidence'))
         
         return return_obj

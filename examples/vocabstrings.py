@@ -10,6 +10,7 @@ Demonstrates uses of VocabString for STIX Controlled Vocabularies.
 from stix.core import STIXHeader
 from stix.common.vocabs import VocabString, PackageIntent
 
+
 def main():
     # Create STIXHeader instance
     header = STIXHeader()

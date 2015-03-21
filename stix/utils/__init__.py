@@ -13,16 +13,15 @@ import lxml.etree
 
 # internal
 import stix
+import stix.xmlconst as xmlconst
 
 # relative
 from . import dates
-from .. import xmlconst
 
 
 CDATA_START = "<![CDATA["
 CDATA_END = "]]>"
-
-_CONFLICTING_NAMES = keyword.kwlist + ['id', 'type', 'range']
+CONFLICTING_NAMES = keyword.kwlist + ['id', 'type', 'range']
 
 
 @contextlib.contextmanager
@@ -90,7 +89,7 @@ def cdata(text):
 
 
 def is_stix(entity):
-    """Returns true if `entity` is an instance of :class:`stix.Entity`."""
+    """Returns true if `entity` is an instance of :class:`.Entity`."""
     return isinstance(entity, stix.Entity)
 
 
@@ -100,7 +99,7 @@ def is_cybox(entity):
 
 
 def is_entity(entity):
-    """Returns true if `entity` is an instance of :class:`stix.Entity` or
+    """Returns true if `entity` is an instance of :class:`.Entity` or
     :class:`cybox.Entity`.
 
     """
@@ -108,7 +107,7 @@ def is_entity(entity):
 
 
 def is_entitylist(entity):
-    """Returns true if `entity` is an instance of :class:`stix.EntityList`
+    """Returns true if `entity` is an instance of :class:`.EntityList`
     or :class:`cybox.EntityList`.
 
     """
@@ -116,7 +115,7 @@ def is_entitylist(entity):
 
 
 def is_typedlist(entity):
-    """Returns true if `entity` is an instance of :class:`stix.TypedList`
+    """Returns true if `entity` is an instance of :class:`.TypedList`
 
     """
     return isinstance(entity, stix.TypedList)
@@ -153,7 +152,7 @@ def attr_name(name):
     if name.startswith("_"):
         name = name[1:]
 
-    if name in _CONFLICTING_NAMES:
+    if name in CONFLICTING_NAMES:
         name += "_"
 
     return name
@@ -237,12 +236,12 @@ def is_bool(obj):
 
 def is_element(obj):
     """Returns ``True`` if `obj` is an lxml ``Element``."""
-    return isinstance(obj, lxml.etree._Element)
+    return isinstance(obj, lxml.etree._Element)  # noqa
 
 
 def is_etree(obj):
     """Returns ``True`` if `obj` is an lxml ``ElementTree``."""
-    return isinstance(obj, lxml.etree._ElementTree)
+    return isinstance(obj, lxml.etree._ElementTree)  # noqa
 
 
 def has_value(var):
@@ -259,7 +258,7 @@ def to_dict(entity, skip=()):
     variable names and values.
 
     Args:
-        entity: A ``stix.Entity`` object.
+        entity: A ``Entity`` object.
         skip: An iterable containing keys to exclude from the dictionary. These
             should be the dictionary key names, and not the instance variable
             name (e.g., 'id' and NOT 'id_').
@@ -297,7 +296,7 @@ def to_dict(entity, skip=()):
     d = {}
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        d = dictify(entity)
+        d.update(dictify(entity))
 
     return d
 

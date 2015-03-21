@@ -10,7 +10,7 @@
 
 import sys
 from stix.bindings import *
-import stix.bindings.course_of_action as course_of_action_binding
+from stix.bindings.course_of_action import StructuredCOAType
 import stix.bindings.stix_common as stix_common_binding
 
 XML_NS = "http://stix.mitre.org/extensions/StructuredCOA#Generic-1"
@@ -19,13 +19,13 @@ XML_NS = "http://stix.mitre.org/extensions/StructuredCOA#Generic-1"
 # Data representation classes.
 #
 
-class GenericStructuredCOAType(course_of_action_binding.StructuredCOAType):
+class GenericStructuredCOAType(StructuredCOAType):
     """The GenericStructuredCOAType specifies an instantial extension from
     the abstract course_of_action_binding.StructuredCOAType intended to support the generic
     inclusion of any COA content.Specifies a reference URL for the
     location of the Generic Structured COA."""
     subclass = None
-    superclass = course_of_action_binding.StructuredCOAType
+    superclass = StructuredCOAType
     def __init__(self, idref=None, id=None, reference_location=None, Description=None, Type=None, Specification=None):
         super(GenericStructuredCOAType, self).__init__(idref=idref, id=id)
         self.xmlns          = XML_NS

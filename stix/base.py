@@ -140,7 +140,7 @@ class Entity(object):
 
         """
 
-        nsparser = utils.nsparser
+        from .utils import nsparser
         parser = nsparser.NamespaceParser()
 
         if auto_namespace:
@@ -479,7 +479,7 @@ class TypedList(collections.MutableSequence):
         """
         try:
             new_value = self._contained_type(value)
-        except:
+        except Exception:
             error = "Can't put '{0}' ({1}) into a {2}. Expected a {3} object."
             error = error.format(
                 value,                  # Input value

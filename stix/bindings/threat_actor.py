@@ -447,8 +447,8 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
                     type_name_ = type_names_[1]
 
                 if type_name_ == "CIQIdentity3.0InstanceType":
-                    import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
-                    obj_ = ciq_identity_binding.CIQIdentity3_0InstanceType.factory()
+                    from .extensions.identity import ciq_identity_3_0
+                    obj_ = ciq_identity_3_0.CIQIdentity3_0InstanceType.factory()
             else:
                 obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
 

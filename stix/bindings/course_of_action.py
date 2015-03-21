@@ -406,8 +406,8 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
                     type_name_ = type_names_[1]
 
                 if type_name_ == "GenericStructuredCOAType":
-                    import stix.bindings.extensions.structured_coa.generic as generic_coa_binding
-                    obj_ = generic_coa_binding.GenericStructuredCOAType.factory()
+                    from .extensions.structured_coa import generic
+                    obj_ = generic.GenericStructuredCOAType.factory()
                 else:
                     raise NotImplementedError('No implementation class for Structured_COA: ' + type_name_)
             else:

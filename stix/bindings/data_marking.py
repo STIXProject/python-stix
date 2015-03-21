@@ -7,11 +7,13 @@
 #
 # Generated Thu Apr 11 15:06:22 2013 by generateDS.py version 2.9a.
 #
-
+# stdlib
 import sys
-from stix import xmlconst
+
+# internal
 from stix.bindings import *
-import stix.bindings.stix_common as stix_common_binding
+from stix import xmlconst
+from . import stix_common as stix_common_binding
 
 XML_NS  = "http://data-marking.mitre.org/Marking-1"
 
@@ -331,9 +333,9 @@ class MarkingSpecificationType(GeneratedsSuper):
             self.Controlled_Structure = Controlled_Structure_
         elif nodeName_ == 'Marking_Structure':
 
-            import stix.bindings.extensions.marking.simple_marking as simple_marking_binding
-            import stix.bindings.extensions.marking.tlp as tlp_marking_binding
-            import stix.bindings.extensions.marking.terms_of_use_marking as tou_marking_binding
+            from .extensions.marking import simple_marking
+            from .extensions.marking import tlp
+            from .extensions.marking import terms_of_use_marking
 
             # Look for xsi:type. If not there, build an instance of
             # MarkingStructureType

@@ -32,6 +32,7 @@ from stix.indicator import Indicator
 from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
 
+
 RelatedCampaign._base_type = Campaign  # noqa
 RelatedCOA._base_type = CourseOfAction  # noqa
 RelatedExploitTarget._base_type = ExploitTarget  # noqa
@@ -46,6 +47,7 @@ RelatedCampaignRef._base_type = CampaignRef  # noqa
 
 # Path the RelatedPackages _contained_type
 RelatedPackages._contained_type = RelatedPackage  # noqa
+
 
 import stix
 import stix.utils as utils
