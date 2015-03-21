@@ -12,7 +12,7 @@ import stix
 import stix.xmlconst as xmlconst
 
 # relative
-from . import ignored
+from . import ignored, is_etree, is_element
 
 
 class UnknownVersionError(Exception):
@@ -61,14 +61,13 @@ def get_xml_parser(encoding=None):
 
 
 def get_etree(doc, encoding=None):
-    if isinstance(doc, etree._Element):
+    if is_element(doc):
         return etree.ElementTree(doc)
-
-    if isinstance(doc, etree._ElementTree):
+    elif is_etree(doc):
         return doc
-
-    parser = get_xml_parser(encoding=encoding)
-    return etree.parse(doc, parser=parser)
+    else:
+        parser = get_xml_parser(encoding=encoding)
+        return etree.parse(doc, parser=parser)
 
 
 def get_etree_root(doc, encoding=None):
@@ -90,14 +89,8 @@ def get_etree_root(doc, encoding=None):
         lxml.ParseError: If `doc` is a malformed XML document.
 
     """
-    if isinstance(doc, etree._Element):
-        root = doc
-    elif isinstance(doc, etree._ElementTree):
-        root = doc.getroot()
-    else:
-        parser = get_xml_parser(encoding=encoding)
-        tree = etree.parse(doc, parser=parser)
-        root = tree.getroot()
+    tree = get_etree(doc, encoding)
+    root = tree.getroot()
 
     return root
 
