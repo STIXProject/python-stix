@@ -648,11 +648,13 @@ class NameElement(stix.Entity):
         return return_obj
         
     @classmethod
-    def from_obj(cls, obj):
+    def from_obj(cls, obj, return_obj=None):
         if obj is None:
             return None
-        
-        return_obj = cls()
+
+        if not return_obj:
+            return_obj = cls()
+
         return_obj.value = obj.text
         return return_obj
     
@@ -663,11 +665,13 @@ class NameElement(stix.Entity):
         return d
     
     @classmethod
-    def from_dict(cls, d):
+    def from_dict(cls, d, return_obj=None):
         if not d:
             return None
-        
-        return_obj = cls()
+
+        if not return_obj:
+            return_obj = cls()
+
         return_obj.value = d.get('value')
         return return_obj
 
@@ -1162,7 +1166,10 @@ class _BaseNameElement(stix.Entity):
         self._value = value
 
     @classmethod
-    def from_obj(cls, obj, return_obj):
+    def from_obj(cls, obj, return_obj=None):
+        if not return_obj:
+            raise ValueError("Must supply return_obj")
+
         return_obj.value = obj.valueOf_
         return return_obj
 
@@ -1173,13 +1180,15 @@ class _BaseNameElement(stix.Entity):
         return return_obj
 
     @classmethod
-    def from_dict(cls, dict_repr, return_obj):
+    def from_dict(cls, dict_repr, return_obj=None):
+        if not return_obj:
+            raise ValueError("Must supply return_obj")
+
         return_obj.value = dict_repr.get('value', None)
         return return_obj
 
-    def to_dict(self, d):
-        d['value'] = self.value
-        return d
+    def to_dict(self):
+        return dict(value=self.value)
 
 
 class PersonNameElement(_BaseNameElement):
@@ -1476,11 +1485,13 @@ class ElectronicAddressIdentifier(stix.Entity):
         return return_obj
     
     @classmethod
-    def from_obj(cls, obj):
+    def from_obj(cls, obj, return_obj=None):
         if obj is None:
             return None
-        
-        return_obj = cls()
+
+        if not return_obj:
+            return_obj = cls()
+
         return_obj.type_ = obj.attrib.get('{%s}Type' % XML_NS_XPIL)
         return_obj.value = obj.text
         return return_obj
@@ -1494,11 +1505,13 @@ class ElectronicAddressIdentifier(stix.Entity):
         return d
     
     @classmethod
-    def from_dict(cls, d):
+    def from_dict(cls, d, return_obj=None):
         if not d:
             return None
-        
-        return_obj = cls()
+
+        if not return_obj:
+            return_obj = cls()
+
         return_obj.value = d.get('value')
         return_obj.type_ = d.get('type')
         return return_obj
@@ -1521,11 +1534,13 @@ class OrganisationInfo(stix.Entity):
         return return_obj
     
     @classmethod
-    def from_obj(cls, obj):
+    def from_obj(cls, obj, return_obj=None):
         if obj is None:
             return None
-        
-        return_obj = cls()
+
+        if not return_obj:
+            return_obj = cls()
+
         return_obj.industry_type = obj.get('{%s}IndustryType' % cls._namespace)
         return return_obj
 
@@ -1536,11 +1551,13 @@ class OrganisationInfo(stix.Entity):
         return d
     
     @classmethod
-    def from_dict(cls, d):
+    def from_dict(cls, d, return_obj=None):
         if not d:
             return None
-        
-        return_obj = cls()
+
+        if not return_obj:
+            return_obj = cls()
+
         return_obj.industry_type = d.get('industry_type')
         return return_obj
 
@@ -1565,11 +1582,13 @@ class FreeTextLine(stix.Entity):
         return return_obj
     
     @classmethod
-    def from_obj(cls, obj):
+    def from_obj(cls, obj, return_obj=None):
         if obj is None:
             return None
-        
-        return_obj = cls()
+
+        if not return_obj:
+            return_obj = cls()
+
         return_obj.type_ = obj.get('{%s}Type' % cls._namespace)
         return_obj.value = obj.text
         return return_obj
@@ -1583,11 +1602,13 @@ class FreeTextLine(stix.Entity):
         return d
     
     @classmethod
-    def from_dict(cls, d):
+    def from_dict(cls, d, return_obj=None):
         if not d:
             return None
-        
-        return_obj = cls()
+
+        if not return_obj:
+            return_obj = cls()
+
         return_obj.type_ = d.get('type')
         return_obj.value = d.get('value')
         return return_obj
@@ -1603,8 +1624,10 @@ class ContactNumber(stix.Entity):
     COM_MEDIA_TYPE_TELEPHONE = "Telephone"
     COM_MEDIA_TYPE_VOIP = "VOIP"
     
-    ALLOWED_COM_MEDIA_TYPES = (COM_MEDIA_TYPE_CELLPHONE, COM_MEDIA_TYPE_FAX, COM_MEDIA_TYPE_PAGER,
-                               COM_MEDIA_TYPE_TELEPHONE, COM_MEDIA_TYPE_VOIP)
+    ALLOWED_COM_MEDIA_TYPES = (
+        COM_MEDIA_TYPE_CELLPHONE, COM_MEDIA_TYPE_FAX, COM_MEDIA_TYPE_PAGER,
+        COM_MEDIA_TYPE_TELEPHONE, COM_MEDIA_TYPE_VOIP
+    )
     
     def __init__(self, contact_number_elements=None, communication_media_type=None):
         self.communication_media_type = communication_media_type
@@ -1657,11 +1680,13 @@ class ContactNumber(stix.Entity):
         return return_obj
     
     @classmethod
-    def from_obj(cls, obj):
+    def from_obj(cls, obj, return_obj=None):
         if obj is None:
             return None
-        
-        return_obj = cls()
+
+        if not return_obj:
+            return_obj = cls()
+
         return_obj.communication_media_type = obj.get('{%s}CommunicationMediaType' % cls._namespace)
         
         contact_number_elements = obj.findall("{%s}ContactNumberElement" % XML_NS_XPIL)
@@ -1680,11 +1705,13 @@ class ContactNumber(stix.Entity):
         return d
     
     @classmethod
-    def from_dict(cls, d):
+    def from_dict(cls, d, return_obj=None):
         if not d:
             return None
-        
-        return_obj = cls()
+
+        if not return_obj:
+            return_obj = cls()
+
         return_obj.communication_media_type = d.get('communication_media_type')
         return_obj.contact_number_elements = [ContactNumberElement.from_dict(x) for x in d.get('contact_number_elements', [])]
        
@@ -1739,11 +1766,13 @@ class ContactNumberElement(stix.Entity):
         return return_obj
     
     @classmethod
-    def from_obj(cls, obj):
+    def from_obj(cls, obj, return_obj=None):
         if obj is None:
             return None
-        
-        return_obj = cls()
+
+        if not return_obj:
+            return_obj = cls()
+
         return_obj.type_ = obj.get('{%s}Type' % cls._namespace)
         return_obj.value = obj.text
         return return_obj
@@ -1757,11 +1786,13 @@ class ContactNumberElement(stix.Entity):
         return d
     
     @classmethod
-    def from_dict(cls, d):
+    def from_dict(cls, d, return_obj=None):
         if not d:
             return None
-        
-        return_obj = cls()
+
+        if not return_obj:
+            return_obj = cls()
+
         return_obj.type_ = d.get('type')
         return_obj.value = d.get('value')
         return return_obj

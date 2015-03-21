@@ -46,9 +46,10 @@ class TTPs(stix.EntityList):
         return return_obj
     
     @classmethod
-    def from_obj(cls, obj, return_obj=None):
+    def from_obj(cls, obj, return_obj=None):  # noqa
         if not obj:
             return None
+
         if not return_obj:
             return_obj = cls()
         
@@ -62,7 +63,7 @@ class TTPs(stix.EntityList):
         return super(TTPs, self).to_dict()
 
     @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
+    def from_dict(cls, dict_repr, return_obj=None):  # noqa
         if not dict_repr:
             return None
 
