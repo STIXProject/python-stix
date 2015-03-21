@@ -206,7 +206,7 @@ class NamespaceInfo(object):
         # schemalocation and we can't find it anywhere.
         for ns in self.finalized_namespaces.iterkeys():
             if ns in DEFAULT_STIX_SCHEMALOCATIONS:
-                 schemaloc_dict[ns] = DEFAULT_STIX_SCHEMALOCATIONS[ns]
+                schemaloc_dict[ns] = DEFAULT_STIX_SCHEMALOCATIONS[ns]
             elif ns in schemaloc_dict:
                 continue
             elif (ns == id_ns) or (ns in XML_NAMESPACES):
