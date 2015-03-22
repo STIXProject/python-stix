@@ -61,10 +61,10 @@ def get_xml_parser(encoding=None):
 
 
 def get_etree(doc, encoding=None):
-    if is_element(doc):
-        return etree.ElementTree(doc)
-    elif is_etree(doc):
+    if is_etree(doc):
         return doc
+    elif is_element(doc):
+        return etree.ElementTree(doc)
     else:
         parser = get_xml_parser(encoding=encoding)
         return etree.parse(doc, parser=parser)
