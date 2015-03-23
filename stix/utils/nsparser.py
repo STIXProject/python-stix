@@ -35,29 +35,29 @@ class NamespaceInfo(object):
     def __init__(self):
         # Namespaces that are "collected" from the Python objects during
         # serialization.
-        self.collected_namespaces = {}
+        self._collected_namespaces = {}
 
         # Namespaces and schemalocations that are attached to STIX/CybOX
         # entities when parsed from an external source.
-        self.input_namespaces = {}
-        self.input_schemalocs = {}
+        self._input_namespaces = {}
+        self._input_schemalocs = {}
+
+        # A list of classes that have been visited/seen during the namespace
+        # collection process. This speeds up the collect() method.
+        self._collected_classes = set()
 
         # Namespaces and schemalocations that will appear in the output
         # XML document.
         self.finalized_namespaces = None
         self.finalized_schemalocs = None
 
-        # A list of classes that have been visited/seen during the namespace
-        # collection process. This speeds up the collect() method.
-        self.__collected_classes = set()
-
     def update(self, ns_info):
-        self.collected_namespaces.update(ns_info.collected_namespaces)
-        self.input_namespaces.update(ns_info.input_namespaces)
-        self.input_schemalocs.update(ns_info.input_schemalocs)
+        self._collected_namespaces.update(ns_info._collected_namespaces)  # noqa
+        self._input_namespaces.update(ns_info._input_namespaces)  # noqa
+        self._input_schemalocs.update(ns_info._input_schemalocs)  # noqa
 
     def _parse_collected_classes(self):
-        collected = self.__collected_classes
+        collected = self._collected_classes
         entity_klasses = (stix.Entity, cybox.Entity)
 
         # Generator which yields all stix.Entity and cybox.Entity subclasses
@@ -79,21 +79,21 @@ class NamespaceInfo(object):
             # used for its namespace.
             alias = getattr(klass, "_XSI_NS", None)
             if alias:
-                self.collected_namespaces[ns] = alias
+                self._collected_namespaces[ns] = alias
                 continue
 
             xsi_type = getattr(klass, "_XSI_TYPE", None)
             if not xsi_type:
-                self.collected_namespaces[ns] = None
+                self._collected_namespaces[ns] = None
                 continue
 
             # Attempt to split the xsi:type attribute value into the ns alias
             # and the typename.
             typeinfo = xsi_type.split(":")
             if len(typeinfo) == 2:
-                self.collected_namespaces[ns] = typeinfo[0]
+                self._collected_namespaces[ns] = typeinfo[0]
             else:
-                self.collected_namespaces[ns] = None
+                self._collected_namespaces[ns] = None
 
     def _fix_example_namespace(self, ns_dict):
         """Attempts to resolve issues where our samples use
@@ -145,7 +145,7 @@ class NamespaceInfo(object):
         # Iterate over the namespaces collected during a parse of the package.
         # If a namespace is not a STIX/CybOX/MAEC/XML namespace, include
         # the namespace->alias mapping.
-        for ns, alias in self.input_namespaces.iteritems():
+        for ns, alias in self._input_namespaces.iteritems():
             if ns in DEFAULT_STIX_NAMESPACES:
                 continue
             d_ns[ns] = alias
@@ -153,7 +153,7 @@ class NamespaceInfo(object):
         # Iterate over the 'collected' namespaces which were found on every
         # python-stix|cybox|maec object in this package. If it has an alias
         # defined, use it. Otherwise, look up the alias in our default dicts.
-        for ns, alias in self.collected_namespaces.iteritems():
+        for ns, alias in self._collected_namespaces.iteritems():
             if alias:
                 d_ns[ns] = alias
             else:
@@ -196,7 +196,7 @@ class NamespaceInfo(object):
         #
         # If there is a schemalocation found in both the parsed schemalocs and
         # the schema_loc dict, use the schemaloc_dict value.
-        for ns, loc in self.input_schemalocs.iteritems():
+        for ns, loc in self._input_schemalocs.iteritems():
             if ns in schemaloc_dict:
                 continue
             schemaloc_dict[ns] = loc
@@ -224,20 +224,17 @@ class NamespaceInfo(object):
 
     def collect(self, entity):
         # Collect all the classes we need to inspect for namespace information
-        self.__collected_classes.update(entity.__class__.__mro__)
+        self._collected_classes.update(entity.__class__.__mro__)
 
         # Collect the input namespaces if this entity came from some external
         # source.
         if hasattr(entity, "__input_namespaces__"):
-            self.input_namespaces.update(entity.__input_namespaces__)
+            self._input_namespaces.update(entity.__input_namespaces__)
 
         # Collect the input schemalocation information if this entity came
         # from some external source.
         if hasattr(entity, "__input_schemalocations__"):
-            self.input_schemalocs.update(entity.__input_schemalocations__)
-
-    def __setitem__(self, key, value):
-        self.namespaces[key] = value
+            self._input_schemalocs.update(entity.__input_schemalocations__)
 
 
 class NamespaceParser(object):

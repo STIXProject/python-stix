@@ -48,7 +48,7 @@ class NamespaceInfoTests(unittest.TestCase):
         # Parse collected classes
         nsinfo._parse_collected_classes()
 
-        self.assertEqual(len(nsinfo.collected_namespaces), 3)
+        self.assertEqual(len(nsinfo._collected_namespaces), 3)  # noqa
 
 
     def test_namespace_dict(self):
