@@ -263,4 +263,4 @@ _EXTENSION_MAP = {}
 
 
 def add_extension(cls):
-    _EXTENSION_MAP[cls._XSI_TYPE] = cls
+    _EXTENSION_MAP[cls._XSI_TYPE] = cls  # noqa
