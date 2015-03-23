@@ -57,9 +57,7 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
             self.__input_schemalocations__ = {}
 
     def _collect_namespaces(self, node):
-        self.__input_namespaces__ = {}
-        for alias, ns in node.nsmap.iteritems():
-            self.__input_namespaces__[ns] = alias
+        self.__input_namespaces__ = dict(node.nsmap.iteritems())
 
     def _cast_ioc(self, node):
         ns_ioc = "http://schemas.mandiant.com/2010/ioc"

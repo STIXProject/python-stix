@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # stdlib
+import collections
 import warnings
 import itertools
 
@@ -20,22 +21,32 @@ from .walk import iterwalk
 from .idgen import get_id_namespace, get_id_namespace_alias
 
 
+class DuplicatePrefixError(Exception):
+    def __init__(self, message, prefix, source_ns, dest_ns):
+        super(DuplicatePrefixError, self).__init__(message)
+        self.prefix = prefix
+        self.source_ns = source_ns,
+        self.dest_ns = dest_ns
+
+
 class NamespaceInfo(object):
     # These appear in every exported document
-    _DEFAULT_NAMESPACES = {
-        'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
-        'http://stix.mitre.org/stix-1': 'stix',
-        'http://stix.mitre.org/common-1': 'stixCommon',
-        'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
-        'http://cybox.mitre.org/cybox-2': 'cybox',
-        'http://cybox.mitre.org/common-2': 'cyboxCommon',
-        'http://cybox.mitre.org/default_vocabularies-2': 'cyboxVocabs',
+    _BASELINE_NAMESPACES = {
+        'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
+        'stix': 'http://stix.mitre.org/stix-1',
+        'stixCommon': 'http://stix.mitre.org/common-1',
+        'stixVocabs': 'http://stix.mitre.org/default_vocabularies-1',
+        'cybox': 'http://cybox.mitre.org/cybox-2',
+        'cyboxCommon': 'http://cybox.mitre.org/common-2',
+        'cyboxVocabs': 'http://cybox.mitre.org/default_vocabularies-2'
     }
 
     def __init__(self):
         # Namespaces that are "collected" from the Python objects during
-        # serialization.
-        self._collected_namespaces = {}
+        # serialization. Key is the namespace alias/prefix. Value is the
+        # namespace. There are many classes without a defined prefix, so
+        # the ``None`` prefix is predefined as a ``set()``.
+        self._collected_namespaces = {None: set()}
 
         # Namespaces and schemalocations that are attached to STIX/CybOX
         # entities when parsed from an external source.
@@ -66,6 +77,11 @@ class NamespaceInfo(object):
             klass for klass in collected if issubclass(klass, entity_klasses)
         )
 
+        # Local function for adding namespaces that have no defined prefix
+        # mapping at the class-level. These will be resolved in the
+        # self._finalize_namespaces() function.
+        no_alias = self._collected_namespaces[None].add
+
         for klass in entity_subclasses:
             # Prevents exception being raised if/when
             # collections.MutableSequence or another base class appears in the
@@ -74,42 +90,50 @@ class NamespaceInfo(object):
             if not ns:
                 continue
 
-            # cybox.objects.* ObjectPropreties derivations have an _XSI_NS
+            # cybox.objects.* ObjectProperties derivations have an _XSI_NS
             # class-level attribute which holds the namespace alias to be
             # used for its namespace.
             alias = getattr(klass, "_XSI_NS", None)
             if alias:
-                self._collected_namespaces[ns] = alias
+                self._collected_namespaces[alias] = ns
                 continue
 
+            # Many stix/cybox entity classes have an _XSI_TYPE attribute that
+            # contains a `prefix:namespace` formatted QNAME for the
+            # associated xsi:type.
             xsi_type = getattr(klass, "_XSI_TYPE", None)
             if not xsi_type:
-                self._collected_namespaces[ns] = None
+                no_alias(ns)
                 continue
 
             # Attempt to split the xsi:type attribute value into the ns alias
             # and the typename.
             typeinfo = xsi_type.split(":")
             if len(typeinfo) == 2:
-                self._collected_namespaces[ns] = typeinfo[0]
+                self._collected_namespaces[typeinfo[0]] = ns
             else:
-                self._collected_namespaces[ns] = None
+                no_alias(ns)
 
-    def _fix_example_namespace(self, ns_dict):
+    def _fix_example_namespace(self, ns_dict, input_namespaces):
         """Attempts to resolve issues where our samples use
         'http://example.com/' for our example namespace but python-stix uses
         'http://example.com' by removing the former.
 
         """
-        examples = (
-            ('http://example.com/' in ns_dict),
-            ('http://example.com' in ns_dict)
+        sample_ns = 'http://example.com/'
+        api_ns =  'http://example.com'
+        prefix = 'example'
+
+        # Do we have two mappings of the 'example' prefix?
+        dup_example = (
+            input_namespaces.get(sample_ns) == prefix,
+            ns_dict.get(api_ns) == prefix
         )
 
         # If we found both example namespaces, remove the one with a slash
         # at the end, because our default ID namespace doesn't have a slash.
-        if all(examples):
-            del ns_dict['http://example.com/']
+        if all(dup_example):
+            del input_namespaces['http://example.com/']
 
     def _validate_namespaces(self, ns_dict):
         # Attempt to identify duplicate namespace aliases. This will render
@@ -126,54 +150,90 @@ class NamespaceInfo(object):
                 message = message.format(alias, ns, alias)
                 warnings.warn(message)
 
+    def _check_namespace_alias(self, ns_dict, prefix, namespace):
+        # Get the current namespace mapping if it exists
+        current_ns = ns_dict.get(prefix)
+
+        # If there is not currently a namespace mapping or the the current
+        # mapping matches the one we're checking we're good!
+        if current_ns in (None, namespace):
+            return
+
+        # We are attempting to define a prefix-to-namespace mapping that
+        # conflicts with an existing mapping. Raise an exception or else
+        # we'll render invalid XML.
+        error = (
+            "Cannot map namespace prefix '{0}' to '{1}': prefix already mapped "
+            "to '{2}'."
+        )
+        error = error.format(prefix, namespace, current_ns)
+
+        raise DuplicatePrefixError(
+            message=error,
+            prefix=prefix,
+            source_ns=current_ns,
+            dest_ns=namespace
+        )
+
     def _finalize_namespaces(self, ns_dict=None):
         # If ns_dict was passed in, make a copy so we don't mistakenly modify
         # the original.
         if ns_dict:
-            ns_dict = dict(ns_dict.iteritems())
+            ns_dict = dict((alias, ns) for ns, alias in ns_dict.iteritems())
         else:
             ns_dict = {}
 
         # Get our id namespaces
-        id_ns = get_id_namespace()
-        id_ns_alias = get_id_namespace_alias()
+        id_ns_alias, id_ns = get_id_namespace_alias(), get_id_namespace()
 
         # Baseline namespaces: these appear in every document
-        d_ns = dict(self._DEFAULT_NAMESPACES.iteritems())
-        d_ns[id_ns] = id_ns_alias
+        d_ns = dict(self._BASELINE_NAMESPACES.iteritems())
+        d_ns[id_ns_alias] = id_ns
+
+        # Fix issues with the example namespaces used in the STIX samples
+        # and used in the API
+        self._fix_example_namespace(d_ns, self._input_namespaces)
 
         # Iterate over the namespaces collected during a parse of the package.
         # If a namespace is not a STIX/CybOX/MAEC/XML namespace, include
         # the namespace->alias mapping.
-        for ns, alias in self._input_namespaces.iteritems():
-            if ns in DEFAULT_STIX_NAMESPACES:
+        for alias, ns in self._input_namespaces.iteritems():
+            if ns in DEFAULT_STIX_NAMESPACES_TUPLE:
                 continue
-            d_ns[ns] = alias
+
+            # Check that this namespace mapping doesn't conflict with an
+            # existing one.
+            self._check_namespace_alias(d_ns, alias, ns)
+
+            # Assign the prefix-to-namespace mapping.
+            d_ns[alias] = ns
 
         # Iterate over the 'collected' namespaces which were found on every
         # python-stix|cybox|maec object in this package. If it has an alias
         # defined, use it. Otherwise, look up the alias in our default dicts.
-        for ns, alias in self._collected_namespaces.iteritems():
-            if alias:
-                d_ns[ns] = alias
-            else:
-                default_alias = DEFAULT_STIX_NAMESPACES[ns]
-                d_ns[ns] = default_alias
+        no_alias = self._collected_namespaces.pop(None, ())
+        for ns in no_alias:
+            alias = DEFAULT_STIX_NAMESPACES[ns]
+            self._check_namespace_alias(d_ns, alias, ns)
+            d_ns[alias] = ns
+
+        # The rest of the collected namespace entries have aliases defined.
+        for alias, ns in self._collected_namespaces.iteritems():
+            self._check_namespace_alias(d_ns, alias, ns)
+            d_ns[alias] = ns
 
         # Update the input dictionary with our processed input/collected
         # namespaces. This will overwrite any of the ns_dict namespace mappings
         # with those expected/defined by the APIs and bindings.
         #
         # This will be our finalized_namespaces value.
-        ns_dict.update(d_ns)
-
-        # Fix issues with the example namespaces used in the STIX samples
-        # and used in the API
-        self._fix_example_namespace(ns_dict)
+        for alias, ns in d_ns.iteritems():
+            self._check_namespace_alias(ns_dict, alias, ns)
+            ns_dict[alias] = ns
 
         # Check that our namespace dictionary is sane and warn if there are
         # any issues that may render an invalid XML document.
-        self._validate_namespaces(ns_dict)
+        # self._validate_namespaces(ns_dict)
 
         return ns_dict
 
@@ -396,6 +456,12 @@ DEFAULT_STIX_NAMESPACES  = dict(
     )
 )
 
+DEFAULT_STIX_PREFIX_TO_NAMESPACE = dict(
+    (alias, ns) for ns, alias in DEFAULT_STIX_NAMESPACES.iteritems()
+)
+
+DEFAULT_STIX_NAMESPACES_TUPLE = tuple(DEFAULT_STIX_NAMESPACES.keys())
+
 DEFAULT_STIX_SCHEMALOCATIONS = dict(
     itertools.chain(
         STIX_NS_TO_SCHEMALOCATION.iteritems(),
@@ -404,15 +470,26 @@ DEFAULT_STIX_SCHEMALOCATIONS = dict(
     )
 )
 
+
 # python-maec support code
 with ignored(ImportError):
     from maec.utils.nsparser import NS_LIST
 
-    DEFAULT_MAEC_NAMESPACES = dict((ns, alias) for (ns, alias, _) in NS_LIST)
-    del DEFAULT_MAEC_NAMESPACES['http://maec.mitre.org/default_vocabularies-1']
-    MAEC_NS_TO_SCHEMALOCATION = dict(
+    ns_to_prefix = dict(
+        (ns, prefix) for (ns, prefix, _) in NS_LIST
+    )
+
+    del ns_to_prefix['http://maec.mitre.org/default_vocabularies-1']
+
+    prefix_to_ns = dict(
+        (prefix, ns) for (ns, prefix) in ns_to_prefix.iteritems()
+    )
+
+    ns_to_schemalocation = dict(
         (ns, schemaloc) for ns, _, schemaloc in NS_LIST if schemaloc
     )
 
-    DEFAULT_STIX_NAMESPACES.update(DEFAULT_MAEC_NAMESPACES)
-    DEFAULT_STIX_SCHEMALOCATIONS.update(MAEC_NS_TO_SCHEMALOCATION)
+    DEFAULT_STIX_NAMESPACES.update(ns_to_prefix)
+    DEFAULT_STIX_PREFIX_TO_NAMESPACE.update(prefix_to_ns)
+    DEFAULT_STIX_NAMESPACES_TUPLE = tuple(DEFAULT_STIX_NAMESPACES.iterkeys())
+    DEFAULT_STIX_SCHEMALOCATIONS.update(ns_to_schemalocation)
