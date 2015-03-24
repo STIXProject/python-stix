@@ -158,7 +158,7 @@ class Entity(object):
 
         if auto_namespace:
             ns_info.finalize(ns_dict=ns_dict, schemaloc_dict=schemaloc_dict)
-            obj_ns_dict = ns_info.finalized_namespaces
+            obj_ns_dict = ns_info.binding_namespaces
         else:
             ns_info = nsparser.NamespaceInfo()
             ns_info.finalized_namespaces = ns_dict or {}

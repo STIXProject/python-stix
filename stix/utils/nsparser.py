@@ -62,6 +62,9 @@ class NamespaceInfo(object):
         self.finalized_namespaces = None
         self.finalized_schemalocs = None
 
+        # Namespace dictionary that gets passed to the bindings.
+        self.binding_namespaces = None
+
     def update(self, ns_info):
         self._collected_namespaces.update(ns_info._collected_namespaces)  # noqa
         self._input_namespaces.update(ns_info._input_namespaces)  # noqa
@@ -135,21 +138,6 @@ class NamespaceInfo(object):
         if all(dup_example):
             del input_namespaces['http://example.com/']
 
-    def _validate_namespaces(self, ns_dict):
-        # Attempt to identify duplicate namespace aliases. This will render
-        # an invalid XML document. Raise a Python warning if duplicates are
-        # found.
-        aliases = {}
-        for ns, alias in ns_dict.iteritems():
-            if alias not in aliases:
-                aliases[alias] = ns
-            else:
-                # TODO: Should we just throw an exception here?
-                # The XML will be invalid if there is a duplicate ns alias
-                message = "namespace alias '{0}' mapped to '{1}' and '{2}'"
-                message = message.format(alias, ns, alias)
-                warnings.warn(message)
-
     def _check_namespace_alias(self, ns_dict, prefix, namespace):
         # Get the current namespace mapping if it exists
         current_ns = ns_dict.get(prefix)
@@ -163,8 +151,8 @@ class NamespaceInfo(object):
         # conflicts with an existing mapping. Raise an exception or else
         # we'll render invalid XML.
         error = (
-            "Cannot map namespace prefix '{0}' to '{1}': prefix already mapped "
-            "to '{2}'."
+            "Cannot map namespace prefix '{0}' to '{1}': prefix already "
+            "mapped to '{2}'."
         )
         error = error.format(prefix, namespace, current_ns)
 
@@ -179,7 +167,7 @@ class NamespaceInfo(object):
         # If ns_dict was passed in, make a copy so we don't mistakenly modify
         # the original.
         if ns_dict:
-            ns_dict = dict((alias, ns) for ns, alias in ns_dict.iteritems())
+            ns_dict = dict(ns_dict.iteritems())
         else:
             ns_dict = {}
 
@@ -222,20 +210,13 @@ class NamespaceInfo(object):
             self._check_namespace_alias(d_ns, alias, ns)
             d_ns[alias] = ns
 
-        # Update the input dictionary with our processed input/collected
-        # namespaces. This will overwrite any of the ns_dict namespace mappings
-        # with those expected/defined by the APIs and bindings.
-        #
-        # This will be our finalized_namespaces value.
-        for alias, ns in d_ns.iteritems():
-            self._check_namespace_alias(ns_dict, alias, ns)
-            ns_dict[alias] = ns
 
-        # Check that our namespace dictionary is sane and warn if there are
-        # any issues that may render an invalid XML document.
-        # self._validate_namespaces(ns_dict)
+        # Added the values from the `ns_dict` dictionary to the return dict.
+        for ns, alias in ns_dict.iteritems():
+            self._check_namespace_alias(d_ns, alias, ns)
+            d_ns[alias] = ns
 
-        return ns_dict
+        return d_ns
 
     def _finalize_schemalocs(self, schemaloc_dict=None):
         # If schemaloc_dict was passed in, make a copy so we don't mistakenly
@@ -264,7 +245,8 @@ class NamespaceInfo(object):
         # Iterate over the finalized namespaces for a document and attempt
         # to map them to schemalocations. Warn if the namespace should have a
         # schemalocation and we can't find it anywhere.
-        for ns in self.finalized_namespaces.iterkeys():
+        nsset = set(self.finalized_namespaces.itervalues())
+        for ns in nsset:
             if ns in DEFAULT_STIX_SCHEMALOCATIONS:
                 schemaloc_dict[ns] = DEFAULT_STIX_SCHEMALOCATIONS[ns]
             elif ns in schemaloc_dict:
@@ -277,10 +259,23 @@ class NamespaceInfo(object):
 
         return schemaloc_dict
 
+    def _finalize_binding_namespaces(self):
+        if not self.finalized_namespaces:
+            return {}
+
+        final = dict(
+            (ns, alias) for alias, ns in self.finalized_namespaces.iteritems()
+        )
+        
+        final.update(DEFAULT_STIX_NAMESPACES)
+
+        return final
+
     def finalize(self, ns_dict=None, schemaloc_dict=None):
         self._parse_collected_classes()
         self.finalized_namespaces = self._finalize_namespaces(ns_dict)
         self.finalized_schemalocs = self._finalize_schemalocs(schemaloc_dict)
+        self.binding_namespaces = self._finalize_binding_namespaces()
 
     def collect(self, entity):
         # Collect all the classes we need to inspect for namespace information
@@ -322,7 +317,7 @@ class NamespaceParser(object):
     def get_xmlns_str(self, ns_dict):
         pairs = sorted(ns_dict.iteritems())
         return "\n\t".join(
-            'xmlns:%s="%s"' % (alias, ns) for ns, alias in pairs
+            'xmlns:%s="%s"' % (alias, ns) for alias, ns in pairs
         )
 
     def get_schemaloc_str(self, schemaloc_dict):
@@ -389,7 +384,9 @@ STIX_NS_TO_SCHEMALOCATION = {
 }
 
 #: Schema locations for namespaces defined by the CybOX language
-CYBOX_NS_TO_SCHEMALOCATION = dict((ns, schemaloc) for ns, _, schemaloc in cybox.utils.nsparser.NS_LIST if schemaloc)
+CYBOX_NS_TO_SCHEMALOCATION = dict(
+    (ns, loc) for ns, _, loc in cybox.utils.nsparser.NS_LIST if loc
+)
 
 #: Schema locations for namespaces not defined by STIX, but hosted on the STIX website
 EXT_NS_TO_SCHEMALOCATION = {
@@ -443,10 +440,13 @@ DEFAULT_EXT_TO_PREFIX = {
     'urn:oasis:names:tc:ciq:xnl:3': 'xnl'
 }
 
+#: Mapping of CybOX namespaces to default aliases
 DEFAULT_CYBOX_NAMESPACES = dict(
     (ns, alias) for (ns, alias, _) in cybox.utils.nsparser.NS_LIST
 )
 
+
+#: Mapping of all STIX/STIX Extension/CybOX/XML namespaces
 DEFAULT_STIX_NAMESPACES  = dict(
     itertools.chain(
         DEFAULT_CYBOX_NAMESPACES.iteritems(),
@@ -456,12 +456,15 @@ DEFAULT_STIX_NAMESPACES  = dict(
     )
 )
 
+#: Prefix-to-namespace mapping of the `DEFAULT_STIX_NAMESPACES` mapping
 DEFAULT_STIX_PREFIX_TO_NAMESPACE = dict(
     (alias, ns) for ns, alias in DEFAULT_STIX_NAMESPACES.iteritems()
 )
 
+#: Tuple of all keys found in `DEFAULT_STIX_NAMESPACES` mapping.
 DEFAULT_STIX_NAMESPACES_TUPLE = tuple(DEFAULT_STIX_NAMESPACES.keys())
 
+#: Mapping of STIX/CybOX/STIX Extension namespaces to canonical schema locations
 DEFAULT_STIX_SCHEMALOCATIONS = dict(
     itertools.chain(
         STIX_NS_TO_SCHEMALOCATION.iteritems(),
@@ -469,7 +472,6 @@ DEFAULT_STIX_SCHEMALOCATIONS = dict(
         CYBOX_NS_TO_SCHEMALOCATION.iteritems(),
     )
 )
-
 
 # python-maec support code
 with ignored(ImportError):

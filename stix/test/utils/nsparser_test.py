@@ -48,7 +48,7 @@ class NamespaceInfoTests(unittest.TestCase):
         # Parse collected classes
         nsinfo._parse_collected_classes()
 
-        self.assertEqual(len(nsinfo._collected_namespaces), 3)  # noqa
+        self.assertEqual(len(nsinfo._collected_namespaces), 4)  # noqa
 
 
     def test_namespace_dict(self):
@@ -59,6 +59,6 @@ class NamespaceInfoTests(unittest.TestCase):
 
         # finalize the namespace dictionary
         nsinfo.finalize(ns_dict=NSMAP, schemaloc_dict=SCHEMALOCS)
-        namespaces = nsinfo.finalized_namespaces
-        
+        namespaces = nsinfo.finalized_namespaces.values()
+
         self.assertTrue(all(ns in namespaces for ns in NSMAP.iterkeys()))
