@@ -9,7 +9,7 @@ Classes
 -------
 
 .. autoclass:: CourseOfAction
-	:show-inheritance:
+    :show-inheritance:
 	:members:
 
 .. autoclass:: RelatedCOAs
