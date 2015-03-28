@@ -87,6 +87,8 @@ class _FixedOffsetTZ(tzinfo):
     def dst(self, dt):
         return None
 
+    __reduce__ = object.__reduce__
+
 
 class GeneratedsSuper(object):
 
@@ -225,6 +227,8 @@ class GeneratedsSuper(object):
         return input_data
 
     def gds_format_date(self, input_data, input_name=''):
+        if isinstance(input_data, basestring):
+            return input_data
         _svalue = input_data.strftime('%Y-%m-%d')
         if input_data.tzinfo is not None:
             tzoff = input_data.tzinfo.utcoffset(input_data)
