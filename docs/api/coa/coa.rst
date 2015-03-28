@@ -10,8 +10,8 @@ Classes
 
 .. autoclass:: CourseOfAction
     :show-inheritance:
-	:members:
+    :members:
 
 .. autoclass:: RelatedCOAs
-	:show-inheritance:
-	:members:
+    :show-inheritance:
+    :members:

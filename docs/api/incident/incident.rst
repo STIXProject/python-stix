@@ -9,25 +9,25 @@ Classes
 -------
 
 .. autoclass:: Incident
-	:show-inheritance:
-	:members:
+    :show-inheritance:
+    :members:
 
 .. autoclass:: AttributedThreatActors
-	:show-inheritance:
-	:members:
+    :show-inheritance:
+    :members:
 
 .. autoclass:: LeveragedTTPs
-	:show-inheritance:
-	:members:
+    :show-inheritance:
+    :members:
 
 .. autoclass:: RelatedIndicators
-	:show-inheritance:
-	:members:
+    :show-inheritance:
+    :members:
 
 .. autoclass:: RelatedObservables
-	:show-inheritance:
-	:members:
+    :show-inheritance:
+    :members:
 
 .. autoclass:: RelatedIncidents
-	:show-inheritance:
-	:members:
+    :show-inheritance:
+    :members:
