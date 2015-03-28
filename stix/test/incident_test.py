@@ -465,6 +465,49 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
         xml = s.getvalue()
         self.assertTrue("A Description" in xml, "Description not exported")
 
+    def test_add_related_observable(self):
+        from cybox.core import Observable
+        from stix.common.related import RelatedObservable
+
+        i = self.klass()
+
+        self.assertEqual(0, len(i.related_observables))
+        i.add_related_observable(Observable())
+        self.assertEqual(1, len(i.related_observables))
+
+
+        related = RelatedObservable(Observable())
+        i.add_related_observable(related)
+        self.assertEqual(2, len(i.related_observables))
+
+        # Test that this fails
+        self.assertRaises(
+            ValueError,
+            i.add_related_observable,
+            "THIS SHOULD FAIL"
+        )
+
+    def test_add_related_indicator(self):
+        from stix.indicator import Indicator
+        from stix.common.related import RelatedIndicator
+
+        i = self.klass()
+
+        self.assertEqual(0, len(i.related_indicators))
+        i.add_related_indicator(Indicator())
+        self.assertEqual(1, len(i.related_indicators))
+
+        related = RelatedIndicator(Indicator())
+        i.add_related_indicator(related)
+        self.assertEqual(2, len(i.related_indicators))
+
+        # Test that this fails
+        self.assertRaises(
+            ValueError,
+            i.add_related_indicator,
+            "THIS SHOULD FAIL"
+        )
+
 
 
 if __name__ == "__main__":

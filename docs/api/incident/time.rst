@@ -9,5 +9,5 @@ Classes
 -------
 
 .. autoclass:: Time
-	:show-inheritance:
-	:members:
+    :show-inheritance:
+    :members:

@@ -220,6 +220,86 @@ class Incident(stix.BaseCoreComponent):
     def add_coa_taken(self, value):
         self.coa_taken.append(value)
 
+    @property
+    def related_indicators(self):
+        return self._related_indicators
+
+    @related_indicators.setter
+    def related_indicators(self, value):
+        self._set_var(RelatedIndicators, related_indicators=value)
+
+    def add_related_indicator(self, value):
+        """Adds an Related Indicator to the ``related_indicators`` list
+        property of this :class:`Incident`.
+
+        The `indicator` parameter must be an instance of
+        :class:`.RelatedIndicator` or :class:`Indicator`.
+
+        If the `indicator` parameter is ``None``, no item wil be added to the
+        ``related_indicators`` list property.
+
+        Calling this method is the same as calling ``append()`` on the
+        ``related_indicators`` property.
+
+        See Also:
+            The :class:`RelatedIndicators` documentation.
+
+        Note:
+            If the `indicator` parameter is not an instance of
+            :class:`.RelatedIndicator` an attempt will be
+            made to convert it to one.
+
+        Args:
+            indicator: An instance of :class:`Indicator` or
+                :class:`.RelatedIndicator`.
+
+        Raises:
+            ValueError: If the `indicator` parameter cannot be converted into
+                an instance of :class:`.RelatedIndicator`
+
+        """
+        self.related_indicators.append(value)
+
+    @property
+    def related_observables(self):
+        return self._related_observables
+
+    @related_observables.setter
+    def related_observables(self, value):
+        self._set_var(RelatedObservables, related_observables=value)
+
+    def add_related_observable(self, value):
+        """Adds a Related Observable to the ``related_observables`` list
+        property of this :class:`Incident`.
+
+        The `observable` parameter must be an instance of
+        :class:`.RelatedObservable` or :class:`Observable`.
+
+        If the `observable` parameter is ``None``, no item will be added to the
+        ``related_observables`` list property.
+
+        Calling this method is the same as calling ``append()`` on the
+        ``related_observables`` property.
+
+        See Also:
+            The :class:`RelatedObservables` documentation.
+
+        Note:
+            If the `observable` parameter is not an instance of
+            :class:`.RelatedObservable` an attempt will be
+            made to convert it to one.
+
+        Args:
+            observable: An instance of :class:`Observable` or
+                :class:`.RelatedObservable`.
+
+        Raises:
+            ValueError: If the `value` parameter cannot be converted into
+                an instance of :class:`.RelatedObservable`
+
+        """
+        self.related_observables.append(value)
+
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
