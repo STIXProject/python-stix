@@ -1,6 +1,8 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+import copy
+import StringIO
 import unittest
 
 from stix.test import EntityTestCase
@@ -90,6 +92,27 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
         'ttps': TTPsTests._full_dict,
         'version': "1.1.1"
     }
+
+
+    def test_deepcopy(self):
+        """Test copy.deepcopy() against parsed document.
+
+        Previous versions of python-stix would cause an exception with
+        copy.deepcopy() when applied to a parsed STIX component which contained
+        timestamp information.
+
+        This was due to the lack of a __reduce__ function defined on the
+        bindings._FixedTZOffset class.
+
+        """
+        package = core.STIXPackage.from_xml(
+            StringIO.StringIO(
+                core.STIXPackage().to_xml()
+            )
+        )
+
+        copied = copy.deepcopy(package)
+        self.assertEqual(package.timestamp, copied.timestamp)
 
 
 if __name__ == "__main__":
