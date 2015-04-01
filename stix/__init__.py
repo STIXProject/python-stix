@@ -5,8 +5,7 @@ __version__ = "1.1.1.5-dev"
 
 
 def supported_stix_version():
-    lib_version = __version__
-    return lib_version[:-2]
+    return '.'.join(__version__.split('.')[:-1])
 
 
 from .base import Entity, EntityList, TypedList, BaseCoreComponent  # noqa
