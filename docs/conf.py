@@ -25,7 +25,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 rst_prolog = """
-**Version**: {}
+**Version**: {0}
 """.format(release)
 
 exclude_patterns = ['_build', '_includes', 'api_vs_bindings/*_snippet.rst']
