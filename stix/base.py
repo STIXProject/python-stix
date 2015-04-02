@@ -104,7 +104,7 @@ class Entity(object):
         """Create an object from a binding object"""
         raise NotImplementedError()
 
-    def to_xml(self, include_namespaces=True, include_schemalocs=True,
+    def to_xml(self, include_namespaces=True, include_schemalocs=False,
                ns_dict=None, schemaloc_dict=None, pretty=True,
                auto_namespace=True, encoding='utf-8'):
         """Serializes a :class:`Entity` instance to an XML string.
