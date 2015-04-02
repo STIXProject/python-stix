@@ -1,3 +1,5 @@
+import os
+
 import stix
 
 project = u'python-stix'
@@ -26,30 +28,18 @@ rst_prolog = """
 **Version**: {}
 """.format(release)
 
-exclude_patterns = ['_build', '_includes']
+exclude_patterns = ['_build', '_includes', 'api_vs_bindings/*_snippet.rst']
 
 pygments_style = 'sphinx'
 
-html_theme = 'default'
-html_style = 'stix_doc.css'
-html_static_path = ['_static']
-htmlhelp_basename = 'python-stixdoc'
+on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
+if not on_rtd:  # only import and set the theme if we're building docs locally
+    import sphinx_rtd_theme
+    html_theme = 'sphinx_rtd_theme'
+    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+else:
+    html_theme = 'default'
 
-html_theme_options = {
-    'codebgcolor': '#EEE',
-    'footerbgcolor': '#FFF',
-    'footertextcolor': '#666',
-    'headbgcolor': '#CCC',
-    'headtextcolor': '#666',
-    'headlinkcolor': '#ED1C24',
-    'linkcolor': '#ED1C24',
-    'relbarbgcolor': '#666',
-    'relbartextcolor': '#ED1C24',
-    'sidebarbgcolor': '#EEE',
-    'sidebarlinkcolor': '#ED1C24',
-    'sidebartextcolor': '#000',
-    'visitedlinkcolor': '#ED1C24',
-}
 html_sidebars = {"**": ['localtoc.html', 'relations.html', 'sourcelink.html',
 'searchbox.html', 'links.html']}
 

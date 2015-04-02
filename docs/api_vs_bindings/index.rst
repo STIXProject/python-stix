@@ -3,12 +3,6 @@ APIs or bindings?
 
 This page describes both the **APIs** and the **bindings** provided by the *python-stix* library.
 
-.. toctree::
-   :hidden:
-
-   api_snippet
-   binding_snippet
-
 Overview
 --------
 
