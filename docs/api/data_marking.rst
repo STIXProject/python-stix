@@ -1,5 +1,3 @@
-.. include:: /_includes/wip_prolog.rst
-
 :mod:`stix.data_marking` Module
 ==================================
 

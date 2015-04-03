@@ -1,5 +1,3 @@
-.. include:: /_includes/wip_prolog.rst
-
 :mod:`stix.extensions.identity.ciq_identity_3_0` Module
 =======================================================
 
