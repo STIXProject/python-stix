@@ -16,9 +16,8 @@ import cybox.utils
 import stix
 
 # relative
-from . import ignored
+from . import ignored, idgen
 from .walk import iterwalk
-from .idgen import get_id_namespace, get_id_namespace_alias
 
 
 class DuplicatePrefixError(Exception):
@@ -117,26 +116,23 @@ class NamespaceInfo(object):
             else:
                 no_alias(ns)
 
-    def _fix_example_namespace(self, ns_dict, input_namespaces):
+    def _fix_example_namespace(self):
         """Attempts to resolve issues where our samples use
         'http://example.com/' for our example namespace but python-stix uses
         'http://example.com' by removing the former.
 
         """
-        sample_ns = 'http://example.com/'
-        api_ns =  'http://example.com'
-        prefix = 'example'
+        ex_api_ns = idgen.EXAMPLE_NAMESPACE.keys()[0]
+        ex_prefix = 'example'  # Example ns prefix
+        id_alias = idgen.get_id_namespace_alias()
 
-        # Do we have two mappings of the 'example' prefix?
-        dup_example = (
-            input_namespaces.get(sample_ns) == prefix,
-            ns_dict.get(api_ns) == prefix
-        )
+        if id_alias != ex_prefix:
+            return
 
-        # If we found both example namespaces, remove the one with a slash
-        # at the end, because our default ID namespace doesn't have a slash.
-        if all(dup_example):
-            del input_namespaces['http://example.com/']
+        if ex_prefix not in self._input_namespaces:
+            return
+
+        self._input_namespaces[ex_prefix] = ex_api_ns
 
     def _check_namespace_alias(self, ns_dict, prefix, namespace):
         # Get the current namespace mapping if it exists
@@ -167,56 +163,50 @@ class NamespaceInfo(object):
         # If ns_dict was passed in, make a copy so we don't mistakenly modify
         # the original.
         if ns_dict:
-            ns_dict = dict(ns_dict.iteritems())
+            user_namespaces = dict(ns_dict.iteritems())
         else:
-            ns_dict = {}
-
-        # Get our id namespaces
-        id_ns_alias, id_ns = get_id_namespace_alias(), get_id_namespace()
+            user_namespaces = {}
 
         # Baseline namespaces: these appear in every document
-        d_ns = dict(self._BASELINE_NAMESPACES.iteritems())
-        d_ns[id_ns_alias] = id_ns
+        ns_dict = dict(self._BASELINE_NAMESPACES.iteritems())
 
-        # Fix issues with the example namespaces used in the STIX samples
-        # and used in the API
-        self._fix_example_namespace(d_ns, self._input_namespaces)
+        # Add the ID namespaces
+        id_alias = idgen.get_id_namespace_alias()
+        id_ns = idgen.get_id_namespace()
 
-        # Iterate over the namespaces collected during a parse of the package.
-        # If a namespace is not a STIX/CybOX/MAEC/XML namespace, include
-        # the namespace->alias mapping.
-        for alias, ns in self._input_namespaces.iteritems():
-            if ns in DEFAULT_STIX_NAMESPACES_TUPLE:
-                continue
+        self._check_namespace_alias(ns_dict, id_alias, id_ns)
+        ns_dict[id_alias] = id_ns
 
-            # Check that this namespace mapping doesn't conflict with an
-            # existing one.
-            self._check_namespace_alias(d_ns, alias, ns)
+        # Remap the example namespace to the one expected by the APIs if the
+        # sample example namespace is found.
+        self._fix_example_namespace()
 
-            # Assign the prefix-to-namespace mapping.
-            d_ns[alias] = ns
-
-        # Iterate over the 'collected' namespaces which were found on every
-        # python-stix|cybox|maec object in this package. If it has an alias
-        # defined, use it. Otherwise, look up the alias in our default dicts.
+        # Add the "collected" namespaces that are defined on python-stix
+        # classes. If there is no alias defined, get the default from the
+        # global dict.
         no_alias = self._collected_namespaces.pop(None, ())
         for ns in no_alias:
             alias = DEFAULT_STIX_NAMESPACES[ns]
-            self._check_namespace_alias(d_ns, alias, ns)
-            d_ns[alias] = ns
+            self._check_namespace_alias(ns_dict, alias, ns)
+            ns_dict[alias] = ns
 
         # The rest of the collected namespace entries have aliases defined.
         for alias, ns in self._collected_namespaces.iteritems():
-            self._check_namespace_alias(d_ns, alias, ns)
-            d_ns[alias] = ns
+            self._check_namespace_alias(ns_dict, alias, ns)
+            ns_dict[alias] = ns
 
+        # Add the namespace values that were found on an XML document during
+        # parse.
+        for alias, ns in self._input_namespaces.iteritems():
+            self._check_namespace_alias(ns_dict, alias, ns)
+            ns_dict[alias] = ns
 
-        # Added the values from the `ns_dict` dictionary to the return dict.
-        for ns, alias in ns_dict.iteritems():
-            self._check_namespace_alias(d_ns, alias, ns)
-            d_ns[alias] = ns
+        # Add the values that the user supplied via `ns_dict` parameter.
+        for ns, alias in user_namespaces.iteritems():
+            self._check_namespace_alias(ns_dict, alias, ns)
+            ns_dict[alias] = ns
 
-        return d_ns
+        return ns_dict
 
     def _finalize_schemalocs(self, schemaloc_dict=None):
         # If schemaloc_dict was passed in, make a copy so we don't mistakenly
@@ -227,7 +217,7 @@ class NamespaceInfo(object):
             schemaloc_dict = {}
 
         # Get our id namespace
-        id_ns = get_id_namespace()
+        id_ns = idgen.get_id_namespace()
 
         # Build our schemalocation dictionary!
         #

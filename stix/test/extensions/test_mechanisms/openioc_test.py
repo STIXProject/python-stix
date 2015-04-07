@@ -42,9 +42,10 @@ class OpenIOCEtreeTests(unittest.TestCase):
         <stix-openioc:ioc
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:mandiant-openioc="http://schemas.mandiant.com/2010/ioc"
             xmlns="http://schemas.mandiant.com/2010/ioc"
             xmlns:stix-openioc="http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1"
-            id="6d2a1b03-b216-4cd8-9a9e-8827af6ebf93" last-modified="2011-10-28T19:28:20">
+            id="mandiant:6d2a1b03-b216-4cd8-9a9e-8827af6ebf93" last-modified="2011-10-28T19:28:20">
             <short_description>Zeus</short_description>
               <description>{0}</description>
               <keywords/>
@@ -114,6 +115,12 @@ class OpenIOCEtreeTests(unittest.TestCase):
         </stix-openioc:ioc>
         """.format(DESCRIPTION)
     )
+
+    def setUp(self):
+        utils.set_id_namespace({"http://schemas.mandiant.com/2010/ioc": "mandiant-openioc"})
+
+    def tearDown(self):
+        utils.set_id_namespace(utils.EXAMPLE_NAMESPACE)
 
     def _test_xml(self, obj):
         xml = obj.to_xml()
