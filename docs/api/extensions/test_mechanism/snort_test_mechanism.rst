@@ -1,5 +1,3 @@
-.. include:: /_includes/wip_prolog.rst
-
 :mod:`stix.extensions.test_mechanism.snort_test_mechanism` Module
 =================================================================
 

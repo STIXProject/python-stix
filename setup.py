@@ -1,18 +1,24 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
-# See LICENSE.txt for complete terms.
+#!/usr/bin/env python
+
+# Copyright (c) 2015 - The MITRE Corporation
+# For license information, see the LICENSE.txt file
 
 from os.path import abspath, dirname, join
+
+
 from setuptools import setup, find_packages
 
-INIT_FILE = join(dirname(abspath(__file__)), 'stix', '__init__.py')
+BASE_DIR = dirname(abspath(__file__))
+VERSION_FILE = join(BASE_DIR, 'stix', 'version.py')
 
 def get_version():
-    with open(INIT_FILE) as f:
+    with open(VERSION_FILE) as f:
         for line in f.readlines():
             if line.startswith("__version__"):
                 version = line.split()[-1].strip('"')
                 return version
         raise AttributeError("Package does not have a __version__")
+
 
 with open('README.rst') as f:
     readme = f.read()
@@ -23,6 +29,7 @@ extras_require = {
         # TODO: remove when updating to Sphinx 1.3, since napoleon will be
         # included as sphinx.ext.napoleon
         'sphinxcontrib-napoleon==0.2.4',
+        'sphinx_rtd_theme==0.1.7',
     ],
     'test': [
         'nose==1.3.0',

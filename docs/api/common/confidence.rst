@@ -1,5 +1,3 @@
-.. include:: /_includes/wip_prolog.rst
-
 :mod:`stix.common.confidence` Module
 ====================================
 
