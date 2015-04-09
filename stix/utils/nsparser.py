@@ -21,15 +21,15 @@ from .walk import iterwalk
 
 
 class DuplicatePrefixError(Exception):
-    def __init__(self, message, prefix, source_ns, dest_ns):
+    def __init__(self, message, prefix, namespaces):
         super(DuplicatePrefixError, self).__init__(message)
         self.prefix = prefix
-        self.source_ns = source_ns,
-        self.dest_ns = dest_ns
+        self.namespaces = namespaces
 
 
 class NamespaceInfo(object):
     # These appear in every exported document
+
     _BASELINE_NAMESPACES = {
         'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
         'stix': 'http://stix.mitre.org/stix-1',
@@ -126,87 +126,124 @@ class NamespaceInfo(object):
         ex_prefix = 'example'  # Example ns prefix
         id_alias = idgen.get_id_namespace_alias()
 
+        # If the ID namespace alias doesn't match the example alias, return.
         if id_alias != ex_prefix:
             return
 
+        # If the example namespace prefix isn't in the parsed namespace
+        # prefixes, return.
         if ex_prefix not in self._input_namespaces:
             return
 
         self._input_namespaces[ex_prefix] = ex_api_ns
 
-    def _check_namespace_alias(self, ns_dict, prefix, namespace):
-        # Get the current namespace mapping if it exists
-        current_ns = ns_dict.get(prefix)
+    def _check_namespaces(self, ns_dict):
+        """Check that all the prefixes in `ns_dict` are mapped to only
+        one namespace.
 
-        # If there is not currently a namespace mapping or the the current
-        # mapping matches the one we're checking we're good!
-        if current_ns in (None, namespace):
-            return
+        Args:
+            ns_dict: A ``prefix: [namespaces]`` dictionary.
 
-        # We are attempting to define a prefix-to-namespace mapping that
-        # conflicts with an existing mapping. Raise an exception or else
-        # we'll render invalid XML.
-        error = (
-            "Cannot map namespace prefix '{0}' to '{1}': prefix already "
-            "mapped to '{2}'."
-        )
-        error = error.format(prefix, namespace, current_ns)
+        Raises:
+        `   .DuplicatePrefixError: If a prefix is mapped to more than one
+                namespace.
 
-        raise DuplicatePrefixError(
-            message=error,
-            prefix=prefix,
-            source_ns=current_ns,
-            dest_ns=namespace
-        )
+        """
+        for prefix, namespaces in ns_dict.iteritems():
+            if len(namespaces) == 1:
+                continue
+
+            error = "Namespace prefix '{0}' mapped to multiple namespaces: {1}"
+            error = error.format(prefix, namespaces)
+
+            raise DuplicatePrefixError(
+                message=error,
+                prefix=prefix,
+                namespaces=tuple(namespaces)
+            )
+
+    def _resolve_unprefixed(self, no_prefix):
+        """Resolve namespace aliases for the unprefixed namespaces found on
+        collected python-stix objects.
+
+        Args:
+            A collection of namespaces that were not mapped to a namespace
+            prefix by a python Object.
+
+        """
+        collected_unprefixed = {}
+
+        for ns in no_prefix:
+            alias = DEFAULT_STIX_NAMESPACES[ns]
+            collected_unprefixed[alias] = ns
+
+        return collected_unprefixed
 
     def _finalize_namespaces(self, ns_dict=None):
-        # If ns_dict was passed in, make a copy so we don't mistakenly modify
-        # the original.
-        if ns_dict:
-            user_namespaces = dict(ns_dict.iteritems())
-        else:
-            user_namespaces = {}
+        """Returns a dictionary of namespaces to be exported with an XML
+        document.
 
-        # Baseline namespaces: these appear in every document
-        ns_dict = dict(self._BASELINE_NAMESPACES.iteritems())
+        This loops over all the namespaces that were discovered and built
+        during the execution of ``collect()`` and
+        ``_parse_collected_classes()`` and attempts to merge them all.
+
+        Returns:
+            An ``alias: namespace`` dictionary containing all namespaces
+            required to be present on an exported document.
+
+        Raises:
+            .DuplicatePrefixError: If namespace prefix was mapped to more than
+                one namespace.
+
+        """
+        if not ns_dict:
+            ns_dict = {}
+
+        # Copy and flip the input dictionary from ns=>alias to alias=>ns
+        user_namespaces = {}
+        for ns, alias in ns_dict.iteritems():
+            user_namespaces[alias] = ns
+
+        # Our return value
+        ns_dict = collections.defaultdict(set)
 
         # Add the ID namespaces
         id_alias = idgen.get_id_namespace_alias()
         id_ns = idgen.get_id_namespace()
+        ns_dict[id_alias].add(id_ns)
 
-        self._check_namespace_alias(ns_dict, id_alias, id_ns)
-        ns_dict[id_alias] = id_ns
+        # Build namespace dictionaries from the collected Entity objects.
+        collected_prefixed = dict(self._collected_namespaces.iteritems())
+
+        # Pop the unprefixed entries.
+        no_prefix = collected_prefixed.pop(None, ())
+
+        # Resolve namespace aliases for the unprefixed namespaces.
+        collected_unprefixed = self._resolve_unprefixed(no_prefix)
 
         # Remap the example namespace to the one expected by the APIs if the
         # sample example namespace is found.
         self._fix_example_namespace()
 
-        # Add the "collected" namespaces that are defined on python-stix
-        # classes. If there is no alias defined, get the default from the
-        # global dict.
-        no_alias = self._collected_namespaces.pop(None, ())
-        for ns in no_alias:
-            alias = DEFAULT_STIX_NAMESPACES[ns]
-            self._check_namespace_alias(ns_dict, alias, ns)
-            ns_dict[alias] = ns
+        # All the namespaces dictionaries we need to merge and export.
+        namespace_dicts = itertools.chain(
+            self._BASELINE_NAMESPACES.iteritems(),
+            self._input_namespaces.iteritems(),
+            collected_prefixed.iteritems(),
+            collected_unprefixed.iteritems(),
+            user_namespaces.iteritems()
+        )
 
-        # The rest of the collected namespace entries have aliases defined.
-        for alias, ns in self._collected_namespaces.iteritems():
-            self._check_namespace_alias(ns_dict, alias, ns)
-            ns_dict[alias] = ns
+        # Build our merged namespace dictionary. It will be inspected for
+        # duplicate ns prefix mappings.
+        for alias, ns in namespace_dicts:
+            ns_dict[alias].add(ns)
 
-        # Add the namespace values that were found on an XML document during
-        # parse.
-        for alias, ns in self._input_namespaces.iteritems():
-            self._check_namespace_alias(ns_dict, alias, ns)
-            ns_dict[alias] = ns
+        # Check that all the aliases are mapped to only one namespace
+        self._check_namespaces(ns_dict)
 
-        # Add the values that the user supplied via `ns_dict` parameter.
-        for ns, alias in user_namespaces.iteritems():
-            self._check_namespace_alias(ns_dict, alias, ns)
-            ns_dict[alias] = ns
-
-        return ns_dict
+        # Return a flattened dictionary
+        return dict((alias, tuple(ns)[0]) for alias, ns in ns_dict.iteritems())
 
     def _finalize_schemalocs(self, schemaloc_dict=None):
         # If schemaloc_dict was passed in, make a copy so we don't mistakenly
