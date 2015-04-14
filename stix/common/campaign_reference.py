@@ -50,10 +50,9 @@ class CampaignRef(stix.Entity):
             ns_info=ns_info
         )
 
-        if self.idref:
-            return_obj.idref = self.idref
-        if self.timestamp:
-            return_obj.timestamp = self.timestamp
+        return_obj.idref = self.idref
+        return_obj.timestamp = utils.serialize_value(self.timestamp)
+
         if self.names:
             return_obj.Names = self.names.to_obj()
 
@@ -71,7 +70,7 @@ class CampaignRef(stix.Entity):
             return_obj = cls()
 
         return_obj.idref = obj.idref
-        return_obj.timestamp = utils.dates.serialize_value(obj.timestamp)
+        return_obj.timestamp = obj.timestamp
         return_obj.names = Names.from_obj(obj.Names)
 
         return return_obj
