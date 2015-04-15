@@ -72,6 +72,32 @@ class COAsTakenTest(TypedListTestCase, unittest.TestCase):
     ]
 
 
+class COARequestedTest(EntityTestCase, unittest.TestCase):
+    klass = incident.COARequested
+
+    _full_dict = {
+        'time': COATimeTest._full_dict,
+        'priority': "High",
+        #'coordinators': None,  # need to implement this!
+        'course_of_action': {
+            'version': '1.1.1',
+            'title': 'Test Title',
+            'description': 'Test Description',
+            'short_description': "Test Short Description",
+            'timestamp': '2015-03-06T14:35:23.375304+00:00',
+        }
+    }
+
+
+class COAsRequestedTest(TypedListTestCase, unittest.TestCase):
+    klass = incident._COAsRequested
+
+    _full_dict = [
+        COARequestedTest._full_dict,
+    ]
+
+
+
 class JournalEntryTest(EntityTestCase, unittest.TestCase):
     klass = history.JournalEntry
 
@@ -412,6 +438,7 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
         'attributed_threat_actors': AttributedThreatActorsTest._full_dict,
         'categories': CategoriesTest._full_dict,
         'coa_taken': COAsTakenTest._full_dict,
+        'coa_requested': COAsRequestedTest._full_dict,
         'coordinators': InformationSourcesTest._full_dict,
         'impact_assessment': ImpactAssessmentTest._full_dict,
         'leveraged_ttps': LeveragedTTPsTest._full_dict,

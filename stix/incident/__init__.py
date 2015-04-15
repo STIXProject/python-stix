@@ -20,7 +20,7 @@ from .property_affected import PropertyAffected  # noqa
 from .time import Time
 from .external_id import ExternalID
 from .impact_assessment import ImpactAssessment
-from .coa import COATaken, COATime  # noqa
+from .coa import COATaken, COARequested, COATime # noqa
 from .history import History
 
 
@@ -62,6 +62,7 @@ class Incident(stix.BaseCoreComponent):
         self.security_compromise = None
         self.confidence = None
         self.coa_taken = None
+        self.coa_requested = None
         self.handling = None
         self.history = History()
 
@@ -221,6 +222,17 @@ class Incident(stix.BaseCoreComponent):
         self.coa_taken.append(value)
 
     @property
+    def coa_requested(self):
+        return self._coa_requested
+
+    @coa_requested.setter
+    def coa_requested(self, value):
+        self._coa_requested = _COAsRequested(value)
+
+    def add_coa_requested(self, value):
+        self.coa_requested.append(value)
+
+    @property
     def related_indicators(self):
         return self._related_indicators
 
@@ -344,6 +356,8 @@ class Incident(stix.BaseCoreComponent):
             return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
         if self.coa_taken:
             return_obj.COA_Taken = self.coa_taken.to_obj(ns_info=ns_info)
+        if self.coa_requested:
+            return_obj.COA_Requested = self.coa_requested.to_obj(ns_info=ns_info)
         if self.status:
             return_obj.Status = self.status.to_obj(ns_info=ns_info)
         if self.handling:
@@ -371,6 +385,7 @@ class Incident(stix.BaseCoreComponent):
             return_obj.affected_assets = AffectedAssets.from_obj(obj.Affected_Assets)
             return_obj.discovery_methods = DiscoveryMethods.from_obj(obj.Discovery_Method)
             return_obj.coa_taken = _COAsTaken.from_obj(obj.COA_Taken)
+            return_obj.coa_requested = _COAsRequested.from_obj(obj.COA_Requested)
             return_obj.confidence = Confidence.from_obj(obj.Confidence)
             return_obj.attributed_threat_actors = AttributedThreatActors.from_obj(obj.Attributed_Threat_Actors)
             return_obj.related_indicators = RelatedIndicators.from_obj(obj.Related_Indicators)
@@ -422,6 +437,7 @@ class Incident(stix.BaseCoreComponent):
         return_obj.security_compromise = VocabString.from_dict(get('security_compromise'))
         return_obj.confidence = Confidence.from_dict(get('confidence'))
         return_obj.coa_taken = _COAsTaken.from_dict(get('coa_taken'))
+        return_obj.coa_requested = _COAsRequested.from_dict(get('coa_requested'))
         return_obj.status = VocabString.from_dict(get('status'))
         return_obj.handling = Marking.from_dict(get('handling'))
         return_obj.history = History.from_dict(get('history'))
@@ -508,6 +524,10 @@ class DiscoveryMethods(stix.TypedList):
 
 class _COAsTaken(stix.TypedList):
     _contained_type = COATaken
+
+
+class _COAsRequested(stix.TypedList):
+    _contained_type = COARequested
 
 
 class _ExternalIDs(stix.TypedList):

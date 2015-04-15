@@ -3,7 +3,7 @@
 
 # internal
 import stix
-import stix.utils
+import stix.utils as utils
 import stix.bindings.incident as incident_binding
 from stix.common import DateTimeWithPrecision
 from stix.coa import CourseOfAction
@@ -94,6 +94,64 @@ class COATaken(stix.Entity):
         return super(COATaken, self).to_dict()
 
 
+class COARequested(COATaken):
+    namespace = "http://stix.mitre.org/Incident-1"
+    _binding = incident_binding
+    _binding_class = _binding.COARequestedType
+
+    def __init__(self, course_of_action=None):
+        super(COARequested, self).__init__(course_of_action=course_of_action)
+        self.priority = None
+
+    @property
+    def priority(self):
+        return self._priority
+
+    @priority.setter
+    def priority(self, value):
+        if value is None:
+            self._priority = None
+        else:
+            self._priority = value
+
+    @classmethod
+    def from_obj(cls, obj, return_obj=None):
+        if not obj:
+            return None
+        if not return_obj:
+            return_obj = cls()
+
+        super(COARequested, cls).from_obj(obj, return_obj=return_obj)
+        return_obj.priority = obj.priority
+
+        return return_obj
+
+    def to_obj(self, return_obj=None, ns_info=None):
+        if not return_obj:
+            return_obj = self._binding_class()
+
+        super(COARequested, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+        return_obj.priority = self.priority
+
+        return return_obj
+
+    @classmethod
+    def from_dict(cls, d, return_obj=None):
+        if not d:
+            return None
+        if not return_obj:
+            return_obj = cls()
+
+        super(COARequested, cls).from_dict(d, return_obj=return_obj)
+        return_obj.priority = d.get('priority')
+
+        return return_obj
+
+    def to_dict(self):
+        d = utils.to_dict(self)
+        return d
+
+
 class COATime(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding = incident_binding
@@ -131,10 +189,10 @@ class COATime(stix.Entity):
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):
-        super(COATime, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
         if not return_obj:
             return_obj = self._binding_class()
+
+        super(COATime, self).to_obj(return_obj=return_obj, ns_info=ns_info)
             
         if self.start:
             return_obj.Start = self.start.to_obj(ns_info=ns_info)
