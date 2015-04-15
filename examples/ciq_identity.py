@@ -56,6 +56,11 @@ def main():
         administrative_area='An Admin Area'
     )
     ident_spec.add_address(addr)
+
+    # Build and add a nationality
+    nationality = stix_ciq.Country("Norway")
+    ident_spec.add_nationality(nationality)
+
     identity = stix_ciq.CIQIdentity3_0Instance(specification=ident_spec)
 
     # Set the Indicator producer identity to our CIQ Identity

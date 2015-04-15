@@ -143,7 +143,7 @@ class STIXCIQIdentity3_0(stix.Entity):
 
     def __init__(self, party_name=None, languages=None, addresses=None, 
                  organisation_info=None, electronic_address_identifiers=None,
-                 free_text_lines=None, contact_numbers=None):
+                 free_text_lines=None, contact_numbers=None, nationalities=None):
         self.party_name = party_name
         self.languages = languages
         self.addresses = addresses
@@ -151,6 +151,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         self.electronic_address_identifiers = electronic_address_identifiers
         self.free_text_lines = free_text_lines
         self.contact_numbers = contact_numbers
+        self.nationalities = nationalities
         
     @property
     def addresses(self):
@@ -280,6 +281,29 @@ class STIXCIQIdentity3_0(stix.Entity):
         else:
             self.contact_numbers.append(ContactNumber(value))
 
+    @property
+    def nationalities(self):
+        return self._nationalities
+
+    @nationalities.setter
+    def nationalities(self, value):
+        self._nationalities = []
+        if not value:
+            return
+        elif utils.is_sequence(value):
+            for v in value:
+                self.add_nationality(v)
+        else:
+            self.add_nationality(value)
+
+    def add_nationality(self, value):
+        if not value:
+            return
+        elif isinstance(value, Country):
+            self.nationalities.append(value)
+        else:
+           self.nationalities.append(Country(value))
+
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if obj is None:
@@ -298,6 +322,10 @@ class STIXCIQIdentity3_0(stix.Entity):
         addresses = obj.findall("{%s}Addresses" % XML_NS_XPIL)
         if addresses is not None and len(addresses) > 0:
             return_obj.addresses = [Address.from_obj(x) for x in addresses[0]]
+
+        nationalities = obj.findall("{%s}Nationalities" % XML_NS_XPIL)
+        if nationalities is not None and len(nationalities) > 0:
+            return_obj.nationalities = [Country.from_obj(x) for x in nationalities[0]]
         
         organisation_info = obj.findall(OrganisationInfo.XML_TAG)
         if organisation_info is not None and len(organisation_info) > 0:
@@ -359,6 +387,14 @@ class STIXCIQIdentity3_0(stix.Entity):
             return_obj.append(languages_root)
             for language in self.languages:
                 languages_root.append(language.to_obj(ns_info=ns_info))
+
+        if self.nationalities:
+            nationalities_root = et.Element("{%s}Nationalities" % XML_NS_XPIL)
+            return_obj.append(nationalities_root)
+            for country in self.nationalities:
+                country_obj = country.to_obj(ns_info=ns_info)
+                country_obj.tag = "{%s}Country" % XML_NS_XPIL
+                nationalities_root.append(country_obj)
         
         return return_obj
 
@@ -375,7 +411,8 @@ class STIXCIQIdentity3_0(stix.Entity):
         return_obj.electronic_address_identifiers = [ElectronicAddressIdentifier.from_dict(x) for x in dict_repr.get('electronic_address_identifiers', [])]
         return_obj.free_text_lines = [FreeTextLine.from_dict(x) for x in dict_repr.get('free_text_lines', [])]
         return_obj.contact_numbers = [ContactNumber.from_dict(x) for x in dict_repr.get('contact_numbers', [])]
-        
+        return_obj.nationalities = [Country.from_dict(x) for x in dict_repr.get('nationalities', [])]
+
         return return_obj
 
     def to_dict(self):
@@ -393,6 +430,8 @@ class STIXCIQIdentity3_0(stix.Entity):
             d['free_text_lines'] = [x.to_dict() for x in self.free_text_lines]
         if self.contact_numbers:
             d['contact_numbers'] = [x.to_dict() for x in self.contact_numbers]
+        if self.nationalities:
+            d['nationalities'] = [x.to_dict() for x in self.nationalities]
 
         return d
 

@@ -92,6 +92,14 @@ class CIQIdentity3_0InstanceTests(EntityTestCase, unittest.TestCase):
                     ]
                 }
             ],
+            'nationalities': [
+                {
+                    'name_elements': [
+                        {'value': 'name 1'},
+                        {'value': 'name 2'}
+                    ]
+                }
+            ]
         },
         'xsi:type': 'ciqIdentity:CIQIdentity3.0InstanceType'
     }
