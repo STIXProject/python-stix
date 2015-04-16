@@ -66,6 +66,7 @@ class Incident(stix.BaseCoreComponent):
         self.handling = None
         self.history = History()
 
+
     @property
     def status(self):
         return self._status

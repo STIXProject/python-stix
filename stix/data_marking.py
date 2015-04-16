@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import stix
+from stix.common import InformationSource
 import stix.bindings.data_marking as stix_data_marking_binding
 
 
@@ -80,7 +81,15 @@ class MarkingSpecification(stix.Entity):
         self.version = None
         self.controlled_structure = controlled_structure
         self.marking_structures = _MarkingStructures(marking_structures)
-        # TODO: add Information_Source
+        self.information_source = None
+
+    @property
+    def information_source(self):
+        return self._information_source
+
+    @information_source.setter
+    def information_source(self, value):
+        self._set_var(InformationSource, try_cast=False, information_source=value)
 
     @property
     def marking_structures(self):
@@ -104,6 +113,9 @@ class MarkingSpecification(stix.Entity):
         obj.Controlled_Structure = self.controlled_structure
         obj.Marking_Structure = self.marking_structures.to_obj(ns_info=ns_info)
 
+        if self.information_source:
+            obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
+
         return obj
 
     def to_dict(self):
@@ -113,32 +125,38 @@ class MarkingSpecification(stix.Entity):
     def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
+        if not return_obj:
+            return_obj = cls()
 
-        m = return_obj if return_obj else cls()
-        m.id_ = obj.id
-        m.idref = obj.idref
-        m.version = obj.version
-        m.controlled_structure = obj.Controlled_Structure
-        m.marking_structures = _MarkingStructures.from_obj(obj.Marking_Structure)
+        return_obj.id_ = obj.id
+        return_obj.idref = obj.idref
+        return_obj.version = obj.version
+        return_obj.controlled_structure = obj.Controlled_Structure
+        return_obj.marking_structures = _MarkingStructures.from_obj(obj.Marking_Structure)
+        return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
 
-        return m
+        return return_obj
 
     @classmethod
     def from_dict(cls, d, return_obj=None):
         if not d:
             return None
+        if not return_obj:
+            return_obj = cls()
 
         get = d.get  # PEP8 line length fix
-        m = return_obj if return_obj else cls()
-        m.id_ = get('id')
-        m.idref = get('idref')
-        m.version = get('version')
-        m.controlled_structure = get('controlled_structure')
-        m.marking_structures = _MarkingStructures.from_dict(
+        return_obj.id_ = get('id')
+        return_obj.idref = get('idref')
+        return_obj.version = get('version')
+        return_obj.controlled_structure = get('controlled_structure')
+        return_obj.marking_structures = _MarkingStructures.from_dict(
             get('marking_structures')
         )
+        return_obj.information_source = InformationSource.from_dict(
+            get('information_source')
+        )
 
-        return m
+        return return_obj
 
 
 class MarkingStructure(stix.Entity):

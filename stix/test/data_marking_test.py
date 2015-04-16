@@ -5,6 +5,7 @@ import unittest
 
 import stix.data_marking as dm
 from stix.test import EntityTestCase
+from stix.test.common import information_source_test
 
 
 class MarkingSpecificationTests(EntityTestCase, unittest.TestCase):
@@ -47,6 +48,7 @@ class MarkingTests(EntityTestCase, unittest.TestCase):
     _full_dict = [
         {
             'id': "foo",
+            'information_source': information_source_test.InformationSourceTests._full_dict
         },
         {
             'id': "bar",
