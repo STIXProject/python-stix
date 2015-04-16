@@ -28,10 +28,10 @@ STIX Top-level Constructs
 STIX Construct                  API Coverage                Documentation
 =============================   ==========================  =====================
 Campaign                        ✓ Full                      :class:`stix.campaign.Campaign`
-Course of Action                ⚠ Partial                   :class:`stix.coa.CourseOfAction`
-Exploit Target                  ⚠ Partial                   :class:`stix.exploit_target.ExploitTarget`
+Course of Action                ✓ Full                      :class:`stix.coa.CourseOfAction`
+Exploit Target                  ✓ Full                      :class:`stix.exploit_target.ExploitTarget`
 Incident                        ⚠ Partial                   :class:`stix.incident.Incident`
-Indicator                       ⚠ Partial                   :class:`stix.indicator.indicator.Indicator`
+Indicator                       ✓ Full                      :class:`stix.indicator.indicator.Indicator`
 Observable                      *Provided by* **CybOX**     
 Threat Actor                    ✓ Full                      :class:`stix.threat_actor.ThreatActor`
 TTP                             ⚠ Partial                   :class:`stix.ttp.TTP`
@@ -44,9 +44,9 @@ STIX Features
 STIX Construct                  API Coverage                Documentation
 =============================   ==========================  ==========================================
 Confidence                      ⚠ Partial                   :class:`stix.common.confidence.Confidence`
-Handling                        ⚠ Partial                   :class:`stix.data_marking.Marking`
+Handling                        ✓ Full                      :class:`stix.data_marking.Marking`
 Markup in Structured Text       × None                      
-Relationships                   ⚠ Partial                   
+Relationships                   ✓ Full
 =============================   ==========================  ==========================================
 
 STIX Extensions
@@ -68,9 +68,9 @@ CIQ Identity                    ✓ Full                  :class:`stix.extension
 MAEC                            ✓ Full                  :class:`stix.extensions.malware.maec_4_1_malware.MAECInstance`
 |
 **Marking Extensions**          
-Simple Marking                  ⚠ Partial               :class:`stix.extensions.marking.simple_marking.SimpleMarkingStructure`
-TLP                             ⚠ Partial               :class:`stix.extensions.marking.tlp.TLPMarkingStructure`
-Terms of Use                    ⚠ Partial               :class:`stix.extensions.marking.terms_of_use_marking.TermsOfUseMarkingStructure`
+Simple Marking                  ✓ Full                  :class:`stix.extensions.marking.simple_marking.SimpleMarkingStructure`
+TLP                             ✓ Full                  :class:`stix.extensions.marking.tlp.TLPMarkingStructure`
+Terms of Use                    ✓ Full                  :class:`stix.extensions.marking.terms_of_use_marking.TermsOfUseMarkingStructure`
 |
 **Structured COA Extensions**                           
 Generic Structured COA          × None                  
