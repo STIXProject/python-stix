@@ -131,7 +131,7 @@ class NamespaceInfoTests(unittest.TestCase):
             """<stix:STIX_Package
                     xmlns:cybox="THISISGONNABEPROBLEM"
                     xmlns:stix="http://stix.mitre.org/stix-1"
-                    version="1.1.1"
+                    version="1.2"
                     timestamp="2015-04-09T14:22:25.620831+00:00"/>"""
         )
 
@@ -163,7 +163,7 @@ class NamespaceInfoTests(unittest.TestCase):
                     xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                     id="example:Package-e2454ee8-e59c-43ac-a085-46ae4516fd6e"
-                    version="1.1.1"
+                    version="1.2"
                     timestamp="2015-04-09T14:22:25.620831+00:00"/>"""
         )
 

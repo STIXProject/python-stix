@@ -1,10 +1,8 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# stdlib
 import itertools
 
-# internal
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
@@ -112,50 +110,110 @@ class StructuredText(stix.Entity):
         return unicode(self.value)
 
 
-def _ordkey(text):
-    o = text.ordinality
-    o = int(o) if o is not None else None
-    return (o is None, o)
+class StructuredTextList(stix.TypedSequence):
+    """A sequence type used to store StructureText objects.
 
+    Args:
+        *args: A variable-length argument list which can contain single
+            :class:`StructuredText` objects or sequences of objects.
 
-class StructuredTextList(stix.TypedList):
+    """
     _contained_type = StructuredText
 
+    def __init__(self, *args):
+        super(StructuredTextList, self).__init__()
+
+        # Check if it was initialized with args=None
+        if not any(args):
+            return
+
+        for arg in args:
+            if utils.is_sequence(arg):
+                self.update(arg)
+            else:
+                self.add(arg)
+
     def with_ordinality(self, ordinality):
-        if not isinstance(ordinality, int):
-            error = "ordinality must be an integer. Received {}"
-            error = error.format(type(ordinality))
-            raise ValueError(error)
+        """Returns a :class:`StructuredText` object with a matching `ordinality`
+        or ``None`` if not found.
+
+        """
+        o = int(ordinality)
 
         for item in self._inner:
-            if item.ordinality == ordinality:
+            if item.ordinality == o:
                 return item
 
+        # Not found. Return None.
         return None
 
     def with_id(self, id):
+        """Returns a :class:`StructuredText` object with a matching `id` or
+        ``None`` if not found.
+
+        """
         for text in self._inner:
             if text.id_ == id:
                 return text
 
+        # Not found. Return None.
         return None
 
     def reset(self):
+        """Assigns sequential ordinality values to each of the sorted
+        :class:`StructuredText` objects, starting with ``1`` and ending
+        at ``len(self)``.
+
+        """
         for idx, item in enumerate(self.sorted, 1):
             item.ordinality = idx
 
+    def __reversed__(self):
+        """The collections.Sequence class defines this in an incompatible way.
+
+        """
+        raise NotImplementedError()
+
     @property
     def sorted(self):
-        return sorted(self._inner, key=_ordkey)
+        """Returns a copy of the collection of internal
+        :class:`StructuredText` objects, sorted by their ``ordinality``.
+
+        """
+        return sorted(self._inner, key=lambda x: int(x.ordinality))
 
     @property
     def ordinalities(self):
+        """Returns a sorted list of all the ``ordinality`` attribute
+        values of the internal :class:`StructuredTex` objects.
+
+        """
         return tuple(x.ordinality for x in self.sorted)
 
+    @property
+    def next_ordinality(self):
+        """Returns the "+1" of the highest ordinality in the collection.
+
+        """
+        if self.ordinalities:
+            return self.ordinalities[-1] + 1
+        else:
+            return 1
+
     def __iter__(self):
+        """Returns an iterator for the collection sorted by ordinality.
+
+        """
         return iter(self.sorted)
 
     def __getitem__(self, key):
+        """Returns the :class:`StructuredText` object with a matching
+        ordinality.
+
+        Args:
+            key: An ordinality value.
+
+        """
         o = int(key)
         text = self.with_ordinality(o)
 
@@ -163,34 +221,78 @@ class StructuredTextList(stix.TypedList):
             return text
 
         error = "No item found with an ordinality of {0}".format(o)
-        raise IndexError(error)
+        raise KeyError(error)
 
-    def __setitem__(self, key, value):
-        o = int(key)
+    def add(self, value):
+        """Adds the :class:`StructuredText` `value` to the collection.
 
-        if o < 1:
-            raise IndexError("ordinality must be > 0")
+        If `value` does not have an ``ordinality`` set, one will be assigned.
+        If `value` has an ordinality which matches one already in the
+        collection, `value` will replace the existing item.
 
+        """
         if not self._is_valid(value):
             value = self._fix_value(value)
 
         if value.ordinality is None:
-            value.ordinality = o
-        elif value.ordinality != o:
-            error = (
-                "Ordinality mismatch. {0} found on input object but index "
-                "was {1}"
-            ).format(value.ordinality, o)
-            raise ValueError(error)
+            value.ordinality = self.next_ordinality
 
-        existing = self.with_ordinality(o)
+        # Find an item with a matching ordinality. Remove it if one exists.
+        existing = self.with_ordinality(value.ordinality)
 
         if existing is not None:
             self._inner.remove(existing)
 
         self._inner.append(value)
 
+    def update(self, iterable):
+        """Adds each item of `iterable` to the collection.
+
+        """
+        for item in iterable:
+            self.add(item)
+
+    def _shift(self, ordinality):
+        to_shift = []
+
+        for o in itertools.count(ordinality):
+            text = self.with_ordinality(o)
+
+            if not text:
+                break
+
+            to_shift.append(text)
+
+        for text in to_shift:
+            text.ordinality += 1
+
+    def insert(self, value):
+        """Inserts `value` into the collection.
+
+        If `value` has an ordinality which conflicts with an existing value,
+        the existing value (and any contiguous items) will have their
+        ordinality values incremented by one.
+
+        """
+        if value.ordinality is None:
+            self.add(value)
+
+        o = value.ordinality
+        self._shift(o)
+        self._inner.append(value)
+
+
     def __delitem__(self, key):
+        """Removes the item with a given ordinality.
+
+        Args:
+            key: An ordinality value.
+
+        Raises:
+            KeyError: If the `key` does not match the ordinality for any object
+                in the collection.
+
+        """
         o = int(key)
         text = self.with_ordinality(o)
 
@@ -199,48 +301,77 @@ class StructuredTextList(stix.TypedList):
             return
 
         error = "No item found with an ordinality of {0}".format(o)
-        raise IndexError(error)
+        raise KeyError(error)
 
-    def insert(self, idx, value):
-        if value is None:
-            return
+    def remove(self, value):
+        """Removes the value from the collection.
 
-        if not self._is_valid(value):
-            value = self._fix_value(value)
+        """
+        self._inner.remove(value)
 
-        if value.ordinality is None:
-            if self._inner:
-                new_ord = self.ordinalities[-1] + 1
-                value.ordinality = new_ord
-            else:
-                value.ordinality = 1
+    def to_obj(self, ns_info=None):
+        """Returns a binding object list for the StructuredTextList.
 
-        exists = self.with_ordinality(value.ordinality)
-        if not exists:
-            self._inner.append(value)
-            return
+        If the list has a length of 1, and its member has an ordinality of 1,
+        the ordinality will be unset.
 
-        error = "Value with ordinality {0} exists: '{1}'."
-        error = error.format(value.ordinality, exists.value)
-        raise ValueError(error)
+        """
+        objlist = super(StructuredTextList, self).to_obj(ns_info=ns_info)
+
+        if len(objlist) > 1:
+            return objlist
+
+        # List has a size of 1. Get the only member
+        obj = objlist[0]
+
+        # If the ordinality is 1, unset it.
+        if obj.ordinality == 1:
+            obj.ordinality = None
+
+        return objlist
 
     def to_list(self):
+        """Attempts to flatten out the returned list when there is only one
+        item in the list. This is to support backwards compatibility with
+        previous versions of python-stix.
+
+        * If the list repr has more than one item, return the list.
+        * If there is only one item, inspect it.
+          * If the item is not a dictionary, return it.
+          * If its ``ordinality`` key has a corresponding value of ``1``, remove
+            it from the dictionary since it's assumed if there is only one item.
+          * After removing ``ordinality``, if the only key left is ``value``,
+            just return the value of ``value`` (a string).
+
+        """
+        # Build the list representation
         l = super(StructuredTextList, self).to_list()
 
+        # If we have more than one StructuredText list item, return the list.
         if len(l) > 1:
             return l
 
+        # Only one item.
         d = l[0]
-        ordinality = int(d.get('ordinality', 1))
 
-        if ordinality != 1:
-            return l
+        # If the item is not a dictionary (e.g., a string), return it.
+        if not isinstance(d, dict):
+            return d
 
-        del d['ordinality']
+        # Item was a dictionary. Check for `ordinality` and remove it if its
+        # value is ``1``.
+        if 'ordinality' in d:
+            ordinality = int(d['ordinality'])
 
-        if len(d.keys()) == 1 and 'value' in d:
+            if ordinality == 1:
+                del d['ordinality']
+
+        # If the only key we have left is ``value``, just return the
+        # corresponding string.
+        if len(d) == 1 and 'value' in d:
             return d['value']
 
+        # The dictionary has more than one key, so we can't flatten it.
         return d
 
     to_dict = to_list

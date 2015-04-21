@@ -425,46 +425,17 @@ class EntityList(collections.MutableSequence, Entity):
 
         return return_obj
 
-
-class TypedList(collections.MutableSequence):
+class TypedCollection(object):
     _contained_type = _override
 
-    def __init__(self, *args):
+    def __init__(self):
         self._inner = []
 
-        # Check if it was initialized with args=None
-        if not any(args):
-            return
-
-        for arg in args:
-            if utils.is_sequence(arg):
-                self.extend(arg)
-            else:
-                self.append(arg)
+    def __len__(self):
+        return bool(self._inner)
 
     def __nonzero__(self):
         return bool(self._inner)
-
-    def __getitem__(self, key):
-        return self._inner.__getitem__(key)
-
-    def __setitem__(self, key, value):
-        if not self._is_valid(value):
-            value = self._fix_value(value)
-        self._inner.__setitem__(key, value)
-
-    def __delitem__(self, key):
-        self._inner.__delitem__(key)
-
-    def __len__(self):
-        return len(self._inner)
-
-    def insert(self, idx, value):
-        if not value:
-            return
-        if not self._is_valid(value):
-            value = self._fix_value(value)
-        self._inner.insert(idx, value)
 
     def _is_valid(self, value):
         """Check if this is a valid object to add to the list."""
@@ -497,8 +468,6 @@ class TypedList(collections.MutableSequence):
     def to_list(self):
         return [h.to_dict() for h in self]
 
-    to_dict = to_list
-
     @classmethod
     def from_obj(cls, obj_list, contained_type=None):
         if not obj_list:
@@ -512,8 +481,8 @@ class TypedList(collections.MutableSequence):
         if not utils.is_sequence(obj_list):
             obj_list = [obj_list]
 
-        return_obj.extend(contained_type.from_obj(x) for x in obj_list)
-        return return_obj
+        items = (contained_type.from_obj(x) for x in obj_list)
+        return cls(items)
 
     @classmethod
     def from_list(cls, list_repr, contained_type=None):
@@ -524,15 +493,14 @@ class TypedList(collections.MutableSequence):
         if not utils.is_sequence(list_repr):
             list_repr = [list_repr]
 
-        return_obj = cls()
-
         if not contained_type:
             contained_type = cls._contained_type
 
-        return_obj.extend(contained_type.from_dict(x) for x in list_repr)
-        return return_obj
+        items = (contained_type.from_dict(x) for x in list_repr)
+        return cls(items)
 
     from_dict = from_list
+    to_dict = to_list
 
     @classmethod
     def object_from_dict(cls, entity_dict):
@@ -543,6 +511,46 @@ class TypedList(collections.MutableSequence):
     def dict_from_object(cls, entity_obj):
         """Convert from object representation to dict representation."""
         return cls.from_obj(entity_obj).to_dict()
+
+
+class TypedSequence(TypedCollection, collections.Sequence):
+    pass
+
+
+class TypedList(TypedCollection, collections.MutableSequence):
+    def __init__(self, *args):
+        TypedCollection.__init__(self)
+
+        # Check if it was initialized with args=None
+        if not any(args):
+            return
+
+        for arg in args:
+            if utils.is_sequence(arg):
+                self.extend(arg)
+            else:
+                self.append(arg)
+
+    def __getitem__(self, key):
+        return self._inner.__getitem__(key)
+
+    def __setitem__(self, key, value):
+        if not self._is_valid(value):
+            value = self._fix_value(value)
+        self._inner.__setitem__(key, value)
+
+    def __delitem__(self, key):
+        self._inner.__delitem__(key)
+
+    def __len__(self):
+        return len(self._inner)
+
+    def insert(self, idx, value):
+        if not value:
+            return
+        if not self._is_valid(value):
+            value = self._fix_value(value)
+        self._inner.insert(idx, value)
 
 
 class BaseCoreComponent(Entity):

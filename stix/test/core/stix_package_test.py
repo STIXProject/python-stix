@@ -90,7 +90,7 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
         },
         'threat_actors': ThreatActorsTests._full_dict,
         'ttps': TTPsTests._full_dict,
-        'version': "1.1.1"
+        'version': "1.2"
     }
 
 

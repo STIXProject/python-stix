@@ -2,7 +2,11 @@
 # See LICENSE.txt for complete terms.
 
 # Make sure base gets imported before common.
-from .base import Entity, EntityList, TypedList, BaseCoreComponent  # noqa
+from .base import (  # noqa
+    Entity, EntityList, TypedCollection, TypedList, TypedSequence,
+    BaseCoreComponent
+)
+
 from . import common  # noqa
 
 from .version import __version__  # noqa
