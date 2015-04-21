@@ -215,8 +215,14 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
         self.Title = Title
         self.Stage = Stage
         self.Type = Type
-        self.Description = Description
-        self.Short_Description = Short_Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
+        if Short_Description is None:
+            self.Short_Description = []
+        else:
+            self.Short_Description = Short_Description
         self.Objective = Objective
         self.Parameter_Observables = Parameter_Observables
         self.Structured_COA = Structured_COA
@@ -239,8 +245,12 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     def set_Stage(self, Stage): self.Stage = Stage
     def get_Type(self): return self.Type
     def set_Type(self, Type): self.Type = Type
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def insert_Short_Description(self, index, value): self.Short_Description[index] = value
+    def add_Short_Description(self, Short_Description): self.Short_Description.append(Short_Description)
     def get_Short_Description(self): return self.Short_Description
     def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Objective(self): return self.Objective
@@ -270,8 +280,8 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             self.Title is not None or
             self.Stage is not None or
             self.Type is not None or
-            self.Description is not None or
-            self.Short_Description is not None or
+            self.Description or
+            self.Short_Description or
             self.Objective is not None or
             self.Parameter_Observables is not None or
             self.Structured_COA is not None or
@@ -329,10 +339,10 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             self.Stage.export(lwrite, level, nsmap, namespace_, name_='Stage', pretty_print=pretty_print)
         if self.Type is not None:
             self.Type.export(lwrite, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-        if self.Short_Description is not None:
-            self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Short_Description in self.Short_Description:
+            Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         if self.Objective is not None:
             self.Objective.export(lwrite, level, nsmap, namespace_, name_='Objective', pretty_print=pretty_print)
         if self.Parameter_Observables is not None:
@@ -381,11 +391,11 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Short_Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Short_Description(obj_)
+            self.add_Short_Description(obj_)
         elif nodeName_ == 'Objective':
             obj_ = ObjectiveType.factory()
             obj_.build(child_)

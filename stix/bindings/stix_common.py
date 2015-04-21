@@ -3589,9 +3589,14 @@ class StructuredTextType(GeneratedsSuper):
     attribute is absent, the implication is that no markup is being used."""
     subclass = None
     superclass = None
-    def __init__(self, structuring_format=None, valueOf_=None):
+    def __init__(self, structuring_format=None, valueOf_=None, id=None,
+                 idref=None, ordinality=None):
         self.structuring_format = _cast(None, structuring_format)
         self.valueOf_ = valueOf_
+        self.id = id,
+        self.idref = idref,
+        self.ordinality = ordinality
+
     def factory(*args_, **kwargs_):
         if StructuredTextType.subclass:
             return StructuredTextType.subclass(*args_, **kwargs_)
@@ -3602,6 +3607,10 @@ class StructuredTextType(GeneratedsSuper):
     def set_structuring_format(self, structuring_format): self.structuring_format = structuring_format
     def get_valueOf_(self): return self.valueOf_
     def set_valueOf_(self, valueOf_): self.valueOf_ = valueOf_
+    def get_id(self): return self.id
+    def set_id(self, id): self.id = id
+    def get_ordinality(self): return self.ordinality
+    def set_ordinality(self, ordinality): self.ordinality = ordinality
     def hasContent_(self):
         if (
             self.valueOf_
@@ -3629,6 +3638,12 @@ class StructuredTextType(GeneratedsSuper):
         if self.structuring_format is not None and 'structuring_format' not in already_processed:
             already_processed.add('structuring_format')
             lwrite(' structuring_format=%s' % (quote_attrib(self.structuring_format), ))
+        if self.id is not None and 'id' not in already_processed:
+            already_processed.add('id')
+            lwrite(' id=%s' % (quote_attrib(self.id), ))
+        if self.ordinality is not None and 'ordinality' not in already_processed:
+            already_processed.add('ordinality')
+            lwrite(' ordinality=%s' % (quote_attrib(self.ordinality), ))
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='StructuredTextType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
@@ -3643,6 +3658,14 @@ class StructuredTextType(GeneratedsSuper):
         if value is not None and 'structuring_format' not in already_processed:
             already_processed.add('structuring_format')
             self.structuring_format = value
+        value = find_attr_value_('id', node)
+        if value is not None and 'id' not in already_processed:
+            already_processed.add('id')
+            self.id = value
+        value = find_attr_value_('ordinality', node)
+        if value is not None and 'ordinality' not in already_processed:
+            already_processed.add('ordinality')
+            self.ordinality = value
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
 # end class StructuredTextType

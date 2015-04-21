@@ -3,7 +3,7 @@
 
 from __future__ import absolute_import
 
-from .structured_text import StructuredText  # noqa
+from .structured_text import StructuredText, StructuredTextList  # noqa
 from .vocabs import VocabString   # noqa
 from .datetimewithprecision import DateTimeWithPrecision  # noqa
 from .activity import Activity  # noqa

@@ -2169,8 +2169,14 @@ class IncidentType(stix_common_binding.IncidentBaseType):
         else:
             self.External_ID = External_ID
         self.Time = Time
-        self.Description = Description
-        self.Short_Description = Short_Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
+        if Short_Description is None:
+            self.Short_Description = []
+        else:
+            self.Short_Description = Short_Description
         self.Categories = Categories
         self.Reporter = Reporter
         if Responder is None:
@@ -2233,8 +2239,12 @@ class IncidentType(stix_common_binding.IncidentBaseType):
     def insert_External_ID(self, index, value): self.External_ID[index] = value
     def get_Time(self): return self.Time
     def set_Time(self, Time): self.Time = Time
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def insert_Short_Description(self, index, value): self.Short_Description[index] = value
+    def add_Short_Description(self, Short_Description): self.Short_Description.append(Short_Description)
     def get_Short_Description(self): return self.Short_Description
     def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Categories(self): return self.Categories
@@ -2310,8 +2320,8 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             self.Title is not None or
             self.External_ID or
             self.Time is not None or
-            self.Description is not None or
-            self.Short_Description is not None or
+            self.Description or
+            self.Short_Description or
             self.Categories is not None or
             self.Reporter is not None or
             self.Responder or
@@ -2386,10 +2396,10 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             External_ID_.export(lwrite, level, nsmap, namespace_, name_='External_ID', pretty_print=pretty_print)
         if self.Time is not None:
             self.Time.export(lwrite, level, nsmap, namespace_, name_='Time', pretty_print=pretty_print)
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-        if self.Short_Description is not None:
-            self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Short_Description in self.Short_Description:
+            Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         if self.Categories is not None:
             self.Categories.export(lwrite, level, nsmap, namespace_, name_='Categories', pretty_print=pretty_print)
         if self.Reporter is not None:
@@ -2470,11 +2480,11 @@ class IncidentType(stix_common_binding.IncidentBaseType):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Short_Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Short_Description(obj_)
+            self.add_Short_Description(obj_)
         elif nodeName_ == 'Categories':
             obj_ = CategoriesType.factory()
             obj_.build(child_)
