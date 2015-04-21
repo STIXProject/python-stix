@@ -117,12 +117,6 @@ class StructuredTextList(stix.TypedSequence):
         *args: A variable-length argument list which can contain single
             :class:`StructuredText` objects or sequences of objects.
 
-    Attributes:
-        sorted:
-        ordinalities:
-        next_ordinality:
-
-
     """
     _contained_type = StructuredText
 
