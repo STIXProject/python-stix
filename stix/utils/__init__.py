@@ -337,6 +337,11 @@ def cast_var(item, klass, arg=None):
     return klass(**kwarg)   # klass(value='foobar')
 
 
+def remove_entries(map, keys):
+    for key in keys:
+        map.pop(key, None)
+
+
 # Namespace flattening
 from .nsparser import *  # noqa
 from .dates import *  # noqa

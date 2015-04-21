@@ -906,9 +906,9 @@ class Indicator(stix.BaseCoreComponent):
 
         if isinstance(obj, cls._binding_class):
             return_obj.negate = obj.negate
-            return_obj.producer         = InformationSource.from_obj(obj.Producer)
-            return_obj.confidence       = Confidence.from_obj(obj.Confidence)
-            return_obj.sightings        = Sightings.from_obj(obj.Sightings)
+            return_obj.producer = InformationSource.from_obj(obj.Producer)
+            return_obj.confidence = Confidence.from_obj(obj.Confidence)
+            return_obj.sightings = Sightings.from_obj(obj.Sightings)
             return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_obj(obj.Composite_Indicator_Expression)
             return_obj.handling = Marking.from_obj(obj.Handling)
             return_obj.kill_chain_phases = KillChainPhasesReference.from_obj(obj.Kill_Chain_Phases)
@@ -927,8 +927,16 @@ class Indicator(stix.BaseCoreComponent):
         return return_obj
 
     def to_dict(self):
-        skip = ('observables', 'observable_composition_operator', 'negate')
-        d = utils.to_dict(self, skip=skip)
+        skip = (
+            'observables',
+            'observable_composition_operator',
+            'negate',
+            'descriptions',
+            'short_descriptions',
+        )
+
+        d = super(Indicator, self).to_dict()
+        utils.remove_entries(d, skip)
 
         if self.negate:
             d['negate'] = True

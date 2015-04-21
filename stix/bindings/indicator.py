@@ -859,8 +859,14 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
             self.Alternative_ID = []
         else:
             self.Alternative_ID = Alternative_ID
-        self.Description = Description
-        self.Short_Description = Short_Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
+        if Short_Description is None:
+            self.Short_Description = []
+        else:
+            self.Short_Description = Short_Description
         if Valid_Time_Position is None:
             self.Valid_Time_Position = []
         else:
@@ -898,8 +904,12 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
     def set_Alternative_ID(self, Alternative_ID): self.Alternative_ID = Alternative_ID
     def add_Alternative_ID(self, value): self.Alternative_ID.append(value)
     def insert_Alternative_ID(self, index, value): self.Alternative_ID[index] = value
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def insert_Short_Description(self, index, value): self.Short_Description[index] = value
+    def add_Short_Description(self, Short_Description): self.Short_Description.append(Short_Description)
     def get_Short_Description(self): return self.Short_Description
     def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Valid_Time_Position(self): return self.Valid_Time_Position
@@ -945,8 +955,8 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
             self.Title is not None or
             self.Type or
             self.Alternative_ID or
-            self.Description is not None or
-            self.Short_Description is not None or
+            self.Description or
+            self.Short_Description or
             self.Valid_Time_Position or
             self.Observable is not None or
             self.Composite_Indicator_Expression is not None or
@@ -1013,10 +1023,10 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
         for Alternative_ID_ in self.Alternative_ID:
             showIndent(lwrite, level, pretty_print)
             lwrite('<%s:Alternative_ID>%s</%s:Alternative_ID>%s' % (nsmap[namespace_], quote_xml(Alternative_ID_), nsmap[namespace_], eol_))
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-        if self.Short_Description is not None:
-            self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Short_Description in self.Short_Description:
+            Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         for Valid_Time_Position_ in self.Valid_Time_Position:
             Valid_Time_Position_.export(lwrite, level, nsmap, namespace_, name_='Valid_Time_Position', pretty_print=pretty_print)
         if self.Observable is not None:
@@ -1083,11 +1093,11 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Short_Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Short_Description(obj_)
+            self.add_Short_Description(obj_)
         elif nodeName_ == 'Valid_Time_Position':
             obj_ = ValidTimeType.factory()
             obj_.build(child_)

@@ -1256,8 +1256,14 @@ class TTPType(stix_common_binding.TTPBaseType):
         self.version = _cast(None, version)
 
         self.Title = Title
-        self.Description = Description
-        self.Short_Description = Short_Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
+        if Short_Description is None:
+            self.Short_Description = []
+        else:
+            self.Short_Description = Short_Description
         if Intended_Effect is None:
             self.Intended_Effect = []
         else:
@@ -1280,8 +1286,12 @@ class TTPType(stix_common_binding.TTPBaseType):
     factory = staticmethod(factory)
     def get_Title(self): return self.Title
     def set_Title(self, Title): self.Title = Title
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def insert_Short_Description(self, index, value): self.Short_Description[index] = value
+    def add_Short_Description(self, Short_Description): self.Short_Description.append(Short_Description)
     def get_Short_Description(self): return self.Short_Description
     def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Intended_Effect(self): return self.Intended_Effect
@@ -1313,8 +1323,8 @@ class TTPType(stix_common_binding.TTPBaseType):
     def hasContent_(self):
         if (
             self.Title is not None or
-            self.Description is not None or
-            self.Short_Description is not None or
+            self.Description or
+            self.Short_Description or
             self.Intended_Effect or
             self.Behavior is not None or
             self.Resources is not None or
@@ -1369,10 +1379,10 @@ class TTPType(stix_common_binding.TTPBaseType):
         if self.Title is not None:
             showIndent(lwrite, level, pretty_print)
             lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-        if self.Short_Description is not None:
-            self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Short_Description in self.Short_Description:
+            Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         for Intended_Effect_ in self.Intended_Effect:
             Intended_Effect_.export(lwrite, level, nsmap, namespace_, name_='Intended_Effect', pretty_print=pretty_print)
         if self.Behavior is not None:
@@ -1415,11 +1425,11 @@ class TTPType(stix_common_binding.TTPBaseType):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Short_Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Short_Description(obj_)
+            self.add_Short_Description(obj_)
         elif nodeName_ == 'Intended_Effect':
             obj_ = stix_common_binding.StatementType.factory()
             obj_.build(child_)

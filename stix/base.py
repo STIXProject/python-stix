@@ -518,8 +518,11 @@ class TypedList(collections.MutableSequence):
     @classmethod
     def from_list(cls, list_repr, contained_type=None):
 
-        if not utils.is_sequence(list_repr):
+        if not list_repr:
             return None
+
+        if not utils.is_sequence(list_repr):
+            list_repr = [list_repr]
 
         return_obj = cls()
 
@@ -692,12 +695,23 @@ class BaseCoreComponent(Entity):
             :class:`.StructuredText`
 
         """
-        return self._description
+        if self.descriptions:
+            return self.descriptions.sorted[0]
+        else:
+            return None
 
     @description.setter
     def description(self, value):
-        from stix.common import StructuredText
-        self._set_var(StructuredText, description=value)
+        self.descriptions = value
+
+    @property
+    def descriptions(self):
+        return self._descriptions
+
+    @descriptions.setter
+    def descriptions(self, value):
+        from stix.common import StructuredTextList
+        self._descriptions = StructuredTextList(value)
 
     @property
     def short_description(self):
@@ -715,12 +729,23 @@ class BaseCoreComponent(Entity):
             :class:`.StructuredText`
 
         """
-        return self._short_description
+        if self.short_descriptions:
+            return self.short_descriptions.sorted[0]
+        else:
+            return None
 
     @short_description.setter
     def short_description(self, value):
-        from stix.common import StructuredText
-        self._set_var(StructuredText, short_description=value)
+        self.short_descriptions = value
+
+    @property
+    def short_descriptions(self):
+        return self._short_descriptions
+
+    @short_descriptions.setter
+    def short_descriptions(self, value):
+        from stix.common import StructuredTextList
+        self._short_descriptions = StructuredTextList(value)
 
     @property
     def information_source(self):
@@ -747,7 +772,7 @@ class BaseCoreComponent(Entity):
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
-        from stix.common import StructuredText, InformationSource
+        from stix.common import StructuredTextList, InformationSource
 
         if not return_obj:
             raise ValueError("Must provide a return_obj argument")
@@ -763,10 +788,10 @@ class BaseCoreComponent(Entity):
         # type definition (e.g., used as a reference)
         return_obj.version = getattr(obj, 'version', None)
         return_obj.title = getattr(obj, 'Title', None)
-        return_obj.description = \
-            StructuredText.from_obj(getattr(obj, 'Description', None))
-        return_obj.short_description = \
-            StructuredText.from_obj(getattr(obj, 'Short_Description', None))
+        return_obj.descriptions = \
+            StructuredTextList.from_obj(getattr(obj, 'Description', None))
+        return_obj.short_descriptions = \
+            StructuredTextList.from_obj(getattr(obj, 'Short_Description', None))
         return_obj.information_source = \
             InformationSource.from_obj(getattr(obj, 'Information_Source', None))
 
@@ -788,10 +813,10 @@ class BaseCoreComponent(Entity):
 
         if self.timestamp:
             return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
-        if self.description:
-            return_obj.Description = self.description.to_obj(ns_info=ns_info)
-        if self.short_description:
-            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
+        if self.descriptions:
+            return_obj.Description = self.descriptions.to_obj(ns_info=ns_info)
+        if self.short_descriptions:
+            return_obj.Short_Description = self.short_descriptions.to_obj(ns_info=ns_info)
         if self.information_source:
             return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
 
@@ -799,7 +824,7 @@ class BaseCoreComponent(Entity):
 
     @classmethod
     def from_dict(cls, d, return_obj=None):
-        from stix.common import StructuredText, InformationSource
+        from stix.common import StructuredTextList, InformationSource
 
         if not return_obj:
             raise ValueError("Must provide a return_obj argument")
@@ -810,14 +835,30 @@ class BaseCoreComponent(Entity):
         return_obj.timestamp = get('timestamp')
         return_obj.version = get('version')
         return_obj.title = get('title')
-        return_obj.description = \
-            StructuredText.from_dict(get('description'))
-        return_obj.short_description = \
-            StructuredText.from_dict(get('short_description'))
+        return_obj.descriptions = \
+            StructuredTextList.from_dict(get('description'))
+        return_obj.short_descriptions = \
+            StructuredTextList.from_dict(get('short_description'))
         return_obj.information_source = \
             InformationSource.from_dict(get('information_source'))
 
         return return_obj
 
     def to_dict(self):
-        return super(BaseCoreComponent, self).to_dict()
+        skip = (
+            'description',
+            'descriptions',
+            'short_description',
+            'short_descriptions'
+        )
+
+        d = utils.to_dict(self, skip=skip)
+
+        if self.descriptions:
+            d['description'] = self.descriptions.to_dict()
+        if self.short_descriptions:
+            d['short_description'] = self.short_descriptions.to_dict()
+
+        return d
+
+
