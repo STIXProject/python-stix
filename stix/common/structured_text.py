@@ -193,6 +193,10 @@ class StructuredTextList(stix.TypedSequence):
         Args:
             key: An ordinality value.
 
+        Raises:
+            KeyError: If `key` does not match the ordinality of any
+                :class:`.StructuredText` object.
+
         """
         o = int(key)
 
@@ -225,9 +229,16 @@ class StructuredTextList(stix.TypedSequence):
     def add(self, value):
         """Adds the :class:`StructuredText` `value` to the collection.
 
-        If `value` does not have an ``ordinality`` set, one will be assigned.
-        If `value` has an ordinality which matches one already in the
-        collection, `value` will replace the existing item.
+        If `value` is not a :class:`StructuredText` object, an attempt will
+        be made to convert it to one.
+
+        Note:
+            If `value` does not have an ``ordinality`` set, one will be
+            assigned. If `value` has an ordinality which matches one already
+            in the collection, `value` will replace the existing item.
+
+        Args:
+            value: A :class:`StructuredText` object.
 
         """
         if not self._is_valid(value):
@@ -245,11 +256,30 @@ class StructuredTextList(stix.TypedSequence):
     def update(self, iterable):
         """Adds each item of `iterable` to the collection.
 
+        Note:
+            Any existing objects with conflicting ordinality values will be
+            overwritten.
+
+        Args:
+            iterable: An iterable collection of :class:`StructuredText` objects
+                to add to this collection.
+
         """
         for item in iterable:
             self.add(item)
 
     def _shift(self, ordinality):
+        """Increments the ordinality values on all objects in the collection
+        that have an ordinality greater than or equal to `ordinality`.
+
+        This is used in ``insert()`` operations.
+
+        Note:
+            This will only shift contiguous ordinalities, so if the collection
+            contains the ordinaliities [1,2,6], then _shift(1) would result in
+            [2,3,6] since 6 is not contiguous with [1,2].
+
+        """
         to_shift = []
 
         for o in itertools.count(ordinality):
@@ -275,7 +305,6 @@ class StructuredTextList(stix.TypedSequence):
         o = value.ordinality
         self._shift(o)
         self._inner.append(value)
-
 
     def remove(self, value):
         """Removes the value from the collection.
