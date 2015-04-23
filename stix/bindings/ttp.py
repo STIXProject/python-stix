@@ -44,8 +44,14 @@ class AttackPatternType(GeneratedsSuper):
         self.capec_id = _cast(None, capec_id)
         self.id = _cast(None, id)
         self.Title = Title
-        self.Description = Description
-        self.Short_Description = Short_Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
+        if Short_Description is None:
+            self.Short_Description = []
+        else:
+            self.Short_Description = Short_Description
     def factory(*args_, **kwargs_):
         if AttackPatternType.subclass:
             return AttackPatternType.subclass(*args_, **kwargs_)
@@ -54,8 +60,12 @@ class AttackPatternType(GeneratedsSuper):
     factory = staticmethod(factory)
     def get_Title(self): return self.Title
     def set_Title(self, Title): self.Title = Title
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def insert_Short_Description(self, index, value): self.Short_Description[index] = value
+    def add_Short_Description(self, Short_Description): self.Short_Description.append(Short_Description)
     def get_Short_Description(self): return self.Short_Description
     def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_idref(self): return self.idref
@@ -67,8 +77,8 @@ class AttackPatternType(GeneratedsSuper):
     def hasContent_(self):
         if (
             self.Title is not None or
-            self.Description is not None or
-            self.Short_Description is not None
+            self.Description or
+            self.Short_Description
             ):
             return True
         else:
@@ -107,10 +117,10 @@ class AttackPatternType(GeneratedsSuper):
         if self.Title is not None:
             showIndent(lwrite, level, pretty_print)
             lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-        if self.Short_Description is not None:
-            self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Short_Description in self.Short_Description:
+            Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -138,11 +148,11 @@ class AttackPatternType(GeneratedsSuper):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Short_Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Short_Description(obj_)
+            self.add_Short_Description(obj_)
 # end class AttackPatternType
 
 
@@ -175,8 +185,17 @@ class MalwareInstanceType(GeneratedsSuper):
         else:
             self.Name = Name
         self.Title = Title
-        self.Description = Description
-        self.Short_Description = Short_Description
+
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
+
+        if Short_Description is None:
+            self.Short_Description = []
+        else:
+            self.Short_Description = Short_Description
+
     def factory(*args_, **kwargs_):
         if MalwareInstanceType.subclass:
             return MalwareInstanceType.subclass(*args_, **kwargs_)
@@ -193,8 +212,12 @@ class MalwareInstanceType(GeneratedsSuper):
     def insert_Name(self, index, value): self.Name[index] = value
     def get_Title(self): return self.Title
     def set_Title(self, Title): self.Title = Title
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def insert_Short_Description(self, index, value): self.Short_Description[index] = value
+    def add_Short_Description(self, Short_Description): self.Short_Description.append(Short_Description)
     def get_Short_Description(self): return self.Short_Description
     def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_idref(self): return self.idref
@@ -206,8 +229,8 @@ class MalwareInstanceType(GeneratedsSuper):
             self.Type or
             self.Name or
             self.Title is not None or
-            self.Description is not None or
-            self.Short_Description is not None
+            self.Description or
+            self.Short_Description
             ):
             return True
         else:
@@ -247,10 +270,10 @@ class MalwareInstanceType(GeneratedsSuper):
         if self.Title is not None:
             showIndent(lwrite, level, pretty_print)
             lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-        if self.Short_Description is not None:
-            self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Short_Description in self.Short_Description:
+            Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -282,11 +305,11 @@ class MalwareInstanceType(GeneratedsSuper):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Short_Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Short_Description(obj_)
+            self.add_Short_Description(obj_)
 # end class MalwareInstanceType
 
 class ExploitType(GeneratedsSuper):
@@ -305,8 +328,17 @@ class ExploitType(GeneratedsSuper):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
         self.Title = Title
-        self.Description = Description
-        self.Short_Description = Short_Description
+
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
+
+        if Short_Description is None:
+            self.Short_Description = []
+        else:
+            self.Short_Description = Short_Description
+
     def factory(*args_, **kwargs_):
         if ExploitType.subclass:
             return ExploitType.subclass(*args_, **kwargs_)
@@ -315,8 +347,12 @@ class ExploitType(GeneratedsSuper):
     factory = staticmethod(factory)
     def get_Title(self): return self.Title
     def set_Title(self, Title): self.Title = Title
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def insert_Short_Description(self, index, value): self.Short_Description[index] = value
+    def add_Short_Description(self, Short_Description): self.Short_Description.append(Short_Description)
     def get_Short_Description(self): return self.Short_Description
     def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_idref(self): return self.idref
@@ -326,8 +362,8 @@ class ExploitType(GeneratedsSuper):
     def hasContent_(self):
         if (
             self.Title is not None or
-            self.Description is not None or
-            self.Short_Description is not None
+            self.Description or
+            self.Short_Description
             ):
             return True
         else:
@@ -363,10 +399,10 @@ class ExploitType(GeneratedsSuper):
         if self.Title is not None:
             showIndent(lwrite, level, pretty_print)
             lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-        if self.Short_Description is not None:
-            self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Short_Description in self.Short_Description:
+            Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -390,11 +426,11 @@ class ExploitType(GeneratedsSuper):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Short_Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Short_Description(obj_)
+            self.add_Short_Description(obj_)
 # end class ExploitType
 
 
@@ -412,8 +448,17 @@ class InfrastructureType(GeneratedsSuper):
             self.Type = []
         else:
             self.Type = Type
-        self.Description = Description
-        self.Short_Description = Short_Description
+
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
+
+        if Short_Description is None:
+            self.Short_Description = []
+        else:
+            self.Short_Description = Short_Description
+
         self.Observable_Characterization = Observable_Characterization
     def factory(*args_, **kwargs_):
         if InfrastructureType.subclass:
@@ -427,8 +472,12 @@ class InfrastructureType(GeneratedsSuper):
     def set_Type(self, Type): self.Type = Type
     def add_Type(self, value): self.Type.append(value)
     def insert_Type(self, index, value): self.Type[index] = value
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def insert_Short_Description(self, index, value): self.Short_Description[index] = value
+    def add_Short_Description(self, Short_Description): self.Short_Description.append(Short_Description)
     def get_Short_Description(self): return self.Short_Description
     def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Observable_Characterization(self): return self.Observable_Characterization
@@ -481,10 +530,10 @@ class InfrastructureType(GeneratedsSuper):
             lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
         for Type_ in self.Type:
             Type_.export(lwrite, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-        if self.Short_Description is not None:
-            self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Short_Description in self.Short_Description:
+            Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         if self.Observable_Characterization is not None:
             self.Observable_Characterization.export(lwrite, level, "%s:" % (nsmap[namespace_]), name_='Observable_Characterization', pretty_print=pretty_print)
     def build(self, node):
@@ -514,11 +563,11 @@ class InfrastructureType(GeneratedsSuper):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Short_Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Short_Description(obj_)
+            self.add_Short_Description(obj_)
         elif nodeName_ == 'Observable_Characterization':
             obj_ = cybox_core_binding.ObservablesType.factory()
             obj_.build(child_)

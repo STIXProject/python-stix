@@ -50,7 +50,6 @@ class Objective(stix.Entity):
 
     @descriptions.setter
     def descriptions(self, value):
-        from stix.common import StructuredTextList
         self._description = StructuredTextList(value)
 
     @property

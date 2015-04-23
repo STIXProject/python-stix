@@ -413,7 +413,10 @@ class SightingType(GeneratedsSuper):
         self.Source = Source
         self.Reference = Reference
         self.Confidence = Confidence
-        self.Description = Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
         self.Related_Observables = Related_Observables
     def factory(*args_, **kwargs_):
         if SightingType.subclass:
@@ -427,6 +430,8 @@ class SightingType(GeneratedsSuper):
     def set_Reference(self, Reference): self.Reference = Reference
     def get_Confidence(self): return self.Confidence
     def set_Confidence(self, Confidence): self.Confidence = Confidence
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
     def get_Related_Observables(self): return self.Related_Observables
@@ -440,7 +445,7 @@ class SightingType(GeneratedsSuper):
             self.Source is not None or
             self.Reference is not None or
             self.Confidence is not None or
-            self.Description is not None or
+            self.Description or
             self.Related_Observables is not None
             ):
             return True
@@ -481,8 +486,8 @@ class SightingType(GeneratedsSuper):
             lwrite('<%s:Reference>%s</%s:Reference>%s' % (nsmap[namespace_], quote_xml(self.Reference), nsmap[namespace_], eol_))
         if self.Confidence is not None:
             self.Confidence.export(lwrite, level, nsmap, namespace_, name_='Confidence', pretty_print=pretty_print)
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Related_Observables is not None:
             self.Related_Observables.export(lwrite, level, nsmap, namespace_, name_='Related_Observables', pretty_print=pretty_print)
     def build(self, node):
@@ -519,7 +524,7 @@ class SightingType(GeneratedsSuper):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Related_Observables':
             obj_ = RelatedObservablesType.factory()
             obj_.build(child_)

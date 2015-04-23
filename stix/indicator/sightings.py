@@ -4,7 +4,7 @@
 import stix
 import stix.utils as utils
 from stix.common import (
-    GenericRelationshipList, RelatedObservable, StructuredText, Confidence,
+    GenericRelationshipList, RelatedObservable, StructuredTextList, Confidence,
     InformationSource
 )
 import stix.bindings.indicator as indicator_binding
@@ -34,11 +34,38 @@ class Sighting(stix.Entity):
     
     @property
     def description(self):
-        return self._description
-    
+        """A :class:`.StructuredTextList` object, containing descriptions about
+        the purpose or intent of this object.
+
+        Iterating over this object will yield its contents sorted by their
+        ``ordinality`` value.
+
+        Default Value: Empty :class:`StructuredTextList` object.
+
+        Note:
+            IF this is set to a value that is not an instance of
+            :class:`.StructuredText`, an effort will ne made to convert it.
+            If this is set to an iterable, any values contained that are not
+            an instance of :class:`StructuredText` will be be converted.
+
+        Returns:
+            An instance of
+            :class:`.StructuredTextList`
+
+        """
+        return next(iter(self.descriptions), None)
+
     @description.setter
     def description(self, value):
-        self._set_var(StructuredText, description=value)
+        self.descriptions = value
+
+    @property
+    def descriptions(self):
+        return self._description
+
+    @descriptions.setter
+    def descriptions(self, value):
+        self._description = StructuredTextList(value)
 
     @property
     def source(self):
@@ -70,8 +97,8 @@ class Sighting(stix.Entity):
             return_obj.Source = self.source.to_obj(ns_info=ns_info)
         if self.confidence:
             return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
-        if self.description:
-            return_obj.Description = self.description.to_obj(ns_info=ns_info)
+        if self.descriptions:
+            return_obj.Description = self.descriptions.to_obj(ns_info=ns_info)
         if self.related_observables:
             return_obj.Related_Observables = self.related_observables.to_obj(ns_info=ns_info)
         
@@ -93,7 +120,7 @@ class Sighting(stix.Entity):
         return_obj.source = InformationSource.from_obj(obj.Source)
         return_obj.reference = obj.Reference
         return_obj.confidence = Confidence.from_obj(obj.Confidence)
-        return_obj.description = StructuredText.from_obj(obj.Description)
+        return_obj.descriptions = StructuredTextList.from_obj(obj.Description)
         return_obj.related_observables = RelatedObservables.from_obj(obj.Related_Observables)
         return return_obj
 
@@ -109,7 +136,7 @@ class Sighting(stix.Entity):
         return_obj.source = InformationSource.from_dict(d.get('source'))
         return_obj.reference = d.get('reference')
         return_obj.confidence = Confidence.from_dict(d.get('confidence'))
-        return_obj.description = StructuredText.from_dict(d.get('description'))
+        return_obj.descriptions = StructuredTextList.from_dict(d.get('description'))
         return_obj.related_observables = RelatedObservables.from_dict(d.get('related_observables'))
         return return_obj
 
