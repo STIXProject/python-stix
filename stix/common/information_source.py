@@ -14,7 +14,7 @@ import stix.bindings.stix_common as stix_common_binding
 # relative
 from . import vocabs, VocabString
 from .identity import Identity
-from .structured_text import StructuredText, StructuredTextList
+from .structured_text import StructuredTextList
 
 
 class InformationSource(stix.Entity):
@@ -95,7 +95,6 @@ class InformationSource(stix.Entity):
 
     @descriptions.setter
     def descriptions(self, value):
-        from stix.common import StructuredTextList
         self._descriptions = StructuredTextList(value)
 
     @property
