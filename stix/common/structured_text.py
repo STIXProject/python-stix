@@ -295,16 +295,18 @@ class StructuredTextList(stix.TypedSequence):
         """Inserts `value` into the collection.
 
         If `value` has an ordinality which conflicts with an existing value,
-        the existing value (and any contiguous items) will have their
+        the existing value (and any contiguous values) will have their
         ordinality values incremented by one.
 
         """
+        if not self._is_valid(value):
+            value = self._fix_value(value)
+
         if value.ordinality is None:
             self.add(value)
-
-        o = value.ordinality
-        self._shift(o)
-        self._inner.append(value)
+        else:
+            self._shift(value.ordinality)
+            self._inner.append(value)
 
     def remove(self, value):
         """Removes the value from the collection.
@@ -368,7 +370,7 @@ class StructuredTextList(stix.TypedSequence):
         # Item was a dictionary. Check if there is an 'ordinality' value.
         ordinality = int(d.pop('ordinality', 1))
 
-        # Reinsert it if the value is different than the default
+        # Reinsert it if the value is different than the default.
         if ordinality != 1:
             d['ordinality'] = ordinality
 
