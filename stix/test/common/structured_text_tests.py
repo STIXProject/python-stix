@@ -104,11 +104,9 @@ class StructuredTextListTests(unittest.TestCase, TypedListTestCase):
         self.assertEqual(st1.ordinality, 2)
         self.assertEqual(st2.ordinality, 3)
 
-
     def test_insert_str(self):
         slist = common.StructuredTextList("foo", "bar")
         slist.insert("test")
-
         self.assertEqual(str(slist[3]), "test")
 
     def test_delitem(self):

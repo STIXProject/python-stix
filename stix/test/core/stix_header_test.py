@@ -4,7 +4,7 @@
 import unittest
 
 from stix.test import EntityTestCase, data_marking_test
-from stix.test.common import information_source_test
+from stix.test.common import information_source_test, structured_text_tests
 
 from stix import core
 
@@ -24,6 +24,14 @@ class STIXHeaderTests(EntityTestCase, unittest.TestCase):
         # Recreate https://github.com/STIXProject/python-stix/issues/63
         hdr = core.STIXHeader(package_intents=["Indicators - Watchlist"])
         self.assertEqual(1, len(hdr.package_intents))
+
+
+class STIXHeaderMultiDescTests(EntityTestCase, unittest.TestCase):
+    klass = core.STIXHeader
+    _full_dict = {
+        'description': structured_text_tests.StructuredTextListTests._full_dict,
+        'short_description': structured_text_tests.StructuredTextListTests._full_dict
+    }
 
 
 if __name__ == "__main__":

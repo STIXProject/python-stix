@@ -689,18 +689,23 @@ class BaseCoreComponent(Entity):
 
     @property
     def description(self):
-        """A description about the contents or purpose of this object.
+        """A :class:`.StructuredTextList` object, containing descriptions about
+        the purpose or intent of this object.
 
-        Default Value: ``None``
+        Iterating over this object will yield its contents sorted by their
+        ``ordinality`` value.
+
+        Default Value: Empty :class:`StructuredTextList` object.
 
         Note:
-            If set to a value that is not an instance of
-            :class:`.StructuredText`, an attempt to will be made to convert
-            the value into an instance of :class:`.StructuredText`.
+            IF this is set to a value that is not an instance of
+            :class:`.StructuredText`, an effort will ne made to convert it.
+            If this is set to an iterable, any values contained that are not
+            an instance of :class:`StructuredText` will be be converted.
 
         Returns:
             An instance of
-            :class:`.StructuredText`
+            :class:`.StructuredTextList`
 
         """
         return next(iter(self.descriptions), None)
@@ -720,18 +725,23 @@ class BaseCoreComponent(Entity):
 
     @property
     def short_description(self):
-        """A short description about the contents or purpose of this object.
+        """A :class:`.StructuredTextList` object, containing descriptions about
+        the purpose or intent of this object.
 
-        Default Value: ``None``
+        Iterating over this object will yield its contents sorted by their
+        ``ordinality`` value.
+
+        Default Value: Empty :class:`StructuredTextList` object.
 
         Note:
-            If set to a value that is not an instance of
-            :class:`.StructuredText`, an attempt to will be made to convert
-            the value into an instance of :class:`.StructuredText`.
+            IF this is set to a value that is not an instance of
+            :class:`.StructuredText`, an effort will ne made to convert it.
+            If this is set to an iterable, any values contained that are not
+            an instance of :class:`StructuredText` will be be converted.
 
         Returns:
             An instance of
-            :class:`.StructuredText`
+            :class:`.StructuredTextList`
 
         """
         return next(iter(self.short_descriptions), None)
@@ -858,6 +868,7 @@ class BaseCoreComponent(Entity):
 
         if self.descriptions:
             d['description'] = self.descriptions.to_dict()
+
         if self.short_descriptions:
             d['short_description'] = self.short_descriptions.to_dict()
 

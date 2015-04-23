@@ -2,9 +2,11 @@
 # See LICENSE.txt for complete terms.
 
 import stix
+import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.stix_core as stix_core_binding
-from stix.common import vocabs, InformationSource, StructuredText, VocabString
+from stix.common import InformationSource, StructuredTextList, VocabString
+from stix.common.vocabs import PackageIntent
 from stix.data_marking import Marking
 
 
@@ -25,41 +27,73 @@ class STIXHeader(stix.Entity):
 
     @property
     def description(self):
-        return self._description
+        """A :class:`.StructuredTextList` object, containing descriptions about
+        the purpose or intent of this object.
 
-    @description.setter
-    def description(self, value):
-        """Sets the value of the description property.
+        Iterating over this object will yield its contents sorted by their
+        ``ordinality`` value.
 
-        If the value is an instance of basestring, it will be coerced into an
-        instance of StructuredText, with its 'text' property set to the input
-        value.
-
-        """
-        self._set_var(StructuredText, description=value)
-
-    @property
-    def short_description(self):
-        """The ``short_description`` property for this entity.
-
-        Default Value: ``None``
+        Default Value: Empty :class:`StructuredTextList` object.
 
         Note:
-            If set to a value that is not an instance of
-            :class:`stix.common.structured_text.StructuredText`, an attempt to
-            will be made to convert the value into an instance of
-            :class:`stix.common.structured_text.StructuredText`.
+            IF this is set to a value that is not an instance of
+            :class:`.StructuredText`, an effort will ne made to convert it.
+            If this is set to an iterable, any values contained that are not
+            an instance of :class:`StructuredText` will be be converted.
 
         Returns:
             An instance of
-            :class:`stix.common.structured_text.StructuredText`
+            :class:`.StructuredTextList`
 
         """
-        return self._short_description
+        return next(iter(self.descriptions), None)
+
+    @description.setter
+    def description(self, value):
+        self.descriptions = value
+
+    @property
+    def descriptions(self):
+        return self._descriptions
+
+    @descriptions.setter
+    def descriptions(self, value):
+        self._descriptions = StructuredTextList(value)
+
+    @property
+    def short_description(self):
+        """A :class:`.StructuredTextList` object, containing descriptions about
+        the purpose or intent of this object.
+
+        Iterating over this object will yield its contents sorted by their
+        ``ordinality`` value.
+
+        Default Value: Empty :class:`StructuredTextList` object.
+
+        Note:
+            IF this is set to a value that is not an instance of
+            :class:`.StructuredText`, an effort will ne made to convert it.
+            If this is set to an iterable, any values contained that are not
+            an instance of :class:`StructuredText` will be be converted.
+
+        Returns:
+            An instance of
+            :class:`.StructuredTextList`
+
+        """
+        return next(iter(self.short_descriptions), None)
 
     @short_description.setter
     def short_description(self, value):
-        self._set_var(StructuredText, short_description=value)
+        self.short_descriptions = value
+
+    @property
+    def short_descriptions(self):
+        return self._short_descriptions
+
+    @short_descriptions.setter
+    def short_descriptions(self, value):
+        self._short_descriptions = StructuredTextList(value)
 
     @property
     def handling(self):
@@ -104,8 +138,8 @@ class STIXHeader(stix.Entity):
             return_obj = cls()
 
         return_obj.title = obj.Title
-        return_obj.description = StructuredText.from_obj(obj.Description)
-        return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
+        return_obj.descriptions = StructuredTextList.from_obj(obj.Description)
+        return_obj.short_descriptions = StructuredTextList.from_obj(obj.Short_Description)
         return_obj.handling = Marking.from_obj(obj.Handling)
         return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
         return_obj.package_intents = _PackageIntents.from_obj(obj.Package_Intent)
@@ -123,10 +157,10 @@ class STIXHeader(stix.Entity):
             return_obj.Title = self.title
         if self.package_intents:
             return_obj.Package_Intent = self.package_intents.to_obj(ns_info=ns_info)
-        if self.description:
-            return_obj.Description = self.description.to_obj(ns_info=ns_info)
-        if self.short_description:
-            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
+        if self.descriptions:
+            return_obj.Description = self.descriptions.to_obj(ns_info=ns_info)
+        if self.short_descriptions:
+            return_obj.Short_Description = self.short_descriptions.to_obj(ns_info=ns_info)
         if self.handling:
             return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
         if self.information_source:
@@ -148,8 +182,8 @@ class STIXHeader(stix.Entity):
         
         return_obj.title = get('title')
         return_obj.package_intents = _PackageIntents.from_list(get('package_intents'))
-        return_obj.description = StructuredText.from_dict(get('description'))
-        return_obj.short_description = StructuredText.from_dict(get('short_description'))
+        return_obj.descriptions = StructuredTextList.from_dict(get('description'))
+        return_obj.short_descriptions = StructuredTextList.from_dict(get('short_description'))
         return_obj.handling = Marking.from_dict(get('handling'))
         return_obj.information_source = InformationSource.from_dict(get('information_source'))
         return_obj.profiles = get('profiles')
@@ -157,7 +191,21 @@ class STIXHeader(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        return super(STIXHeader, self).to_dict()
+        skip = (
+            'description',
+            'descriptions',
+            'short_description',
+            'short_descriptions'
+        )
+
+        d = utils.to_dict(self, skip=skip)
+
+        if self.descriptions:
+            d['description'] = self.descriptions.to_dict()
+        if self.short_descriptions:
+            d['short_description'] = self.short_descriptions.to_dict()
+
+        return d
 
 
 # NOT AN ACTUAL STIX TYPE!
@@ -165,4 +213,4 @@ class _PackageIntents(stix.TypedList):
     _contained_type = VocabString
 
     def _fix_value(self, value):
-        return vocabs.PackageIntent(value)
+        return PackageIntent(value)
