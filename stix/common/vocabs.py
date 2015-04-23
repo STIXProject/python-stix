@@ -244,10 +244,11 @@ class AttackerInfrastructureType(VocabString):
 @add_allowed_values
 class DiscoveryMethod(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
-    _XSI_TYPE = 'stixVocabs:DiscoveryMethodVocab-1.0'
+    _XSI_TYPE = 'stixVocabs:DiscoveryMethodVocab-2.0'
 
     TERM_AGENT_DISCLOSURE = "Agent Disclosure"
-    TERM_FRAUD_DETECTION = "Fraud Detection"
+    TERM_EXTERNAL_FRAUD_DETECTION = "External - Fraud Detection"
+    TERM_INTERNAL_FRAUD_DETECTION = "Internal - Fraud Detection"
     TERM_MONITORING_SERVICE = "Monitoring Service"
     TERM_LAW_ENFORCEMENT = "Law Enforcement"
     TERM_CUSTOMER = "Customer"
