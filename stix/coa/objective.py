@@ -81,6 +81,14 @@ class Objective(stix.Entity):
         self.short_descriptions = value
 
     @property
+    def short_descriptions(self):
+        return self._short_descriptions
+
+    @short_descriptions.setter
+    def short_descriptions(self, value):
+        self._short_descriptions = StructuredTextList(value)
+
+    @property
     def applicability_confidence(self):
         return self._applicability_confidence
     
