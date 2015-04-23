@@ -4,7 +4,7 @@
 import stix
 import stix.utils
 import stix.coa.structured_coa
-from stix.common import EncodedCDATA, StructuredText, VocabString
+from stix.common import EncodedCDATA, StructuredTextList, VocabString
 from stix.coa.structured_coa import _BaseStructuredCOA
 import stix.bindings.extensions.structured_coa.generic as generic_structured_coa_binding
 
@@ -32,11 +32,78 @@ class GenericStructuredCOA(_BaseStructuredCOA):
 
     @property
     def description(self):
-        return self._description
+        """A single description about the contents or purpose of this object.
+
+        Default Value: ``None``
+
+        Note:
+            If this object has more than one description set, this will return
+            the description with the lowest ordinality value.
+
+        Returns:
+            An instance of
+            :class:`.StructuredText`
+
+        """
+        return next(iter(self.descriptions), None)
 
     @description.setter
     def description(self, value):
-        self._set_var(StructuredText, description=value)
+        self.descriptions = value
+
+    @property
+    def descriptions(self):
+        """A :class:`.StructuredTextList` object, containing descriptions about
+        the purpose or intent of this object.
+
+        Iterating over this object will yield its contents sorted by their
+        ``ordinality`` value.
+
+        Default Value: Empty :class:`StructuredTextList` object.
+
+        Note:
+            IF this is set to a value that is not an instance of
+            :class:`.StructuredText`, an effort will ne made to convert it.
+            If this is set to an iterable, any values contained that are not
+            an instance of :class:`StructuredText` will be be converted.
+
+        Returns:
+            An instance of
+            :class:`.StructuredTextList`
+
+        """
+        return self._descriptions
+
+    @descriptions.setter
+    def descriptions(self, value):
+        self._descriptions = StructuredTextList(value)
+
+    @property
+    def descriptions(self):
+        """A :class:`.StructuredTextList` object, containing descriptions about
+        the purpose or intent of this object.
+
+        Iterating over this object will yield its contents sorted by their
+        ``ordinality`` value.
+
+        Default Value: Empty :class:`StructuredTextList` object.
+
+        Note:
+            IF this is set to a value that is not an instance of
+            :class:`.StructuredText`, an effort will ne made to convert it.
+            If this is set to an iterable, any values contained that are not
+            an instance of :class:`StructuredText` will be be converted.
+
+        Returns:
+            An instance of
+            :class:`.StructuredTextList`
+
+        """
+        return self._descriptions
+
+    @descriptions.setter
+    def descriptions(self, value):
+        self._descriptions = StructuredTextList(value)
 
     @property
     def type_(self):
@@ -56,7 +123,7 @@ class GenericStructuredCOA(_BaseStructuredCOA):
 
         super(GenericStructuredCOA, cls).from_obj(obj, return_obj)
         return_obj.reference_location = obj.reference_location
-        return_obj.description = StructuredText.from_obj(obj.Description)
+        return_obj.descriptions = StructuredTextList.from_obj(obj.Description)
         return_obj.type_ = VocabString.from_obj(obj.Type)
         return_obj.specification = EncodedCDATA.from_obj(obj.Specification)
 
@@ -69,8 +136,8 @@ class GenericStructuredCOA(_BaseStructuredCOA):
         super(GenericStructuredCOA, self).to_obj(return_obj=return_obj, ns_info=ns_info)
         if self.reference_location:
             return_obj.reference_location = self.reference_location
-        if self.description:
-            return_obj.Description = self.description.to_obj(ns_info=ns_info)
+        if self.descriptions:
+            return_obj.Description = self.descriptions.to_obj(ns_info=ns_info)
         if self.type_:
             return_obj.Type = self.type_.to_obj(ns_info=ns_info)
         if self.specification:
@@ -87,15 +154,19 @@ class GenericStructuredCOA(_BaseStructuredCOA):
 
         super(GenericStructuredCOA, cls).from_dict(d, return_obj)
         return_obj.reference_location = d.get('reference_location')
-        return_obj.description = StructuredText.from_dict(d.get('description'))
+        return_obj.descriptions = StructuredTextList.from_dict(d.get('description'))
         return_obj.type_ = VocabString.from_dict(d.get('type'))
         return_obj.specification = EncodedCDATA.from_dict(d.get('specification'))
 
         return return_obj
 
     def to_dict(self):
-        return super(GenericStructuredCOA, self).to_dict()
+        d = super(GenericStructuredCOA, self).to_dict()
 
+        if 'descriptions' in d:
+            d['description'] = d.pop('descriptions')
+
+        return d
 
 # Register the extension
 stix.coa.structured_coa.add_extension(GenericStructuredCOA)
