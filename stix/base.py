@@ -490,7 +490,7 @@ class TypedCollection(object):
         if not list_repr:
             return None
 
-        if not utils.is_sequence(list_repr):
+        if isinstance(list_repr, dict) or not utils.is_sequence(list_repr):
             list_repr = [list_repr]
 
         if not contained_type:
