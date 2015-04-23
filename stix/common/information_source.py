@@ -80,10 +80,7 @@ class InformationSource(stix.Entity):
             :class:`.StructuredText`
 
         """
-        if self.descriptions:
-            return self.descriptions.sorted[0]
-        else:
-            return None
+        return next(iter(self.descriptions), None)
 
     @description.setter
     def description(self, value):
