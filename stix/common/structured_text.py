@@ -133,20 +133,6 @@ class StructuredTextList(stix.TypedSequence):
             else:
                 self.add(arg)
 
-    def with_ordinality(self, ordinality):
-        """Returns a :class:`StructuredText` object with a matching `ordinality`
-        or ``None`` if not found.
-
-        """
-        o = int(ordinality)
-
-        for item in self._inner:
-            if item.ordinality == o:
-                return item
-
-        # Not found. Return None.
-        return None
-
     def with_id(self, id):
         """Returns a :class:`StructuredText` object with a matching `id` or
         ``None`` if not found.
@@ -167,12 +153,6 @@ class StructuredTextList(stix.TypedSequence):
         """
         for idx, item in enumerate(self.sorted, 1):
             item.ordinality = idx
-
-    def __reversed__(self):
-        """The collections.Sequence class defines this in an incompatible way.
-
-        """
-        raise NotImplementedError()
 
     @property
     def sorted(self):
@@ -215,13 +195,32 @@ class StructuredTextList(stix.TypedSequence):
 
         """
         o = int(key)
-        text = self.with_ordinality(o)
 
-        if text:
-            return text
+        for item in self._inner:
+            if item.ordinality == o:
+                return item
 
         error = "No item found with an ordinality of {0}".format(o)
         raise KeyError(error)
+
+    def __delitem__(self, key):
+        """Removes the item with a given ordinality.
+
+        Args:
+            key: An ordinality value.
+
+        Raises:
+            KeyError: If the `key` does not match the ordinality for any object
+                in the collection.
+
+        """
+        self._inner.remove(self[key])
+
+    def __reversed__(self):
+        """The collections.Sequence class defines this in an incompatible way.
+
+        """
+        raise NotImplementedError()
 
     def add(self, value):
         """Adds the :class:`StructuredText` `value` to the collection.
@@ -237,11 +236,9 @@ class StructuredTextList(stix.TypedSequence):
         if value.ordinality is None:
             value.ordinality = self.next_ordinality
 
-        # Find an item with a matching ordinality. Remove it if one exists.
-        existing = self.with_ordinality(value.ordinality)
-
-        if existing is not None:
-            self._inner.remove(existing)
+        # Remove the existing item if there is one.
+        with utils.ignored(KeyError):
+            del self[value.ordinality]
 
         self._inner.append(value)
 
@@ -256,12 +253,10 @@ class StructuredTextList(stix.TypedSequence):
         to_shift = []
 
         for o in itertools.count(ordinality):
-            text = self.with_ordinality(o)
-
-            if not text:
+            try:
+                to_shift.append(self[o])
+            except KeyError:
                 break
-
-            to_shift.append(text)
 
         for text in to_shift:
             text.ordinality += 1
@@ -281,27 +276,6 @@ class StructuredTextList(stix.TypedSequence):
         self._shift(o)
         self._inner.append(value)
 
-
-    def __delitem__(self, key):
-        """Removes the item with a given ordinality.
-
-        Args:
-            key: An ordinality value.
-
-        Raises:
-            KeyError: If the `key` does not match the ordinality for any object
-                in the collection.
-
-        """
-        o = int(key)
-        text = self.with_ordinality(o)
-
-        if text:
-            self._inner.remove(text)
-            return
-
-        error = "No item found with an ordinality of {0}".format(o)
-        raise KeyError(error)
 
     def remove(self, value):
         """Removes the value from the collection.
@@ -347,6 +321,10 @@ class StructuredTextList(stix.TypedSequence):
         # Build the list representation
         l = super(StructuredTextList, self).to_list()
 
+        # No items. Just return the empty list.
+        if not l:
+            return l
+
         # If we have more than one StructuredText list item, return the list.
         if len(l) > 1:
             return l
@@ -358,13 +336,12 @@ class StructuredTextList(stix.TypedSequence):
         if not isinstance(d, dict):
             return d
 
-        # Item was a dictionary. Check for `ordinality` and remove it if its
-        # value is ``1``.
-        if 'ordinality' in d:
-            ordinality = int(d['ordinality'])
+        # Item was a dictionary. Check if there is an 'ordinality' value.
+        ordinality = int(d.pop('ordinality', 1))
 
-            if ordinality == 1:
-                del d['ordinality']
+        # Reinsert it if the value is different than the default
+        if ordinality != 1:
+            d['ordinality'] = ordinality
 
         # If the only key we have left is ``value``, just return the
         # corresponding string.
