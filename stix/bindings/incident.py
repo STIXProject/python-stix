@@ -25,7 +25,10 @@ class PropertyAffectedType(GeneratedsSuper):
     superclass = None
     def __init__(self, Property=None, Description_Of_Effect=None, Type_Of_Availability_Loss=None, Duration_Of_Availability_Loss=None, Non_Public_Data_Compromised=None):
         self.Property = Property
-        self.Description_Of_Effect = Description_Of_Effect
+        if Description_Of_Effect is None:
+            self.Description_Of_Effect = []
+        else:
+            self.Description_Of_Effect = Description_Of_Effect
         self.Type_Of_Availability_Loss = Type_Of_Availability_Loss
         self.Duration_Of_Availability_Loss = Duration_Of_Availability_Loss
         self.Non_Public_Data_Compromised = Non_Public_Data_Compromised
@@ -37,6 +40,8 @@ class PropertyAffectedType(GeneratedsSuper):
     factory = staticmethod(factory)
     def get_Property(self): return self.Property
     def set_Property(self, Property): self.Property = Property
+    def insert_Description_Of_Effect(self, index, value): self.Description_Of_Effect[index] = value
+    def add_Description_Of_Effect(self, value): self.Description_Of_Effect.append(value)
     def get_Description_Of_Effect(self): return self.Description_Of_Effect
     def set_Description_Of_Effect(self, Description_Of_Effect): self.Description_Of_Effect = Description_Of_Effect
     def get_Type_Of_Availability_Loss(self): return self.Type_Of_Availability_Loss
@@ -48,7 +53,7 @@ class PropertyAffectedType(GeneratedsSuper):
     def hasContent_(self):
         if (
             self.Property is not None or
-            self.Description_Of_Effect is not None or
+            self.Description_Of_Effect or
             self.Type_Of_Availability_Loss is not None or
             self.Duration_Of_Availability_Loss is not None or
             self.Non_Public_Data_Compromised is not None
@@ -81,8 +86,8 @@ class PropertyAffectedType(GeneratedsSuper):
             eol_ = ''
         if self.Property is not None:
             self.Property.export(lwrite, level, nsmap, namespace_, name_='Property', pretty_print=pretty_print)
-        if self.Description_Of_Effect is not None:
-            self.Description_Of_Effect.export(lwrite, level, nsmap, namespace_, name_='Description_Of_Effect', pretty_print=pretty_print)
+        for doe in self.Description_Of_Effect:
+            doe.export(lwrite, level, nsmap, namespace_, name_='Description_Of_Effect', pretty_print=pretty_print)
         if self.Type_Of_Availability_Loss is not None:
             self.Type_Of_Availability_Loss.export(lwrite, level, nsmap, namespace_, name_='Type_Of_Availability_Loss', pretty_print=pretty_print)
         if self.Duration_Of_Availability_Loss is not None:
@@ -105,7 +110,7 @@ class PropertyAffectedType(GeneratedsSuper):
         elif nodeName_ == 'Description_Of_Effect':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description_Of_Effect(obj_)
+            self.add_Description_Of_Effect(obj_)
         elif nodeName_ == 'Type_Of_Availability_Loss':
             obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)

@@ -3,7 +3,7 @@
 
 
 import stix
-from stix.common import vocabs, VocabString, StructuredText
+from stix.common import vocabs, VocabString, StructuredTextList
 import stix.bindings.incident as incident_binding
 
 
@@ -82,11 +82,38 @@ class PropertyAffected(stix.Entity):
 
     @property
     def description_of_effect(self):
-        return self._description_of_effect
-    
+        """A :class:`.StructuredTextList` object, containing descriptions about
+        the purpose or intent of this object.
+
+        Iterating over this object will yield its contents sorted by their
+        ``ordinality`` value.
+
+        Default Value: Empty :class:`StructuredTextList` object.
+
+        Note:
+            IF this is set to a value that is not an instance of
+            :class:`.StructuredText`, an effort will ne made to convert it.
+            If this is set to an iterable, any values contained that are not
+            an instance of :class:`StructuredText` will be be converted.
+
+        Returns:
+            An instance of
+            :class:`.StructuredTextList`
+
+        """
+        return next(iter(self.descriptions_of_effect), None)
+
     @description_of_effect.setter
     def description_of_effect(self, value):
-        self._set_var(StructuredText, description_of_effect=value)
+        self.descriptions_of_effect = value
+
+    @property
+    def descriptions_of_effect(self):
+        return self._description_of_effect
+
+    @descriptions_of_effect.setter
+    def descriptions_of_effect(self, value):
+        self._description_of_effect = StructuredTextList(value)
 
     @property
     def type_of_availability_loss(self):
@@ -120,7 +147,7 @@ class PropertyAffected(stix.Entity):
             return_obj = cls()
             
         return_obj.property_ = VocabString.from_obj(obj.Property)
-        return_obj.description_of_effect = StructuredText.from_obj(obj.Description_Of_Effect)
+        return_obj.descriptions_of_effect = StructuredTextList.from_obj(obj.Description_Of_Effect)
         return_obj.type_of_availability_loss = VocabString.from_obj(obj.Type_Of_Availability_Loss)
         return_obj.duration_of_availability_loss = VocabString.from_obj(obj.Duration_Of_Availability_Loss)
         return_obj.non_public_data_compromised = NonPublicDataCompromised.from_obj(obj.Non_Public_Data_Compromised)
@@ -134,8 +161,8 @@ class PropertyAffected(stix.Entity):
             
         if self.property_:
             return_obj.Property = self.property_.to_obj(ns_info=ns_info)
-        if self.description_of_effect:
-            return_obj.Description_Of_Effect = self.description_of_effect.to_obj(ns_info=ns_info)
+        if self.descriptions_of_effect:
+            return_obj.Description_Of_Effect = self.descriptions_of_effect.to_obj(ns_info=ns_info)
         if self.type_of_availability_loss:
             return_obj.Type_Of_Availability_Loss = self.type_of_availability_loss.to_obj(ns_info=ns_info)
         if self.duration_of_availability_loss:
@@ -153,7 +180,7 @@ class PropertyAffected(stix.Entity):
             return_obj = cls()
             
         return_obj.property_ = VocabString.from_dict(d.get('property'))
-        return_obj.description_of_effect = StructuredText.from_dict(d.get('description_of_effect'))
+        return_obj.descriptions_of_effect = StructuredTextList.from_dict(d.get('description_of_effect'))
         return_obj.type_of_availability_loss = VocabString.from_dict(d.get('type_of_availability_loss'))
         return_obj.duration_of_availability_loss = VocabString.from_dict(d.get('duration_of_availability_loss'))
         return_obj.non_public_data_compromised = NonPublicDataCompromised.from_dict(d.get('non_public_data_compromised'))
