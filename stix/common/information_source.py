@@ -106,11 +106,11 @@ class InformationSource(stix.Entity):
             :class:`.StructuredTextList`
 
         """
-        return self._descriptions
+        return self._description
 
     @descriptions.setter
     def descriptions(self, value):
-        self._descriptions = StructuredTextList(value)
+        self._description = StructuredTextList(value)
 
     @property
     def identity(self):
@@ -216,12 +216,7 @@ class InformationSource(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = utils.to_dict(self)
-
-        # Rename 'descriptions' key.
-        utils.fix_descriptions(d)
-
-        return d
+       return super(InformationSource, self).to_dict()
 
 class ContributingSources(stix.EntityList):
     _namespace = "http://stix.mitre.org/common-1"

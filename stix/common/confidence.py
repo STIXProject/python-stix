@@ -92,11 +92,11 @@ class Confidence(stix.Entity):
             :class:`.StructuredTextList`
 
         """
-        return self._descriptions
+        return self._description
 
     @descriptions.setter
     def descriptions(self, value):
-        self._descriptions = StructuredTextList(value)
+        self._description = StructuredTextList(value)
 
     # @property
     # def confidence_assertion_chain(self):
@@ -124,14 +124,11 @@ class Confidence(stix.Entity):
         return obj
 
     def to_dict(self):
-        skip = ('timestamp_precision', 'descriptions')
+        skip = ('timestamp_precision',)
         d = utils.to_dict(self, skip=skip)
 
         if self.timestamp_precision != 'second':
             d['timestamp_precision'] = self.timestamp_precision
-
-        if self.descriptions:
-            d['description'] = self.descriptions.to_dict()
 
         return d
 

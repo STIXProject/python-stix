@@ -716,12 +716,12 @@ class BaseCoreComponent(Entity):
 
     @property
     def descriptions(self):
-        return self._descriptions
+        return self._description
 
     @descriptions.setter
     def descriptions(self, value):
         from stix.common import StructuredTextList
-        self._descriptions = StructuredTextList(value)
+        self._description = StructuredTextList(value)
 
     @property
     def short_description(self):
@@ -752,12 +752,12 @@ class BaseCoreComponent(Entity):
 
     @property
     def short_descriptions(self):
-        return self._short_descriptions
+        return self._short_description
 
     @short_descriptions.setter
     def short_descriptions(self, value):
         from stix.common import StructuredTextList
-        self._short_descriptions = StructuredTextList(value)
+        self._short_description = StructuredTextList(value)
 
     @property
     def information_source(self):
@@ -857,11 +857,6 @@ class BaseCoreComponent(Entity):
         return return_obj
 
     def to_dict(self):
-        d = utils.to_dict(self)
-
-        # Rename 'descriptions' and 'short_descriptions' keys.
-        utils.fix_descriptions(d)
-
-        return d
+        return super(BaseCoreComponent, self).to_dict()
 
 

@@ -72,38 +72,11 @@ class GenericStructuredCOA(_BaseStructuredCOA):
             :class:`.StructuredTextList`
 
         """
-        return self._descriptions
+        return self._description
 
     @descriptions.setter
     def descriptions(self, value):
-        self._descriptions = StructuredTextList(value)
-
-    @property
-    def descriptions(self):
-        """A :class:`.StructuredTextList` object, containing descriptions about
-        the purpose or intent of this object.
-
-        Iterating over this object will yield its contents sorted by their
-        ``ordinality`` value.
-
-        Default Value: Empty :class:`StructuredTextList` object.
-
-        Note:
-            IF this is set to a value that is not an instance of
-            :class:`.StructuredText`, an effort will ne made to convert it.
-            If this is set to an iterable, any values contained that are not
-            an instance of :class:`StructuredText` will be be converted.
-
-        Returns:
-            An instance of
-            :class:`.StructuredTextList`
-
-        """
-        return self._descriptions
-
-    @descriptions.setter
-    def descriptions(self, value):
-        self._descriptions = StructuredTextList(value)
+        self._description = StructuredTextList(value)
 
     @property
     def type_(self):
@@ -161,12 +134,8 @@ class GenericStructuredCOA(_BaseStructuredCOA):
         return return_obj
 
     def to_dict(self):
-        d = super(GenericStructuredCOA, self).to_dict()
+        return super(GenericStructuredCOA, self).to_dict()
 
-        # Rename 'descriptions' key.
-        utils.fix_descriptions(d)
-
-        return d
 
 # Register the extension
 stix.coa.structured_coa.add_extension(GenericStructuredCOA)

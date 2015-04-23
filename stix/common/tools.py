@@ -6,6 +6,7 @@ import cybox.common
 
 # internal
 import stix
+import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
 # relative
@@ -72,11 +73,11 @@ class ToolInformation(stix.Entity, cybox.common.ToolInformation):
             :class:`.StructuredTextList`
 
         """
-        return self._short_descriptions
+        return self._short_description
 
     @short_descriptions.setter
     def short_descriptions(self, value):
-        self._short_descriptions = StructuredTextList(value)
+        self._short_description = StructuredTextList(value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
@@ -110,14 +111,7 @@ class ToolInformation(stix.Entity, cybox.common.ToolInformation):
         return return_obj
 
     def to_dict(self):
-        d = cybox.common.ToolInformation.to_dict(self)
-        
-        if self.title:
-            d['title'] = self.title
-        if self.short_descriptions:
-            d['short_description'] = self.short_descriptions.to_dict()
-       
-        return d
+        return utils.to_dict(self)
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):

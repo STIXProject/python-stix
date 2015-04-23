@@ -46,12 +46,12 @@ class Objective(stix.Entity):
 
     @property
     def descriptions(self):
-        return self._descriptions
+        return self._description
 
     @descriptions.setter
     def descriptions(self, value):
         from stix.common import StructuredTextList
-        self._descriptions = StructuredTextList(value)
+        self._description = StructuredTextList(value)
 
     @property
     def short_description(self):
@@ -82,11 +82,11 @@ class Objective(stix.Entity):
 
     @property
     def short_descriptions(self):
-        return self._short_descriptions
+        return self._short_description
 
     @short_descriptions.setter
     def short_descriptions(self, value):
-        self._short_descriptions = StructuredTextList(value)
+        self._short_description = StructuredTextList(value)
 
     @property
     def applicability_confidence(self):
@@ -124,11 +124,7 @@ class Objective(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = super(Objective, self).to_dict()
-
-        utils.fix_descriptions(d)
-
-        return d
+        return super(Objective, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):

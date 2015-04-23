@@ -34,7 +34,7 @@ class GenericTestMechanism(_BaseTestMechanism):
             self._specification = value
         else:
             self._specification = EncodedCDATA(value=value)
-    
+
     @property
     def description(self):
         """A single description about the contents or purpose of this object.
@@ -77,11 +77,11 @@ class GenericTestMechanism(_BaseTestMechanism):
             :class:`.StructuredTextList`
 
         """
-        return self._descriptions
+        return self._description
 
     @descriptions.setter
     def descriptions(self, value):
-        self._descriptions = StructuredTextList(value)
+        self._description = StructuredTextList(value)
     
     @property
     def type_(self):
@@ -143,12 +143,7 @@ class GenericTestMechanism(_BaseTestMechanism):
         return return_obj
     
     def to_dict(self):
-        d = super(GenericTestMechanism, self).to_dict()
-
-        # Rename 'descriptions' key.
-        utils.fix_descriptions(d)
-        
-        return d
+        return super(GenericTestMechanism, self).to_dict()
 
     
 stix.indicator.test_mechanism.add_extension(GenericTestMechanism)

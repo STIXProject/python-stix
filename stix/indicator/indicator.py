@@ -930,9 +930,7 @@ class Indicator(stix.BaseCoreComponent):
         skip = (
             'observables',
             'observable_composition_operator',
-            'negate',
-            'descriptions',
-            'short_descriptions',
+            'negate'
         )
 
         d = super(Indicator, self).to_dict()

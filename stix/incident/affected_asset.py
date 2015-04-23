@@ -67,11 +67,11 @@ class AffectedAsset(stix.Entity):
 
     @property
     def descriptions(self):
-        return self._descriptions
+        return self._description
 
     @descriptions.setter
     def descriptions(self, value):
-        self._descriptions = StructuredTextList(value)
+        self._description = StructuredTextList(value)
 
     @property
     def business_function_or_role(self):
@@ -83,11 +83,11 @@ class AffectedAsset(stix.Entity):
 
     @property
     def business_functions_or_roles(self):
-        return self._business_functions_or_roles
+        return self._business_function_or_role
 
     @business_functions_or_roles.setter
     def business_functions_or_roles(self, value):
-        self._business_functions_or_roles = StructuredTextList(value)
+        self._business_function_or_role = StructuredTextList(value)
 
     @property
     def ownership_class(self):
@@ -202,13 +202,7 @@ class AffectedAsset(stix.Entity):
         return return_obj
     
     def to_dict(self):
-        d = super(AffectedAsset, self).to_dict()
-        utils.fix_descriptions(d)
-
-        if 'business_functions_or_roles' in d:
-            d['business_function_or_role'] = d.pop('business_functions_or_roles')
-
-        return d
+        return super(AffectedAsset, self).to_dict()
 
 class AssetType(VocabString):
     _namespace = "http://stix.mitre.org/Incident-1"

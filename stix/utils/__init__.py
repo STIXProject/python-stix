@@ -339,30 +339,6 @@ def remove_entries(map, keys):
         map.pop(key, None)
 
 
-def fix_descriptions(d):
-    """Renames 'descriptions` and 'short_descriptions` keys to 'description'
-    and 'short_description' on the input dictionary.
-
-    Dictionaries returned by ``to_dict()`` which are created by inspecting the
-    entity instance variables will produce the plural key forms.
-
-    For backwards compatibility, we need to convert these keys to their
-    singular forms.
-
-    Note:
-        This modification is applied to the input dictionary.
-
-    Args:
-        d: An Entity dictionary.
-
-    """
-    if 'descriptions' in d:
-        d['description'] = d.pop('descriptions')
-
-    if 'short_descriptions' in d:
-        d['short_description'] = d.pop('short_descriptions')
-
-
 # Namespace flattening
 from .nsparser import *  # noqa
 from .dates import *  # noqa

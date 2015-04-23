@@ -54,11 +54,11 @@ class STIXHeader(stix.Entity):
 
     @property
     def descriptions(self):
-        return self._descriptions
+        return self._description
 
     @descriptions.setter
     def descriptions(self, value):
-        self._descriptions = StructuredTextList(value)
+        self._description = StructuredTextList(value)
 
     @property
     def short_description(self):
@@ -89,11 +89,11 @@ class STIXHeader(stix.Entity):
 
     @property
     def short_descriptions(self):
-        return self._short_descriptions
+        return self._short_description
 
     @short_descriptions.setter
     def short_descriptions(self, value):
-        self._short_descriptions = StructuredTextList(value)
+        self._short_description = StructuredTextList(value)
 
     @property
     def handling(self):
@@ -191,21 +191,7 @@ class STIXHeader(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        skip = (
-            'description',
-            'descriptions',
-            'short_description',
-            'short_descriptions'
-        )
-
-        d = utils.to_dict(self, skip=skip)
-
-        if self.descriptions:
-            d['description'] = self.descriptions.to_dict()
-        if self.short_descriptions:
-            d['short_description'] = self.short_descriptions.to_dict()
-
-        return d
+        return super(STIXHeader, self).to_dict()
 
 
 # NOT AN ACTUAL STIX TYPE!

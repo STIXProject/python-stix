@@ -68,11 +68,11 @@ class Activity(stix.Entity):
             :class:`.StructuredTextList`
 
         """
-        return self._descriptions
+        return self._description
 
     @descriptions.setter
     def descriptions(self, value):
-        self._descriptions = StructuredTextList(value)
+        self._description = StructuredTextList(value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(Activity, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -101,12 +101,7 @@ class Activity(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = utils.to_dict(self)
-
-        # Rename 'descriptions' key.
-        utils.fix_descriptions(d)
-
-        return d
+        return super(Activity, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
