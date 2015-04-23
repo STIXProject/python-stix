@@ -123,8 +123,16 @@ class ObjectiveType(GeneratedsSuper):
     subclass = None
     superclass = None
     def __init__(self, Description=None, Short_Description=None, Applicability_Confidence=None):
-        self.Description = Description
-        self.Short_Description = Short_Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
+
+        if Short_Description is None:
+            self.Short_Description = []
+        else:
+            self.Short_Description = Short_Description
+
         self.Applicability_Confidence = Applicability_Confidence
     def factory(*args_, **kwargs_):
         if ObjectiveType.subclass:
@@ -132,15 +140,20 @@ class ObjectiveType(GeneratedsSuper):
         else:
             return ObjectiveType(*args_, **kwargs_)
     factory = staticmethod(factory)
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def insert_Short_Description(self, index, value): self.Short_Description[index] = value
+    def add_Short_Description(self, Short_Description): self.Short_Description.append(Short_Description)
     def get_Short_Description(self): return self.Short_Description
     def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Applicability_Confidence(self): return self.Applicability_Confidence
     def set_Applicability_Confidence(self, Applicability_Confidence): self.Applicability_Confidence = Applicability_Confidence
     def hasContent_(self):
         if (
-            self.Description is not None or
+            self.Description or
+            self.Short_Description or
             self.Applicability_Confidence is not None
             ):
             return True
@@ -169,10 +182,10 @@ class ObjectiveType(GeneratedsSuper):
             eol_ = '\n'
         else:
             eol_ = ''
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-        if self.Short_Description is not None:
-            self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Short_Description in self.Short_Description:
+            Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         if self.Applicability_Confidence is not None:
             self.Applicability_Confidence.export(lwrite, level, nsmap, namespace_, name_='Applicability_Confidence', pretty_print=pretty_print)
     def build(self, node):
@@ -187,11 +200,11 @@ class ObjectiveType(GeneratedsSuper):
         if nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Short_Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Short_Description(obj_)
+            self.add_Short_Description(obj_)
         elif nodeName_ == 'Applicability_Confidence':
             obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)

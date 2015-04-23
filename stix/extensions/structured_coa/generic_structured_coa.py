@@ -2,7 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils
+import stix.utils as utils
 import stix.coa.structured_coa
 from stix.common import EncodedCDATA, StructuredTextList, VocabString
 from stix.coa.structured_coa import _BaseStructuredCOA
@@ -163,8 +163,8 @@ class GenericStructuredCOA(_BaseStructuredCOA):
     def to_dict(self):
         d = super(GenericStructuredCOA, self).to_dict()
 
-        if 'descriptions' in d:
-            d['description'] = d.pop('descriptions')
+        # Rename 'descriptions' key.
+        utils.fix_descriptions(d)
 
         return d
 

@@ -101,11 +101,10 @@ class Activity(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        skip = ('description', 'descriptions')
-        d = utils.to_dict(self, skip=skip)
+        d = utils.to_dict(self)
 
-        if self.descriptions:
-            d['description'] = self.descriptions.to_dict()
+        # Rename 'descriptions' key.
+        utils.fix_descriptions(d)
 
         return d
 

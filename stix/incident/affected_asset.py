@@ -6,7 +6,8 @@ from cybox.core import Observables
 
 # internal
 import stix
-from stix.common import vocabs, VocabString, StructuredText
+import stix.utils as utils
+from stix.common import vocabs, VocabString, StructuredTextList
 import stix.bindings.incident as incident_binding
 
 # relative
@@ -36,23 +37,58 @@ class AffectedAsset(stix.Entity):
     @type_.setter
     def type_(self, value):
         self._set_var(AssetType, type=value)
-    
+
     @property
     def description(self):
-        return self._description
-    
+        """A :class:`.StructuredTextList` object, containing descriptions about
+        the purpose or intent of this object.
+
+        Iterating over this object will yield its contents sorted by their
+        ``ordinality`` value.
+
+        Default Value: Empty :class:`StructuredTextList` object.
+
+        Note:
+            IF this is set to a value that is not an instance of
+            :class:`.StructuredText`, an effort will ne made to convert it.
+            If this is set to an iterable, any values contained that are not
+            an instance of :class:`StructuredText` will be be converted.
+
+        Returns:
+            An instance of
+            :class:`.StructuredTextList`
+
+        """
+        return next(iter(self.descriptions), None)
+
     @description.setter
     def description(self, value):
-        self._set_var(StructuredText, description=value)
-    
+        self.descriptions = value
+
+    @property
+    def descriptions(self):
+        return self._descriptions
+
+    @descriptions.setter
+    def descriptions(self, value):
+        self._descriptions = StructuredTextList(value)
+
     @property
     def business_function_or_role(self):
-        return self._business_function_or_role
-    
+        return next(iter(self.business_functions_or_roles), None)
+
     @business_function_or_role.setter
     def business_function_or_role(self, value):
-        self._set_var(StructuredText, business_function_or_role=value)
-            
+        self.business_functions_or_roles = value
+
+    @property
+    def business_functions_or_roles(self):
+        return self._business_functions_or_roles
+
+    @business_functions_or_roles.setter
+    def business_functions_or_roles(self, value):
+        self._business_functions_or_roles = StructuredTextList(value)
+
     @property
     def ownership_class(self):
         return self._ownership_class
@@ -104,8 +140,8 @@ class AffectedAsset(stix.Entity):
             return_obj = cls()
 
         return_obj.type_ = AssetType.from_obj(obj.Type)
-        return_obj.description = StructuredText.from_obj(obj.Description)
-        return_obj.business_function_or_role = StructuredText.from_obj(obj.Business_Function_Or_Role)
+        return_obj.descriptions = StructuredTextList.from_obj(obj.Description)
+        return_obj.business_functions_or_roles = StructuredTextList.from_obj(obj.Business_Function_Or_Role)
         return_obj.ownership_class = VocabString.from_obj(obj.Ownership_Class)
         return_obj.management_class = VocabString.from_obj(obj.Management_Class)
         return_obj.location_class = VocabString.from_obj(obj.Location_Class)
@@ -127,8 +163,8 @@ class AffectedAsset(stix.Entity):
             return_obj.Type = self.type_.to_obj(ns_info=ns_info)
         if self.description:
             return_obj.Description = self.description.to_obj(ns_info=ns_info)
-        if self.business_function_or_role:
-            return_obj.Business_Function_Or_Role = self.business_function_or_role.to_obj(ns_info=ns_info)
+        if self.business_functions_or_roles:
+            return_obj.Business_Function_Or_Role = self.business_functions_or_roles.to_obj(ns_info=ns_info)
         if self.ownership_class:
             return_obj.Ownership_Class = self.ownership_class.to_obj(ns_info=ns_info)
         if self.management_class:
@@ -155,8 +191,8 @@ class AffectedAsset(stix.Entity):
 
         get = d.get
         return_obj.type_ = AssetType.from_dict(get('type'))
-        return_obj.description = StructuredText.from_dict(get('description'))
-        return_obj.business_function_or_role = StructuredText.from_dict(get('business_function_or_role'))
+        return_obj.description = StructuredTextList.from_dict(get('description'))
+        return_obj.business_functions_or_roles = StructuredTextList.from_dict(get('business_function_or_role'))
         return_obj.ownership_class = VocabString.from_dict(get('ownership_class'))
         return_obj.management_class = VocabString.from_dict(get('management_class'))
         return_obj.location_class = VocabString.from_dict(get('location_class'))
@@ -166,8 +202,13 @@ class AffectedAsset(stix.Entity):
         return return_obj
     
     def to_dict(self):
-        return super(AffectedAsset, self).to_dict()
+        d = super(AffectedAsset, self).to_dict()
+        utils.fix_descriptions(d)
 
+        if 'business_functions_or_roles' in d:
+            d['business_function_or_role'] = d.pop('business_functions_or_roles')
+
+        return d
 
 class AssetType(VocabString):
     _namespace = "http://stix.mitre.org/Incident-1"

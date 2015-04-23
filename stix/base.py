@@ -857,20 +857,10 @@ class BaseCoreComponent(Entity):
         return return_obj
 
     def to_dict(self):
-        skip = (
-            'description',
-            'descriptions',
-            'short_description',
-            'short_descriptions'
-        )
+        d = utils.to_dict(self)
 
-        d = utils.to_dict(self, skip=skip)
-
-        if self.descriptions:
-            d['description'] = self.descriptions.to_dict()
-
-        if self.short_descriptions:
-            d['short_description'] = self.short_descriptions.to_dict()
+        # Rename 'descriptions' and 'short_descriptions' keys.
+        utils.fix_descriptions(d)
 
         return d
 

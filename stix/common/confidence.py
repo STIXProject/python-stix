@@ -124,7 +124,7 @@ class Confidence(stix.Entity):
         return obj
 
     def to_dict(self):
-        skip = ('timestamp_precision', 'description', 'descriptions')
+        skip = ('timestamp_precision', 'descriptions')
         d = utils.to_dict(self, skip=skip)
 
         if self.timestamp_precision != 'second':
