@@ -417,7 +417,10 @@ class ToolInformationType(cybox_common_binding.ToolInformationType):
     def __init__(self, idref=None, id=None, Name=None, Type=None, Description=None, References=None, Vendor=None, Version=None, Service_Pack=None, Tool_Specific_Data=None, Tool_Hashes=None, Tool_Configuration=None, Execution_Environment=None, Errors=None, Metadata=None, Compensation_Model=None, Title=None, Short_Description=None, extensiontype_=None):
         super(ToolInformationType, self).__init__(idref=idref, id=id, Name=Name, Type=Type, Description=Description, References=References, Vendor=Vendor, Version=Version, Service_Pack=Service_Pack, Tool_Specific_Data=Tool_Specific_Data, Execution_Environment=Execution_Environment, Errors=Errors, Metadata=Metadata, Compensation_Model=Compensation_Model)
         self.Title = Title
-        self.Short_Description = Short_Description
+        if Short_Description is None:
+            self.Short_Description = []
+        else:
+            self.Short_Description = Short_Description
         self.extensiontype_ = extensiontype_
     def factory(*args_, **kwargs_):
         if ToolInformationType.subclass:
@@ -428,13 +431,15 @@ class ToolInformationType(cybox_common_binding.ToolInformationType):
     factory = staticmethod(factory)
     def get_Title(self): return self.Title
     def set_Title(self, Title): self.Title = Title
+    def add_Short_Description(self, Short_Description): self.Short_Description.append(Short_Description)
+    def insert_Short_Description(self, index, Short_Description): self.Short_Description[index] = Short_Description
     def get_Short_Description(self): return self.Short_Description
     def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def hasContent_(self):
         if (
             super(ToolInformationType, self).hasContent_() or
             self.Title is not None or
-            self.Short_Description is not None
+            self.Short_Description
             ):
             return True
         else:
@@ -470,8 +475,8 @@ class ToolInformationType(cybox_common_binding.ToolInformationType):
         if self.Title:
             showIndent(lwrite, level, pretty_print)
             lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_],quote_xml(self.Title), nsmap[namespace_], eol_))
-        if self.Short_Description is not None:
-            self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+        for Short_Description in self.Short_Description:
+            Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -493,7 +498,7 @@ class ToolInformationType(cybox_common_binding.ToolInformationType):
         elif nodeName_ == 'Short_Description':
             obj_ = StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Short_Description(obj_)
+            self.add_Short_Description(obj_)
 # end class ToolInformationType
 
 class InformationSourceType(GeneratedsSuper):
@@ -600,7 +605,7 @@ class InformationSourceType(GeneratedsSuper):
         if nodeName_ == 'Description':
             obj_ = StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Identity':
             type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
             if type_name_ is None:
@@ -651,7 +656,10 @@ class ConfidenceType(GeneratedsSuper):
         self.timestamp = _cast(None, timestamp)
         self.timestamp_precision = _cast(None, timestamp_precision)
         self.Value = Value
-        self.Description = Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
         self.Source = Source
         self.Confidence_Assertion_Chain = Confidence_Assertion_Chain
     def factory(*args_, **kwargs_):
@@ -662,6 +670,8 @@ class ConfidenceType(GeneratedsSuper):
     factory = staticmethod(factory)
     def get_Value(self): return self.Value
     def set_Value(self, Value): self.Value = Value
+    def add_Description(self, Description): self.Description.append(Description)
+    def insert_Description(self, index, Description): self.Description[index] = Description
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
     def get_Source(self): return self.Source
@@ -675,7 +685,7 @@ class ConfidenceType(GeneratedsSuper):
     def hasContent_(self):
         if (
             self.Value is not None or
-            self.Description is not None or
+            self.Description or
             self.Source is not None or
             self.Confidence_Assertion_Chain is not None
             ):
@@ -712,8 +722,8 @@ class ConfidenceType(GeneratedsSuper):
             eol_ = ''
         if self.Value is not None:
             self.Value.export(lwrite, level, nsmap, namespace_, name_='Value', pretty_print=pretty_print)
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Source is not None:
             self.Source.export(lwrite, level, nsmap, namespace_, name_='Source', pretty_print=pretty_print)
         if self.Confidence_Assertion_Chain is not None:
@@ -745,7 +755,7 @@ class ConfidenceType(GeneratedsSuper):
         elif nodeName_ == 'Description':
             obj_ = StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Source':
             obj_ = InformationSourceType.factory()
             obj_.build(child_)
@@ -761,7 +771,10 @@ class ActivityType(GeneratedsSuper):
     superclass = None
     def __init__(self, Date_Time=None, Description=None):
         self.Date_Time = Date_Time
-        self.Description = Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
     def factory(*args_, **kwargs_):
         if ActivityType.subclass:
             return ActivityType.subclass(*args_, **kwargs_)
@@ -770,12 +783,14 @@ class ActivityType(GeneratedsSuper):
     factory = staticmethod(factory)
     def get_Date_Time(self): return self.Date_Time
     def set_Date_Time(self, Date_Time): self.Date_Time = Date_Time
+    def add_Description(self, Description): self.Description.append(Description)
+    def insert_Description(self, index, Description): self.Description[index] = Description
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
     def hasContent_(self):
         if (
             self.Date_Time is not None or
-            self.Description is not None
+            self.Description
             ):
             return True
         else:
@@ -805,8 +820,8 @@ class ActivityType(GeneratedsSuper):
             eol_ = ''
         if self.Date_Time is not None:
             self.Date_Time.export(lwrite, level, nsmap, namespace_, name_='Date_Time', pretty_print=pretty_print)
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
@@ -823,7 +838,7 @@ class ActivityType(GeneratedsSuper):
         elif nodeName_ == 'Description':
             obj_ = StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
 # end class ActivityType
 
 class KillChainsType(GeneratedsSuper):
@@ -3477,7 +3492,10 @@ class StatementType(GeneratedsSuper):
         self.timestamp = _cast(None, timestamp)
         self.timestamp_precision = _cast(None, timestamp_precision)
         self.Value = Value
-        self.Description = Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
         self.Source = Source
         self.Confidence = Confidence
     def factory(*args_, **kwargs_):
@@ -3488,6 +3506,8 @@ class StatementType(GeneratedsSuper):
     factory = staticmethod(factory)
     def get_Value(self): return self.Value
     def set_Value(self, Value): self.Value = Value
+    def add_Description(self, Description): self.Description.append(Description)
+    def insert_Description(self, index, Description): self.Description[index] = Description
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
     def get_Source(self): return self.Source
@@ -3501,7 +3521,7 @@ class StatementType(GeneratedsSuper):
     def hasContent_(self):
         if (
             self.Value is not None or
-            self.Description is not None or
+            self.Description or
             self.Source is not None or
             self.Confidence is not None
             ):
@@ -3538,8 +3558,8 @@ class StatementType(GeneratedsSuper):
             eol_ = ''
         if self.Value is not None:
             self.Value.export(lwrite, level, nsmap, namespace_, name_='Value', pretty_print=pretty_print)
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Source is not None:
             self.Source.export(lwrite, level, nsmap, namespace_, name_='Source', pretty_print=pretty_print)
         if self.Confidence is not None:
@@ -3570,7 +3590,7 @@ class StatementType(GeneratedsSuper):
         elif nodeName_ == 'Description':
             obj_ = StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Source':
             obj_ = InformationSourceType.factory()
             obj_.build(child_)

@@ -9,7 +9,7 @@ import stix
 import stix.bindings.stix_common as common_binding
 
 # relative
-from .structured_text import StructuredText
+from .structured_text import StructuredTextList
 
 class ToolInformation(stix.Entity, cybox.common.ToolInformation):
     _namespace = 'http://stix.mitre.org/common-1'
@@ -31,11 +31,52 @@ class ToolInformation(stix.Entity, cybox.common.ToolInformation):
 
     @property
     def short_description(self):
-        return self._short_description
+        """A single short description about the contents or purpose of this
+        object.
+
+        Default Value: ``None``
+
+        Note:
+            If this object has more than one short description set, this will
+            return the short_description with the lowest ordinality value.
+
+        Returns:
+            An instance of
+            :class:`.StructuredText`
+
+        """
+        return next(iter(self.short_descriptions), None)
 
     @short_description.setter
     def short_description(self, value):
-        self._set_var(StructuredText, short_description=value)
+        self.short_descriptions = value
+
+    @property
+    def short_descriptions(self):
+        """A :class:`.StructuredTextList` object, containing descriptions about
+        the purpose or intent of this object.
+
+        Iterating over this object will yield its contents sorted by their
+        ``ordinality`` value.
+
+        Default Value: Empty :class:`StructuredTextList` object.
+
+        Note:
+            IF this is set to a value that is not an instance of
+            :class:`.StructuredText`, an effort will ne made to convert it.
+            If this is set to an iterable, any values contained that are not
+            an instance of :class:`StructuredText` will be be converted.
+
+        Returns:
+            An instance of
+            :class:`.StructuredTextList`
+
+        """
+        return self._short_descriptions
+
+    @short_descriptions.setter
+    def short_descriptions(self, value):
+        self._short_descriptions = StructuredTextList(value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
@@ -49,8 +90,8 @@ class ToolInformation(stix.Entity, cybox.common.ToolInformation):
         )
 
         return_obj.Title = self.title        
-        if self.short_description:
-            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
+        if self.short_descriptions:
+            return_obj.Short_Description = self.short_descriptions.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -64,7 +105,7 @@ class ToolInformation(stix.Entity, cybox.common.ToolInformation):
         cybox.common.ToolInformation.from_obj(obj, return_obj)
         
         return_obj.title = obj.Title
-        return_obj.short_description = StructuredText.from_obj(obj.Short_Description)
+        return_obj.short_descriptions = StructuredTextList.from_obj(obj.Short_Description)
         
         return return_obj
 
@@ -73,8 +114,8 @@ class ToolInformation(stix.Entity, cybox.common.ToolInformation):
         
         if self.title:
             d['title'] = self.title
-        if self.short_description:
-            d['short_description'] = self.short_description.to_dict()
+        if self.short_descriptions:
+            d['short_description'] = self.short_descriptions.to_dict()
        
         return d
 
@@ -87,6 +128,6 @@ class ToolInformation(stix.Entity, cybox.common.ToolInformation):
 
         cybox.common.ToolInformation.from_dict(dict_repr, return_obj)
         return_obj.title = dict_repr.get('title')
-        return_obj.short_description = StructuredText.from_dict(dict_repr.get('short_description'))
+        return_obj.short_descriptions = StructuredTextList.from_dict(dict_repr.get('short_description'))
         
         return return_obj

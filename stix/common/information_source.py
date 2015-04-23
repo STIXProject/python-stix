@@ -66,14 +66,13 @@ class InformationSource(stix.Entity):
 
     @property
     def description(self):
-        """A description about the contents or purpose of this object.
+        """A single description about the contents or purpose of this object.
 
         Default Value: ``None``
 
         Note:
-            If set to a value that is not an instance of
-            :class:`.StructuredText`, an attempt to will be made to convert
-            the value into an instance of :class:`.StructuredText`.
+            If this object has more than one description set, this will return
+            the description with the lowest ordinality value.
 
         Returns:
             An instance of
@@ -88,6 +87,25 @@ class InformationSource(stix.Entity):
 
     @property
     def descriptions(self):
+        """A :class:`.StructuredTextList` object, containing descriptions about
+        the purpose or intent of this object.
+
+        Iterating over this object will yield its contents sorted by their
+        ``ordinality`` value.
+
+        Default Value: Empty :class:`StructuredTextList` object.
+
+        Note:
+            IF this is set to a value that is not an instance of
+            :class:`.StructuredText`, an effort will ne made to convert it.
+            If this is set to an iterable, any values contained that are not
+            an instance of :class:`StructuredText` will be be converted.
+
+        Returns:
+            An instance of
+            :class:`.StructuredTextList`
+
+        """
         return self._descriptions
 
     @descriptions.setter
