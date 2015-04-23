@@ -176,10 +176,7 @@ def is_sequence(item):
     ``tuple``). String types will return ``False``.
 
     """
-    return (
-        hasattr(item, "__iter__") and
-        not isinstance(item, collections.Mapping)
-    )
+    return hasattr(item, "__iter__")
 
 
 def check_version(expected, found):
