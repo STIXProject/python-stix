@@ -14,7 +14,7 @@ import stix.bindings.stix_common as stix_common_binding
 # relative
 from . import vocabs, VocabString
 from .identity import Identity
-from .structured_text import StructuredText
+from .structured_text import StructuredText, StructuredTextList
 
 
 class InformationSource(stix.Entity):
@@ -66,18 +66,37 @@ class InformationSource(stix.Entity):
 
     @property
     def description(self):
-        return self._description
+        """A description about the contents or purpose of this object.
+
+        Default Value: ``None``
+
+        Note:
+            If set to a value that is not an instance of
+            :class:`.StructuredText`, an attempt to will be made to convert
+            the value into an instance of :class:`.StructuredText`.
+
+        Returns:
+            An instance of
+            :class:`.StructuredText`
+
+        """
+        if self.descriptions:
+            return self.descriptions.sorted[0]
+        else:
+            return None
 
     @description.setter
     def description(self, value):
-        """Sets the value of the description property.
+        self.descriptions = value
 
-        If the value is an instance of basestring, it will be coerced into an
-        instance of StructuredText, with its 'text' property set to the input
-        value.
+    @property
+    def descriptions(self):
+        return self._descriptions
 
-        """
-        self._set_var(StructuredText, description=value)
+    @descriptions.setter
+    def descriptions(self, value):
+        from stix.common import StructuredTextList
+        self._descriptions = StructuredTextList(value)
 
     @property
     def identity(self):
@@ -123,8 +142,8 @@ class InformationSource(stix.Entity):
         if not return_obj:
             return_obj = self._binding_class()
             
-        if self.description is not None:
-            return_obj.Description = self.description.to_obj(ns_info=ns_info)
+        if self.descriptions:
+            return_obj.Description = self.descriptions.to_obj(ns_info=ns_info)
         if self.references:
             return_obj.References = stix_common_binding.ReferencesType(Reference=self.references)
         if self.contributing_sources:
@@ -147,7 +166,7 @@ class InformationSource(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.description = StructuredText.from_obj(obj.Description)
+        return_obj.description = StructuredTextList.from_obj(obj.Description)
         return_obj.identity = Identity.from_obj(obj.Identity)
         return_obj.contributing_sources = ContributingSources.from_obj(obj.Contributing_Sources)
         return_obj.roles = _Roles.from_obj(obj.Role)
@@ -172,7 +191,7 @@ class InformationSource(stix.Entity):
             return_obj = cls()
 
         get = dict_repr.get
-        return_obj.description = StructuredText.from_dict(get('description'))
+        return_obj.description = StructuredTextList.from_dict(get('description'))
         return_obj.references = get('references')
         return_obj.contributing_sources = ContributingSources.from_dict(get('contributing_sources'))
         return_obj.identity = Identity.from_dict(get('identity'))
@@ -183,8 +202,13 @@ class InformationSource(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        return super(InformationSource, self).to_dict()
+        skip = ('description', 'descriptions')
+        d = utils.to_dict(self, skip=skip)
 
+        if self.descriptions:
+            d['description'] = self.descriptions.to_dict()
+
+        return d
 
 class ContributingSources(stix.EntityList):
     _namespace = "http://stix.mitre.org/common-1"

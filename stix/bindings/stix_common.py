@@ -501,7 +501,10 @@ class InformationSourceType(GeneratedsSuper):
     subclass = None
     superclass = None
     def __init__(self, Description=None, Identity=None, Role=None, Contributing_Sources=None, Time=None, Tools=None, References=None):
-        self.Description = Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
         self.Identity = Identity
         if Role is None:
             self.Role = []
@@ -517,6 +520,8 @@ class InformationSourceType(GeneratedsSuper):
         else:
             return InformationSourceType(*args_, **kwargs_)
     factory = staticmethod(factory)
+    def add_Description(self, Description): self.Description.append(Description)
+    def insert_Description(self, index, Description): self.Description[index] = Description
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
     def get_Identity(self): return self.Identity
@@ -535,7 +540,7 @@ class InformationSourceType(GeneratedsSuper):
     def set_References(self, References): self.References = References
     def hasContent_(self):
         if (
-            self.Description is not None or
+            self.Description or
             self.Identity is not None or
             self.Role or
             self.Contributing_Sources is not None or
@@ -569,8 +574,8 @@ class InformationSourceType(GeneratedsSuper):
             eol_ = '\n'
         else:
             eol_ = ''
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Identity is not None:
             self.Identity.export(lwrite, level, nsmap, namespace_, name_='Identity', pretty_print=pretty_print)
         for Role_ in self.Role:
