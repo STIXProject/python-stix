@@ -55,6 +55,9 @@ class StructuredText(stix.Entity):
         raise ValueError(error)
 
     def to_obj(self, return_obj=None, ns_info=None):
+        """Converts this object into a binding object.
+
+        """
         if not return_obj:
             return_obj = self._binding_class()
 
@@ -80,6 +83,13 @@ class StructuredText(stix.Entity):
         return plain
 
     def to_dict(self):
+        """Converts this object into a dictionary representation.
+
+        Note:
+            If no properies or attributes are set other than ``value``,
+            this will return a string.
+
+        """
         # Return a plain string if there is no format specified.
         if self.is_plain():
             return self.value
@@ -88,6 +98,12 @@ class StructuredText(stix.Entity):
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
+        """Create an object from the input binding object.
+
+        Args:
+            obj: A generateDS binding object.
+
+        """
         if not obj:
             return None
 
@@ -103,6 +119,12 @@ class StructuredText(stix.Entity):
 
     @classmethod
     def from_dict(cls, d, return_obj=None):
+        """Creates an object from the input dictionary.
+
+        Args:
+            d: A dictionary representation of this object.
+
+        """
         if not d:
             return None
 

@@ -398,6 +398,7 @@ class Indicator(stix.BaseCoreComponent):
         Raises:
             ValueError: If the `value` argument is not an instance of
                 :class:`stix.indicator.valid_time.ValidTime`.
+
         """
         self.valid_time_positions.append(value)
 
@@ -615,6 +616,34 @@ class Indicator(stix.BaseCoreComponent):
             self._related_campaigns = RelatedCampaignRefs(value)
 
     def add_related_campaign(self, value):
+        """Adds a Related Campaign to this Indicator.
+
+        The `value` parameter must be an instance of :class:`.RelatedCampaignRef`
+        or :class:`.CampaignRef`.
+
+        If the `value` parameter is ``None``, no item wil be added to the
+        ``related_campaigns`` collection.
+
+        Calling this method is the same as calling ``append()`` on the
+        ``related_campaigns`` property.
+
+        See Also:
+            The :class:`.RelatedCampaignRef` documentation.
+
+        Note:
+            If the `value` parameter is not an instance of
+            :class:`.RelatedCampaignRef` an attempt will be made to convert it
+            to one.
+
+        Args:
+            value: An instance of :class:`.RelatedCampaignRef` or
+                :class:`.Campaign`.
+
+        Raises:
+            ValueError: If the `value` parameter cannot be converted into
+                an instance of :class:`.RelatedCampaignRef`
+
+        """
         self.related_campaigns.append(value)
 
     @property
