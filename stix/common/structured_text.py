@@ -219,10 +219,12 @@ class StructuredTextList(stix.TypedSequence):
         """Returns the "+1" of the highest ordinality in the collection.
 
         """
-        if self.ordinalities:
-            return self.ordinalities[-1] + 1
-        else:
+        ords = self.ordinalities
+
+        if not ords:
             return 1
+
+        return ords[-1] + 1
 
     def __iter__(self):
         """Returns an iterator for the collection sorted by ordinality.
