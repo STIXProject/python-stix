@@ -40,23 +40,17 @@ class AffectedAsset(stix.Entity):
 
     @property
     def description(self):
-        """A :class:`.StructuredTextList` object, containing descriptions about
-        the purpose or intent of this object.
+        """A single description about the contents or purpose of this object.
 
-        Iterating over this object will yield its contents sorted by their
-        ``ordinality`` value.
-
-        Default Value: Empty :class:`StructuredTextList` object.
+        Default Value: ``None``
 
         Note:
-            IF this is set to a value that is not an instance of
-            :class:`.StructuredText`, an effort will ne made to convert it.
-            If this is set to an iterable, any values contained that are not
-            an instance of :class:`StructuredText` will be be converted.
+            If this object has more than one description set, this will return
+            the description with the lowest ordinality value.
 
         Returns:
             An instance of
-            :class:`.StructuredTextList`
+            :class:`.StructuredText`
 
         """
         return next(iter(self.descriptions), None)
@@ -67,6 +61,28 @@ class AffectedAsset(stix.Entity):
 
     @property
     def descriptions(self):
+        """A :class:`.StructuredTextList` object, containing descriptions about
+        the purpose or intent of this object.
+
+        This is typically used for the purpose of providing multiple
+        descriptions with different classificaton markings.
+
+        Iterating over this object will yield its contents sorted by their
+        ``ordinality`` value.
+
+        Default Value: Empty :class:`.StructuredTextList` object.
+
+        Note:
+            IF this is set to a value that is not an instance of
+            :class:`.StructuredText`, an effort will ne made to convert it.
+            If this is set to an iterable, any values contained that are not
+            an instance of :class:`.StructuredText` will be be converted.
+
+        Returns:
+            An instance of
+            :class:`.StructuredTextList`
+
+        """
         return self._description
 
     @descriptions.setter

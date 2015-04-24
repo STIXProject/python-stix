@@ -115,7 +115,7 @@ class StructuredTextList(stix.TypedSequence):
 
     Args:
         *args: A variable-length argument list which can contain single
-            :class:`StructuredText` objects or sequences of objects.
+            :class:`.StructuredText` objects or sequences of objects.
 
     """
     _contained_type = StructuredText
@@ -134,7 +134,7 @@ class StructuredTextList(stix.TypedSequence):
                 self.add(arg)
 
     def with_id(self, id):
-        """Returns a :class:`StructuredText` object with a matching `id` or
+        """Returns a :class:`.StructuredText` object with a matching `id` or
         ``None`` if not found.
 
         """
@@ -147,7 +147,7 @@ class StructuredTextList(stix.TypedSequence):
 
     def reset(self):
         """Assigns sequential ordinality values to each of the sorted
-        :class:`StructuredText` objects, starting with ``1`` and ending
+        :class:`.StructuredText` objects, starting with ``1`` and ending
         at ``len(self)``.
 
         """
@@ -157,7 +157,7 @@ class StructuredTextList(stix.TypedSequence):
     @property
     def sorted(self):
         """Returns a copy of the collection of internal
-        :class:`StructuredText` objects, sorted by their ``ordinality``.
+        :class:`.StructuredText` objects, sorted by their ``ordinality``.
 
         """
         return sorted(self._inner, key=lambda x: int(x.ordinality))
@@ -187,7 +187,7 @@ class StructuredTextList(stix.TypedSequence):
         return iter(self.sorted)
 
     def __getitem__(self, key):
-        """Returns the :class:`StructuredText` object with a matching
+        """Returns the :class:`.StructuredText` object with a matching
         ordinality.
 
         Args:
@@ -227,9 +227,9 @@ class StructuredTextList(stix.TypedSequence):
         raise NotImplementedError()
 
     def add(self, value):
-        """Adds the :class:`StructuredText` `value` to the collection.
+        """Adds the :class:`.StructuredText` `value` to the collection.
 
-        If `value` is not a :class:`StructuredText` object, an attempt will
+        If `value` is not a :class:`.StructuredText` object, an attempt will
         be made to convert it to one.
 
         Note:
@@ -238,7 +238,7 @@ class StructuredTextList(stix.TypedSequence):
             in the collection, `value` will replace the existing item.
 
         Args:
-            value: A :class:`StructuredText` object.
+            value: A :class:`.StructuredText` object.
 
         """
         if not self._is_valid(value):
@@ -261,7 +261,7 @@ class StructuredTextList(stix.TypedSequence):
             overwritten.
 
         Args:
-            iterable: An iterable collection of :class:`StructuredText` objects
+            iterable: An iterable collection of :class:`.StructuredText` objects
                 to add to this collection.
 
         """
@@ -336,12 +336,16 @@ class StructuredTextList(stix.TypedSequence):
         return objlist
 
     def to_list(self):
-        """Attempts to flatten out the returned list when there is only one
-        item in the list. This is to support backwards compatibility with
-        previous versions of python-stix.
+        """Returns a list of dictionary representations of the contained
+        objects.
+
+        An attempt is made to flatten out the returned list when there is only
+        one item in the collection. This is to support backwards
+        compatibility with previous versions of python-stix.
 
         * If the list repr has more than one item, return the list.
         * If there is only one item, inspect it.
+
           * If the item is not a dictionary, return it.
           * If its ``ordinality`` key has a corresponding value of ``1``, remove
             it from the dictionary since it's assumed if there is only one item.

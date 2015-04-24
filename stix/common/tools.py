@@ -39,7 +39,7 @@ class ToolInformation(stix.Entity, cybox.common.ToolInformation):
 
         Note:
             If this object has more than one short description set, this will
-            return the short_description with the lowest ordinality value.
+            return the short description with the lowest ordinality value.
 
         Returns:
             An instance of
@@ -54,23 +54,25 @@ class ToolInformation(stix.Entity, cybox.common.ToolInformation):
 
     @property
     def short_descriptions(self):
-        """A :class:`.StructuredTextList` object, containing descriptions about
-        the purpose or intent of this object.
+        """A :class:`.StructuredTextList` object, containing short descriptions
+        about the purpose or intent of this object.
+
+        This is typically used for the purpose of providing multiple
+        short descriptions with different classificaton markings.
 
         Iterating over this object will yield its contents sorted by their
         ``ordinality`` value.
 
-        Default Value: Empty :class:`StructuredTextList` object.
+        Default Value: Empty :class:`.StructuredTextList` object.
 
         Note:
             IF this is set to a value that is not an instance of
             :class:`.StructuredText`, an effort will ne made to convert it.
             If this is set to an iterable, any values contained that are not
-            an instance of :class:`StructuredText` will be be converted.
+            an instance of :class:`.StructuredText` will be be converted.
 
         Returns:
-            An instance of
-            :class:`.StructuredTextList`
+            An instance of :class:`.StructuredTextList`
 
         """
         return self._short_description

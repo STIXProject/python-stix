@@ -927,14 +927,8 @@ class Indicator(stix.BaseCoreComponent):
         return return_obj
 
     def to_dict(self):
-        skip = (
-            'observables',
-            'observable_composition_operator',
-            'negate'
-        )
-
-        d = super(Indicator, self).to_dict()
-        utils.remove_entries(d, skip)
+        keys = ('observables', 'observable_composition_operator', 'negate')
+        d = utils.to_dict(self, skip=keys)
 
         if self.negate:
             d['negate'] = True

@@ -88,13 +88,13 @@ class PropertyAffected(stix.Entity):
         Iterating over this object will yield its contents sorted by their
         ``ordinality`` value.
 
-        Default Value: Empty :class:`StructuredTextList` object.
+        Default Value: Empty :class:`.StructuredTextList` object.
 
         Note:
             IF this is set to a value that is not an instance of
             :class:`.StructuredText`, an effort will ne made to convert it.
             If this is set to an iterable, any values contained that are not
-            an instance of :class:`StructuredText` will be be converted.
+            an instance of :class:`.StructuredText` will be be converted.
 
         Returns:
             An instance of
