@@ -9,6 +9,15 @@ import stix.bindings.stix_common as stix_common_binding
 
 
 class StructuredText(stix.Entity):
+    """Used for storing descriptive text elements.
+
+    Attributes:
+        id_: An id for the text element, typically used for controlled
+            structure xpath selectors.
+        value: The text value of this object.
+        structuring_format: The format of the text. For example, ``html5``.
+
+    """
     _binding = stix_common_binding
     _binding_class = _binding.StructuredTextType
     _namespace = 'http://stix.mitre.org/common-1'
@@ -25,6 +34,13 @@ class StructuredText(stix.Entity):
 
     @ordinality.setter
     def ordinality(self, value):
+        """An integer ordinality for this text item. This must be greater than
+        1.
+
+        This is used for displaying :class:`.StructuredTextList` items and
+        provides an order to display text items to a parser.
+
+        """
         if value is None:
             self._ordinality = None
             return
@@ -104,9 +120,15 @@ class StructuredText(stix.Entity):
         return return_obj
     
     def __str__(self):
+        """Returns a UTF-8 encoded string representation of the ``value``.
+
+        """
         return self.__unicode__().encode("utf-8")
 
     def __unicode__(self):
+        """Returns a ``unicode`` string representation of the ``value``.
+
+        """
         return unicode(self.value)
 
 
