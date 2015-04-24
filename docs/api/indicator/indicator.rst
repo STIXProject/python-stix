@@ -23,20 +23,33 @@ Classes
 
 .. autoclass:: Indicator
     :show-inheritance:
-    :members:
+    :members: to_obj, from_obj, to_dict, from_dict, producer, observable,
+        observables, add_observable, alternative_id, add_alternative_id,
+        valid_time_positions, add_valid_time_position, indicator_types,
+        add_indicator_type, confidence, add_indicated_ttp,
+        add_test_mechanism, add_related_indicator
+
 
 .. autoclass:: CompositeIndicatorExpression
     :show-inheritance:
-    :members:
+    :members: to_obj, from_obj, to_dict, from_dict
+
 
 .. autoclass:: RelatedIndicators
     :show-inheritance:
-    :members:
+    :members: to_obj, from_obj, to_dict, from_dict
+
+
+.. autoclass:: RelatedCampaignRefs
+    :show-inheritance:
+    :members: to_obj, from_obj, to_dict, from_dict
+
 
 .. autoclass:: SuggestedCOAs
     :show-inheritance:
-    :members:
+    :members: to_obj, from_obj, to_dict, from_dict
+
 
 .. autoclass:: IndicatorTypes
     :show-inheritance:
-    :members:
+    :members: to_obj, from_obj, to_dict, from_dict
