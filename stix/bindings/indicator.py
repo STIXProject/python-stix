@@ -662,37 +662,8 @@ class TestMechanismsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Test_Mechanism':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-                    
-                if type_name_ == "OVAL5.10TestMechanismType":
-                    import stix.bindings.extensions.test_mechanism.oval_5_10 as oval_5_10_tm_binding
-                    obj_ = oval_5_10_tm_binding.OVAL5_10TestMechanismType.factory()
-                elif type_name_ == "YaraTestMechanismType":
-                    import stix.bindings.extensions.test_mechanism.yara as yara_tm_binding
-                    obj_ = yara_tm_binding.YaraTestMechanismType.factory()
-                elif type_name_ == "SnortTestMechanismType":
-                    import stix.bindings.extensions.test_mechanism.snort as snort_tm_binding
-                    obj_ = snort_tm_binding.SnortTestMechanismType.factory()
-                elif type_name_ == "OpenIOC2010TestMechanismType":
-                    import stix.bindings.extensions.test_mechanism.open_ioc_2010 as openioc_tm_binding
-                    obj_ = openioc_tm_binding.OpenIOC2010TestMechanismType.factory()
-                elif type_name_ == "GenericTestMechanismType":
-                    import stix.bindings.extensions.test_mechanism.generic as generic_tm_binding
-                    obj_ = generic_tm_binding.GenericTestMechanismType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for <Test_Mechanism> element: ' + type_name_)
-            else:
-                raise NotImplementedError(
-                    'Class not implemented for <Test_Mechanism> element: no xsi:type attribute found')
-
+            from .extensions.test_mechanism import (generic, oval_5_10, open_ioc_2010, snort, yara)
+            obj_ = lookup_extension(child_).factory()
             obj_.build(child_)
             self.Test_Mechanism.append(obj_)
 # end class TestMechanismsType
@@ -835,6 +806,8 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
         super(RelatedIndicatorsType, self).buildChildren(child_, node, nodeName_, True)
 # end class RelatedIndicatorsType
 
+
+@register_extension
 class IndicatorType(stix_common_binding.IndicatorBaseType):
     """The IndicatorType characterizes a cyber threat indicator made up of
     a pattern identifying certain observable conditions as well as
@@ -847,11 +820,13 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
     specifies the absence of the pattern."""
     subclass = None
     superclass = stix_common_binding.IndicatorBaseType
+
+    xmlns          = "http://stix.mitre.org/Indicator-2"
+    xmlns_prefix   = "indicator"
+    xml_type       = "IndicatorType"
+
     def __init__(self, idref=None, id=None, timestamp=None, negate=False, version=None, Title=None, Type=None, Alternative_ID=None, Description=None, Short_Description=None, Valid_Time_Position=None, Observable=None, Composite_Indicator_Expression=None, Indicated_TTP=None, Kill_Chain_Phases=None, Test_Mechanisms=None, Likely_Impact=None, Suggested_COAs=None, Handling=None, Confidence=None, Sightings=None, Related_Indicators=None, Related_Campaigns=None, Related_Packages=None, Producer=None):
         super(IndicatorType, self).__init__(idref=idref, id=id, timestamp=timestamp)
-        self.xmlns          = "http://stix.mitre.org/Indicator-2"
-        self.xmlns_prefix   = "indicator"
-        self.xml_type       = "IndicatorType"
 
         self.negate = _cast(bool, negate)
         self.version = _cast(None, version)

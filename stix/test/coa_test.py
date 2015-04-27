@@ -70,7 +70,6 @@ class COATests(EntityTestCase, unittest.TestCase):
     }
 
 
-
     def test_structured_coa(self):
         coa_ = coa.CourseOfAction()
 

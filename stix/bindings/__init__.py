@@ -411,8 +411,41 @@ def get_type_info(node):
     return TypeInfo(ns=ns, typename=typename)
 
 
+_EXTENSION_MAP = {}
+
+
+def add_extension(cls):
+    typeinfo = TypeInfo(ns=cls.xmlns, typename=cls.xml_type)
+    _EXTENSION_MAP[typeinfo] = cls
+
+
+def register_extension(cls):
+    add_extension(cls)
+    return cls
+
+
+def lookup_extension(typeinfo):
+    if not isinstance(typeinfo, TypeInfo):
+        typeinfo = get_type_info(typeinfo)
+
+    try:
+        return _EXTENSION_MAP[typeinfo]
+    except KeyError:
+        fmt = "No class implemented or registered for XML type '{%s}%s'"
+        error = fmt % (typeinfo.ns, typeinfo.typename)
+        raise NotImplementedError(error)
+
+
+def is_base(node):
+    return xmlconst.TAG_XSI_TYPE not in node.attrib
+
+
 __all__ = [
     '_cast',
+    'add_extension',
+    'lookup_extension',
+    'is_base',
+    'register_extension',
     'etree_',
     'ExternalEncoding',
     'find_attr_value_',

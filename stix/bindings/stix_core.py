@@ -560,26 +560,17 @@ class IndicatorsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Indicator':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from . import indicator
 
-                if type_name_ == "IndicatorType":
-                    import stix.bindings.indicator as indicator_binding
-                    obj_ = indicator_binding.IndicatorType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
+            if is_base(child_):
+                obj_ = stix_common_binding.IndicatorBaseType.factory()
             else:
-                obj_ = stix_common_binding.IndicatorBaseType.factory() # not abstract
+                klass = lookup_extension(child_)
+                obj_ = klass.factory()
 
             obj_.build(child_)
             self.Indicator.append(obj_)
+
 # end class IndicatorsType
 
 class TTPsType(GeneratedsSuper):
@@ -648,26 +639,17 @@ class TTPsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'TTP':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from . import ttp
 
-                if type_name_ == "TTPType":
-                    import stix.bindings.ttp as ttp_binding
-                    obj_ = ttp_binding.TTPType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
+            if is_base(child_):
                 obj_ = stix_common_binding.TTPBaseType.factory() # not abstract
+            else:
+                klass = lookup_extension(child_)
+                obj_ = klass.factory()
 
             obj_.build(child_)
             self.TTP.append(obj_)
+
         elif nodeName_ == 'Kill_Chains':
             obj_ = stix_common_binding.KillChainsType.factory()
             obj_.build(child_)
@@ -734,26 +716,17 @@ class IncidentsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Incident':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from . import incident
 
-                if type_name_ == "IncidentType":
-                    import stix.bindings.incident as incident_binding
-                    obj_ = incident_binding.IncidentType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
+            if is_base(child_):
                 obj_ = stix_common_binding.IncidentBaseType.factory() # not abstract
+            else:
+                klass = lookup_extension(child_)
+                obj_ = klass.factory()
 
             obj_.build(child_)
             self.Incident.append(obj_)
+
 # end class IncidentsType
 
 class CoursesOfActionType(GeneratedsSuper):
@@ -816,23 +789,13 @@ class CoursesOfActionType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Course_Of_Action':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from . import course_of_action
 
-                if type_name_ == "CourseOfActionType":
-                    import stix.bindings.course_of_action as coa_binding
-                    obj_ = coa_binding.CourseOfActionType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
+            if is_base(child_):
                 obj_ = stix_common_binding.CourseOfActionBaseType.factory() # not abstract
+            else:
+                klass = lookup_extension(child_)
+                obj_ = klass.factory()
 
             obj_.build(child_)
             self.Course_Of_Action.append(obj_)
@@ -898,23 +861,13 @@ class CampaignsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Campaign':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from . import campaign
 
-                if type_name_ == "CampaignType":
-                    import stix.bindings.campaign as campaign_binding
-                    obj_ = campaign_binding.CampaignType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
+            if is_base(child_):
                 obj_ = stix_common_binding.CampaignBaseType.factory() # not abstract
+            else:
+                klass = lookup_extension(child_)
+                obj_ = klass.factory()
 
             obj_.build(child_)
             self.Campaign.append(obj_)
@@ -980,23 +933,13 @@ class ThreatActorsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Threat_Actor':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from . import threat_actor
 
-                if type_name_ == "ThreatActorType":
-                    import stix.bindings.threat_actor as ta_binding
-                    obj_ = ta_binding.ThreatActorType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
+            if is_base(child_):
                 obj_ = stix_common_binding.ThreatActorBaseType.factory() # not abstract
+            else:
+                klass = lookup_extension(child_)
+                obj_ = klass.factory()
 
             obj_.build(child_)
             self.Threat_Actor.append(obj_)

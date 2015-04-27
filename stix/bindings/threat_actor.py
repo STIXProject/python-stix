@@ -227,16 +227,19 @@ class AssociatedActorsType(stix_common_binding.GenericRelationshipListType):
         super(AssociatedActorsType, self).buildChildren(child_, node, nodeName_, True)
 # end class AssociatedActorsType
 
+@register_extension
 class ThreatActorType(stix_common_binding.ThreatActorBaseType):
     """Specifies the relevant STIX-ThreatActor schema version for this
     content."""
     subclass = None
     superclass = stix_common_binding.ThreatActorBaseType
+
+    xmlns          = "http://stix.mitre.org/ThreatActor-1"
+    xmlns_prefix   = "ta"
+    xml_type       = "ThreatActorType"
+
     def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Description=None, Short_Description=None, Identity=None, Type=None, Motivation=None, Sophistication=None, Intended_Effect=None, Planning_And_Operational_Support=None, Observed_TTPs=None, Associated_Campaigns=None, Associated_Actors=None, Handling=None, Confidence=None, Information_Source=None, Related_Packages=None):
         super(ThreatActorType, self).__init__(idref=idref, id=id, timestamp=timestamp)
-        self.xmlns          = "http://stix.mitre.org/ThreatActor-1"
-        self.xmlns_prefix   = "ta"
-        self.xml_type       = "ThreatActorType"
         self.version = _cast(None, version)
         self.Title = Title
         if Description is None:
@@ -446,22 +449,14 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
             obj_.build(child_)
             self.add_Short_Description(obj_)
         elif nodeName_ == 'Identity':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from .extensions.identity import ciq_identity_3_0
 
-                if type_name_ == "CIQIdentity3.0InstanceType":
-                    from .extensions.identity import ciq_identity_3_0
-                    obj_ = ciq_identity_3_0.CIQIdentity3_0InstanceType.factory()
-            else:
+            if is_base(child_):
                 obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
+            else:
+                obj_ = lookup_extension(child_).factory()
 
+            obj_.build(child_)
             obj_.build(child_)
             self.set_Identity(obj_)
         elif nodeName_ == 'Type':

@@ -18,6 +18,7 @@ XML_NS = "http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1"
 # Data representation classes.
 #
 
+@register_extension
 class OpenIOC2010TestMechanismType(indicator_binding.TestMechanismType):
     """The OpenIOC2010TestMechanismType provides an extension to the
     indicator_binding.TestMechanismType which imports and leverages the 2010 Open IOC
@@ -25,11 +26,13 @@ class OpenIOC2010TestMechanismType(indicator_binding.TestMechanismType):
     mechanism."""
     subclass = None
     superclass = indicator_binding.TestMechanismType
+
+    xmlns          = XML_NS
+    xmlns_prefix   = "stix-openioc"
+    xml_type       = "OpenIOC2010TestMechanismType"
+
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, ioc=None):
         super(OpenIOC2010TestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
-        self.xmlns          = XML_NS
-        self.xmlns_prefix   = "stix-openioc"
-        self.xml_type       = "OpenIOC2010TestMechanismType"
         self.ioc = ioc
     def factory(*args_, **kwargs_):
         if OpenIOC2010TestMechanismType.subclass:

@@ -19,6 +19,7 @@ XML_NS = "http://stix.mitre.org/extensions/TestMechanism#Generic-1"
 # Data representation classes.
 #
 
+@register_extension
 class GenericTestMechanismType(indicator_binding.TestMechanismType):
     """The GenericTestMechanismType specifies an instantial extension from
     the abstract indicator_binding.TestMechanismType intended to support the generic
@@ -26,11 +27,13 @@ class GenericTestMechanismType(indicator_binding.TestMechanismType):
     URL for the location of the Generic Test Mechanism."""
     subclass = None
     superclass = indicator_binding.TestMechanismType
+
+    xmlns          = XML_NS
+    xmlns_prefix   = "genericTM"
+    xml_type       = "GenericTestMechanismType"
+
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, reference_location=None, Description=None, Type=None, Specification=None):
         super(GenericTestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
-        self.xmlns          = XML_NS
-        self.xmlns_prefix   = "genericTM"
-        self.xml_type       = "GenericTestMechanismType"
         self.reference_location = _cast(None, reference_location)
         if Description is None:
             self.Description = []

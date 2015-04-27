@@ -18,17 +18,21 @@ XML_NS = "http://stix.mitre.org/extensions/TestMechanism#OVAL5.10-1"
 # Data representation classes.
 #
 
+
+@register_extension
 class OVAL5_10TestMechanismType(indicator_binding.TestMechanismType):
     """The OVALTestMechanismType provides an extension to the
     indicator_binding.TestMechanismType which imports and leverages the OVAL schema in
     order to include OVAL Definitions as the test mechanism."""
     subclass = None
     superclass = indicator_binding.TestMechanismType
+
+    xmlns          = XML_NS
+    xmlns_prefix   = "ovalTM"
+    xml_type       = "OVAL5.10TestMechanismType"
+
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, oval_definitions=None, oval_variables=None):
         super(OVAL5_10TestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
-        self.xmlns          = XML_NS
-        self.xmlns_prefix   = "ovalTM"
-        self.xml_type       = "OVAL5.10TestMechanismType"
         self.oval_definitions = oval_definitions
         self.oval_variables = oval_variables
     def factory(*args_, **kwargs_):

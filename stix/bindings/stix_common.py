@@ -607,21 +607,12 @@ class InformationSourceType(GeneratedsSuper):
             obj_.build(child_)
             self.add_Description(obj_)
         elif nodeName_ == 'Identity':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from .extensions.identity import ciq_identity_3_0
 
-                if type_name_ == "CIQIdentity3.0InstanceType":
-                    import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
-                    obj_ = ciq_identity_binding.CIQIdentity3_0InstanceType.factory()
-            else:
+            if is_base(child_):
                 obj_ = IdentityType.factory() # IdentityType is not abstract
+            else:
+                obj_ = lookup_extension(child_).factory()
 
             obj_.build(child_)
             self.set_Identity(obj_)
@@ -1491,23 +1482,13 @@ class RelatedCampaignType(GenericRelationshipType):
         super(RelatedCampaignType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Campaign':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from . import campaign
 
-                if type_name_ == "CampaignType":
-                    import stix.bindings.campaign as campaign_binding
-                    obj_ = campaign_binding.CampaignType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
+            if is_base(child_):
                 obj_ = CampaignBaseType.factory() # not abstract
+            else:
+                klass = lookup_extension(child_)
+                obj_ = klass.factory()
 
             obj_.build(child_)
             self.set_Campaign(obj_)
@@ -1573,23 +1554,13 @@ class RelatedCourseOfActionType(GenericRelationshipType):
         super(RelatedCourseOfActionType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Course_Of_Action':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from . import campaign
 
-                if type_name_ == "CourseOfActionType":
-                    import stix.bindings.course_of_action as coa_binding
-                    obj_ = coa_binding.CourseOfActionType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
+            if is_base(child_):
+                obj_ = CampaignBaseType.factory() # not abstract
             else:
-                obj_ = CourseOfActionBaseType.factory() # not abstract
+                klass = lookup_extension(child_)
+                obj_ = klass.factory()
 
             obj_.build(child_)
             self.set_Course_Of_Action(obj_)
@@ -1655,23 +1626,11 @@ class RelatedExploitTargetType(GenericRelationshipType):
         super(RelatedExploitTargetType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Exploit_Target':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "ExploitTargetType":
-                    import stix.bindings.exploit_target as et_binding
-                    obj_ = et_binding.ExploitTargetType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
+            if is_base(child_):
                 obj_ = ExploitTargetBaseType.factory() # not abstract
+            else:
+                klass = lookup_extension(child_)
+                obj_ = klass.factory()
 
             obj_.build(child_)
             self.set_Exploit_Target(obj_)
@@ -1737,23 +1696,13 @@ class RelatedIncidentType(GenericRelationshipType):
         super(RelatedIncidentType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Incident':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from . import incident
 
-                if type_name_ == "IncidentType":
-                    import stix.bindings.incident as incident_binding
-                    obj_ = incident_binding.IncidentType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
+            if is_base(child_):
                 obj_ = IncidentBaseType.factory() # not abstract
+            else:
+                klass = lookup_extension(child_)
+                obj_ = klass.factory()
 
             obj_.build(child_)
             self.set_Incident(obj_)
@@ -1819,23 +1768,13 @@ class RelatedIndicatorType(GenericRelationshipType):
         super(RelatedIndicatorType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Indicator':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from . import indicator
 
-                if type_name_ == "IndicatorType":
-                    import stix.bindings.indicator as indicator_binding
-                    obj_ = indicator_binding.IndicatorType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
+            if is_base(child_):
+                obj_ = IndicatorBaseType.factory()
             else:
-                obj_ = IndicatorBaseType.factory() # not abstract
+                klass = lookup_extension(child_)
+                obj_ = klass.factory()
 
             obj_.build(child_)
             self.set_Indicator(obj_)
@@ -1966,23 +1905,13 @@ class RelatedThreatActorType(GenericRelationshipType):
         super(RelatedThreatActorType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Threat_Actor':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from . import threat_actor
 
-                if type_name_ == "ThreatActorType":
-                    import stix.bindings.threat_actor as ta_binding
-                    obj_ = ta_binding.ThreatActorType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
+            if is_base(child_):
                 obj_ = ThreatActorBaseType.factory() # not abstract
+            else:
+                klass = lookup_extension(child_)
+                obj_ = klass.factory()
 
             obj_.build(child_)
             self.set_Threat_Actor(obj_)
@@ -2048,23 +1977,13 @@ class RelatedTTPType(GenericRelationshipType):
         super(RelatedTTPType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'TTP':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from . import ttp
 
-                if type_name_ == "TTPType":
-                    import stix.bindings.ttp as ttp_binding
-                    obj_ = ttp_binding.TTPType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
+            if is_base(child_):
                 obj_ = TTPBaseType.factory() # not abstract
+            else:
+                klass = lookup_extension(child_)
+                obj_ = klass.factory()
 
             obj_.build(child_)
             self.set_TTP(obj_)
@@ -2130,21 +2049,12 @@ class RelatedIdentityType(GenericRelationshipType):
         super(RelatedIdentityType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Identity':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from .extensions.identity import ciq_identity_3_0
 
-                if type_name_ == "CIQIdentity3.0InstanceType":
-                    from .extensions.identity import ciq_identity_3_0
-                    obj_ = ciq_identity_3_0.CIQIdentity3_0InstanceType.factory()
-            else:
+            if is_base(child_):
                 obj_ = IdentityType.factory() # IdentityType is not abstract
+            else:
+                obj_ = lookup_extension(child_).factory()
 
             obj_.build(child_)
             self.set_Identity(obj_)
@@ -3132,23 +3042,11 @@ class ExploitTargetsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Exploit_Target':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "ExploitTargetType":
-                    import stix.bindings.exploit_target as exploit_target_binding
-                    obj_ = exploit_target_binding.ExploitTargetType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
+            if is_base(child_):
                 obj_ = ExploitTargetBaseType.factory() # not abstract
+            else:
+                klass = lookup_extension(child_)
+                obj_ = klass.factory()
 
             obj_.build(child_)
             self.Exploit_Target.append(obj_)
@@ -3860,6 +3758,190 @@ class ControlledVocabularyStringType(GeneratedsSuper):
         pass
 # end class ControlledVocabularyStringType
 
+
+class ReportBaseType(GeneratedsSuper):
+    """This type represents the STIX Report component. It is extended using
+    the XML Schema Extension feature by the STIX Report type itself.
+    Users of this type who wish to express a full report using STIX
+    must do so using the xsi:type extension feature. The STIX-
+    defined Report type is ReportType in the
+    http://stix.mitre.org/Report-1 namespace. This type is defined
+    in the report.xsd file or at the URL http://stix.mitre.org/XMLSc
+    hema/report/1.2/report.xsd.Alternatively, uses that require
+    simply specifying an idref as a reference to a report defined
+    elsewhere can do so without specifying an xsi:type.Specifies a
+    globally unique identifier for this Report. Specifies a globally
+    unique identifier of a Report specified elsewhere.When idref is
+    specified, the id attribute must not be specified, and any
+    instance of this Report should not hold content.Specifies a
+    timestamp for the definition of a specific version of a Report.
+    When used in conjunction with the id, this field is specifying
+    the definition time for the specific version of the Report. When
+    used in conjunction with the idref, this field is specifying a
+    reference to a specific version of a Report defined elsewhere.
+    This field has no defined semantic meaning if used in the
+    absence of either the id or idref fields."""
+    subclass = None
+    superclass = None
+    def __init__(self, timestamp=None, idref=None, id=None, extensiontype_=None):
+        self.timestamp = _cast(None, timestamp)
+        self.idref = _cast(None, idref)
+        self.id = _cast(None, id)
+        self.extensiontype_ = extensiontype_
+    def factory(*args_, **kwargs_):
+        if ReportBaseType.subclass:
+            return ReportBaseType.subclass(*args_, **kwargs_)
+        else:
+            return ReportBaseType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_timestamp(self): return self.timestamp
+    def set_timestamp(self, timestamp): self.timestamp = timestamp
+    def get_idref(self): return self.idref
+    def set_idref(self, idref): self.idref = idref
+    def get_id(self): return self.id
+    def set_id(self, id): self.id = id
+    def get_extensiontype_(self): return self.extensiontype_
+    def set_extensiontype_(self, extensiontype_): self.extensiontype_ = extensiontype_
+    def hasContent_(self):
+        if (
+
+            ):
+            return True
+        else:
+            return False
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ReportBaseType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='ReportBaseType')
+        if self.hasContent_():
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='report:', name_='ReportBaseType'):
+        if self.timestamp is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            lwrite(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
+        if self.idref is not None and 'idref' not in already_processed:
+            already_processed.add('idref')
+            lwrite(' idref=%s' % (quote_attrib(self.idref), ))
+        if self.id is not None and 'id' not in already_processed:
+            already_processed.add('id')
+            lwrite(' id=%s' % (quote_attrib(self.id), ))
+        if self.extensiontype_ is not None and 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            lwrite(' xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"')
+            lwrite(' xsi:type="%s"' % self.extensiontype_)
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ReportBaseType', fromsubclass_=False, pretty_print=True):
+        pass
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        value = find_attr_value_('timestamp', node)
+        if value is not None and 'timestamp' not in already_processed:
+            already_processed.add('timestamp')
+            try:
+                self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
+            except ValueError, exp:
+                raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
+        value = find_attr_value_('idref', node)
+        if value is not None and 'idref' not in already_processed:
+            already_processed.add('idref')
+            self.idref = value
+        value = find_attr_value_('id', node)
+        if value is not None and 'id' not in already_processed:
+            already_processed.add('id')
+            self.id = value
+        value = find_attr_value_('xsi:type', node)
+        if value is not None and 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            self.extensiontype_ = value
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        pass
+# end class ReportBaseType
+
+
+class RelatedReportsType(GenericRelationshipListType):
+    subclass = None
+    superclass = GenericRelationshipListType
+    def __init__(self, scope='exclusive', Related_Report=None):
+        super(RelatedReportsType, self).__init__(scope, )
+        if Related_Report is None:
+            self.Related_Report = []
+        else:
+            self.Related_Report = Related_Report
+    def factory(*args_, **kwargs_):
+        if RelatedReportsType.subclass:
+            return RelatedReportsType.subclass(*args_, **kwargs_)
+        else:
+            return RelatedReportsType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_Related_Report(self): return self.Related_Report
+    def set_Related_Report(self, Related_Report): self.Related_Report = Related_Report
+    def add_Related_Report(self, value): self.Related_Report.append(value)
+    def insert_Related_Report(self, index, value): self.Related_Report[index] = value
+    def hasContent_(self):
+        if (
+            self.Related_Report or
+            super(RelatedReportsType, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedReportsType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedReportsType')
+        if self.hasContent_():
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='report:', name_='RelatedReportsType'):
+        super(RelatedReportsType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedReportsType')
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedReportsType', fromsubclass_=False, pretty_print=True):
+        super(RelatedReportsType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for Related_Report_ in self.Related_Report:
+            Related_Report_.export(lwrite, level, nsmap, namespace_, name_='Related_Report', pretty_print=pretty_print)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(RelatedReportsType, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'Related_Report':
+            obj_ = RelatedReportType.factory()
+            obj_.build(child_)
+            self.Related_Report.append(obj_)
+        super(RelatedReportsType, self).buildChildren(child_, node, nodeName_, True)
+# end class RelatedReportsType
+
+
+
 GDSClassesMapping = {}
 
 USAGE_TEXT = """
@@ -3985,5 +4067,6 @@ __all__ = [
     "StatementType",
     "StructuredTextType",
     "EncodedCDATAType",
-    "ControlledVocabularyStringType"
+    "ControlledVocabularyStringType",
+    "ReportBaseType"
     ]

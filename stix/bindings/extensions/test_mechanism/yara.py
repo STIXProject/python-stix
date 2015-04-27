@@ -19,17 +19,20 @@ XML_NS = "http://stix.mitre.org/extensions/TestMechanism#YARA-1"
 # Data representation classes.
 #
 
+@register_extension
 class YaraTestMechanismType(indicator_binding.TestMechanismType):
     """The YaraTestMechanismType specifies an instantial extension from the
     abstract indicator_binding.TestMechanismType intended to support the inclusion of
     a YARA rule as a test mechanism content."""
     subclass = None
     superclass = indicator_binding.TestMechanismType
+
+    xmlns          = XML_NS
+    xmlns_prefix   = "yaraTM"
+    xml_type       = "YaraTestMechanismType"
+
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, Version=None, Rule=None):
         super(YaraTestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
-        self.xmlns          = XML_NS
-        self.xmlns_prefix   = "yaraTM"
-        self.xml_type       = "YaraTestMechanismType"
         self.Version = Version
         self.Rule = Rule
     def factory(*args_, **kwargs_):

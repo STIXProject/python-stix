@@ -18,6 +18,7 @@ XML_NS = "http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use
 # Data representation classes.
 #
 
+@register_extension
 class TermsOfUseMarkingStructureType(data_marking_binding.MarkingStructureType):
     """The TermsOfUseMarkingStructureType is a basic implementation of the
     data marking schema that allows for a string statement
@@ -103,8 +104,6 @@ class TermsOfUseMarkingStructureType(data_marking_binding.MarkingStructureType):
             self.Terms_Of_Use = Terms_Of_Use_
         super(TermsOfUseMarkingStructureType, self).buildChildren(child_, node, nodeName_, True)
 # end class TermsOfUseMarkingStructureType
-
-data_marking_binding.add_extension(TermsOfUseMarkingStructureType)
 
 GDSClassesMapping = {}
 

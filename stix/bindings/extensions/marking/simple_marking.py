@@ -18,6 +18,8 @@ XML_NS = "http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1"
 # Data representation classes.
 #
 
+
+@register_extension
 class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
     """The SimpleMarkingStructureType is a basic implementation of the data
     marking schema that allows for a string statement to be
@@ -101,7 +103,6 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
         super(SimpleMarkingStructureType, self).buildChildren(child_, node, nodeName_, True)
 # end class SimpleMarkingStructureType
 
-data_marking_binding.add_extension(SimpleMarkingStructureType)
 
 GDSClassesMapping = {}
 

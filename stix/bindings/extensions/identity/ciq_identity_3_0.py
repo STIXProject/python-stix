@@ -18,6 +18,7 @@ XML_NS = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
 # Data representation classes.
 #
 
+@register_extension
 class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
     """The CIQIdentity3.0InstanceType provides an extension to the
     IdentityStructureAbstractType which imports and leverages
@@ -25,11 +26,13 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
     characterization of Identities."""
     subclass = None
     superclass = stix_common_binding.IdentityType
+
+    xmlns          = XML_NS
+    xmlns_prefix   = "stix-ciqidentity"
+    xml_type       = "CIQIdentity3.0InstanceType"
+
     def __init__(self, idref=None, id=None, Name=None, Related_Identities=None, Specification=None, Role=None):
         super(CIQIdentity3_0InstanceType, self).__init__(idref=idref, id=id, Name=Name, Related_Identities=Related_Identities)
-        self.xmlns          = XML_NS
-        self.xmlns_prefix   = "stix-ciqidentity"
-        self.xml_type       = "CIQIdentity3.0InstanceType"
         self.xsi_type       = None
         self.Specification = Specification
         if Role is None:

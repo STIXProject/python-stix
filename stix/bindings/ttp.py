@@ -765,21 +765,12 @@ class MalwareType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Malware_Instance':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from .extensions.malware import maec_4_1
 
-                if type_name_ == "MAEC4.1InstanceType":
-                    from .extensions.malware import maec_4_1
-                    obj_ = maec_4_1.MAEC4_1InstanceType.factory()
-            else:
+            if is_base(child_):
                 obj_ = MalwareInstanceType.factory() # MalwareInstanceType is not abstract
+            else:
+                obj_ = lookup_extension(child_).factory()
 
             obj_.build(child_)
             self.Malware_Instance.append(obj_)
@@ -845,23 +836,12 @@ class AttackPatternsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Attack_Pattern':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from .extensions.attack_pattern import capec_2_7
 
-                if type_name_ == "CAPEC2.7InstanceType":
-                    from .extensions.attack_pattern import capec_2_7
-                    obj_ = capec_2_7.CAPEC2_7InstanceType.factory()
-                else:
-                    raise NotImplementedError('No implementation for type: ' + type_name_)
-            else:
+            if is_base(child_):
                 obj_ = AttackPatternType.factory() # AttackPattern is not abstract
+            else:
+                obj_ = lookup_extension(child_).factory()
 
             obj_.build(child_)
             self.Attack_Pattern.append(obj_)
@@ -1007,22 +987,14 @@ class PersonasType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Persona':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from .extensions.identity import ciq_identity_3_0
 
-                if type_name_ == "CIQIdentity3.0InstanceType":
-                    from .extensions.identity import ciq_identity_3_0
-                    obj_ = ciq_identity_3_0.CIQIdentity3_0InstanceType.factory()
-            else:
+            if is_base(child_):
                 obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
+            else:
+                obj_ = lookup_extension(child_).factory()
 
+            obj_.build(child_)
             obj_.build(child_)
             self.Persona.append(obj_)
 # end class PersonasType
@@ -1191,21 +1163,12 @@ class VictimTargetingType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Identity':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from .extensions.identity import ciq_identity_3_0
 
-                if type_name_ == "CIQIdentity3.0InstanceType":
-                    from .extensions.identity import ciq_identity_3_0
-                    obj_ = ciq_identity_3_0.CIQIdentity3_0InstanceType.factory()
-            else:
+            if is_base(child_):
                 obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
+            else:
+                obj_ = lookup_extension(child_).factory()
 
             obj_.build(child_)
             self.set_Identity(obj_)
@@ -1292,18 +1255,21 @@ class RelatedTTPsType(stix_common_binding.GenericRelationshipListType):
         super(RelatedTTPsType, self).buildChildren(child_, node, nodeName_, True)
 # end class RelatedTTPsType
 
+
+@register_extension
 class TTPType(stix_common_binding.TTPBaseType):
     """TTPType characterizes an individual adversary TTP.Specifies the
     relevant STIX-TTP schema version for this content."""
     subclass = None
     superclass = stix_common_binding.TTPBaseType
+
+    xmlns          = "http://stix.mitre.org/TTP-1"
+    xmlns_prefix   = "ttp"
+    xml_type       = "TTPType"
+
     def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Description=None, Short_Description=None, Intended_Effect=None, Behavior=None, Resources=None, Victim_Targeting=None, Exploit_Targets=None, Related_TTPs=None, Kill_Chain_Phases=None, Information_Source=None, Kill_Chains=None, Handling=None, Related_Packages=None):
         super(TTPType, self).__init__(idref=idref, id=id, timestamp=timestamp)
-        self.xmlns          = "http://stix.mitre.org/TTP-1"
-        self.xmlns_prefix   = "ttp"
-        self.xml_type       = "TTPType"
         self.version = _cast(None, version)
-
         self.Title = Title
         if Description is None:
             self.Description = []

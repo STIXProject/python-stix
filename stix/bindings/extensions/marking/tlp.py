@@ -18,6 +18,7 @@ XML_NS = "http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1"
 # Data representation classes.
 #
 
+@register_extension
 class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
     """The TLPMarkingStructureType is an implementation of the data marking
     schema that allows for a TLP Designation to be attached to an
@@ -99,7 +100,6 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
         pass
 # end class TLPMarkingStructureType
 
-data_marking_binding.add_extension(TLPMarkingStructureType)
 
 GDSClassesMapping = {}
 

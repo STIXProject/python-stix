@@ -252,24 +252,8 @@ class AffectedAssetType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Location_Class(obj_)
         elif nodeName_ == 'Location':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "CIQAddress3.0InstanceType":
-                    import stix.bindings.extensions.address.ciq_address_3_0 as ciq_address_binding
-                    obj_ = ciq_address_binding.CIQAddress3_0InstanceType.factory()
-                else:
-                    raise NotImplementedError('No implementation class found for: ' + type_name_)
-            else:
-                raise NotImplementedError('Class not implemented for <Location> element')
-
+            from .extensions.address import ciq_address_3_0
+            obj_ = lookup_extension(child_).factory()
             obj_.build(child_)
             self.set_Location(obj_)
         elif nodeName_ == 'Nature_Of_Security_Effect':
@@ -565,23 +549,12 @@ class COATakenType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Contributors(obj_)
         elif nodeName_ == 'Course_Of_Action':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            from . import course_of_action
 
-                if type_name_ == "CourseOfActionType":
-                    import stix.bindings.course_of_action as coa_binding
-                    obj_ = coa_binding.CourseOfActionType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
+            if is_base(child_):
                 obj_ = stix_common_binding.CourseOfActionBaseType.factory() # not abstract
+            else:
+                obj_ = lookup_extension(child_).factory()
 
             obj_.build(child_)
             self.set_Course_Of_Action(obj_)
@@ -2154,6 +2127,8 @@ class AssetTypeType(stix_common_binding.ControlledVocabularyStringType):
         pass
 # end class AssetTypeType
 
+
+@register_extension
 class IncidentType(stix_common_binding.IncidentBaseType):
     """The IncidentType characterizes a single cyber threat
     Incident.Specifies the relevant STIX-Incident schema version for
@@ -2161,11 +2136,13 @@ class IncidentType(stix_common_binding.IncidentBaseType):
     Incident specification."""
     subclass = None
     superclass = stix_common_binding.IncidentBaseType
+
+    xmlns          = "http://stix.mitre.org/Incident-1"
+    xmlns_prefix   = "incident"
+    xml_type       = "IncidentType"
+
     def __init__(self, idref=None, id=None, timestamp=None, URL=None, version=None, Title=None, External_ID=None, Time=None, Description=None, Short_Description=None, Categories=None, Reporter=None, Responder=None, Coordinator=None, Victim=None, Affected_Assets=None, Impact_Assessment=None, Status=None, Related_Indicators=None, Related_Observables=None, Leveraged_TTPs=None, Attributed_Threat_Actors=None, Intended_Effect=None, Security_Compromise=None, Discovery_Method=None, Related_Incidents=None, COA_Requested=None, COA_Taken=None, Confidence=None, Contact=None, History=None, Information_Source=None, Handling=None, Related_Packages=None):
         super(IncidentType, self).__init__(timestamp=timestamp, idref=idref, id=id)
-        self.xmlns          = "http://stix.mitre.org/Incident-1"
-        self.xmlns_prefix   = "incident"
-        self.xml_type       = "IncidentType"
         self.URL = _cast(None, URL)
         self.version = _cast(None, version)
         self.Title = Title
@@ -2507,21 +2484,13 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             obj_.build(child_)
             self.Coordinator.append(obj_)
         elif nodeName_ == 'Victim':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
+            import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
 
-                if type_name_ == "CIQIdentity3.0InstanceType":
-                    import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
-                    obj_ = ciq_identity_binding.CIQIdentity3_0InstanceType.factory()
-            else:
+            if is_base(child_):
                 obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
+            else:
+                obj_ = lookup_extension(child_).factory()
+
             obj_.build(child_)
             self.Victim.append(obj_)
         elif nodeName_ == 'Affected_Assets':

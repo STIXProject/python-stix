@@ -19,6 +19,7 @@ XML_NS = "http://stix.mitre.org/extensions/StructuredCOA#Generic-1"
 # Data representation classes.
 #
 
+@register_extension
 class GenericStructuredCOAType(StructuredCOAType):
     """The GenericStructuredCOAType specifies an instantial extension from
     the abstract course_of_action_binding.StructuredCOAType intended to support the generic
@@ -26,11 +27,13 @@ class GenericStructuredCOAType(StructuredCOAType):
     location of the Generic Structured COA."""
     subclass = None
     superclass = StructuredCOAType
+
+    xmlns          = XML_NS
+    xmlns_prefix   = "genericStructuredCOA"
+    xml_type       = "GenericStructuredCOAType"
+
     def __init__(self, idref=None, id=None, reference_location=None, Description=None, Type=None, Specification=None):
         super(GenericStructuredCOAType, self).__init__(idref=idref, id=id)
-        self.xmlns          = XML_NS
-        self.xmlns_prefix   = "genericStructuredCOA"
-        self.xml_type       = "GenericStructuredCOAType"
         self.reference_location = _cast(None, reference_location)
         if Description is None:
             self.Description = []

@@ -432,17 +432,21 @@ class AttributionType(stix_common_binding.GenericRelationshipListType):
         super(AttributionType, self).buildChildren(child_, node, nodeName_, True)
 # end class AttributionType
 
+
+@register_extension
 class CampaignType(stix_common_binding.CampaignBaseType):
     """The CampaignType characterizes a single cyber threat
     Campaign.Specifies the relevant STIX-Campaign schema version for
     this content."""
     subclass = None
     superclass = stix_common_binding.CampaignBaseType
+
+    xmlns          = "http://stix.mitre.org/Campaign-1"
+    xmlns_prefix   = "campaign"
+    xml_type       = "CampaignType"
+
     def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Description=None, Short_Description=None, Names=None, Intended_Effect=None, Status=None, Related_TTPs=None, Related_Incidents=None, Related_Indicators=None, Attribution=None, Associated_Campaigns=None, Confidence=None, Activity=None, Information_Source=None, Handling=None, Related_Packages=None):
         super(CampaignType, self).__init__(idref=idref, id=id, timestamp=timestamp)
-        self.xmlns          = "http://stix.mitre.org/Campaign-1"
-        self.xmlns_prefix   = "campaign"
-        self.xml_type       = "CampaignType"
         self.version = _cast(None, version)
         self.Title = Title
         if Description is None:
