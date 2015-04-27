@@ -31,7 +31,7 @@ class STIXType(GeneratedsSuper):
     version for this content."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, timestamp=None, version=None, STIX_Header=None, Observables=None, Indicators=None, TTPs=None, Exploit_Targets=None, Incidents=None, Courses_Of_Action=None, Campaigns=None, Threat_Actors=None, Related_Packages=None):
+    def __init__(self, idref=None, id=None, timestamp=None, version=None, STIX_Header=None, Observables=None, Indicators=None, TTPs=None, Exploit_Targets=None, Incidents=None, Courses_Of_Action=None, Campaigns=None, Threat_Actors=None, Related_Packages=None, Reports=None):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
         self.timestamp = _cast(None, timestamp)
@@ -46,6 +46,7 @@ class STIXType(GeneratedsSuper):
         self.Campaigns = Campaigns
         self.Threat_Actors = Threat_Actors
         self.Related_Packages = Related_Packages
+        self.Reports = Reports
         self.nsmap = {}
     def factory(*args_, **kwargs_):
         if STIXType.subclass:
@@ -73,6 +74,8 @@ class STIXType(GeneratedsSuper):
     def set_Threat_Actors(self, Threat_Actors): self.Threat_Actors = Threat_Actors
     def get_Related_Packages(self): return self.Related_Packages
     def set_Related_Packages(self, value): self.Related_Packages = value
+    def get_Reports(self): return self.Reports
+    def set_Reports(self, value): self.Reports = value
     def get_idref(self): return self.idref
     def set_idref(self, idref): self.idref = idref
     def get_id(self): return self.id
@@ -92,7 +95,8 @@ class STIXType(GeneratedsSuper):
             self.Courses_Of_Action is not None or
             self.Campaigns is not None or
             self.Threat_Actors is not None or
-            self.Related_Packages is not None
+            self.Related_Packages is not None or
+            self.Reports
             ):
             return True
         else:
@@ -127,9 +131,6 @@ class STIXType(GeneratedsSuper):
             already_processed.add('timestamp')
             lwrite(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
 
-        #for ns, prefix in nsmap.iteritems():
-        #    lwrite(' xmlns:%s="%s"' % (prefix, ns))
-
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='STIXType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
@@ -153,9 +154,10 @@ class STIXType(GeneratedsSuper):
             self.Campaigns.export(lwrite, level, nsmap, namespace_, name_='Campaigns', pretty_print=pretty_print)
         if self.Threat_Actors is not None:
             self.Threat_Actors.export(lwrite, level, nsmap, namespace_, name_='Threat_Actors', pretty_print=pretty_print)
+        if self.Reports is not None:
+            self.Reports.export(lwrite, level, nsmap, namespace_, name_='Reports', pretty_print=pretty_print)
         if self.Related_Packages is not None:
             self.Related_Packages.export(lwrite, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
-            
     def build(self, node):
         already_processed = set()
         self.nsmap = node.nsmap
@@ -220,6 +222,10 @@ class STIXType(GeneratedsSuper):
             obj_ = ThreatActorsType.factory()
             obj_.build(child_)
             self.set_Threat_Actors(obj_)
+        elif nodeName_ == 'Reports':
+            obj_ = ReportsType.factory()
+            obj_.build(child_)
+            self.set_Reports(obj_)
         elif nodeName_ == 'Related_Packages':
             obj_ = RelatedPackagesType.factory()
             obj_.build(child_)
@@ -944,6 +950,80 @@ class ThreatActorsType(GeneratedsSuper):
             obj_.build(child_)
             self.Threat_Actor.append(obj_)
 # end class ThreatActorsType
+
+
+class ReportsType(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, Report=None):
+        if Report is None:
+            self.Report = []
+        else:
+            self.Report = Report
+    def factory(*args_, **kwargs_):
+        if ReportsType.subclass:
+            return ReportsType.subclass(*args_, **kwargs_)
+        else:
+            return ReportsType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_Report(self): return self.Report
+    def set_Report(self, Report): self.Report = Report
+    def add_Report(self, value): self.Report.append(value)
+    def insert_Report(self, index, value): self.Report[index] = value
+    def hasContent_(self):
+        if (
+            self.Report
+            ):
+            return True
+        else:
+            return False
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ReportsType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='ReportsType')
+        if self.hasContent_():
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_=XML_NS, name_='ReportsType'):
+        pass
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ReportsType', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for Report_ in self.Report:
+            Report_.export(lwrite, level, nsmap, namespace_, name_='Report', pretty_print=pretty_print)
+
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'Report':
+            from . import report
+
+            if is_base(child_):
+                obj_ = stix_common_binding.ReportBaseType.factory() # not abstract
+            else:
+                klass = lookup_extension(child_)
+                obj_ = klass.factory()
+
+            obj_.build(child_)
+            self.Report.append(obj_)
+# end class TTPsType
 
 
 GDSClassesMapping = {}
