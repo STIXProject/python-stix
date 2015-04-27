@@ -726,6 +726,34 @@ class PackageIntent(VocabString):
 
 
 @register_vocab
+class ReportIntent(VocabString):
+    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _XSI_TYPE = 'stixVocabs:ReportIntentVocab-1.0'
+
+    TERM_COLLECTIVE_THREAT_INTELLIGENCE = "Collective Threat Intelligence"
+    TERM_THREAT_REPORT = "Threat Report"
+    TERM_INDICATORS = "Indicators"
+    TERM_INDICATORS_PHISHING = "Indicators - Phishing"
+    TERM_INDICATORS_WATCHLIST = "Indicators - Watchlist"
+    TERM_INDICATORS_MALWARE_ARTIFACTS = "Indicators - Malware Artifacts"
+    TERM_INDICATORS_NETWORK_ACTIVITY = "Indicators - Network Activity"
+    TERM_INDICATORS_ENDPOINT_CHARACTERISTICS = "Indicators - Endpoint Characteristics"
+    TERM_CAMPAIGN_CHARACTERIZATION = "Campaign Characterization"
+    TERM_THREAT_ACTOR_CHARACTERIZATION = "Threat Actor Characterization"
+    TERM_EXPLOIT_CHARACTERIZATION = "Exploit Characterization"
+    TERM_ATTACK_PATTERN_CHARACTERIZATION = "Attack Pattern Characterization"
+    TERM_MALWARE_CHARACTERIZATION = "Malware Characterization"
+    TERM_TTP_INFRASTRUCTURE = "TTP - Infrastructure"
+    TERM_TTP_TOOLS = "TTP - Tools"
+    TERM_COURSES_OF_ACTION = "Courses of Action"
+    TERM_INCIDENT = "Incident"
+    TERM_OBSERVATIONS = "Observations"
+    TERM_OBSERVATIONS_EMAIL = "Observations - Email"
+    TERM_MALWARE_SAMPLES = "Malware Samples"
+
+
+
+@register_vocab
 class LossDuration(VocabString):
     _namespace = 'http://stix.mitre.org/default_vocabularies-1'
     _XSI_TYPE = 'stixVocabs:LossDurationVocab-1.0'

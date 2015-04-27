@@ -2,27 +2,25 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.bindings.stix_common as stix_common_binding
-import stix.bindings.stix_core as stix_core_binding
+import stix.bindings.report as report_binding
 from stix.common import InformationSource, StructuredTextList, VocabString
-from stix.common.vocabs import PackageIntent
+from stix.common.vocabs import ReportIntent
 from stix.data_marking import Marking
 
 
-class STIXHeader(stix.Entity):
-    _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
+class Header(stix.Entity):
+    _binding = report_binding
+    _namespace = 'http://stix.mitre.org/Report-1'
 
-    def __init__(self, package_intents=None, description=None, handling=None,
-                 information_source=None, title=None, short_description=None):
+    def __init__(self, title=None, description=None, short_description=None,
+                 handling=None, intents=None, information_source=None):
 
-        self.package_intents = package_intents
+        self.intents = intents
         self.title = title
         self.description = description
         self.short_description = short_description
         self.handling = handling
         self.information_source = information_source
-        self.profiles = []
 
     @property
     def description(self):
@@ -134,15 +132,15 @@ class STIXHeader(stix.Entity):
         self._set_var(Marking, try_cast=False, handling=value)
 
     @property
-    def package_intents(self):
-        return self._package_intents
+    def intents(self):
+        return self._intents
 
-    @package_intents.setter
-    def package_intents(self, value):
-        self._package_intents = _PackageIntents(value)
+    @intents.setter
+    def intents(self, value):
+        self._intents = _ReportIntents(value)
 
-    def add_package_intent(self, package_intent):
-        self.package_intents.append(package_intent)
+    def add_intent(self, intent):
+        self.intents.append(intent)
 
     @property
     def information_source(self):
@@ -151,13 +149,6 @@ class STIXHeader(stix.Entity):
     @information_source.setter
     def information_source(self, value):
         self._set_var(InformationSource, try_cast=False, information_source=value)
-
-    def add_profile(self, profile):
-        """Adds a profile to the STIX Header. A Profile is represented by a
-        string URI.
-
-        """
-        self.profiles.append(profile)
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -172,21 +163,20 @@ class STIXHeader(stix.Entity):
         return_obj.short_descriptions = StructuredTextList.from_obj(obj.Short_Description)
         return_obj.handling = Marking.from_obj(obj.Handling)
         return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
-        return_obj.package_intents = _PackageIntents.from_obj(obj.Package_Intent)
-        return_obj.profiles = obj.Profiles.Profile if obj.Profiles else []
+        return_obj.intents = _ReportIntents.from_obj(obj.Intent)
 
         return return_obj
 
     def to_obj(self, return_obj=None, ns_info=None):
-        super(STIXHeader, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+        super(Header, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
-            return_obj = self._binding.STIXHeaderType()
+            return_obj = self._binding.HeaderType()
 
         if self.title:
             return_obj.Title = self.title
-        if self.package_intents:
-            return_obj.Package_Intent = self.package_intents.to_obj(ns_info=ns_info)
+        if self.intents:
+            return_obj.Intent = self.intents.to_obj(ns_info=ns_info)
         if self.descriptions:
             return_obj.Description = self.descriptions.to_obj(ns_info=ns_info)
         if self.short_descriptions:
@@ -195,8 +185,6 @@ class STIXHeader(stix.Entity):
             return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
         if self.information_source:
             return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
-        if self.profiles:
-            return_obj.Profiles = stix_common_binding.ProfilesType(Profile=self.profiles)
 
         return return_obj
 
@@ -209,24 +197,23 @@ class STIXHeader(stix.Entity):
             return_obj = cls()
 
         get = dict_repr.get
-        
+
         return_obj.title = get('title')
-        return_obj.package_intents = _PackageIntents.from_list(get('package_intents'))
+        return_obj.intents = _ReportIntents.from_list(get('intents'))
         return_obj.descriptions = StructuredTextList.from_dict(get('description'))
         return_obj.short_descriptions = StructuredTextList.from_dict(get('short_description'))
         return_obj.handling = Marking.from_dict(get('handling'))
         return_obj.information_source = InformationSource.from_dict(get('information_source'))
-        return_obj.profiles = get('profiles')
 
         return return_obj
 
     def to_dict(self):
-        return super(STIXHeader, self).to_dict()
+        return super(Header, self).to_dict()
 
 
 # NOT AN ACTUAL STIX TYPE!
-class _PackageIntents(stix.TypedList):
+class _ReportIntents(stix.TypedList):
     _contained_type = VocabString
 
     def _fix_value(self, value):
-        return PackageIntent(value)
+        return ReportIntent(value)

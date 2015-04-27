@@ -18,7 +18,8 @@ from .related import (   # noqa
     GenericRelationshipList, RelatedCampaign, RelatedCOA,
     RelatedExploitTarget, RelatedIdentity, RelatedIncident,
     RelatedIndicator, RelatedObservable, RelatedThreatActor, RelatedTTP,
-    RelatedPackage, RelatedPackages, RelatedCampaignRef
+    RelatedPackage, RelatedPackages, RelatedCampaignRef, RelatedReports,
+    RelatedReport
 )
 
 # Patch in base types of Related* types
@@ -29,6 +30,7 @@ from stix.coa import CourseOfAction
 from stix.exploit_target import ExploitTarget
 from stix.incident import Incident
 from stix.indicator import Indicator
+from stix.report import Report
 from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
 
@@ -43,11 +45,13 @@ RelatedThreatActor._base_type = ThreatActor  # noqa
 RelatedTTP._base_type = TTP  # noqa
 RelatedObservable._base_type = Observable  # noqa
 RelatedPackage._base_type = STIXPackage  # noqa
+RelatedReport._base_type = Report  # noqa
 RelatedCampaignRef._base_type = CampaignRef  # noqa
 
-# Path the RelatedPackages _contained_type
-RelatedPackages._contained_type = RelatedPackage  # noqa
 
+# Patch contained types
+RelatedPackages._contained_type = RelatedPackage  # noqa
+RelatedReports._contained_type = RelatedReport  # noqa
 
 import stix
 import stix.utils as utils

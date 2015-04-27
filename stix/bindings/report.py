@@ -1,3 +1,6 @@
+# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# See LICENSE.txt for complete terms.
+
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -8,7 +11,6 @@
 from stix.bindings import *
 from cybox.bindings import cybox_core
 import stix.bindings.stix_common as common_binding
-from stix import xmlconst
 
 XML_NS = "http://stix.mitre.org/Report-1"
 
@@ -586,71 +588,7 @@ class ThreatActorsType(GeneratedsSuper):
 # end class ThreatActorsType
 
 
-class RelatedReportType(common_binding.GenericRelationshipType):
-    """Identifies or characterizes a relationship to a report."""
-    subclass = None
-    superclass = common_binding.GenericRelationshipType
-    def __init__(self, Confidence=None, Information_Source=None, Relationship=None, Report=None):
-        super(RelatedReportType, self).__init__(Confidence, Information_Source, Relationship, )
-        self.Report = Report
-    def factory(*args_, **kwargs_):
-        if RelatedReportType.subclass:
-            return RelatedReportType.subclass(*args_, **kwargs_)
-        else:
-            return RelatedReportType(*args_, **kwargs_)
-    factory = staticmethod(factory)
-    def get_Report(self): return self.Report
-    def set_Report(self, Report): self.Report = Report
-    def hasContent_(self):
-        if (
-            self.Report is not None or
-            super(RelatedReportType, self).hasContent_()
-            ):
-            return True
-        else:
-            return False
-    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedReportType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
-        showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
-        already_processed = set()
-        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedReportType')
-        if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
-            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
-        else:
-            lwrite('/>%s' % (eol_, ))
-    def exportAttributes(self, lwrite, level, already_processed, namespace_='report:', name_='RelatedReportType'):
-        super(RelatedReportType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedReportType')
-    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedReportType', fromsubclass_=False, pretty_print=True):
-        super(RelatedReportType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
-        if self.Report is not None:
-            self.Report.export(lwrite, level, nsmap, namespace_, name_='Report', pretty_print=pretty_print)
-    def build(self, node):
-        already_processed = set()
-        self.buildAttributes(node, node.attrib, already_processed)
-        for child in node:
-            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
-            self.buildChildren(child, node, nodeName_)
-    def buildAttributes(self, node, attrs, already_processed):
-        super(RelatedReportType, self).buildAttributes(node, attrs, already_processed)
-    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'Report':
-            class_obj_ = self.get_class_obj_(child_, common_binding.ReportBaseType)
-            obj_ = class_obj_.factory()
-            obj_.build(child_)
-            self.set_Report(obj_)
-        super(RelatedReportType, self).buildChildren(child_, node, nodeName_, True)
-# end class RelatedReportType
+
 
 
 @register_extension
@@ -826,6 +764,75 @@ class ReportType(common_binding.ReportBaseType):
         super(ReportType, self).buildChildren(child_, node, nodeName_, True)
 # end class ReportType
 
+
+class RelatedReportsType(common_binding.GenericRelationshipListType):
+    subclass = None
+    superclass = common_binding.GenericRelationshipListType
+    def __init__(self, scope='exclusive', Related_Report=None):
+        super(RelatedReportsType, self).__init__(scope, )
+        if Related_Report is None:
+            self.Related_Report = []
+        else:
+            self.Related_Report = Related_Report
+    def factory(*args_, **kwargs_):
+        if RelatedReportsType.subclass:
+            return RelatedReportsType.subclass(*args_, **kwargs_)
+        else:
+            return RelatedReportsType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_Related_Report(self): return self.Related_Report
+    def set_Related_Report(self, Related_Report): self.Related_Report = Related_Report
+    def add_Related_Report(self, value): self.Related_Report.append(value)
+    def insert_Related_Report(self, index, value): self.Related_Report[index] = value
+    def hasContent_(self):
+        if (
+            self.Related_Report or
+            super(RelatedReportsType, self).hasContent_()
+            ):
+            return True
+        else:
+            return False
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedReportsType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedReportsType')
+        if self.hasContent_():
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_='report:', name_='RelatedReportsType'):
+        super(RelatedReportsType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='RelatedReportsType')
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedReportsType', fromsubclass_=False, pretty_print=True):
+        super(RelatedReportsType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for Related_Report_ in self.Related_Report:
+            Related_Report_.export(lwrite, level, nsmap, namespace_, name_='Related_Report', pretty_print=pretty_print)
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        super(RelatedReportsType, self).buildAttributes(node, attrs, already_processed)
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'Related_Report':
+            obj_ = common_binding.RelatedReportType.factory()
+            obj_.build(child_)
+            self.Related_Report.append(obj_)
+        super(RelatedReportsType, self).buildChildren(child_, node, nodeName_, True)
+# end class RelatedReportsType
 
 
 GDSClassesMapping = {}

@@ -11,38 +11,37 @@ import stix.utils.parser as parser
 
 from stix.campaign import Campaign
 from stix.coa import CourseOfAction
+from stix.core.ttps import TTPs
 from stix.exploit_target import ExploitTarget
 from stix.indicator import Indicator
 from stix.incident import Incident
-from stix.report import Report
 from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
-from stix.common.related import RelatedPackages
+from stix.common.related import RelatedReports
 
 # relative imports
-from .stix_header import STIXHeader
-from .ttps import TTPs
+from .header import Header
 
 # binding imports
 import stix.bindings.stix_common as stix_common_binding
-import stix.bindings.stix_core as stix_core_binding
+import stix.bindings.report as report_binding
 
 
-class STIXPackage(stix.Entity):
-    _binding = stix_core_binding
-    _binding_class = _binding.STIXType
-    _namespace = 'http://stix.mitre.org/stix-1'
-    _version = "1.2"
+class Report(stix.Entity):
+    _binding = report_binding
+    _binding_class = _binding.ReportType
+    _namespace = 'http://stix.mitre.org/Report-1'
+    _version = "1.0"
 
-    def __init__(self, id_=None, idref=None, timestamp=None, stix_header=None,
+    def __init__(self, id_=None, idref=None, timestamp=None, header=None,
                  courses_of_action=None, exploit_targets=None, indicators=None,
                  observables=None, incidents=None, threat_actors=None,
-                 ttps=None, campaigns=None, reports=None):
+                 ttps=None, campaigns=None):
         
-        self.id_ = id_ or stix.utils.create_id("Package")
+        self.id_ = id_ or stix.utils.create_id("Report")
         self.idref = idref
         self.version = self._version
-        self.stix_header = stix_header
+        self.header = header
         self.campaigns = campaigns
         self.courses_of_action = courses_of_action
         self.exploit_targets = exploit_targets
@@ -51,8 +50,7 @@ class STIXPackage(stix.Entity):
         self.incidents = incidents
         self.threat_actors = threat_actors
         self.ttps = ttps
-        self.related_packages = RelatedPackages()
-        self.reports = reports
+        self.related_reports = RelatedReports()
         
         if timestamp:
             self.timestamp = timestamp
@@ -92,12 +90,12 @@ class STIXPackage(stix.Entity):
         self._timestamp = utils.dates.parse_value(value)
 
     @property
-    def stix_header(self):
-        return self._stix_header
+    def header(self):
+        return self._header
 
-    @stix_header.setter
-    def stix_header(self, value):
-        self._set_var(STIXHeader, try_cast=False, stix_header=value)
+    @header.setter
+    def header(self, value):
+        self._set_var(Header, try_cast=False, header=value)
 
     @property
     def indicators(self):
@@ -193,17 +191,6 @@ class STIXPackage(stix.Entity):
     def add_ttp(self, ttp):
         self.ttps.append(ttp)
 
-    @property
-    def reports(self):
-        return self._reports
-
-    @reports.setter
-    def reports(self, value):
-        self._reports = Reports(value)
-
-    def add_report(self, report):
-        self.reports.append(report)
-
     def add(self, entity):
         """Adds `entity` to a top-level collection. For example, if `entity` is
         an Indicator object, the `entity` will be added to the ``indicators``
@@ -222,7 +209,6 @@ class STIXPackage(stix.Entity):
             Indicator: self.add_indicator,
             ThreatActor: self.add_threat_actor,
             TTP: self.add_threat_actor,
-            Report: self.add_report,
             Observable: self.add_observable,
         }
 
@@ -235,7 +221,7 @@ class STIXPackage(stix.Entity):
             raise TypeError(error)
 
     def to_obj(self, return_obj=None, ns_info=None):
-        super(STIXPackage, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+        super(Report, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
         if not return_obj:
             return_obj = self._binding_class()
@@ -245,8 +231,8 @@ class STIXPackage(stix.Entity):
         return_obj.version = self.version
         return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
 
-        if self.stix_header:
-            return_obj.STIX_Header = self.stix_header.to_obj(ns_info=ns_info)
+        if self.header:
+            return_obj.STIX_Header = self.header.to_obj(ns_info=ns_info)
         if self.campaigns:
             return_obj.Campaigns = self.campaigns.to_obj(ns_info=ns_info)
         if self.courses_of_action:
@@ -263,15 +249,13 @@ class STIXPackage(stix.Entity):
             return_obj.Threat_Actors = self.threat_actors.to_obj(ns_info=ns_info)
         if self.ttps:
             return_obj.TTPs = self.ttps.to_obj(ns_info=ns_info)
-        if self.related_packages:
-            return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
-        if self.reports:
-            return_obj.Reports = self.reports.to_obj(ns_info=ns_info)
+        if self.related_reports:
+            return_obj.Related_Reports = self.related_reports.to_obj(ns_info=ns_info)
              
         return return_obj
 
     def to_dict(self):
-        return super(STIXPackage, self).to_dict()
+        return super(Report, self).to_dict()
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -281,7 +265,7 @@ class STIXPackage(stix.Entity):
         return_obj.id_ = obj.id
         return_obj.idref = obj.idref
         return_obj.timestamp = obj.timestamp
-        return_obj.stix_header = STIXHeader.from_obj(obj.STIX_Header)
+        return_obj.header = Header.from_obj(obj.STIX_Header)
         return_obj.campaigns = Campaigns.from_obj(obj.Campaigns)
         return_obj.courses_of_action = CoursesOfAction.from_obj(obj.Courses_Of_Action)
         return_obj.exploit_targets = ExploitTargets.from_obj(obj.Exploit_Targets)
@@ -290,8 +274,7 @@ class STIXPackage(stix.Entity):
         return_obj.incidents = Incidents.from_obj(obj.Incidents)
         return_obj.threat_actors = ThreatActors.from_obj(obj.Threat_Actors)
         return_obj.ttps = TTPs.from_obj(obj.TTPs)
-        return_obj.related_packages = RelatedPackages.from_obj(obj.Related_Packages)
-        return_obj.reports = Reports.from_obj(obj.Reports)
+        return_obj.related_reports = RelatedReports.from_obj(obj.Related_Packages)
 
         # Don't overwrite unless a version is passed in
         if obj.version:
@@ -305,12 +288,11 @@ class STIXPackage(stix.Entity):
             return_obj = cls()
 
         get = dict_repr.get
-
         return_obj.id_ = get('id')
         return_obj.idref = get('idref')
         return_obj.timestamp = get('timestamp')
         return_obj.version = get('version', cls._version)
-        return_obj.stix_header = STIXHeader.from_dict(get('stix_header'))
+        return_obj.header = Header.from_dict(get('header'))
         return_obj.campaigns = Campaigns.from_dict(get('campaigns'))
         return_obj.courses_of_action = CoursesOfAction.from_dict(get('courses_of_action'))
         return_obj.exploit_targets = ExploitTargets.from_dict(get('exploit_targets'))
@@ -319,34 +301,14 @@ class STIXPackage(stix.Entity):
         return_obj.incidents = Incidents.from_dict(get('incidents'))
         return_obj.threat_actors = ThreatActors.from_dict(get('threat_actors'))
         return_obj.ttps = TTPs.from_dict(get('ttps'))
-        return_obj.related_packages = RelatedPackages.from_dict(get('related_packages'))
-        return_obj.reports = Reports.from_dict(get('reports'))
+        return_obj.related_reports = RelatedReports.from_dict(get('related_reports'))
         
         return return_obj
 
-    @classmethod
-    def from_xml(cls, xml_file, encoding=None):
-        """Parses the `xml_file` file-like object and returns a
-        :class:`STIXPackage` instance.
-
-        Args:
-            xml_file: A file, file-like object, etree._Element, or
-                etree._ElementTree instance.
-            encoding: The character encoding of the `xml_file` input. If
-                ``None``, an attempt will be made to determine the input
-                character encoding. Default is ``None``.
-
-        Returns:
-            An instance of :class:`STIXPackage`.
-
-        """
-        entity_parser = parser.EntityParser()
-        return entity_parser.parse_xml(xml_file, encoding=encoding)
-
 
 class Campaigns(stix.EntityList):
-    _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
+    _binding = report_binding
+    _namespace = 'http://stix.mitre.org/Report-1'
     _binding_class = _binding.CampaignsType
     _contained_type = Campaign
     _binding_var = "Campaign"
@@ -355,8 +317,8 @@ class Campaigns(stix.EntityList):
 
 
 class CoursesOfAction(stix.EntityList):
-    _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
+    _binding = report_binding
+    _namespace = 'http://stix.mitre.org/Report-1'
     _binding_class = _binding.CoursesOfActionType
     _contained_type = CourseOfAction
     _binding_var = "Course_Of_Action"
@@ -375,8 +337,8 @@ class ExploitTargets(stix.EntityList):
 
 
 class Incidents(stix.EntityList):
-    _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
+    _binding = report_binding
+    _namespace = 'http://stix.mitre.org/Report-1'
     _binding_class = _binding.IncidentsType
     _contained_type = Incident
     _binding_var = "Incident"
@@ -385,8 +347,8 @@ class Incidents(stix.EntityList):
 
 
 class Indicators(stix.EntityList):
-    _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
+    _binding = report_binding
+    _namespace = 'http://stix.mitre.org/Report-1'
     _binding_class = _binding.IndicatorsType
     _contained_type = Indicator
     _binding_var = "Indicator"
@@ -395,20 +357,10 @@ class Indicators(stix.EntityList):
 
 
 class ThreatActors(stix.EntityList):
-    _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
+    _binding = report_binding
+    _namespace = 'http://stix.mitre.org/Report-1'
     _binding_class = _binding.ThreatActorsType
     _contained_type = ThreatActor
     _binding_var = "Threat_Actor"
     _inner_name = "threat_actors"
-    _dict_as_list = True
-
-
-class Reports(stix.EntityList):
-    _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
-    _binding_class = _binding.ReportsType
-    _contained_type = Report
-    _binding_var = "Report"
-    _inner_name = "reports"
     _dict_as_list = True

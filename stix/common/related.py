@@ -8,6 +8,7 @@ import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 import stix.bindings.stix_core as core_binding
+import stix.bindings.report as report_binding
 
 # relative
 from .vocabs import VocabString
@@ -267,6 +268,15 @@ class RelatedPackages(GenericRelationshipList):
     _inner_name = "related_packages"
 
 
+class RelatedReports(GenericRelationshipList):
+    _namespace = 'http://stix.mitre.org/Report-1'
+    _binding = report_binding
+    _binding_class = report_binding.RelatedReportsType
+    _binding_var = "Related_Report"
+    # _contained_type is patched in common/__init__.py
+    _inner_name = "related_reports"
+
+
 class RelatedPackageRefs(stix.EntityList):
     _namespace = 'http://stix.mitre.org/common-1'
     _binding = common_binding
@@ -442,6 +452,14 @@ class RelatedPackage(_BaseRelated):
     _binding_class = core_binding.RelatedPackageType
     # _base_type is set in common/__init__.py
     _inner_var = "Package"
+
+
+class RelatedReport(_BaseRelated):
+    _namespace = "http://stix.mitre.org/common-1"
+    _binding = common_binding
+    _binding_class = common_binding.RelatedReportType
+    # _base_type is set in common/__init__.py
+    _inner_var = "Report"
 
 
 class RelatedCampaignRef(_BaseRelated):
