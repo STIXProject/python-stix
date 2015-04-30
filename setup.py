@@ -34,9 +34,17 @@ extras_require = {
     'test': [
         'nose==1.3.0',
         'tox==1.6.1',
-        'maec>=4.1.0.10,<4.1.1.0'
+        'maec>=4.1.0.12,<4.1.1.0'
     ],
 }
+
+
+install_requires = [
+    'lxml>=2.3',
+    'python-dateutil',
+    'cybox>=2.1.0.11,<2.1.1.0'
+]
+
 
 setup(
     name="stix",
@@ -47,7 +55,7 @@ setup(
     long_description=readme,
     url="http://stix.mitre.org",
     packages=find_packages(),
-    install_requires=['lxml>=2.3', 'python-dateutil', 'cybox>=2.1.0.9,<2.1.1.0'],
+    install_requires=install_requires,
     extras_require=extras_require,
     classifiers=[
         "Programming Language :: Python",

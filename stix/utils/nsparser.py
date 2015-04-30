@@ -239,11 +239,17 @@ class NamespaceInfo(object):
         for alias, ns in namespace_dicts:
             ns_dict[alias].add(ns)
 
-        # Check that all the aliases are mapped to only one namespace
+        # Check that all the prefixes are mapped to only one namespace
         self._check_namespaces(ns_dict)
 
-        # Return a flattened dictionary
-        return dict((alias, tuple(ns)[0]) for alias, ns in ns_dict.iteritems())
+        # Flatten the dictionary by popping the namespace from the namespace
+        # set values in ns_dict.
+        flattened = {}
+        for alias, ns_set in ns_dict.iteritems():
+            flattened[alias] = ns_set.pop()
+
+        # Return the flattened dictionary
+        return flattened
 
     def _finalize_schemalocs(self, schemaloc_dict=None):
         # If schemaloc_dict was passed in, make a copy so we don't mistakenly
@@ -287,16 +293,28 @@ class NamespaceInfo(object):
         return schemaloc_dict
 
     def _finalize_binding_namespaces(self):
+        """Returns a namespace-to-prefix dictionary view of the
+        finalized_namespaces (which are mapped prefix-to-namespace).
+
+        The bindings expect an NS-to-prefix mapping, while our ns processing
+        code builds dictionaries that map prefix-to-Namespace(s). Because of
+        this, we need to flip our dictionaries before handing them off to the
+        bindings for serialization.
+
+        """
         if not self.finalized_namespaces:
-            return {}
+            return {}  # TODO: Should this return the DEFAULT_STIX_NAMESPACES?
 
-        final = dict(
-            (ns, alias) for alias, ns in self.finalized_namespaces.iteritems()
-        )
-        
-        final.update(DEFAULT_STIX_NAMESPACES)
+        binding_namespaces = {}
+        for alias, ns in self.finalized_namespaces.iteritems():
+            binding_namespaces[ns] = alias
 
-        return final
+        # Always use the default STIX prefixes for STIX namespaces.
+        # This is because of xsi:type prefixes used by the STIX/CybOX user-level
+        # API classes.
+        binding_namespaces.update(DEFAULT_STIX_NAMESPACES)
+
+        return binding_namespaces
 
     def finalize(self, ns_dict=None, schemaloc_dict=None):
         self._parse_collected_classes()
