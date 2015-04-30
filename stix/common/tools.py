@@ -81,6 +81,14 @@ class ToolInformation(stix.Entity, cybox.common.ToolInformation):
     def short_descriptions(self, value):
         self._short_description = StructuredTextList(value)
 
+    def add_short_description(self, description):
+        """Adds a description to the ``short_descriptions`` collection.
+
+        This is the same as calling "foo.short_descriptions.add(bar)".
+
+        """
+        self.short_descriptions.add(description)
+
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()

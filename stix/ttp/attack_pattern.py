@@ -77,6 +77,14 @@ class AttackPattern(stix.Entity):
     def descriptions(self, value):
         self._description = StructuredTextList(value)
 
+    def add_description(self, description):
+        """Adds a description to the ``descriptions`` collection.
+
+        This is the same as calling "foo.descriptions.add(bar)".
+
+        """
+        self.descriptions.add(description)
+
     @property
     def short_description(self):
         """A single short description about the contents or purpose of this
@@ -126,6 +134,14 @@ class AttackPattern(stix.Entity):
     @short_descriptions.setter
     def short_descriptions(self, value):
         self._short_description = StructuredTextList(value)
+
+    def add_short_description(self, description):
+        """Adds a description to the ``short_descriptions`` collection.
+
+        This is the same as calling "foo.short_descriptions.add(bar)".
+
+        """
+        self.short_descriptions.add(description)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(AttackPattern, self).to_obj(return_obj=return_obj, ns_info=ns_info)

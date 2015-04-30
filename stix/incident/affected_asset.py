@@ -89,6 +89,14 @@ class AffectedAsset(stix.Entity):
     def descriptions(self, value):
         self._description = StructuredTextList(value)
 
+    def add_description(self, description):
+        """Adds a description to the ``descriptions`` collection.
+
+        This is the same as calling "foo.descriptions.add(bar)".
+
+        """
+        self.descriptions.add(description)
+
     @property
     def business_function_or_role(self):
         return next(iter(self.business_functions_or_roles), None)

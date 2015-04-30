@@ -738,6 +738,14 @@ class BaseCoreComponent(Entity):
         from stix.common import StructuredTextList
         self._description = StructuredTextList(value)
 
+    def add_description(self, description):
+        """Adds a description to the ``descriptions`` collection.
+
+        This is the same as calling "foo.descriptions.add(bar)".
+
+        """
+        self.descriptions.add(description)
+
     @property
     def short_description(self):
         """A single short description about the contents or purpose of this
@@ -788,6 +796,14 @@ class BaseCoreComponent(Entity):
     def short_descriptions(self, value):
         from stix.common import StructuredTextList
         self._short_description = StructuredTextList(value)
+
+    def add_short_description(self, description):
+        """Adds a description to the ``short_descriptions`` collection.
+
+        This is the same as calling "foo.short_descriptions.add(bar)".
+
+        """
+        self.short_descriptions.add(description)
 
     @property
     def information_source(self):

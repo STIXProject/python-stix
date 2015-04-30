@@ -83,6 +83,14 @@ class Sighting(stix.Entity):
     def descriptions(self, value):
         self._description = StructuredTextList(value)
 
+    def add_description(self, description):
+        """Adds a description to the ``descriptions`` collection.
+
+        This is the same as calling "foo.descriptions.add(bar)".
+
+        """
+        self.descriptions.add(description)
+
     @property
     def source(self):
         return self._source

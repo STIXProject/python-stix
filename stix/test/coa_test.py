@@ -69,6 +69,29 @@ class COATests(EntityTestCase, unittest.TestCase):
         'structured_coa': generic_test.GenericStructuredCOATests._full_dict
     }
 
+    def test_add_description(self):
+        o1 = self.klass()
+        o2 = self.klass()
+
+        o1.add_description("Test")
+        o2.descriptions.add("Test")
+
+        self.assertEqual(
+            o1.descriptions.to_dict(),
+            o2.descriptions.to_dict()
+        )
+
+    def test_add_short_description(self):
+        o1 = self.klass()
+        o2 = self.klass()
+
+        o1.add_short_description("Test")
+        o2.short_descriptions.add("Test")
+
+        self.assertEqual(
+            o1.short_descriptions.to_dict(),
+            o2.short_descriptions.to_dict()
+        )
 
     def test_structured_coa(self):
         coa_ = coa.CourseOfAction()

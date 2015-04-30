@@ -74,6 +74,14 @@ class Activity(stix.Entity):
     def descriptions(self, value):
         self._description = StructuredTextList(value)
 
+    def add_description(self, description):
+        """Adds a description to the ``descriptions`` collection.
+
+        This is the same as calling "foo.descriptions.add(bar)".
+
+        """
+        self.descriptions.add(description)
+
     def to_obj(self, return_obj=None, ns_info=None):
         super(Activity, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 

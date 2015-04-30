@@ -163,6 +163,8 @@ class StructuredTextListTests(unittest.TestCase, TypedListTestCase):
         self.assertTrue(st1 not in slist)
         self.assertTrue(st2 not in slist)
 
+    def test_add_short_description(self):
+        pass
 
 if __name__ == "__main__":
     unittest.main()
