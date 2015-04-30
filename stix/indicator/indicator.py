@@ -174,8 +174,8 @@ class Indicator(stix.BaseCoreComponent):
     _binding = indicator_binding
     _binding_class = indicator_binding.IndicatorType
     _namespace = 'http://stix.mitre.org/Indicator-2'
-    _version = "2.1.1"
-    _ALL_VERSIONS = ("2.0", "2.0.1", "2.1", "2.1.1")
+    _version = "2.2"
+    _ALL_VERSIONS = ("2.0", "2.0.1", "2.1", "2.1.1", "2.2")
     _ALLOWED_COMPOSITION_OPERATORS = ('AND', 'OR')
     _ID_PREFIX = "indicator"
 

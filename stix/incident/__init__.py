@@ -28,8 +28,8 @@ class Incident(stix.BaseCoreComponent):
     _binding = incident_binding
     _binding_class = _binding.IncidentType
     _namespace = "http://stix.mitre.org/Incident-1"
-    _version = "1.1.1"
-    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1")
+    _version = "1.2"
+    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = 'incident'
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):

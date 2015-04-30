@@ -70,8 +70,8 @@ class Campaign(stix.BaseCoreComponent):
     _binding = campaign_binding
     _binding_class = _binding.CampaignType
     _namespace = "http://stix.mitre.org/Campaign-1"
-    _version = "1.1.1"
-    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1")
+    _version = "1.2"
+    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = 'campaign'
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,

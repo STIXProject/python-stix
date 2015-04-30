@@ -17,8 +17,8 @@ class TTP(stix.BaseCoreComponent):
     _binding = ttp_binding
     _binding_class = _binding.TTPType
     _namespace = "http://stix.mitre.org/TTP-1"
-    _version = "1.1.1"
-    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1")
+    _version = "1.2"
+    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = "ttp"
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,

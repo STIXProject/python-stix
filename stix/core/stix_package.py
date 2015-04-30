@@ -33,6 +33,7 @@ class STIXPackage(stix.Entity):
     _binding_class = _binding.STIXType
     _namespace = 'http://stix.mitre.org/stix-1'
     _version = "1.2"
+    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
 
     def __init__(self, id_=None, idref=None, timestamp=None, stix_header=None,
                  courses_of_action=None, exploit_targets=None, indicators=None,

@@ -409,7 +409,7 @@ STIX_NS_TO_SCHEMALOCATION = {
     'http://stix.mitre.org/CourseOfAction-1': 'http://stix.mitre.org/XMLSchema/course_of_action/1.2/course_of_action.xsd',
     'http://stix.mitre.org/ExploitTarget-1': 'http://stix.mitre.org/XMLSchema/exploit_target/1.2/exploit_target.xsd',
     'http://stix.mitre.org/Incident-1': 'http://stix.mitre.org/XMLSchema/incident/1.2/incident.xsd',
-    'http://stix.mitre.org/Indicator-2': 'http://stix.mitre.org/XMLSchema/indicator/2.1.1/indicator.xsd',
+    'http://stix.mitre.org/Indicator-2': 'http://stix.mitre.org/XMLSchema/indicator/2.2/indicator.xsd',
     'http://stix.mitre.org/Report-1': 'http://stix.mitre.org/XMLSchema/report/1.0/report.xsd',
     'http://stix.mitre.org/TTP-1': 'http://stix.mitre.org/XMLSchema/ttp/1.2/ttp.xsd',
     'http://stix.mitre.org/ThreatActor-1': 'http://stix.mitre.org/XMLSchema/threat_actor/1.2/threat_actor.xsd',

@@ -42,8 +42,8 @@ class ThreatActor(stix.BaseCoreComponent):
     _binding = threat_actor_binding
     _binding_class = threat_actor_binding.ThreatActorType
     _namespace = 'http://stix.mitre.org/ThreatActor-1'
-    _version = "1.1.1"
-    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1")
+    _version = "1.2"
+    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = 'threatactor'
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
