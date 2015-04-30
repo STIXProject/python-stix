@@ -828,3 +828,12 @@ class InformationSourceRole(VocabString):
     TERM_AGGREGATOR = "Aggregator"
     TERM_TRANSFORMERORTRANSLATOR = "Transformer/Translator"
 
+
+@register_vocab
+class Versioning(VocabString):
+    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _XSI_TYPE = 'stixVocabs:VersioningVocab-1.0'
+
+    TERM_UPDATES_REVISES = "Updates - Revises"
+    TERM_UPDATE_CORRECTS = "Updates - Corrects"
+    TERM_REVOKES = "Revokes"
