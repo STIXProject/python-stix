@@ -130,8 +130,16 @@ class AffectedAssetType(GeneratedsSuper):
     superclass = None
     def __init__(self, Type=None, Description=None, Business_Function_Or_Role=None, Ownership_Class=None, Management_Class=None, Location_Class=None, Location=None, Nature_Of_Security_Effect=None, Structured_Description=None):
         self.Type = Type
-        self.Description = Description
-        self.Business_Function_Or_Role = Business_Function_Or_Role
+        if Description is None:
+            self.Description  = []
+        else:
+            self.Description = Description
+
+        if Business_Function_Or_Role is None:
+            self.Business_Function_Or_Role = []
+        else:
+            self.Business_Function_Or_Role = Business_Function_Or_Role
+
         self.Ownership_Class = Ownership_Class
         self.Management_Class = Management_Class
         self.Location_Class = Location_Class
@@ -146,8 +154,12 @@ class AffectedAssetType(GeneratedsSuper):
     factory = staticmethod(factory)
     def get_Type(self): return self.Type
     def set_Type(self, Type): self.Type = Type
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def insert_Business_Function_Or_Role(self, index, value): self.Business_Function_Or_Role[index] = value
+    def add_Business_Function_Or_Role(self, Business_Function_Or_Role): self.Business_Function_Or_Role.append(Business_Function_Or_Role)
     def get_Business_Function_Or_Role(self): return self.Business_Function_Or_Role
     def set_Business_Function_Or_Role(self, Business_Function_Or_Role): self.Business_Function_Or_Role = Business_Function_Or_Role
     def get_Ownership_Class(self): return self.Ownership_Class
@@ -165,8 +177,8 @@ class AffectedAssetType(GeneratedsSuper):
     def hasContent_(self):
         if (
             self.Type is not None or
-            self.Description is not None or
-            self.Business_Function_Or_Role is not None or
+            self.Description or
+            self.Business_Function_Or_Role or
             self.Ownership_Class is not None or
             self.Management_Class is not None or
             self.Location_Class is not None or
@@ -202,10 +214,10 @@ class AffectedAssetType(GeneratedsSuper):
             eol_ = ''
         if self.Type is not None:
             self.Type.export(lwrite, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-        if self.Business_Function_Or_Role is not None:
-            self.Business_Function_Or_Role.export(lwrite, level, nsmap, namespace_, name_='Business_Function_Or_Role', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Business_Function_Or_Role in self.Business_Function_Or_Role:
+            Business_Function_Or_Role.export(lwrite, level, nsmap, namespace_, name_='Business_Function_Or_Role', pretty_print=pretty_print)
         if self.Ownership_Class is not None:
             self.Ownership_Class.export(lwrite, level, nsmap, namespace_, name_='Ownership_Class', pretty_print=pretty_print)
         if self.Management_Class is not None:
@@ -234,11 +246,11 @@ class AffectedAssetType(GeneratedsSuper):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Business_Function_Or_Role':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Business_Function_Or_Role(obj_)
+            self.add_Business_Function_Or_Role(obj_)
         elif nodeName_ == 'Ownership_Class':
             obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)

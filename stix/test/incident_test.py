@@ -360,6 +360,8 @@ class AffectedAssetTest(EntityTestCase, unittest.TestCase):
 
     _full_dict = {
         'type': AssetTypeTest._full_dict,
+        'description': 'Foo',
+        'business_function_or_role': 'Bar',
         'nature_of_security_effect': NatureOfSecurityEffectTest._full_dict,
         'ownership_class': {
             'value': 'Unknown',

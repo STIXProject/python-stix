@@ -185,8 +185,8 @@ class AffectedAsset(stix.Entity):
         
         if self.type_:
             return_obj.Type = self.type_.to_obj(ns_info=ns_info)
-        if self.description:
-            return_obj.Description = self.description.to_obj(ns_info=ns_info)
+        if self.descriptions:
+            return_obj.Description = self.descriptions.to_obj(ns_info=ns_info)
         if self.business_functions_or_roles:
             return_obj.Business_Function_Or_Role = self.business_functions_or_roles.to_obj(ns_info=ns_info)
         if self.ownership_class:
@@ -215,7 +215,7 @@ class AffectedAsset(stix.Entity):
 
         get = d.get
         return_obj.type_ = AssetType.from_dict(get('type'))
-        return_obj.description = StructuredTextList.from_dict(get('description'))
+        return_obj.descriptions = StructuredTextList.from_dict(get('description'))
         return_obj.business_functions_or_roles = StructuredTextList.from_dict(get('business_function_or_role'))
         return_obj.ownership_class = VocabString.from_dict(get('ownership_class'))
         return_obj.management_class = VocabString.from_dict(get('management_class'))
