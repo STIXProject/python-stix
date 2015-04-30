@@ -11,6 +11,7 @@
 from stix.bindings import *
 from cybox.bindings import cybox_core
 import stix.bindings.stix_common as common_binding
+import stix.bindings.data_marking as data_marking_binding
 
 XML_NS = "http://stix.mitre.org/Report-1"
 
@@ -100,7 +101,7 @@ class HeaderType(GeneratedsSuper):
             eol_ = ''
         if self.Title is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Title).encode(ExternalEncoding), input_name='Title'), nsmap[namespace_], eol_))
+            lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
         for Intent_ in self.Intent:
             Intent_.export(lwrite, level, nsmap, namespace_, name_='Intent', pretty_print=pretty_print)
         for Description_ in self.Description:
@@ -137,7 +138,7 @@ class HeaderType(GeneratedsSuper):
             obj_.build(child_)
             self.Short_Description.append(obj_)
         elif nodeName_ == 'Handling':
-            obj_ = common_binding.MarkingType.factory()
+            obj_ = data_marking_binding.MarkingType.factory()
             obj_.build(child_)
             self.set_Handling(obj_)
         elif nodeName_ == 'Information_Source':
@@ -679,6 +680,10 @@ class ReportType(common_binding.ReportBaseType):
             lwrite('/>%s' % (eol_, ))
     def exportAttributes(self, lwrite, level, already_processed, namespace_='report:', name_='ReportType'):
         super(ReportType, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='ReportType')
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            lwrite(xsi_type)
         if self.version is not None and 'version' not in already_processed:
             already_processed.add('version')
             lwrite(' version=%s' % (quote_attrib(self.version), ))
@@ -691,7 +696,7 @@ class ReportType(common_binding.ReportBaseType):
         if self.Header is not None:
             self.Header.export(lwrite, level, nsmap, namespace_, name_='Header', pretty_print=pretty_print)
         if self.Observables is not None:
-            self.Observables.export(lwrite, level, nsmap, namespace_, name_='Observables', pretty_print=pretty_print)
+            self.Observables.export(lwrite, level, "%s:" % (nsmap[namespace_]), name_='Observables', pretty_print=pretty_print) # no nsmap parameter, so we use this hack to pass the right namespace prefix
         if self.Indicators is not None:
             self.Indicators.export(lwrite, level, nsmap, namespace_, name_='Indicators', pretty_print=pretty_print)
         if self.TTPs is not None:
@@ -758,7 +763,7 @@ class ReportType(common_binding.ReportBaseType):
             obj_.build(child_)
             self.set_Threat_Actors(obj_)
         elif nodeName_ == 'Related_Reports':
-            obj_ = common_binding.RelatedReportsType.factory()
+            obj_ = RelatedReportsType.factory()
             obj_.build(child_)
             self.set_Related_Reports(obj_)
         super(ReportType, self).buildChildren(child_, node, nodeName_, True)

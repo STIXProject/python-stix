@@ -265,7 +265,7 @@ class Report(stix.Entity):
         return_obj.id_ = obj.id
         return_obj.idref = obj.idref
         return_obj.timestamp = obj.timestamp
-        return_obj.header = Header.from_obj(obj.STIX_Header)
+        return_obj.header = Header.from_obj(obj.Header)
         return_obj.campaigns = Campaigns.from_obj(obj.Campaigns)
         return_obj.courses_of_action = CoursesOfAction.from_obj(obj.Courses_Of_Action)
         return_obj.exploit_targets = ExploitTargets.from_obj(obj.Exploit_Targets)
@@ -274,7 +274,7 @@ class Report(stix.Entity):
         return_obj.incidents = Incidents.from_obj(obj.Incidents)
         return_obj.threat_actors = ThreatActors.from_obj(obj.Threat_Actors)
         return_obj.ttps = TTPs.from_obj(obj.TTPs)
-        return_obj.related_reports = RelatedReports.from_obj(obj.Related_Packages)
+        return_obj.related_reports = RelatedReports.from_obj(obj.Related_Reports)
 
         # Don't overwrite unless a version is passed in
         if obj.version:
