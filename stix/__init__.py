@@ -12,7 +12,7 @@ from .base import (  # noqa
 _EXTENSION_MAP = {}
 
 
-def _lookup_unprefixed_extension(typename):
+def _lookup_unprefixed(typename):
     """Attempts to resolve a class for the input XML type `typename`.
 
     Args:
@@ -85,7 +85,7 @@ def lookup_extension(typeinfo):
         return _lookup_extension(xsi_type)
 
     # no xmlns_prefix found, try to resolve the class by just the `xml_type`
-    return _lookup_unprefixed_extension(typeinfo.xml_type)
+    return _lookup_unprefixed(typeinfo.xml_type)
 
 
 def add_extension(cls):
