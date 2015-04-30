@@ -55,7 +55,7 @@ class COATakenTest(EntityTestCase, unittest.TestCase):
         'time': COATimeTest._full_dict,
         #'coordinators': None,  # need to implement this!
         'course_of_action': {
-            'version': '1.1.1',
+            'version': '1.2',
             'title': 'Test Title',
             'description': 'Test Description',
             'short_description': "Test Short Description",
@@ -80,7 +80,7 @@ class COARequestedTest(EntityTestCase, unittest.TestCase):
         'priority': "High",
         #'coordinators': None,  # need to implement this!
         'course_of_action': {
-            'version': '1.1.1',
+            'version': '1.2',
             'title': 'Test Title',
             'description': 'Test Description',
             'short_description': "Test Short Description",
@@ -430,7 +430,7 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
     klass = incident.Incident
     _full_dict = {
         'id': 'example:test-1',
-        'version': '1.1.1',
+        'version': '1.2',
         'timestamp': '2014-05-05T14:50:25.992383+00:00',
         'title': 'Test Title',
         'description': 'The Datacenter was broken into.',

@@ -107,7 +107,7 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
     _full_dict = {
         'id': "example:test-1",
         'timestamp': "2014-01-31T06:14:46",
-        'version': '1.1.1',
+        'version': '1.2',
         'title': 'Purple Elephant',
         'description': 'A pretty novice set of actors.',
         'short_description': 'novices',

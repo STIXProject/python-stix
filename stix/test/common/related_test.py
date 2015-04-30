@@ -192,7 +192,7 @@ class RelatedPackageTests(EntityTestCase, unittest.TestCase):
         'relationship': "Associated",
         'package': {
             'id': 'example:bar-1',
-            'version': '1.1.1',
+            'version': '1.2',
             'stix_header': {
                 'title': 'Test'
             }
@@ -212,7 +212,7 @@ class RelatedPackagesTests(EntityTestCase, unittest.TestCase):
                 'relationship': "Associated",
                 'package': {
                     'id': 'example:bar-1',
-                    'version': '1.1.1',
+                    'version': '1.2',
                     'stix_header': {
                         'title': 'Test'
                     }
@@ -226,7 +226,7 @@ class RelatedPackagesTests(EntityTestCase, unittest.TestCase):
                 'relationship': "Associated",
                 'package': {
                     'id': 'example:bar-2',
-                    'version': '1.1.1',
+                    'version': '1.2',
                     'stix_header': {
                         'title': 'Test'
                     }
