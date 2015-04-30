@@ -207,7 +207,7 @@ class IndicatorsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Indicator':
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = common_binding.IndicatorBaseType.factory()
             else:
                 klass = lookup_extension(child_)
@@ -285,7 +285,7 @@ class TTPsType(GeneratedsSuper):
         if nodeName_ == 'TTP':
             from . import ttp
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = common_binding.TTPBaseType.factory() # not abstract
             else:
                 klass = lookup_extension(child_)
@@ -361,7 +361,7 @@ class IncidentsType(GeneratedsSuper):
         if nodeName_ == 'Incident':
             from . import incident
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = common_binding.IncidentBaseType.factory() # not abstract
             else:
                 klass = lookup_extension(child_)
@@ -433,7 +433,7 @@ class CoursesOfActionType(GeneratedsSuper):
         if nodeName_ == 'Course_Of_Action':
             from . import course_of_action
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = common_binding.CourseOfActionBaseType.factory() # not abstract
             else:
                 klass = lookup_extension(child_)
@@ -505,7 +505,7 @@ class CampaignsType(GeneratedsSuper):
         if nodeName_ == 'Campaign':
             from . import campaign
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = common_binding.CampaignBaseType.factory() # not abstract
             else:
                 klass = lookup_extension(child_)
@@ -577,7 +577,7 @@ class ThreatActorsType(GeneratedsSuper):
         if nodeName_ == 'Threat_Actor':
             from . import threat_actor
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = common_binding.ThreatActorBaseType.factory() # not abstract
             else:
                 klass = lookup_extension(child_)

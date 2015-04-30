@@ -398,6 +398,18 @@ TypeInfo = collections.namedtuple("TypeInfo", ('ns', 'typename'))
 
 
 def get_type_info(node):
+    """Returns a ``TypeInfo`` object for `node`.
+
+    This is accomplished by parsing the ``xsi:type`` attribute found on
+    `node`.
+
+    Args:
+        node: An lxml.etree element object.
+
+    Raises:
+        KeyError: If `node` does not have an ``xsi:type`` attribute.
+
+    """
     xsi_type = node.attrib[xmlconst.TAG_XSI_TYPE]
     typeinfo = xsi_type.split(":")
 
@@ -411,20 +423,42 @@ def get_type_info(node):
     return TypeInfo(ns=ns, typename=typename)
 
 
+#: A mapping of namespace/type information to binding classes.
 _EXTENSION_MAP = {}
 
 
 def add_extension(cls):
+    """Adds the binding class `cls` to the ``_EXTENSION_MAP``.
+
+    This enables the lookup and instantiation of classes during parse when
+    ``xsi:type`` attributes are encountered.
+
+    """
     typeinfo = TypeInfo(ns=cls.xmlns, typename=cls.xml_type)
     _EXTENSION_MAP[typeinfo] = cls
 
 
 def register_extension(cls):
+    """Class decorator for registering a binding class as an implementation of
+    an xml type.
+
+    Classes must have ``xmlns`` and ``xml_type`` class attributes to be
+    registered.
+
+    """
     add_extension(cls)
     return cls
 
 
 def lookup_extension(typeinfo):
+    """Looks up the binding class for `typeinfo`, which is a namespace/typename
+    pairing.
+
+    Returns:
+        A binding class that has been registered for the namespace and typename
+        found on `typeinfo`.
+
+    """
     if not isinstance(typeinfo, TypeInfo):
         typeinfo = get_type_info(typeinfo)
 
@@ -436,30 +470,33 @@ def lookup_extension(typeinfo):
         raise NotImplementedError(error)
 
 
-def is_base(node):
+def has_xsi_type(node):
+    """Returns ``True`` if `node` does not have an xsi:type attribute.
+
+    """
     return xmlconst.TAG_XSI_TYPE not in node.attrib
 
 
 __all__ = [
+    'CDATA_END', 
+    'CDATA_START', 
+    'ExternalEncoding',
+    'GeneratedsSuper',
+    'Tag_pattern_',
+    'TypeInfo',
     '_cast',
     'add_extension',
-    'lookup_extension',
-    'is_base',
-    'register_extension',
     'etree_',
-    'ExternalEncoding',
     'find_attr_value_',
     'get_all_text_',
     'get_type_info',
+    'has_xsi_type',
+    'lookup_extension',
     'parsexml_',
-    'quote_xml',
     'quote_attrib',
     'quote_python',
+    'quote_xml',
     'raise_parse_error',
-    'showIndent',
-    'Tag_pattern_',
-    'GeneratedsSuper',
-    'CDATA_START',
-    'CDATA_END',
-    'TypeInfo'
+    'register_extension',
+    'showIndent'
 ]

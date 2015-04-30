@@ -551,7 +551,7 @@ class COATakenType(GeneratedsSuper):
         elif nodeName_ == 'Course_Of_Action':
             from . import course_of_action
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = stix_common_binding.CourseOfActionBaseType.factory() # not abstract
             else:
                 obj_ = lookup_extension(child_).factory()
@@ -2486,7 +2486,7 @@ class IncidentType(stix_common_binding.IncidentBaseType):
         elif nodeName_ == 'Victim':
             import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
             else:
                 obj_ = lookup_extension(child_).factory()

@@ -767,7 +767,7 @@ class MalwareType(GeneratedsSuper):
         if nodeName_ == 'Malware_Instance':
             from .extensions.malware import maec_4_1
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = MalwareInstanceType.factory() # MalwareInstanceType is not abstract
             else:
                 obj_ = lookup_extension(child_).factory()
@@ -838,7 +838,7 @@ class AttackPatternsType(GeneratedsSuper):
         if nodeName_ == 'Attack_Pattern':
             from .extensions.attack_pattern import capec_2_7
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = AttackPatternType.factory() # AttackPattern is not abstract
             else:
                 obj_ = lookup_extension(child_).factory()
@@ -989,7 +989,7 @@ class PersonasType(GeneratedsSuper):
         if nodeName_ == 'Persona':
             from .extensions.identity import ciq_identity_3_0
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
             else:
                 obj_ = lookup_extension(child_).factory()
@@ -1165,7 +1165,7 @@ class VictimTargetingType(GeneratedsSuper):
         if nodeName_ == 'Identity':
             from .extensions.identity import ciq_identity_3_0
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
             else:
                 obj_ = lookup_extension(child_).factory()

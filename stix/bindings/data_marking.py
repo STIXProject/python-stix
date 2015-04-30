@@ -338,7 +338,7 @@ class MarkingSpecificationType(GeneratedsSuper):
 
             # Look for xsi:type. If not there, build an instance of
             # MarkingStructureType
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = MarkingStructureType.factory()
             else:
                 obj_ = lookup_extension(child_).factory()

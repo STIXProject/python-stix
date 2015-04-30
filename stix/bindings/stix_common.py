@@ -609,7 +609,7 @@ class InformationSourceType(GeneratedsSuper):
         elif nodeName_ == 'Identity':
             from .extensions.identity import ciq_identity_3_0
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = IdentityType.factory() # IdentityType is not abstract
             else:
                 obj_ = lookup_extension(child_).factory()
@@ -1484,7 +1484,7 @@ class RelatedCampaignType(GenericRelationshipType):
         if nodeName_ == 'Campaign':
             from . import campaign
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = CampaignBaseType.factory() # not abstract
             else:
                 klass = lookup_extension(child_)
@@ -1556,7 +1556,7 @@ class RelatedCourseOfActionType(GenericRelationshipType):
         if nodeName_ == 'Course_Of_Action':
             from . import campaign
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = CampaignBaseType.factory() # not abstract
             else:
                 klass = lookup_extension(child_)
@@ -1626,7 +1626,7 @@ class RelatedExploitTargetType(GenericRelationshipType):
         super(RelatedExploitTargetType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Exploit_Target':
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = ExploitTargetBaseType.factory() # not abstract
             else:
                 klass = lookup_extension(child_)
@@ -1698,7 +1698,7 @@ class RelatedIncidentType(GenericRelationshipType):
         if nodeName_ == 'Incident':
             from . import incident
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = IncidentBaseType.factory() # not abstract
             else:
                 klass = lookup_extension(child_)
@@ -1770,7 +1770,7 @@ class RelatedIndicatorType(GenericRelationshipType):
         if nodeName_ == 'Indicator':
             from . import indicator
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = IndicatorBaseType.factory()
             else:
                 klass = lookup_extension(child_)
@@ -1907,7 +1907,7 @@ class RelatedThreatActorType(GenericRelationshipType):
         if nodeName_ == 'Threat_Actor':
             from . import threat_actor
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = ThreatActorBaseType.factory() # not abstract
             else:
                 klass = lookup_extension(child_)
@@ -1979,7 +1979,7 @@ class RelatedTTPType(GenericRelationshipType):
         if nodeName_ == 'TTP':
             from . import ttp
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = TTPBaseType.factory() # not abstract
             else:
                 klass = lookup_extension(child_)
@@ -2051,7 +2051,7 @@ class RelatedIdentityType(GenericRelationshipType):
         if nodeName_ == 'Identity':
             from .extensions.identity import ciq_identity_3_0
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = IdentityType.factory() # IdentityType is not abstract
             else:
                 obj_ = lookup_extension(child_).factory()
@@ -3042,7 +3042,7 @@ class ExploitTargetsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Exploit_Target':
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = ExploitTargetBaseType.factory() # not abstract
             else:
                 klass = lookup_extension(child_)
@@ -3931,7 +3931,7 @@ class RelatedReportType(GenericRelationshipType):
         if nodeName_ == 'Report':
             from . import report
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = ReportBaseType.factory()
             else:
                 obj_ = lookup_extension(child_).factory()

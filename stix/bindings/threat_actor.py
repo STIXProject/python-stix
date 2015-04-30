@@ -451,7 +451,7 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
         elif nodeName_ == 'Identity':
             from .extensions.identity import ciq_identity_3_0
 
-            if is_base(child_):
+            if has_xsi_type(child_):
                 obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
             else:
                 obj_ = lookup_extension(child_).factory()
