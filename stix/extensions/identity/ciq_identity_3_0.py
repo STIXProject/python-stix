@@ -21,6 +21,7 @@ et.register_namespace('xal', XML_NS_XAL)
 et.register_namespace('ExtSch', XML_NS_STIX_EXT)
 
 
+@stix.register_extension
 class CIQIdentity3_0Instance(common.Identity):
     _binding        = ciq_identity_binding
     _binding_class  = _binding.CIQIdentity3_0InstanceType
@@ -1835,7 +1836,3 @@ class ContactNumberElement(stix.Entity):
         return_obj.type_ = d.get('type')
         return_obj.value = d.get('value')
         return return_obj
-
-
-# Register the extension
-identity.add_extension(CIQIdentity3_0Instance)

@@ -6,7 +6,6 @@ from cybox.core import Observables
 
 # internal
 import stix
-import stix.utils as utils
 from stix.common import vocabs, VocabString, StructuredTextList
 import stix.bindings.incident as incident_binding
 

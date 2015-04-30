@@ -19,10 +19,11 @@ class _BaseStructuredCOA(stix.Entity):
         if not obj:
             return None
 
-        from stix.extensions.structured_coa.generic_structured_coa import GenericStructuredCOA   # noqa
+        # Registers the class extension
+        import stix.extensions.structured_coa.generic_structured_coa  # noqa
 
         if not return_obj:
-            klass = _BaseStructuredCOA.lookup_class(obj.xml_type)
+            klass = _BaseStructuredCOA.lookup_class(obj)
             return_obj = klass.from_obj(obj)
         else:
             return_obj.id_ = obj.id
@@ -49,13 +50,8 @@ class _BaseStructuredCOA(stix.Entity):
     def lookup_class(xsi_type):
         if not xsi_type:
             raise ValueError("xsi:type is required")
-        for (k, v) in _EXTENSION_MAP.iteritems():
-            # TODO: for now we ignore the prefix and just check for
-            # a partial match
-            if xsi_type in k:
-                return v
 
-        raise ValueError("Unregistered xsi:type %s" % xsi_type)
+        return stix.lookup_extension(xsi_type)
 
     @classmethod
     def from_dict(cls, d, return_obj=None):
@@ -79,9 +75,5 @@ class _BaseStructuredCOA(stix.Entity):
         return d
 
 
-#: Mapping of structured coa extension types to classes
-_EXTENSION_MAP = {}
-
-
-def add_extension(cls):
-    _EXTENSION_MAP[cls._XSI_TYPE] = cls  # noqa
+# Backwards compatibility
+add_extension = stix.add_extension

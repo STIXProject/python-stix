@@ -1,11 +1,12 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-import stix.bindings.extensions.marking.simple_marking as simple_marking_binding
-import stix.data_marking
+import stix
 from stix.data_marking import MarkingStructure
+import stix.bindings.extensions.marking.simple_marking as simple_marking_binding
 
 
+@stix.register_extension
 class SimpleMarkingStructure(MarkingStructure):
     _binding = simple_marking_binding
     _binding_class = simple_marking_binding.SimpleMarkingStructureType
@@ -60,6 +61,3 @@ class SimpleMarkingStructure(MarkingStructure):
 
         return return_obj
 
-
-# Register extension
-stix.data_marking.add_extension(SimpleMarkingStructure)

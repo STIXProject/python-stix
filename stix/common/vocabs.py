@@ -65,14 +65,11 @@ class VocabString(stix.Entity):
     def lookup_class(xsi_type):
         if not xsi_type:
             return VocabString
-        
-        for (k, v) in _VOCAB_MAP.iteritems():
-            # TODO: for now we ignore the prefix and just check for
-            # a partial match
-            if xsi_type in k:
-                return v
 
-        return VocabString
+        try:
+            return stix.lookup_extension(xsi_type)
+        except ValueError:
+            return VocabString
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(VocabString, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -154,10 +151,6 @@ class VocabString(stix.Entity):
         return return_obj
 
 
-#: Mapping of Controlled Vocabulary xsi:type's to their class implementations.
-_VOCAB_MAP = {}
-
-
 def _get_terms(vocab_class):
     """Helper function used by register_vocab."""
     for k, v in vocab_class.__dict__.items():
@@ -172,7 +165,7 @@ def add_vocab(cls):
         The :meth:`register_vocab` class decorator has replaced this method.
 
     """
-    _VOCAB_MAP[cls._XSI_TYPE] = cls
+    stix.add_extension(cls)
 
 
 def register_vocab(cls):

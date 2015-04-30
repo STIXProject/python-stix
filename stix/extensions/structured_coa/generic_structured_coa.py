@@ -2,13 +2,12 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils as utils
-import stix.coa.structured_coa
 from stix.common import EncodedCDATA, StructuredTextList, VocabString
 from stix.coa.structured_coa import _BaseStructuredCOA
 import stix.bindings.extensions.structured_coa.generic as generic_structured_coa_binding
 
 
+@stix.register_extension
 class GenericStructuredCOA(_BaseStructuredCOA):
     _namespace = "http://stix.mitre.org/extensions/StructuredCOA#Generic-1"
     _binding = generic_structured_coa_binding
@@ -144,6 +143,3 @@ class GenericStructuredCOA(_BaseStructuredCOA):
     def to_dict(self):
         return super(GenericStructuredCOA, self).to_dict()
 
-
-# Register the extension
-stix.coa.structured_coa.add_extension(GenericStructuredCOA)

@@ -38,13 +38,13 @@ class _BaseTestMechanism(stix.Entity):
         if not obj:
             return None
         
-        from stix.extensions.test_mechanism.snort_test_mechanism import SnortTestMechanism   # noqa
-        from stix.extensions.test_mechanism.open_ioc_2010_test_mechanism import OpenIOCTestMechanism   # noqa
-        from stix.extensions.test_mechanism.yara_test_mechanism import YaraTestMechanism   # noqa
-        from stix.extensions.test_mechanism.generic_test_mechanism import GenericTestMechanism   # noqa
+        import stix.extensions.test_mechanism.snort_test_mechanism  # noqa
+        import stix.extensions.test_mechanism.open_ioc_2010_test_mechanism  # noqa
+        import stix.extensions.test_mechanism.yara_test_mechanism  # noqa
+        import stix.extensions.test_mechanism.generic_test_mechanism  # noqa
         
         if not return_obj:
-            klass = _BaseTestMechanism.lookup_class(obj.xml_type)
+            klass = _BaseTestMechanism.lookup_class(obj)
             return_obj = klass.from_obj(obj)
         else:
             return_obj.id_ = obj.id
@@ -75,23 +75,18 @@ class _BaseTestMechanism(stix.Entity):
     def lookup_class(xsi_type):
         if not xsi_type:
             raise ValueError("xsi:type is required")
-        for (k, v) in _EXTENSION_MAP.iteritems():
-            # TODO: for now we ignore the prefix and just check for
-            # a partial match
-            if xsi_type in k:
-                return v
 
-        raise ValueError("Unregistered xsi:type %s" % xsi_type)
+        return stix.lookup_extension(xsi_type)
     
     @classmethod
     def from_dict(cls, d, return_obj=None):
         if not d:
             return None
         
-        from stix.extensions.test_mechanism.snort_test_mechanism import SnortTestMechanism   # noqa
-        from stix.extensions.test_mechanism.open_ioc_2010_test_mechanism import OpenIOCTestMechanism   # noqa
-        from stix.extensions.test_mechanism.yara_test_mechanism import YaraTestMechanism   # noqa
-        from stix.extensions.test_mechanism.generic_test_mechanism import GenericTestMechanism   # noqa
+        import stix.extensions.test_mechanism.snort_test_mechanism  # noqa
+        import stix.extensions.test_mechanism.open_ioc_2010_test_mechanism  # noqa
+        import stix.extensions.test_mechanism.yara_test_mechanism  # noqa
+        import stix.extensions.test_mechanism.generic_test_mechanism  # noqa
         
         if not return_obj:
             klass = _BaseTestMechanism.lookup_class(d.get('xsi:type'))
@@ -120,9 +115,5 @@ class TestMechanisms(stix.EntityList):
     _dict_as_list = True
 
 
-#: Mapping of test mechanism extension types to classes
-_EXTENSION_MAP = {}
-
-
-def add_extension(cls):
-    _EXTENSION_MAP[cls._XSI_TYPE] = cls  # noqa
+# Backwards compatibility
+add_extension = stix.add_extension
