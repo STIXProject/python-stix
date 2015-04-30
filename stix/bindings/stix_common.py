@@ -3516,8 +3516,8 @@ class StructuredTextType(GeneratedsSuper):
                  idref=None, ordinality=None):
         self.structuring_format = _cast(None, structuring_format)
         self.valueOf_ = valueOf_
-        self.id = id,
-        self.idref = idref,
+        self.id = id
+        self.idref = idref
         self.ordinality = ordinality
 
     def factory(*args_, **kwargs_):
@@ -3560,13 +3560,13 @@ class StructuredTextType(GeneratedsSuper):
     def exportAttributes(self, lwrite, level, already_processed, namespace_='stixCommon:', name_='StructuredTextType'):
         if self.structuring_format is not None and 'structuring_format' not in already_processed:
             already_processed.add('structuring_format')
-            lwrite(' structuring_format=%s' % (quote_attrib(self.structuring_format), ))
+            lwrite(' structuring_format=%s' % quote_attrib(self.structuring_format))
         if self.id is not None and 'id' not in already_processed:
             already_processed.add('id')
-            lwrite(' id=%s' % (quote_attrib(self.id), ))
+            lwrite(' id=%s' % quote_attrib(self.id))
         if self.ordinality is not None and 'ordinality' not in already_processed:
             already_processed.add('ordinality')
-            lwrite(' ordinality=%s' % (quote_attrib(self.ordinality), ))
+            lwrite(' ordinality=%s' % quote_attrib(self.ordinality))
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='StructuredTextType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
