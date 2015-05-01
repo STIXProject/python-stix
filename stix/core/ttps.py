@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import stix
+from stix.utils.deprecated import idref_deprecated
 from stix.ttp import TTP
 from stix.bindings import stix_core as core_binding
 from stix.common.kill_chains import KillChains
@@ -33,7 +34,11 @@ class TTPs(stix.EntityList):
 
     def add_ttp(self, ttp):
         self.ttps.append(ttp)
-        
+
+    @idref_deprecated
+    def _is_valid(self, value):
+        return stix.EntityList._is_valid(self, value)
+
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
