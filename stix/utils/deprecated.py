@@ -6,17 +6,21 @@ import warnings
 
 
 def idref_deprecated(func):
-    """Raises a deprecation warning if the input value has an idref attribute
+    """Raises a python warning if the input value has an idref attribute
     set.
 
     """
     @functools.wraps(func)
     def inner(*args, **kwargs):
-        val = args[1]
+        if kwargs:
+            val = next(kwargs.itervalues())
+        else:
+            val = args[1]
 
-        if val and val.idref:
-            msg = "The use of idrefs has been deprecated for this field."
-            warnings.warn(msg, category=DeprecationWarning)
+        if getattr(val, 'idref', None):
+            msg = ("The use of idrefs has been deprecated for this field. "
+                   "'{0}' object with idref: '{1}'.")
+            warnings.warn(msg.format(type(val).__name__, val.idref))
 
         return func(*args, **kwargs)
 
