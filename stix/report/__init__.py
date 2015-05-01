@@ -39,7 +39,7 @@ class Report(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, header=None,
                  courses_of_action=None, exploit_targets=None, indicators=None,
                  observables=None, incidents=None, threat_actors=None,
-                 ttps=None, campaigns=None):
+                 ttps=None, campaigns=None, related_reports=None):
         
         self.id_ = id_ or stix.utils.create_id("Report")
         self.idref = idref
@@ -53,7 +53,7 @@ class Report(stix.Entity):
         self.incidents = incidents
         self.threat_actors = threat_actors
         self.ttps = ttps
-        self.related_reports = RelatedReports()
+        self.related_reports = related_reports
         
         if timestamp:
             self.timestamp = timestamp
