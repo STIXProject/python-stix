@@ -32,11 +32,6 @@ class StructuredTextListTests(unittest.TestCase, TypedListTestCase):
         }
     ]
 
-    def test_with_ordinality(self):
-        for idx in xrange(1, len(self.slist)):
-            text = self.slist.with_ordinality(idx)
-            self.assertEqual(text.ordinality, idx)
-
     @classmethod
     def _get_text_list(cls):
         slist = []
@@ -163,8 +158,20 @@ class StructuredTextListTests(unittest.TestCase, TypedListTestCase):
         self.assertTrue(st1 not in slist)
         self.assertTrue(st2 not in slist)
 
-    def test_add_short_description(self):
-        pass
+    def test_len(self):
+        slist = common.StructuredTextList()
+        st1 = common.StructuredText("foo", ordinality=1)
+        st2 = common.StructuredText("bar", ordinality=2)
+
+        slist.add(st1)
+        slist.add(st2)
+
+        self.assertEqual(len(slist), 2)
+
+        del slist[1]
+
+        self.assertEqual(len(slist), 1)
+
 
 if __name__ == "__main__":
     unittest.main()

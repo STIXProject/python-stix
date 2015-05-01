@@ -2,10 +2,14 @@
 # See LICENSE.txt for complete terms.
 
 import itertools
+import contextlib
 
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
+
+#: Default ordinality value for StructuredText.
+DEFAULT_ORDINALITY = 1
 
 
 class StructuredText(stix.Entity):
@@ -152,6 +156,27 @@ class StructuredText(stix.Entity):
 
         """
         return unicode(self.value)
+
+
+@contextlib.contextmanager
+def _unset_default(text):
+    """Unsets the ordinality of the StructuredText object `text` if the
+    ordinality is equal to the DEFAULT_ORDINALITY.
+
+    The ordinaity will be returned to its original state after exiting the
+    context manager.
+
+    """
+    ordinality = text.ordinality
+
+    try:
+        if ordinality == DEFAULT_ORDINALITY:
+            text.ordinality = None  # Unset
+
+        yield #  Return to caller
+    finally:
+        # Reset
+        text.ordinality = ordinality
 
 
 class StructuredTextList(stix.TypedSequence):
@@ -367,19 +392,19 @@ class StructuredTextList(stix.TypedSequence):
         the ordinality will be unset.
 
         """
-        objlist = super(StructuredTextList, self).to_obj(ns_info=ns_info)
+        if not self:
+            return []
 
-        if len(objlist) > 1:
-            return objlist
+        if len(self) > 1:
+            return super(StructuredTextList, self).to_obj(ns_info=ns_info)
 
-        # List has a size of 1. Get the only member
-        obj = objlist[0]
+        # One item. Temporarily unset the ordinality if its the default value.
+        text = self._inner[0]
 
-        # If the ordinality is 1, unset it.
-        if obj.ordinality == 1:
-            obj.ordinality = None
+        with _unset_default(text):
+            l = [text.to_obj(ns_info=ns_info)]
 
-        return objlist
+        return l
 
     def to_list(self):
         """Returns a list of dictionary representations of the contained
@@ -399,37 +424,19 @@ class StructuredTextList(stix.TypedSequence):
             just return the value of ``value`` (a string).
 
         """
-        # Build the list representation
-        l = super(StructuredTextList, self).to_list()
+        if not self:
+            return []
 
-        # No items. Just return the empty list.
-        if not l:
-            return l
+        if len(self) > 1:
+            return super(StructuredTextList, self).to_list()
 
-        # If we have more than one StructuredText list item, return the list.
-        if len(l) > 1:
-            return l
+        # One item. Temporarily unset the ordinality if its the default value.
+        text = self._inner[0]
 
-        # Only one item.
-        d = l[0]
+        # Temporarily unset the ordinality to create our dictionary
+        with _unset_default(text):
+            d = text.to_dict()
 
-        # If the item is not a dictionary (e.g., a string), return it.
-        if not isinstance(d, dict):
-            return d
-
-        # Item was a dictionary. Check if there is an 'ordinality' value.
-        ordinality = int(d.pop('ordinality', 1))
-
-        # Reinsert it if the value is different than the default.
-        if ordinality != 1:
-            d['ordinality'] = ordinality
-
-        # If the only key we have left is ``value``, just return the
-        # corresponding string.
-        if len(d) == 1 and 'value' in d:
-            return d['value']
-
-        # The dictionary has more than one key, so we can't flatten it.
         return d
 
     to_dict = to_list
