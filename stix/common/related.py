@@ -1,7 +1,9 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# stdlib
 from __future__ import absolute_import
+import warnings
 
 # internal
 import stix
@@ -9,6 +11,9 @@ import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 import stix.bindings.stix_core as core_binding
 import stix.bindings.report as report_binding
+
+# deprecation warnings
+from stix.utils.deprecated import idref_deprecated
 
 # relative
 from .vocabs import VocabString
@@ -453,6 +458,10 @@ class RelatedPackage(_BaseRelated):
     # _base_type is set in common/__init__.py
     _inner_var = "Package"
 
+    @_BaseRelated.item.setter
+    @idref_deprecated
+    def item(self, value):
+        _BaseRelated.item.fset(self, value)
 
 class RelatedReport(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
