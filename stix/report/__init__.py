@@ -9,6 +9,7 @@ import stix
 import stix.utils as utils
 import stix.utils.parser as parser
 
+# components
 from stix.campaign import Campaign
 from stix.coa import CourseOfAction
 from stix.core.ttps import TTPs
@@ -17,6 +18,8 @@ from stix.indicator import Indicator
 from stix.incident import Incident
 from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
+
+# relationships
 from stix.common.related import RelatedReports
 
 # relative imports
@@ -191,6 +194,20 @@ class Report(stix.Entity):
     def add_ttp(self, ttp):
         self.ttps.append(ttp)
 
+    @property
+    def related_reports(self):
+        return self._related_reports
+
+    @related_reports.setter
+    def related_reports(self, value):
+        if isinstance(value, RelatedReports):
+            self._related_reports = value
+        else:
+            self._related_reports = RelatedReports(value)
+
+    def add_related_report(self, related_report):
+        self.related_reports.append(related_report)
+
     def add(self, entity):
         """Adds `entity` to a top-level collection. For example, if `entity` is
         an Indicator object, the `entity` will be added to the ``indicators``
@@ -232,7 +249,7 @@ class Report(stix.Entity):
         return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
 
         if self.header:
-            return_obj.STIX_Header = self.header.to_obj(ns_info=ns_info)
+            return_obj.Header = self.header.to_obj(ns_info=ns_info)
         if self.campaigns:
             return_obj.Campaigns = self.campaigns.to_obj(ns_info=ns_info)
         if self.courses_of_action:
