@@ -10,6 +10,7 @@ import stix
 # utility imports
 import stix.utils as utils
 import stix.utils.parser as parser
+from stix.utils.deprecated import idref_deprecated
 
 # component imports
 from stix.campaign import Campaign
@@ -137,6 +138,7 @@ class STIXPackage(stix.Entity):
     def observables(self, value):
         self._set_var(Observables, observables=value)
 
+    @idref_deprecated
     def add_observable(self, observable):
         if not self.observables:
             self.observables = Observables(observables=observable)
