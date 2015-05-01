@@ -432,7 +432,7 @@ class TypedCollection(object):
         self._inner = []
 
     def __len__(self):
-        return bool(self._inner)
+        return len(self._inner)
 
     def __nonzero__(self):
         return bool(self._inner)
