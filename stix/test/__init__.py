@@ -3,6 +3,7 @@
 
 import json
 import itertools
+import warnings
 
 import cybox.utils
 
@@ -106,9 +107,11 @@ class EntityTestCase(object):
         if type(self) == type(EntityTestCase):
             return
 
-        dict2 = round_trip_dict(self.klass, self._full_dict)
-        self.maxDiff = None
-        self.assertEqual(self._full_dict, dict2)
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore')
+            dict2 = round_trip_dict(self.klass, self._full_dict)
+            self.maxDiff = None
+            self.assertEqual(self._full_dict, dict2)
 
     def _combine(self, d):
         items = itertools.chain(
@@ -123,21 +126,25 @@ class EntityTestCase(object):
         if type(self) == type(EntityTestCase):
             return
 
-        ent = self.klass.from_dict(self._full_dict)
-        ent2 = round_trip(ent, output=True)
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore')
+            ent = self.klass.from_dict(self._full_dict)
+            ent2 = round_trip(ent, output=True)
 
-        #TODO: eventually we want to test the objects are the same, but for
-        # now, just make sure there aren't any errors.
 
     def _test_round_trip_dict(self, input):
-        dict2 = round_trip_dict(self.klass, input)
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore')
+            dict2 = round_trip_dict(self.klass, input)
 
-        self.maxDiff = None
-        self.assertEqual(input, dict2)
+            self.maxDiff = None
+            self.assertEqual(input, dict2)
 
     def _test_partial_dict(self, partial):
-        d = self._combine(partial)
-        self._test_round_trip_dict(d)
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore')
+            d = self._combine(partial)
+            self._test_round_trip_dict(d)
 
 
 class TypedListTestCase(object):
@@ -145,6 +152,9 @@ class TypedListTestCase(object):
         if type(self) == type(TypedListTestCase):
             return
 
-        obj = self.klass.from_dict(self._full_dict)
-        dict2 = obj.to_dict()
-        self.assertEqual(self._full_dict, dict2)
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore')
+
+            obj = self.klass.from_dict(self._full_dict)
+            dict2 = obj.to_dict()
+            self.assertEqual(self._full_dict, dict2)
