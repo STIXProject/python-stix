@@ -4,27 +4,33 @@
 # external
 from cybox.core import Observable, Observables
 
-# internal
+# base
 import stix
+
+# utility imports
 import stix.utils as utils
 import stix.utils.parser as parser
 
+# component imports
 from stix.campaign import Campaign
 from stix.coa import CourseOfAction
 from stix.exploit_target import ExploitTarget
 from stix.indicator import Indicator
 from stix.incident import Incident
-from stix.report import Report
 from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
+from stix.report import Report
+
+# relationship imports
 from stix.common.related import RelatedPackages
 
 # relative imports
 from .stix_header import STIXHeader
 from .ttps import TTPs
+from . import (Campaigns, CoursesOfAction, ExploitTargets, Incidents,
+               Indicators, ThreatActors, Reports)
 
 # binding imports
-import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.stix_core as stix_core_binding
 
 
@@ -38,7 +44,8 @@ class STIXPackage(stix.Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, stix_header=None,
                  courses_of_action=None, exploit_targets=None, indicators=None,
                  observables=None, incidents=None, threat_actors=None,
-                 ttps=None, campaigns=None, reports=None):
+                 ttps=None, campaigns=None, related_packages=None,
+                 reports=None):
         
         self.id_ = id_ or stix.utils.create_id("Package")
         self.idref = idref
@@ -52,7 +59,7 @@ class STIXPackage(stix.Entity):
         self.incidents = incidents
         self.threat_actors = threat_actors
         self.ttps = ttps
-        self.related_packages = RelatedPackages()
+        self.related_packages = related_packages
         self.reports = reports
         
         if timestamp:
@@ -205,6 +212,20 @@ class STIXPackage(stix.Entity):
     def add_report(self, report):
         self.reports.append(report)
 
+    @property
+    def related_packages(self):
+        return self._related_packages
+
+    @related_packages.setter
+    def related_packages(self, value):
+        if isinstance(value, RelatedPackages):
+            self._related_packages = value
+        else:
+            self._related_packages = RelatedPackages(value)
+
+    def add_related_package(self, related_package):
+        self.related_packages.append(related_package)
+
     def add(self, entity):
         """Adds `entity` to a top-level collection. For example, if `entity` is
         an Indicator object, the `entity` will be added to the ``indicators``
@@ -343,73 +364,3 @@ class STIXPackage(stix.Entity):
         """
         entity_parser = parser.EntityParser()
         return entity_parser.parse_xml(xml_file, encoding=encoding)
-
-
-class Campaigns(stix.EntityList):
-    _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
-    _binding_class = _binding.CampaignsType
-    _contained_type = Campaign
-    _binding_var = "Campaign"
-    _inner_name = "campaigns"
-    _dict_as_list = True
-
-
-class CoursesOfAction(stix.EntityList):
-    _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
-    _binding_class = _binding.CoursesOfActionType
-    _contained_type = CourseOfAction
-    _binding_var = "Course_Of_Action"
-    _inner_name = "courses_of_action"
-    _dict_as_list = True
-
-
-class ExploitTargets(stix.EntityList):
-    _binding = stix_common_binding
-    _namespace = 'http://stix.mitre.org/common-1'
-    _binding_class = _binding.ExploitTargetsType
-    _contained_type = ExploitTarget
-    _binding_var = "Exploit_Target"
-    _inner_name = "exploit_targets"
-    _dict_as_list = True
-
-
-class Incidents(stix.EntityList):
-    _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
-    _binding_class = _binding.IncidentsType
-    _contained_type = Incident
-    _binding_var = "Incident"
-    _inner_name = "incidents"
-    _dict_as_list = True
-
-
-class Indicators(stix.EntityList):
-    _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
-    _binding_class = _binding.IndicatorsType
-    _contained_type = Indicator
-    _binding_var = "Indicator"
-    _inner_name = "indicators"
-    _dict_as_list = True
-
-
-class ThreatActors(stix.EntityList):
-    _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
-    _binding_class = _binding.ThreatActorsType
-    _contained_type = ThreatActor
-    _binding_var = "Threat_Actor"
-    _inner_name = "threat_actors"
-    _dict_as_list = True
-
-
-class Reports(stix.EntityList):
-    _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
-    _binding_class = _binding.ReportsType
-    _contained_type = Report
-    _binding_var = "Report"
-    _inner_name = "reports"
-    _dict_as_list = True

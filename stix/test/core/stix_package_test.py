@@ -5,8 +5,8 @@ import copy
 import StringIO
 import unittest
 
-from stix.test import EntityTestCase
-from stix.test.common import kill_chains_test
+from stix.test import EntityTestCase, report_test
+from stix.test.common import kill_chains_test, related_test
 
 from . import stix_header_test
 
@@ -69,6 +69,14 @@ class TTPsTests(EntityTestCase, unittest.TestCase):
     }
 
 
+class ReportsTests(EntityTestCase, unittest.TestCase):
+    klass = stix_package.Reports
+
+    _full_dict = [
+        report_test.ReportTests._full_dict
+    ]
+
+
 class STIXPackageTests(EntityTestCase, unittest.TestCase):
     klass = core.STIXPackage
     _full_dict = {
@@ -90,6 +98,8 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
         },
         'threat_actors': ThreatActorsTests._full_dict,
         'ttps': TTPsTests._full_dict,
+        'related_packages': related_test.RelatedPackagesTests._full_dict,
+        'reports': ReportsTests._full_dict,
         'version': "1.2"
     }
 
