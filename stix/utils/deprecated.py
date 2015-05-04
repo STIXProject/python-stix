@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import warnings
+import functools
 
 
 def idref_deprecated(entity):
@@ -19,4 +20,12 @@ def idref_deprecated(entity):
     warnings.warn(msg)
 
 
+def deprecated(value):
+    if value is None:
+        return
+
+    fmt = "The use of this field has been deprecated. Received '{0}' object."
+
+    msg = fmt.format(type(value).__name__)
+    warnings.warn(msg)
 

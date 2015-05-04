@@ -200,6 +200,17 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
             TTP(idref='test-idref-dep')
         )
 
+    @raise_warnings
+    def test_related_package_idref_deprecation(self):
+        package = core.STIXPackage()
+
+        # Entitylist._fix_value() will catch the Warning and re-raise
+        # as a ValueError
+        self.assertRaises(
+            ValueError,
+            package.add_related_package,
+            core.STIXPackage(idref='foo')
+        )
 
 if __name__ == "__main__":
     unittest.main()

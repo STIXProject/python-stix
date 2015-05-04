@@ -3,7 +3,6 @@
 
 # stdlib
 from __future__ import absolute_import
-import warnings
 
 # internal
 import stix
@@ -13,7 +12,7 @@ import stix.bindings.stix_core as core_binding
 import stix.bindings.report as report_binding
 
 # deprecation warnings
-from stix.utils.deprecated import idref_deprecated
+from stix.utils.deprecated import idref_deprecated, deprecated
 
 # relative
 from .vocabs import VocabString
@@ -290,6 +289,10 @@ class RelatedPackageRefs(stix.EntityList):
     _contained_type = RelatedPackageRef
     _inner_name = "packages"
 
+    def _is_valid(self, value):
+        deprecated(value)
+        return stix.EntityList._is_valid(self, value)
+
 
 class _BaseRelated(GenericRelationship):
     """A base class for related types.
@@ -460,7 +463,7 @@ class RelatedPackage(_BaseRelated):
 
     @_BaseRelated.item.setter
     def item(self, value):
-
+        idref_deprecated(value)
         _BaseRelated.item.fset(self, value)
 
 class RelatedReport(_BaseRelated):
