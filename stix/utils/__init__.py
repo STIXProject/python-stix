@@ -5,6 +5,7 @@
 import collections
 import contextlib
 import keyword
+import functools
 import warnings
 
 # external
@@ -335,8 +336,41 @@ def cast_var(item, klass, arg=None):
 
 
 def remove_entries(map, keys):
+    """Removes all the `keys` from `map`.
+
+    Args:
+        map: A dictionary.
+        keys: An iterable collection of dictionary keys to remove.
+
+    """
     for key in keys:
         map.pop(key, None)
+
+
+def raise_warnings(func):
+    """Function decorator that causes all Python warnings to be raised as
+    exceptions in the wrapped function.
+
+    """
+    @functools.wraps(func)
+    def inner(*args, **kwargs):
+        with warnings.catch_warnings():
+            warnings.simplefilter('error')
+            return func(*args, **kwargs)
+    return inner
+
+
+def silence_warnings(func):
+    """Function decorator that silences/ignores all Python warnings in the
+    wrapped function.
+
+    """
+    @functools.wraps(func)
+    def inner(*args, **kwargs):
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore')
+            return func(*args, **kwargs)
+    return inner
 
 
 # Namespace flattening

@@ -3,12 +3,11 @@
 
 import json
 import itertools
-import warnings
 
 import cybox.utils
 
 import stix.bindings as bindings
-from stix.utils import NamespaceInfo
+from stix.utils import NamespaceInfo, silence_warnings
 
 
 def round_trip_dict(cls, dict_):
@@ -102,16 +101,15 @@ class EntityTestCase(object):
         self.assertNotEqual(self.klass, None)
         self.assertNotEqual(self._full_dict, None)
 
+    @silence_warnings
     def test_round_trip_full_dict(self):
         # Don't run this test on the base class
         if type(self) == type(EntityTestCase):
             return
 
-        with warnings.catch_warnings():
-            warnings.simplefilter('ignore')
-            dict2 = round_trip_dict(self.klass, self._full_dict)
-            self.maxDiff = None
-            self.assertEqual(self._full_dict, dict2)
+        dict2 = round_trip_dict(self.klass, self._full_dict)
+        self.maxDiff = None
+        self.assertEqual(self._full_dict, dict2)
 
     def _combine(self, d):
         items = itertools.chain(
@@ -121,40 +119,36 @@ class EntityTestCase(object):
 
         return dict(items)
 
+
+    @silence_warnings
     def test_round_trip_full(self):
         # Don't run this test on the base class
         if type(self) == type(EntityTestCase):
             return
 
-        with warnings.catch_warnings():
-            warnings.simplefilter('ignore')
-            ent = self.klass.from_dict(self._full_dict)
-            ent2 = round_trip(ent, output=True)
+        ent = self.klass.from_dict(self._full_dict)
+        ent2 = round_trip(ent, output=True)
 
-
+    @silence_warnings
     def _test_round_trip_dict(self, input):
-        with warnings.catch_warnings():
-            warnings.simplefilter('ignore')
-            dict2 = round_trip_dict(self.klass, input)
+        dict2 = round_trip_dict(self.klass, input)
+        self.maxDiff = None
+        self.assertEqual(input, dict2)
 
-            self.maxDiff = None
-            self.assertEqual(input, dict2)
-
+    @silence_warnings
     def _test_partial_dict(self, partial):
-        with warnings.catch_warnings():
-            warnings.simplefilter('ignore')
-            d = self._combine(partial)
-            self._test_round_trip_dict(d)
+        d = self._combine(partial)
+        self._test_round_trip_dict(d)
 
 
 class TypedListTestCase(object):
+
+    @silence_warnings
     def test_round_trip_rt(self):
         if type(self) == type(TypedListTestCase):
             return
 
-        with warnings.catch_warnings():
-            warnings.simplefilter('ignore')
+        obj = self.klass.from_dict(self._full_dict)
+        dict2 = obj.to_dict()
+        self.assertEqual(self._full_dict, dict2)
 
-            obj = self.klass.from_dict(self._full_dict)
-            dict2 = obj.to_dict()
-            self.assertEqual(self._full_dict, dict2)

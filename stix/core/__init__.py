@@ -30,8 +30,8 @@ class Campaigns(stix.EntityList):
     _inner_name = "campaigns"
     _dict_as_list = True
 
-    @idref_deprecated
     def _is_valid(self, value):
+        idref_deprecated(value)
         return stix.EntityList._is_valid(self, value)
 
 
@@ -44,8 +44,8 @@ class CoursesOfAction(stix.EntityList):
     _inner_name = "courses_of_action"
     _dict_as_list = True
 
-    @idref_deprecated
     def _is_valid(self, value):
+        idref_deprecated(value)
         return stix.EntityList._is_valid(self, value)
 
 class ExploitTargets(stix.EntityList):
@@ -57,8 +57,8 @@ class ExploitTargets(stix.EntityList):
     _inner_name = "exploit_targets"
     _dict_as_list = True
 
-    @idref_deprecated
     def _is_valid(self, value):
+        idref_deprecated(value)
         return stix.EntityList._is_valid(self, value)
 
 
@@ -71,8 +71,8 @@ class Incidents(stix.EntityList):
     _inner_name = "incidents"
     _dict_as_list = True
 
-    @idref_deprecated
     def _is_valid(self, value):
+        idref_deprecated(value)
         return stix.EntityList._is_valid(self, value)
 
 
@@ -85,8 +85,8 @@ class Indicators(stix.EntityList):
     _inner_name = "indicators"
     _dict_as_list = True
 
-    @idref_deprecated
     def _is_valid(self, value):
+        idref_deprecated(value)
         return stix.EntityList._is_valid(self, value)
 
 
@@ -99,8 +99,8 @@ class ThreatActors(stix.EntityList):
     _inner_name = "threat_actors"
     _dict_as_list = True
 
-    @idref_deprecated
     def _is_valid(self, value):
+        idref_deprecated(value)
         return stix.EntityList._is_valid(self, value)
 
 
@@ -113,8 +113,8 @@ class Reports(stix.EntityList):
     _inner_name = "reports"
     _dict_as_list = True
 
-    @idref_deprecated
     def _is_valid(self, value):
+        idref_deprecated(value)
         return stix.EntityList._is_valid(self, value)
 
 

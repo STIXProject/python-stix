@@ -138,8 +138,9 @@ class STIXPackage(stix.Entity):
     def observables(self, value):
         self._set_var(Observables, observables=value)
 
-    @idref_deprecated
     def add_observable(self, observable):
+        idref_deprecated(observable)
+
         if not self.observables:
             self.observables = Observables(observables=observable)
         else:

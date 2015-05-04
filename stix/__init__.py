@@ -7,7 +7,6 @@ from .base import (  # noqa
     BaseCoreComponent
 )
 
-
 #: Mapping of xsi:types to implementation/extension classes
 _EXTENSION_MAP = {}
 

@@ -459,8 +459,8 @@ class RelatedPackage(_BaseRelated):
     _inner_var = "Package"
 
     @_BaseRelated.item.setter
-    @idref_deprecated
     def item(self, value):
+
         _BaseRelated.item.fset(self, value)
 
 class RelatedReport(_BaseRelated):
