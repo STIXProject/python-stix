@@ -66,9 +66,11 @@ class DateTimeWithPrecision(stix.Entity):
         if self.precision == 'second':
             return utils.dates.serialize_value(self.value)
        
-        d  = {}
-        d['value'] = utils.dates.serialize_value(self.value)
-        d['precision'] = self.precision
+        d  = {
+            'value': utils.dates.serialize_value(self.value),
+            'precision':self.precision
+        }
+
         return d
 
     @classmethod

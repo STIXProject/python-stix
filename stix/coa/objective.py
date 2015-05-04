@@ -2,7 +2,6 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils as utils
 from stix.common import StructuredTextList, Confidence
 import stix.bindings.course_of_action as coa_binding
 

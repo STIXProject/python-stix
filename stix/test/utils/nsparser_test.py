@@ -12,7 +12,7 @@ import lxml.etree
 # internal
 import stix
 from stix.core import STIXPackage
-from stix.utils import nsparser
+from stix.utils import nsparser, silence_warnings
 
 
 NSMAP = {
@@ -76,6 +76,8 @@ class NamespaceInfoTests(unittest.TestCase):
 
         self.assertTrue(all(ns in namespaces for ns in NSMAP.iterkeys()))
 
+
+    @silence_warnings
     def test_user_provided_ns(self):
         """Test that user-provided namespaces are serialized.
 
@@ -102,12 +104,9 @@ class NamespaceInfoTests(unittest.TestCase):
         self.assertEqual(finalized.get(TEST_PREFIX), TEST_NS)
         self.assertEqual(finalized.get(NEW_STIX_PREFIX), NEW_STIX_NS)
 
-        with warnings.catch_warnings():
-            warnings.simplefilter('ignore')
-            xml = p.to_xml(ns_dict=test_dict)
-
         # Parse the exported document and make sure that the namespaces
         # made it through the serialization process.
+        xml = p.to_xml(ns_dict=test_dict)
         e = lxml.etree.XML(xml)
         self.assertEqual(e.nsmap.get(TEST_PREFIX), TEST_NS)
         self.assertEqual(e.nsmap.get(NEW_STIX_PREFIX), NEW_STIX_NS)
@@ -144,6 +143,8 @@ class NamespaceInfoTests(unittest.TestCase):
             p.to_xml
         )
 
+
+    @silence_warnings
     def test_parsed_namespaces(self):
         """Test that non-default namespaces make it through the parse-serialize
         process.
@@ -170,10 +171,7 @@ class NamespaceInfoTests(unittest.TestCase):
         sio = StringIO.StringIO(xml)
         p = STIXPackage.from_xml(sio)
 
-        with warnings.catch_warnings():
-            warnings.simplefilter('ignore')
-            serialized = p.to_xml()
-
+        serialized = p.to_xml()
         e = lxml.etree.XML(serialized)
         self.assertEqual(e.nsmap.get('TEST'), 'a:test')
         self.assertEqual(e.nsmap.get('FOO'), 'a:foo')

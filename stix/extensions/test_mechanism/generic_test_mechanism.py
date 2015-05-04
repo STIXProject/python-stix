@@ -2,7 +2,6 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils as utils
 import stix.indicator.test_mechanism
 from stix.common import EncodedCDATA, StructuredTextList, VocabString
 from stix.indicator.test_mechanism import _BaseTestMechanism

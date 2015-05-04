@@ -6,7 +6,6 @@ import lxml.etree as et
 import stix
 import stix.utils as utils
 import stix.common as common
-import stix.common.identity as identity
 import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
 
 
@@ -967,8 +966,7 @@ class NameLine(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        d['value'] = self.value
+        d = {'value': self.value}
 
         if self.type:
             d['type'] = self.type
@@ -1292,8 +1290,7 @@ class PersonNameElement(_BaseNameElement):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        d['value'] = self.value
+        d = {'value': self.value}
 
         if self.element_type:
             d['element_type'] = self.element_type
@@ -1446,8 +1443,8 @@ class SubDivisionName(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        d['value'] = self.value
+        d = {'value': self.value}
+
         if self.type:
             d['type'] = self.type
 

@@ -4,7 +4,6 @@
 import copy
 import StringIO
 import unittest
-import warnings
 
 from stix.test import EntityTestCase
 from stix.test import report_test

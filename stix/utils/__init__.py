@@ -2,11 +2,10 @@
 # See LICENSE.txt for complete terms.
 
 # stdlib
-import collections
 import contextlib
 import keyword
 import functools
-import warnings
+
 
 # external
 import cybox
@@ -35,6 +34,32 @@ def ignored(*exceptions):
         yield
     except exceptions:
         pass
+
+
+def raise_warnings(func):
+    """Function decorator that causes all Python warnings to be raised as
+    exceptions in the wrapped function.
+
+    """
+    @functools.wraps(func)
+    def inner(*args, **kwargs):
+        with warnings.catch_warnings():
+            warnings.simplefilter('error')
+            return func(*args, **kwargs)
+    return inner
+
+
+def silence_warnings(func):
+    """Function decorator that silences/ignores all Python warnings in the
+    wrapped function.
+
+    """
+    @functools.wraps(func)
+    def inner(*args, **kwargs):
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore')
+            return func(*args, **kwargs)
+    return inner
 
 
 def is_cdata(text):
@@ -250,6 +275,7 @@ def has_value(var):
     return bool(var) or (var in (False, 0))
 
 
+@silence_warnings
 def to_dict(entity, skip=()):
     """Returns a dictionary representation of `entity`. This will iterate over
     the instance vars of `entity` and construct keys and values from those
@@ -268,33 +294,26 @@ def to_dict(entity, skip=()):
     def dict_iter(items):
         return [x.to_dict() if is_dictable(x) else x for x in items]
 
-    def dictify(entity):
-        d = {}
-        for name, field in iter_vars(entity):
-            key = key_name(name)
-
-            if key in skip or not has_value(field):
-                continue
-
-            if is_dictable(field):
-                d[key] = field.to_dict()
-            elif is_timestamp(field):
-                d[key] = dates.serialize_value(field)
-            elif is_date(field):
-                d[key] = dates.serialize_date(field)
-            elif is_element(field) or is_etree(field):
-                d[key] = lxml.etree.tostring(field)
-            elif is_sequence(field):
-                d[key] = dict_iter(field)
-            else:
-                d[key] = field
-
-        return d
 
     d = {}
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        d.update(dictify(entity))
+    for name, field in iter_vars(entity):
+        key = key_name(name)
+
+        if key in skip or not has_value(field):
+            continue
+
+        if is_dictable(field):
+            d[key] = field.to_dict()
+        elif is_timestamp(field):
+            d[key] = dates.serialize_value(field)
+        elif is_date(field):
+            d[key] = dates.serialize_date(field)
+        elif is_element(field) or is_etree(field):
+            d[key] = lxml.etree.tostring(field)
+        elif is_sequence(field):
+            d[key] = dict_iter(field)
+        else:
+            d[key] = field
 
     return d
 
@@ -345,32 +364,6 @@ def remove_entries(map, keys):
     """
     for key in keys:
         map.pop(key, None)
-
-
-def raise_warnings(func):
-    """Function decorator that causes all Python warnings to be raised as
-    exceptions in the wrapped function.
-
-    """
-    @functools.wraps(func)
-    def inner(*args, **kwargs):
-        with warnings.catch_warnings():
-            warnings.simplefilter('error')
-            return func(*args, **kwargs)
-    return inner
-
-
-def silence_warnings(func):
-    """Function decorator that silences/ignores all Python warnings in the
-    wrapped function.
-
-    """
-    @functools.wraps(func)
-    def inner(*args, **kwargs):
-        with warnings.catch_warnings():
-            warnings.simplefilter('ignore')
-            return func(*args, **kwargs)
-    return inner
 
 
 # Namespace flattening

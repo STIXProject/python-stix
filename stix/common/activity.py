@@ -2,7 +2,6 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
 from .datetimewithprecision import DateTimeWithPrecision

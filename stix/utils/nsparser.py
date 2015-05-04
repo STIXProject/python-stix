@@ -216,7 +216,7 @@ class NamespaceInfo(object):
         collected_prefixed = dict(self._collected_namespaces.iteritems())
 
         # Pop the unprefixed entries.
-        no_prefix = collected_prefixed.pop(None, ())
+        no_prefix = collected_prefixed.pop(None, set())
 
         # Resolve namespace aliases for the unprefixed namespaces.
         collected_unprefixed = self._resolve_unprefixed(no_prefix)

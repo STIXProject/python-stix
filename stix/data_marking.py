@@ -253,8 +253,8 @@ class MarkingStructure(stix.Entity):
             m.marking_model_ref = d.get('marking_model_ref')
         else:
             if 'xsi:type' in d:
-                cls = MarkingStructure.lookup_class(d.get('xsi:type'))
-                m = cls.from_dict(d)
+                klass = MarkingStructure.lookup_class(d.get('xsi:type'))
+                m = klass.from_dict(d)
             else:
                 m = cls.from_dict(d, cls())
 

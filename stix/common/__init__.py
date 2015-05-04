@@ -48,7 +48,6 @@ RelatedPackage._base_type = STIXPackage  # noqa
 RelatedReport._base_type = Report  # noqa
 RelatedCampaignRef._base_type = CampaignRef  # noqa
 
-
 # Patch contained types
 RelatedPackages._contained_type = RelatedPackage  # noqa
 RelatedReports._contained_type = RelatedReport  # noqa
