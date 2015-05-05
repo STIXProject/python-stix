@@ -2,7 +2,8 @@
 # See LICENSE.txt for complete terms.
 
 import warnings
-import functools
+
+from . import is_sequence
 
 
 def idref_deprecated(entity):
@@ -21,11 +22,20 @@ def idref_deprecated(entity):
 
 
 def deprecated(value):
+    """Raises a Python UserWarning if `value` is not None.
+
+    This is typically going to be used inside setter functions for deprecated
+    fields. The deprecation warning shouldn't be raised when the field is being
+    initialized to ``None``.
+
+    """
     if value is None:
         return
 
-    fmt = "The use of this field has been deprecated. Received '{0}' object."
+    if is_sequence(value) and not value:
+        return
 
+    fmt = "The use of this field has been deprecated. Received '{0}' object."
     msg = fmt.format(type(value).__name__)
     warnings.warn(msg)
 

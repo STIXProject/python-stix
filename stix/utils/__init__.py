@@ -56,8 +56,8 @@ def silence_warnings(func):
     """
     @functools.wraps(func)
     def inner(*args, **kwargs):
-        with warnings.catch_warnings():
-            warnings.simplefilter('ignore')
+        with warnings.catch_warnings(record=True):
+            warnings.simplefilter('always')
             return func(*args, **kwargs)
     return inner
 
