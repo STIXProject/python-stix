@@ -13,6 +13,10 @@ from stix.utils import NamespaceInfo, silence_warnings
 
 
 def assert_warnings(func):
+    """Test function decorator which asserts that a warning has been raised
+    during the execution of the test.
+
+    """
     @functools.wraps(func)
     def inner(*args, **kwargs):
         self = args[0]
