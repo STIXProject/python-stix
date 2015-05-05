@@ -6,6 +6,7 @@ import stix
 import stix.bindings.ttp as ttp_binding
 from stix.common import vocabs, Statement
 from stix.data_marking import Marking
+from stix.common.related import RelatedPackageRefs
 
 # relative
 from .behavior import Behavior
@@ -40,6 +41,7 @@ class TTP(stix.BaseCoreComponent):
         self.victim_targeting = None
         self.handling = None
         self.exploit_targets = ExploitTargets()
+        self.related_packages = None
 
     @property
     def behavior(self):
@@ -106,6 +108,17 @@ class TTP(stix.BaseCoreComponent):
     def handling(self, value):
         self._set_var(Marking, try_cast=False, handling=value)
 
+    @property
+    def related_packages(self):
+        return self._related_packages
+
+    @related_packages.setter
+    def related_packages(self, value):
+        self._related_packages = RelatedPackageRefs(value)
+
+    def add_related_package(self, value):
+        self.related_packages.append(value)
+
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -126,6 +139,8 @@ class TTP(stix.BaseCoreComponent):
             return_obj.Victim_Targeting = self.victim_targeting.to_obj(ns_info=ns_info)
         if self.handling:
             return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
+        if self.related_packages:
+            return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -147,6 +162,7 @@ class TTP(stix.BaseCoreComponent):
             return_obj.victim_targeting = VictimTargeting.from_obj(obj.Victim_Targeting)
             return_obj.handling = Marking.from_obj(obj.Handling)
             return_obj.intended_effects = _IntendedEffects.from_obj(obj.Intended_Effect)
+            return_obj.related_packages = RelatedPackageRefs.from_obj(obj.Related_Packages)
 
         return return_obj
 
@@ -171,6 +187,7 @@ class TTP(stix.BaseCoreComponent):
         return_obj.resources = Resource.from_dict(get('resources'))
         return_obj.victim_targeting = VictimTargeting.from_dict(get('victim_targeting'))
         return_obj.handling = Marking.from_dict(get('handling'))
+        return_obj.related_packages = RelatedPackageRefs.from_dict(get('related_packages'))
 
         return return_obj
 

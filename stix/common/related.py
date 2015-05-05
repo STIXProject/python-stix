@@ -114,10 +114,17 @@ class RelatedPackageRef(GenericRelationship):
     _binding = common_binding
     _binding_class = common_binding.RelatedPackageRefType
 
-    def __init__(self, **kwargs):
-        super(RelatedPackageRef, self).__init__(**kwargs)
-        self.idref = None
-        self.timestamp = None
+    def __init__(self, idref=None, timestamp=None, confidence=None,
+                 information_source=None, relationship=None):
+
+        super(RelatedPackageRef, self).__init__(
+            confidence=confidence,
+            information_source=information_source,
+            relationship=relationship
+        )
+
+        self.idref = idref
+        self.timestamp = timestamp
 
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
@@ -288,6 +295,17 @@ class RelatedPackageRefs(stix.EntityList):
     _binding_var = "Package_Reference"
     _contained_type = RelatedPackageRef
     _inner_name = "packages"
+
+    def _fix_value(self, value):
+        from stix.core import STIXPackage
+
+        if isinstance(value, STIXPackage) and value.id_:
+            return RelatedPackageRef(idref=value.id_, timestamp=value.timestamp)
+
+        fmt = ("Cannot add type '{0}' to RelatedPackageRefs collection. "
+               "Expected RelatedPackageRef or STIXPackage")
+        error = fmt.format(type(value))
+        raise TypeError(error)
 
     def _is_valid(self, value):
         deprecated(value)
