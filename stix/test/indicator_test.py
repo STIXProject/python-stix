@@ -441,6 +441,7 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
     def test_deprecated_related_packages(self):
         i = Indicator()
         i.related_packages.append(STIXPackage())
+        self.assertEqual(len(i.related_packages), 1)
 
 
 class RelatedCampaignReferencesTests(unittest.TestCase, EntityTestCase):

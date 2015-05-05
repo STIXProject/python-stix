@@ -180,6 +180,7 @@ class TTPTests(EntityTestCase, unittest.TestCase):
     def test_deprecated_related_packages(self):
         t = ttp.TTP()
         t.related_packages.append(STIXPackage())
+        self.assertEqual(len(t.related_packages), 1)
 
 
 if __name__ == "__main__":

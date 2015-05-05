@@ -118,6 +118,7 @@ class COATests(EntityTestCase, unittest.TestCase):
     def test_deprecated_related_packages(self):
         c = coa.CourseOfAction()
         c.related_packages.append(STIXPackage())
+        self.assertEqual(len(c.related_packages), 1)
 
 
 if __name__ == "__main__":

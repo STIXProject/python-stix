@@ -162,8 +162,9 @@ class ThreatActorTests(EntityTestCase, unittest.TestCase):
 
     @assert_warnings
     def test_deprecated_related_packages(self):
-        i = ta.ThreatActor()
-        i.related_packages.append(STIXPackage())
+        t = ta.ThreatActor()
+        t.related_packages.append(STIXPackage())
+        self.assertEqual(len(t.related_packages), 1)
 
 if __name__ == "__main__":
     unittest.main()

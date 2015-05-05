@@ -568,6 +568,7 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
     def test_deprecated_related_packages(self):
         i = incident.Incident()
         i.related_packages.append(STIXPackage())
+        self.assertEqual(len(i.related_packages), 1)
 
 
 if __name__ == "__main__":
