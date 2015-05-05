@@ -3,7 +3,10 @@
 
 import unittest
 
-from stix.test import EntityTestCase, TypedListTestCase, data_marking_test
+from stix.core import STIXPackage
+
+from stix.test import EntityTestCase, TypedListTestCase, assert_warnings
+from stix.test import data_marking_test
 from stix.test.common import (
     confidence_test, information_source_test, related_test,identity_test
 )
@@ -156,6 +159,11 @@ class ThreatActorTests(EntityTestCase, unittest.TestCase):
             o1.short_descriptions.to_dict(),
             o2.short_descriptions.to_dict()
         )
+
+    @assert_warnings
+    def test_deprecated_related_packages(self):
+        i = ta.ThreatActor()
+        i.related_packages.append(STIXPackage())
 
 if __name__ == "__main__":
     unittest.main()

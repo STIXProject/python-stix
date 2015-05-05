@@ -3,9 +3,11 @@
 
 import unittest
 
-from stix.test import EntityTestCase, data_marking_test
+from stix.test import EntityTestCase, assert_warnings
+from stix.test import data_marking_test
 from stix.test.common import related_test, identity_test
 
+from stix.core import STIXPackage
 import stix.ttp as ttp
 from stix.ttp import (
     resource, infrastructure, exploit_targets, malware_instance, exploit,
@@ -146,7 +148,8 @@ class TTPTests(EntityTestCase, unittest.TestCase):
         'resources': ResourcesTests._full_dict,
         'handling': data_marking_test.MarkingTests._full_dict,
         'exploit_targets': ExploitTargetsTests._full_dict,
-        'behavior': BehaviorTests._full_dict
+        'behavior': BehaviorTests._full_dict,
+        'related_packages': related_test.RelatedPackageRefsTests._full_dict,
     }
 
     def test_add_description(self):
@@ -172,6 +175,12 @@ class TTPTests(EntityTestCase, unittest.TestCase):
             o1.short_descriptions.to_dict(),
             o2.short_descriptions.to_dict()
         )
+
+    @assert_warnings
+    def test_deprecated_related_packages(self):
+        t = ttp.TTP()
+        t.related_packages.append(STIXPackage())
+
 
 if __name__ == "__main__":
     unittest.main()

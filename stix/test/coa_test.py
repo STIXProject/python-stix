@@ -3,13 +3,15 @@
 
 import unittest
 
-from stix.test import EntityTestCase, data_marking_test
-from stix.test.common import (
-    confidence_test, information_source_test, statement_test, related_test,
-)
+from stix.test import EntityTestCase, assert_warnings
+from stix.test import  data_marking_test
+from stix.test.common import (confidence_test, information_source_test,
+                              statement_test, related_test)
+from stix.core import STIXPackage
 from stix.test.extensions.structured_coa import generic_test
 import stix.coa as coa
 import stix.coa.objective as objective
+
 
 
 class RelatedCOAsTests(EntityTestCase, unittest.TestCase):
@@ -111,6 +113,11 @@ class COATests(EntityTestCase, unittest.TestCase):
         coa_.structured_coa = struct_coa
 
         self.assertTrue(str(coa_.structured_coa.description) == "SUCCESS")
+
+    @assert_warnings
+    def test_deprecated_related_packages(self):
+        c = coa.CourseOfAction()
+        c.related_packages.append(STIXPackage())
 
 
 if __name__ == "__main__":

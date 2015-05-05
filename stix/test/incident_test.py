@@ -4,9 +4,11 @@
 import unittest
 import StringIO
 
+from stix.core import STIXPackage
 from cybox.common import StructuredText
 
-from stix.test import EntityTestCase, TypedListTestCase, data_marking_test
+from stix.test import EntityTestCase, TypedListTestCase, assert_warnings
+from stix.test import data_marking_test
 from stix.test.common import (
     confidence_test, information_source_test, statement_test, related_test
 )
@@ -464,7 +466,8 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
         'related_incidents': RelatedIncidentsTests._full_dict,
         'intended_effects': IntendedEffectsTests._full_dict,
         'discovery_methods': DiscoveryMethodsTests._full_dict,
-        'confidence': confidence_test.ConfidenceTests._full_dict
+        'confidence': confidence_test.ConfidenceTests._full_dict,
+        'related_packages': related_test.RelatedPackageRefsTests._full_dict,
     }
 
     def test_parse_category(self):
@@ -560,6 +563,11 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
             o1.short_descriptions.to_dict(),
             o2.short_descriptions.to_dict()
         )
+
+    @assert_warnings
+    def test_deprecated_related_packages(self):
+        i = incident.Incident()
+        i.related_packages.append(STIXPackage())
 
 
 if __name__ == "__main__":

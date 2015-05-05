@@ -5,7 +5,7 @@ import copy
 import StringIO
 import unittest
 
-from stix.test import EntityTestCase
+from stix.test import EntityTestCase, assert_warnings
 from stix.test import report_test
 from stix.test.common import kill_chains_test, related_test
 
@@ -20,9 +20,6 @@ from stix.indicator import Indicator
 from stix.incident import Incident
 from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
-
-# utilities
-from stix.utils import raise_warnings
 
 
 class CampaignsTests(EntityTestCase, unittest.TestCase):
@@ -135,81 +132,46 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
         copied = copy.deepcopy(package)
         self.assertEqual(package.timestamp, copied.timestamp)
 
-
-    @raise_warnings
+    @assert_warnings
     def test_campaign_idref_deprecation(self):
         package = core.STIXPackage()
-        self.assertRaises(
-            Warning,
-            package.add_campaign,
-            Campaign(idref='test-idref-dep')
-        )
+        package.add(Campaign(idref='test-idref-dep'))
 
-    @raise_warnings
+    @assert_warnings
     def test_coa_idref_deprecation(self):
         package = core.STIXPackage()
-        self.assertRaises(
-            Warning,
-            package.add,
-            CourseOfAction(idref='test-idref-dep')
-        )
+        package.add(CourseOfAction(idref='test-idref-dep'))
 
-    @raise_warnings
+    @assert_warnings
     def test_et_idref_deprecation(self):
         package = core.STIXPackage()
-        self.assertRaises(
-            Warning,
-            package.add,
-            ExploitTarget(idref='test-idref-dep')
-        )
+        package.add(ExploitTarget(idref='test-idref-dep'))
 
-    @raise_warnings
+    @assert_warnings
     def test_incident_idref_deprecation(self):
         package = core.STIXPackage()
-        self.assertRaises(
-            Warning,
-            package.add,
-            Incident(idref='test-idref-dep')
-        )
+        package.add(Incident(idref='test-idref-dep'))
 
-    @raise_warnings
+    @assert_warnings
     def test_indicator_idref_deprecation(self):
         package = core.STIXPackage()
-        self.assertRaises(
-            Warning,
-            package.add,
-            Indicator(idref='test-idref-dep')
-        )
+        package.add(Indicator(idref='test-idref-dep'))
 
-    @raise_warnings
+    @assert_warnings
     def test_ta_idref_deprecation(self):
         package = core.STIXPackage()
-        self.assertRaises(
-            Warning,
-            package.add,
-            ThreatActor(idref='test-idref-dep')
-        )
+        package.add(ThreatActor(idref='test-idref-dep'))
 
-    @raise_warnings
+    @assert_warnings
     def test_ttp_idref_deprecation(self):
         package = core.STIXPackage()
-        self.assertRaises(
-            Warning,
-            package.add,
-            TTP(idref='test-idref-dep')
-        )
+        package.add(TTP(idref='test-idref-dep'))
 
-    @raise_warnings
+    @assert_warnings
     def test_related_package_idref_deprecation(self):
         package = core.STIXPackage()
+        package.add_related_package(core.STIXPackage(idref='foo'))
 
-        # Entitylist._fix_value() will catch the Warning and re-raise
-        # as a ValueError
-        self.assertRaises(
-            ValueError,
-            package.add_related_package,
-            core.STIXPackage(idref='foo')
-        )
 
 if __name__ == "__main__":
     unittest.main()

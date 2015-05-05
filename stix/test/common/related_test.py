@@ -3,8 +3,9 @@
 
 import unittest
 
-from stix.test import EntityTestCase
+from stix.test import EntityTestCase, assert_warnings
 
+from stix.utils import silence_warnings
 from stix.common.related import (
     RelatedCampaign, RelatedCampaignRef, RelatedIdentity, RelatedCOA,
     RelatedPackage, RelatedPackageRef, RelatedExploitTarget, RelatedIncident,
@@ -94,6 +95,34 @@ class RelatedPackageRefsTests(EntityTestCase, unittest.TestCase):
         ]
     }
 
+    @silence_warnings
+    def test_add_stix_package(self):
+        from stix.core import STIXPackage
+
+        l = RelatedPackageRefs()
+        l.append(STIXPackage())
+
+        self.assertEqual(1, len(l))
+
+
+    @silence_warnings
+    def test_add_bad_type(self):
+        from stix.indicator import Indicator
+
+        l = RelatedPackageRefs()
+
+        self.assertRaises(
+            TypeError,
+            l.append,
+            Indicator()
+        )
+
+    @assert_warnings
+    def test_deprecated_warning(self):
+        from stix.core import STIXPackage
+
+        l = RelatedPackageRefs()
+        l.append(STIXPackage())
 
 
 class RelatedPackageRefTests(EntityTestCase, unittest.TestCase):
