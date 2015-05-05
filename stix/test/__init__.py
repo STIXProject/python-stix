@@ -3,11 +3,27 @@
 
 import json
 import itertools
+import warnings
+import functools
 
 import cybox.utils
 
 import stix.bindings as bindings
 from stix.utils import NamespaceInfo, silence_warnings
+
+
+def assert_warnings(func):
+    @functools.wraps(func)
+    def inner(*args, **kwargs):
+        self = args[0]
+
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter('always')
+            results = func(*args, **kwargs)
+            self.assertTrue(len(w) > 0)
+            return results
+
+    return inner
 
 
 def round_trip_dict(cls, dict_):
