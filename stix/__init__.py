@@ -57,6 +57,9 @@ def lookup_extension(typeinfo):
     """Returns a stix.Entity class for that has been registered for the
     `typeinfo` value.
 
+    Note:
+        This is for internal use only.
+
     Args:
         typeinfo: An object or string containing type information. This can be
             either an xsi:type attribute value or a stix.bindings object.
@@ -93,6 +96,9 @@ def add_extension(cls):
     Classes must have an ``_XSI_TYPE`` class attributes to be registered. The
     value of this attribute must be a valid xsi:type.
 
+    Note:
+        This was designed for internal use.
+
     """
     _EXTENSION_MAP[cls._XSI_TYPE] = cls  # noqa
 
@@ -102,6 +108,9 @@ def register_extension(cls):
     of an xml type.
 
     Classes must have an ``_XSI_TYPE`` class attributes to be registered.
+
+    Note:
+        This was designed for internal use.
 
     """
     add_extension(cls)
