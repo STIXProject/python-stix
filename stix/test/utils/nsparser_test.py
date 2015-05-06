@@ -4,7 +4,6 @@
 # stdlib
 import StringIO
 import unittest
-import warnings
 
 # external
 import lxml.etree
@@ -111,6 +110,7 @@ class NamespaceInfoTests(unittest.TestCase):
         self.assertEqual(e.nsmap.get(TEST_PREFIX), TEST_NS)
         self.assertEqual(e.nsmap.get(NEW_STIX_PREFIX), NEW_STIX_NS)
 
+    @silence_warnings
     def test_duplicate_ns_prefix(self):
         """Test that duplicate namespace prefix mappings raise errors.
 

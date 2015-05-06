@@ -161,6 +161,14 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
         c = campaign.Campaign()
         c.related_packages.append(STIXPackage())
 
+    @assert_warnings
+    def test_deprecated_related_indicators(self):
+        from stix.indicator import Indicator
+
+        c = campaign.Campaign()
+        c.related_indicators.append(Indicator())
+        self.assertEqual(1, len(c.related_indicators))
+
 
 if __name__ == "__main__":
     unittest.main()

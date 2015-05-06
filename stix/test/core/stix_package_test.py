@@ -20,6 +20,7 @@ from stix.indicator import Indicator
 from stix.incident import Incident
 from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
+from stix.utils import silence_warnings, now
 
 
 class CampaignsTests(EntityTestCase, unittest.TestCase):
@@ -112,6 +113,7 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
     }
 
 
+    @silence_warnings
     def test_deepcopy(self):
         """Test copy.deepcopy() against parsed document.
 
@@ -131,6 +133,19 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
 
         copied = copy.deepcopy(package)
         self.assertEqual(package.timestamp, copied.timestamp)
+
+    @assert_warnings
+    def test_deprecated_idref(self):
+        p = core.STIXPackage()
+        p.idref = "test"
+        self.assertEqual(p.idref, "test")
+
+    @assert_warnings
+    def test_deprecated_timestamp(self):
+        p = core.STIXPackage()
+        ts = now()
+        p.timestamp = ts
+        self.assertEqual(ts, p.timestamp)
 
     @assert_warnings
     def test_campaign_idref_deprecation(self):

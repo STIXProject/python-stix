@@ -10,7 +10,7 @@ import stix
 # utility imports
 import stix.utils as utils
 import stix.utils.parser as parser
-from stix.utils.deprecated import idref_deprecated
+from stix.utils.deprecated import idref_deprecated, deprecated
 
 # component imports
 from stix.campaign import Campaign
@@ -86,6 +86,8 @@ class STIXPackage(stix.Entity):
     
     @idref.setter
     def idref(self, value):
+        deprecated(value)
+
         if not value:
             self._idref = None
         else:
@@ -98,6 +100,7 @@ class STIXPackage(stix.Entity):
 
     @timestamp.setter
     def timestamp(self, value):
+        deprecated(value)
         self._timestamp = utils.dates.parse_value(value)
 
     @property

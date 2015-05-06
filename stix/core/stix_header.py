@@ -2,11 +2,12 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.bindings.stix_common as stix_common_binding
-import stix.bindings.stix_core as stix_core_binding
+from stix.utils.deprecated import deprecated
 from stix.common import InformationSource, StructuredTextList, VocabString
 from stix.common.vocabs import PackageIntent
 from stix.data_marking import Marking
+import stix.bindings.stix_common as stix_common_binding
+import stix.bindings.stix_core as stix_core_binding
 
 
 class STIXHeader(stix.Entity):
@@ -23,6 +24,15 @@ class STIXHeader(stix.Entity):
         self.handling = handling
         self.information_source = information_source
         self.profiles = []
+
+    @property
+    def title(self):
+        return self._title
+
+    @title.setter
+    def title(self, value):
+        deprecated(value)
+        self._title = value
 
     @property
     def description(self):
@@ -73,6 +83,7 @@ class STIXHeader(stix.Entity):
 
     @descriptions.setter
     def descriptions(self, value):
+        deprecated(value)
         self._description = StructuredTextList(value)
 
     def add_description(self, description):
@@ -131,6 +142,7 @@ class STIXHeader(stix.Entity):
 
     @short_descriptions.setter
     def short_descriptions(self, value):
+        deprecated(value)
         self._short_description = StructuredTextList(value)
 
     def add_short_description(self, description):
@@ -155,6 +167,7 @@ class STIXHeader(stix.Entity):
 
     @package_intents.setter
     def package_intents(self, value):
+        deprecated(value)
         self._package_intents = _PackageIntents(value)
 
     def add_package_intent(self, package_intent):
