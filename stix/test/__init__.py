@@ -1,15 +1,33 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-import json
-import itertools
-import warnings
+import contextlib
 import functools
+import itertools
+import json
+import warnings
 
 import cybox.utils
 
 import stix.bindings as bindings
 from stix.utils import NamespaceInfo, silence_warnings
+
+
+@contextlib.contextmanager
+def ctx_assert_warnings(self):
+    """Context manager for verifying that a block of code has raised a
+    warning.
+
+    """
+    with warnings.catch_warnings(record=True) as w:
+        # Raise all warnings
+        warnings.simplefilter('always')
+
+        # Return to caller
+        yield
+
+        # Assert that a warning was raised.
+        self.assertTrue(len(w) > 0)
 
 
 def assert_warnings(func):
@@ -20,12 +38,8 @@ def assert_warnings(func):
     @functools.wraps(func)
     def inner(*args, **kwargs):
         self = args[0]
-
-        with warnings.catch_warnings(record=True) as w:
-            warnings.simplefilter('always')
-            results = func(*args, **kwargs)
-            self.assertTrue(len(w) > 0)
-            return results
+        with ctx_assert_warnings(self):
+            return func(*args, **kwargs)
 
     return inner
 
