@@ -454,6 +454,11 @@ def lookup_extension(typeinfo, default=None):
     """Looks up the binding class for `typeinfo`, which is a namespace/typename
     pairing.
 
+    Args:
+        typeinfo: An lxml Element node or a stix.bindings.TypeInfo namedtuple.
+        default: A binding class that will be returned if typeinfo is an
+            Element without an xsi:type attribute.
+
     Returns:
         A binding class that has been registered for the namespace and typename
         found on `typeinfo`.
