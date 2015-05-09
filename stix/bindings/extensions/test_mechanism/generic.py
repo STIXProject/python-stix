@@ -89,10 +89,10 @@ class GenericTestMechanismType(indicator_binding.TestMechanismType):
         #     already_processed.add('xmlns')
         #     xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
         #     lwrite(xmlns)
-        # if 'xsi:type' not in already_processed:
-        #     already_processed.add('xsi:type')
-        #     xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
-        #     lwrite(xsi_type)
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            lwrite(xsi_type)
         if self.reference_location is not None and 'reference_location' not in already_processed:
             already_processed.add('reference_location')
             lwrite(' reference_location=%s' % (quote_attrib(self.reference_location), ))
