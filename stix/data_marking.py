@@ -228,11 +228,8 @@ class MarkingStructure(stix.Entity):
             m.marking_model_ref = obj.marking_model_ref
 
         else:
-            if hasattr(obj, 'xml_type'):
-                klass = MarkingStructure.lookup_class(obj)
-                m = klass.from_obj(obj)
-            else:
-                m = cls.from_obj(obj, cls())
+            klass = stix.lookup_extension(obj, default=cls)
+            m = klass.from_obj(obj, return_obj=klass())
 
         return m
 
@@ -245,18 +242,17 @@ class MarkingStructure(stix.Entity):
         if not d:
             return None
 
+        get = d.get
+        
         if return_obj is not None:
             m = return_obj
-            m.id_ = d.get('id')
-            m.idref = d.get('idref')
-            m.marking_model_name = d.get('marking_model_name')
-            m.marking_model_ref = d.get('marking_model_ref')
+            m.id_ = get('id')
+            m.idref = get('idref')
+            m.marking_model_name = get('marking_model_name')
+            m.marking_model_ref = get('marking_model_ref')
         else:
-            if 'xsi:type' in d:
-                klass = MarkingStructure.lookup_class(d.get('xsi:type'))
-                m = klass.from_dict(d)
-            else:
-                m = cls.from_dict(d, cls())
+            klass = stix.lookup_extension(get('xsi:type'), default=cls)
+            m = klass.from_dict(d, return_obj=klass())
 
         return m
 

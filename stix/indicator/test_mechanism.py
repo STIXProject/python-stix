@@ -44,7 +44,7 @@ class _BaseTestMechanism(stix.Entity):
         import stix.extensions.test_mechanism.generic_test_mechanism  # noqa
         
         if not return_obj:
-            klass = _BaseTestMechanism.lookup_class(obj)
+            klass = stix.lookup_extension(obj)
             return_obj = klass.from_obj(obj)
         else:
             return_obj.id_ = obj.id
@@ -62,7 +62,7 @@ class _BaseTestMechanism(stix.Entity):
         
         return_obj.id = self.id_
         return_obj.idref = self.idref
-        return_obj.xsi_type = self._XSI_TYPE
+        # return_obj.xsi_type = self._XSI_TYPE
 
         if self.efficacy:
             return_obj.Efficacy = self.efficacy.to_obj(ns_info=ns_info)
@@ -89,7 +89,7 @@ class _BaseTestMechanism(stix.Entity):
         import stix.extensions.test_mechanism.generic_test_mechanism  # noqa
         
         if not return_obj:
-            klass = _BaseTestMechanism.lookup_class(d.get('xsi:type'))
+            klass = stix.lookup_extension(d.get('xsi:type'))
             return_obj = klass.from_dict(d)
         else:
             return_obj.id_ = d.get('id')

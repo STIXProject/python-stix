@@ -30,7 +30,7 @@ def _lookup_unprefixed(typename):
         if typename in xsi_type:
             return klass
 
-    error = "Unregistered extension for unprefixed type: %s" % typename
+    error = "Unregistered extension type: %s" % typename
     raise ValueError(error)
 
 
@@ -53,7 +53,7 @@ def _lookup_extension(xsi_type):
     raise ValueError("Unregistered xsi:type %s" % xsi_type)
 
 
-def lookup_extension(typeinfo):
+def lookup_extension(typeinfo, default=None):
     """Returns a stix.Entity class for that has been registered for the
     `typeinfo` value.
 
@@ -63,6 +63,8 @@ def lookup_extension(typeinfo):
     Args:
         typeinfo: An object or string containing type information. This can be
             either an xsi:type attribute value or a stix.bindings object.
+        default: Return class if typeinfo is None or contains no xml type
+            information.
 
     Returns:
         A stix.Entity implementation class for the `xsi_type`.
@@ -71,17 +73,23 @@ def lookup_extension(typeinfo):
         ValueError: If no class has been registered for the `xsi_type`.
 
     """
+    if typeinfo is None and default:
+        return default
+
     # If the `typeinfo` was a string, consider it a  full xsi:type value.
     if isinstance(typeinfo, basestring):
         return _lookup_extension(typeinfo)
 
-    # If we didn't pass in string xsi:type, try to look it up by class attr.
-    # Binding classes have an `xml_type` class attribute.
+    # Most extension bindings include this attribute.
     if not hasattr(typeinfo, 'xml_type'):
+        if default:
+            return default
+
         error = "Input %s is missing xml_type attribute. Cannot lookup class."
         raise ValueError(error)
     
-    # Binding classes usually (always?) have an `xmlns_prefix` class attribute
+    # Extension binding classes usually (always?) have an `xmlns_prefix`
+    # class attribute.
     if hasattr(typeinfo, 'xmlns_prefix'):
         xsi_type = "%s:%s" % (typeinfo.xmlns_prefix, typeinfo.xml_type)
         return _lookup_extension(xsi_type)

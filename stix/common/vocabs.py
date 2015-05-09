@@ -63,13 +63,7 @@ class VocabString(stix.Entity):
 
     @staticmethod
     def lookup_class(xsi_type):
-        if not xsi_type:
-            return VocabString
-
-        try:
-            return stix.lookup_extension(xsi_type)
-        except ValueError:
-            return VocabString
+        return stix.lookup_extension(xsi_type, default=VocabString)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(VocabString, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -111,8 +105,8 @@ class VocabString(stix.Entity):
             return None
         
         if not return_obj:
-            klass = VocabString.lookup_class(vocab_obj.xsi_type)
-            return klass.from_obj(vocab_obj, klass())
+            klass = stix.lookup_extension(vocab_obj.xsi_type, default=cls)
+            return klass.from_obj(vocab_obj, return_obj=klass())
            
         # xsi_type should be set automatically by the class's constructor.
         
@@ -129,11 +123,12 @@ class VocabString(stix.Entity):
     def from_dict(cls, vocab_dict, return_obj=None):
         if not vocab_dict:
             return None
-        
+
         if not return_obj:
             if isinstance(vocab_dict, dict):
-                klass = VocabString.lookup_class(vocab_dict.get('xsi:type'))
-                return klass.from_dict(vocab_dict, klass())
+                get = vocab_dict.get
+                klass = stix.lookup_extension(get('xsi:type'), default=cls)
+                return klass.from_dict(vocab_dict, return_obj=klass())
             else:
                 return_obj = cls()
             
@@ -143,10 +138,11 @@ class VocabString(stix.Entity):
         if not isinstance(vocab_dict, dict):
             return_obj.value = vocab_dict
         else:
-            return_obj.value = vocab_dict.get('value')
-            return_obj.vocab_name = vocab_dict.get('vocab_name')
-            return_obj.vocab_reference = vocab_dict.get('vocab_reference')
-            return_obj.xsi_type = vocab_dict.get('xsi:type')
+            get = vocab_dict.get
+            return_obj.value = get('value')
+            return_obj.vocab_name = get('vocab_name')
+            return_obj.vocab_reference = get('vocab_reference')
+            return_obj.xsi_type = get('xsi:type')
 
         return return_obj
 
