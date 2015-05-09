@@ -208,11 +208,7 @@ class IndicatorsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Indicator':
-            if has_xsi_type(child_):
-                obj_ = common_binding.IndicatorBaseType.factory()
-            else:
-                klass = lookup_extension(child_)
-                obj_ = klass.factory()
+            obj_ = lookup_extension(child_, common_binding.IndicatorBaseType).factory()
             obj_.build(child_)
             self.Indicator.append(obj_)
 # end class IndicatorsType
@@ -285,13 +281,7 @@ class TTPsType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'TTP':
             from . import ttp
-
-            if has_xsi_type(child_):
-                obj_ = common_binding.TTPBaseType.factory() # not abstract
-            else:
-                klass = lookup_extension(child_)
-                obj_ = klass.factory()
-
+            obj_ = lookup_extension(child_, common_binding.TTPBaseType).factory()
             obj_.build(child_)
             self.TTP.append(obj_)
         elif nodeName_ == 'Kill_Chains':
@@ -361,13 +351,7 @@ class IncidentsType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Incident':
             from . import incident
-
-            if has_xsi_type(child_):
-                obj_ = common_binding.IncidentBaseType.factory() # not abstract
-            else:
-                klass = lookup_extension(child_)
-                obj_ = klass.factory()
-
+            obj_ = lookup_extension(child_, common_binding.IncidentBaseType).factory()
             obj_.build(child_)
             self.Incident.append(obj_)
 # end class IncidentsType
@@ -433,13 +417,7 @@ class CoursesOfActionType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Course_Of_Action':
             from . import course_of_action
-
-            if has_xsi_type(child_):
-                obj_ = common_binding.CourseOfActionBaseType.factory() # not abstract
-            else:
-                klass = lookup_extension(child_)
-                obj_ = klass.factory()
-
+            obj_ = lookup_extension(child_, common_binding.CourseOfActionBaseType).factory()
             obj_.build(child_)
             self.Course_Of_Action.append(obj_)
 # end class CoursesOfActionType
@@ -505,13 +483,7 @@ class CampaignsType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Campaign':
             from . import campaign
-
-            if has_xsi_type(child_):
-                obj_ = common_binding.CampaignBaseType.factory() # not abstract
-            else:
-                klass = lookup_extension(child_)
-                obj_ = klass.factory()
-
+            obj_ = lookup_extension(child_, common_binding.CampaignBaseType).factory()
             obj_.build(child_)
             self.Campaign.append(obj_)
 # end class CampaignsType
@@ -577,13 +549,7 @@ class ThreatActorsType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Threat_Actor':
             from . import threat_actor
-
-            if has_xsi_type(child_):
-                obj_ = common_binding.ThreatActorBaseType.factory() # not abstract
-            else:
-                klass = lookup_extension(child_)
-                obj_ = klass.factory()
-
+            obj_ = lookup_extension(child_, common_binding.ThreatActorBaseType).factory()
             obj_.build(child_)
             self.Threat_Actor.append(obj_)
 # end class ThreatActorsType

@@ -562,12 +562,7 @@ class COATakenType(GeneratedsSuper):
             self.set_Contributors(obj_)
         elif nodeName_ == 'Course_Of_Action':
             from . import course_of_action
-
-            if has_xsi_type(child_):
-                obj_ = stix_common_binding.CourseOfActionBaseType.factory() # not abstract
-            else:
-                obj_ = lookup_extension(child_).factory()
-
+            obj_ = lookup_extension(child_, stix_common_binding.CourseOfActionBaseType).factory()
             obj_.build(child_)
             self.set_Course_Of_Action(obj_)
 # end class COATakenType
@@ -2497,12 +2492,7 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             self.Coordinator.append(obj_)
         elif nodeName_ == 'Victim':
             import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
-
-            if has_xsi_type(child_):
-                obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
-            else:
-                obj_ = lookup_extension(child_).factory()
-
+            obj_ = lookup_extension(child_, stix_common_binding.IdentityType).factory()
             obj_.build(child_)
             self.Victim.append(obj_)
         elif nodeName_ == 'Affected_Assets':

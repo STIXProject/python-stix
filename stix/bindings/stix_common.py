@@ -608,12 +608,7 @@ class InformationSourceType(GeneratedsSuper):
             self.add_Description(obj_)
         elif nodeName_ == 'Identity':
             from .extensions.identity import ciq_identity_3_0
-
-            if has_xsi_type(child_):
-                obj_ = IdentityType.factory() # IdentityType is not abstract
-            else:
-                obj_ = lookup_extension(child_).factory()
-
+            obj_ = lookup_extension(child_, IdentityType).factory()
             obj_.build(child_)
             self.set_Identity(obj_)
         elif nodeName_ == 'Role':
@@ -1483,13 +1478,7 @@ class RelatedCampaignType(GenericRelationshipType):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Campaign':
             from . import campaign
-
-            if has_xsi_type(child_):
-                obj_ = CampaignBaseType.factory() # not abstract
-            else:
-                klass = lookup_extension(child_)
-                obj_ = klass.factory()
-
+            obj_ = lookup_extension(child_, CampaignBaseType).factory()
             obj_.build(child_)
             self.set_Campaign(obj_)
         super(RelatedCampaignType, self).buildChildren(child_, node, nodeName_, True)
@@ -1554,14 +1543,8 @@ class RelatedCourseOfActionType(GenericRelationshipType):
         super(RelatedCourseOfActionType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Course_Of_Action':
-            from . import campaign
-
-            if has_xsi_type(child_):
-                obj_ = CampaignBaseType.factory() # not abstract
-            else:
-                klass = lookup_extension(child_)
-                obj_ = klass.factory()
-
+            from . import course_of_action
+            obj_ = lookup_extension(child_, CourseOfActionBaseType).factory()
             obj_.build(child_)
             self.set_Course_Of_Action(obj_)
         super(RelatedCourseOfActionType, self).buildChildren(child_, node, nodeName_, True)
@@ -1626,12 +1609,7 @@ class RelatedExploitTargetType(GenericRelationshipType):
         super(RelatedExploitTargetType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Exploit_Target':
-            if has_xsi_type(child_):
-                obj_ = ExploitTargetBaseType.factory() # not abstract
-            else:
-                klass = lookup_extension(child_)
-                obj_ = klass.factory()
-
+            obj_ = lookup_extension(child_, ExploitTargetBaseType).factory()
             obj_.build(child_)
             self.set_Exploit_Target(obj_)
         super(RelatedExploitTargetType, self).buildChildren(child_, node, nodeName_, True)
@@ -1697,13 +1675,7 @@ class RelatedIncidentType(GenericRelationshipType):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Incident':
             from . import incident
-
-            if has_xsi_type(child_):
-                obj_ = IncidentBaseType.factory() # not abstract
-            else:
-                klass = lookup_extension(child_)
-                obj_ = klass.factory()
-
+            obj_ = lookup_extension(child_, IncidentBaseType).factory()
             obj_.build(child_)
             self.set_Incident(obj_)
         super(RelatedIncidentType, self).buildChildren(child_, node, nodeName_, True)
@@ -1769,13 +1741,7 @@ class RelatedIndicatorType(GenericRelationshipType):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Indicator':
             from . import indicator
-
-            if has_xsi_type(child_):
-                obj_ = IndicatorBaseType.factory()
-            else:
-                klass = lookup_extension(child_)
-                obj_ = klass.factory()
-
+            obj_ = lookup_extension(child_, IncidentBaseType).factory()
             obj_.build(child_)
             self.set_Indicator(obj_)
         super(RelatedIndicatorType, self).buildChildren(child_, node, nodeName_, True)
@@ -1906,13 +1872,7 @@ class RelatedThreatActorType(GenericRelationshipType):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Threat_Actor':
             from . import threat_actor
-
-            if has_xsi_type(child_):
-                obj_ = ThreatActorBaseType.factory() # not abstract
-            else:
-                klass = lookup_extension(child_)
-                obj_ = klass.factory()
-
+            obj_ = lookup_extension(child_, ThreatActorBaseType).factory()
             obj_.build(child_)
             self.set_Threat_Actor(obj_)
         super(RelatedThreatActorType, self).buildChildren(child_, node, nodeName_, True)
@@ -1978,13 +1938,7 @@ class RelatedTTPType(GenericRelationshipType):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'TTP':
             from . import ttp
-
-            if has_xsi_type(child_):
-                obj_ = TTPBaseType.factory() # not abstract
-            else:
-                klass = lookup_extension(child_)
-                obj_ = klass.factory()
-
+            obj_ = lookup_extension(child_, TTPBaseType).factory()
             obj_.build(child_)
             self.set_TTP(obj_)
         super(RelatedTTPType, self).buildChildren(child_, node, nodeName_, True)
@@ -2050,12 +2004,7 @@ class RelatedIdentityType(GenericRelationshipType):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Identity':
             from .extensions.identity import ciq_identity_3_0
-
-            if has_xsi_type(child_):
-                obj_ = IdentityType.factory() # IdentityType is not abstract
-            else:
-                obj_ = lookup_extension(child_).factory()
-
+            obj_ = lookup_extension(child_, IdentityType).factory()
             obj_.build(child_)
             self.set_Identity(obj_)
         super(RelatedIdentityType, self).buildChildren(child_, node, nodeName_, True)
@@ -3042,12 +2991,7 @@ class ExploitTargetsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Exploit_Target':
-            if has_xsi_type(child_):
-                obj_ = ExploitTargetBaseType.factory() # not abstract
-            else:
-                klass = lookup_extension(child_)
-                obj_ = klass.factory()
-
+            obj_ = lookup_extension(child_, ExploitTargetBaseType).factory()
             obj_.build(child_)
             self.Exploit_Target.append(obj_)
 
@@ -3930,12 +3874,7 @@ class RelatedReportType(GenericRelationshipType):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Report':
             from . import report
-
-            if has_xsi_type(child_):
-                obj_ = ReportBaseType.factory()
-            else:
-                obj_ = lookup_extension(child_).factory()
-
+            obj_ = lookup_extension(child_, ReportBaseType).factory()
             obj_.build(child_)
             self.set_Report(obj_)
         super(RelatedReportType, self).buildChildren(child_, node, nodeName_, True)

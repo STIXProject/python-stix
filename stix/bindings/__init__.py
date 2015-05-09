@@ -450,7 +450,7 @@ def register_extension(cls):
     return cls
 
 
-def lookup_extension(typeinfo):
+def lookup_extension(typeinfo, default=None):
     """Looks up the binding class for `typeinfo`, which is a namespace/typename
     pairing.
 
@@ -460,7 +460,10 @@ def lookup_extension(typeinfo):
 
     """
     if not isinstance(typeinfo, TypeInfo):
-        typeinfo = get_type_info(typeinfo)
+        if has_xsi_type(typeinfo):
+            typeinfo = get_type_info(typeinfo)
+        elif default:
+            return default
 
     try:
         return _EXTENSION_MAP[typeinfo]
@@ -474,7 +477,7 @@ def has_xsi_type(node):
     """Returns ``True`` if `node` does not have an xsi:type attribute.
 
     """
-    return xmlconst.TAG_XSI_TYPE not in node.attrib
+    return xmlconst.TAG_XSI_TYPE in node.attrib
 
 
 __all__ = [

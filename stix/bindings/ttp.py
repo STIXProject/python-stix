@@ -766,12 +766,7 @@ class MalwareType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Malware_Instance':
             from .extensions.malware import maec_4_1
-
-            if has_xsi_type(child_):
-                obj_ = MalwareInstanceType.factory() # MalwareInstanceType is not abstract
-            else:
-                obj_ = lookup_extension(child_).factory()
-
+            obj_ = lookup_extension(child_, MalwareInstanceType).factory()
             obj_.build(child_)
             self.Malware_Instance.append(obj_)
 # end class MalwareType
@@ -837,12 +832,7 @@ class AttackPatternsType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Attack_Pattern':
             from .extensions.attack_pattern import capec_2_7
-
-            if has_xsi_type(child_):
-                obj_ = AttackPatternType.factory() # AttackPattern is not abstract
-            else:
-                obj_ = lookup_extension(child_).factory()
-
+            obj_ = lookup_extension(child_, AttackPatternType).factory()
             obj_.build(child_)
             self.Attack_Pattern.append(obj_)
 # end class AttackPatternsType
@@ -988,13 +978,7 @@ class PersonasType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Persona':
             from .extensions.identity import ciq_identity_3_0
-
-            if has_xsi_type(child_):
-                obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
-            else:
-                obj_ = lookup_extension(child_).factory()
-
-            obj_.build(child_)
+            obj_ = lookup_extension(child_, stix_common_binding.IdentityType).factory()
             obj_.build(child_)
             self.Persona.append(obj_)
 # end class PersonasType
@@ -1164,12 +1148,7 @@ class VictimTargetingType(GeneratedsSuper):
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Identity':
             from .extensions.identity import ciq_identity_3_0
-
-            if has_xsi_type(child_):
-                obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
-            else:
-                obj_ = lookup_extension(child_).factory()
-
+            obj_ = lookup_extension(child_, stix_common_binding.IdentityType).factory()
             obj_.build(child_)
             self.set_Identity(obj_)
         elif nodeName_ == 'Targeted_Systems':
