@@ -9,6 +9,24 @@ from stix.data_marking import Marking
 
 
 class Header(stix.Entity):
+    """The Report Header.
+
+    Args:
+        handling: The data marking section of the Header.
+        information_source: The :class:`.InformationSource` section of the
+            Header.
+        intents: A collection of :class:`.VocabString` defining the intent
+            of the parent :class:`.Report`.
+        description: A description of the intent or purpose of the parent
+            :class:`.Report`.
+        short_description: A short description of the intent or purpose of
+            the parent :class:`.Report`.
+        title: The title of the :class:`.Report`.
+
+    Attributes:
+        title: The title of the parent :class:`.Report`.
+
+    """
     _binding = report_binding
     _namespace = 'http://stix.mitre.org/Report-1'
 
@@ -141,6 +159,10 @@ class Header(stix.Entity):
 
     @property
     def handling(self):
+        """The :class:`.Marking` section of this Header. This section contains
+        data marking information.
+
+        """
         return self._handling
 
     @handling.setter
@@ -149,6 +171,10 @@ class Header(stix.Entity):
 
     @property
     def intents(self):
+        """A collection of :class:`.VocabString` controlled vocabulary
+        objects.
+
+        """
         return self._intents
 
     @intents.setter
@@ -156,10 +182,20 @@ class Header(stix.Entity):
         self._intents = _ReportIntents(value)
 
     def add_intent(self, intent):
+        """Adds :class:`.VocabString` object to the :attr:`intents`
+        collection.
+
+        If the input is not an instance of :class:`.VocabString`, an effort
+        will be made to convert it into an instance of :class:`.ReportIntent`.
+
+        """
         self.intents.append(intent)
 
     @property
     def information_source(self):
+        """The :class:`.InformationSource` section of the Header.
+
+        """
         return self._information_source
 
     @information_source.setter

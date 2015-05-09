@@ -31,6 +31,27 @@ import stix.bindings.report as report_binding
 
 
 class Report(stix.Entity):
+    """A STIX Report Object.
+
+    Args:
+        id_ (optional): An identifier. If ``None``, a value will be generated
+            via ``stix.utils.create_id()``. If set, this will unset the
+            ``idref`` property.
+        idref (optional): An identifier reference. If set this will unset the
+            ``id_`` property.
+        timestamp (optional): A timestamp value. Can be an instance of
+            ``datetime.datetime`` or ``str``.
+        header: A Report :class:`.Header` object.
+        campaigns: A collection of :class:`.Campaign` objects.
+        course_of_action: A collection of :class:`.CourseOfAction` objects.
+        exploit_targets: A collection of :class:`.ExploitTarget` objects.
+        incidents: A collection of :class:`.Incident` objects.
+        indicators: A collection of :class:`.Indicator` objects.
+        threat_actors: A collection of :class:`.ThreatActor` objects.
+        ttps: A collection of :class:`.TTP` objects.
+        related_reports: A collection of :class:`.RelatedReport` objects.
+
+    """
     _binding = report_binding
     _binding_class = _binding.ReportType
     _namespace = 'http://stix.mitre.org/Report-1'
@@ -62,6 +83,10 @@ class Report(stix.Entity):
 
     @property
     def id_(self):
+        """A globally unique identifier for this Report. By default, one
+        will be generated automatically.
+
+        """
         return self._id
     
     @id_.setter
@@ -74,6 +99,10 @@ class Report(stix.Entity):
     
     @property
     def idref(self):
+        """A reference to another Report identifier. Setting this will unset
+        any previous ``id`` values.
+
+        """
         return self._idref
     
     @idref.setter
@@ -86,6 +115,10 @@ class Report(stix.Entity):
     
     @property
     def timestamp(self):
+        """Specifies a timestamp for the definition of this specific Report
+        object.
+
+        """
         return self._timestamp
 
     @timestamp.setter
@@ -94,6 +127,9 @@ class Report(stix.Entity):
 
     @property
     def header(self):
+        """The :class:`.Header` section for the Report.
+
+        """
         return self._header
 
     @header.setter
@@ -102,6 +138,10 @@ class Report(stix.Entity):
 
     @property
     def indicators(self):
+        """The top-level :class:`.Indicator` collection. This behaves like
+        a ``MutableSequence`` type.
+
+        """
         return self._indicators
 
     @indicators.setter
@@ -109,10 +149,18 @@ class Report(stix.Entity):
         self._indicators = Indicators(value)
 
     def add_indicator(self, indicator):
+        """Adds an :class:`.Indicator` object to the :attr:`indicators`
+        collection.
+
+        """
         self.indicators.append(indicator)
 
     @property
     def campaigns(self):
+        """The top-level :class:`.Campaign` collection. This behaves like
+        a ``MutableSequence`` type.
+
+        """
         return self._campaigns
 
     @campaigns.setter
@@ -120,10 +168,17 @@ class Report(stix.Entity):
         self._campaigns = Campaigns(value)
 
     def add_campaign(self, campaign):
+        """Adds a :class:`Campaign` object to the :attr:`campaigns` collection.
+
+        """
         self.campaigns.append(campaign)
 
     @property
     def observables(self):
+        """The top-level ``Observable`` collection. This behaves like
+        a ``MutableSequence`` type.
+
+        """
         return self._observables
 
     @observables.setter
@@ -131,6 +186,12 @@ class Report(stix.Entity):
         self._set_var(Observables, observables=value)
 
     def add_observable(self, observable):
+        """Adds an ``Observable`` object to the :attr:`observables` collection.
+
+        If `observable` is not an ``Observable`` instance, an effort will be
+        made to convert it to one.
+
+        """
         if not self.observables:
             self.observables = Observables(observables=observable)
         else:
@@ -138,6 +199,10 @@ class Report(stix.Entity):
 
     @property
     def incidents(self):
+        """The top-level :class:`.Incident` collection. This behaves like
+        a ``MutableSequence`` type.
+
+        """
         return self._incidents
     
     @incidents.setter
@@ -145,10 +210,18 @@ class Report(stix.Entity):
         self._incidents = Incidents(value)
     
     def add_incident(self, incident):
+        """Adds an :class:`.Incident` object to the :attr:`incidents`
+        collection.
+
+        """
         self.incidents.append(incident)
 
     @property
     def threat_actors(self):
+        """The top-level :class:`.ThreatActor` collection. This behaves like
+        a ``MutableSequence`` type.
+
+        """
         return self._threat_actors
     
     @threat_actors.setter
@@ -156,10 +229,18 @@ class Report(stix.Entity):
         self._threat_actors = ThreatActors(value)
 
     def add_threat_actor(self, threat_actor):
+        """Adds an :class:`.ThreatActor` object to the :attr:`threat_actors`
+        collection.
+
+        """
         self._threat_actors.append(threat_actor)
 
     @property
     def courses_of_action(self):
+        """The top-level :class:`.CourseOfAction` collection. This behaves like
+        a ``MutableSequence`` type.
+
+        """
         return self._courses_of_action
     
     @courses_of_action.setter
@@ -167,10 +248,18 @@ class Report(stix.Entity):
         self._courses_of_action = CoursesOfAction(value)
 
     def add_course_of_action(self, course_of_action):
+        """Adds an :class:`.CourseOfAction` object to the
+        :attr:`courses_of_action` collection.
+
+        """
         self._courses_of_action.append(course_of_action)
 
     @property
     def exploit_targets(self):
+        """The top-level :class:`.ExploitTarget` collection. This behaves like
+        a ``MutableSequence`` type.
+
+        """
         return self._exploit_targets
     
     @exploit_targets.setter
@@ -178,10 +267,18 @@ class Report(stix.Entity):
         self._exploit_targets = ExploitTargets(value)
 
     def add_exploit_target(self, exploit_target):
+        """Adds an :class:`.ExploitTarget` object to the
+        :attr:`exploit_targets` collection.
+
+        """
         self._exploit_targets.append(exploit_target)
 
     @property
     def ttps(self):
+        """The top-level :class:`.TTP` collection. This behaves like
+        a ``MutableSequence`` type.
+
+        """
         return self._ttps
     
     @ttps.setter
@@ -192,10 +289,17 @@ class Report(stix.Entity):
             self._ttps = TTPs(value)
     
     def add_ttp(self, ttp):
+        """Adds an :class:`.TTP` object to the :attr:`ttps` collection.
+
+        """
         self.ttps.append(ttp)
 
     @property
     def related_reports(self):
+        """The top-level :class:`.RelatedReports` collection. This behaves like
+        a ``MutableSequence`` type.
+
+        """
         return self._related_reports
 
     @related_reports.setter
@@ -206,6 +310,10 @@ class Report(stix.Entity):
             self._related_reports = RelatedReports(value)
 
     def add_related_report(self, related_report):
+        """Adds an :class:`.RelatedReport` object to the
+        :attr:`related_reports` collection.
+
+        """
         self.related_reports.append(related_report)
 
     def add(self, entity):

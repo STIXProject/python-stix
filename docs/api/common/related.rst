@@ -1,5 +1,5 @@
 :mod:`stix.common.related` Module
-==================================
+=================================
 
 .. module:: stix.common.related
 
@@ -61,3 +61,12 @@ Classes
 .. autoclass:: RelatedTTP
 	:show-inheritance:
 	:members:
+
+.. autoclass:: RelatedReports
+    :show-inheritance:
+    :members:
+
+.. autoclass:: RelatedReport
+    :show-inheritance:
+    :members:
+

@@ -11,6 +11,26 @@ import stix.bindings.stix_core as stix_core_binding
 
 
 class STIXHeader(stix.Entity):
+    """The STIX Package Header.
+
+    Args:
+        handling: The data marking section of the Header.
+        information_source: The :class:`.InformationSource` section of the
+            Header.
+        package_intents: **DEPRECATED**. A collection of :class:`.VocabString`
+            defining the intent of the parent :class:`.STIXPackage`.
+        description: **DEPRECATED**. A description of the intent or purpose
+            of the parent :class:`.STIXPackage`.
+        short_description: **DEPRECATED**. A short description of the intent
+            or purpose of the parent :class:`.STIXPackage`.
+        title: **DEPRECATED**. The title of the :class:`.STIXPackage`.
+
+    Attributes:
+        profiles: A collection of STIX Profiles the parent
+            :class:`.STIXPackage` conforms to.
+        title: **DEPRECATED**. The title of the parent :class:`.STIXPackage`.
+
+    """
     _binding = stix_core_binding
     _namespace = 'http://stix.mitre.org/stix-1'
 
@@ -36,7 +56,8 @@ class STIXHeader(stix.Entity):
 
     @property
     def description(self):
-        """A single description about the contents or purpose of this object.
+        """**DEPRECATED**. A single description about the contents or
+        purpose of this object.
 
         Default Value: ``None``
 
@@ -57,8 +78,8 @@ class STIXHeader(stix.Entity):
 
     @property
     def descriptions(self):
-        """A :class:`.StructuredTextList` object, containing descriptions about
-        the purpose or intent of this object.
+        """**DEPRECATED**. A :class:`.StructuredTextList` object, containing
+        descriptions about the purpose or intent of this object.
 
         This is typically used for the purpose of providing multiple
         descriptions with different classificaton markings.
@@ -87,17 +108,19 @@ class STIXHeader(stix.Entity):
         self._description = StructuredTextList(value)
 
     def add_description(self, description):
-        """Adds a description to the ``descriptions`` collection.
+        """**DEPRECATED**. Adds a description to the ``descriptions``
+        collection.
 
         This is the same as calling "foo.descriptions.add(bar)".
 
         """
+        deprecated(description)
         self.descriptions.add(description)
 
     @property
     def short_description(self):
-        """A single short description about the contents or purpose of this
-        object.
+        """**DEPRECATED**. A single short description about the contents or
+        purpose of this object.
 
         Default Value: ``None``
 
@@ -117,8 +140,8 @@ class STIXHeader(stix.Entity):
 
     @property
     def short_descriptions(self):
-        """A :class:`.StructuredTextList` object, containing short descriptions
-        about the purpose or intent of this object.
+        """**DEPRECATED**. A :class:`.StructuredTextList` object, containing
+        short descriptions about the purpose or intent of this object.
 
         This is typically used for the purpose of providing multiple
         short descriptions with different classificaton markings.
@@ -146,15 +169,21 @@ class STIXHeader(stix.Entity):
         self._short_description = StructuredTextList(value)
 
     def add_short_description(self, description):
-        """Adds a description to the ``short_descriptions`` collection.
+        """**DEPRECATED**. Adds a description to the ``short_descriptions``
+        collection.
 
         This is the same as calling "foo.short_descriptions.add(bar)".
 
         """
+        deprecated(description)
         self.short_descriptions.add(description)
 
     @property
     def handling(self):
+        """The :class:`.Marking` section of this Header. This section contains
+        data marking information.
+
+        """
         return self._handling
 
     @handling.setter
@@ -163,6 +192,10 @@ class STIXHeader(stix.Entity):
 
     @property
     def package_intents(self):
+        """**DEPRECATED**. A collection of :class:`.VocabString` controlled
+        vocabulary objects defining the intent of the STIX PAckage.
+
+        """
         return self._package_intents
 
     @package_intents.setter
@@ -171,10 +204,21 @@ class STIXHeader(stix.Entity):
         self._package_intents = _PackageIntents(value)
 
     def add_package_intent(self, package_intent):
+        """**DEPRECATED**. Adds :class:`.VocabString` object to the
+        :attr:`package_intents` collection.
+
+        If the input is not an instance of :class:`.VocabString`, an effort
+        will be made to convert it into an instance of :class:`.PackageIntent`.
+
+        """
+        deprecated(package_intent)
         self.package_intents.append(package_intent)
 
     @property
     def information_source(self):
+        """The :class:`.InformationSource` section of the STIX Header.
+
+        """
         return self._information_source
 
     @information_source.setter

@@ -120,6 +120,19 @@ Modules located in the `stix.indicator`_ package
    indicator/indicator
    indicator/*
 
+STIX Report
+-----------
+Modules located in the `stix.report`_ package
+
+.. _stix.report: https://github.com/STIXProject/python-stix/tree/master/stix/report
+
+.. toctree::
+   :titlesonly:
+   :glob:
+
+   report/report
+   report/*
+
 STIX Threat Actor
 -----------------
 Modules located in the `stix.threat_actor`_ package
