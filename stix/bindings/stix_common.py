@@ -3697,7 +3697,22 @@ class ControlledVocabularyStringType(GeneratedsSuper):
         value = find_attr_value_('xsi:type', node)
         if value is not None and 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
-            self.xsi_type = value
+
+            from stix.utils import DEFAULT_STIX_NAMESPACES
+            typeinfo = get_type_info(node)
+
+            # Override the prefix if its mapped to a known STIX namespace.
+            # This will help prevent class resolution failures in
+            # stix.lookup_extension().
+            if typeinfo.ns in DEFAULT_STIX_NAMESPACES:
+                ns = typeinfo.ns
+                typename = typeinfo.typename
+                xsi_type = "%s:%s" % (DEFAULT_STIX_NAMESPACES[ns], typename)
+            else:
+                xsi_type = value
+
+            self.xsi_type = xsi_type
+
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
 # end class ControlledVocabularyStringType

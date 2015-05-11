@@ -470,12 +470,12 @@ def lookup_extension(typeinfo, default=None):
         elif default:
             return default
 
-    try:
+    if typeinfo in _EXTENSION_MAP:
         return _EXTENSION_MAP[typeinfo]
-    except KeyError:
-        fmt = "No class implemented or registered for XML type '{%s}%s'"
-        error = fmt % (typeinfo.ns, typeinfo.typename)
-        raise NotImplementedError(error)
+
+    fmt = "No class implemented or registered for XML type '{%s}%s'"
+    error = fmt % (typeinfo.ns, typeinfo.typename)
+    raise NotImplementedError(error)
 
 
 def has_xsi_type(node):
