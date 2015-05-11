@@ -821,7 +821,7 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
     subclass = None
     superclass = stix_common_binding.IndicatorBaseType
 
-    xmlns          = "http://stix.mitre.org/Indicator-2"
+    xmlns          = XML_NS
     xmlns_prefix   = "indicator"
     xml_type       = "IndicatorType"
 

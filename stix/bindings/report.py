@@ -555,9 +555,6 @@ class ThreatActorsType(GeneratedsSuper):
 # end class ThreatActorsType
 
 
-
-
-
 @register_extension
 class ReportType(common_binding.ReportBaseType):
     """ReportType defines a contextual wrapper for a grouping of STIX
