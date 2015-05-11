@@ -424,7 +424,7 @@ def get_type_info(node):
 
 
 #: A mapping of namespace/type information to binding classes.
-_EXTENSION_MAP = {}
+_BINDING_EXTENSION_MAP = {}
 
 
 def add_extension(cls):
@@ -435,7 +435,7 @@ def add_extension(cls):
 
     """
     typeinfo = TypeInfo(ns=cls.xmlns, typename=cls.xml_type)
-    _EXTENSION_MAP[typeinfo] = cls
+    _BINDING_EXTENSION_MAP[typeinfo] = cls
 
 
 def register_extension(cls):
@@ -470,8 +470,8 @@ def lookup_extension(typeinfo, default=None):
         elif default:
             return default
 
-    if typeinfo in _EXTENSION_MAP:
-        return _EXTENSION_MAP[typeinfo]
+    if typeinfo in _BINDING_EXTENSION_MAP:
+        return _BINDING_EXTENSION_MAP[typeinfo]
 
     fmt = "No class implemented or registered for XML type '{%s}%s'"
     error = fmt % (typeinfo.ns, typeinfo.typename)
