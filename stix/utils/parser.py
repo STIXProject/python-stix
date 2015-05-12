@@ -144,7 +144,10 @@ class EntityParser(object):
         document_version = get_document_version(tree)
         supported = stix.supported_stix_version()
 
-        if StrictVersion(supported) == StrictVersion(document_version):
+        doc_version = StrictVersion(document_version)
+        api_versions = [StrictVersion(x) for x in supported]
+
+        if doc_version in api_versions:
             return
 
         error = (

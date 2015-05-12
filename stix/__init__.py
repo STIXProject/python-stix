@@ -130,5 +130,6 @@ from .version import __version__  # noqa
 
 
 def supported_stix_version():
-    return '.'.join(__version__.split('.')[:3])
+    #return '.'.join(__version__.split('.')[:3])
+    return ('1.1.1', '1.2')
 
