@@ -139,6 +139,28 @@ class STIXPackage(stix.Entity):
         self._timestamp = utils.dates.parse_value(value)
 
     @property
+    def version(self):
+        """The schematic version of this component.
+        
+        Note:
+            This property refers to the version of the schema component
+            type and should not be used for the purpose of content versioning.
+
+        Default Value: '1.2'
+
+        """
+        return self._version
+
+    @version.setter
+    def version(self, value):
+        if not value:
+            self._version = None
+        else:
+            utils.check_version(self._ALL_VERSIONS, value)
+            self._version = value
+
+
+    @property
     def stix_header(self):
         """The :class:`.STIXHeader` section of the STIX Package.
 
