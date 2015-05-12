@@ -10,7 +10,7 @@ import stix
 # utility imports
 import stix.utils as utils
 import stix.utils.parser as parser
-from stix.utils.deprecated import idref_deprecated, deprecated
+from stix.utils.deprecated import deprecated
 
 # component imports
 from stix.campaign import Campaign
