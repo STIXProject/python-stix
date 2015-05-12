@@ -141,7 +141,7 @@ class STIXPackage(stix.Entity):
     @property
     def version(self):
         """The schematic version of this component.
-        
+
         Note:
             This property refers to the version of the schema component
             type and should not be used for the purpose of content versioning.
@@ -465,7 +465,6 @@ class STIXPackage(stix.Entity):
             return_obj = cls()
 
         get = dict_repr.get
-
         return_obj.id_ = get('id')
         return_obj.idref = get('idref')
         return_obj.timestamp = get('timestamp')
