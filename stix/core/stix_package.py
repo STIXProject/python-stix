@@ -73,7 +73,7 @@ class STIXPackage(stix.Entity):
         
         self.id_ = id_ or stix.utils.create_id("Package")
         self.idref = idref
-        self.version = self._version
+        self.version = STIXPackage._version
         self.stix_header = stix_header
         self.campaigns = campaigns
         self.courses_of_action = courses_of_action
@@ -406,7 +406,7 @@ class STIXPackage(stix.Entity):
 
         return_obj.id = self.id_
         return_obj.idref = self.idref
-        return_obj.version = self.version
+        return_obj.version = STIXPackage._version  # noqa
         return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
 
         if self.stix_header:
@@ -435,7 +435,12 @@ class STIXPackage(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        return super(STIXPackage, self).to_dict()
+        d = utils.to_dict(self)
+
+        if 'version' in d:
+            d['version'] = STIXPackage._version  # noqa
+
+        return d
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -457,6 +462,10 @@ class STIXPackage(stix.Entity):
         return_obj.related_packages = RelatedPackages.from_obj(obj.Related_Packages)
         return_obj.reports = Reports.from_obj(obj.Reports)
 
+        # Don't overwrite this unless passed in.
+        if obj.version:
+            return_obj.version = obj.version
+
         return return_obj
 
     @classmethod
@@ -468,6 +477,7 @@ class STIXPackage(stix.Entity):
         return_obj.id_ = get('id')
         return_obj.idref = get('idref')
         return_obj.timestamp = get('timestamp')
+        return_obj.version = get('version', cls._version)
         return_obj.stix_header = STIXHeader.from_dict(get('stix_header'))
         return_obj.campaigns = Campaigns.from_dict(get('campaigns'))
         return_obj.courses_of_action = CoursesOfAction.from_dict(get('courses_of_action'))
