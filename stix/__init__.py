@@ -130,6 +130,9 @@ from .version import __version__  # noqa
 
 
 def supported_stix_version():
-    #return '.'.join(__version__.split('.')[:3])
+    """Returns a tuple of STIX version strings that this version of python-stix
+    supports (i.e., can parse).
+
+    """
     return ('1.1.1', '1.2')
 
