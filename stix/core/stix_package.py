@@ -435,10 +435,6 @@ class STIXPackage(stix.Entity):
         return_obj.related_packages = RelatedPackages.from_obj(obj.Related_Packages)
         return_obj.reports = Reports.from_obj(obj.Reports)
 
-        # Don't overwrite unless a version is passed in
-        if obj.version:
-            return_obj.version = obj.version
-
         return return_obj
 
     @classmethod
@@ -451,7 +447,6 @@ class STIXPackage(stix.Entity):
         return_obj.id_ = get('id')
         return_obj.idref = get('idref')
         return_obj.timestamp = get('timestamp')
-        return_obj.version = get('version', cls._version)
         return_obj.stix_header = STIXHeader.from_dict(get('stix_header'))
         return_obj.campaigns = Campaigns.from_dict(get('campaigns'))
         return_obj.courses_of_action = CoursesOfAction.from_dict(get('courses_of_action'))
