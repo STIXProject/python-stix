@@ -1007,6 +1007,7 @@ AvailabilityLossType = AvailabilityLossType_1_1_1
 CampaignStatus = CampaignStatus_1_0
 COAStage = COAStage_1_0
 CourseOfActionType = CourseOfActionType_1_0
+DiscoveryMethod = DiscoveryMethod_2_0
 HighMediumLow = HighMediumLow_1_0
 ImpactQualification = ImpactQualification_1_0
 ImpactRating = ImpactRating_1_0
