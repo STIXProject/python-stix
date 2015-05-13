@@ -5,6 +5,7 @@
 import stix
 import stix.bindings.ttp as ttp_binding
 from stix.common import vocabs, Statement
+from stix.common.kill_chains import KillChainPhasesReference
 from stix.data_marking import Marking
 from stix.common.related import RelatedPackageRefs
 
@@ -42,6 +43,7 @@ class TTP(stix.BaseCoreComponent):
         self.handling = None
         self.exploit_targets = ExploitTargets()
         self.related_packages = None
+        self.kill_chain_phases = None
 
     @property
     def behavior(self):
@@ -109,6 +111,25 @@ class TTP(stix.BaseCoreComponent):
         self._set_var(Marking, try_cast=False, handling=value)
 
     @property
+    def kill_chain_phases(self):
+        return self._kill_chain_phases
+
+    @kill_chain_phases.setter
+    def kill_chain_phases(self, value):
+        self._kill_chain_phases = KillChainPhasesReference(value)
+
+    def add_kill_chain_phase(self, value):
+        """Add a new Kill Chain Phase reference to this Indicator.
+
+        Args:
+            value: a :class:`stix.common.kill_chains.KillChainPhase` or a `str`
+                representing the phase_id of. Note that you if you are defining
+                a custom Kill Chain, you need to add it to the STIX package
+                separately.
+        """
+        self.kill_chain_phases.append(value)
+
+    @property
     def related_packages(self):
         return self._related_packages
 
@@ -137,6 +158,8 @@ class TTP(stix.BaseCoreComponent):
             return_obj.Resources = self.resources.to_obj(ns_info=ns_info)
         if self.victim_targeting:
             return_obj.Victim_Targeting = self.victim_targeting.to_obj(ns_info=ns_info)
+        if self.kill_chain_phases:
+            return_obj.Kill_Chain_Phases = self.kill_chain_phases.to_obj(ns_info=ns_info)
         if self.handling:
             return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
         if self.related_packages:
@@ -162,6 +185,7 @@ class TTP(stix.BaseCoreComponent):
             return_obj.victim_targeting = VictimTargeting.from_obj(obj.Victim_Targeting)
             return_obj.handling = Marking.from_obj(obj.Handling)
             return_obj.intended_effects = _IntendedEffects.from_obj(obj.Intended_Effect)
+            return_obj.kill_chain_phases = KillChainPhasesReference.from_obj(obj.Kill_Chain_Phases)
             return_obj.related_packages = RelatedPackageRefs.from_obj(obj.Related_Packages)
 
         return return_obj
@@ -188,6 +212,7 @@ class TTP(stix.BaseCoreComponent):
         return_obj.victim_targeting = VictimTargeting.from_dict(get('victim_targeting'))
         return_obj.handling = Marking.from_dict(get('handling'))
         return_obj.related_packages = RelatedPackageRefs.from_dict(get('related_packages'))
+        return_obj.kill_chain_phases = KillChainPhasesReference.from_dict(get('kill_chain_phases'))
 
         return return_obj
 

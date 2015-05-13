@@ -5,7 +5,7 @@ import unittest
 
 from stix.test import EntityTestCase, assert_warnings
 from stix.test import data_marking_test
-from stix.test.common import related_test, identity_test
+from stix.test.common import related_test, identity_test, kill_chains_test
 
 from stix.core import STIXPackage
 import stix.ttp as ttp
@@ -150,6 +150,7 @@ class TTPTests(EntityTestCase, unittest.TestCase):
         'exploit_targets': ExploitTargetsTests._full_dict,
         'behavior': BehaviorTests._full_dict,
         'related_packages': related_test.RelatedPackageRefsTests._full_dict,
+        'kill_chain_phases': kill_chains_test.KillChainPhasesReferenceTests._full_dict
     }
 
     def test_add_description(self):
