@@ -5,9 +5,9 @@ The **python-stix** library provides an API for developing and consuming *Struct
 
 .. note::
 
-	These docs provide standard reference for this Python library. For documentation on *idiomatic* usage and *common patterns*, as well as various STIX-related information and utilities, please visit the `STIXProject at GitHub`_.
-	
-	.. _STIXProject at GitHub: http://stixproject.github.io/
+    These docs provide standard reference for this Python library. For documentation on *idiomatic* usage and *common patterns*, as well as various STIX-related information and utilities, please visit the `STIXProject at GitHub`_.
+
+    .. _STIXProject at GitHub: http://stixproject.github.io/
 
 .. _STIX website: http://stix.mitre.org
 
@@ -55,6 +55,7 @@ Contents
 
    installation
    getting_started
+   overview/index
    examples/index
    api_vs_bindings/index
 
