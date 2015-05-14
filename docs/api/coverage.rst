@@ -62,22 +62,22 @@ CIQ Address                     × None
 CAPEC 2.7                       × None                  
 |
 **Identity Extensions**                                 
-CIQ Identity                    ✓ Full                  :class:`stix.extensions.identity.ciq_identity_3_0.CIQIdentity3_0Instance`
+CIQ Identity                    ⚠ Partial               :class:`stix.extensions.identity.ciq_identity_3_0.CIQIdentity3_0Instance`
 |
-**Malware Extensions**                                  
+**Malware Extensions**
 MAEC                            ✓ Full                  :class:`stix.extensions.malware.maec_4_1_malware.MAECInstance`
 |
-**Marking Extensions**          
+**Marking Extensions**
 Simple Marking                  ✓ Full                  :class:`stix.extensions.marking.simple_marking.SimpleMarkingStructure`
 TLP                             ✓ Full                  :class:`stix.extensions.marking.tlp.TLPMarkingStructure`
 Terms of Use                    ✓ Full                  :class:`stix.extensions.marking.terms_of_use_marking.TermsOfUseMarkingStructure`
 |
-**Structured COA Extensions**                           
-Generic Structured COA          × None                  
+**Structured COA Extensions**
+Generic Structured COA          ✓ Full                  :class:`stix.extensions.structured_coa.generic_structured_coa.GenericStructuredCOA`
 |
-**Test Mechanism Extensions**                           
+**Test Mechanism Extensions**
 Generic Test Mechanism          ✓ Full                  :class:`stix.extensions.test_mechanism.generic_test_mechanism.GenericTestMechanism`
-OVAL                            × None                  
+OVAL                            × None
 OpenIOC                         ✓ Full                  :class:`stix.extensions.test_mechanism.open_ioc_2010_test_mechanism.OpenIOCTestMechanism`
 SNORT                           ✓ Full                  :class:`stix.extensions.test_mechanism.snort_test_mechanism.SnortTestMechanism`
 YARA                            ✓ Full                  :class:`stix.extensions.test_mechanism.yara_test_mechanism.YaraTestMechanism`
@@ -95,19 +95,20 @@ STIX Construct                              API Coverage                        
 AssetTypeVocab-1.0                          ✓ Full                                      :class:`stix.common.vocabs.AssetType`
 AttackerInfrastructureTypeVocab-1.0         ✓ Full                                      :class:`stix.common.vocabs.AttackerInfrastructureType`
 AttackerToolTypeVocab-1.0                   ✓ Full                                      :class:`stix.common.vocabs.AttackerToolType`
-AvailabilityLossTypeVocab-1.0               × None *(replaced by version 1.1.1)*                                      
+AvailabilityLossTypeVocab-1.0               ✓ Full                                      :class:`stix.common.vocabs.AttackToolType_1_0`
 AvailabilityLossTypeVocab-1.1.1             ✓ Full                                      :class:`stix.common.vocabs.AvailabilityLossType`
 COAStageVocab-1.0                           ✓ Full                                      :class:`stix.common.vocabs.COAStage`
 CampaignStatusVocab-1.0                     ✓ Full                                      :class:`stix.common.vocabs.CampaignStatus`
 CourseOfActionTypeVocab-1.0                 ✓ Full                                      :class:`stix.common.vocabs.CourseOfActionType`
-DiscoveryMethodVocab-1.0                    ✓ Full                                      :class:`stix.common.vocabs.DiscoveryMethod`
+DiscoveryMethodVocab-1.0                    ✓ Full                                      :class:`stix.common.vocabs.DiscoveryMethod_1_0`
+DiscoveryMethodVocab-2.0                    ✓ Full                                      :class:`stix.common.vocabs.DiscoveryMethod`
 HighMediumLowVocab-1.0                      ✓ Full                                      :class:`stix.common.vocabs.HighMediumLow`
 ImpactQualificationVocab-1.0                ✓ Full                                      :class:`stix.common.vocabs.ImpactQualification`
 ImpactRatingVocab-1.0                       ✓ Full                                      :class:`stix.common.vocabs.ImpactRating`
 IncidentCategoryVocab-1.0                   ✓ Full                                      :class:`stix.common.vocabs.IncidentCategory`
 IncidentEffectVocab-1.0                     ✓ Full                                      :class:`stix.common.vocabs.IncidentEffect`
 IncidentStatusVocab-1.0                     ✓ Full                                      :class:`stix.common.vocabs.IncidentStatus`
-IndicatorTypeVocab-1.0                      × None *(replaced by version 1.1)*                                      
+IndicatorTypeVocab-1.0                      ✓ Full                                      :class:`stix.common.vocabs.IndicatorType_1_0`
 IndicatorTypeVocab-1.1                      ✓ Full                                      :class:`stix.common.vocabs.IndicatorType`
 InformationSourceRoleVocab-1.0              ✓ Full                                      :class:`stix.common.vocabs.InformationSourceRole`
 InformationTypeVocab-1.0                    ✓ Full                                      :class:`stix.common.vocabs.InformationType`
@@ -117,12 +118,12 @@ LossDurationVocab-1.0                       ✓ Full                            
 LossPropertyVocab-1.0                       ✓ Full                                      :class:`stix.common.vocabs.LossProperty`
 MalwareTypeVocab-1.0                        ✓ Full                                      :class:`stix.common.vocabs.MalwareType`
 ManagementClassVocab-1.0                    ✓ Full                                      :class:`stix.common.vocabs.ManagementClass`
-MotivationVocab-1.0                         × None *(replaced by version 1.0.1)*                                      
-MotivationVocab-1.0.1                       × None *(replaced by version 1.1)*                                      
+MotivationVocab-1.0                         ✓ Full                                      :class:`stix.common.vocabs.Motivation_1_0`
+MotivationVocab-1.0.1                       ✓ Full                                      :class:`stix.common.vocabs.Motivation_1_0_1`
 MotivationVocab-1.1                         ✓ Full                                      :class:`stix.common.vocabs.Motivation`
 OwnershipClassVocab-1.0                     ✓ Full                                      :class:`stix.common.vocabs.OwnershipClass`
 PackageIntentVocab-1.0                      ✓ Full                                      :class:`stix.common.vocabs.PackageIntent`
-PlanningAndOperationalSupportVocab-1.0      × None *(replaced by version 1.0.1)*                                      
+PlanningAndOperationalSupportVocab-1.0      ✓ Full                                      :class:`stix.common.vocabs.PlanningAndOperationalSupport_1_0`
 PlanningAndOperationalSupportVocab-1.0.1    ✓ Full                                      :class:`stix.common.vocabs.PlanningAndOperationalSupport`
 SecurityCompromiseVocab-1.0                 ✓ Full                                      :class:`stix.common.vocabs.SecurityCompromise`
 SystemTypeVocab-1.0                         ✓ Full                                      :class:`stix.common.vocabs.SystemType`
