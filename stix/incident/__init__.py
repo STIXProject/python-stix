@@ -372,7 +372,7 @@ class Incident(stix.BaseCoreComponent):
         self._set_var(RelatedIndicators, related_indicators=value)
 
     def add_related_indicator(self, value):
-        """Adds an Related Indicator to the ``related_indicators`` list
+        """Adds an Related Indicator to the :attr:`related_indicators` list
         property of this :class:`Incident`.
 
         The `indicator` parameter must be an instance of
