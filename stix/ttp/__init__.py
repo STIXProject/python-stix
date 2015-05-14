@@ -61,6 +61,9 @@ class TTP(stix.BaseCoreComponent):
 
     @property
     def behavior(self):
+        """A :class:`.Behavior` field.
+
+        """
         return self._behavior
 
     @behavior.setter
@@ -69,6 +72,10 @@ class TTP(stix.BaseCoreComponent):
 
     @property
     def related_ttps(self):
+        """A collection of :class:`.RelatedTTP` objects. This behaves like a
+        ``MutableSequence`` Type.
+
+        """
         return self._related_ttps
 
     @related_ttps.setter
@@ -78,8 +85,44 @@ class TTP(stix.BaseCoreComponent):
         else:
             self._related_ttps = RelatedTTPs(value)
 
+    def add_related_ttp(self, value):
+        """Adds an Related TTP to the :attr:`related_ttps` list
+        property of this :class:`TTP`.
+
+        The `TTP` parameter must be an instance of
+        :class:`.RelatedTTP` or :class:`TTP`.
+
+        If the `TTP` parameter is ``None``, no item wil be added to the
+        ``related_ttps`` list property.
+
+        Calling this method is the same as calling ``append()`` on the
+        ``related_ttps`` property.
+
+        See Also:
+            The :class:`RelatedTTPs` documentation.
+
+        Note:
+            If the `TTP` parameter is not an instance of
+            :class:`.RelatedTTP` an attempt will be
+            made to convert it to one.
+
+        Args:
+            TTP: An instance of :class:`TTP` or
+                :class:`.RelatedTTP`.
+
+        Raises:
+            ValueError: If the `TTP` parameter cannot be converted into
+                an instance of :class:`.RelatedTTP`
+
+        """
+        self.related_ttps.append(value)
+
     @property
     def exploit_targets(self):
+        """A collection of :class:`.ExploitTarget` objects. This behaves like
+        a ``MutableSequence`` type.
+
+        """
         return self._exploit_targets
 
     @exploit_targets.setter
@@ -89,8 +132,23 @@ class TTP(stix.BaseCoreComponent):
         else:
             self._exploit_targets = ExploitTargets(value)
 
+    def add_exploit_target(self, value):
+        """Adds a :class:`.ExploitTarget` object to the :attr:`exploit_targets`
+        collection.
+
+        """
+        self.exploit_targets.append(value)
+
     @property
     def intended_effects(self):
+        """A collection of :class:`.Statement` objects. This behaves like a
+        ``MutableSequence`` type.
+
+        If set to a string, an attempt will be made to convert it into a
+        :class:`.Statement` object with its value set to an instance of
+        :class:`.IntendedEffect`.
+
+        """
         return self._intended_effects
 
     @intended_effects.setter
@@ -98,10 +156,21 @@ class TTP(stix.BaseCoreComponent):
         self._intended_effects = _IntendedEffects(value)
 
     def add_intended_effect(self, value):
+        """Adds a :class:`.Statement` object to the :attr:`intended_effects`
+        collection.
+
+        If `value` is a string, an attempt will be made to convert it into an
+        instance of :class:`.Statement`.
+
+        """
         self.intended_effects.append(value)
 
     @property
     def resources(self):
+        """A collection of :class:`.Resource` objects. This behaves like a
+        ``MutableSequence`` type.
+
+        """
         return self._resources
 
     @resources.setter
@@ -110,6 +179,10 @@ class TTP(stix.BaseCoreComponent):
 
     @property
     def victim_targeting(self):
+        """A collection of :class:`.VictimTargeting` objects. This behaves like
+        a ``MutableSequence`` type.
+
+        """
         return self._victim_targeting
 
     @victim_targeting.setter
@@ -118,6 +191,10 @@ class TTP(stix.BaseCoreComponent):
 
     @property
     def kill_chain_phases(self):
+        """A collection of :class:`.KillChainPhaseReference` objects. This
+        behaves like a ``MutableSequence`` type.
+
+        """
         return self._kill_chain_phases
 
     @kill_chain_phases.setter
@@ -125,18 +202,23 @@ class TTP(stix.BaseCoreComponent):
         self._kill_chain_phases = KillChainPhasesReference(value)
 
     def add_kill_chain_phase(self, value):
-        """Add a new Kill Chain Phase reference to this Indicator.
+        """Adds a :class:`.KillChainPhaseReference` to the
+        :attr:`kill_chain_phases` collection.
 
         Args:
-            value: a :class:`stix.common.kill_chains.KillChainPhase` or a `str`
-                representing the phase_id of. Note that you if you are defining
-                a custom Kill Chain, you need to add it to the STIX package
-                separately.
+            value: A :class:`.KillChainPhase`, :class:`.KillChainPhaseReference`
+                or a ``str`` representing the phase_id of. Note that you if you
+                are defining a custom Kill Chain, you need to add it to the
+                STIX package separately.
         """
         self.kill_chain_phases.append(value)
 
     @property
     def related_packages(self):
+        """**DEPRECATED**: A collection of :class:`.RelatedPackageRef`
+        objects. This behaves like a ``MutableSequence``.
+
+        """
         return self._related_packages
 
     @related_packages.setter
@@ -144,6 +226,14 @@ class TTP(stix.BaseCoreComponent):
         self._related_packages = RelatedPackageRefs(value)
 
     def add_related_package(self, value):
+        """Adds a :class:`.RelatedPackageRef` object to the
+        :attr:`related_packages` collection.
+
+        Args:
+            value: A :class:`.RelatedPackageRef` or a :class:`.STIXPackage`
+                object.
+
+        """
         self.related_packages.append(value)
 
     def to_obj(self, return_obj=None, ns_info=None):
