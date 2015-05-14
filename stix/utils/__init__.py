@@ -40,6 +40,11 @@ def raise_warnings(func):
     """Function decorator that causes all Python warnings to be raised as
     exceptions in the wrapped function.
 
+    Example:
+        >>> @raise_warnings
+        >>> def foo():
+        >>>     warnings.warn("this will raise an exception")
+
     """
     @functools.wraps(func)
     def inner(*args, **kwargs):
@@ -53,6 +58,11 @@ def silence_warnings(func):
     """Function decorator that silences/ignores all Python warnings in the
     wrapped function.
 
+    Example:
+        >>> @silence_warnings
+        >>> def foo():
+        >>>     warnings.warn("this will not appear")
+
     """
     @functools.wraps(func)
     def inner(*args, **kwargs):
@@ -63,6 +73,15 @@ def silence_warnings(func):
 
 
 def is_cdata(text):
+    """Returns ``True`` if `text` contains a CDATA block.
+
+    Example:
+        >>> is_cdata("<![CDATA[Foo]]>")
+        True
+        >>> is_cdata("NOPE")
+        False
+
+    """
     if not text:
         return False
 
@@ -92,7 +111,7 @@ def strip_cdata(text):
 
 
 def cdata(text):
-    """Wraps the input `text` in a <![CDATA[]]> block.
+    """Wraps the input `text` in a ``<![CDATA[ ]]>`` block.
 
     If the text contains CDATA sections already, they are stripped and replaced
     by the application of an outer-most CDATA block.
@@ -101,7 +120,7 @@ def cdata(text):
         text: A string to wrap in a CDATA block.
 
     Returns:
-        The `text` value wrapped in <![CDATA[]]>
+        The `text` value wrapped in ``<![CDATA[]]>``
 
     """
     if not text:

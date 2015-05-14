@@ -168,4 +168,5 @@ Modules located in the `stix.utils`_ package
    :titlesonly:
    :glob:
 
+   utils/utils
    utils/*
