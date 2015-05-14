@@ -87,6 +87,10 @@ class ThreatActor(stix.BaseCoreComponent):
 
     @property
     def identity(self):
+        """A :class:`.Identity` field characterizing information about the
+        threat actor.
+
+        """
         return self._identity
     
     @identity.setter
@@ -95,6 +99,12 @@ class ThreatActor(stix.BaseCoreComponent):
 
     @property
     def types(self):
+        """A collection of :class:`.VocabString` objects. Default is
+        :class:`.ThreatActorType`.
+
+        This behaves like a ``MutableSequence`` type.
+
+        """
         return self._types
     
     @types.setter
@@ -102,10 +112,22 @@ class ThreatActor(stix.BaseCoreComponent):
         self._types = _Types(value)
             
     def add_type(self, value):
+        """Adds a :class:`.VocabString` object to the :attr:`types` collection.
+
+        If set to a string, an attempt will be made to convert it into an
+        instance of :class:`.ThreatActorType`.
+
+        """
         self.types.append(value)
 
     @property
     def motivations(self):
+        """A collection of :class:`.VocabString` objects. Default is
+        :class:`.Motivation`.
+
+        This behaves like a ``MutableSequence`` type.
+
+        """
         return self._motivations
     
     @motivations.setter
@@ -113,10 +135,20 @@ class ThreatActor(stix.BaseCoreComponent):
         self._motivations = _Motivations(value)
             
     def add_motivation(self, value):
+        """Adds a :class:`.Motivation` object to the :attr:`motivations`
+        collection.
+
+        """
         self.motivations.append(value)
 
     @property
     def sophistications(self):
+        """A collection of :class:`.VocabString` objects. Default is
+        :class:`.ThreatActorSophistication`.
+
+        This behaves like a ``MutableSequence`` type.
+
+        """
         return self._sophistications
     
     @sophistications.setter
@@ -124,10 +156,25 @@ class ThreatActor(stix.BaseCoreComponent):
         self._sophistications = _Sophistications(value)
             
     def add_sophistication(self, value):
+        """Adds a :class:`.VocabString` object to the :attr:`sophistications`
+        collection.
+
+        If `value` is a string, an attempt will be made to convert it to an
+        instance of :class:`.ThreatActorSophistication`.
+
+        """
         self._sophistications.append(value)
 
     @property
     def intended_effects(self):
+        """A collection of :class:`.Statement` objects. This behaves like a
+        ``MutableSequence`` type.
+
+        If set to a string, an attempt will be made to convert it into a
+        :class:`.Statement` object with its value set to an instance of
+        :class:`.IntendedEffect`.
+
+        """
         return self._intended_effects
     
     @intended_effects.setter
@@ -135,10 +182,23 @@ class ThreatActor(stix.BaseCoreComponent):
         self._intended_effects = _IntendedEffects(value)
             
     def add_intended_effect(self, value):
+        """Adds a :class:`.Statement` object to the :attr:`intended_effects`
+        collection.
+
+        If `value` is a string, an attempt will be made to convert it into an
+        instance of :class:`.Statement`.
+
+        """
         self.intended_effects.append(value)
 
     @property
     def planning_and_operational_supports(self):
+        """A collection of :class:`.VocabString` objects. Default is
+        :class:`.PlanningAndOperationalSupport`.
+
+        This behaves like a ``MutableSequence`` type.
+
+        """
         return self._planning_and_operational_supports
     
     @planning_and_operational_supports.setter
@@ -146,6 +206,13 @@ class ThreatActor(stix.BaseCoreComponent):
         self._planning_and_operational_supports = _PlanningAndOperationalSupports(value)
             
     def add_planning_and_operational_support(self, value):
+        """Adds a :class:`.VocabString` object to the
+        :attr:`planning_and_operational_supports` collection.
+
+        If `value` is a string, an attempt will be made to convert it to an
+        instance of :class:`.PlanningAndOperationalSupport`.
+
+        """
         self.planning_and_operational_supports.append(value)
 
     def to_obj(self, return_obj=None, ns_info=None):
