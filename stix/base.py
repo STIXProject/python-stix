@@ -567,6 +567,7 @@ class BaseCoreComponent(Entity):
         self.short_description = short_description
         self.version = None
         self.information_source = None
+        self.handling = None
 
         if timestamp:
             self.timestamp = timestamp
@@ -828,9 +829,24 @@ class BaseCoreComponent(Entity):
         from stix.common import InformationSource
         self._set_var(InformationSource, try_cast=False, information_source=value)
 
+    @property
+    def handling(self):
+        return self._handling
+
+    @handling.setter
+    def handling(self, value):
+        """The :class:`.Marking` section of this component. This section
+        contains data marking information.
+
+        """
+        from stix.data_marking import Marking
+        self._set_var(Marking, try_cast=False, handling=value)
+
+
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         from stix.common import StructuredTextList, InformationSource
+        from stix.data_marking import Marking
 
         if not return_obj:
             raise ValueError("Must provide a return_obj argument")
@@ -852,6 +868,8 @@ class BaseCoreComponent(Entity):
             StructuredTextList.from_obj(getattr(obj, 'Short_Description', None))
         return_obj.information_source = \
             InformationSource.from_obj(getattr(obj, 'Information_Source', None))
+        return_obj.handling = \
+            Marking.from_obj(getattr(obj, 'Handling', None))
 
         return return_obj
 
@@ -877,12 +895,15 @@ class BaseCoreComponent(Entity):
             return_obj.Short_Description = self.short_descriptions.to_obj(ns_info=ns_info)
         if self.information_source:
             return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
+        if self.handling:
+            return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
 
         return return_obj
 
     @classmethod
     def from_dict(cls, d, return_obj=None):
         from stix.common import StructuredTextList, InformationSource
+        from stix.data_marking import Marking
 
         if not return_obj:
             raise ValueError("Must provide a return_obj argument")
@@ -899,6 +920,8 @@ class BaseCoreComponent(Entity):
             StructuredTextList.from_dict(get('short_description'))
         return_obj.information_source = \
             InformationSource.from_dict(get('information_source'))
+        return_obj.handling = \
+            Marking.from_dict(get('handling'))
 
         return return_obj
 

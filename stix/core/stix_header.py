@@ -193,7 +193,7 @@ class STIXHeader(stix.Entity):
     @property
     def package_intents(self):
         """**DEPRECATED**. A collection of :class:`.VocabString` controlled
-        vocabulary objects defining the intent of the STIX PAckage.
+        vocabulary objects defining the intent of the STIX Package.
 
         """
         return self._package_intents
