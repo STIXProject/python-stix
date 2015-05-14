@@ -1,5 +1,5 @@
 :mod:`stix.utils.idgen` Module
-==================================
+==============================
 
 .. module:: stix.utils.idgen
 

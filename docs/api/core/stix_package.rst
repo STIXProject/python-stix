@@ -29,7 +29,7 @@ Classes
         campaigns, add_observable, to_obj, related_packages, idref,
         courses_of_action, reports, ttps, incidents, to_dict, observables,
         add_ttp, threat_actors, add_campaign, walk, to_obj, to_xml, find,
-        to_json, to_dict
+        to_json, to_dict, from_xml
 
 
 .. autoclass:: RelatedPackages
