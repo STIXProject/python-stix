@@ -34,7 +34,7 @@ Classes
         observables, producer, related_campaigns, related_indicators,
         related_packages, set_produced_time, set_producer_identity,
         set_received_time, short_description, short_descriptions,
-        test_mechanisms, timestamp, title, to_dict, to_json, to_obj, to_xml,
+        test_mechanisms, timestamp, title, to_dict, to_json, to_obj,
         valid_time_positions, version, walk
 
 
