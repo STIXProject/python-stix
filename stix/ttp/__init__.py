@@ -6,7 +6,6 @@ import stix
 import stix.bindings.ttp as ttp_binding
 from stix.common import vocabs, Statement
 from stix.common.kill_chains import KillChainPhasesReference
-from stix.data_marking import Marking
 from stix.common.related import RelatedPackageRefs
 
 # relative
@@ -16,6 +15,22 @@ from .victim_targeting import VictimTargeting
 
 
 class TTP(stix.BaseCoreComponent):
+    """Implementation of the STIX TTP.
+
+    Args:
+        id_ (optional): An identifier. If ``None``, a value will be generated
+            via ``stix.utils.create_id()``. If set, this will unset the
+            ``idref`` property.
+        idref (optional): An identifier reference. If set this will unset the
+            ``id_`` property.
+        timestamp (optional): A timestamp value. Can be an instance of
+            ``datetime.datetime`` or ``str``.
+        description: A description of the purpose or intent of this object.
+        short_description: A short description of the intent
+            or purpose of this object.
+        title: The title of this object.
+
+    """
     _binding = ttp_binding
     _binding_class = _binding.TTPType
     _namespace = "http://stix.mitre.org/TTP-1"
@@ -40,7 +55,6 @@ class TTP(stix.BaseCoreComponent):
         self.intended_effects = None
         self.resources = None
         self.victim_targeting = None
-        self.handling = None
         self.exploit_targets = ExploitTargets()
         self.related_packages = None
         self.kill_chain_phases = None
@@ -103,14 +117,6 @@ class TTP(stix.BaseCoreComponent):
         self._set_var(VictimTargeting, try_cast=False, victim_targeting=value)
 
     @property
-    def handling(self):
-        return self._handling
-
-    @handling.setter
-    def handling(self, value):
-        self._set_var(Marking, try_cast=False, handling=value)
-
-    @property
     def kill_chain_phases(self):
         return self._kill_chain_phases
 
@@ -160,8 +166,6 @@ class TTP(stix.BaseCoreComponent):
             return_obj.Victim_Targeting = self.victim_targeting.to_obj(ns_info=ns_info)
         if self.kill_chain_phases:
             return_obj.Kill_Chain_Phases = self.kill_chain_phases.to_obj(ns_info=ns_info)
-        if self.handling:
-            return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
         if self.related_packages:
             return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
 
@@ -183,7 +187,6 @@ class TTP(stix.BaseCoreComponent):
             return_obj.exploit_targets = ExploitTargets.from_obj(obj.Exploit_Targets)
             return_obj.resources = Resource.from_obj(obj.Resources)
             return_obj.victim_targeting = VictimTargeting.from_obj(obj.Victim_Targeting)
-            return_obj.handling = Marking.from_obj(obj.Handling)
             return_obj.intended_effects = _IntendedEffects.from_obj(obj.Intended_Effect)
             return_obj.kill_chain_phases = KillChainPhasesReference.from_obj(obj.Kill_Chain_Phases)
             return_obj.related_packages = RelatedPackageRefs.from_obj(obj.Related_Packages)
@@ -210,7 +213,6 @@ class TTP(stix.BaseCoreComponent):
         return_obj.intended_effects = _IntendedEffects.from_dict(get('intended_effects'))
         return_obj.resources = Resource.from_dict(get('resources'))
         return_obj.victim_targeting = VictimTargeting.from_dict(get('victim_targeting'))
-        return_obj.handling = Marking.from_dict(get('handling'))
         return_obj.related_packages = RelatedPackageRefs.from_dict(get('related_packages'))
         return_obj.kill_chain_phases = KillChainPhasesReference.from_dict(get('kill_chain_phases'))
 

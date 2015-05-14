@@ -11,7 +11,6 @@ from stix.common.related import (
     GenericRelationshipList, RelatedIndicator, RelatedThreatActor, RelatedTTP,
     RelatedObservable, RelatedIncident, RelatedPackageRefs
 )
-from stix.data_marking import Marking
 
 # relative
 from .affected_asset import AffectedAsset
@@ -24,6 +23,22 @@ from .history import History
 
 
 class Incident(stix.BaseCoreComponent):
+    """Implementation of the STIX Incident.
+
+    Args:
+        id_ (optional): An identifier. If ``None``, a value will be generated
+            via ``stix.utils.create_id()``. If set, this will unset the
+            ``idref`` property.
+        idref (optional): An identifier reference. If set this will unset the
+            ``id_`` property.
+        timestamp (optional): A timestamp value. Can be an instance of
+            ``datetime.datetime`` or ``str``.
+        description: A description of the purpose or intent of this object.
+        short_description: A short description of the intent
+            or purpose of this object.
+        title: The title of this object.
+
+    """
     _binding = incident_binding
     _binding_class = _binding.IncidentType
     _namespace = "http://stix.mitre.org/Incident-1"
@@ -63,7 +78,6 @@ class Incident(stix.BaseCoreComponent):
         self.confidence = None
         self.coa_taken = None
         self.coa_requested = None
-        self.handling = None
         self.history = History()
 
 
@@ -82,14 +96,6 @@ class Incident(stix.BaseCoreComponent):
     @time.setter
     def time(self, value):
         self._set_var(Time, try_cast=False, time=value)
-
-    @property
-    def handling(self):
-        return self._handling
-    
-    @handling.setter
-    def handling(self, value):
-        self._set_var(Marking, try_cast=False, handling=value)
 
     @property
     def intended_effects(self):
@@ -372,8 +378,6 @@ class Incident(stix.BaseCoreComponent):
             return_obj.COA_Requested = self.coa_requested.to_obj(ns_info=ns_info)
         if self.status:
             return_obj.Status = self.status.to_obj(ns_info=ns_info)
-        if self.handling:
-            return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
         if self.history:
             return_obj.History = self.history.to_obj(ns_info=ns_info)
         if self.related_packages:
@@ -407,7 +411,6 @@ class Incident(stix.BaseCoreComponent):
             return_obj.leveraged_ttps = LeveragedTTPs.from_obj(obj.Leveraged_TTPs)
             return_obj.related_incidents = RelatedIncidents.from_obj(obj.Related_Incidents)
             return_obj.status = VocabString.from_obj(obj.Status)
-            return_obj.handling = Marking.from_obj(obj.Handling)
             return_obj.history = History.from_obj(obj.History)
             return_obj.responders = _InformationSources.from_obj(obj.Responder)
             return_obj.coordinators = _InformationSources.from_obj(obj.Coordinator)
@@ -454,7 +457,6 @@ class Incident(stix.BaseCoreComponent):
         return_obj.coa_taken = _COAsTaken.from_dict(get('coa_taken'))
         return_obj.coa_requested = _COAsRequested.from_dict(get('coa_requested'))
         return_obj.status = VocabString.from_dict(get('status'))
-        return_obj.handling = Marking.from_dict(get('handling'))
         return_obj.history = History.from_dict(get('history'))
         return_obj.related_packages = RelatedPackageRefs.from_dict(get('related_packages'))
 
