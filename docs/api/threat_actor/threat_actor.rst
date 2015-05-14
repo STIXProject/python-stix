@@ -3,6 +3,22 @@
 
 .. module:: stix.threat_actor
 
+Overview
+--------
+
+The :mod:`stix.threat_actor` module implements :class:`.ThreatActor`.
+
+ThreatActors are characterizations of malicious actors (or adversaries)
+representing a cyber attack threat including presumed intent and historically
+observed behavior.
+
+
+Documentation Resources
+~~~~~~~~~~~~~~~~~~~~~~~
+
+* `Threat Actor Data Model <https://stixproject.github.io/data-model/1.2/ta/ThreatActorType/>`_
+
+
 Classes
 -------
 

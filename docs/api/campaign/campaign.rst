@@ -3,6 +3,20 @@
 
 .. module:: stix.campaign
 
+Overview
+--------
+
+The :mod:`stix.campaign` module implements :class:`.Campaign`.
+
+Campaigns are instances of ThreatActors pursuing an intent, as observed through
+sets of Incidents and/or TTP, potentially across organizations.
+
+
+Documentation Resources
+~~~~~~~~~~~~~~~~~~~~~~~
+
+* `Campaign Data Model <http://stixproject.github.io/data-model/1.2/campaign/CampaignType/>`_
+
 Classes
 -------
 

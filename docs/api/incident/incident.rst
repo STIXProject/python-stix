@@ -1,7 +1,21 @@
 :mod:`stix.incident` Module
-==================================
+===========================
 
 .. module:: stix.incident
+
+Overview
+--------
+
+The :mod:`stix.incident` module implements :class:`.Incident`.
+
+Incidents are discrete instances of Indicators affecting an organization along
+with information discovered or decided during an incident response investigation.
+
+
+Documentation Resources
+~~~~~~~~~~~~~~~~~~~~~~~
+
+* `Incident Data Model <https://stixproject.github.io/data-model/1.2/incident/IncidentType/>`_
 
 Classes
 -------

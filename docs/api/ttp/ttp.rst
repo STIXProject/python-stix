@@ -1,7 +1,20 @@
 :mod:`stix.ttp` Module
-==================================
+======================
 
 .. module:: stix.ttp
+
+Overview
+--------
+
+The :mod:`stix.ttp` module implements :class:`.TTP`.
+
+TTPs are representations of the behavior or modus operandi of cyber adversaries.
+
+
+Documentation Resources
+~~~~~~~~~~~~~~~~~~~~~~~
+
+* `TTP Data Model <https://stixproject.github.io/data-model/1.2/ttp/TTPType/>`_
 
 Classes
 -------
