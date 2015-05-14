@@ -165,7 +165,7 @@ def add_vocab(cls):
 
 
 def register_vocab(cls):
-    """Register a VocabString subclass.
+    """Class decorator that registers a VocabString subclass.
 
     Also, calculate all the permitted values for class being decorated by
     adding an ``_ALLOWED_VALUES`` tuple of all the values of class members
