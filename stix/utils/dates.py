@@ -83,5 +83,5 @@ def serialize_date(value):
 
 
 def now():
-    """Returns the current UTC datetime.datetime."""
+    """Returns the current UTC ``datetime.datetime`` timestamp."""
     return datetime.datetime.now(tz=dateutil.tz.tzutc())
