@@ -30,7 +30,7 @@ Which outputs:
         xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
         xmlns:stix="http://stix.mitre.org/stix-1"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        id="myNS:Package-b2039368-9476-4a5b-8c1d-0ef5d1b37e06" version="1.1.1" timestamp="2014-08-12T18:15:33.603457+00:00"/>
+        id="myNS:Package-b2039368-9476-4a5b-8c1d-0ef5d1b37e06" version="1.2"/>
 
 Success! The ``xmlns:myNS="http://MY-NAMESPACE.com"`` matches our ``NAMESPACE``
 dictionary and the ``id`` attribute includes the ``myNS`` namespace alias.

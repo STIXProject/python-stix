@@ -37,7 +37,7 @@ Which outputs:
 
 .. code-block:: xml
 
-    <stix:STIX_Package id="example:Package-1" version="1.2" timestamp="2014-08-12T18:03:44.240457+00:00">
+    <stix:STIX_Package id="example:Package-1" version="1.2">
         <stix:STIX_Header>
             <stix:Description>Getting Started!</stix:Description>
         </stix:STIX_Header>

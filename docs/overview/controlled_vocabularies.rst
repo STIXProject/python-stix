@@ -177,7 +177,6 @@ field.
         http://stix.mitre.org/stix-1 /path/to/stix_core.xsd
         http://customvocabs.com/vocabs-1 /path/to/customVocabs.xsd"
         id="stixExample:STIXPackage-33fe3b22-0201-47cf-85d0-97c02164528d"
-        timestamp="2014-05-08T09:00:00.000000Z"
         version="1.2">
         <stix:STIX_Header>
             <stix:Package_Intent xsi:type="customVocabs:CustomVocab-1.0">FOO</stix:Package_Intent>
@@ -261,7 +260,6 @@ XML Schema definition, but in Python!
         http://stix.mitre.org/stix-1 /path/to/stix_core.xsd
         http://customvocabs.com/vocabs-1 /path/to/customVocabs.xsd"
         id="example:STIXPackage-33fe3b22-0201-47cf-85d0-97c02164528d"
-        timestamp="2014-05-08T09:00:00.000000Z"
         version="1.2">
         <stix:STIX_Header>
             <stix:Package_Intent xsi:type="customVocabs:CustomVocab-1.0">FOO</stix:Package_Intent>
