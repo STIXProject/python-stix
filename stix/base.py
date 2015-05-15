@@ -425,11 +425,25 @@ class EntityList(collections.MutableSequence, Entity):
 
         return return_obj
 
+
 class TypedCollection(object):
+    """Abstract base class for non-STIX collections of entities.
+
+    See also:
+        TypedList
+
+    """
     _contained_type = _override
 
-    def __init__(self):
+    def __init__(self, *args):
         self._inner = []
+        self._initialize_inner(*args)
+
+    def _initialize_inner(self, *args):
+        """Must be overridden by subclass.
+
+        """
+        raise NotImplementedError()
 
     def __len__(self):
         return len(self._inner)
@@ -473,8 +487,6 @@ class TypedCollection(object):
         if not obj_list:
             return None
 
-        return_obj = cls()
-
         if not contained_type:
             contained_type = cls._contained_type
 
@@ -513,14 +525,11 @@ class TypedCollection(object):
         return cls.from_obj(entity_obj).to_dict()
 
 
-class TypedSequence(TypedCollection, collections.Sequence):
-    pass
-
-
 class TypedList(TypedCollection, collections.MutableSequence):
     def __init__(self, *args):
-        TypedCollection.__init__(self)
+        TypedCollection.__init__(self, *args)
 
+    def _initialize_inner(self, *args):
         # Check if it was initialized with args=None
         if not any(args):
             return

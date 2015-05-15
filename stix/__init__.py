@@ -2,10 +2,8 @@
 # See LICENSE.txt for complete terms.
 
 # Make sure base gets imported before common.
-from .base import (  # noqa
-    Entity, EntityList, TypedCollection, TypedList, TypedSequence,
-    BaseCoreComponent
-)
+from .base import (Entity, EntityList, TypedCollection, TypedList,  # noqa
+                   BaseCoreComponent)
 
 #: Mapping of xsi:types to implementation/extension classes
 _EXTENSION_MAP = {}

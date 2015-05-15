@@ -3,6 +3,7 @@
 
 import itertools
 import contextlib
+import collections
 
 import stix
 import stix.utils as utils
@@ -179,7 +180,7 @@ def _unset_default(text):
         text.ordinality = ordinality
 
 
-class StructuredTextList(stix.TypedSequence):
+class StructuredTextList(stix.TypedCollection, collections.Sequence):
     """A sequence type used to store StructureText objects.
 
     Args:
@@ -190,8 +191,9 @@ class StructuredTextList(stix.TypedSequence):
     _contained_type = StructuredText
 
     def __init__(self, *args):
-        super(StructuredTextList, self).__init__()
+        stix.TypedCollection.__init__(self, *args)
 
+    def _initialize_inner(self, *args):
         # Check if it was initialized with args=None
         if not any(args):
             return
@@ -292,10 +294,12 @@ class StructuredTextList(stix.TypedSequence):
         self._inner.remove(self[key])
 
     def __reversed__(self):
-        """The collections.Sequence class defines this in an incompatible way.
+        """Yields the :class:`StructuredText` collection in descending order
+        of their ordinalities.
 
         """
-        raise NotImplementedError()
+        for text in reversed(self.sorted):
+            yield text
 
     def add(self, value):
         """Adds the :class:`.StructuredText` `value` to the collection.
