@@ -7,7 +7,6 @@ from cybox.core import Observable, Observables
 # internal
 import stix
 import stix.utils as utils
-import stix.utils.parser as parser
 
 # components
 from stix.campaign import Campaign
