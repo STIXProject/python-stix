@@ -1,3 +1,15 @@
+Version 1.2.0.0
+2015-05-15
+- Support for parsing and creating STIX 1.2 content.
+- Added VocabString implementations for deprecated default STIX controlled
+  vocabularies.
+- Refactored internal class resolution for xsi:types.
+- #262 Added support for STIX Report content
+- #261 Added deprecation warnings when setting fields that have been 
+  deprecated in STIX 1.2.
+- #260 Added Versioning controlled vocabulary.
+- #253 Added support for Kill Chain Phases and Related Pacakges on TTP 
+
 Version 1.1.1.5
 2015-04-29
 - #200 Refactored ns_dict behavior in to_xml() to allow custom namespace mappings
