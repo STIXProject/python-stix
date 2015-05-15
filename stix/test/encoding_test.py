@@ -7,7 +7,7 @@
 import unittest
 from StringIO import StringIO
 
-import stix.bindings as bindings
+
 from stix.core import STIXHeader, STIXPackage
 from stix.campaign import Campaign
 from stix.indicator import Indicator
@@ -16,7 +16,9 @@ from stix.exploit_target import ExploitTarget
 from stix.threat_actor import ThreatActor
 from stix.ttp import TTP
 from stix.common import StructuredText
-import stix.incident.affected_asset as affected_asset
+from stix.incident import affected_asset
+from stix.utils import silence_warnings
+import stix.bindings as bindings
 
 from stix.test import round_trip
 
@@ -28,7 +30,7 @@ u"""
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:stix="http://stix.mitre.org/stix-1"
     xmlns:example="http://example.com/"
-    id="example:Indicator-ba1d406e-937c-414f-9231-6e1dbe64fe8b" version="1.1.1" timestamp="2014-05-08T09:00:00.000000Z">
+    id="example:Indicator-ba1d406e-937c-414f-9231-6e1dbe64fe8b" version="1.2" timestamp="2014-05-08T09:00:00.000000Z">
     <stix:STIX_Header>
         <stix:Title>{0}</stix:Title>
     </stix:STIX_Header>
@@ -63,6 +65,7 @@ class EncodingTests(unittest.TestCase):
         a2 = round_trip(a)
         self.assertEqual(a.count_affected, a2.count_affected)
 
+    @silence_warnings
     def test_stix_header(self):
         header = STIXHeader()
         header.title = UNICODE_STR
@@ -198,6 +201,7 @@ class EncodingTests(unittest.TestCase):
         s = bindings.quote_xml(i)
         self.assertEqual(u'', s)
 
+    @silence_warnings
     def test_to_xml_utf16_encoded(self):
         encoding = 'utf-16'
         s = STIXHeader()
@@ -205,12 +209,14 @@ class EncodingTests(unittest.TestCase):
         xml = s.to_xml(encoding=encoding)
         self.assertTrue(UNICODE_STR in xml.decode(encoding))
 
+    @silence_warnings
     def test_to_xml_default_encoded(self):
         s = STIXHeader()
         s.title = UNICODE_STR
         xml = s.to_xml()
         self.assertTrue(UNICODE_STR in xml.decode('utf-8'))
 
+    @silence_warnings
     def test_to_xml_no_encoding(self):
         s = STIXHeader()
         s.title = UNICODE_STR
@@ -218,6 +224,7 @@ class EncodingTests(unittest.TestCase):
         self.assertTrue(isinstance(xml, unicode))
         self.assertTrue(UNICODE_STR in xml)
 
+    @silence_warnings
     def test_from_xml_utf16_encoded(self):
         utf16_xml = XML.encode('utf-16')
         sio = StringIO(utf16_xml)
@@ -225,6 +232,7 @@ class EncodingTests(unittest.TestCase):
         header = sp.stix_header
         self.assertEqual(header.title, UNICODE_STR)
 
+    @silence_warnings
     def test_from_xml_default_encoded(self):
         utf8_xml = XML.encode('utf-8')
         sio = StringIO(utf8_xml)
@@ -232,7 +240,7 @@ class EncodingTests(unittest.TestCase):
         header = sp.stix_header
         self.assertEqual(header.title, UNICODE_STR)
 
-
+    @silence_warnings
     def test_utf16_roundtrip(self):
         sh = STIXHeader()
         sh.title = UNICODE_STR

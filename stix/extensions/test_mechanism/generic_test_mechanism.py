@@ -2,13 +2,13 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-import stix.utils
 import stix.indicator.test_mechanism
-from stix.common import EncodedCDATA, StructuredText, VocabString
+from stix.common import EncodedCDATA, StructuredTextList, VocabString
 from stix.indicator.test_mechanism import _BaseTestMechanism
 import stix.bindings.extensions.test_mechanism.generic as generic_tm_binding
 
 
+@stix.register_extension
 class GenericTestMechanism(_BaseTestMechanism):
     _namespace = "http://stix.mitre.org/extensions/TestMechanism#Generic-1"
     _binding = generic_tm_binding
@@ -34,20 +34,63 @@ class GenericTestMechanism(_BaseTestMechanism):
             self._specification = value
         else:
             self._specification = EncodedCDATA(value=value)
-    
+
     @property
     def description(self):
-        return self._description
-    
+        """A single description about the contents or purpose of this object.
+
+        Default Value: ``None``
+
+        Note:
+            If this object has more than one description set, this will return
+            the description with the lowest ordinality value.
+
+        Returns:
+            An instance of
+            :class:`.StructuredText`
+
+        """
+        return next(iter(self.descriptions), None)
+
     @description.setter
     def description(self, value):
-        if not value:
-            self._description = None
-        elif isinstance(value, StructuredText):
-            self._description = value
-        else:
-            self._description = StructuredText(value)
-    
+        self.descriptions = value
+
+    @property
+    def descriptions(self):
+        """A :class:`.StructuredTextList` object, containing descriptions about
+        the purpose or intent of this object.
+
+        Iterating over this object will yield its contents sorted by their
+        ``ordinality`` value.
+
+        Default Value: Empty :class:`.StructuredTextList` object.
+
+        Note:
+            IF this is set to a value that is not an instance of
+            :class:`.StructuredText`, an effort will ne made to convert it.
+            If this is set to an iterable, any values contained that are not
+            an instance of :class:`.StructuredText` will be be converted.
+
+        Returns:
+            An instance of
+            :class:`.StructuredTextList`
+
+        """
+        return self._description
+
+    @descriptions.setter
+    def descriptions(self, value):
+        self._description = StructuredTextList(value)
+
+    def add_description(self, description):
+        """Adds a description to the ``descriptions`` collection.
+
+        This is the same as calling "foo.descriptions.add(bar)".
+
+        """
+        self.descriptions.add(description)
+
     @property
     def type_(self):
         return self._type
@@ -70,7 +113,7 @@ class GenericTestMechanism(_BaseTestMechanism):
         
         super(GenericTestMechanism, cls).from_obj(obj, return_obj)
         return_obj.reference_location = obj.reference_location
-        return_obj.description = StructuredText.from_obj(obj.Description)
+        return_obj.descriptions = StructuredTextList.from_obj(obj.Description)
         return_obj.type_ = VocabString.from_obj(obj.Type)
         return_obj.specification = EncodedCDATA.from_obj(obj.Specification)
         
@@ -84,7 +127,7 @@ class GenericTestMechanism(_BaseTestMechanism):
         if self.reference_location:
             return_obj.reference_location = self.reference_location
         if self.description:
-            return_obj.Description = self.description.to_obj(ns_info=ns_info)
+            return_obj.Description = self.descriptions.to_obj(ns_info=ns_info)
         if self.type_:
             return_obj.Type = self.type_.to_obj(ns_info=ns_info)
         if self.specification:
@@ -101,25 +144,11 @@ class GenericTestMechanism(_BaseTestMechanism):
             
         super(GenericTestMechanism, cls).from_dict(d, return_obj)
         return_obj.reference_location = d.get('reference_location')
-        return_obj.description = StructuredText.from_dict(d.get('description'))
+        return_obj.descriptions = StructuredTextList.from_dict(d.get('description'))
         return_obj.type_ = VocabString.from_dict(d.get('type'))
         return_obj.specification = EncodedCDATA.from_dict(d.get('specification'))
         
         return return_obj
     
     def to_dict(self):
-        d = super(GenericTestMechanism, self).to_dict()
-        
-        if self.reference_location:
-            d['reference_location'] = self.reference_location
-        if self.description:
-            d['description'] = self.description.to_dict()
-        if self.type_:
-            d['type'] = self.type_.to_dict()
-        if self.specification:
-            d['specification'] = self.specification.to_dict()
-        
-        return d
-
-    
-stix.indicator.test_mechanism.add_extension(GenericTestMechanism)
+        return super(GenericTestMechanism, self).to_dict()

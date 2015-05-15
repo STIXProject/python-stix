@@ -3,8 +3,12 @@
 
 import unittest
 
-from stix.indicator import Indicator
-from stix.test import EntityTestCase, round_trip, round_trip_dict
+from stix.core import STIXPackage
+from stix.indicator import Indicator, RelatedCampaignRefs
+
+from stix.test import EntityTestCase, assert_warnings
+from stix.test.common import related_test
+
 
 class IndicatorTest(EntityTestCase, unittest.TestCase):
     klass = Indicator
@@ -408,6 +412,63 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
         }
 
         self._test_partial_dict(d)
+
+    def test_add_description(self):
+        o1 = self.klass()
+        o2 = self.klass()
+
+        o1.add_description("Test")
+        o2.descriptions.add("Test")
+
+        self.assertEqual(
+            o1.descriptions.to_dict(),
+            o2.descriptions.to_dict()
+        )
+
+    def test_add_short_description(self):
+        o1 = self.klass()
+        o2 = self.klass()
+
+        o1.add_short_description("Test")
+        o2.short_descriptions.add("Test")
+
+        self.assertEqual(
+            o1.short_descriptions.to_dict(),
+            o2.short_descriptions.to_dict()
+        )
+
+    @assert_warnings
+    def test_deprecated_related_packages(self):
+        i = Indicator()
+        i.related_packages.append(STIXPackage())
+        self.assertEqual(len(i.related_packages), 1)
+
+
+class RelatedCampaignReferencesTests(unittest.TestCase, EntityTestCase):
+    klass = RelatedCampaignRefs
+    _full_dict = {
+        'related_campaigns': [
+            related_test.RelatedCampaignRefTests._full_dict
+        ]
+    }
+
+    def test_add_campaign(self):
+        from stix.campaign import Campaign
+
+        l = RelatedCampaignRefs()
+        l.append(Campaign())
+
+        self.assertEqual(1, len(l))
+
+    def test_append_bad_type(self):
+        l = RelatedCampaignRefs()
+
+        self.assertRaises(
+            Exception,
+            l.append,
+            Indicator()
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

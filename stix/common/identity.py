@@ -79,13 +79,7 @@ class Identity(stix.Entity):
         if not xsi_type:
             raise ValueError("xsi:type is required")
 
-        for (k, v) in _EXTENSION_MAP.iteritems():
-            # TODO: for now we ignore the prefix and just check for
-            # a partial match
-            if xsi_type in k:
-                return v
-
-        raise ValueError("Unregistered xsi:type %s" % xsi_type)
+        return stix.lookup_extension(xsi_type)
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -95,11 +89,8 @@ class Identity(stix.Entity):
             return None
 
         if not return_obj:
-            if hasattr(obj, 'xml_type'):
-                klass = Identity.lookup_class(obj.xml_type)
-                return_obj = klass.from_obj(obj)
-            else:
-                return_obj = Identity.from_obj(obj, cls())
+            klass = stix.lookup_extension(obj, default=cls)
+            return_obj = klass.from_obj(obj, return_obj=klass())
         else:
             return_obj.id_ = obj.id
             return_obj.idref = obj.idref
@@ -122,12 +113,8 @@ class Identity(stix.Entity):
         get = dict_repr.get
 
         if not return_obj:
-            xsi_type = get('xsi:type')
-            if xsi_type:
-                klass = Identity.lookup_class(get('xsi:type'))
-                return_obj = klass.from_dict(dict_repr)
-            else:
-                return_obj = Identity.from_dict(dict_repr, cls())
+            klass = stix.lookup_extension(get('xsi:type'), default=cls)
+            return_obj = klass.from_dict(dict_repr, klass())
         else:
             return_obj.name = get('name')
             return_obj.id_ = get('id')
@@ -151,9 +138,6 @@ class RelatedIdentities(stix.EntityList):
     _inner_name = "identities"
 
 
-#: Mapping of identity extension types to classes
-_EXTENSION_MAP = {}
 
-
-def add_extension(cls):
-    _EXTENSION_MAP[cls._XSI_TYPE] = cls  # noqa
+# Backwards compatibility
+add_extension = stix.add_extension

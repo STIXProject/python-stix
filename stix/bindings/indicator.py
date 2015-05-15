@@ -220,12 +220,12 @@ class TestMechanismType(GeneratedsSuper):
     reference to the ID of a Test Mechanism specified elsewhere."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, xsi_type=None):
+    def __init__(self, idref=None, id=None, Efficacy=None, Producer=None):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
         self.Efficacy = Efficacy
         self.Producer = Producer
-        self.xsi_type = xsi_type
+        # self.xsi_type = xsi_type
     def factory(*args_, **kwargs_):
         if TestMechanismType.subclass:
             return TestMechanismType.subclass(*args_, **kwargs_)
@@ -273,9 +273,9 @@ class TestMechanismType(GeneratedsSuper):
         if self.id is not None and 'id' not in already_processed:
             already_processed.add('id')
             lwrite(' id=%s' % (quote_attrib(self.id), ))
-        if self.xsi_type is not None and 'xsi:type' not in already_processed:
-            already_processed.add('xsi:type')
-            lwrite('  xsi:type="%s"' % self.xsi_type)
+        # if self.xsi_type is not None and 'xsi:type' not in already_processed:
+        #     already_processed.add('xsi:type')
+        #     lwrite('  xsi:type="%s"' % self.xsi_type)
 
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='TestMechanismType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
@@ -413,7 +413,10 @@ class SightingType(GeneratedsSuper):
         self.Source = Source
         self.Reference = Reference
         self.Confidence = Confidence
-        self.Description = Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
         self.Related_Observables = Related_Observables
     def factory(*args_, **kwargs_):
         if SightingType.subclass:
@@ -427,6 +430,8 @@ class SightingType(GeneratedsSuper):
     def set_Reference(self, Reference): self.Reference = Reference
     def get_Confidence(self): return self.Confidence
     def set_Confidence(self, Confidence): self.Confidence = Confidence
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
     def get_Related_Observables(self): return self.Related_Observables
@@ -440,7 +445,7 @@ class SightingType(GeneratedsSuper):
             self.Source is not None or
             self.Reference is not None or
             self.Confidence is not None or
-            self.Description is not None or
+            self.Description or
             self.Related_Observables is not None
             ):
             return True
@@ -481,8 +486,8 @@ class SightingType(GeneratedsSuper):
             lwrite('<%s:Reference>%s</%s:Reference>%s' % (nsmap[namespace_], quote_xml(self.Reference), nsmap[namespace_], eol_))
         if self.Confidence is not None:
             self.Confidence.export(lwrite, level, nsmap, namespace_, name_='Confidence', pretty_print=pretty_print)
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Related_Observables is not None:
             self.Related_Observables.export(lwrite, level, nsmap, namespace_, name_='Related_Observables', pretty_print=pretty_print)
     def build(self, node):
@@ -519,7 +524,7 @@ class SightingType(GeneratedsSuper):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Related_Observables':
             obj_ = RelatedObservablesType.factory()
             obj_.build(child_)
@@ -657,37 +662,8 @@ class TestMechanismsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Test_Mechanism':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-                    
-                if type_name_ == "OVAL5.10TestMechanismType":
-                    import stix.bindings.extensions.test_mechanism.oval_5_10 as oval_5_10_tm_binding
-                    obj_ = oval_5_10_tm_binding.OVAL5_10TestMechanismType.factory()
-                elif type_name_ == "YaraTestMechanismType":
-                    import stix.bindings.extensions.test_mechanism.yara as yara_tm_binding
-                    obj_ = yara_tm_binding.YaraTestMechanismType.factory()
-                elif type_name_ == "SnortTestMechanismType":
-                    import stix.bindings.extensions.test_mechanism.snort as snort_tm_binding
-                    obj_ = snort_tm_binding.SnortTestMechanismType.factory()
-                elif type_name_ == "OpenIOC2010TestMechanismType":
-                    import stix.bindings.extensions.test_mechanism.open_ioc_2010 as openioc_tm_binding
-                    obj_ = openioc_tm_binding.OpenIOC2010TestMechanismType.factory()
-                elif type_name_ == "GenericTestMechanismType":
-                    import stix.bindings.extensions.test_mechanism.generic as generic_tm_binding
-                    obj_ = generic_tm_binding.GenericTestMechanismType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for <Test_Mechanism> element: ' + type_name_)
-            else:
-                raise NotImplementedError(
-                    'Class not implemented for <Test_Mechanism> element: no xsi:type attribute found')
-
+            from .extensions.test_mechanism import (generic, oval_5_10, open_ioc_2010, snort, yara)
+            obj_ = lookup_extension(child_).factory()
             obj_.build(child_)
             self.Test_Mechanism.append(obj_)
 # end class TestMechanismsType
@@ -830,6 +806,8 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
         super(RelatedIndicatorsType, self).buildChildren(child_, node, nodeName_, True)
 # end class RelatedIndicatorsType
 
+
+@register_extension
 class IndicatorType(stix_common_binding.IndicatorBaseType):
     """The IndicatorType characterizes a cyber threat indicator made up of
     a pattern identifying certain observable conditions as well as
@@ -842,11 +820,13 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
     specifies the absence of the pattern."""
     subclass = None
     superclass = stix_common_binding.IndicatorBaseType
+
+    xmlns          = XML_NS
+    xmlns_prefix   = "indicator"
+    xml_type       = "IndicatorType"
+
     def __init__(self, idref=None, id=None, timestamp=None, negate=False, version=None, Title=None, Type=None, Alternative_ID=None, Description=None, Short_Description=None, Valid_Time_Position=None, Observable=None, Composite_Indicator_Expression=None, Indicated_TTP=None, Kill_Chain_Phases=None, Test_Mechanisms=None, Likely_Impact=None, Suggested_COAs=None, Handling=None, Confidence=None, Sightings=None, Related_Indicators=None, Related_Campaigns=None, Related_Packages=None, Producer=None):
         super(IndicatorType, self).__init__(idref=idref, id=id, timestamp=timestamp)
-        self.xmlns          = "http://stix.mitre.org/Indicator-2"
-        self.xmlns_prefix   = "indicator"
-        self.xml_type       = "IndicatorType"
 
         self.negate = _cast(bool, negate)
         self.version = _cast(None, version)
@@ -859,8 +839,14 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
             self.Alternative_ID = []
         else:
             self.Alternative_ID = Alternative_ID
-        self.Description = Description
-        self.Short_Description = Short_Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
+        if Short_Description is None:
+            self.Short_Description = []
+        else:
+            self.Short_Description = Short_Description
         if Valid_Time_Position is None:
             self.Valid_Time_Position = []
         else:
@@ -898,8 +884,12 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
     def set_Alternative_ID(self, Alternative_ID): self.Alternative_ID = Alternative_ID
     def add_Alternative_ID(self, value): self.Alternative_ID.append(value)
     def insert_Alternative_ID(self, index, value): self.Alternative_ID[index] = value
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def insert_Short_Description(self, index, value): self.Short_Description[index] = value
+    def add_Short_Description(self, Short_Description): self.Short_Description.append(Short_Description)
     def get_Short_Description(self): return self.Short_Description
     def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Valid_Time_Position(self): return self.Valid_Time_Position
@@ -945,8 +935,8 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
             self.Title is not None or
             self.Type or
             self.Alternative_ID or
-            self.Description is not None or
-            self.Short_Description is not None or
+            self.Description or
+            self.Short_Description or
             self.Valid_Time_Position or
             self.Observable is not None or
             self.Composite_Indicator_Expression is not None or
@@ -1013,10 +1003,10 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
         for Alternative_ID_ in self.Alternative_ID:
             showIndent(lwrite, level, pretty_print)
             lwrite('<%s:Alternative_ID>%s</%s:Alternative_ID>%s' % (nsmap[namespace_], quote_xml(Alternative_ID_), nsmap[namespace_], eol_))
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-        if self.Short_Description is not None:
-            self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Short_Description in self.Short_Description:
+            Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         for Valid_Time_Position_ in self.Valid_Time_Position:
             Valid_Time_Position_.export(lwrite, level, nsmap, namespace_, name_='Valid_Time_Position', pretty_print=pretty_print)
         if self.Observable is not None:
@@ -1083,11 +1073,11 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Short_Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Short_Description(obj_)
+            self.add_Short_Description(obj_)
         elif nodeName_ == 'Valid_Time_Position':
             obj_ = ValidTimeType.factory()
             obj_.build(child_)

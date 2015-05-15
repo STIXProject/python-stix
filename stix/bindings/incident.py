@@ -25,7 +25,10 @@ class PropertyAffectedType(GeneratedsSuper):
     superclass = None
     def __init__(self, Property=None, Description_Of_Effect=None, Type_Of_Availability_Loss=None, Duration_Of_Availability_Loss=None, Non_Public_Data_Compromised=None):
         self.Property = Property
-        self.Description_Of_Effect = Description_Of_Effect
+        if Description_Of_Effect is None:
+            self.Description_Of_Effect = []
+        else:
+            self.Description_Of_Effect = Description_Of_Effect
         self.Type_Of_Availability_Loss = Type_Of_Availability_Loss
         self.Duration_Of_Availability_Loss = Duration_Of_Availability_Loss
         self.Non_Public_Data_Compromised = Non_Public_Data_Compromised
@@ -37,6 +40,8 @@ class PropertyAffectedType(GeneratedsSuper):
     factory = staticmethod(factory)
     def get_Property(self): return self.Property
     def set_Property(self, Property): self.Property = Property
+    def insert_Description_Of_Effect(self, index, value): self.Description_Of_Effect[index] = value
+    def add_Description_Of_Effect(self, value): self.Description_Of_Effect.append(value)
     def get_Description_Of_Effect(self): return self.Description_Of_Effect
     def set_Description_Of_Effect(self, Description_Of_Effect): self.Description_Of_Effect = Description_Of_Effect
     def get_Type_Of_Availability_Loss(self): return self.Type_Of_Availability_Loss
@@ -48,7 +53,7 @@ class PropertyAffectedType(GeneratedsSuper):
     def hasContent_(self):
         if (
             self.Property is not None or
-            self.Description_Of_Effect is not None or
+            self.Description_Of_Effect or
             self.Type_Of_Availability_Loss is not None or
             self.Duration_Of_Availability_Loss is not None or
             self.Non_Public_Data_Compromised is not None
@@ -81,8 +86,8 @@ class PropertyAffectedType(GeneratedsSuper):
             eol_ = ''
         if self.Property is not None:
             self.Property.export(lwrite, level, nsmap, namespace_, name_='Property', pretty_print=pretty_print)
-        if self.Description_Of_Effect is not None:
-            self.Description_Of_Effect.export(lwrite, level, nsmap, namespace_, name_='Description_Of_Effect', pretty_print=pretty_print)
+        for doe in self.Description_Of_Effect:
+            doe.export(lwrite, level, nsmap, namespace_, name_='Description_Of_Effect', pretty_print=pretty_print)
         if self.Type_Of_Availability_Loss is not None:
             self.Type_Of_Availability_Loss.export(lwrite, level, nsmap, namespace_, name_='Type_Of_Availability_Loss', pretty_print=pretty_print)
         if self.Duration_Of_Availability_Loss is not None:
@@ -105,7 +110,7 @@ class PropertyAffectedType(GeneratedsSuper):
         elif nodeName_ == 'Description_Of_Effect':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description_Of_Effect(obj_)
+            self.add_Description_Of_Effect(obj_)
         elif nodeName_ == 'Type_Of_Availability_Loss':
             obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)
@@ -125,8 +130,16 @@ class AffectedAssetType(GeneratedsSuper):
     superclass = None
     def __init__(self, Type=None, Description=None, Business_Function_Or_Role=None, Ownership_Class=None, Management_Class=None, Location_Class=None, Location=None, Nature_Of_Security_Effect=None, Structured_Description=None):
         self.Type = Type
-        self.Description = Description
-        self.Business_Function_Or_Role = Business_Function_Or_Role
+        if Description is None:
+            self.Description  = []
+        else:
+            self.Description = Description
+
+        if Business_Function_Or_Role is None:
+            self.Business_Function_Or_Role = []
+        else:
+            self.Business_Function_Or_Role = Business_Function_Or_Role
+
         self.Ownership_Class = Ownership_Class
         self.Management_Class = Management_Class
         self.Location_Class = Location_Class
@@ -141,8 +154,12 @@ class AffectedAssetType(GeneratedsSuper):
     factory = staticmethod(factory)
     def get_Type(self): return self.Type
     def set_Type(self, Type): self.Type = Type
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def insert_Business_Function_Or_Role(self, index, value): self.Business_Function_Or_Role[index] = value
+    def add_Business_Function_Or_Role(self, Business_Function_Or_Role): self.Business_Function_Or_Role.append(Business_Function_Or_Role)
     def get_Business_Function_Or_Role(self): return self.Business_Function_Or_Role
     def set_Business_Function_Or_Role(self, Business_Function_Or_Role): self.Business_Function_Or_Role = Business_Function_Or_Role
     def get_Ownership_Class(self): return self.Ownership_Class
@@ -160,8 +177,8 @@ class AffectedAssetType(GeneratedsSuper):
     def hasContent_(self):
         if (
             self.Type is not None or
-            self.Description is not None or
-            self.Business_Function_Or_Role is not None or
+            self.Description or
+            self.Business_Function_Or_Role or
             self.Ownership_Class is not None or
             self.Management_Class is not None or
             self.Location_Class is not None or
@@ -197,10 +214,10 @@ class AffectedAssetType(GeneratedsSuper):
             eol_ = ''
         if self.Type is not None:
             self.Type.export(lwrite, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-        if self.Business_Function_Or_Role is not None:
-            self.Business_Function_Or_Role.export(lwrite, level, nsmap, namespace_, name_='Business_Function_Or_Role', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Business_Function_Or_Role in self.Business_Function_Or_Role:
+            Business_Function_Or_Role.export(lwrite, level, nsmap, namespace_, name_='Business_Function_Or_Role', pretty_print=pretty_print)
         if self.Ownership_Class is not None:
             self.Ownership_Class.export(lwrite, level, nsmap, namespace_, name_='Ownership_Class', pretty_print=pretty_print)
         if self.Management_Class is not None:
@@ -229,11 +246,11 @@ class AffectedAssetType(GeneratedsSuper):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Business_Function_Or_Role':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Business_Function_Or_Role(obj_)
+            self.add_Business_Function_Or_Role(obj_)
         elif nodeName_ == 'Ownership_Class':
             obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)
@@ -247,24 +264,8 @@ class AffectedAssetType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Location_Class(obj_)
         elif nodeName_ == 'Location':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "CIQAddress3.0InstanceType":
-                    import stix.bindings.extensions.address.ciq_address_3_0 as ciq_address_binding
-                    obj_ = ciq_address_binding.CIQAddress3_0InstanceType.factory()
-                else:
-                    raise NotImplementedError('No implementation class found for: ' + type_name_)
-            else:
-                raise NotImplementedError('Class not implemented for <Location> element')
-
+            from .extensions.address import ciq_address_3_0
+            obj_ = lookup_extension(child_).factory()
             obj_.build(child_)
             self.set_Location(obj_)
         elif nodeName_ == 'Nature_Of_Security_Effect':
@@ -560,24 +561,8 @@ class COATakenType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Contributors(obj_)
         elif nodeName_ == 'Course_Of_Action':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "CourseOfActionType":
-                    import stix.bindings.course_of_action as coa_binding
-                    obj_ = coa_binding.CourseOfActionType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
-                obj_ = stix_common_binding.CourseOfActionBaseType.factory() # not abstract
-
+            from . import course_of_action
+            obj_ = lookup_extension(child_, stix_common_binding.CourseOfActionBaseType).factory()
             obj_.build(child_)
             self.set_Course_Of_Action(obj_)
 # end class COATakenType
@@ -2149,6 +2134,8 @@ class AssetTypeType(stix_common_binding.ControlledVocabularyStringType):
         pass
 # end class AssetTypeType
 
+
+@register_extension
 class IncidentType(stix_common_binding.IncidentBaseType):
     """The IncidentType characterizes a single cyber threat
     Incident.Specifies the relevant STIX-Incident schema version for
@@ -2156,11 +2143,13 @@ class IncidentType(stix_common_binding.IncidentBaseType):
     Incident specification."""
     subclass = None
     superclass = stix_common_binding.IncidentBaseType
+
+    xmlns          = "http://stix.mitre.org/Incident-1"
+    xmlns_prefix   = "incident"
+    xml_type       = "IncidentType"
+
     def __init__(self, idref=None, id=None, timestamp=None, URL=None, version=None, Title=None, External_ID=None, Time=None, Description=None, Short_Description=None, Categories=None, Reporter=None, Responder=None, Coordinator=None, Victim=None, Affected_Assets=None, Impact_Assessment=None, Status=None, Related_Indicators=None, Related_Observables=None, Leveraged_TTPs=None, Attributed_Threat_Actors=None, Intended_Effect=None, Security_Compromise=None, Discovery_Method=None, Related_Incidents=None, COA_Requested=None, COA_Taken=None, Confidence=None, Contact=None, History=None, Information_Source=None, Handling=None, Related_Packages=None):
         super(IncidentType, self).__init__(timestamp=timestamp, idref=idref, id=id)
-        self.xmlns          = "http://stix.mitre.org/Incident-1"
-        self.xmlns_prefix   = "incident"
-        self.xml_type       = "IncidentType"
         self.URL = _cast(None, URL)
         self.version = _cast(None, version)
         self.Title = Title
@@ -2169,8 +2158,14 @@ class IncidentType(stix_common_binding.IncidentBaseType):
         else:
             self.External_ID = External_ID
         self.Time = Time
-        self.Description = Description
-        self.Short_Description = Short_Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
+        if Short_Description is None:
+            self.Short_Description = []
+        else:
+            self.Short_Description = Short_Description
         self.Categories = Categories
         self.Reporter = Reporter
         if Responder is None:
@@ -2233,8 +2228,12 @@ class IncidentType(stix_common_binding.IncidentBaseType):
     def insert_External_ID(self, index, value): self.External_ID[index] = value
     def get_Time(self): return self.Time
     def set_Time(self, Time): self.Time = Time
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def insert_Short_Description(self, index, value): self.Short_Description[index] = value
+    def add_Short_Description(self, Short_Description): self.Short_Description.append(Short_Description)
     def get_Short_Description(self): return self.Short_Description
     def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Categories(self): return self.Categories
@@ -2310,8 +2309,8 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             self.Title is not None or
             self.External_ID or
             self.Time is not None or
-            self.Description is not None or
-            self.Short_Description is not None or
+            self.Description or
+            self.Short_Description or
             self.Categories is not None or
             self.Reporter is not None or
             self.Responder or
@@ -2386,10 +2385,10 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             External_ID_.export(lwrite, level, nsmap, namespace_, name_='External_ID', pretty_print=pretty_print)
         if self.Time is not None:
             self.Time.export(lwrite, level, nsmap, namespace_, name_='Time', pretty_print=pretty_print)
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-        if self.Short_Description is not None:
-            self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Short_Description in self.Short_Description:
+            Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         if self.Categories is not None:
             self.Categories.export(lwrite, level, nsmap, namespace_, name_='Categories', pretty_print=pretty_print)
         if self.Reporter is not None:
@@ -2470,11 +2469,11 @@ class IncidentType(stix_common_binding.IncidentBaseType):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Short_Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Short_Description(obj_)
+            self.add_Short_Description(obj_)
         elif nodeName_ == 'Categories':
             obj_ = CategoriesType.factory()
             obj_.build(child_)
@@ -2492,21 +2491,8 @@ class IncidentType(stix_common_binding.IncidentBaseType):
             obj_.build(child_)
             self.Coordinator.append(obj_)
         elif nodeName_ == 'Victim':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "CIQIdentity3.0InstanceType":
-                    import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
-                    obj_ = ciq_identity_binding.CIQIdentity3_0InstanceType.factory()
-            else:
-                obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
+            import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
+            obj_ = lookup_extension(child_, stix_common_binding.IdentityType).factory()
             obj_.build(child_)
             self.Victim.append(obj_)
         elif nodeName_ == 'Affected_Assets':

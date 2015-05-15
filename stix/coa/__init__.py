@@ -6,7 +6,6 @@ from cybox.core import Observables
 
 # internal
 import stix
-from stix.data_marking import Marking
 from stix.common import vocabs, related, VocabString, Statement
 import stix.bindings.course_of_action as coa_binding
 
@@ -29,11 +28,27 @@ class RelatedCOAs(related.GenericRelationshipList):
 
 
 class CourseOfAction(stix.BaseCoreComponent):
+    """Implementation of the STIX Course of Action.
+
+    Args:
+        id_ (optional): An identifier. If ``None``, a value will be generated
+            via ``stix.utils.create_id()``. If set, this will unset the
+            ``idref`` property.
+        idref (optional): An identifier reference. If set this will unset the
+            ``id_`` property.
+        timestamp (optional): A timestamp value. Can be an instance of
+            ``datetime.datetime`` or ``str``.
+        description: A description of the purpose or intent of this object.
+        short_description: A short description of the intent
+            or purpose of this object.
+        title: The title of this object.
+
+    """
     _binding = coa_binding
     _binding_class = coa_binding.CourseOfActionType
     _namespace = "http://stix.mitre.org/CourseOfAction-1"
-    _version = "1.1.1"
-    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1")
+    _version = "1.2"
+    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = 'coa'
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
@@ -56,12 +71,15 @@ class CourseOfAction(stix.BaseCoreComponent):
         self.impact = None
         self.cost = None
         self.efficacy = None
-        self.handling = None
         self.related_coas = RelatedCOAs()
         self.related_packages = related.RelatedPackageRefs()
 
     @property
     def stage(self):
+        """A :class:`.VocabString` property. If set to a string, an attempt
+        will be made to convert it to an instance of :class:`.Stage`.
+
+        """
         return self._stage
 
     @stage.setter
@@ -70,6 +88,10 @@ class CourseOfAction(stix.BaseCoreComponent):
 
     @property
     def type_(self):
+        """A :class:`.VocabString` property. If set to a string, an attempt
+        will be made to convert it to an instance of :class:`.COAType`.
+
+        """
         return self._type
 
     @type_.setter
@@ -78,6 +100,9 @@ class CourseOfAction(stix.BaseCoreComponent):
 
     @property
     def objective(self):
+        """A :class:`.Objective` field.
+
+        """
         return self._objective
 
     @objective.setter
@@ -86,6 +111,12 @@ class CourseOfAction(stix.BaseCoreComponent):
 
     @property
     def impact(self):
+        """The impact of this COA. This is a :class:`.Statement` property.
+
+        If set to a string, an attempt will be made to convert it into a
+        :class:`.Statement` object.
+
+        """
         return self._impact
 
     @impact.setter
@@ -94,6 +125,12 @@ class CourseOfAction(stix.BaseCoreComponent):
 
     @property
     def cost(self):
+        """The cost of this COA. This is a :class:`.Statement` property.
+
+        If set to a string, an attempt will be made to convert it into a
+        :class:`.Statement` object.
+
+        """
         return self._cost
 
     @cost.setter
@@ -102,6 +139,12 @@ class CourseOfAction(stix.BaseCoreComponent):
 
     @property
     def efficacy(self):
+        """The efficacy of this COA. This is a :class:`.Statement` property.
+
+        If set to a string, an attempt will be made to convert it into a
+        :class:`.Statement` object.
+
+        """
         return self._efficacy
 
     @efficacy.setter
@@ -109,15 +152,12 @@ class CourseOfAction(stix.BaseCoreComponent):
         self._set_var(Statement, efficacy=value)
 
     @property
-    def handling(self):
-        return self._handling
-
-    @handling.setter
-    def handling(self, value):
-        self._set_var(Marking, try_cast=False, handling=value)
-
-    @property
     def structured_coa(self):
+        """A structured Course of Action extension point. This can be
+        set to implementations of this extension point, such as
+        :class:`.GenericStructuredCOA`.
+
+        """
         return self._structured_coa
 
     @structured_coa.setter
@@ -144,8 +184,6 @@ class CourseOfAction(stix.BaseCoreComponent):
             return_obj.Cost = self.cost.to_obj(ns_info=ns_info)
         if self.efficacy:
             return_obj.Efficacy = self.efficacy.to_obj(ns_info=ns_info)
-        if self.handling:
-            return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
         if self.related_coas:
             return_obj.Related_COAs = self.related_coas.to_obj(ns_info=ns_info)
         if self.related_packages:
@@ -175,7 +213,6 @@ class CourseOfAction(stix.BaseCoreComponent):
             return_obj.impact = Statement.from_obj(obj.Impact)
             return_obj.cost = Statement.from_obj(obj.Cost)
             return_obj.efficacy = Statement.from_obj(obj.Efficacy)
-            return_obj.handling = Marking.from_obj(obj.Handling)
             return_obj.related_coas = \
                 RelatedCOAs.from_obj(obj.Related_COAs)
             return_obj.related_packages = \
@@ -206,7 +243,6 @@ class CourseOfAction(stix.BaseCoreComponent):
         return_obj.impact = Statement.from_dict(get('impact'))
         return_obj.cost = Statement.from_dict(get('cost'))
         return_obj.efficacy = Statement.from_dict(get('efficacy'))
-        return_obj.handling = Marking.from_dict(get('handling'))
         return_obj.related_coas = \
             RelatedCOAs.from_dict(get('related_coas'))
         return_obj.related_packages = \

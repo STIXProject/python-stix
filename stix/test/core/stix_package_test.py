@@ -5,13 +5,22 @@ import copy
 import StringIO
 import unittest
 
-from stix.test import EntityTestCase
-from stix.test.common import kill_chains_test
+from stix.test import EntityTestCase, assert_warnings
+from stix.test import report_test
+from stix.test.common import kill_chains_test, related_test
 
 from . import stix_header_test
 
 from stix import core
 from stix.core import stix_package
+from stix.campaign import Campaign
+from stix.coa import CourseOfAction
+from stix.exploit_target import ExploitTarget
+from stix.indicator import Indicator
+from stix.incident import Incident
+from stix.threat_actor import ThreatActor
+from stix.ttp import TTP
+from stix.utils import silence_warnings, now
 
 
 class CampaignsTests(EntityTestCase, unittest.TestCase):
@@ -69,6 +78,14 @@ class TTPsTests(EntityTestCase, unittest.TestCase):
     }
 
 
+class ReportsTests(EntityTestCase, unittest.TestCase):
+    klass = stix_package.Reports
+
+    _full_dict = [
+        report_test.ReportTests._full_dict
+    ]
+
+
 class STIXPackageTests(EntityTestCase, unittest.TestCase):
     klass = core.STIXPackage
     _full_dict = {
@@ -90,10 +107,13 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
         },
         'threat_actors': ThreatActorsTests._full_dict,
         'ttps': TTPsTests._full_dict,
-        'version': "1.1.1"
+        'related_packages': related_test.RelatedPackagesTests._full_dict,
+        'reports': ReportsTests._full_dict,
+        'version': "1.2"
     }
 
 
+    @silence_warnings
     def test_deepcopy(self):
         """Test copy.deepcopy() against parsed document.
 
@@ -113,6 +133,75 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
 
         copied = copy.deepcopy(package)
         self.assertEqual(package.timestamp, copied.timestamp)
+
+    @assert_warnings
+    def test_deprecated_idref(self):
+        p = core.STIXPackage()
+        p.idref = "test"
+        self.assertEqual(p.idref, "test")
+
+    @assert_warnings
+    def test_deprecated_timestamp(self):
+        p = core.STIXPackage()
+        ts = now()
+        p.timestamp = ts
+        self.assertEqual(ts, p.timestamp)
+
+    @assert_warnings
+    def test_campaign_idref_deprecation(self):
+        package = core.STIXPackage()
+        package.add(Campaign(idref='test-idref-dep'))
+
+    @assert_warnings
+    def test_coa_idref_deprecation(self):
+        package = core.STIXPackage()
+        package.add(CourseOfAction(idref='test-idref-dep'))
+
+    @assert_warnings
+    def test_et_idref_deprecation(self):
+        package = core.STIXPackage()
+        package.add(ExploitTarget(idref='test-idref-dep'))
+
+    @assert_warnings
+    def test_incident_idref_deprecation(self):
+        package = core.STIXPackage()
+        package.add(Incident(idref='test-idref-dep'))
+
+    @assert_warnings
+    def test_indicator_idref_deprecation(self):
+        package = core.STIXPackage()
+        package.add(Indicator(idref='test-idref-dep'))
+
+    @assert_warnings
+    def test_ta_idref_deprecation(self):
+        package = core.STIXPackage()
+        package.add(ThreatActor(idref='test-idref-dep'))
+
+    @assert_warnings
+    def test_ttp_idref_deprecation(self):
+        package = core.STIXPackage()
+        package.add(TTP(idref='test-idref-dep'))
+
+    @assert_warnings
+    def test_related_package_idref_deprecation(self):
+        package = core.STIXPackage()
+        package.add_related_package(core.STIXPackage(idref='foo'))
+
+    def test_version(self):
+        """Tests that setting the version property of a STIXPackage does
+        not affect the serialized versions.
+
+        """
+        p = core.STIXPackage()
+        p.version = "1.0"  # old version
+
+        s = p.to_xml()
+        sio = StringIO.StringIO(s)
+
+        # Reparse the package
+        p = core.STIXPackage.from_xml(sio)
+
+        self.assertEqual(p.version, core.STIXPackage._version)
 
 
 if __name__ == "__main__":

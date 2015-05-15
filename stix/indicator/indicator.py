@@ -16,7 +16,6 @@ from stix.common.related import (
     GenericRelationshipList, RelatedCOA, RelatedIndicator, RelatedCampaignRef,
     RelatedPackageRefs
 )
-from stix.data_marking import Marking
 from stix.common.vocabs import IndicatorType
 from stix.common.kill_chains import KillChainPhasesReference
 import stix.bindings.indicator as indicator_binding
@@ -156,7 +155,7 @@ class RelatedIndicators(GenericRelationshipList):
 
 
 class Indicator(stix.BaseCoreComponent):
-    """Implementation of the STIX ``IndicatorType``.
+    """Implementation of the STIX Indicator.
 
     Args:
         id_ (optional): An identifier. If ``None``, a value will be generated
@@ -174,8 +173,8 @@ class Indicator(stix.BaseCoreComponent):
     _binding = indicator_binding
     _binding_class = indicator_binding.IndicatorType
     _namespace = 'http://stix.mitre.org/Indicator-2'
-    _version = "2.1.1"
-    _ALL_VERSIONS = ("2.0", "2.0.1", "2.1", "2.1.1")
+    _version = "2.2"
+    _ALL_VERSIONS = ("2.0", "2.0.1", "2.1", "2.1.1", "2.2")
     _ALLOWED_COMPOSITION_OPERATORS = ('AND', 'OR')
     _ID_PREFIX = "indicator"
 
@@ -201,7 +200,6 @@ class Indicator(stix.BaseCoreComponent):
         self.suggested_coas = SuggestedCOAs()
         self.sightings = Sightings()
         self.composite_indicator_expression = None
-        self.handling = None
         self.kill_chain_phases = KillChainPhasesReference()
         self.valid_time_positions = _ValidTimePositions()
         self.related_indicators = None
@@ -398,6 +396,7 @@ class Indicator(stix.BaseCoreComponent):
         Raises:
             ValueError: If the `value` argument is not an instance of
                 :class:`stix.indicator.valid_time.ValidTime`.
+
         """
         self.valid_time_positions.append(value)
 
@@ -552,14 +551,6 @@ class Indicator(stix.BaseCoreComponent):
         self.test_mechanisms.append(tm)
 
     @property
-    def handling(self):
-        return self._handling
-    
-    @handling.setter
-    def handling(self, value):
-        self._set_var(Marking, handling=value)
-
-    @property
     def related_indicators(self):
         return self._related_indicators
 
@@ -615,6 +606,34 @@ class Indicator(stix.BaseCoreComponent):
             self._related_campaigns = RelatedCampaignRefs(value)
 
     def add_related_campaign(self, value):
+        """Adds a Related Campaign to this Indicator.
+
+        The `value` parameter must be an instance of :class:`.RelatedCampaignRef`
+        or :class:`.CampaignRef`.
+
+        If the `value` parameter is ``None``, no item wil be added to the
+        ``related_campaigns`` collection.
+
+        Calling this method is the same as calling ``append()`` on the
+        ``related_campaigns`` property.
+
+        See Also:
+            The :class:`.RelatedCampaignRef` documentation.
+
+        Note:
+            If the `value` parameter is not an instance of
+            :class:`.RelatedCampaignRef` an attempt will be made to convert it
+            to one.
+
+        Args:
+            value: An instance of :class:`.RelatedCampaignRef` or
+                :class:`.Campaign`.
+
+        Raises:
+            ValueError: If the `value` parameter cannot be converted into
+                an instance of :class:`.RelatedCampaignRef`
+
+        """
         self.related_campaigns.append(value)
 
     @property
@@ -876,8 +895,6 @@ class Indicator(stix.BaseCoreComponent):
             return_obj.Sightings = self.sightings.to_obj(ns_info=ns_info)
         if self.composite_indicator_expression:
             return_obj.Composite_Indicator_Expression = self.composite_indicator_expression.to_obj(ns_info=ns_info)
-        if self.handling:
-            return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
         if self.kill_chain_phases:
             return_obj.Kill_Chain_Phases = self.kill_chain_phases.to_obj(ns_info=ns_info)
         if self.related_indicators:
@@ -906,11 +923,10 @@ class Indicator(stix.BaseCoreComponent):
 
         if isinstance(obj, cls._binding_class):
             return_obj.negate = obj.negate
-            return_obj.producer         = InformationSource.from_obj(obj.Producer)
-            return_obj.confidence       = Confidence.from_obj(obj.Confidence)
-            return_obj.sightings        = Sightings.from_obj(obj.Sightings)
+            return_obj.producer = InformationSource.from_obj(obj.Producer)
+            return_obj.confidence = Confidence.from_obj(obj.Confidence)
+            return_obj.sightings = Sightings.from_obj(obj.Sightings)
             return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_obj(obj.Composite_Indicator_Expression)
-            return_obj.handling = Marking.from_obj(obj.Handling)
             return_obj.kill_chain_phases = KillChainPhasesReference.from_obj(obj.Kill_Chain_Phases)
             return_obj.related_indicators = RelatedIndicators.from_obj(obj.Related_Indicators)
             return_obj.likely_impact = Statement.from_obj(obj.Likely_Impact)
@@ -927,8 +943,8 @@ class Indicator(stix.BaseCoreComponent):
         return return_obj
 
     def to_dict(self):
-        skip = ('observables', 'observable_composition_operator', 'negate')
-        d = utils.to_dict(self, skip=skip)
+        keys = ('observables', 'observable_composition_operator', 'negate')
+        d = utils.to_dict(self, skip=keys)
 
         if self.negate:
             d['negate'] = True
@@ -959,7 +975,6 @@ class Indicator(stix.BaseCoreComponent):
         return_obj.suggested_coas = SuggestedCOAs.from_dict(get('suggested_coas'))
         return_obj.sightings = Sightings.from_dict(get('sightings'))
         return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_dict(get('composite_indicator_expression'))
-        return_obj.handling = Marking.from_dict(get('handling'))
         return_obj.kill_chain_phases = KillChainPhasesReference.from_dict(get('kill_chain_phases'))
         return_obj.related_indicators = RelatedIndicators.from_dict(get('related_indicators'))
         return_obj.likely_impact = Statement.from_dict(get('likely_impact'))

@@ -7,6 +7,7 @@ from stix.indicator import test_mechanism
 import stix.bindings.extensions.test_mechanism.snort as snort_tm_binding
 
 
+@stix.register_extension
 class SnortTestMechanism(test_mechanism._BaseTestMechanism):
     _namespace = "http://stix.mitre.org/extensions/TestMechanism#Snort-1"
     _binding = snort_tm_binding
@@ -131,5 +132,3 @@ class _EncodedCDATAs(stix.TypedList):
     _contained_type = EncodedCDATA
 
 
-# Register this extension
-test_mechanism.add_extension(SnortTestMechanism)

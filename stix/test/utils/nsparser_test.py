@@ -4,7 +4,6 @@
 # stdlib
 import StringIO
 import unittest
-import warnings
 
 # external
 import lxml.etree
@@ -12,7 +11,7 @@ import lxml.etree
 # internal
 import stix
 from stix.core import STIXPackage
-from stix.utils import nsparser
+from stix.utils import nsparser, silence_warnings
 
 
 NSMAP = {
@@ -76,6 +75,8 @@ class NamespaceInfoTests(unittest.TestCase):
 
         self.assertTrue(all(ns in namespaces for ns in NSMAP.iterkeys()))
 
+
+    @silence_warnings
     def test_user_provided_ns(self):
         """Test that user-provided namespaces are serialized.
 
@@ -102,16 +103,14 @@ class NamespaceInfoTests(unittest.TestCase):
         self.assertEqual(finalized.get(TEST_PREFIX), TEST_NS)
         self.assertEqual(finalized.get(NEW_STIX_PREFIX), NEW_STIX_NS)
 
-        with warnings.catch_warnings():
-            warnings.simplefilter('ignore')
-            xml = p.to_xml(ns_dict=test_dict)
-
         # Parse the exported document and make sure that the namespaces
         # made it through the serialization process.
+        xml = p.to_xml(ns_dict=test_dict)
         e = lxml.etree.XML(xml)
         self.assertEqual(e.nsmap.get(TEST_PREFIX), TEST_NS)
         self.assertEqual(e.nsmap.get(NEW_STIX_PREFIX), NEW_STIX_NS)
 
+    @silence_warnings
     def test_duplicate_ns_prefix(self):
         """Test that duplicate namespace prefix mappings raise errors.
 
@@ -131,7 +130,7 @@ class NamespaceInfoTests(unittest.TestCase):
             """<stix:STIX_Package
                     xmlns:cybox="THISISGONNABEPROBLEM"
                     xmlns:stix="http://stix.mitre.org/stix-1"
-                    version="1.1.1"
+                    version="1.2"
                     timestamp="2015-04-09T14:22:25.620831+00:00"/>"""
         )
 
@@ -144,6 +143,8 @@ class NamespaceInfoTests(unittest.TestCase):
             p.to_xml
         )
 
+
+    @silence_warnings
     def test_parsed_namespaces(self):
         """Test that non-default namespaces make it through the parse-serialize
         process.
@@ -163,17 +164,14 @@ class NamespaceInfoTests(unittest.TestCase):
                     xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                     id="example:Package-e2454ee8-e59c-43ac-a085-46ae4516fd6e"
-                    version="1.1.1"
+                    version="1.2"
                     timestamp="2015-04-09T14:22:25.620831+00:00"/>"""
         )
 
         sio = StringIO.StringIO(xml)
         p = STIXPackage.from_xml(sio)
 
-        with warnings.catch_warnings():
-            warnings.simplefilter('ignore')
-            serialized = p.to_xml()
-
+        serialized = p.to_xml()
         e = lxml.etree.XML(serialized)
         self.assertEqual(e.nsmap.get('TEST'), 'a:test')
         self.assertEqual(e.nsmap.get('FOO'), 'a:foo')

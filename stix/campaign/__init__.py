@@ -2,13 +2,13 @@
 # See LICENSE.txt for complete terms.
 
 import stix
+from stix.utils.deprecated import deprecated
 from stix.common import Activity, Confidence, Statement, VocabString
 from stix.common.related import (
     GenericRelationshipList, RelatedCampaign, RelatedIncident, RelatedIndicator,
     RelatedPackageRefs, RelatedThreatActor, RelatedTTP
 )
 from stix.common import vocabs
-from stix.data_marking import Marking
 import stix.bindings.campaign as campaign_binding
 
 
@@ -47,6 +47,10 @@ class RelatedIndicators(GenericRelationshipList):
     _contained_type = RelatedIndicator
     _inner_name = "indicators"
 
+    def _is_valid(self, value):
+        deprecated(value)
+        return super(RelatedIndicators, self)._is_valid(value)
+
 
 class RelatedTTPs(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Campaign-1"
@@ -67,11 +71,27 @@ class Names(stix.EntityList):
 
 
 class Campaign(stix.BaseCoreComponent):
+    """Implementation of the STIX Campaign.
+
+    Args:
+        id_ (optional): An identifier. If ``None``, a value will be generated
+            via ``stix.utils.create_id()``. If set, this will unset the
+            ``idref`` property.
+        idref (optional): An identifier reference. If set this will unset the
+            ``id_`` property.
+        timestamp (optional): A timestamp value. Can be an instance of
+            ``datetime.datetime`` or ``str``.
+        description: A description of the purpose or intent of this object.
+        short_description: A short description of the intent
+            or purpose of this object.
+        title: The title of this object.
+
+    """
     _binding = campaign_binding
     _binding_class = _binding.CampaignType
     _namespace = "http://stix.mitre.org/Campaign-1"
-    _version = "1.1.1"
-    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1")
+    _version = "1.2"
+    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = 'campaign'
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
@@ -96,15 +116,25 @@ class Campaign(stix.BaseCoreComponent):
         self.associated_campaigns = AssociatedCampaigns()
         self.confidence = None
         self.activity = _Activities()
-        self.handling = None
         self.related_packages = RelatedPackageRefs()
 
     @property
     def intended_effects(self):
+        """A collection of :class:`.Statement` objects. This behaves like a
+        ``MutableSequence`` type.
+
+        """
         return self._intended_effects
 
     @intended_effects.setter
     def intended_effects(self, value):
+        """Adds a :class:`.Statement` object to the :attr:`intended_effects`
+        collection.
+
+        If `value` is not an instance of :class:`.Statement`, an attempt will
+        be made to convert it to one.
+
+        """
         self._intended_effects = _IntendedEffects(value)
 
     def add_intended_effect(self, value):
@@ -112,6 +142,10 @@ class Campaign(stix.BaseCoreComponent):
 
     @property
     def activity(self):
+        """A collection of :class:`.Activity` objects. This behaves like a
+        ``MutableSequence`` type.
+
+        """
         return self._activity
 
     @activity.setter
@@ -119,10 +153,20 @@ class Campaign(stix.BaseCoreComponent):
         self._activity = _Activities(value)
 
     def add_activity(self, value):
+        """Adds an :class:`.Activity` object to the :attr:`activity`
+        collection.
+
+        """
         self.activity.append(value)
 
     @property
     def status(self):
+        """The status of the Campaign. This is a :class:`VocabString` field.
+
+        If set to a string, an attempt will be made to convert it to a
+        :class:`.CampaignStatus` object.
+
+        """
         return self._status
 
     @status.setter
@@ -131,6 +175,10 @@ class Campaign(stix.BaseCoreComponent):
 
     @property
     def attribution(self):
+        """A collection of :class:`.Attribution` objects. This behaves like a
+        ``MutableSequence`` type.
+
+        """
         return self._attribution
 
     @attribution.setter
@@ -163,8 +211,6 @@ class Campaign(stix.BaseCoreComponent):
             return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
         if self.activity:
             return_obj.Activity = self.activity.to_obj(ns_info=ns_info)
-        if self.handling:
-            return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
         if self.related_packages:
             return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
 
@@ -195,7 +241,6 @@ class Campaign(stix.BaseCoreComponent):
                 AssociatedCampaigns.from_obj(obj.Associated_Campaigns)
             return_obj.confidence = Confidence.from_obj(obj.Confidence)
             return_obj.activity = _Activities.from_obj(obj.Activity)
-            return_obj.handling = Marking.from_obj(obj.Handling)
             return_obj.related_packages = \
                 RelatedPackageRefs.from_obj(obj.Related_Packages)
 
@@ -231,7 +276,6 @@ class Campaign(stix.BaseCoreComponent):
         return_obj.confidence = \
             Confidence.from_dict(get('confidence'))
         return_obj.activity = _Activities.from_dict(get('activity'))
-        return_obj.handling = Marking.from_dict(get('handling'))
         return_obj.related_packages = \
             RelatedPackageRefs.from_dict(get('related_packages'))
 

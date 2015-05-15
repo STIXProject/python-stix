@@ -3,13 +3,15 @@
 
 import unittest
 
-from stix.test import EntityTestCase, data_marking_test
-from stix.test.common import (
-    confidence_test, information_source_test, statement_test, related_test,
-)
+from stix.test import EntityTestCase, assert_warnings
+from stix.test import  data_marking_test
+from stix.test.common import (confidence_test, information_source_test,
+                              statement_test, related_test)
+from stix.core import STIXPackage
 from stix.test.extensions.structured_coa import generic_test
 import stix.coa as coa
 import stix.coa.objective as objective
+
 
 
 class RelatedCOAsTests(EntityTestCase, unittest.TestCase):
@@ -69,7 +71,29 @@ class COATests(EntityTestCase, unittest.TestCase):
         'structured_coa': generic_test.GenericStructuredCOATests._full_dict
     }
 
+    def test_add_description(self):
+        o1 = self.klass()
+        o2 = self.klass()
 
+        o1.add_description("Test")
+        o2.descriptions.add("Test")
+
+        self.assertEqual(
+            o1.descriptions.to_dict(),
+            o2.descriptions.to_dict()
+        )
+
+    def test_add_short_description(self):
+        o1 = self.klass()
+        o2 = self.klass()
+
+        o1.add_short_description("Test")
+        o2.short_descriptions.add("Test")
+
+        self.assertEqual(
+            o1.short_descriptions.to_dict(),
+            o2.short_descriptions.to_dict()
+        )
 
     def test_structured_coa(self):
         coa_ = coa.CourseOfAction()
@@ -89,6 +113,12 @@ class COATests(EntityTestCase, unittest.TestCase):
         coa_.structured_coa = struct_coa
 
         self.assertTrue(str(coa_.structured_coa.description) == "SUCCESS")
+
+    @assert_warnings
+    def test_deprecated_related_packages(self):
+        c = coa.CourseOfAction()
+        c.related_packages.append(STIXPackage())
+        self.assertEqual(len(c.related_packages), 1)
 
 
 if __name__ == "__main__":

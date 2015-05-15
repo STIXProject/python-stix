@@ -2,10 +2,13 @@
 # See LICENSE.txt for complete terms.
 
 import stix
+import stix.utils as utils
 from stix.ttp import TTP
-from stix.bindings import stix_core as core_binding
 from stix.common.kill_chains import KillChains
+from stix.bindings import stix_core as core_binding
 
+# deprecation warnings
+from stix.utils.deprecated import idref_deprecated
 
 class TTPs(stix.EntityList):
     _binding = core_binding
@@ -29,11 +32,19 @@ class TTPs(stix.EntityList):
     @ttps.setter
     def ttps(self, value):
         self._inner = []
-        self.append(value)
+
+        if utils.is_sequence(value):
+            self.extend(value)
+        else:
+            self.append(value)
 
     def add_ttp(self, ttp):
-        self.ttps.append(ttp)
-        
+        self.append(ttp)
+
+    def _is_valid(self, value):
+        idref_deprecated(value)
+        return stix.EntityList._is_valid(self, value)
+
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()

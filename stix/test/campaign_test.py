@@ -3,12 +3,15 @@
 
 import unittest
 
-from stix.test import EntityTestCase, TypedListTestCase, data_marking_test
+from stix.test import EntityTestCase, TypedListTestCase, assert_warnings
+import stix.test.data_marking_test as data_marking_test
 from stix.test.common import (
     confidence_test, information_source_test, statement_test, related_test,
     activity_test
 )
 
+from stix.test import assert_warnings
+from stix.core import STIXPackage
 import stix.campaign as campaign
 
 
@@ -107,7 +110,7 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
     _full_dict = {
         'id': "example:test-1",
         'timestamp': "2014-01-31T06:14:46",
-        'version': '1.1.1',
+        'version': '1.2',
         'title': 'Purple Elephant',
         'description': 'A pretty novice set of actors.',
         'short_description': 'novices',
@@ -128,6 +131,43 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
         'handling': data_marking_test.MarkingTests._full_dict,
         'related_packages': related_test.RelatedPackageRefsTests._full_dict
     }
+
+    def test_add_description(self):
+        o1 = self.klass()
+        o2 = self.klass()
+
+        o1.add_description("Test")
+        o2.descriptions.add("Test")
+
+        self.assertEqual(
+            o1.descriptions.to_dict(),
+            o2.descriptions.to_dict()
+        )
+
+    def test_add_short_description(self):
+        o1 = self.klass()
+        o2 = self.klass()
+
+        o1.add_short_description("Test")
+        o2.short_descriptions.add("Test")
+
+        self.assertEqual(
+            o1.short_descriptions.to_dict(),
+            o2.short_descriptions.to_dict()
+        )
+
+    @assert_warnings
+    def test_deprecated_related_packages(self):
+        c = campaign.Campaign()
+        c.related_packages.append(STIXPackage())
+
+    @assert_warnings
+    def test_deprecated_related_indicators(self):
+        from stix.indicator import Indicator
+
+        c = campaign.Campaign()
+        c.related_indicators.append(Indicator())
+        self.assertEqual(1, len(c.related_indicators))
 
 
 if __name__ == "__main__":

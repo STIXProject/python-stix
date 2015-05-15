@@ -1,7 +1,7 @@
 python-stix
 ===========
 
-A python library for parsing, manipulating, and generating STIX v1.1.1 content.
+A python library for parsing, manipulating, and generating STIX v1.2 content.
 
 :Source: https://github.com/STIXProject/python-stix
 :Documentation: http://stix.readthedocs.org
@@ -67,36 +67,38 @@ Layout
 
 The python-stix package layout is as follows:
 
-* ``stix/`` : root level package
+* ``stix/`` : root level package.
 
-* ``examples/`` : example python scripts that leverage the python-stix library
+* ``examples/`` : example python scripts that leverage the python-stix library.
 
 * ``stix/utils/`` : utility classes and modules used internally by the python-stix
-  library
+  library.
 
 * ``stix/bindings/`` : generateDS generated xml-to-python bindings (leveraged for
-  parsing and output of STIX XML content)
+  parsing and output of STIX XML content).
   
-* ``stix/campaign/`` : APIs for STIX Campaign constructs
+* ``stix/campaign/`` : APIs for STIX Campaign constructs.
 
-* ``stix/coa/`` : APIs for STIX Course Of Action constructs
+* ``stix/coa/`` : APIs for STIX Course Of Action constructs.
 
-* ``stix/core/`` : APIs for core STIX constructs (e.g., STIX Header, STIX Package)
+* ``stix/core/`` : APIs for core STIX constructs (e.g., STIX Header, STIX Package).
 
 * ``stix/common/`` : APIs for common STIX constructs (e.g., Structured Text,
-  Information Source)
+  Information Source).
 
-* ``stix/exploit_target/`` : APIs for STIX Exploit Target constructs
+* ``stix/exploit_target/`` : APIs for STIX Exploit Target constructs.
 
-* ``stix/incident/`` : APIs for common Incident constructs
+* ``stix/incident/`` : APIs for common Incident constructs.
 
-* ``stix/indicator/`` : APIs for STIX Indicator constructs
+* ``stix/indicator/`` : APIs for STIX Indicator constructs.
 
-* ``stix/extensions/`` : APIs for STIX extensions (e.g., CIQ Identity)
+* ``stix/extensions/`` : APIs for STIX extensions (e.g., CIQ Identity).
 
-* ``stix/threat_actor/`` : APIs for STIX Threat Actor constructs
+* ``stix/report/``: APIs for STIX Report constructs.
 
-* ``stix/ttp/`` : APIs for STIX TTP constructs
+* ``stix/threat_actor/`` : APIs for STIX Threat Actor constructs.
+
+* ``stix/ttp/`` : APIs for STIX TTP constructs.
 
 Please refer to examples for concrete examples of how to interact with the
-python-stix library
+python-stix library.

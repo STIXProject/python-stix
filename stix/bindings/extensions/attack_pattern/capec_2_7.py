@@ -18,18 +18,21 @@ XML_NS = "http://stix.mitre.org/extensions/AP#CAPEC2.7-1"
 # Data representation classes.
 #
 
+@register_extension
 class CAPEC2_7InstanceType(ttp_binding.AttackPatternType):
     """The CAPECInstanceType provides an extension to the
     APStructureAbstractType which imports and leverages the CAPEC
     schema for structured characterization of Attack Patterns."""
     subclass = None
     superclass = ttp_binding.AttackPatternType
+
+    xmlns          = XML_NS
+    xmlns_prefix   = "capecInstance"
+    xml_type       = "CAPEC2.7InstanceType"
+
     def __init__(self, capec_id=None, Description=None, CAPEC=None):
         super(CAPEC2_7InstanceType, self).__init__(capec_id=capec_id, Description=Description)
         self.CAPEC = CAPEC
-        self.xmlns          = XML_NS
-        self.xmlns_prefix   = "capecInstance"
-        self.xml_type       = "CAPEC2.7InstanceType"
 
     def factory(*args_, **kwargs_):
         if CAPEC2_7InstanceType.subclass:

@@ -12,7 +12,6 @@ import sys
 
 # internal
 from stix.bindings import *
-from stix import xmlconst
 from . import stix_common as stix_common_binding
 
 XML_NS  = "http://data-marking.mitre.org/Marking-1"
@@ -339,20 +338,7 @@ class MarkingSpecificationType(GeneratedsSuper):
 
             # Look for xsi:type. If not there, build an instance of
             # MarkingStructureType
-            if xmlconst.TAG_XSI_TYPE not in child_.attrib:
-                ref = MarkingStructureType.factory()
-                ref.build(child_)
-                self.Marking_Structure.append(ref)
-                return
-
-            # Extract the xsi:type associated type namespace and type name
-            typeinfo = get_type_info(child_)
-
-            if typeinfo not in _EXTENSION_MAP:
-                raise NotImplementedError('Marking structure type not implemented ' + typeinfo.typename)
-
-            klass = _EXTENSION_MAP[typeinfo]
-            obj_ = klass.factory()
+            obj_ = lookup_extension(child_, MarkingStructureType).factory()
             obj_.build(child_)
             self.Marking_Structure.append(obj_)
 
@@ -361,13 +347,6 @@ class MarkingSpecificationType(GeneratedsSuper):
             obj_.build(child_)
             self.set_Information_Source(obj_)
 # end class MarkingSpecificationType
-
-
-_EXTENSION_MAP = {}
-
-def add_extension(klass):
-    typeinfo = TypeInfo(ns=klass.xmlns, typename=klass.xml_type)
-    _EXTENSION_MAP[typeinfo] = klass
 
 
 GDSClassesMapping = {}

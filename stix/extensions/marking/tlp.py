@@ -1,11 +1,12 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-import stix.bindings.extensions.marking.tlp as tlp_binding
-import stix.data_marking
+import stix
 from stix.data_marking import MarkingStructure
+import stix.bindings.extensions.marking.tlp as tlp_binding
 
 
+@stix.register_extension
 class TLPMarkingStructure(MarkingStructure):
     _binding = tlp_binding
     _binding_class = tlp_binding.TLPMarkingStructureType
@@ -60,6 +61,3 @@ class TLPMarkingStructure(MarkingStructure):
 
         return return_obj
 
-
-# Register extension
-stix.data_marking.add_extension(TLPMarkingStructure)

@@ -7,24 +7,24 @@ Classes
 -------
 
 .. autoclass:: KillChain
-	:show-inheritance:
-	:members:
+    :show-inheritance:
+    :members:
 
 .. autoclass:: KillChains
-	:show-inheritance:
-	:members:
+    :show-inheritance:
+    :members:
 
 .. autoclass:: KillChainPhase
-	:show-inheritance:
-	:members:
+    :show-inheritance:
+    :members:
 
 .. autoclass:: KillChainPhaseReference
-	:show-inheritance:
-	:members:
+    :show-inheritance:
+    :members:
 
 .. autoclass:: KillChainPhasesReference
-	:show-inheritance:
-	:members:
+    :show-inheritance:
+    :members:
 
 Lockheed Martin Kill Chain
 --------------------------

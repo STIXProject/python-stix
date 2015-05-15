@@ -8,7 +8,7 @@ import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
 from . import vocabs, VocabString
-from .structured_text import StructuredText
+from .structured_text import StructuredTextList
 
 
 class Confidence(stix.Entity):
@@ -52,11 +52,59 @@ class Confidence(stix.Entity):
 
     @property
     def description(self):
-        return self._description
+        """A single description about the contents or purpose of this object.
+
+        Default Value: ``None``
+
+        Note:
+            If this object has more than one description set, this will return
+            the description with the lowest ordinality value.
+
+        Returns:
+            An instance of
+            :class:`.StructuredText`
+
+        """
+        return next(iter(self.descriptions), None)
 
     @description.setter
     def description(self, value):
-        self._set_var(StructuredText, description=value)
+        self.descriptions = value
+
+    @property
+    def descriptions(self):
+        """A :class:`.StructuredTextList` object, containing descriptions about
+        the purpose or intent of this object.
+
+        Iterating over this object will yield its contents sorted by their
+        ``ordinality`` value.
+
+        Default Value: Empty :class:`.StructuredTextList` object.
+
+        Note:
+            IF this is set to a value that is not an instance of
+            :class:`.StructuredText`, an effort will ne made to convert it.
+            If this is set to an iterable, any values contained that are not
+            an instance of :class:`.StructuredText` will be be converted.
+
+        Returns:
+            An instance of
+            :class:`.StructuredTextList`
+
+        """
+        return self._description
+
+    @descriptions.setter
+    def descriptions(self, value):
+        self._description = StructuredTextList(value)
+
+    def add_description(self, description):
+        """Adds a description to the ``descriptions`` collection.
+
+        This is the same as calling "foo.descriptions.add(bar)".
+
+        """
+        self.descriptions.add(description)
 
     # @property
     # def confidence_assertion_chain(self):
@@ -76,15 +124,16 @@ class Confidence(stix.Entity):
 
         if self.value:
             obj.Value = self.value.to_obj(ns_info=ns_info)
-        if self.description:
-            obj.Description = self.description.to_obj(ns_info=ns_info)
+        if self.descriptions:
+            obj.Description = self.descriptions.to_obj(ns_info=ns_info)
         if self.source:
             obj.Source = self.source.to_obj(ns_info=ns_info)
 
         return obj
 
     def to_dict(self):
-        d = utils.to_dict(self, skip=('timestamp_precision',))
+        skip = ('timestamp_precision',)
+        d = utils.to_dict(self, skip=skip)
 
         if self.timestamp_precision != 'second':
             d['timestamp_precision'] = self.timestamp_precision
@@ -104,7 +153,7 @@ class Confidence(stix.Entity):
         return_obj.timestamp = obj.timestamp
         return_obj.timestamp_precision = obj.timestamp_precision
         return_obj.value = VocabString.from_obj(obj.Value)
-        return_obj.description = StructuredText.from_obj(obj.Description)
+        return_obj.descriptions = StructuredTextList.from_obj(obj.Description)
         return_obj.source = InformationSource.from_obj(obj.Source)
 
         return return_obj
@@ -122,7 +171,7 @@ class Confidence(stix.Entity):
         return_obj.timestamp = d.get('timestamp')
         return_obj.timestamp_precision = d.get('timestamp_precision', 'second')
         return_obj.value = VocabString.from_dict(d.get('value'))
-        return_obj.description = StructuredText.from_dict(d.get('description'))
+        return_obj.descriptions = StructuredTextList.from_dict(d.get('description'))
         return_obj.source = InformationSource.from_dict(d.get('source'))
 
         return return_obj

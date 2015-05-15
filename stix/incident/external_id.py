@@ -52,9 +52,10 @@ class ExternalID(stix.Entity):
         return return_obj
 
     def to_dict(self):    
-        d  = {}
-        d['value'] = self.value
-        d['source'] = self.source
+        d  = {
+            'value': self.value,
+            'source': self.source
+        }
         return d
 
     @classmethod

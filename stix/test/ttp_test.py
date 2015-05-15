@@ -3,9 +3,11 @@
 
 import unittest
 
-from stix.test import EntityTestCase, data_marking_test
-from stix.test.common import related_test, identity_test
+from stix.test import EntityTestCase, assert_warnings
+from stix.test import data_marking_test
+from stix.test.common import related_test, identity_test, kill_chains_test
 
+from stix.core import STIXPackage
 import stix.ttp as ttp
 from stix.ttp import (
     resource, infrastructure, exploit_targets, malware_instance, exploit,
@@ -146,8 +148,41 @@ class TTPTests(EntityTestCase, unittest.TestCase):
         'resources': ResourcesTests._full_dict,
         'handling': data_marking_test.MarkingTests._full_dict,
         'exploit_targets': ExploitTargetsTests._full_dict,
-        'behavior': BehaviorTests._full_dict
+        'behavior': BehaviorTests._full_dict,
+        'related_packages': related_test.RelatedPackageRefsTests._full_dict,
+        'kill_chain_phases': kill_chains_test.KillChainPhasesReferenceTests._full_dict
     }
+
+    def test_add_description(self):
+        o1 = self.klass()
+        o2 = self.klass()
+
+        o1.add_description("Test")
+        o2.descriptions.add("Test")
+
+        self.assertEqual(
+            o1.descriptions.to_dict(),
+            o2.descriptions.to_dict()
+        )
+
+    def test_add_short_description(self):
+        o1 = self.klass()
+        o2 = self.klass()
+
+        o1.add_short_description("Test")
+        o2.short_descriptions.add("Test")
+
+        self.assertEqual(
+            o1.short_descriptions.to_dict(),
+            o2.short_descriptions.to_dict()
+        )
+
+    @assert_warnings
+    def test_deprecated_related_packages(self):
+        t = ttp.TTP()
+        t.related_packages.append(STIXPackage())
+        self.assertEqual(len(t.related_packages), 1)
+
 
 if __name__ == "__main__":
     unittest.main()

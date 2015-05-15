@@ -4,6 +4,7 @@
 import unittest
 
 from stix.test import EntityTestCase
+from stix.test.common import structured_text_tests
 
 from stix.common import InformationSource
 
@@ -63,6 +64,13 @@ class InformationSourceTests(EntityTestCase, unittest.TestCase):
             'http://example.com'
         ]
     }
+
+class InformationSourceMultiDescTests(EntityTestCase, unittest.TestCase):
+    klass = InformationSource
+    _full_dict = {
+        'description': structured_text_tests.StructuredTextListTests._full_dict
+    }
+
 
 
 if __name__ == "__main__":

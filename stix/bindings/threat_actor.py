@@ -227,20 +227,29 @@ class AssociatedActorsType(stix_common_binding.GenericRelationshipListType):
         super(AssociatedActorsType, self).buildChildren(child_, node, nodeName_, True)
 # end class AssociatedActorsType
 
+@register_extension
 class ThreatActorType(stix_common_binding.ThreatActorBaseType):
     """Specifies the relevant STIX-ThreatActor schema version for this
     content."""
     subclass = None
     superclass = stix_common_binding.ThreatActorBaseType
+
+    xmlns          = "http://stix.mitre.org/ThreatActor-1"
+    xmlns_prefix   = "ta"
+    xml_type       = "ThreatActorType"
+
     def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Description=None, Short_Description=None, Identity=None, Type=None, Motivation=None, Sophistication=None, Intended_Effect=None, Planning_And_Operational_Support=None, Observed_TTPs=None, Associated_Campaigns=None, Associated_Actors=None, Handling=None, Confidence=None, Information_Source=None, Related_Packages=None):
         super(ThreatActorType, self).__init__(idref=idref, id=id, timestamp=timestamp)
-        self.xmlns          = "http://stix.mitre.org/ThreatActor-1"
-        self.xmlns_prefix   = "ta"
-        self.xml_type       = "ThreatActorType"
         self.version = _cast(None, version)
         self.Title = Title
-        self.Description = Description
-        self.Short_Description = Short_Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
+        if Short_Description is None:
+            self.Short_Description = []
+        else:
+            self.Short_Description = Short_Description
         self.Identity = Identity
         if Type is None:
             self.Type = []
@@ -277,8 +286,12 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
     factory = staticmethod(factory)
     def get_Title(self): return self.Title
     def set_Title(self, Title): self.Title = Title
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def insert_Short_Description(self, index, value): self.Short_Description[index] = value
+    def add_Short_Description(self, Short_Description): self.Short_Description.append(Short_Description)
     def get_Short_Description(self): return self.Short_Description
     def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Identity(self): return self.Identity
@@ -380,10 +393,10 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
         if self.Title is not None:
             showIndent(lwrite, level, pretty_print)
             lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-        if self.Short_Description is not None:
-            self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Short_Description in self.Short_Description:
+            Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         if self.Identity is not None:
             self.Identity.export(lwrite, level, nsmap, namespace_, name_='Identity', pretty_print=pretty_print)
         for Type_ in self.Type:
@@ -430,28 +443,14 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Short_Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Short_Description(obj_)
+            self.add_Short_Description(obj_)
         elif nodeName_ == 'Identity':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "CIQIdentity3.0InstanceType":
-                    from .extensions.identity import ciq_identity_3_0
-                    obj_ = ciq_identity_3_0.CIQIdentity3_0InstanceType.factory()
-            else:
-                obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
-
+            from .extensions.identity import ciq_identity_3_0
+            obj_ = lookup_extension(child_, stix_common_binding.IdentityType).factory()
             obj_.build(child_)
             self.set_Identity(obj_)
         elif nodeName_ == 'Type':

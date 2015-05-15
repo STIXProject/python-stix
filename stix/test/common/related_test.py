@@ -3,14 +3,72 @@
 
 import unittest
 
-from stix.test import EntityTestCase
+from stix.test import EntityTestCase, assert_warnings
 
+from stix.utils import silence_warnings
 from stix.common.related import (
     RelatedCampaign, RelatedCampaignRef, RelatedIdentity, RelatedCOA,
     RelatedPackage, RelatedPackageRef, RelatedExploitTarget, RelatedIncident,
     RelatedIndicator, RelatedObservable, RelatedThreatActor, RelatedTTP,
-    RelatedPackageRefs, RelatedPackages
+    RelatedPackageRefs, RelatedPackages, RelatedReports, RelatedReport
 )
+
+
+class RelatedReportTests(EntityTestCase, unittest.TestCase):
+    klass = RelatedReport
+    _full_dict = {
+        'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
+        'information_source': {
+            'description': "Source of the relationship",
+        },
+        'relationship': "Associated",
+        'report': {
+            'id': 'example:bar-1',
+            'version': '1.0',
+            'header': {
+                'title': 'Test'
+            }
+        }
+    }
+
+
+class RelatedReportsTests(EntityTestCase, unittest.TestCase):
+    klass = RelatedReports
+
+    _full_dict = {
+        'scope': 'inclusive',
+        'related_reports': [
+            {
+                'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
+                'information_source': {
+                    'description': "Source of the relationship",
+                },
+                'relationship': "Associated",
+                'report': {
+                    'id': 'example:bar-1',
+                    'version': '1.2',
+                    'header': {
+                        'title': 'Test'
+                    }
+                }
+            },
+            {
+                'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
+                'information_source': {
+                    'description': "Source of the relationship",
+                },
+                'relationship': "Associated",
+                'report': {
+                    'id': 'example:bar-2',
+                    'version': '1.2',
+                    'header': {
+                        'title': 'Test'
+                    }
+                }
+            }
+        ]
+    }
+
 
 class RelatedPackageRefsTests(EntityTestCase, unittest.TestCase):
     klass = RelatedPackageRefs
@@ -37,6 +95,34 @@ class RelatedPackageRefsTests(EntityTestCase, unittest.TestCase):
         ]
     }
 
+    @silence_warnings
+    def test_add_stix_package(self):
+        from stix.core import STIXPackage
+
+        l = RelatedPackageRefs()
+        l.append(STIXPackage())
+
+        self.assertEqual(1, len(l))
+
+
+    @silence_warnings
+    def test_add_bad_type(self):
+        from stix.indicator import Indicator
+
+        l = RelatedPackageRefs()
+
+        self.assertRaises(
+            TypeError,
+            l.append,
+            Indicator()
+        )
+
+    @assert_warnings
+    def test_deprecated_warning(self):
+        from stix.core import STIXPackage
+
+        l = RelatedPackageRefs()
+        l.append(STIXPackage())
 
 
 class RelatedPackageRefTests(EntityTestCase, unittest.TestCase):
@@ -192,7 +278,7 @@ class RelatedPackageTests(EntityTestCase, unittest.TestCase):
         'relationship': "Associated",
         'package': {
             'id': 'example:bar-1',
-            'version': '1.1.1',
+            'version': '1.2',
             'stix_header': {
                 'title': 'Test'
             }
@@ -212,7 +298,7 @@ class RelatedPackagesTests(EntityTestCase, unittest.TestCase):
                 'relationship': "Associated",
                 'package': {
                     'id': 'example:bar-1',
-                    'version': '1.1.1',
+                    'version': '1.2',
                     'stix_header': {
                         'title': 'Test'
                     }
@@ -226,7 +312,7 @@ class RelatedPackagesTests(EntityTestCase, unittest.TestCase):
                 'relationship': "Associated",
                 'package': {
                     'id': 'example:bar-2',
-                    'version': '1.1.1',
+                    'version': '1.2',
                     'stix_header': {
                         'title': 'Test'
                     }

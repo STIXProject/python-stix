@@ -43,9 +43,6 @@ class StructuredCOAType(GeneratedsSuper):
     subclass = None
     superclass = None
     def __init__(self, idref=None, id=None):
-        self.xmlns          = "http://stix.mitre.org/CourseOfAction-1"
-        self.xmlns_prefix   = "coa"
-        self.xml_type       = "CourseOfActionType"
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
         pass
@@ -123,8 +120,16 @@ class ObjectiveType(GeneratedsSuper):
     subclass = None
     superclass = None
     def __init__(self, Description=None, Short_Description=None, Applicability_Confidence=None):
-        self.Description = Description
-        self.Short_Description = Short_Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
+
+        if Short_Description is None:
+            self.Short_Description = []
+        else:
+            self.Short_Description = Short_Description
+
         self.Applicability_Confidence = Applicability_Confidence
     def factory(*args_, **kwargs_):
         if ObjectiveType.subclass:
@@ -132,15 +137,20 @@ class ObjectiveType(GeneratedsSuper):
         else:
             return ObjectiveType(*args_, **kwargs_)
     factory = staticmethod(factory)
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def insert_Short_Description(self, index, value): self.Short_Description[index] = value
+    def add_Short_Description(self, Short_Description): self.Short_Description.append(Short_Description)
     def get_Short_Description(self): return self.Short_Description
     def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Applicability_Confidence(self): return self.Applicability_Confidence
     def set_Applicability_Confidence(self, Applicability_Confidence): self.Applicability_Confidence = Applicability_Confidence
     def hasContent_(self):
         if (
-            self.Description is not None or
+            self.Description or
+            self.Short_Description or
             self.Applicability_Confidence is not None
             ):
             return True
@@ -169,10 +179,10 @@ class ObjectiveType(GeneratedsSuper):
             eol_ = '\n'
         else:
             eol_ = ''
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-        if self.Short_Description is not None:
-            self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Short_Description in self.Short_Description:
+            Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         if self.Applicability_Confidence is not None:
             self.Applicability_Confidence.export(lwrite, level, nsmap, namespace_, name_='Applicability_Confidence', pretty_print=pretty_print)
     def build(self, node):
@@ -187,17 +197,19 @@ class ObjectiveType(GeneratedsSuper):
         if nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Short_Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Short_Description(obj_)
+            self.add_Short_Description(obj_)
         elif nodeName_ == 'Applicability_Confidence':
             obj_ = stix_common_binding.ConfidenceType.factory()
             obj_.build(child_)
             self.set_Applicability_Confidence(obj_)
 # end class ObjectiveType
 
+
+@register_extension
 class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     """The CourseOfActionType characterizes a Course of Action to be taken
     in regards to one of more cyber threats. NOTE: This construct is
@@ -206,17 +218,26 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     schema version for this content."""
     subclass = None
     superclass = stix_common_binding.CourseOfActionBaseType
+
+    xmlns          = "http://stix.mitre.org/CourseOfAction-1"
+    xmlns_prefix   = "coa"
+    xml_type       = "CourseOfActionType"
+
     def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Stage=None, Type=None, Description=None, Short_Description=None, Objective=None, Parameter_Observables=None, Structured_COA=None, Impact=None, Cost=None, Efficacy=None, Information_Source=None, Handling=None, Related_COAs=None, Related_Packages=None):
         super(CourseOfActionType, self).__init__(idref=idref, id=id, timestamp=timestamp)
-        self.xmlns          = "http://stix.mitre.org/CourseOfAction-1"
-        self.xmlns_prefix   = "coa"
-        self.xml_type       = "CourseOfActionType"
+
         self.version = _cast(None, version)
         self.Title = Title
         self.Stage = Stage
         self.Type = Type
-        self.Description = Description
-        self.Short_Description = Short_Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
+        if Short_Description is None:
+            self.Short_Description = []
+        else:
+            self.Short_Description = Short_Description
         self.Objective = Objective
         self.Parameter_Observables = Parameter_Observables
         self.Structured_COA = Structured_COA
@@ -239,8 +260,12 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     def set_Stage(self, Stage): self.Stage = Stage
     def get_Type(self): return self.Type
     def set_Type(self, Type): self.Type = Type
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def insert_Short_Description(self, index, value): self.Short_Description[index] = value
+    def add_Short_Description(self, Short_Description): self.Short_Description.append(Short_Description)
     def get_Short_Description(self): return self.Short_Description
     def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Objective(self): return self.Objective
@@ -270,8 +295,8 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             self.Title is not None or
             self.Stage is not None or
             self.Type is not None or
-            self.Description is not None or
-            self.Short_Description is not None or
+            self.Description or
+            self.Short_Description or
             self.Objective is not None or
             self.Parameter_Observables is not None or
             self.Structured_COA is not None or
@@ -329,10 +354,10 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             self.Stage.export(lwrite, level, nsmap, namespace_, name_='Stage', pretty_print=pretty_print)
         if self.Type is not None:
             self.Type.export(lwrite, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-        if self.Short_Description is not None:
-            self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Short_Description in self.Short_Description:
+            Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         if self.Objective is not None:
             self.Objective.export(lwrite, level, nsmap, namespace_, name_='Objective', pretty_print=pretty_print)
         if self.Parameter_Observables is not None:
@@ -381,11 +406,11 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Short_Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Short_Description(obj_)
+            self.add_Short_Description(obj_)
         elif nodeName_ == 'Objective':
             obj_ = ObjectiveType.factory()
             obj_.build(child_)
@@ -395,24 +420,8 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             obj_.build(child_)
             self.set_Parameter_Observables(obj_)
         elif nodeName_ == 'Structured_COA':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "GenericStructuredCOAType":
-                    from .extensions.structured_coa import generic
-                    obj_ = generic.GenericStructuredCOAType.factory()
-                else:
-                    raise NotImplementedError('No implementation class for Structured_COA: ' + type_name_)
-            else:
-                raise NotImplementedError('Structured_COA type not declared: missing xsi_type attribute') 
-
+            from .extensions.structured_coa import generic
+            obj_ = lookup_extension(child_).factory()
             obj_.build(child_)
             self.set_Structured_COA(obj_)
         elif nodeName_ == 'Impact':

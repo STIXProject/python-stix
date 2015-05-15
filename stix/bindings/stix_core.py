@@ -31,7 +31,7 @@ class STIXType(GeneratedsSuper):
     version for this content."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, timestamp=None, version=None, STIX_Header=None, Observables=None, Indicators=None, TTPs=None, Exploit_Targets=None, Incidents=None, Courses_Of_Action=None, Campaigns=None, Threat_Actors=None, Related_Packages=None):
+    def __init__(self, idref=None, id=None, timestamp=None, version=None, STIX_Header=None, Observables=None, Indicators=None, TTPs=None, Exploit_Targets=None, Incidents=None, Courses_Of_Action=None, Campaigns=None, Threat_Actors=None, Related_Packages=None, Reports=None):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
         self.timestamp = _cast(None, timestamp)
@@ -46,6 +46,7 @@ class STIXType(GeneratedsSuper):
         self.Campaigns = Campaigns
         self.Threat_Actors = Threat_Actors
         self.Related_Packages = Related_Packages
+        self.Reports = Reports
         self.nsmap = {}
     def factory(*args_, **kwargs_):
         if STIXType.subclass:
@@ -73,6 +74,8 @@ class STIXType(GeneratedsSuper):
     def set_Threat_Actors(self, Threat_Actors): self.Threat_Actors = Threat_Actors
     def get_Related_Packages(self): return self.Related_Packages
     def set_Related_Packages(self, value): self.Related_Packages = value
+    def get_Reports(self): return self.Reports
+    def set_Reports(self, value): self.Reports = value
     def get_idref(self): return self.idref
     def set_idref(self, idref): self.idref = idref
     def get_id(self): return self.id
@@ -92,7 +95,8 @@ class STIXType(GeneratedsSuper):
             self.Courses_Of_Action is not None or
             self.Campaigns is not None or
             self.Threat_Actors is not None or
-            self.Related_Packages is not None
+            self.Related_Packages is not None or
+            self.Reports
             ):
             return True
         else:
@@ -127,9 +131,6 @@ class STIXType(GeneratedsSuper):
             already_processed.add('timestamp')
             lwrite(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
 
-        #for ns, prefix in nsmap.iteritems():
-        #    lwrite(' xmlns:%s="%s"' % (prefix, ns))
-
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='STIXType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
@@ -153,9 +154,10 @@ class STIXType(GeneratedsSuper):
             self.Campaigns.export(lwrite, level, nsmap, namespace_, name_='Campaigns', pretty_print=pretty_print)
         if self.Threat_Actors is not None:
             self.Threat_Actors.export(lwrite, level, nsmap, namespace_, name_='Threat_Actors', pretty_print=pretty_print)
+        if self.Reports is not None:
+            self.Reports.export(lwrite, level, nsmap, namespace_, name_='Reports', pretty_print=pretty_print)
         if self.Related_Packages is not None:
             self.Related_Packages.export(lwrite, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
-            
     def build(self, node):
         already_processed = set()
         self.nsmap = node.nsmap
@@ -220,6 +222,10 @@ class STIXType(GeneratedsSuper):
             obj_ = ThreatActorsType.factory()
             obj_.build(child_)
             self.set_Threat_Actors(obj_)
+        elif nodeName_ == 'Reports':
+            obj_ = ReportsType.factory()
+            obj_.build(child_)
+            self.set_Reports(obj_)
         elif nodeName_ == 'Related_Packages':
             obj_ = RelatedPackagesType.factory()
             obj_.build(child_)
@@ -373,9 +379,15 @@ class STIXHeaderType(GeneratedsSuper):
             self.Package_Intent = []
         else:
             self.Package_Intent = Package_Intent
-        self.Description = Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
         self.Handling = Handling
-        self.Short_Description = Short_Description
+        if Short_Description is None:
+            self.Short_Description = []
+        else:
+            self.Short_Description = Short_Description
         self.Profiles = Profiles
         self.Information_Source = Information_Source
     def factory(*args_, **kwargs_):
@@ -390,8 +402,12 @@ class STIXHeaderType(GeneratedsSuper):
     def set_Package_Intent(self, Package_Intent): self.Package_Intent = Package_Intent
     def add_Package_Intent(self, value): self.Package_Intent.append(value)
     def insert_Package_Intent(self, index, value): self.Package_Intent[index] = value
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def insert_Short_Description(self, index, value): self.Short_Description[index] = value
+    def add_Short_Description(self, Short_Description): self.Short_Description.append(Short_Description)
     def get_Short_Description(self): return self.Short_Description
     def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Profiles(self): return self.Profiles
@@ -404,8 +420,8 @@ class STIXHeaderType(GeneratedsSuper):
         if (
             self.Title is not None or
             self.Package_Intent or
-            self.Description is not None or
-            self.Short_Description is not None or
+            self.Description or
+            self.Short_Description or
             self.Profiles is not None or
             self.Handling is not None or
             self.Information_Source is not None
@@ -441,10 +457,10 @@ class STIXHeaderType(GeneratedsSuper):
             lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
         for Package_Intent_ in self.Package_Intent:
             Package_Intent_.export(lwrite, level, nsmap, namespace_, name_='Package_Intent', pretty_print=pretty_print)
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-        if self.Short_Description is not None:
-            self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Short_Description in self.Short_Description:
+            Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         if self.Profiles is not None:
             self.Profiles.export(lwrite, level, nsmap, namespace_, name_='Profiles', pretty_print=pretty_print)
         if self.Handling is not None:
@@ -471,11 +487,11 @@ class STIXHeaderType(GeneratedsSuper):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Short_Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Short_Description(obj_)
+            self.add_Short_Description(obj_)
         elif nodeName_ == 'Profiles':
             obj_ = stix_common_binding.ProfilesType.factory()
             obj_.build(child_)
@@ -550,26 +566,11 @@ class IndicatorsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Indicator':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "IndicatorType":
-                    import stix.bindings.indicator as indicator_binding
-                    obj_ = indicator_binding.IndicatorType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
-                obj_ = stix_common_binding.IndicatorBaseType.factory() # not abstract
-
+            from . import indicator
+            obj_ = lookup_extension(child_, stix_common_binding.IndicatorBaseType).factory()
             obj_.build(child_)
             self.Indicator.append(obj_)
+
 # end class IndicatorsType
 
 class TTPsType(GeneratedsSuper):
@@ -638,26 +639,11 @@ class TTPsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'TTP':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "TTPType":
-                    import stix.bindings.ttp as ttp_binding
-                    obj_ = ttp_binding.TTPType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
-                obj_ = stix_common_binding.TTPBaseType.factory() # not abstract
-
+            from . import ttp
+            obj_ = lookup_extension(child_, stix_common_binding.TTPBaseType).factory()
             obj_.build(child_)
             self.TTP.append(obj_)
+
         elif nodeName_ == 'Kill_Chains':
             obj_ = stix_common_binding.KillChainsType.factory()
             obj_.build(child_)
@@ -724,26 +710,11 @@ class IncidentsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Incident':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "IncidentType":
-                    import stix.bindings.incident as incident_binding
-                    obj_ = incident_binding.IncidentType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
-                obj_ = stix_common_binding.IncidentBaseType.factory() # not abstract
-
+            from . import incident
+            obj_ = lookup_extension(child_, stix_common_binding.IncidentBaseType).factory()
             obj_.build(child_)
             self.Incident.append(obj_)
+
 # end class IncidentsType
 
 class CoursesOfActionType(GeneratedsSuper):
@@ -806,24 +777,8 @@ class CoursesOfActionType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Course_Of_Action':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "CourseOfActionType":
-                    import stix.bindings.course_of_action as coa_binding
-                    obj_ = coa_binding.CourseOfActionType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
-                obj_ = stix_common_binding.CourseOfActionBaseType.factory() # not abstract
-
+            from . import course_of_action
+            obj_ = lookup_extension(child_, stix_common_binding.CourseOfActionBaseType).factory()
             obj_.build(child_)
             self.Course_Of_Action.append(obj_)
 # end class CoursesOfActionType
@@ -888,24 +843,8 @@ class CampaignsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Campaign':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "CampaignType":
-                    import stix.bindings.campaign as campaign_binding
-                    obj_ = campaign_binding.CampaignType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
-                obj_ = stix_common_binding.CampaignBaseType.factory() # not abstract
-
+            from . import campaign
+            obj_ = lookup_extension(child_, stix_common_binding.CampaignBaseType).factory()
             obj_.build(child_)
             self.Campaign.append(obj_)
 # end class CampaignsType
@@ -970,27 +909,79 @@ class ThreatActorsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Threat_Actor':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "ThreatActorType":
-                    import stix.bindings.threat_actor as ta_binding
-                    obj_ = ta_binding.ThreatActorType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
-                obj_ = stix_common_binding.ThreatActorBaseType.factory() # not abstract
-
+            from . import threat_actor
+            obj_ = lookup_extension(child_, stix_common_binding.ThreatActorBaseType).factory()
             obj_.build(child_)
             self.Threat_Actor.append(obj_)
 # end class ThreatActorsType
+
+
+class ReportsType(GeneratedsSuper):
+    subclass = None
+    superclass = None
+    def __init__(self, Report=None):
+        if Report is None:
+            self.Report = []
+        else:
+            self.Report = Report
+    def factory(*args_, **kwargs_):
+        if ReportsType.subclass:
+            return ReportsType.subclass(*args_, **kwargs_)
+        else:
+            return ReportsType(*args_, **kwargs_)
+    factory = staticmethod(factory)
+    def get_Report(self): return self.Report
+    def set_Report(self, Report): self.Report = Report
+    def add_Report(self, value): self.Report.append(value)
+    def insert_Report(self, index, value): self.Report[index] = value
+    def hasContent_(self):
+        if (
+            self.Report
+            ):
+            return True
+        else:
+            return False
+    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ReportsType', namespacedef_='', pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        showIndent(lwrite, level, pretty_print)
+        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
+        already_processed = set()
+        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='ReportsType')
+        if self.hasContent_():
+            lwrite('>%s' % (eol_, ))
+            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
+            showIndent(lwrite, level, pretty_print)
+            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
+        else:
+            lwrite('/>%s' % (eol_, ))
+    def exportAttributes(self, lwrite, level, already_processed, namespace_=XML_NS, name_='ReportsType'):
+        pass
+    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ReportsType', fromsubclass_=False, pretty_print=True):
+        if pretty_print:
+            eol_ = '\n'
+        else:
+            eol_ = ''
+        for Report_ in self.Report:
+            Report_.export(lwrite, level, nsmap, namespace_, name_='Report', pretty_print=pretty_print)
+
+    def build(self, node):
+        already_processed = set()
+        self.buildAttributes(node, node.attrib, already_processed)
+        for child in node:
+            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
+            self.buildChildren(child, node, nodeName_)
+    def buildAttributes(self, node, attrs, already_processed):
+        pass
+    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
+        if nodeName_ == 'Report':
+            from . import report
+            obj_ = lookup_extension(child_, stix_common_binding.ReportBaseType).factory()
+            obj_.build(child_)
+            self.Report.append(obj_)
+# end class TTPsType
 
 
 GDSClassesMapping = {}

@@ -66,7 +66,7 @@ class IDGenerator(object):
         else:
             raise InvalidMethodError(self.method)
 
-        ns_prefix = self.namespace.itervalues().next()
+        ns_prefix = next(self.namespace.itervalues())
         return "%s:%s-%s" % (ns_prefix, prefix, id_)
 
 
@@ -110,12 +110,12 @@ def set_id_method(method):
 
 def get_id_namespace():
     """Return the namespace associated with generated ids"""
-    return _get_generator().namespace.iterkeys().next()
+    return next(_get_generator().namespace.iterkeys())
 
 
 def get_id_namespace_alias():
     """Returns the namespace alias assoicated with generated ids"""
-    return _get_generator().namespace.itervalues().next()
+    return next(_get_generator().namespace.itervalues())
 
 
 def create_id(prefix=None):

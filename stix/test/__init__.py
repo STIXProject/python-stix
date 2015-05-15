@@ -1,13 +1,47 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-import json
+import contextlib
+import functools
 import itertools
+import json
+import warnings
 
 import cybox.utils
 
 import stix.bindings as bindings
-from stix.utils import NamespaceInfo
+from stix.utils import NamespaceInfo, silence_warnings
+
+
+@contextlib.contextmanager
+def ctx_assert_warnings(self):
+    """Context manager for verifying that a block of code has raised a
+    warning.
+
+    """
+    with warnings.catch_warnings(record=True) as w:
+        # Raise all warnings
+        warnings.simplefilter('always')
+
+        # Return to caller
+        yield
+
+        # Assert that a warning was raised.
+        self.assertTrue(len(w) > 0)
+
+
+def assert_warnings(func):
+    """Test function decorator which asserts that a warning has been raised
+    during the execution of the test.
+
+    """
+    @functools.wraps(func)
+    def inner(*args, **kwargs):
+        self = args[0]
+        with ctx_assert_warnings(self):
+            return func(*args, **kwargs)
+
+    return inner
 
 
 def round_trip_dict(cls, dict_):
@@ -101,6 +135,7 @@ class EntityTestCase(object):
         self.assertNotEqual(self.klass, None)
         self.assertNotEqual(self._full_dict, None)
 
+    @silence_warnings
     def test_round_trip_full_dict(self):
         # Don't run this test on the base class
         if type(self) == type(EntityTestCase):
@@ -118,6 +153,8 @@ class EntityTestCase(object):
 
         return dict(items)
 
+
+    @silence_warnings
     def test_round_trip_full(self):
         # Don't run this test on the base class
         if type(self) == type(EntityTestCase):
@@ -126,21 +163,21 @@ class EntityTestCase(object):
         ent = self.klass.from_dict(self._full_dict)
         ent2 = round_trip(ent, output=True)
 
-        #TODO: eventually we want to test the objects are the same, but for
-        # now, just make sure there aren't any errors.
-
+    @silence_warnings
     def _test_round_trip_dict(self, input):
         dict2 = round_trip_dict(self.klass, input)
-
         self.maxDiff = None
         self.assertEqual(input, dict2)
 
+    @silence_warnings
     def _test_partial_dict(self, partial):
         d = self._combine(partial)
         self._test_round_trip_dict(d)
 
 
 class TypedListTestCase(object):
+
+    @silence_warnings
     def test_round_trip_rt(self):
         if type(self) == type(TypedListTestCase):
             return
@@ -148,3 +185,4 @@ class TypedListTestCase(object):
         obj = self.klass.from_dict(self._full_dict)
         dict2 = obj.to_dict()
         self.assertEqual(self._full_dict, dict2)
+

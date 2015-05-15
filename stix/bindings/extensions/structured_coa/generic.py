@@ -19,6 +19,7 @@ XML_NS = "http://stix.mitre.org/extensions/StructuredCOA#Generic-1"
 # Data representation classes.
 #
 
+@register_extension
 class GenericStructuredCOAType(StructuredCOAType):
     """The GenericStructuredCOAType specifies an instantial extension from
     the abstract course_of_action_binding.StructuredCOAType intended to support the generic
@@ -26,13 +27,18 @@ class GenericStructuredCOAType(StructuredCOAType):
     location of the Generic Structured COA."""
     subclass = None
     superclass = StructuredCOAType
+
+    xmlns          = XML_NS
+    xmlns_prefix   = "genericStructuredCOA"
+    xml_type       = "GenericStructuredCOAType"
+
     def __init__(self, idref=None, id=None, reference_location=None, Description=None, Type=None, Specification=None):
         super(GenericStructuredCOAType, self).__init__(idref=idref, id=id)
-        self.xmlns          = XML_NS
-        self.xmlns_prefix   = "genericStructuredCOA"
-        self.xml_type       = "GenericStructuredCOAType"
         self.reference_location = _cast(None, reference_location)
-        self.Description = Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
         self.Type = Type
         self.Specification = Specification
     def factory(*args_, **kwargs_):
@@ -41,6 +47,8 @@ class GenericStructuredCOAType(StructuredCOAType):
         else:
             return GenericStructuredCOAType(*args_, **kwargs_)
     factory = staticmethod(factory)
+    def add_Description(self, Description): self.Description.append(Description)
+    def insert_Description(self, index, Description): self.Description[index] = Description
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
     def get_Type(self): return self.Type
@@ -51,7 +59,7 @@ class GenericStructuredCOAType(StructuredCOAType):
     def set_reference_location(self, reference_location): self.reference_location = reference_location
     def hasContent_(self):
         if (
-            self.Description is not None or
+            self.Description or
             self.Type is not None or
             self.Specification is not None or
             super(GenericStructuredCOAType, self).hasContent_()
@@ -94,8 +102,8 @@ class GenericStructuredCOAType(StructuredCOAType):
             eol_ = '\n'
         else:
             eol_ = ''
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
         if self.Type is not None:
             self.Type.export(lwrite, level, nsmap, namespace_, name_='Type', pretty_print=pretty_print)
         if self.Specification is not None:
@@ -116,7 +124,7 @@ class GenericStructuredCOAType(StructuredCOAType):
         if nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Type':
             obj_ = stix_common_binding.ControlledVocabularyStringType.factory()
             obj_.build(child_)

@@ -18,6 +18,7 @@ XML_NS = "http://stix.mitre.org/extensions/Address#CIQAddress3.0-1"
 # Data representation classes.
 #
 
+@register_extension
 class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
     """The CIQAddress3.0InstanceType provides an extension to the
     stix_common_binding.AddressAbstractType which imports and leverages version 3.0 of
@@ -25,12 +26,14 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
     Addresses."""
     subclass = None
     superclass = stix_common_binding.AddressAbstractType
+
+    xmlns          = XML_NS
+    xmlns_prefix   = "ciqAddress"
+    xml_type       = "CIQAddress3.0InstanceType"
+
     def __init__(self, Location=None):
         super(CIQAddress3_0InstanceType, self).__init__()
         self.Location = Location
-        self.xmlns          = XML_NS
-        self.xmlns_prefix   = "ciqAddress"
-        self.xml_type       = "CIQAddress3.0InstanceType"
     def factory(*args_, **kwargs_):
         if CIQAddress3_0InstanceType.subclass:
             return CIQAddress3_0InstanceType.subclass(*args_, **kwargs_)

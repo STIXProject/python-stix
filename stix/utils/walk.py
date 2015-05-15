@@ -25,9 +25,15 @@ def _is_skippable(owner, varname, varobj):
 
 
 def _iter_vars(obj):
-    instance_vars = getattr(obj, "__dict__", {}).iteritems()
-    typed_fields  = getattr(obj, "_fields", {}).iteritems()
-    return itertools.chain(instance_vars, typed_fields)
+    attrs = []
+
+    if hasattr(obj, "__dict__"):
+        attrs.append(obj.__dict__.iteritems())
+
+    if hasattr(obj, "_fields"):
+        attrs.append(obj._fields.iteritems())
+
+    return itertools.chain.from_iterable(attrs)
 
 
 def iterwalk(obj):

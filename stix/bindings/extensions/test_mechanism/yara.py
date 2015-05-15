@@ -19,17 +19,20 @@ XML_NS = "http://stix.mitre.org/extensions/TestMechanism#YARA-1"
 # Data representation classes.
 #
 
+@register_extension
 class YaraTestMechanismType(indicator_binding.TestMechanismType):
     """The YaraTestMechanismType specifies an instantial extension from the
     abstract indicator_binding.TestMechanismType intended to support the inclusion of
     a YARA rule as a test mechanism content."""
     subclass = None
     superclass = indicator_binding.TestMechanismType
+
+    xmlns          = XML_NS
+    xmlns_prefix   = "yaraTM"
+    xml_type       = "YaraTestMechanismType"
+
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, Version=None, Rule=None):
         super(YaraTestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
-        self.xmlns          = XML_NS
-        self.xmlns_prefix   = "yaraTM"
-        self.xml_type       = "YaraTestMechanismType"
         self.Version = Version
         self.Rule = Rule
     def factory(*args_, **kwargs_):
@@ -73,10 +76,10 @@ class YaraTestMechanismType(indicator_binding.TestMechanismType):
         #     already_processed.add('xmlns')
         #     xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
         #     lwrite(xmlns)
-        # if 'xsi:type' not in already_processed:
-        #     already_processed.add('xsi:type')
-        #     xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
-        #     lwrite(xsi_type)
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            lwrite(xsi_type)
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='YaraTestMechanismType', fromsubclass_=False, pretty_print=True):
         super(YaraTestMechanismType, self).exportChildren(lwrite, level, nsmap, indicator_binding.XML_NS, name_, True, pretty_print=pretty_print)
         if pretty_print:

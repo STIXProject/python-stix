@@ -4,9 +4,11 @@
 import unittest
 import StringIO
 
+from stix.core import STIXPackage
 from cybox.common import StructuredText
 
-from stix.test import EntityTestCase, TypedListTestCase, data_marking_test
+from stix.test import EntityTestCase, TypedListTestCase, assert_warnings
+from stix.test import data_marking_test
 from stix.test.common import (
     confidence_test, information_source_test, statement_test, related_test
 )
@@ -55,7 +57,7 @@ class COATakenTest(EntityTestCase, unittest.TestCase):
         'time': COATimeTest._full_dict,
         #'coordinators': None,  # need to implement this!
         'course_of_action': {
-            'version': '1.1.1',
+            'version': '1.2',
             'title': 'Test Title',
             'description': 'Test Description',
             'short_description': "Test Short Description",
@@ -80,7 +82,7 @@ class COARequestedTest(EntityTestCase, unittest.TestCase):
         'priority': "High",
         #'coordinators': None,  # need to implement this!
         'course_of_action': {
-            'version': '1.1.1',
+            'version': '1.2',
             'title': 'Test Title',
             'description': 'Test Description',
             'short_description': "Test Short Description",
@@ -360,6 +362,8 @@ class AffectedAssetTest(EntityTestCase, unittest.TestCase):
 
     _full_dict = {
         'type': AssetTypeTest._full_dict,
+        'description': 'Foo',
+        'business_function_or_role': 'Bar',
         'nature_of_security_effect': NatureOfSecurityEffectTest._full_dict,
         'ownership_class': {
             'value': 'Unknown',
@@ -428,7 +432,7 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
     klass = incident.Incident
     _full_dict = {
         'id': 'example:test-1',
-        'version': '1.1.1',
+        'version': '1.2',
         'timestamp': '2014-05-05T14:50:25.992383+00:00',
         'title': 'Test Title',
         'description': 'The Datacenter was broken into.',
@@ -462,7 +466,8 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
         'related_incidents': RelatedIncidentsTests._full_dict,
         'intended_effects': IntendedEffectsTests._full_dict,
         'discovery_methods': DiscoveryMethodsTests._full_dict,
-        'confidence': confidence_test.ConfidenceTests._full_dict
+        'confidence': confidence_test.ConfidenceTests._full_dict,
+        'related_packages': related_test.RelatedPackageRefsTests._full_dict,
     }
 
     def test_parse_category(self):
@@ -535,6 +540,35 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
             "THIS SHOULD FAIL"
         )
 
+    def test_add_description(self):
+        o1 = self.klass()
+        o2 = self.klass()
+
+        o1.add_description("Test")
+        o2.descriptions.add("Test")
+
+        self.assertEqual(
+            o1.descriptions.to_dict(),
+            o2.descriptions.to_dict()
+        )
+
+    def test_add_short_description(self):
+        o1 = self.klass()
+        o2 = self.klass()
+
+        o1.add_short_description("Test")
+        o2.short_descriptions.add("Test")
+
+        self.assertEqual(
+            o1.short_descriptions.to_dict(),
+            o2.short_descriptions.to_dict()
+        )
+
+    @assert_warnings
+    def test_deprecated_related_packages(self):
+        i = incident.Incident()
+        i.related_packages.append(STIXPackage())
+        self.assertEqual(len(i.related_packages), 1)
 
 
 if __name__ == "__main__":

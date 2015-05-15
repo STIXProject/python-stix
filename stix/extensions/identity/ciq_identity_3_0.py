@@ -6,7 +6,6 @@ import lxml.etree as et
 import stix
 import stix.utils as utils
 import stix.common as common
-import stix.common.identity as identity
 import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
 
 
@@ -21,6 +20,7 @@ et.register_namespace('xal', XML_NS_XAL)
 et.register_namespace('ExtSch', XML_NS_STIX_EXT)
 
 
+@stix.register_extension
 class CIQIdentity3_0Instance(common.Identity):
     _binding        = ciq_identity_binding
     _binding_class  = _binding.CIQIdentity3_0InstanceType
@@ -966,8 +966,7 @@ class NameLine(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        d['value'] = self.value
+        d = {'value': self.value}
 
         if self.type:
             d['type'] = self.type
@@ -1291,8 +1290,7 @@ class PersonNameElement(_BaseNameElement):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        d['value'] = self.value
+        d = {'value': self.value}
 
         if self.element_type:
             d['element_type'] = self.element_type
@@ -1445,8 +1443,8 @@ class SubDivisionName(stix.Entity):
         return return_obj
 
     def to_dict(self):
-        d = {}
-        d['value'] = self.value
+        d = {'value': self.value}
+
         if self.type:
             d['type'] = self.type
 
@@ -1835,7 +1833,3 @@ class ContactNumberElement(stix.Entity):
         return_obj.type_ = d.get('type')
         return_obj.value = d.get('value')
         return return_obj
-
-
-# Register the extension
-identity.add_extension(CIQIdentity3_0Instance)

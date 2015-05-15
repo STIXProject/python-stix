@@ -10,6 +10,10 @@ Classes
 	:show-inheritance:
 	:members:
 
+.. autoclass:: COARequested
+	:show-inheritance:
+	:members:
+
 .. autoclass:: COATime
 	:show-inheritance:
 	:members:

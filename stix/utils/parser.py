@@ -144,12 +144,15 @@ class EntityParser(object):
         document_version = get_document_version(tree)
         supported = stix.supported_stix_version()
 
-        if StrictVersion(supported) == StrictVersion(document_version):
+        sv_doc_version  = StrictVersion(document_version)
+        sv_api_versions = [StrictVersion(x) for x in supported]
+
+        if sv_doc_version in sv_api_versions:
             return
 
         error = (
-            "Your python-stix library supports STIX %s. Document version was "
-            "%s" % (supported, document_version)
+            "Your python-stix library supports STIX versions: %s. Document "
+            "version was %s" % (supported, document_version)
         )
 
         raise UnsupportedVersionError(

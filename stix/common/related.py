@@ -1,6 +1,7 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# stdlib
 from __future__ import absolute_import
 
 # internal
@@ -8,6 +9,10 @@ import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 import stix.bindings.stix_core as core_binding
+import stix.bindings.report as report_binding
+
+# deprecation warnings
+from stix.utils.deprecated import idref_deprecated, deprecated
 
 # relative
 from .vocabs import VocabString
@@ -109,10 +114,17 @@ class RelatedPackageRef(GenericRelationship):
     _binding = common_binding
     _binding_class = common_binding.RelatedPackageRefType
 
-    def __init__(self, **kwargs):
-        super(RelatedPackageRef, self).__init__(**kwargs)
-        self.idref = None
-        self.timestamp = None
+    def __init__(self, idref=None, timestamp=None, confidence=None,
+                 information_source=None, relationship=None):
+
+        super(RelatedPackageRef, self).__init__(
+            confidence=confidence,
+            information_source=information_source,
+            relationship=relationship
+        )
+
+        self.idref = idref
+        self.timestamp = timestamp
 
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
@@ -267,6 +279,15 @@ class RelatedPackages(GenericRelationshipList):
     _inner_name = "related_packages"
 
 
+class RelatedReports(GenericRelationshipList):
+    _namespace = 'http://stix.mitre.org/Report-1'
+    _binding = report_binding
+    _binding_class = report_binding.RelatedReportsType
+    _binding_var = "Related_Report"
+    # _contained_type is patched in common/__init__.py
+    _inner_name = "related_reports"
+
+
 class RelatedPackageRefs(stix.EntityList):
     _namespace = 'http://stix.mitre.org/common-1'
     _binding = common_binding
@@ -274,6 +295,21 @@ class RelatedPackageRefs(stix.EntityList):
     _binding_var = "Package_Reference"
     _contained_type = RelatedPackageRef
     _inner_name = "packages"
+
+    def _fix_value(self, value):
+        from stix.core import STIXPackage
+
+        if isinstance(value, STIXPackage) and value.id_:
+            return RelatedPackageRef(idref=value.id_, timestamp=value.timestamp)
+
+        fmt = ("Cannot add type '{0}' to RelatedPackageRefs collection. "
+               "Expected RelatedPackageRef or STIXPackage")
+        error = fmt.format(type(value))
+        raise TypeError(error)
+
+    def _is_valid(self, value):
+        deprecated(value)
+        return stix.EntityList._is_valid(self, value)
 
 
 class _BaseRelated(GenericRelationship):
@@ -442,6 +478,18 @@ class RelatedPackage(_BaseRelated):
     _binding_class = core_binding.RelatedPackageType
     # _base_type is set in common/__init__.py
     _inner_var = "Package"
+
+    @_BaseRelated.item.setter
+    def item(self, value):
+        idref_deprecated(value)
+        _BaseRelated.item.fset(self, value)
+
+class RelatedReport(_BaseRelated):
+    _namespace = "http://stix.mitre.org/common-1"
+    _binding = common_binding
+    _binding_class = common_binding.RelatedReportType
+    # _base_type is set in common/__init__.py
+    _inner_var = "Report"
 
 
 class RelatedCampaignRef(_BaseRelated):

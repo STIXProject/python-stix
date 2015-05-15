@@ -2,10 +2,9 @@
 # See LICENSE.txt for complete terms.
 
 # stdlib
-import collections
 import contextlib
 import keyword
-import warnings
+import functools
 
 # external
 import cybox
@@ -36,7 +35,52 @@ def ignored(*exceptions):
         pass
 
 
+def raise_warnings(func):
+    """Function decorator that causes all Python warnings to be raised as
+    exceptions in the wrapped function.
+
+    Example:
+        >>> @raise_warnings
+        >>> def foo():
+        >>>     warnings.warn("this will raise an exception")
+
+    """
+    @functools.wraps(func)
+    def inner(*args, **kwargs):
+        with warnings.catch_warnings():
+            warnings.simplefilter('error')
+            return func(*args, **kwargs)
+    return inner
+
+
+def silence_warnings(func):
+    """Function decorator that silences/ignores all Python warnings in the
+    wrapped function.
+
+    Example:
+        >>> @silence_warnings
+        >>> def foo():
+        >>>     warnings.warn("this will not appear")
+
+    """
+    @functools.wraps(func)
+    def inner(*args, **kwargs):
+        with warnings.catch_warnings(record=True):
+            warnings.simplefilter('always')
+            return func(*args, **kwargs)
+    return inner
+
+
 def is_cdata(text):
+    """Returns ``True`` if `text` contains a CDATA block.
+
+    Example:
+        >>> is_cdata("<![CDATA[Foo]]>")
+        True
+        >>> is_cdata("NOPE")
+        False
+
+    """
     if not text:
         return False
 
@@ -66,7 +110,7 @@ def strip_cdata(text):
 
 
 def cdata(text):
-    """Wraps the input `text` in a <![CDATA[]]> block.
+    """Wraps the input `text` in a ``<![CDATA[ ]]>`` block.
 
     If the text contains CDATA sections already, they are stripped and replaced
     by the application of an outer-most CDATA block.
@@ -75,7 +119,7 @@ def cdata(text):
         text: A string to wrap in a CDATA block.
 
     Returns:
-        The `text` value wrapped in <![CDATA[]]>
+        The `text` value wrapped in ``<![CDATA[]]>``
 
     """
     if not text:
@@ -249,6 +293,7 @@ def has_value(var):
     return bool(var) or (var in (False, 0))
 
 
+@silence_warnings
 def to_dict(entity, skip=()):
     """Returns a dictionary representation of `entity`. This will iterate over
     the instance vars of `entity` and construct keys and values from those
@@ -267,33 +312,26 @@ def to_dict(entity, skip=()):
     def dict_iter(items):
         return [x.to_dict() if is_dictable(x) else x for x in items]
 
-    def dictify(entity):
-        d = {}
-        for name, field in iter_vars(entity):
-            key = key_name(name)
-
-            if key in skip or not has_value(field):
-                continue
-
-            if is_dictable(field):
-                d[key] = field.to_dict()
-            elif is_timestamp(field):
-                d[key] = dates.serialize_value(field)
-            elif is_date(field):
-                d[key] = dates.serialize_date(field)
-            elif is_element(field) or is_etree(field):
-                d[key] = lxml.etree.tostring(field)
-            elif is_sequence(field):
-                d[key] = dict_iter(field)
-            else:
-                d[key] = field
-
-        return d
 
     d = {}
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        d.update(dictify(entity))
+    for name, field in iter_vars(entity):
+        key = key_name(name)
+
+        if key in skip or not has_value(field):
+            continue
+
+        if is_dictable(field):
+            d[key] = field.to_dict()
+        elif is_timestamp(field):
+            d[key] = dates.serialize_value(field)
+        elif is_date(field):
+            d[key] = dates.serialize_date(field)
+        elif is_element(field) or is_etree(field):
+            d[key] = lxml.etree.tostring(field)
+        elif is_sequence(field):
+            d[key] = dict_iter(field)
+        else:
+            d[key] = field
 
     return d
 
@@ -332,6 +370,18 @@ def cast_var(item, klass, arg=None):
 
     kwarg = {arg: item}     # kwarg dict
     return klass(**kwarg)   # klass(value='foobar')
+
+
+def remove_entries(d, keys):
+    """Removes all the `keys` from the dictionary `d`.
+
+    Args:
+        d: A dictionary.
+        keys: An iterable collection of dictionary keys to remove.
+
+    """
+    for key in keys:
+        d.pop(key, None)
 
 
 # Namespace flattening

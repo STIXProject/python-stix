@@ -426,45 +426,30 @@ class EntityList(collections.MutableSequence, Entity):
         return return_obj
 
 
-class TypedList(collections.MutableSequence):
+class TypedCollection(object):
+    """Abstract base class for non-STIX collections of entities.
+
+    See also:
+        TypedList
+
+    """
     _contained_type = _override
 
     def __init__(self, *args):
         self._inner = []
+        self._initialize_inner(*args)
 
-        # Check if it was initialized with args=None
-        if not any(args):
-            return
+    def _initialize_inner(self, *args):
+        """Must be overridden by subclass.
 
-        for arg in args:
-            if utils.is_sequence(arg):
-                self.extend(arg)
-            else:
-                self.append(arg)
-
-    def __nonzero__(self):
-        return bool(self._inner)
-
-    def __getitem__(self, key):
-        return self._inner.__getitem__(key)
-
-    def __setitem__(self, key, value):
-        if not self._is_valid(value):
-            value = self._fix_value(value)
-        self._inner.__setitem__(key, value)
-
-    def __delitem__(self, key):
-        self._inner.__delitem__(key)
+        """
+        raise NotImplementedError()
 
     def __len__(self):
         return len(self._inner)
 
-    def insert(self, idx, value):
-        if not value:
-            return
-        if not self._is_valid(value):
-            value = self._fix_value(value)
-        self._inner.insert(idx, value)
+    def __nonzero__(self):
+        return bool(self._inner)
 
     def _is_valid(self, value):
         """Check if this is a valid object to add to the list."""
@@ -497,14 +482,10 @@ class TypedList(collections.MutableSequence):
     def to_list(self):
         return [h.to_dict() for h in self]
 
-    to_dict = to_list
-
     @classmethod
     def from_obj(cls, obj_list, contained_type=None):
         if not obj_list:
             return None
-
-        return_obj = cls()
 
         if not contained_type:
             contained_type = cls._contained_type
@@ -512,24 +493,26 @@ class TypedList(collections.MutableSequence):
         if not utils.is_sequence(obj_list):
             obj_list = [obj_list]
 
-        return_obj.extend(contained_type.from_obj(x) for x in obj_list)
-        return return_obj
+        items = (contained_type.from_obj(x) for x in obj_list)
+        return cls(items)
 
     @classmethod
     def from_list(cls, list_repr, contained_type=None):
 
-        if not utils.is_sequence(list_repr):
+        if not list_repr:
             return None
 
-        return_obj = cls()
+        if isinstance(list_repr, dict) or not utils.is_sequence(list_repr):
+            list_repr = [list_repr]
 
         if not contained_type:
             contained_type = cls._contained_type
 
-        return_obj.extend(contained_type.from_dict(x) for x in list_repr)
-        return return_obj
+        items = (contained_type.from_dict(x) for x in list_repr)
+        return cls(items)
 
     from_dict = from_list
+    to_dict = to_list
 
     @classmethod
     def object_from_dict(cls, entity_dict):
@@ -540,6 +523,43 @@ class TypedList(collections.MutableSequence):
     def dict_from_object(cls, entity_obj):
         """Convert from object representation to dict representation."""
         return cls.from_obj(entity_obj).to_dict()
+
+
+class TypedList(TypedCollection, collections.MutableSequence):
+    def __init__(self, *args):
+        TypedCollection.__init__(self, *args)
+
+    def _initialize_inner(self, *args):
+        # Check if it was initialized with args=None
+        if not any(args):
+            return
+
+        for arg in args:
+            if utils.is_sequence(arg):
+                self.extend(arg)
+            else:
+                self.append(arg)
+
+    def __getitem__(self, key):
+        return self._inner.__getitem__(key)
+
+    def __setitem__(self, key, value):
+        if not self._is_valid(value):
+            value = self._fix_value(value)
+        self._inner.__setitem__(key, value)
+
+    def __delitem__(self, key):
+        self._inner.__delitem__(key)
+
+    def __len__(self):
+        return len(self._inner)
+
+    def insert(self, idx, value):
+        if not value:
+            return
+        if not self._is_valid(value):
+            value = self._fix_value(value)
+        self._inner.insert(idx, value)
 
 
 class BaseCoreComponent(Entity):
@@ -556,6 +576,7 @@ class BaseCoreComponent(Entity):
         self.short_description = short_description
         self.version = None
         self.information_source = None
+        self.handling = None
 
         if timestamp:
             self.timestamp = timestamp
@@ -678,49 +699,121 @@ class BaseCoreComponent(Entity):
 
     @property
     def description(self):
-        """A description about the contents or purpose of this object.
+        """A single description about the contents or purpose of this object.
 
         Default Value: ``None``
 
         Note:
-            If set to a value that is not an instance of
-            :class:`.StructuredText`, an attempt to will be made to convert
-            the value into an instance of :class:`.StructuredText`.
+            If this object has more than one description set, this will return
+            the description with the lowest ordinality value.
+
+        Returns:
+            An instance of :class:`.StructuredText`
+
+        """
+        return next(iter(self.descriptions), None)
+
+    @description.setter
+    def description(self, value):
+        self.descriptions = value
+
+    @property
+    def descriptions(self):
+        """A :class:`.StructuredTextList` object, containing descriptions about
+        the purpose or intent of this object.
+
+        This is typically used for the purpose of providing multiple
+        descriptions with different classificaton markings.
+
+        Iterating over this object will yield its contents sorted by their
+        ``ordinality`` value.
+
+        Default Value: Empty :class:`.StructuredTextList` object.
+
+        Note:
+            IF this is set to a value that is not an instance of
+            :class:`.StructuredText`, an effort will ne made to convert it.
+            If this is set to an iterable, any values contained that are not
+            an instance of :class:`.StructuredText` will be be converted.
 
         Returns:
             An instance of
-            :class:`.StructuredText`
+            :class:`.StructuredTextList`
 
         """
         return self._description
 
-    @description.setter
-    def description(self, value):
-        from stix.common import StructuredText
-        self._set_var(StructuredText, description=value)
+    @descriptions.setter
+    def descriptions(self, value):
+        from stix.common import StructuredTextList
+        self._description = StructuredTextList(value)
+
+    def add_description(self, description):
+        """Adds a description to the ``descriptions`` collection.
+
+        This is the same as calling "foo.descriptions.add(bar)".
+
+        """
+        self.descriptions.add(description)
 
     @property
     def short_description(self):
-        """A short description about the contents or purpose of this object.
+        """A single short description about the contents or purpose of this
+        object.
 
         Default Value: ``None``
 
         Note:
-            If set to a value that is not an instance of
-            :class:`.StructuredText`, an attempt to will be made to convert
-            the value into an instance of :class:`.StructuredText`.
+            If this object has more than one short description set, this will
+            return the description with the lowest ordinality value.
 
         Returns:
-            An instance of
-            :class:`.StructuredText`
+            An instance of :class:`.StructuredText`
+
+        """
+        return next(iter(self.short_descriptions), None)
+
+    @short_description.setter
+    def short_description(self, value):
+        self.short_descriptions = value
+
+    @property
+    def short_descriptions(self):
+        """A :class:`.StructuredTextList` object, containing short descriptions
+        about the purpose or intent of this object.
+
+        This is typically used for the purpose of providing multiple
+        short descriptions with different classificaton markings.
+
+        Iterating over this object will yield its contents sorted by their
+        ``ordinality`` value.
+
+        Default Value: Empty :class:`.StructuredTextList` object.
+
+        Note:
+            IF this is set to a value that is not an instance of
+            :class:`.StructuredText`, an effort will ne made to convert it.
+            If this is set to an iterable, any values contained that are not
+            an instance of :class:`.StructuredText` will be be converted.
+
+        Returns:
+            An instance of :class:`.StructuredTextList`
 
         """
         return self._short_description
 
-    @short_description.setter
-    def short_description(self, value):
-        from stix.common import StructuredText
-        self._set_var(StructuredText, short_description=value)
+    @short_descriptions.setter
+    def short_descriptions(self, value):
+        from stix.common import StructuredTextList
+        self._short_description = StructuredTextList(value)
+
+    def add_short_description(self, description):
+        """Adds a description to the ``short_descriptions`` collection.
+
+        This is the same as calling "foo.short_descriptions.add(bar)".
+
+        """
+        self.short_descriptions.add(description)
 
     @property
     def information_source(self):
@@ -745,9 +838,24 @@ class BaseCoreComponent(Entity):
         from stix.common import InformationSource
         self._set_var(InformationSource, try_cast=False, information_source=value)
 
+    @property
+    def handling(self):
+        return self._handling
+
+    @handling.setter
+    def handling(self, value):
+        """The :class:`.Marking` section of this component. This section
+        contains data marking information.
+
+        """
+        from stix.data_marking import Marking
+        self._set_var(Marking, try_cast=False, handling=value)
+
+
     @classmethod
     def from_obj(cls, obj, return_obj=None):
-        from stix.common import StructuredText, InformationSource
+        from stix.common import StructuredTextList, InformationSource
+        from stix.data_marking import Marking
 
         if not return_obj:
             raise ValueError("Must provide a return_obj argument")
@@ -763,12 +871,14 @@ class BaseCoreComponent(Entity):
         # type definition (e.g., used as a reference)
         return_obj.version = getattr(obj, 'version', None)
         return_obj.title = getattr(obj, 'Title', None)
-        return_obj.description = \
-            StructuredText.from_obj(getattr(obj, 'Description', None))
-        return_obj.short_description = \
-            StructuredText.from_obj(getattr(obj, 'Short_Description', None))
+        return_obj.descriptions = \
+            StructuredTextList.from_obj(getattr(obj, 'Description', None))
+        return_obj.short_descriptions = \
+            StructuredTextList.from_obj(getattr(obj, 'Short_Description', None))
         return_obj.information_source = \
             InformationSource.from_obj(getattr(obj, 'Information_Source', None))
+        return_obj.handling = \
+            Marking.from_obj(getattr(obj, 'Handling', None))
 
         return return_obj
 
@@ -788,18 +898,21 @@ class BaseCoreComponent(Entity):
 
         if self.timestamp:
             return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
-        if self.description:
-            return_obj.Description = self.description.to_obj(ns_info=ns_info)
-        if self.short_description:
-            return_obj.Short_Description = self.short_description.to_obj(ns_info=ns_info)
+        if self.descriptions:
+            return_obj.Description = self.descriptions.to_obj(ns_info=ns_info)
+        if self.short_descriptions:
+            return_obj.Short_Description = self.short_descriptions.to_obj(ns_info=ns_info)
         if self.information_source:
             return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
+        if self.handling:
+            return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
 
         return return_obj
 
     @classmethod
     def from_dict(cls, d, return_obj=None):
-        from stix.common import StructuredText, InformationSource
+        from stix.common import StructuredTextList, InformationSource
+        from stix.data_marking import Marking
 
         if not return_obj:
             raise ValueError("Must provide a return_obj argument")
@@ -810,14 +923,18 @@ class BaseCoreComponent(Entity):
         return_obj.timestamp = get('timestamp')
         return_obj.version = get('version')
         return_obj.title = get('title')
-        return_obj.description = \
-            StructuredText.from_dict(get('description'))
-        return_obj.short_description = \
-            StructuredText.from_dict(get('short_description'))
+        return_obj.descriptions = \
+            StructuredTextList.from_dict(get('description'))
+        return_obj.short_descriptions = \
+            StructuredTextList.from_dict(get('short_description'))
         return_obj.information_source = \
             InformationSource.from_dict(get('information_source'))
+        return_obj.handling = \
+            Marking.from_dict(get('handling'))
 
         return return_obj
 
     def to_dict(self):
         return super(BaseCoreComponent, self).to_dict()
+
+

@@ -432,21 +432,31 @@ class AttributionType(stix_common_binding.GenericRelationshipListType):
         super(AttributionType, self).buildChildren(child_, node, nodeName_, True)
 # end class AttributionType
 
+
+@register_extension
 class CampaignType(stix_common_binding.CampaignBaseType):
     """The CampaignType characterizes a single cyber threat
     Campaign.Specifies the relevant STIX-Campaign schema version for
     this content."""
     subclass = None
     superclass = stix_common_binding.CampaignBaseType
+
+    xmlns          = "http://stix.mitre.org/Campaign-1"
+    xmlns_prefix   = "campaign"
+    xml_type       = "CampaignType"
+
     def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Description=None, Short_Description=None, Names=None, Intended_Effect=None, Status=None, Related_TTPs=None, Related_Incidents=None, Related_Indicators=None, Attribution=None, Associated_Campaigns=None, Confidence=None, Activity=None, Information_Source=None, Handling=None, Related_Packages=None):
         super(CampaignType, self).__init__(idref=idref, id=id, timestamp=timestamp)
-        self.xmlns          = "http://stix.mitre.org/Campaign-1"
-        self.xmlns_prefix   = "campaign"
-        self.xml_type       = "CampaignType"
         self.version = _cast(None, version)
         self.Title = Title
-        self.Description = Description
-        self.Short_Description = Short_Description
+        if Description is None:
+            self.Description = []
+        else:
+            self.Description = Description
+        if Short_Description is None:
+            self.Short_Description = []
+        else:
+            self.Short_Description = Short_Description
         self.Names = Names
         if Intended_Effect is None:
             self.Intended_Effect = []
@@ -477,8 +487,12 @@ class CampaignType(stix_common_binding.CampaignBaseType):
     factory = staticmethod(factory)
     def get_Title(self): return self.Title
     def set_Title(self, Title): self.Title = Title
+    def insert_Description(self, index, value): self.Description[index] = value
+    def add_Description(self, Description): self.Description.append(Description)
     def get_Description(self): return self.Description
     def set_Description(self, Description): self.Description = Description
+    def insert_Short_Description(self, index, value): self.Short_Description[index] = value
+    def add_Short_Description(self, Short_Description): self.Short_Description.append(Short_Description)
     def get_Short_Description(self): return self.Short_Description
     def set_Short_Description(self, Short_Description): self.Short_Description = Short_Description
     def get_Names(self): return self.Names
@@ -518,8 +532,8 @@ class CampaignType(stix_common_binding.CampaignBaseType):
     def hasContent_(self):
         if (
             self.Title is not None or
-            self.Description is not None or
-            self.Short_Description is not None or
+            self.Description or
+            self.Short_Description or
             self.Names is not None or
             self.Intended_Effect or
             self.Status is not None or
@@ -576,10 +590,10 @@ class CampaignType(stix_common_binding.CampaignBaseType):
         if self.Title is not None:
             showIndent(lwrite, level, pretty_print)
             lwrite('<%s:Title>%s</%s:Title>%s' % (nsmap[namespace_], quote_xml(self.Title), nsmap[namespace_], eol_))
-        if self.Description is not None:
-            self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
-        if self.Short_Description is not None:
-            self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
+        for Description in self.Description:
+            Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
+        for Short_Description in self.Short_Description:
+            Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
         if self.Names is not None:
             self.Names.export(lwrite, level, nsmap, namespace_, name_='Names', pretty_print=pretty_print)
         for Intended_Effect_ in self.Intended_Effect:
@@ -626,11 +640,11 @@ class CampaignType(stix_common_binding.CampaignBaseType):
         elif nodeName_ == 'Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Description(obj_)
+            self.add_Description(obj_)
         elif nodeName_ == 'Short_Description':
             obj_ = stix_common_binding.StructuredTextType.factory()
             obj_.build(child_)
-            self.set_Short_Description(obj_)
+            self.add_Short_Description(obj_)
         elif nodeName_ == 'Names':
             obj_ = NamesType.factory()
             obj_.build(child_)

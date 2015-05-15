@@ -5,7 +5,8 @@
 import stix
 import stix.bindings.ttp as ttp_binding
 from stix.common import vocabs, Statement
-from stix.data_marking import Marking
+from stix.common.kill_chains import KillChainPhasesReference
+from stix.common.related import RelatedPackageRefs
 
 # relative
 from .behavior import Behavior
@@ -14,11 +15,27 @@ from .victim_targeting import VictimTargeting
 
 
 class TTP(stix.BaseCoreComponent):
+    """Implementation of the STIX TTP.
+
+    Args:
+        id_ (optional): An identifier. If ``None``, a value will be generated
+            via ``stix.utils.create_id()``. If set, this will unset the
+            ``idref`` property.
+        idref (optional): An identifier reference. If set this will unset the
+            ``id_`` property.
+        timestamp (optional): A timestamp value. Can be an instance of
+            ``datetime.datetime`` or ``str``.
+        description: A description of the purpose or intent of this object.
+        short_description: A short description of the intent
+            or purpose of this object.
+        title: The title of this object.
+
+    """
     _binding = ttp_binding
     _binding_class = _binding.TTPType
     _namespace = "http://stix.mitre.org/TTP-1"
-    _version = "1.1.1"
-    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1")
+    _version = "1.2"
+    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = "ttp"
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
@@ -38,11 +55,15 @@ class TTP(stix.BaseCoreComponent):
         self.intended_effects = None
         self.resources = None
         self.victim_targeting = None
-        self.handling = None
         self.exploit_targets = ExploitTargets()
+        self.related_packages = None
+        self.kill_chain_phases = None
 
     @property
     def behavior(self):
+        """A :class:`.Behavior` field.
+
+        """
         return self._behavior
 
     @behavior.setter
@@ -51,6 +72,10 @@ class TTP(stix.BaseCoreComponent):
 
     @property
     def related_ttps(self):
+        """A collection of :class:`.RelatedTTP` objects. This behaves like a
+        ``MutableSequence`` Type.
+
+        """
         return self._related_ttps
 
     @related_ttps.setter
@@ -60,8 +85,44 @@ class TTP(stix.BaseCoreComponent):
         else:
             self._related_ttps = RelatedTTPs(value)
 
+    def add_related_ttp(self, value):
+        """Adds an Related TTP to the :attr:`related_ttps` list
+        property of this :class:`TTP`.
+
+        The `TTP` parameter must be an instance of
+        :class:`.RelatedTTP` or :class:`TTP`.
+
+        If the `TTP` parameter is ``None``, no item wil be added to the
+        ``related_ttps`` list property.
+
+        Calling this method is the same as calling ``append()`` on the
+        ``related_ttps`` property.
+
+        See Also:
+            The :class:`RelatedTTPs` documentation.
+
+        Note:
+            If the `TTP` parameter is not an instance of
+            :class:`.RelatedTTP` an attempt will be
+            made to convert it to one.
+
+        Args:
+            TTP: An instance of :class:`TTP` or
+                :class:`.RelatedTTP`.
+
+        Raises:
+            ValueError: If the `TTP` parameter cannot be converted into
+                an instance of :class:`.RelatedTTP`
+
+        """
+        self.related_ttps.append(value)
+
     @property
     def exploit_targets(self):
+        """A collection of :class:`.ExploitTarget` objects. This behaves like
+        a ``MutableSequence`` type.
+
+        """
         return self._exploit_targets
 
     @exploit_targets.setter
@@ -71,8 +132,23 @@ class TTP(stix.BaseCoreComponent):
         else:
             self._exploit_targets = ExploitTargets(value)
 
+    def add_exploit_target(self, value):
+        """Adds a :class:`.ExploitTarget` object to the :attr:`exploit_targets`
+        collection.
+
+        """
+        self.exploit_targets.append(value)
+
     @property
     def intended_effects(self):
+        """A collection of :class:`.Statement` objects. This behaves like a
+        ``MutableSequence`` type.
+
+        If set to a string, an attempt will be made to convert it into a
+        :class:`.Statement` object with its value set to an instance of
+        :class:`.IntendedEffect`.
+
+        """
         return self._intended_effects
 
     @intended_effects.setter
@@ -80,10 +156,21 @@ class TTP(stix.BaseCoreComponent):
         self._intended_effects = _IntendedEffects(value)
 
     def add_intended_effect(self, value):
+        """Adds a :class:`.Statement` object to the :attr:`intended_effects`
+        collection.
+
+        If `value` is a string, an attempt will be made to convert it into an
+        instance of :class:`.Statement`.
+
+        """
         self.intended_effects.append(value)
 
     @property
     def resources(self):
+        """A collection of :class:`.Resource` objects. This behaves like a
+        ``MutableSequence`` type.
+
+        """
         return self._resources
 
     @resources.setter
@@ -92,6 +179,10 @@ class TTP(stix.BaseCoreComponent):
 
     @property
     def victim_targeting(self):
+        """A collection of :class:`.VictimTargeting` objects. This behaves like
+        a ``MutableSequence`` type.
+
+        """
         return self._victim_targeting
 
     @victim_targeting.setter
@@ -99,12 +190,51 @@ class TTP(stix.BaseCoreComponent):
         self._set_var(VictimTargeting, try_cast=False, victim_targeting=value)
 
     @property
-    def handling(self):
-        return self._handling
+    def kill_chain_phases(self):
+        """A collection of :class:`.KillChainPhaseReference` objects. This
+        behaves like a ``MutableSequence`` type.
 
-    @handling.setter
-    def handling(self, value):
-        self._set_var(Marking, try_cast=False, handling=value)
+        """
+        return self._kill_chain_phases
+
+    @kill_chain_phases.setter
+    def kill_chain_phases(self, value):
+        self._kill_chain_phases = KillChainPhasesReference(value)
+
+    def add_kill_chain_phase(self, value):
+        """Adds a :class:`.KillChainPhaseReference` to the
+        :attr:`kill_chain_phases` collection.
+
+        Args:
+            value: A :class:`.KillChainPhase`, :class:`.KillChainPhaseReference`
+                or a ``str`` representing the phase_id of. Note that you if you
+                are defining a custom Kill Chain, you need to add it to the
+                STIX package separately.
+        """
+        self.kill_chain_phases.append(value)
+
+    @property
+    def related_packages(self):
+        """**DEPRECATED**: A collection of :class:`.RelatedPackageRef`
+        objects. This behaves like a ``MutableSequence``.
+
+        """
+        return self._related_packages
+
+    @related_packages.setter
+    def related_packages(self, value):
+        self._related_packages = RelatedPackageRefs(value)
+
+    def add_related_package(self, value):
+        """Adds a :class:`.RelatedPackageRef` object to the
+        :attr:`related_packages` collection.
+
+        Args:
+            value: A :class:`.RelatedPackageRef` or a :class:`.STIXPackage`
+                object.
+
+        """
+        self.related_packages.append(value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
@@ -124,8 +254,10 @@ class TTP(stix.BaseCoreComponent):
             return_obj.Resources = self.resources.to_obj(ns_info=ns_info)
         if self.victim_targeting:
             return_obj.Victim_Targeting = self.victim_targeting.to_obj(ns_info=ns_info)
-        if self.handling:
-            return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
+        if self.kill_chain_phases:
+            return_obj.Kill_Chain_Phases = self.kill_chain_phases.to_obj(ns_info=ns_info)
+        if self.related_packages:
+            return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
 
         return return_obj
 
@@ -145,8 +277,9 @@ class TTP(stix.BaseCoreComponent):
             return_obj.exploit_targets = ExploitTargets.from_obj(obj.Exploit_Targets)
             return_obj.resources = Resource.from_obj(obj.Resources)
             return_obj.victim_targeting = VictimTargeting.from_obj(obj.Victim_Targeting)
-            return_obj.handling = Marking.from_obj(obj.Handling)
             return_obj.intended_effects = _IntendedEffects.from_obj(obj.Intended_Effect)
+            return_obj.kill_chain_phases = KillChainPhasesReference.from_obj(obj.Kill_Chain_Phases)
+            return_obj.related_packages = RelatedPackageRefs.from_obj(obj.Related_Packages)
 
         return return_obj
 
@@ -170,7 +303,8 @@ class TTP(stix.BaseCoreComponent):
         return_obj.intended_effects = _IntendedEffects.from_dict(get('intended_effects'))
         return_obj.resources = Resource.from_dict(get('resources'))
         return_obj.victim_targeting = VictimTargeting.from_dict(get('victim_targeting'))
-        return_obj.handling = Marking.from_dict(get('handling'))
+        return_obj.related_packages = RelatedPackageRefs.from_dict(get('related_packages'))
+        return_obj.kill_chain_phases = KillChainPhasesReference.from_dict(get('kill_chain_phases'))
 
         return return_obj
 
