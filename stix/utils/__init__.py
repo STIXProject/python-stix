@@ -6,7 +6,6 @@ import contextlib
 import keyword
 import functools
 
-
 # external
 import cybox
 import lxml.etree
