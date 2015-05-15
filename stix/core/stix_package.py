@@ -42,9 +42,9 @@ class STIXPackage(stix.Entity):
         id_ (optional): An identifier. If ``None``, a value will be generated
             via ``stix.utils.create_id()``. If set, this will unset the
             ``idref`` property.
-        idref (optional): An identifier reference. If set this will unset the
-            ``id_`` property.
-        timestamp (optional): A timestamp value. Can be an instance of
+        idref: **DEPRECATED** An identifier reference. If set this will unset
+            the ``id_`` property.
+        timestamp: **DEPRECATED**A timestamp value. Can be an instance of
             ``datetime.datetime`` or ``str``.
         header: A Report :class:`.Header` object.
         campaigns: A collection of :class:`.Campaign` objects.
