@@ -44,7 +44,7 @@ class STIXPackage(stix.Entity):
             ``idref`` property.
         idref: **DEPRECATED** An identifier reference. If set this will unset
             the ``id_`` property.
-        timestamp: **DEPRECATED**A timestamp value. Can be an instance of
+        timestamp: **DEPRECATED** A timestamp value. Can be an instance of
             ``datetime.datetime`` or ``str``.
         header: A Report :class:`.Header` object.
         campaigns: A collection of :class:`.Campaign` objects.
