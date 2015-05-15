@@ -248,7 +248,7 @@ XML Schema definition, but in Python!
 
     # python-stix modules
     from stix.core import STIXPackage
-    from stix.common import vocabs
+    from stix.common.vocabs import VocabString, register_vocab
 
     XML = \
     """
@@ -270,14 +270,12 @@ XML Schema definition, but in Python!
     """
 
     # Create a VocabString class for our CustomVocab-1.0 vocabulary which
-    class CustomVocab(vocabs.VocabString):
+    @register_vocab
+    class CustomVocab(VocabString):
         _namespace = 'http://customvocabs.com/vocabs-1'
-        _XSI_TYPE = 'customVocabs:CustomVocab-1.0'
-        _ALLOWED_VALUES = ('FOO', 'BAR')
-
-    # Register our Custom Vocabulary class so parsing builds instances of
-    # CustomVocab
-    vocabs.add_vocab(CustomVocab)
+        _XSI_TYPE  = 'customVocabs:CustomVocab-1.0'
+        TERM_FOO   = 'FOO'
+        TERM_BAR   = 'BAR'
 
     # Parse the input document
     sio = StringIO(XML)
