@@ -48,6 +48,7 @@ class CoursesOfAction(stix.EntityList):
         idref_deprecated(value)
         return stix.EntityList._is_valid(self, value)
 
+
 class ExploitTargets(stix.EntityList):
     _binding = stix_common_binding
     _namespace = 'http://stix.mitre.org/common-1'
