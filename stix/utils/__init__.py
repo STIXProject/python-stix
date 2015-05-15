@@ -372,16 +372,16 @@ def cast_var(item, klass, arg=None):
     return klass(**kwarg)   # klass(value='foobar')
 
 
-def remove_entries(map, keys):
-    """Removes all the `keys` from `map`.
+def remove_entries(d, keys):
+    """Removes all the `keys` from the dictionary `d`.
 
     Args:
-        map: A dictionary.
+        d: A dictionary.
         keys: An iterable collection of dictionary keys to remove.
 
     """
     for key in keys:
-        map.pop(key, None)
+        d.pop(key, None)
 
 
 # Namespace flattening
