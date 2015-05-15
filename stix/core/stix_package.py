@@ -85,11 +85,7 @@ class STIXPackage(stix.Entity):
         self.ttps = ttps
         self.related_packages = related_packages
         self.reports = reports
-        
-        if timestamp:
-            self.timestamp = timestamp
-        else:
-            self.timestamp = utils.dates.now() if not idref else None
+        self.timestamp = timestamp
 
     @property
     def id_(self):
