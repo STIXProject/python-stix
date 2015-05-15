@@ -187,6 +187,22 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
         package = core.STIXPackage()
         package.add_related_package(core.STIXPackage(idref='foo'))
 
+    def test_version(self):
+        """Tests that setting the version property of a STIXPackage does
+        not affect the serialized versions.
+
+        """
+        p = core.STIXPackage()
+        p.version = "1.0"  # old version
+
+        s = p.to_xml()
+        sio = StringIO.StringIO(s)
+
+        # Reparse the package
+        p = core.STIXPackage.from_xml(sio)
+
+        self.assertEqual(p.version, core.STIXPackage._version)
+
 
 if __name__ == "__main__":
     unittest.main()
