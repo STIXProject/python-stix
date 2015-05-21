@@ -251,7 +251,7 @@ def iter_vars(obj):
     def check(name):
         return name not in ('__input_namespaces__', '__input_schemalocations__')
 
-    instance_vars = obj.__dict__.iteritems()
+    instance_vars = vars(obj).iteritems()
     return ((attr_name(name), val) for name, val in instance_vars if check(name))
 
 

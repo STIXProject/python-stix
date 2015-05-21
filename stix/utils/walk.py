@@ -28,7 +28,7 @@ def _iter_vars(obj):
     attrs = []
 
     if hasattr(obj, "__dict__"):
-        attrs.append(obj.__dict__.iteritems())
+        attrs.append(vars(obj).iteritems())
 
     if hasattr(obj, "_fields"):
         attrs.append(obj._fields.iteritems())

@@ -149,7 +149,7 @@ class VocabString(stix.Entity):
 
 def _get_terms(vocab_class):
     """Helper function used by register_vocab."""
-    for k, v in vocab_class.__dict__.items():
+    for k, v in vars(vocab_class).items():
         if k.startswith("TERM_"):
             yield v
 
