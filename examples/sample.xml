@@ -17,10 +17,7 @@
     id="example:STIXPackage-33fe3b22-0201-47cf-85d0-97c02164528d"
     timestamp="2014-05-08T09:00:00.000000Z"
     version="1.2">
-    <stix:STIX_Header>
-        <stix:Title>Example watchlist that contains IP information.</stix:Title>
-        <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Indicators - Watchlist</stix:Package_Intent>
-    </stix:STIX_Header>
+    
     <stix:Indicators>
         <stix:Indicator xsi:type="indicator:IndicatorType" id="example:Indicator-33fe3b22-0201-47cf-85d0-97c02164528d" timestamp="2014-05-08T09:00:00.000000Z">
             <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
