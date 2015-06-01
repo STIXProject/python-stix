@@ -1,11 +1,15 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox.cache import Cached
+
+# internal
 import stix
 from stix.bindings import course_of_action as coa_binding
 
 
-class _BaseStructuredCOA(stix.Entity):
+class _BaseStructuredCOA(Cached, stix.Entity):
     _namespace = "http://stix.mitre.org/CourseOfAction-1"
     _binding = coa_binding
     _binding_class = coa_binding.StructuredCOAType

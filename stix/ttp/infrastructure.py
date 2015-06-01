@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # external
+from mixbox.cache import Cached
 from cybox.core import Observables
 
 # internal
@@ -11,7 +12,7 @@ from stix.common.vocabs import AttackerInfrastructureType
 import stix.bindings.ttp as ttp_binding
 
 
-class Infrastructure(stix.Entity):
+class Infrastructure(Cached, stix.Entity):
     _binding = ttp_binding
     _binding_class = _binding.InfrastructureType
     _namespace = "http://stix.mitre.org/TTP-1"

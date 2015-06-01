@@ -1,6 +1,9 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox.cache import Cached
+
 # internal
 import stix
 from stix.common import StructuredTextList
@@ -9,7 +12,7 @@ from stix.common import StructuredTextList
 import stix.bindings.ttp as ttp_binding
 
 
-class AttackPattern(stix.Entity):
+class AttackPattern(Cached, stix.Entity):
     _binding = ttp_binding
     _binding_class = _binding.AttackPatternType
     _namespace = "http://stix.mitre.org/TTP-1"

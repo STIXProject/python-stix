@@ -7,6 +7,9 @@ import collections
 import itertools
 import StringIO
 
+# external
+from mixbox.cache import Cached
+
 # internal
 from . import bindings, utils
 
@@ -562,7 +565,7 @@ class TypedList(TypedCollection, collections.MutableSequence):
         self._inner.insert(idx, value)
 
 
-class BaseCoreComponent(Entity):
+class BaseCoreComponent(Cached, Entity):
     _ALL_VERSIONS = ()
     _ID_PREFIX = None
 
