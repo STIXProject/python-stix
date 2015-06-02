@@ -648,18 +648,6 @@ class ImpactRating_1_0(VocabString):
     TERM_NONE = "None"
     TERM_UNKNOWN = "Unknown"
 
-@register_vocab
-class DeceptionChain(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
-    _XSI_TYPE = 'stixVocabs:SystemTypeVocab-1.0'
-    _VOCAB_VERSION = '1.0'
-
-    TERM_PURPOSE = "Purpose"
-    TERM_PURPOSE = "Purpose"
-    TERM_PURPOSE = "Purpose"
-    TERM_PURPOSE = "Purpose"
-    TERM_PURPOSE = "Purpose"
-
 
 @register_vocab
 class AssetType_1_0(VocabString):
