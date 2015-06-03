@@ -9,9 +9,10 @@ import StringIO
 
 # external
 from mixbox.cache import Cached
+from mixbox.binding_utils import save_encoding
 
 # internal
-from . import bindings, utils
+from . import utils
 
 
 def _override(*args, **kwargs):
@@ -185,7 +186,7 @@ class Entity(object):
         if not pretty:
             namespace_def = namespace_def.replace('\n\t', ' ')
 
-        with bindings.save_encoding(encoding):
+        with save_encoding(encoding):
             sio = StringIO.StringIO()
             obj.export(
                 sio.write,                    # output buffer

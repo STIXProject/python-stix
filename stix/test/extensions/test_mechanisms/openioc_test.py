@@ -5,6 +5,7 @@ import unittest
 import StringIO
 
 import lxml
+import mixbox.xml
 
 from stix import utils
 from stix.test import EntityTestCase
@@ -124,7 +125,7 @@ class OpenIOCEtreeTests(unittest.TestCase):
 
     def _test_xml(self, obj):
         xml = obj.to_xml()
-        parser = utils.parser.get_xml_parser()
+        parser = mixbox.xml.get_xml_parser()
         tree = lxml.etree.parse(StringIO.StringIO(xml), parser=parser)
         root = tree.getroot()
 
@@ -136,7 +137,7 @@ class OpenIOCEtreeTests(unittest.TestCase):
         self.assertEqual(nodes[0].text, self.DESCRIPTION)
 
     def test_etree(self):
-        parser = utils.parser.get_xml_parser()
+        parser = mixbox.xml.get_xml_parser()
         tree = lxml.etree.parse(StringIO.StringIO(self.XML), parser=parser)
 
         ext = OpenIOCTestMechanism()
@@ -144,7 +145,7 @@ class OpenIOCEtreeTests(unittest.TestCase):
         self._test_xml(ext)
 
     def test_etree_dict(self):
-        parser = utils.parser.get_xml_parser()
+        parser = mixbox.xml.get_xml_parser()
         tree = lxml.etree.parse(StringIO.StringIO(self.XML), parser=parser)
         ext = OpenIOCTestMechanism()
         ext.ioc = tree

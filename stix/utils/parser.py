@@ -1,18 +1,13 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# stdlib
 from distutils.version import StrictVersion
 
-# external
-from lxml import etree
+import mixbox.xml
 
-# internal
 import stix
 import stix.xmlconst as xmlconst
-
-# relative
-from . import ignored, is_etree, is_element
+from . import ignored
 
 
 class UnknownVersionError(Exception):
@@ -46,72 +41,8 @@ class UnsupportedRootElementError(Exception):
 UnsupportedRootElement = UnsupportedRootElementError
 
 
-def get_xml_parser(encoding=None):
-    """Returns an ``etree.ETCompatXMLParser`` instance."""
-    parser = etree.ETCompatXMLParser(
-        huge_tree=True,
-        remove_comments=True,
-        strip_cdata=False,
-        remove_blank_text=True,
-        resolve_entities=False,
-        encoding=encoding
-    )
-
-    return parser
-
-
-def get_etree(doc, encoding=None):
-    if is_etree(doc):
-        return doc
-    elif is_element(doc):
-        return etree.ElementTree(doc)
-    else:
-        parser = get_xml_parser(encoding=encoding)
-        return etree.parse(doc, parser=parser)
-
-
-def get_etree_root(doc, encoding=None):
-    """Returns an instance of lxml.etree._Element for the given `doc` input.
-
-    Args:
-        doc: The input XML document. Can be an instance of
-            ``lxml.etree._Element``, ``lxml.etree._ElementTree``, a file-like
-            object, or a string filename.
-        encoding: The character encoding of `doc`. If ``None``, an attempt
-            will be made to determine the character encoding by the XML
-            parser.
-
-    Returns:
-        An ``lxml.etree._Element`` instance for `doc`.
-
-    Raises:
-        IOError: If `doc` cannot be found.
-        lxml.ParseError: If `doc` is a malformed XML document.
-
-    """
-    tree = get_etree(doc, encoding)
-    root = tree.getroot()
-
-    return root
-
-
-def get_schemaloc_pairs(node):
-    """Parses the xsi:schemaLocation attribute on `node`.
-
-    Returns:
-        A list of (ns, schemaLocation) tuples for the node.
-
-    Raises:
-        KeyError: If `node` does not have an xsi:schemaLocation attribute.
-
-    """
-    schemalocs = node.attrib[xmlconst.TAG_SCHEMALOCATION]
-    l = schemalocs.split()
-    return zip(l[::2], l[1::2])
-
-
 def get_document_version(doc):
-    root = get_etree_root(doc)
+    root = mixbox.xml.get_etree_root(doc)
 
     if 'version' in root.attrib:
         return root.attrib['version']
@@ -123,7 +54,7 @@ def get_document_version(doc):
 
 
 def root_tag(doc):
-    root = get_etree_root(doc)
+    root = mixbox.xml.get_etree_root(doc)
     return root.tag
 
 
@@ -173,7 +104,7 @@ class EntityParser(object):
         )
 
     def _apply_input_namespaces(self, tree, entity):
-        root = get_etree_root(tree)
+        root = mixbox.xml.get_etree_root(tree)
         entity.__input_namespaces__ = dict(root.nsmap.iteritems())
 
     def _apply_input_schemalocations(self, tree, entity):
@@ -184,10 +115,10 @@ class EntityParser(object):
             entity: The entity to attach the schemlocation dictionary to
 
         """
-        root = get_etree_root(tree)
+        root = mixbox.xml.get_etree_root(tree)
 
         with ignored(KeyError):
-            pairs = get_schemaloc_pairs(root)
+            pairs = mixbox.xml.get_schemaloc_pairs(root)
             entity.__input_schemalocations__ = dict(pairs)
 
     def parse_xml_to_obj(self, xml_file, check_version=True, check_root=True,
@@ -210,7 +141,7 @@ class EntityParser(object):
                 contains an invalid root element.
 
         """
-        root = get_etree_root(xml_file, encoding=encoding)
+        root = mixbox.xml.get_etree_root(xml_file, encoding=encoding)
 
         if check_version:
             self._check_version(root)
@@ -246,7 +177,7 @@ class EntityParser(object):
                 contains an invalid root element.
 
         """
-        root = get_etree_root(xml_file, encoding=encoding)
+        root = mixbox.xml.get_etree_root(xml_file, encoding=encoding)
 
         stix_package_obj = self.parse_xml_to_obj(
             xml_file=root,

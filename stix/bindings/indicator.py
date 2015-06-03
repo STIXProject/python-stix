@@ -9,8 +9,11 @@
 #
 
 import sys
-from stix.bindings import *
+
 import cybox.bindings.cybox_core as cybox_core_binding
+from mixbox.binding_utils import *
+
+from stix.bindings import lookup_extension, register_extension
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
 

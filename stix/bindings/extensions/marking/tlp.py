@@ -9,7 +9,10 @@
 #
 
 import sys
-from stix.bindings import *
+
+from mixbox.binding_utils import *
+
+from stix.bindings import register_extension
 import stix.bindings.data_marking as data_marking_binding
 
 XML_NS = "http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1"
