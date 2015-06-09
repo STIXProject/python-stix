@@ -24,8 +24,8 @@ class NamespaceInfo(object):
 
     def finalize(self, ns_dict=None, schemaloc_dict=None):
         from stix.utils import (
-            get_id_namespace, get_id_namespace_alias, DEFAULT_STIX_NAMESPACES,
-            XML_NAMESPACES, DEFAULT_STIX_SCHEMALOCATIONS
+            DEFAULT_STIX_NAMESPACES, XML_NAMESPACES,
+            DEFAULT_STIX_SCHEMALOCATIONS,
         )
 
         if not ns_dict:
@@ -33,9 +33,6 @@ class NamespaceInfo(object):
 
         if not schemaloc_dict:
             schemaloc_dict = {}
-
-        id_ns = get_id_namespace()
-        id_ns_alias = get_id_namespace_alias()
 
         d_ns = {
             'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
@@ -45,7 +42,6 @@ class NamespaceInfo(object):
             'http://cybox.mitre.org/cybox-2': 'cybox',
             'http://cybox.mitre.org/common-2': 'cyboxCommon',
             'http://cybox.mitre.org/default_vocabularies-2': 'cyboxVocabs',
-            id_ns: id_ns_alias
         }
 
         for ns, alias in self.input_namespaces.iteritems():
@@ -96,7 +92,6 @@ class NamespaceInfo(object):
                 d_sl[ns] = schemalocation
             else:
                 unmappable = (
-                    (ns == id_ns),
                     (ns in schemaloc_dict),
                     (ns in self.input_schemalocs),
                     (ns in XML_NAMESPACES)
