@@ -6,6 +6,7 @@ import json
 import collections
 import itertools
 import StringIO
+from cybox import TypedField
 
 # internal
 from . import bindings, utils
@@ -15,10 +16,24 @@ def _override(*args, **kwargs):
     raise NotImplementedError()
 
 
+class AttributeField(TypedField):
+    pass
+
+class ElementField(TypedField):
+    pass
+
+class IdField(AttributeField):
+    pass
+
+
 class Entity(object):
     """Base class for all classes in the STIX API."""
     _namespace = None
     _XSI_TYPE = None
+
+    def __init__(self):
+        pass
+        #self._fields = {}
 
     def _collect_ns_info(self, ns_info=None):
         if not ns_info:
@@ -62,6 +77,17 @@ class Entity(object):
             error = error.format(name, klass, type(item))
             raise TypeError(error)
 
+    @classmethod
+    def _get_vars(cls):
+        import inspect
+        var_list = []
+        for (name, obj) in inspect.getmembers(cls, inspect.isdatadescriptor):
+            print name + " " + str(type(obj)) + " " + str(obj.__class__)
+            if isinstance(obj, TypedField):
+                var_list.append(obj)
+
+        return var_list
+
     def _set_vocab(self, klass=None, **kwargs):
         """Sets a controlled vocabulary property value.
 
@@ -89,20 +115,93 @@ class Entity(object):
         else:
             self._set_var(klass, **kwargs)
 
-    def to_obj(self, return_obj=None, ns_info=None):
-        """Converts an `Entity` into a binding object.
+    @classmethod
+    def istypeof(cls, obj):
+        """Check if `cls` is the type of `obj`
 
-        Note:
-            This needs to be overridden by derived classes.
-
+        In the normal case, as implemented here, a simple isinstance check is
+        used. However, there are more complex checks possible. For instance,
+        EmailAddress.istypeof(obj) checks if obj is an Address object with
+        a category of Address.CAT_EMAIL
         """
+        return isinstance(obj, cls)
+
+    def to_obj(self, return_obj=None, ns_info=None):
+        """Convert to a GenerateDS binding object.
+
+        Subclasses can override this function.
+
+        Returns:
+            An instance of this Entity's ``_binding_class`` with properties
+            set from this Entity.
+        """
+        
+        def _objectify(value, return_obj, ns_info):
+            """Make `value` suitable for a binding object.
+        
+            If `value` is an Entity, call to_obj() on it. Otherwise, return it
+            unmodified.
+            """
+            if isinstance(value, Entity):
+                return value.to_obj(return_obj=return_obj, ns_info=ns_info)
+            else:
+                return value
+        
         self._collect_ns_info(ns_info)
-        return return_obj
+
+        entity_obj = self._binding_class()
+
+        vars = {}
+        for klass in self.__class__.__mro__:
+            if klass is Entity:
+                break
+            vars.update(klass.__dict__.iteritems())
+            
+        print "vars", vars
+        print "self", self.__dict__
+
+        for name, field in vars.iteritems():
+            if isinstance(field, TypedField):
+                val = getattr(self, field.attr_name)
+
+                if field.multiple:
+                    if val:
+                        val = [_objectify(x, return_obj, ns_info) for x in val]
+                    else:
+                        val = []
+                else:
+                    val = _objectify(val, return_obj, ns_info)
+
+                setattr(entity_obj, field.name, val)
+
+        self._finalize_obj(entity_obj)
+        return entity_obj
+
+    def _finalize_obj(self, entity_obj):
+        """Subclasses can define additional items in the binding object.
+
+        `entity_obj` should be modified in place.
+        """
+        pass
 
     @classmethod
-    def from_obj(cls, obj, return_obj=None):
+    def from_obj(cls, cls_obj=None):
         """Create an object from a binding object"""
-        raise NotImplementedError()
+        if not cls_obj:
+            return None
+
+        entity = cls()
+
+        for field in cls._get_vars():
+            val = getattr(cls_obj, field.name)
+            if field.type_:
+                if field.multiple and val is not None:
+                    val = [field.type_.from_obj(x) for x in val]
+                else:
+                    val = field.type_.from_obj(val)
+            setattr(entity, field.attr_name, val)
+
+        return entity
 
     def to_xml(self, include_namespaces=True, include_schemalocs=False,
                ns_dict=None, schemaloc_dict=None, pretty=True,
@@ -228,16 +327,97 @@ class Entity(object):
         """Converts a STIX :class:`Entity` implementation into a Python
         dictionary. This may be overridden by derived classes.
 
+        Returns:
+            Python dict with keys set from this Entity.
         """
-        return utils.to_dict(self)
+        def _dictify(value):
+            """Make `value` suitable for a dictionary.
+        
+            If `value` is an Entity, call to_dict() on it. Otherwise, return it
+            unmodified.
+            """
+            if isinstance(value, Entity):
+                return value.to_dict()
+            else:
+                return value
+        
+        entity_dict = {}
+        vars = {}
+        for klass in self.__class__.__mro__:
+            if klass is Entity:
+                break
+            vars.update(klass.__dict__.iteritems())
+
+        hasAnyTypedField = False
+        for name, field in vars.iteritems():
+            if isinstance(field, TypedField):
+                hasAnyTypedField = True
+                
+                val = getattr(self, field.attr_name)
+
+                if field.multiple:
+                    if val:
+                        val = [_dictify(x) for x in val]
+                    else:
+                        val = []
+                else:
+                    val = _dictify(val)
+
+                # Only add non-None objects or non-empty lists
+                if val is not None and val != []:
+                    entity_dict[field.key_name] = val
+
+        # doesn't quite work, possibly because of inherited TypedFields?
+        #if not hasAnyTypedField:
+        #    return utils.to_dict(self)
+
+        self._finalize_dict(entity_dict)
+
+        return entity_dict
+    
+    def _finalize_dict(self, entity_dict):
+        """Subclasses can define additional items in the dictionary.
+
+        `entity_dict` should be modified in place.
+        """
+        pass
 
     @classmethod
-    def from_dict(cls, d, return_obj=None):
-        """Convert from dict representation to object representation.
-        This should be overriden by a subclass
+    def from_dict(cls, cls_dict=None):
+        """Convert from dict representation to object representation."""
+        if cls_dict is None:
+            return None
 
-        """
-        raise NotImplementedError()
+        entity = cls()
+
+        # Shortcut if an actual dict is not provided:
+        if not isinstance(cls_dict, dict):
+            value = cls_dict
+            # Call the class's constructor
+            try:
+                return cls(value)
+            except TypeError:
+                raise TypeError("Could not instantiate a %s from a %s: %s" %
+                                (cls, type(value), value))
+
+        for field in cls._get_vars():
+            val = cls_dict.get(field.key_name)
+            if field.type_:
+                if issubclass(field.type_, EntityList):
+                    val = field.type_.from_list(val)
+                elif field.multiple:
+                    if val is not None:
+                        val = [field.type_.from_dict(x) for x in val]
+                    else:
+                        val = []
+                else:
+                    val = field.type_.from_dict(val)
+            else:
+                if field.multiple and not val:
+                    val = []
+            setattr(entity, field.attr_name, val)
+
+        return entity
             
     @classmethod
     def object_from_dict(cls, entity_dict):
@@ -561,14 +741,21 @@ class TypedList(TypedCollection, collections.MutableSequence):
             value = self._fix_value(value)
         self._inner.insert(idx, value)
 
-
 class BaseCoreComponent(Entity):
     _ALL_VERSIONS = ()
     _ID_PREFIX = None
 
+    title = ElementField("Title")
+    id_ = IdField("id")
+    idref = IdField("idref")
+    version = AttributeField("version")
+    information_source = ElementField("Information_Source")
+    handling = ElementField("Handling", multiple=True)
+
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
-
+        super(BaseCoreComponent, self).__init__()
+        self._fields = {}
         self.id_ = id_ or utils.create_id(self._ID_PREFIX)
         self.idref = idref
         self.title = title
@@ -634,27 +821,8 @@ class BaseCoreComponent(Entity):
             self._idref = value
             self.id_ = None  # unset id_ if idref is present
 
-    @property
-    def version(self):
-        """The schematic version of this component. This property
-        will always return ``None`` unless it is set to a value different than
-        ``self.__class__._version``.
-
-        Note:
-            This property refers to the version of the schema component
-            type and should not be used for the purpose of content versioning.
-
-        Default Value: ``None``
-
-        Returns:
-            The value of the ``version`` property if set to a value different
-            than ``self.__class__._version``
-
-        """
-        return self._version
-
-    @version.setter
-    def version(self, value):
+    # TODO: add this as a callback_hook to version TypedField
+    def check_version(self, value):
         if not value:
             self._version = None
         else:
@@ -688,14 +856,6 @@ class BaseCoreComponent(Entity):
     @timestamp.setter
     def timestamp(self, value):
         self._timestamp = utils.dates.parse_value(value)
-
-    @property
-    def title(self):
-        return self._title
-
-    @title.setter
-    def title(self, value):
-        self._title = value
 
     @property
     def description(self):
@@ -815,42 +975,6 @@ class BaseCoreComponent(Entity):
         """
         self.short_descriptions.add(description)
 
-    @property
-    def information_source(self):
-        """Contains information about the source of this object.
-
-        Default Value: ``None``
-
-        Returns:
-            An instance of
-            :class:`.InformationSource`
-
-        Raises:
-            ValueError: If set to a value that is not ``None`` and not an
-                instance of
-                :class:`.InformationSource`
-
-        """
-        return self._information_source
-
-    @information_source.setter
-    def information_source(self, value):
-        from stix.common import InformationSource
-        self._set_var(InformationSource, try_cast=False, information_source=value)
-
-    @property
-    def handling(self):
-        return self._handling
-
-    @handling.setter
-    def handling(self, value):
-        """The :class:`.Marking` section of this component. This section
-        contains data marking information.
-
-        """
-        from stix.data_marking import Marking
-        self._set_var(Marking, try_cast=False, handling=value)
-
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -936,5 +1060,3 @@ class BaseCoreComponent(Entity):
 
     def to_dict(self):
         return super(BaseCoreComponent, self).to_dict()
-
-

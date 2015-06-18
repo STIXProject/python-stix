@@ -122,10 +122,8 @@ def register_extension(cls):
     add_extension(cls)
     return cls
 
-
 from . import common  # noqa
 from .version import __version__  # noqa
-
 
 def supported_stix_version():
     """Returns a tuple of STIX version strings that this version of python-stix
@@ -134,3 +132,11 @@ def supported_stix_version():
     """
     return ('1.1.1', '1.2')
 
+# because common depends on base, we can only set the TypeFields types on
+# BaseCoreComponent to common classes after both common and base are imported
+#BaseCoreComponent.description.type_ = common.StructuredText
+#common.StructuredText
+BaseCoreComponent.information_source.type_ = common.InformationSource
+
+import data_marking
+BaseCoreComponent.handling.type_ = data_marking.Marking
