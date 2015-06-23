@@ -9,7 +9,10 @@
 #
 
 import sys
-from stix.bindings import *
+
+from mixbox.binding_utils import *
+
+from stix.bindings import register_extension
 import stix.bindings.ttp as ttp_binding
 
 XML_NS = "http://stix.mitre.org/extensions/AP#CAPEC2.7-1"

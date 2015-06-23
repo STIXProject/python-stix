@@ -1,8 +1,14 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox.cache import Cached
+
+# internal
 import stix
 from stix.common import InformationSource
+
+# bindings
 import stix.bindings.data_marking as stix_data_marking_binding
 
 
@@ -70,12 +76,14 @@ class Marking(stix.Entity):
     from_dict = from_list
 
 
-class MarkingSpecification(stix.Entity):
+class MarkingSpecification(Cached, stix.Entity):
     _binding = stix_data_marking_binding
     _binding_class = stix_data_marking_binding.MarkingSpecificationType
     _namespace = 'http://data-marking.mitre.org/Marking-1'
 
     def __init__(self, controlled_structure=None, marking_structures=None):
+        super(MarkingSpecification, self).__init__()
+
         self.id_ = None
         self.idref = None
         self.version = None
@@ -159,7 +167,7 @@ class MarkingSpecification(stix.Entity):
         return return_obj
 
 
-class MarkingStructure(stix.Entity):
+class MarkingStructure(Cached, stix.Entity):
     _binding = stix_data_marking_binding
     _binding_class = stix_data_marking_binding.MarkingStructureType
     _namespace = 'http://data-marking.mitre.org/Marking-1'

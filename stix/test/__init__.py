@@ -8,8 +8,8 @@ import json
 import warnings
 
 import cybox.utils
+from mixbox.binding_utils import ExternalEncoding
 
-import stix.bindings as bindings
 from stix.utils import NamespaceInfo, silence_warnings
 
 
@@ -102,10 +102,10 @@ def round_trip(o, output=False, list_=False):
 
     try:
         # 6. Bindings Object -> XML String
-        xml_string = o2.to_xml(encoding=bindings.ExternalEncoding)
+        xml_string = o2.to_xml(encoding=ExternalEncoding)
 
         if not isinstance(xml_string, unicode):
-            xml_string = xml_string.decode(bindings.ExternalEncoding)
+            xml_string = xml_string.decode(ExternalEncoding)
 
     except KeyError as ex:
         print str(ex)

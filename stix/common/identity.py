@@ -1,13 +1,15 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-from __future__ import absolute_import
+# external
+from mixbox.cache import Cached
 
+# internal
 import stix
 import stix.bindings.stix_common as common_binding
 
 
-class Identity(stix.Entity):
+class Identity(Cached, stix.Entity):
     _binding = common_binding
     _namespace = 'http://stix.mitre.org/common-1'
 

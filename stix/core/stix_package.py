@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # external
+from mixbox.cache import Cached
 from cybox.core import Observable, Observables
 
 # base
@@ -35,7 +36,7 @@ from . import (Campaigns, CoursesOfAction, ExploitTargets, Incidents,
 import stix.bindings.stix_core as stix_core_binding
 
 
-class STIXPackage(stix.Entity):
+class STIXPackage(Cached, stix.Entity):
     """A STIX Package object.
 
     Args:

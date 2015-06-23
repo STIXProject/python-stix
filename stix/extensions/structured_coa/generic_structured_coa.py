@@ -1,9 +1,12 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# internal
 import stix
 from stix.common import EncodedCDATA, StructuredTextList, VocabString
 from stix.coa.structured_coa import _BaseStructuredCOA
+
+# bindings
 import stix.bindings.extensions.structured_coa.generic as generic_structured_coa_binding
 
 

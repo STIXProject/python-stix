@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # external
+from mixbox.cache import Cached
 from cybox.core import Observable, Observables
 
 # internal
@@ -29,7 +30,7 @@ import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.report as report_binding
 
 
-class Report(stix.Entity):
+class Report(Cached, stix.Entity):
     """A STIX Report Object.
 
     Args:

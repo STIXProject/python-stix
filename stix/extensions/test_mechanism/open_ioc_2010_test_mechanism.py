@@ -6,10 +6,10 @@ from StringIO import StringIO
 
 # external
 from lxml import etree
+import mixbox.xml
 
 # internal
 import stix
-import stix.utils.parser as parser
 from stix.indicator.test_mechanism import _BaseTestMechanism
 import stix.bindings.extensions.test_mechanism.open_ioc_2010 as open_ioc_tm_binding
 
@@ -39,8 +39,8 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
             self._ioc = None
             return
 
-        tree = parser.get_etree(value)
-        root = parser.get_etree_root(tree)
+        tree = mixbox.xml.get_etree(value)
+        root = mixbox.xml.get_etree_root(tree)
 
         if root.tag != self._TAG_IOC:
             self._cast_ioc(root)
@@ -51,7 +51,7 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
 
     def _collect_schemalocs(self, node):
         try:
-            schemaloc = parser.get_schemaloc_pairs(node)
+            schemaloc = mixbox.xml.get_schemaloc_pairs(node)
             self.__input_schemalocations__ = dict(schemaloc)
         except KeyError:
             self.__input_schemalocations__ = {}
@@ -99,7 +99,7 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
             
         super(OpenIOCTestMechanism, cls).from_dict(d, return_obj)
         if 'ioc' in d:
-            parser = stix.utils.parser.get_xml_parser()
+            parser = mixbox.xml.get_xml_parser()
             return_obj.ioc = etree.parse(StringIO(d['ioc']), parser=parser)
         
         return return_obj

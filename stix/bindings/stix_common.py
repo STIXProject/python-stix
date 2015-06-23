@@ -9,9 +9,11 @@
 #
 
 import sys
-from stix.bindings import *
+from mixbox.binding_utils import *
 import cybox.bindings.cybox_common as cybox_common_binding
 import cybox.bindings.cybox_core as cybox_core_binding
+
+from stix.bindings import get_type_info, lookup_extension
 
 XML_NS = "http://stix.mitre.org/common-1"
 

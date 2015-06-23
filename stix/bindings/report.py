@@ -8,8 +8,10 @@
 # Generated Mon Apr 27 08:13:59 2015 by generateDS.py version 2.9a.
 #
 
-from stix.bindings import *
 from cybox.bindings import cybox_core
+from mixbox.binding_utils import *
+
+from stix.bindings import lookup_extension, register_extension
 import stix.bindings.stix_common as common_binding
 import stix.bindings.data_marking as data_marking_binding
 

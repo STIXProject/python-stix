@@ -9,10 +9,10 @@ import functools
 # external
 import cybox
 import lxml.etree
+import mixbox.xml
 
 # internal
 import stix
-import stix.xmlconst as xmlconst
 
 # relative
 from . import dates
@@ -275,16 +275,6 @@ def is_bool(obj):
     return isinstance(obj, bool)
 
 
-def is_element(obj):
-    """Returns ``True`` if `obj` is an lxml ``Element``."""
-    return isinstance(obj, lxml.etree._Element)  # noqa
-
-
-def is_etree(obj):
-    """Returns ``True`` if `obj` is an lxml ``ElementTree``."""
-    return isinstance(obj, lxml.etree._ElementTree)  # noqa
-
-
 def has_value(var):
     """Returns ``True`` if `var` is not ``None`` and not empty."""
     if var is None:
@@ -326,7 +316,7 @@ def to_dict(entity, skip=()):
             d[key] = dates.serialize_value(field)
         elif is_date(field):
             d[key] = dates.serialize_date(field)
-        elif is_element(field) or is_etree(field):
+        elif mixbox.xml.is_element(field) or mixbox.xml.is_etree(field):
             d[key] = lxml.etree.tostring(field)
         elif is_sequence(field):
             d[key] = dict_iter(field)
@@ -345,10 +335,10 @@ def xml_bool(value):
     if value is None:
         return None
 
-    if value in xmlconst.FALSE:
+    if value in mixbox.xml.FALSE:
         return False
 
-    if value in xmlconst.TRUE:
+    if value in mixbox.xml.TRUE:
         return True
 
     error = "Unable to determine the xml boolean value of '{0}'".format(value)
