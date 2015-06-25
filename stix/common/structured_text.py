@@ -9,6 +9,8 @@ import stix
 import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
 
+from stix.base import AttributeField, ElementField
+
 #: Default ordinality value for StructuredText.
 DEFAULT_ORDINALITY = 1
 
@@ -26,6 +28,8 @@ class StructuredText(stix.Entity):
     _binding = stix_common_binding
     _binding_class = _binding.StructuredTextType
     _namespace = 'http://stix.mitre.org/common-1'
+
+    #ordinality = AttributeField("ordinality")
 
     def __init__(self, value=None, ordinality=None):
         self.id_ = None

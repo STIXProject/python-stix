@@ -944,7 +944,9 @@ class Indicator(stix.BaseCoreComponent):
 
     def to_dict(self):
         keys = ('observables', 'observable_composition_operator', 'negate')
-        d = utils.to_dict(self, skip=keys)
+        #d = utils.to_dict(self, skip=keys)
+
+        d = super(Indicator, self).to_dict()
 
         if self.negate:
             d['negate'] = True

@@ -3,6 +3,7 @@
 
 import stix
 import stix.bindings.stix_common as common_binding
+import stix.utils
 
 from .datetimewithprecision import DateTimeWithPrecision
 from .structured_text import StructuredTextList
@@ -108,6 +109,7 @@ class Activity(stix.Entity):
         return return_obj
 
     def to_dict(self):
+        return stix.utils.to_dict(self)
         return super(Activity, self).to_dict()
 
     @classmethod

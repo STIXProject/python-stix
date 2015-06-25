@@ -134,9 +134,4 @@ def supported_stix_version():
 
 # because common depends on base, we can only set the TypeFields types on
 # BaseCoreComponent to common classes after both common and base are imported
-#BaseCoreComponent.description.type_ = common.StructuredText
-#common.StructuredText
-BaseCoreComponent.information_source.type_ = common.InformationSource
-
-import data_marking
-BaseCoreComponent.handling.type_ = data_marking.Marking
+BaseCoreComponent.initClassFields()

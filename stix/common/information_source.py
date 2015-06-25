@@ -15,14 +15,17 @@ import stix.bindings.stix_common as stix_common_binding
 from . import vocabs, VocabString
 from .identity import Identity
 from .structured_text import StructuredTextList
-
+from stix.base import ElementField
 
 class InformationSource(stix.Entity):
     _binding = stix_common_binding
     _binding_class = stix_common_binding.InformationSourceType
     _namespace = 'http://stix.mitre.org/common-1'
 
+    identity = ElementField("Identity", Identity)
+
     def __init__(self, description=None, identity=None, time=None, tools=None, contributing_sources=None, references=None):
+        self._fields = {}
         self.description = description
         self.identity = identity
         self.contributing_sources = contributing_sources
@@ -121,14 +124,6 @@ class InformationSource(stix.Entity):
         self.descriptions.add(description)
 
     @property
-    def identity(self):
-        return self._identity
-
-    @identity.setter
-    def identity(self, value):
-        self._set_var(Identity, try_cast=False, identity=value)
-
-    @property
     def time(self):
         return self._time
 
@@ -224,7 +219,13 @@ class InformationSource(stix.Entity):
         return return_obj
 
     def to_dict(self):
-       return super(InformationSource, self).to_dict()
+        #for i in range(10): print i
+        print "TO DICT INFORMATION_SOURCE CALLED"
+        print self.description
+        ret = super(InformationSource, self).to_dict()
+        print ret
+        print utils.to_dict(self)
+        return ret
 
 class ContributingSources(stix.EntityList):
     _namespace = "http://stix.mitre.org/common-1"

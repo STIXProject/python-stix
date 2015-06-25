@@ -5,57 +5,30 @@ from __future__ import absolute_import
 
 import stix
 import stix.bindings.stix_common as common_binding
-
+from stix.base import ElementField, IdField
+from stix.bindings.stix_common import IdentityType
 
 class Identity(stix.Entity):
     _binding = common_binding
     _namespace = 'http://stix.mitre.org/common-1'
+    _binding_class = IdentityType
+
+    id_ = IdField("id")
+    idref = IdField("idref")
+    name = ElementField("Name")
+    related_identities = ElementField("Related_Identities")
+
+    @classmethod
+    def initializeClassFields(cls):
+        cls.related_identities.type = RelatedIdentities
 
     def __init__(self, id_=None, idref=None, name=None, related_identities=None):
+        super(Identity, self).__init__()
+        
         self.id_ = id_
         self.idref = idref
         self.name = name
         self.related_identities = related_identities
-
-    @property
-    def id_(self):
-        return self._id
-    
-    @id_.setter
-    def id_(self, value):
-        if not value:
-            self._id = None
-        else:
-            self._id = value
-            self.idref = None
-    
-    @property
-    def idref(self):
-        return self._idref
-    
-    @idref.setter
-    def idref(self, value):
-        if not value:
-            self._idref = None
-        else:
-            self._idref = value
-            self.id_ = None  # unset id_ if idref is present
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, value):
-        self._name = value if value else None
-
-    @property
-    def related_identities(self):
-        return self._related_identities
-
-    @related_identities.setter
-    def related_identities(self, value):
-        self._related_identities = RelatedIdentities(value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(Identity, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -137,7 +110,8 @@ class RelatedIdentities(stix.EntityList):
     _contained_type = RelatedIdentity
     _inner_name = "identities"
 
-
+# this must come after RelatedIdentities definition
+Identity.initializeClassFields()
 
 # Backwards compatibility
 add_extension = stix.add_extension

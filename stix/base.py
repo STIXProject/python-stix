@@ -6,7 +6,7 @@ import json
 import collections
 import itertools
 import StringIO
-from cybox import TypedField
+from mixbox import fields, entities
 
 # internal
 from . import bindings, utils
@@ -16,10 +16,10 @@ def _override(*args, **kwargs):
     raise NotImplementedError()
 
 
-class AttributeField(TypedField):
+class AttributeField(fields.TypedField):
     pass
 
-class ElementField(TypedField):
+class ElementField(fields.TypedField):
     pass
 
 class IdField(AttributeField):
@@ -32,8 +32,7 @@ class Entity(object):
     _XSI_TYPE = None
 
     def __init__(self):
-        pass
-        #self._fields = {}
+        self._fields = {}
 
     def _collect_ns_info(self, ns_info=None):
         if not ns_info:
@@ -83,7 +82,7 @@ class Entity(object):
         var_list = []
         for (name, obj) in inspect.getmembers(cls, inspect.isdatadescriptor):
             print name + " " + str(type(obj)) + " " + str(obj.__class__)
-            if isinstance(obj, TypedField):
+            if isinstance(obj, fields.TypedField):
                 var_list.append(obj)
 
         return var_list
@@ -161,7 +160,7 @@ class Entity(object):
         print "self", self.__dict__
 
         for name, field in vars.iteritems():
-            if isinstance(field, TypedField):
+            if isinstance(field, fields.TypedField):
                 val = getattr(self, field.attr_name)
 
                 if field.multiple:
@@ -341,8 +340,8 @@ class Entity(object):
             else:
                 return value
         
-        entity_dict = {}
-        vars = {}
+        entity_dict = { }
+        vars = { }
         for klass in self.__class__.__mro__:
             if klass is Entity:
                 break
@@ -350,7 +349,7 @@ class Entity(object):
 
         hasAnyTypedField = False
         for name, field in vars.iteritems():
-            if isinstance(field, TypedField):
+            if isinstance(field, fields.TypedField):
                 hasAnyTypedField = True
                 
                 val = getattr(self, field.attr_name)
@@ -750,12 +749,20 @@ class BaseCoreComponent(Entity):
     idref = IdField("idref")
     version = AttributeField("version")
     information_source = ElementField("Information_Source")
-    handling = ElementField("Handling", multiple=True)
+    #description = ElementField("Description")
+    handling = ElementField("Handling")
+
+    @classmethod
+    def initClassFields(cls):
+        import data_marking
+        import common
+        BaseCoreComponent.handling.type_ = data_marking.Marking
+        #BaseCoreComponent.description.type_ = common.StructuredText
+        BaseCoreComponent.information_source.type_ = common.InformationSource
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
         super(BaseCoreComponent, self).__init__()
-        self._fields = {}
         self.id_ = id_ or utils.create_id(self._ID_PREFIX)
         self.idref = idref
         self.title = title
@@ -769,57 +776,6 @@ class BaseCoreComponent(Entity):
             self.timestamp = timestamp
         else:
             self.timestamp = utils.dates.now() if not idref else None
-
-    @property
-    def id_(self):
-        """The ``id_`` property serves as an identifier. This is
-        automatically set during ``__init__()``.
-
-        Default Value: ``None``
-
-        Note:
-            Both the ``id_`` and ``idref`` properties cannot be set at the
-            same time. **Setting one will unset the other!**
-
-        Returns:
-            A string id.
-
-        """
-        return self._id
-
-    @id_.setter
-    def id_(self, value):
-        if not value:
-            self._id = None
-        else:
-            self._id = value
-            self.idref = None
-
-    @property
-    def idref(self):
-        """The ``idref`` property must be set to the ``id_`` value of another
-        object instance of the same type. An idref does not need to resolve to
-        a local object instance.
-
-        Default Value: ``None``.
-
-        Note:
-            Both the ``id_`` and ``idref`` properties cannot be set at the
-            same time. **Setting one will unset the other!**
-
-        Returns:
-            The value of the ``idref`` property
-
-        """
-        return self._idref
-
-    @idref.setter
-    def idref(self, value):
-        if not value:
-            self._idref = None
-        else:
-            self._idref = value
-            self.id_ = None  # unset id_ if idref is present
 
     # TODO: add this as a callback_hook to version TypedField
     def check_version(self, value):
