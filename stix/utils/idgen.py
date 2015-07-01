@@ -3,6 +3,8 @@
 
 import uuid
 import contextlib
+
+from mixbox.namespaces import Namespace
 import cybox.utils
 
 
@@ -93,7 +95,7 @@ def _set_cybox_namespace(namespace):
     uri = namespace.iterkeys().next()
     prefix = namespace.itervalues().next()
 
-    ns = cybox.utils.Namespace(uri, prefix)
+    ns = Namespace(uri, prefix, '')
     cybox.utils.set_id_namespace(ns)
 
 

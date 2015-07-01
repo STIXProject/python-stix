@@ -1,17 +1,15 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# stdlib
 import contextlib
-import keyword
 import functools
+import keyword
 
-# external
-import cybox
 import lxml.etree
+
+from mixbox.entities import Entity, EntityList
 import mixbox.xml
 
-# internal
 import stix
 
 # relative
@@ -138,24 +136,27 @@ def is_stix(entity):
 
 
 def is_cybox(entity):
-    """Returns true if `entity` is an instance of :class:`cybox.Entity`."""
-    return isinstance(entity, cybox.Entity)
+    """Returns true if `entity` is an instance of
+    :class:`mixbox.entities.Entity`.
+    """
+    # TODO: once all entities subclass from mixbox.entities.Entity, how do we
+    # do this?
+    return isinstance(entity, Entity)
 
 
 def is_entity(entity):
     """Returns true if `entity` is an instance of :class:`.Entity` or
-    :class:`cybox.Entity`.
-
+    :class:`mixbox.Entity`.
     """
-    return isinstance(entity, (cybox.Entity, stix.Entity))
+    return isinstance(entity, (Entity, stix.Entity))
 
 
 def is_entitylist(entity):
     """Returns true if `entity` is an instance of :class:`.EntityList`
-    or :class:`cybox.EntityList`.
+    or :class:`mixbox.entities.EntityList`.
 
     """
-    return isinstance(entity, (cybox.EntityList, stix.EntityList))
+    return isinstance(entity, (EntityList, stix.EntityList))
 
 
 def is_typedlist(entity):
