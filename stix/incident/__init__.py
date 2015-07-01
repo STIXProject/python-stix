@@ -79,6 +79,8 @@ class Incident(stix.BaseCoreComponent):
         self.coa_taken = None
         self.coa_requested = None
         self.history = History()
+        self.contacts = None
+        self.url = None
 
 
     @property
@@ -454,6 +456,27 @@ class Incident(stix.BaseCoreComponent):
     def add_related_package(self, value):
         self.related_packages.append(value)
 
+    @property
+    def contacts(self):
+        return self.contacts
+
+    @contacts.setter
+    def contacts(self, contacts_list):
+        self.contacts = contacts_list
+
+    def add_contact(self, contact):
+        if self.contacts is None:
+            self.contacts = _InformationSources()
+        self.contacts.append(contact)
+
+    @property
+    def url(self):
+        return self.url
+
+    @url.setter
+    def url(self, value):
+        self.url = value
+
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -506,6 +529,10 @@ class Incident(stix.BaseCoreComponent):
             return_obj.History = self.history.to_obj(ns_info=ns_info)
         if self.related_packages:
             return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
+        if self.contacts:
+            return_obj.Contact = self.contacts.to_obj(ns_info=ns_info)
+        if self.url:
+            return_obj.URL = self.url
 
         return return_obj
 
@@ -543,6 +570,8 @@ class Incident(stix.BaseCoreComponent):
             return_obj.impact_assessment = ImpactAssessment.from_obj(obj.Impact_Assessment)
             return_obj.security_compromise = VocabString.from_obj(obj.Security_Compromise)
             return_obj.related_packages = RelatedPackageRefs.from_obj(obj.Related_Packages)
+            return_obj.contacts = _InformationSources.from_obj(obj.Contact)
+            return_obj.url = obj.URL
 
         return return_obj
 
@@ -583,6 +612,8 @@ class Incident(stix.BaseCoreComponent):
         return_obj.status = VocabString.from_dict(get('status'))
         return_obj.history = History.from_dict(get('history'))
         return_obj.related_packages = RelatedPackageRefs.from_dict(get('related_packages'))
+        return_obj.contacts = _InformationSources.from_dict(get('contacts'))
+        return_obj.url = get('url')
 
         return return_obj
 
