@@ -5,9 +5,11 @@ import unittest
 import StringIO
 
 import lxml
+
+from mixbox import idgen
+from mixbox.namespaces import Namespace
 import mixbox.xml
 
-from stix import utils
 from stix.test import EntityTestCase
 from stix.extensions.test_mechanism.open_ioc_2010_test_mechanism import OpenIOCTestMechanism
 
@@ -118,10 +120,12 @@ class OpenIOCEtreeTests(unittest.TestCase):
     )
 
     def setUp(self):
-        utils.set_id_namespace({"http://schemas.mandiant.com/2010/ioc": "mandiant-openioc"})
+        ioc_ns = Namespace("http://schemas.mandiant.com/2010/ioc",
+                           "mandiant-openioc", '')
+        idgen.set_id_namespace(ioc_ns)
 
     def tearDown(self):
-        utils.set_id_namespace(utils.EXAMPLE_NAMESPACE)
+        idgen.set_id_namespace(idgen.EXAMPLE_NAMESPACE)
 
     def _test_xml(self, obj):
         xml = obj.to_xml()

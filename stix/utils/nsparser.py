@@ -5,6 +5,7 @@ import collections
 import itertools
 import warnings
 
+from mixbox import idgen
 from mixbox.entities import Entity
 
 import cybox
@@ -16,7 +17,7 @@ from cybox.utils.nsparser import CYBOX_NAMESPACES
 import stix
 
 # relative
-from . import ignored, idgen
+from . import ignored
 from .walk import iterwalk
 
 
@@ -122,20 +123,19 @@ class NamespaceInfo(object):
         'http://example.com' by removing the former.
 
         """
-        ex_api_ns = idgen.EXAMPLE_NAMESPACE.keys()[0]
-        ex_prefix = 'example'  # Example ns prefix
-        id_alias = idgen.get_id_namespace_alias()
+        example_prefix = 'example'  # Example ns prefix
+        idgen_prefix = idgen.get_id_namespace_prefix()
 
         # If the ID namespace alias doesn't match the example alias, return.
-        if id_alias != ex_prefix:
+        if idgen_prefix != example_prefix:
             return
 
         # If the example namespace prefix isn't in the parsed namespace
         # prefixes, return.
-        if ex_prefix not in self._input_namespaces:
+        if example_prefix not in self._input_namespaces:
             return
 
-        self._input_namespaces[ex_prefix] = ex_api_ns
+        self._input_namespaces[example_prefix] = idgen.EXAMPLE_NAMESPACE.name
 
     def _check_namespaces(self, ns_dict):
         """Check that all the prefixes in `ns_dict` are mapped to only

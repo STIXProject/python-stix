@@ -1,8 +1,9 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# external
+from mixbox import idgen
 from mixbox.cache import Cached
+
 from cybox.core import Observable, Observables
 
 # base
@@ -41,7 +42,7 @@ class STIXPackage(Cached, stix.Entity):
 
     Args:
         id_ (optional): An identifier. If ``None``, a value will be generated
-            via ``stix.utils.create_id()``. If set, this will unset the
+            via ``mixbox.idgen.create_id()``. If set, this will unset the
             ``idref`` property.
         idref: **DEPRECATED** An identifier reference. If set this will unset
             the ``id_`` property.
@@ -72,7 +73,7 @@ class STIXPackage(Cached, stix.Entity):
                  ttps=None, campaigns=None, related_packages=None,
                  reports=None):
         
-        self.id_ = id_ or stix.utils.create_id("Package")
+        self.id_ = id_ or idgen.create_id("Package")
         self.idref = idref
         self.version = STIXPackage._version
         self.stix_header = stix_header

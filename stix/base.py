@@ -7,9 +7,9 @@ import collections
 import itertools
 import StringIO
 
-# external
-from mixbox.cache import Cached
+from mixbox import idgen
 from mixbox.binding_utils import save_encoding
+from mixbox.cache import Cached
 
 # internal
 from . import utils
@@ -573,7 +573,7 @@ class BaseCoreComponent(Cached, Entity):
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
 
-        self.id_ = id_ or utils.create_id(self._ID_PREFIX)
+        self.id_ = id_ or idgen.create_id(self._ID_PREFIX)
         self.idref = idref
         self.title = title
         self.description = description
