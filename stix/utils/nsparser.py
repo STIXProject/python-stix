@@ -508,9 +508,6 @@ DEFAULT_STIX_PREFIX_TO_NAMESPACE = dict(
     (alias, ns) for ns, alias in DEFAULT_STIX_NAMESPACES.iteritems()
 )
 
-#: Tuple of all keys found in `DEFAULT_STIX_NAMESPACES` mapping.
-DEFAULT_STIX_NAMESPACES_TUPLE = tuple(DEFAULT_STIX_NAMESPACES.keys())
-
 #: Mapping of STIX/CybOX/STIX Extension namespaces to canonical schema locations
 DEFAULT_STIX_SCHEMALOCATIONS = dict(
     itertools.chain(
@@ -540,5 +537,4 @@ with ignored(ImportError):
 
     DEFAULT_STIX_NAMESPACES.update(ns_to_prefix)
     DEFAULT_STIX_PREFIX_TO_NAMESPACE.update(prefix_to_ns)
-    DEFAULT_STIX_NAMESPACES_TUPLE = tuple(DEFAULT_STIX_NAMESPACES.iterkeys())
     DEFAULT_STIX_SCHEMALOCATIONS.update(ns_to_schemalocation)
