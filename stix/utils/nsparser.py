@@ -379,17 +379,6 @@ class NamespaceParser(object):
 
         return schemaloc_str_start + schemaloc_str_content + schemaloc_str_end
 
-    def get_namespace_def_str(self, namespaces, schemaloc_dict):
-        if not any((namespaces, schemaloc_dict)):
-            return ""
-
-        parts = (
-            self.get_xmlns_str(namespaces),
-            self.get_schemaloc_str(schemaloc_dict)
-        )
-
-        return "\n\t".join(parts)
-
 
 #: Schema locations for standard XML namespaces
 XML_NAMESPACES = {
