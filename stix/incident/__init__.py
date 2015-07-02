@@ -79,8 +79,8 @@ class Incident(stix.BaseCoreComponent):
         self.coa_taken = None
         self.coa_requested = None
         self.history = History()
-        self.contacts = None
-        self.url = None
+        self._contacts = None
+        self._url = None
 
 
     @property
@@ -458,24 +458,24 @@ class Incident(stix.BaseCoreComponent):
 
     @property
     def contacts(self):
-        return self.contacts
+        return self._contacts
 
     @contacts.setter
     def contacts(self, contacts_list):
-        self.contacts = contacts_list
+        self._contacts = contacts_list
 
     def add_contact(self, contact):
-        if self.contacts is None:
-            self.contacts = _InformationSources()
-        self.contacts.append(contact)
+        if self._contacts is None:
+            self._contacts = _InformationSources()
+        self._contacts.append(contact)
 
     @property
     def url(self):
-        return self.url
+        return self._url
 
     @url.setter
     def url(self, value):
-        self.url = value
+        self._url = value
 
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
