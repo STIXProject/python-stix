@@ -462,7 +462,7 @@ class Incident(stix.BaseCoreComponent):
 
     @contacts.setter
     def contacts(self, contacts_list):
-        self._contacts = contacts_list
+        self._contacts = _InformationSources(contacts_list)
 
     def add_contact(self, contact):
         if self._contacts is None:
