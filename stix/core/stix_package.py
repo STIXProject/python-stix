@@ -75,7 +75,7 @@ class STIXPackage(Cached, stix.Entity):
         
         self.id_ = id_ or idgen.create_id("Package")
         self.idref = idref
-        self.version = STIXPackage._version
+        self._version = STIXPackage._version
         self.stix_header = stix_header
         self.campaigns = campaigns
         self.courses_of_action = courses_of_action
@@ -148,15 +148,6 @@ class STIXPackage(Cached, stix.Entity):
 
         """
         return self._version
-
-    @version.setter
-    def version(self, value):
-        if not value:
-            self._version = None
-        else:
-            utils.check_version(self._ALL_VERSIONS, value)
-            self._version = value
-
 
     @property
     def stix_header(self):
@@ -462,7 +453,7 @@ class STIXPackage(Cached, stix.Entity):
 
         # Don't overwrite this unless passed in.
         if obj.version:
-            return_obj.version = obj.version
+            return_obj._version = obj.version
 
         return return_obj
 
@@ -475,7 +466,7 @@ class STIXPackage(Cached, stix.Entity):
         return_obj.id_ = get('id')
         return_obj.idref = get('idref')
         return_obj.timestamp = get('timestamp')
-        return_obj.version = get('version', cls._version)
+        return_obj._version = get('version', cls._version)
         return_obj.stix_header = STIXHeader.from_dict(get('stix_header'))
         return_obj.campaigns = Campaigns.from_dict(get('campaigns'))
         return_obj.courses_of_action = CoursesOfAction.from_dict(get('courses_of_action'))
