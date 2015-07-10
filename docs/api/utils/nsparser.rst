@@ -3,12 +3,13 @@
 
 .. module:: stix.utils.nsparser
 
-Classes
--------
+Functions
+---------
 
-.. autoclass:: NamespaceParser
-	:show-inheritance:
-	:members:
+.. autofunction:: get_namespaces
+.. autofunction:: get_namespace_schemalocation_dict
+.. autofunction:: get_xmlns_str
+.. autofunction:: get_schemaloc_str
 
 Constants
 ---------

@@ -145,7 +145,6 @@ class Entity(object):
         """
 
         from .utils import nsparser
-        parser = nsparser.NamespaceParser()
 
         if auto_namespace:
             ns_info = nsparser.NamespaceInfo()
@@ -176,7 +175,7 @@ class Entity(object):
 
         namespace_def = ""
         if include_namespaces:
-            xmlns = parser.get_xmlns_str(ns_info.finalized_namespaces)
+            xmlns = nsparser.get_xmlns_str(ns_info.finalized_namespaces)
             namespace_def += ("\n\t" + xmlns)
 
         if include_schemalocs and include_namespaces:

@@ -336,47 +336,43 @@ class NamespaceInfo(object):
             self._input_schemalocs.update(entity.__input_schemalocations__)
 
 
-class NamespaceParser(object):
-    def __init__(self):
-        pass
+def get_namespaces(entity, ns_dict=None):
+    ns_info = NamespaceInfo()
 
-    def get_namespaces(self, entity, ns_dict=None):
-        ns_info = NamespaceInfo()
+    for node in iterwalk(entity):
+        ns_info.collect(node)
 
-        for node in iterwalk(entity):
-            ns_info.collect(node)
+    ns_info.finalize(ns_dict=ns_dict)
+    return ns_info.finalized_namespaces
 
-        ns_info.finalize(ns_dict=ns_dict)
-        return ns_info.finalized_namespaces
+def get_namespace_schemalocation_dict(entity, ns_dict=None, schemaloc_dict=None):
+    ns_info = NamespaceInfo()
 
-    def get_namespace_schemalocation_dict(self, entity, ns_dict=None, schemaloc_dict=None):
-        ns_info = NamespaceInfo()
+    for node in iterwalk(entity):
+        ns_info.collect(node)
 
-        for node in iterwalk(entity):
-            ns_info.collect(node)
+    ns_info.finalize(ns_dict=ns_dict, schemaloc_dict=schemaloc_dict)
+    return ns_info.finalized_schemalocs
 
-        ns_info.finalize(ns_dict=ns_dict, schemaloc_dict=schemaloc_dict)
-        return ns_info.finalized_schemalocs
+def get_xmlns_str(ns_dict):
+    pairs = sorted(ns_dict.iteritems())
+    return "\n\t".join(
+        'xmlns:%s="%s"' % (alias, ns) for alias, ns in pairs
+    )
 
-    def get_xmlns_str(self, ns_dict):
-        pairs = sorted(ns_dict.iteritems())
-        return "\n\t".join(
-            'xmlns:%s="%s"' % (alias, ns) for alias, ns in pairs
-        )
+def get_schemaloc_str(schemaloc_dict):
+    if not schemaloc_dict:
+        return ""
 
-    def get_schemaloc_str(self, schemaloc_dict):
-        if not schemaloc_dict:
-            return ""
+    schemaloc_str_start = 'xsi:schemaLocation="\n\t'
+    schemaloc_str_end = '"'
 
-        schemaloc_str_start = 'xsi:schemaLocation="\n\t'
-        schemaloc_str_end = '"'
+    pairs = sorted(schemaloc_dict.iteritems())
+    schemaloc_str_content = "\n\t".join(
+        "%s %s" % (ns, loc) for ns, loc in pairs
+    )
 
-        pairs = sorted(schemaloc_dict.iteritems())
-        schemaloc_str_content = "\n\t".join(
-            "%s %s" % (ns, loc) for ns, loc in pairs
-        )
-
-        return schemaloc_str_start + schemaloc_str_content + schemaloc_str_end
+    return schemaloc_str_start + schemaloc_str_content + schemaloc_str_end
 
 
 # These namespaces don't need to have a schemalocation included during export.
