@@ -1,14 +1,16 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from mixbox.datautils import is_sequence
+
 import stix
-import stix.utils as utils
 from stix.ttp import TTP
 from stix.common.kill_chains import KillChains
 from stix.bindings import stix_core as core_binding
 
 # deprecation warnings
 from stix.utils.deprecated import idref_deprecated
+
 
 class TTPs(stix.EntityList):
     _binding = core_binding
@@ -33,7 +35,7 @@ class TTPs(stix.EntityList):
     def ttps(self, value):
         self._inner = []
 
-        if utils.is_sequence(value):
+        if is_sequence(value):
             self.extend(value)
         else:
             self.append(value)

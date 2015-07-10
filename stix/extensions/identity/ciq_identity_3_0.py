@@ -3,8 +3,9 @@
 
 import lxml.etree as et
 
+from mixbox.datautils import is_sequence
+
 import stix
-import stix.utils as utils
 import stix.common as common
 import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
 
@@ -162,7 +163,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         self._addresses = []
         if not value:
             return
-        elif utils.is_sequence(value):
+        elif is_sequence(value):
             for v in value:
                 self.add_address(v)
         else:
@@ -185,7 +186,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         self._languages = []
         if not value:
             return
-        elif utils.is_sequence(value):
+        elif is_sequence(value):
             for v in value:
                 self.add_language(v)
         else:
@@ -221,7 +222,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         self._electronic_address_identifiers = []
         if not value:
             return
-        elif utils.is_sequence(value):
+        elif is_sequence(value):
             for v in value:
                 self.add_electronic_address_identifier(v)
         else:
@@ -244,7 +245,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         self._free_text_lines = []
         if not value:
             return
-        elif utils.is_sequence(value):
+        elif is_sequence(value):
             for v in value:
                 self.add_free_text_line(v)
         else:
@@ -267,7 +268,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         self._contact_numbers = []
         if not value:
             return
-        elif utils.is_sequence(value):
+        elif is_sequence(value):
             for v in value:
                 self.add_contact_number(v)
         else:
@@ -290,7 +291,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         self._nationalities = []
         if not value:
             return
-        elif utils.is_sequence(value):
+        elif is_sequence(value):
             for v in value:
                 self.add_nationality(v)
         else:
@@ -544,7 +545,7 @@ class AdministrativeArea(stix.Entity):
         self._name_elements = []
         if not value:
             return
-        elif utils.is_sequence(value):
+        elif is_sequence(value):
             for v in value:
                 self.add_name_element(v)
         else:
@@ -616,7 +617,7 @@ class Country(stix.Entity):
         self._name_elements = []
         if not value:
             return
-        elif utils.is_sequence(value):
+        elif is_sequence(value):
             for v in value:
                 self.add_name_element(v)
         else:
@@ -732,7 +733,7 @@ class FreeTextAddress(stix.Entity):
 
         if value is None or len(value) == 0:
             return
-        elif utils.is_sequence(value):
+        elif is_sequence(value):
             self._address_lines = value
         else:
             self._address_lines.append(value)
@@ -1077,7 +1078,7 @@ class OrganisationName(stix.Entity):
         self._name_elements = []
         if not value:
             return
-        elif utils.is_sequence(value):
+        elif is_sequence(value):
             for v in value:
                 self.add_organisation_name_element(v)
         else:
@@ -1100,7 +1101,7 @@ class OrganisationName(stix.Entity):
         self._subdivision_names = []
         if not value:
             return
-        elif utils.is_sequence(value):
+        elif is_sequence(value):
             for v in value:
                 self.add_subdivision_name(v)
         else:
@@ -1679,7 +1680,7 @@ class ContactNumber(stix.Entity):
         self._contact_number_elements = []
         if not value:
             return
-        elif utils.is_sequence(value):
+        elif is_sequence(value):
             for v in value:
                 self.add_contact_number_element(v)
         else:

@@ -10,6 +10,7 @@ import StringIO
 from mixbox import idgen
 from mixbox.binding_utils import save_encoding
 from mixbox.cache import Cached
+from mixbox.datautils import is_sequence
 
 # internal
 from . import utils
@@ -283,7 +284,7 @@ class EntityList(collections.MutableSequence, Entity):
             return
 
         for arg in args:
-            if utils.is_sequence(arg):
+            if is_sequence(arg):
                 self.extend(arg)
             else:
                 self.append(arg)
@@ -391,7 +392,7 @@ class EntityList(collections.MutableSequence, Entity):
     @classmethod
     def from_list(cls, list_repr, return_obj=None, contained_type=None):
 
-        if not utils.is_sequence(list_repr):
+        if not is_sequence(list_repr):
             return None
 
         if return_obj is None:
@@ -493,7 +494,7 @@ class TypedCollection(object):
         if not contained_type:
             contained_type = cls._contained_type
 
-        if not utils.is_sequence(obj_list):
+        if not is_sequence(obj_list):
             obj_list = [obj_list]
 
         items = (contained_type.from_obj(x) for x in obj_list)
@@ -505,7 +506,7 @@ class TypedCollection(object):
         if not list_repr:
             return None
 
-        if isinstance(list_repr, dict) or not utils.is_sequence(list_repr):
+        if isinstance(list_repr, dict) or not is_sequence(list_repr):
             list_repr = [list_repr]
 
         if not contained_type:
@@ -538,7 +539,7 @@ class TypedList(TypedCollection, collections.MutableSequence):
             return
 
         for arg in args:
-            if utils.is_sequence(arg):
+            if is_sequence(arg):
                 self.extend(arg)
             else:
                 self.append(arg)

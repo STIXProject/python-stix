@@ -3,7 +3,7 @@
 
 import warnings
 
-from . import is_sequence
+from mixbox.datautils import is_sequence
 
 
 def idref_deprecated(entity):

@@ -3,15 +3,13 @@
 
 from __future__ import absolute_import
 
-# external
+from mixbox.datautils import is_sequence
+#
 import cybox.common
 
-# internal
 import stix
-import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
 
-# relative
 from . import vocabs, VocabString
 from .identity import Identity
 from .structured_text import StructuredTextList
@@ -52,7 +50,7 @@ class InformationSource(stix.Entity):
 
         if not value:
             return
-        elif utils.is_sequence(value):
+        elif is_sequence(value):
             for v in value:
                 self.add_reference(v)
         else:

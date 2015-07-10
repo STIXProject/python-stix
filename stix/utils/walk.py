@@ -4,11 +4,13 @@
 # stdlib
 import itertools
 
+from mixbox.datautils import is_sequence
+
 # external
 from cybox.common import ObjectProperties
 
 # internal
-from . import is_entity, is_entitylist, attr_name, is_sequence
+from . import is_entity, is_entitylist, attr_name
 
 
 def _is_skippable(owner, varname, varobj):

@@ -1,12 +1,14 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-import itertools
-import contextlib
 import collections
+import contextlib
+import itertools
+
+from mixbox.datautils import is_sequence
+from mixbox.exceptions import ignored
 
 import stix
-import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
 
 #: Default ordinality value for StructuredText.
@@ -199,7 +201,7 @@ class StructuredTextList(stix.TypedCollection, collections.Sequence):
             return
 
         for arg in args:
-            if utils.is_sequence(arg):
+            if is_sequence(arg):
                 self.update(arg)
             else:
                 self.add(arg)
@@ -323,7 +325,7 @@ class StructuredTextList(stix.TypedCollection, collections.Sequence):
             value.ordinality = self.next_ordinality
 
         # Remove the existing item if there is one.
-        with utils.ignored(KeyError):
+        with ignored(KeyError):
             del self[value.ordinality]
 
         self._inner.append(value)

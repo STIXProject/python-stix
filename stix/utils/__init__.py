@@ -7,6 +7,7 @@ import keyword
 
 import lxml.etree
 
+from mixbox import datautils
 from mixbox.entities import Entity, EntityList
 import mixbox.xml
 
@@ -216,20 +217,12 @@ def key_name(name):
     return name
 
 
-def is_sequence(item):
-    """Returns ``True`` if `value` is a sequence type (e.g., ``list``, or
-    ``tuple``). String types will return ``False``.
-
-    """
-    return hasattr(item, "__iter__")
-
-
 def check_version(expected, found):
     """Raises ValueError if `found` is not equal to or found within
     `expected`.
 
     """
-    if is_sequence(expected):
+    if datautils.is_sequence(expected):
         is_good = found in expected
     else:
         is_good = (found == expected)
@@ -319,7 +312,7 @@ def to_dict(entity, skip=()):
             d[key] = dates.serialize_date(field)
         elif mixbox.xml.is_element(field) or mixbox.xml.is_etree(field):
             d[key] = lxml.etree.tostring(field)
-        elif is_sequence(field):
+        elif datautils.is_sequence(field):
             d[key] = dict_iter(field)
         else:
             d[key] = field
@@ -379,4 +372,4 @@ def remove_entries(d, keys):
 from .nsparser import *  # noqa
 from .dates import *  # noqa
 from .nsparser import *  # noqa
-from .walk import *  # noqa
+#from .walk import *  # noqa

@@ -1,7 +1,8 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# external
+from mixbox.datautils import is_sequence
+
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
 
@@ -340,7 +341,7 @@ class Indicator(stix.BaseCoreComponent):
         self._alternative_id = []
         if not value:
             return
-        elif utils.is_sequence(value):
+        elif is_sequence(value):
             self._alternative_id.extend(x for x in value if x)
         else:
             self._alternative_id.append(value)
