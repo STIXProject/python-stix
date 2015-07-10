@@ -10,9 +10,6 @@ from mixbox.entities import Entity
 from mixbox.namespaces import Namespace, NamespaceSet, register_namespace
 from mixbox.namespaces import XML_NAMESPACES
 
-import cybox
-import cybox.core
-import cybox.common
 from cybox.utils.nsparser import CYBOX_NAMESPACES
 
 # internal
