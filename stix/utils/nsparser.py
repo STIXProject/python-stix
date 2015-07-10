@@ -7,16 +7,12 @@ import warnings
 
 from mixbox import idgen
 from mixbox.entities import Entity
+from mixbox.exceptions import ignored
 from mixbox.namespaces import Namespace, NamespaceSet, register_namespace
 from mixbox.namespaces import XML_NAMESPACES
 
 from cybox.utils.nsparser import CYBOX_NAMESPACES
 
-# internal
-import stix
-
-# relative
-from . import ignored
 from .walk import iterwalk
 
 
@@ -71,12 +67,11 @@ class NamespaceInfo(object):
 
     def _parse_collected_classes(self):
         collected = self._collected_classes
-        entity_klasses = (stix.Entity, Entity)
 
-        # Generator which yields all stix.Entity and mixbox.Entity subclasses
+        # Generator which yields all Entity subclasses
         # that were collected.
         entity_subclasses = (
-            klass for klass in collected if issubclass(klass, entity_klasses)
+            klass for klass in collected if issubclass(klass, Entity)
         )
 
         # Local function for adding namespaces that have no defined prefix
@@ -100,7 +95,7 @@ class NamespaceInfo(object):
                 self._collected_namespaces[alias] = ns
                 continue
 
-            # Many stix/cybox entity classes have an _XSI_TYPE attribute that
+            # Many Entity classes have an _XSI_TYPE attribute that
             # contains a `prefix:namespace` formatted QNAME for the
             # associated xsi:type.
             xsi_type = getattr(klass, "_XSI_TYPE", None)

@@ -1,7 +1,6 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-import contextlib
 import functools
 import keyword
 
@@ -19,22 +18,9 @@ import stix
 # relative
 from . import dates
 
-
 CDATA_START = "<![CDATA["
 CDATA_END = "]]>"
 CONFLICTING_NAMES = keyword.kwlist + ['id', 'type', 'range']
-
-
-@contextlib.contextmanager
-def ignored(*exceptions):
-    """Allows you to ignore exceptions cleanly using context managers. This
-    exists in Python 3.
-
-    """
-    try:
-        yield
-    except exceptions:
-        pass
 
 
 def raise_warnings(func):
@@ -368,7 +354,7 @@ def remove_entries(d, keys):
 
 
 # Namespace flattening
-from .nsparser import *  # noqa
+from .parser import *  # noqa
 from .dates import *  # noqa
 from .nsparser import *  # noqa
-#from .walk import *  # noqa
+from .walk import *  # noqa

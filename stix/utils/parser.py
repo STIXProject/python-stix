@@ -3,11 +3,11 @@
 
 from distutils.version import StrictVersion
 
+from mixbox.exceptions import ignored
 import mixbox.xml
 
 import stix
 import stix.xmlconst as xmlconst
-from . import ignored
 
 
 class UnknownVersionError(Exception):
