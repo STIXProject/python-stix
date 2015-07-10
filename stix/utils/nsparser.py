@@ -7,6 +7,8 @@ import warnings
 
 from mixbox import idgen
 from mixbox.entities import Entity
+from mixbox.namespaces import Namespace, NamespaceSet, register_namespace
+from mixbox.namespaces import XML_NAMESPACES
 
 import cybox
 import cybox.core
@@ -284,7 +286,7 @@ class NamespaceInfo(object):
                 schemaloc_dict[ns] = DEFAULT_STIX_SCHEMALOCATIONS[ns]
             elif ns in schemaloc_dict:
                 continue
-            elif (ns == id_ns) or (ns in XML_NAMESPACES):
+            elif (ns == id_ns) or (ns in NO_SCHEMALOC_NEEDED):
                 continue
             else:
                 error = "Unable to map namespace '{0}' to schemaLocation"
@@ -380,150 +382,96 @@ class NamespaceParser(object):
         return schemaloc_str_start + schemaloc_str_content + schemaloc_str_end
 
 
-#: Schema locations for standard XML namespaces
-XML_NAMESPACES = {
-    'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
-    'http://www.w3.org/2001/XMLSchema': 'xs',
-    'http://www.w3.org/1999/xlink': 'xlink',
-    'http://www.w3.org/2000/09/xmldsig#': 'ds'
-}
+# These namespaces don't need to have a schemalocation included during export.
+NO_SCHEMALOC_NEEDED = [
+    'http://www.w3.org/2001/XMLSchema-instance',
+    'http://www.w3.org/2001/XMLSchema',
+    'http://www.w3.org/1999/xlink',
+    'http://www.w3.org/2000/09/xmldsig#',
+]
 
-#: Schema locations for namespaces defined by the STIX language
-STIX_NS_TO_SCHEMALOCATION = {
-    'http://data-marking.mitre.org/Marking-1': 'http://stix.mitre.org/XMLSchema/data_marking/1.2/data_marking.xsd',
-    'http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1': 'http://stix.mitre.org/XMLSchema/extensions/marking/simple/1.2/simple_marking.xsd',
-    'http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1': 'http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.2/tlp_marking.xsd',
-    'http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1': 'http://stix.mitre.org/XMLSchema/extensions/marking/terms_of_use/1.1/terms_of_use_marking.xsd',
-    'http://stix.mitre.org/Campaign-1': 'http://stix.mitre.org/XMLSchema/campaign/1.2/campaign.xsd',
-    'http://stix.mitre.org/CourseOfAction-1': 'http://stix.mitre.org/XMLSchema/course_of_action/1.2/course_of_action.xsd',
-    'http://stix.mitre.org/ExploitTarget-1': 'http://stix.mitre.org/XMLSchema/exploit_target/1.2/exploit_target.xsd',
-    'http://stix.mitre.org/Incident-1': 'http://stix.mitre.org/XMLSchema/incident/1.2/incident.xsd',
-    'http://stix.mitre.org/Indicator-2': 'http://stix.mitre.org/XMLSchema/indicator/2.2/indicator.xsd',
-    'http://stix.mitre.org/Report-1': 'http://stix.mitre.org/XMLSchema/report/1.0/report.xsd',
-    'http://stix.mitre.org/TTP-1': 'http://stix.mitre.org/XMLSchema/ttp/1.2/ttp.xsd',
-    'http://stix.mitre.org/ThreatActor-1': 'http://stix.mitre.org/XMLSchema/threat_actor/1.2/threat_actor.xsd',
-    'http://stix.mitre.org/common-1': 'http://stix.mitre.org/XMLSchema/common/1.2/stix_common.xsd',
-    'http://stix.mitre.org/default_vocabularies-1': 'http://stix.mitre.org/XMLSchema/default_vocabularies/1.2.0/stix_default_vocabularies.xsd',
-    'http://stix.mitre.org/extensions/AP#CAPEC2.7-1': 'http://stix.mitre.org/XMLSchema/extensions/attack_pattern/capec_2.7/1.1/capec_2.7_attack_pattern.xsd',
-    'http://stix.mitre.org/extensions/Address#CIQAddress3.0-1': 'http://stix.mitre.org/XMLSchema/extensions/address/ciq_3.0/1.2/ciq_3.0_address.xsd',
-    'http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1': 'http://stix.mitre.org/XMLSchema/extensions/identity/ciq_3.0/1.2/ciq_3.0_identity.xsd',
-    'http://stix.mitre.org/extensions/Malware#MAEC4.1-1': 'http://stix.mitre.org/XMLSchema/extensions/malware/maec_4.1/1.1/maec_4.1_malware.xsd',
-    'http://stix.mitre.org/extensions/StructuredCOA#Generic-1': 'http://stix.mitre.org/XMLSchema/extensions/structured_coa/generic/1.2/generic_structured_coa.xsd',
-    'http://stix.mitre.org/extensions/TestMechanism#Generic-1': 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/generic/1.2/generic_test_mechanism.xsd',
-    'http://stix.mitre.org/extensions/TestMechanism#OVAL5.10-1': 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/oval_5.10/1.2/oval_5.10_test_mechanism.xsd',
-    'http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1': 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/open_ioc_2010/1.2/open_ioc_2010_test_mechanism.xsd',
-    'http://stix.mitre.org/extensions/TestMechanism#Snort-1': 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/snort/1.2/snort_test_mechanism.xsd',
-    'http://stix.mitre.org/extensions/TestMechanism#YARA-1': 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/yara/1.2/yara_test_mechanism.xsd',
-    'http://stix.mitre.org/extensions/Vulnerability#CVRF-1': 'http://stix.mitre.org/XMLSchema/extensions/vulnerability/cvrf_1.1/1.2/cvrf_1.1_vulnerability.xsd',
-    'http://stix.mitre.org/stix-1': 'http://stix.mitre.org/XMLSchema/core/1.2/stix_core.xsd'
-}
+#: Data Marking Namespaces
+NS_MARKING = Namespace('http://data-marking.mitre.org/Marking-1', 'marking', 'http://stix.mitre.org/XMLSchema/data_marking/1.2/data_marking.xsd')
+NS_MARKING_SIMPLE = Namespace('http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1', 'simpleMarking', 'http://stix.mitre.org/XMLSchema/extensions/marking/simple/1.2/simple_marking.xsd')
+NS_MARKING_TLP = Namespace('http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1', 'tlpMarking', 'http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.2/tlp_marking.xsd')
+NS_MARKING_TERMSOFUSE = Namespace('http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1', 'TOUMarking', 'http://stix.mitre.org/XMLSchema/extensions/marking/terms_of_use/1.1/terms_of_use_marking.xsd')
 
-#: Schema locations for namespaces defined by the CybOX language
-CYBOX_NS_TO_SCHEMALOCATION = dict(
-    (x.name, x.schema_location) for x in CYBOX_NAMESPACES if x.schema_location
-)
+#: STIX Namespaces
+NS_STIX_CORE = Namespace('http://stix.mitre.org/stix-1', 'stix', 'http://stix.mitre.org/XMLSchema/core/1.2/stix_core.xsd')
+NS_STIX_COMMON = Namespace('http://stix.mitre.org/common-1', 'stixCommon', 'http://stix.mitre.org/XMLSchema/common/1.2/stix_common.xsd')
+NS_STIX_VOCABS = Namespace('http://stix.mitre.org/default_vocabularies-1', 'stixVocabs', 'http://stix.mitre.org/XMLSchema/default_vocabularies/1.2.0/stix_default_vocabularies.xsd')
+NS_STIX_CAMPAIGN = Namespace('http://stix.mitre.org/Campaign-1', 'campaign', 'http://stix.mitre.org/XMLSchema/campaign/1.2/campaign.xsd')
+NS_STIX_COURSE_OF_ACTION = Namespace('http://stix.mitre.org/CourseOfAction-1', 'coa', 'http://stix.mitre.org/XMLSchema/course_of_action/1.2/course_of_action.xsd')
+NS_STIX_EXPLOIT_TARGET = Namespace('http://stix.mitre.org/ExploitTarget-1', 'et', 'http://stix.mitre.org/XMLSchema/exploit_target/1.2/exploit_target.xsd')
+NS_STIX_INCIDENT = Namespace('http://stix.mitre.org/Incident-1', 'incident', 'http://stix.mitre.org/XMLSchema/incident/1.2/incident.xsd')
+NS_STIX_INDICATOR = Namespace('http://stix.mitre.org/Indicator-2', 'indicator', 'http://stix.mitre.org/XMLSchema/indicator/2.2/indicator.xsd')
+NS_STIX_REPORT = Namespace('http://stix.mitre.org/Report-1', 'report', 'http://stix.mitre.org/XMLSchema/report/1.0/report.xsd')
+NS_STIX_TTP = Namespace('http://stix.mitre.org/TTP-1', 'ttp', 'http://stix.mitre.org/XMLSchema/ttp/1.2/ttp.xsd')
+NS_STIX_THREAT_ACTOR = Namespace('http://stix.mitre.org/ThreatActor-1', 'ta', 'http://stix.mitre.org/XMLSchema/threat_actor/1.2/threat_actor.xsd')
+NS_STIX_EXT_AP_CAPEC = Namespace('http://stix.mitre.org/extensions/AP#CAPEC2.7-1', 'stix-capec', 'http://stix.mitre.org/XMLSchema/extensions/attack_pattern/capec_2.7/1.1/capec_2.7_attack_pattern.xsd')
+NS_STIX_EXT_ADDRESS_CIQ= Namespace('http://stix.mitre.org/extensions/Address#CIQAddress3.0-1', 'stix-ciqaddress', 'http://stix.mitre.org/XMLSchema/extensions/address/ciq_3.0/1.2/ciq_3.0_address.xsd')
+NS_STIX_EXT_IDENTITY_CIQ= Namespace('http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1', 'ciqIdentity', 'http://stix.mitre.org/XMLSchema/extensions/identity/ciq_3.0/1.2/ciq_3.0_identity.xsd')
+NS_STIX_EXT_MALWARE_MAEC = Namespace('http://stix.mitre.org/extensions/Malware#MAEC4.1-1', 'stix-maec', 'http://stix.mitre.org/XMLSchema/extensions/malware/maec_4.1/1.1/maec_4.1_malware.xsd')
+NS_STIX_EXT_COA_GENERIC = Namespace('http://stix.mitre.org/extensions/StructuredCOA#Generic-1', 'genericStructuredCOA', 'http://stix.mitre.org/XMLSchema/extensions/structured_coa/generic/1.2/generic_structured_coa.xsd')
+NS_STIX_EXT_TEST_GENERIC = Namespace('http://stix.mitre.org/extensions/TestMechanism#Generic-1', 'genericTM', 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/generic/1.2/generic_test_mechanism.xsd')
+NS_STIX_EXT_TEST_OVAL = Namespace('http://stix.mitre.org/extensions/TestMechanism#OVAL5.10-1', 'stix-oval', 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/oval_5.10/1.2/oval_5.10_test_mechanism.xsd')
+NS_STIX_EXT_TEST_OPENIOC = Namespace('http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1', 'stix-openioc', 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/open_ioc_2010/1.2/open_ioc_2010_test_mechanism.xsd')
+NS_STIX_EXT_TEST_SNORT = Namespace('http://stix.mitre.org/extensions/TestMechanism#Snort-1', 'snortTM', 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/snort/1.2/snort_test_mechanism.xsd')
+NS_STIX_EXT_TEST_YARA = Namespace('http://stix.mitre.org/extensions/TestMechanism#YARA-1', 'yaraTM', 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/yara/1.2/yara_test_mechanism.xsd')
+NS_STIX_EXT_VULN_CVRF = Namespace('http://stix.mitre.org/extensions/Vulnerability#CVRF-1', 'stix-cvrf', 'http://stix.mitre.org/XMLSchema/extensions/vulnerability/cvrf_1.1/1.2/cvrf_1.1_vulnerability.xsd')
 
-#: Schema locations for namespaces not defined by STIX, but hosted on the STIX website
-EXT_NS_TO_SCHEMALOCATION = {
-    'urn:oasis:names:tc:ciq:xal:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xAL.xsd',
-    'urn:oasis:names:tc:ciq:xpil:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd',
-    'urn:oasis:names:tc:ciq:xnl:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xNL.xsd'
-}
+#: Namespaces used by external schemas that are incorporated in STIX.
+NS_CAPEC = Namespace('http://capec.mitre.org/capec-2', 'capec', '')
+NS_MAEC_PACKAGE = Namespace('http://maec.mitre.org/XMLSchema/maec-package-2', 'maecPackage', '')
+NS_OVAL_DEF = Namespace('http://oval.mitre.org/XMLSchema/oval-definitions-5', 'oval-def', '')
+NS_OVAL_VAR = Namespace('http://oval.mitre.org/XMLSchema/oval-variables-5', 'oval-var', '')
+NS_OPENIOC = Namespace('http://schemas.mandiant.com/2010/ioc', 'ioc', '')
+NS_OPENIOC_TR = Namespace('http://schemas.mandiant.com/2010/ioc/TR/', 'ioc-tr', '')
+NS_CVRF = Namespace('http://www.icasi.org/CVRF/schema/cvrf/1.1', 'cvrf', '')
+# NOTE: These three schemas are hosted on the STIX site despite them being
+# defined outside of STIX
+NS_OASIS_CIQ_XAL = Namespace('urn:oasis:names:tc:ciq:xal:3', 'xal', 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xAL.xsd')
+NS_OASIS_CIQ_XPIL = Namespace('urn:oasis:names:tc:ciq:xpil:3', 'xpil', 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd')
+NS_OASIS_CIQ_XNL = Namespace('urn:oasis:names:tc:ciq:xnl:3', 'xnl', 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xNL.xsd')
+
+
+STIX_NAMESPACES = NamespaceSet()
+EXTENSION_NAMESPACES = NamespaceSet()
+
+# Magic to automatically register all Namespaces defined in this module.
+for k, v in dict(globals()).items():
+    if k.startswith('NS_'):
+        register_namespace(v)
+        if k.startswith('NS_MARKING_') or k.startswith('NS_STIX_'):
+            STIX_NAMESPACES.add(v)
+        else:
+            EXTENSION_NAMESPACES.add(v)
+
 
 #: Default namespace->alias mappings. These can be overriden by user-provided dictionaries on export.
-DEFAULT_STIX_NS_TO_PREFIX = {
-    'http://cybox.mitre.org/common-2': 'cyboxCommon',
-    'http://cybox.mitre.org/cybox-2': 'cybox',
-    'http://data-marking.mitre.org/Marking-1': 'marking',
-    'http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1': 'simpleMarking',
-    'http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1': 'tlpMarking',
-    'http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1': 'TOUMarking',
-    'http://stix.mitre.org/Campaign-1': 'campaign',
-    'http://stix.mitre.org/CourseOfAction-1': 'coa',
-    'http://stix.mitre.org/ExploitTarget-1': 'et',
-    'http://stix.mitre.org/Incident-1': 'incident',
-    'http://stix.mitre.org/Indicator-2': 'indicator',
-    'http://stix.mitre.org/TTP-1': 'ttp',
-    'http://stix.mitre.org/ThreatActor-1': 'ta',
-    'http://stix.mitre.org/Report-1': 'report',
-    'http://stix.mitre.org/stix-1': 'stix',
-    'http://stix.mitre.org/common-1': 'stixCommon',
-    'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
-    'http://stix.mitre.org/extensions/AP#CAPEC2.7-1': 'stix-capec',
-    'http://stix.mitre.org/extensions/Address#CIQAddress3.0-1': 'stix-ciqaddress',
-    'http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1': 'ciqIdentity',
-    'http://stix.mitre.org/extensions/Malware#MAEC4.1-1': 'stix-maec',
-    'http://stix.mitre.org/extensions/StructuredCOA#Generic-1': 'genericStructuredCOA',
-    'http://stix.mitre.org/extensions/TestMechanism#Generic-1': 'genericTM',
-    'http://stix.mitre.org/extensions/TestMechanism#OVAL5.10-1': 'stix-oval',
-    'http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1': 'stix-openioc',
-    'http://stix.mitre.org/extensions/TestMechanism#Snort-1': 'snortTM',
-    'http://stix.mitre.org/extensions/TestMechanism#YARA-1': 'yaraTM',
-    'http://stix.mitre.org/extensions/Vulnerability#CVRF-1': 'stix-cvrf'
-}
-
-#: Mapping of extension namespaces to their (typical) prefixes.
-DEFAULT_EXT_TO_PREFIX = {
-    'http://capec.mitre.org/capec-2': 'capec',
-    'http://maec.mitre.org/XMLSchema/maec-package-2': 'maecPackage',
-    'http://oval.mitre.org/XMLSchema/oval-definitions-5': 'oval-def',
-    'http://oval.mitre.org/XMLSchema/oval-variables-5': 'oval-var',
-    'http://schemas.mandiant.com/2010/ioc': 'ioc',
-    'http://schemas.mandiant.com/2010/ioc/TR/': 'ioc-tr',
-    'http://www.icasi.org/CVRF/schema/cvrf/1.1': 'cvrf',
-    'urn:oasis:names:tc:ciq:xal:3': 'xal',
-    'urn:oasis:names:tc:ciq:xpil:3': 'xpil',
-    'urn:oasis:names:tc:ciq:xnl:3': 'xnl'
-}
-
-#: Mapping of CybOX namespaces to default aliases
-DEFAULT_CYBOX_NAMESPACES = dict(
-    (x.name, x.prefix) for x in CYBOX_NAMESPACES
-)
+DEFAULT_STIX_NS_TO_PREFIX = {x.name: x.prefix for x in STIX_NAMESPACES}
+# NOTE: CybOX Core and Common are no longer in this mapping. Is this OK?
+# 'http://cybox.mitre.org/common-2': 'cyboxCommon',
+# 'http://cybox.mitre.org/cybox-2': 'cybox',
 
 
-#: Mapping of all STIX/STIX Extension/CybOX/XML namespaces
-DEFAULT_STIX_NAMESPACES  = dict(
-    itertools.chain(
-        DEFAULT_CYBOX_NAMESPACES.iteritems(),
-        XML_NAMESPACES.iteritems(),
-        DEFAULT_STIX_NS_TO_PREFIX.iteritems(),
-        DEFAULT_EXT_TO_PREFIX.iteritems()
-    )
-)
+# Collect all namespaces into one set (NOTE: a general set, not a NamespaceSet)
+_ALL_NAMESPACES = (set(XML_NAMESPACES) | set(CYBOX_NAMESPACES) |
+        set(STIX_NAMESPACES) | set(EXTENSION_NAMESPACES))
 
-#: Prefix-to-namespace mapping of the `DEFAULT_STIX_NAMESPACES` mapping
-DEFAULT_STIX_PREFIX_TO_NAMESPACE = dict(
-    (alias, ns) for ns, alias in DEFAULT_STIX_NAMESPACES.iteritems()
-)
-
-#: Mapping of STIX/CybOX/STIX Extension namespaces to canonical schema locations
-DEFAULT_STIX_SCHEMALOCATIONS = dict(
-    itertools.chain(
-        STIX_NS_TO_SCHEMALOCATION.iteritems(),
-        EXT_NS_TO_SCHEMALOCATION.iteritems(),
-        CYBOX_NS_TO_SCHEMALOCATION.iteritems(),
-    )
-)
-
-# python-maec support code
+# If python-maec is installed, add MAEC namespaces as well.
 with ignored(ImportError):
     from maec.utils.nsparser import MAEC_NAMESPACES
+    _ALL_NAMESPACES = _ALL_NAMESPACES | set(MAEC_NAMESPACES)
 
-    ns_to_prefix = dict(
-        (x.name, x.prefix) for x in MAEC_NAMESPACES
-    )
 
-    del ns_to_prefix['http://maec.mitre.org/default_vocabularies-1']
+#: Mapping of all namespace names to prefixes
+DEFAULT_STIX_NAMESPACES = {x.name: x.prefix for x in _ALL_NAMESPACES}
 
-    prefix_to_ns = dict(
-        (prefix, ns) for (ns, prefix) in ns_to_prefix.iteritems()
-    )
+#: Mapping of all prefixes to namespace names
+DEFAULT_STIX_PREFIX_TO_NAMESPACE = {x.name: x.prefix for x in _ALL_NAMESPACES}
 
-    ns_to_schemalocation = dict(
-        (x.name, x.schema_location) for x in MAEC_NAMESPACES if x.schema_location
-    )
-
-    DEFAULT_STIX_NAMESPACES.update(ns_to_prefix)
-    DEFAULT_STIX_PREFIX_TO_NAMESPACE.update(prefix_to_ns)
-    DEFAULT_STIX_SCHEMALOCATIONS.update(ns_to_schemalocation)
+#: Mapping of all namespace names to schema locations
+DEFAULT_STIX_SCHEMALOCATIONS = {
+    x.name: x.schema_location for x in _ALL_NAMESPACES if x.schema_location
+}
