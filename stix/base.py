@@ -1,18 +1,17 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# builtin
-import json
 import collections
 import itertools
+import json
 import StringIO
 
+from mixbox import entities
 from mixbox import idgen
 from mixbox.binding_utils import save_encoding
 from mixbox.cache import Cached
 from mixbox.datautils import is_sequence
 
-# internal
 from . import utils
 
 
@@ -20,7 +19,7 @@ def _override(*args, **kwargs):
     raise NotImplementedError()
 
 
-class Entity(object):
+class Entity(entities.Entity):
     """Base class for all classes in the STIX API."""
     _namespace = None
     _XSI_TYPE = None
@@ -269,74 +268,14 @@ class Entity(object):
                 return entity
 
 
-class EntityList(collections.MutableSequence, Entity):
+# TODO: For now, this subclasses mixbox.entities.EntityList and stix.Entity.
+# Ultimately we want to remove the latter.
+class EntityList(entities.EntityList, Entity):
     _binding_class = _override
     _binding_var = None
     _contained_type = _override
     _inner_name = None
     _dict_as_list = False
-
-    def __init__(self, *args):
-        super(EntityList, self).__init__()
-        self._inner = []
-
-        if not any(args):
-            return
-
-        for arg in args:
-            if is_sequence(arg):
-                self.extend(arg)
-            else:
-                self.append(arg)
-
-    def __nonzero__(self):
-        return bool(self._inner)
-
-    def __getitem__(self, key):
-        return self._inner.__getitem__(key)
-
-    def __setitem__(self, key, value):
-        if not self._is_valid(value):
-            value = self._fix_value(value)
-        self._inner.__setitem__(key, value)
-
-    def __delitem__(self, key):
-        self._inner.__delitem__(key)
-
-    def __len__(self):
-        return len(self._inner)
-
-    def insert(self, idx, value):
-        if not value:
-            return
-        if not self._is_valid(value):
-            value = self._fix_value(value)
-        self._inner.insert(idx, value)
-
-    def _is_valid(self, value):
-        """Check if this is a valid object to add to the list."""
-        # Subclasses can override this function, but if it becomes common, it's
-        # probably better to use self._contained_type.istypeof(value)
-        return isinstance(value, self._contained_type)
-
-    def _fix_value(self, value):
-        """Attempt to coerce value into the correct type.
-
-        Subclasses can override this function.
-        """
-        try:
-            new_value = self._contained_type(value)
-        except:
-            error = "Can't put '{0}' ({1}) into a {2}. Expected a {3} object."
-            error = error.format(
-                value,                  # Input value
-                type(value),            # Type of input value
-                type(self),             # Type of collection
-                self._contained_type    # Expected type of input value
-            )
-            raise ValueError(error)
-
-        return new_value
 
     # The next four functions can be overridden, but otherwise define the
     # default behavior for EntityList subclasses which define the following
@@ -356,9 +295,6 @@ class EntityList(collections.MutableSequence, Entity):
         setattr(return_obj, self._binding_var, objlist)
 
         return return_obj
-
-    def to_list(self):
-        return [h.to_dict() for h in self]
 
     def to_dict(self):
         if self._dict_as_list:

@@ -11,6 +11,9 @@ from mixbox import datautils
 from mixbox.entities import Entity, EntityList
 import mixbox.xml
 
+from cybox.common import ObjectProperties
+from cybox.core import Object, Observable
+
 import stix
 
 # relative
@@ -132,24 +135,20 @@ def cdata(text):
 
 
 def is_stix(entity):
-    """Returns true if `entity` is an instance of :class:`.Entity`."""
+    """Returns true if `entity` is an instance of :class:`stix.Entity`."""
     return isinstance(entity, stix.Entity)
 
 
 def is_cybox(entity):
-    """Returns true if `entity` is an instance of
-    :class:`mixbox.entities.Entity`.
+    """Returns true if `entity` is a CybOX Object, Observable, or
+    ObjectProperties subclass.
     """
-    # TODO: once all entities subclass from mixbox.entities.Entity, how do we
-    # do this?
-    return isinstance(entity, Entity)
+    return isinstance(entity, (Object, Observable, ObjectProperties))
 
 
 def is_entity(entity):
-    """Returns true if `entity` is an instance of :class:`.Entity` or
-    :class:`mixbox.Entity`.
-    """
-    return isinstance(entity, (Entity, stix.Entity))
+    """Returns true if `entity` is :class:`mixbox.entities.Entity`."""
+    return isinstance(entity, Entity)
 
 
 def is_entitylist(entity):
