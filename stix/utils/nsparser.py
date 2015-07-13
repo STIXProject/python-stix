@@ -446,7 +446,7 @@ for k, v in dict(globals()).items():
 
 
 #: Default namespace->alias mappings. These can be overriden by user-provided dictionaries on export.
-DEFAULT_STIX_NS_TO_PREFIX = {x.name: x.prefix for x in STIX_NAMESPACES}
+DEFAULT_STIX_NS_TO_PREFIX = dict((x.name, x.prefix) for x in STIX_NAMESPACES)
 # NOTE: CybOX Core and Common are no longer in this mapping. Is this OK?
 # 'http://cybox.mitre.org/common-2': 'cyboxCommon',
 # 'http://cybox.mitre.org/cybox-2': 'cybox',
