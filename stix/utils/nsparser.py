@@ -9,9 +9,15 @@ from mixbox import idgen
 from mixbox.entities import Entity
 from mixbox.exceptions import ignored
 from mixbox.namespaces import Namespace, NamespaceSet, register_namespace
-from mixbox.namespaces import XML_NAMESPACES
+from mixbox.namespaces import (get_full_ns_map, get_full_prefix_map,
+                               get_full_schemaloc_map)
 
-from cybox.utils.nsparser import CYBOX_NAMESPACES
+import cybox.utils.nsparser
+
+try:
+    import maec.utils.nsparser
+except ImportError:
+    pass
 
 from .walk import iterwalk
 
@@ -340,6 +346,7 @@ def get_namespaces(entity, ns_dict=None):
     ns_info.finalize(ns_dict=ns_dict)
     return ns_info.finalized_namespaces
 
+
 def get_namespace_schemalocation_dict(entity, ns_dict=None, schemaloc_dict=None):
     ns_info = NamespaceInfo()
 
@@ -349,11 +356,13 @@ def get_namespace_schemalocation_dict(entity, ns_dict=None, schemaloc_dict=None)
     ns_info.finalize(ns_dict=ns_dict, schemaloc_dict=schemaloc_dict)
     return ns_info.finalized_schemalocs
 
+
 def get_xmlns_str(ns_dict):
     pairs = sorted(ns_dict.iteritems())
     return "\n\t".join(
         'xmlns:%s="%s"' % (alias, ns) for alias, ns in pairs
     )
+
 
 def get_schemaloc_str(schemaloc_dict):
     if not schemaloc_dict:
@@ -442,24 +451,6 @@ DEFAULT_STIX_NS_TO_PREFIX = {x.name: x.prefix for x in STIX_NAMESPACES}
 # 'http://cybox.mitre.org/common-2': 'cyboxCommon',
 # 'http://cybox.mitre.org/cybox-2': 'cybox',
 
-
-# Collect all namespaces into one set (NOTE: a general set, not a NamespaceSet)
-_ALL_NAMESPACES = (set(XML_NAMESPACES) | set(CYBOX_NAMESPACES) |
-        set(STIX_NAMESPACES) | set(EXTENSION_NAMESPACES))
-
-# If python-maec is installed, add MAEC namespaces as well.
-with ignored(ImportError):
-    from maec.utils.nsparser import MAEC_NAMESPACES
-    _ALL_NAMESPACES = _ALL_NAMESPACES | set(MAEC_NAMESPACES)
-
-
-#: Mapping of all namespace names to prefixes
-DEFAULT_STIX_NAMESPACES = {x.name: x.prefix for x in _ALL_NAMESPACES}
-
-#: Mapping of all prefixes to namespace names
-DEFAULT_STIX_PREFIX_TO_NAMESPACE = {x.name: x.prefix for x in _ALL_NAMESPACES}
-
-#: Mapping of all namespace names to schema locations
-DEFAULT_STIX_SCHEMALOCATIONS = {
-    x.name: x.schema_location for x in _ALL_NAMESPACES if x.schema_location
-}
+DEFAULT_STIX_NAMESPACES = get_full_ns_map()
+DEFAULT_STIX_PREFIX_TO_NAMESPACE = get_full_prefix_map()
+DEFAULT_STIX_SCHEMALOCATIONS = get_full_schemaloc_map()
