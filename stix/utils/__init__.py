@@ -356,5 +356,5 @@ def remove_entries(d, keys):
 # Namespace flattening
 from .parser import *  # noqa
 from .dates import *  # noqa
-from .nsparser import *  # noqa
+from .parser import *  # noqa
 from .walk import *  # noqa
