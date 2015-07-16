@@ -179,7 +179,7 @@ class Entity(entities.Entity):
             namespace_def += ("\n\t" + xmlns)
 
         if include_schemalocs and include_namespaces:
-            schemaloc = parser.get_schemaloc_str(ns_info.finalized_schemalocs)
+            schemaloc = nsparser.get_schemaloc_str(ns_info.finalized_schemalocs)
             namespace_def += ("\n\t" + schemaloc)
 
         if not pretty:
