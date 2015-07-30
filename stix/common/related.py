@@ -91,6 +91,8 @@ class GenericRelationship(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
+        print "DICT", dict_repr
+
         return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
         return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
         return_obj.relationship = VocabString.from_dict(dict_repr.get('relationship'))
@@ -204,6 +206,10 @@ class GenericRelationshipList(stix.EntityList):
             super(GenericRelationshipList, self).__nonzero__() or
             bool(self.scope)
         )
+        
+    #def __iter__(self):
+    #    print "ITER", self._inner_name, len(self)
+    #    return getattr(self, self._inner_name)
 
     @property
     def scope(self):

@@ -10,7 +10,8 @@ from stix.common.related import (
 )
 from stix.common import vocabs
 import stix.bindings.campaign as campaign_binding
-
+from stix.common.structured_text import StructuredTextList, StructuredTextListField
+from stix.base import ElementField, AttributeField
 
 class AssociatedCampaigns(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Campaign-1"
@@ -94,6 +95,12 @@ class Campaign(stix.BaseCoreComponent):
     _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = 'campaign'
 
+    descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
+    activity = ElementField("Activity", multiple=True)
+    associated_campaigns = ElementField("Associated_Campaigns", AssociatedCampaigns)
+    attribution = ElementField("Attribution", multiple=True)
+    #confidence = ElementField("Confidence")
+
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
 
@@ -112,10 +119,9 @@ class Campaign(stix.BaseCoreComponent):
         self.related_ttps = RelatedTTPs()
         self.related_incidents = RelatedIncidents()
         self.related_indicators = RelatedIndicators()
-        self.attribution = _AttributionList()
-        self.associated_campaigns = AssociatedCampaigns()
+        #self.attribution = _AttributionList()
         self.confidence = None
-        self.activity = _Activities()
+        #self.activity = _Activities()
         self.related_packages = RelatedPackageRefs()
 
     @property
@@ -140,17 +146,7 @@ class Campaign(stix.BaseCoreComponent):
     def add_intended_effect(self, value):
         self.intended_effects.append(value)
 
-    @property
-    def activity(self):
-        """A collection of :class:`.Activity` objects. This behaves like a
-        ``MutableSequence`` type.
 
-        """
-        return self._activity
-
-    @activity.setter
-    def activity(self, value):
-        self._activity = _Activities(value)
 
     def add_activity(self, value):
         """Adds an :class:`.Activity` object to the :attr:`activity`
@@ -173,19 +169,9 @@ class Campaign(stix.BaseCoreComponent):
     def status(self, value):
         self._set_vocab(vocabs.CampaignStatus, status=value)
 
-    @property
-    def attribution(self):
-        """A collection of :class:`.Attribution` objects. This behaves like a
-        ``MutableSequence`` type.
 
-        """
-        return self._attribution
 
-    @attribution.setter
-    def attribution(self, value):
-        self._attribution = _AttributionList(value)
-
-    def to_obj(self, return_obj=None, ns_info=None):
+"""    def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
 
@@ -280,7 +266,7 @@ class Campaign(stix.BaseCoreComponent):
             RelatedPackageRefs.from_dict(get('related_packages'))
 
         return return_obj
-
+"""
 
 # Not Actual STIX Types!
 class _AttributionList(stix.TypedList):

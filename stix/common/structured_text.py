@@ -8,11 +8,22 @@ import collections
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
-
+from  mixbox.fields import TypedField
 from stix.base import AttributeField, ElementField
 
 #: Default ordinality value for StructuredText.
 DEFAULT_ORDINALITY = 1
+
+
+class StructuredTextListField(ElementField):
+
+    @TypedField.attr_name.getter
+    def attr_name(self):
+        return "descriptions"
+
+    @TypedField.key_name.getter
+    def key_name(self):
+        return "description"
 
 
 class StructuredText(stix.Entity):
@@ -29,39 +40,16 @@ class StructuredText(stix.Entity):
     _binding_class = _binding.StructuredTextType
     _namespace = 'http://stix.mitre.org/common-1'
 
-    #ordinality = AttributeField("ordinality")
-
+    ordinality = AttributeField("ordinality")
+    value = AttributeField("value")
+    structuring_format = AttributeField("structuring_format")
+    
     def __init__(self, value=None, ordinality=None):
+        self._fields = {}
         self.id_ = None
         self.value = value
         self.structuring_format = None
         self.ordinality = ordinality
-
-    @property
-    def ordinality(self):
-        return self._ordinality
-
-    @ordinality.setter
-    def ordinality(self, value):
-        """An integer ordinality for this text item. This must be greater than
-        1.
-
-        This is used for displaying :class:`.StructuredTextList` items and
-        provides an order to display text items to a parser.
-
-        """
-        if value is None:
-            self._ordinality = None
-            return
-
-        value = int(value)
-
-        if value > 0:
-            self._ordinality = value
-            return
-
-        error = "Value must be an integer > 0. Received {0}".format(value)
-        raise ValueError(error)
 
     def to_obj(self, return_obj=None, ns_info=None):
         """Converts this object into a binding object.
@@ -207,6 +195,17 @@ class StructuredTextList(stix.TypedCollection, collections.Sequence):
                 self.update(arg)
             else:
                 self.add(arg)
+
+    @classmethod
+    def istypeof(cls, obj):
+        """Check if `cls` is the type of `obj`
+
+        In the normal case, as implemented here, a simple isinstance check is
+        used. However, there are more complex checks possible. For instance,
+        EmailAddress.istypeof(obj) checks if obj is an Address object with
+        a category of Address.CAT_EMAIL
+        """
+        return isinstance(obj, cls)
 
     def with_id(self, id):
         """Returns a :class:`.StructuredText` object with a matching `id` or

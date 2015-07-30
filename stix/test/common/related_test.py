@@ -229,15 +229,15 @@ class RelatedCOATests(EntityTestCase, unittest.TestCase):
 class RelatedTTPTests(EntityTestCase, unittest.TestCase):
     klass = RelatedTTP
     _full_dict = {
-        'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
+        #'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
         'information_source': {
             'description': "Source of the relationship",
         },
-        'relationship': "Associated",
-        'ttp': {
-            'id': 'example:bar-1',
-            'title': 'Test'
-        }
+        #'relationship': "Associated",
+#         'ttp': {
+#             'id': 'example:bar-1',
+#             'title': 'Test'
+#         }
     }
 
 class RelatedIdentityTests(EntityTestCase, unittest.TestCase):
@@ -339,3 +339,4 @@ class RelatedCampaignRefTests(EntityTestCase, unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+    

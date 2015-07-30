@@ -81,7 +81,7 @@ class Entity(object):
         import inspect
         var_list = []
         for (name, obj) in inspect.getmembers(cls, inspect.isdatadescriptor):
-            print name + " " + str(type(obj)) + " " + str(obj.__class__)
+            #print name + " " + str(type(obj)) + " " + str(obj.__class__)
             if isinstance(obj, fields.TypedField):
                 var_list.append(obj)
 
@@ -141,9 +141,9 @@ class Entity(object):
             If `value` is an Entity, call to_obj() on it. Otherwise, return it
             unmodified.
             """
-            if isinstance(value, Entity):
+            try:
                 return value.to_obj(return_obj=return_obj, ns_info=ns_info)
-            else:
+            except:
                 return value
         
         self._collect_ns_info(ns_info)
@@ -156,8 +156,8 @@ class Entity(object):
                 break
             vars.update(klass.__dict__.iteritems())
             
-        print "vars", vars
-        print "self", self.__dict__
+        #print "vars", vars
+        #print "self", self.__dict__
 
         for name, field in vars.iteritems():
             if isinstance(field, fields.TypedField):
@@ -184,12 +184,15 @@ class Entity(object):
         pass
 
     @classmethod
-    def from_obj(cls, cls_obj=None):
+    def from_obj(cls, cls_obj=None, return_obj=None):
         """Create an object from a binding object"""
         if not cls_obj:
             return None
 
-        entity = cls()
+        if return_obj is None:
+            entity = cls()
+        else:
+            entity = return_obj
 
         for field in cls._get_vars():
             val = getattr(cls_obj, field.name)
@@ -335,9 +338,9 @@ class Entity(object):
             If `value` is an Entity, call to_dict() on it. Otherwise, return it
             unmodified.
             """
-            if isinstance(value, Entity):
+            try:
                 return value.to_dict()
-            else:
+            except:
                 return value
         
         entity_dict = { }
@@ -382,12 +385,15 @@ class Entity(object):
         pass
 
     @classmethod
-    def from_dict(cls, cls_dict=None):
+    def from_dict(cls, cls_dict=None, return_obj=None):
         """Convert from dict representation to object representation."""
         if cls_dict is None:
             return None
 
-        entity = cls()
+        if return_obj is None:
+            entity = cls()
+        else:
+            entity = return_obj
 
         # Shortcut if an actual dict is not provided:
         if not isinstance(cls_dict, dict):
@@ -566,6 +572,7 @@ class EntityList(collections.MutableSequence, Entity):
 
     @classmethod
     def from_list(cls, list_repr, return_obj=None, contained_type=None):
+        from stix.common.related import GenericRelationshipList
 
         if not utils.is_sequence(list_repr):
             return None
@@ -574,6 +581,18 @@ class EntityList(collections.MutableSequence, Entity):
             return_obj = cls()
         if not contained_type:
             contained_type = cls._contained_type
+
+        print list_repr.__class__, isinstance(list_repr, GenericRelationshipList)
+
+        # GenericRelationshipList is not actually a list; it's dict with a list member
+        if issubclass(cls, GenericRelationshipList):
+            return cls.from_dict(list_repr, return_obj)
+
+        try:
+            list_repr = list_repr[getattr(cls, '_inner_name')]
+        except:
+            pass
+        
 
         return_obj.extend(contained_type.from_dict(x) for x in list_repr)
         return return_obj
@@ -931,7 +950,7 @@ class BaseCoreComponent(Entity):
         """
         self.short_descriptions.add(description)
 
-
+"""
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         from stix.common import StructuredTextList, InformationSource
@@ -1016,3 +1035,4 @@ class BaseCoreComponent(Entity):
 
     def to_dict(self):
         return super(BaseCoreComponent, self).to_dict()
+"""

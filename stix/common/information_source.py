@@ -14,8 +14,9 @@ import stix.bindings.stix_common as stix_common_binding
 # relative
 from . import vocabs, VocabString
 from .identity import Identity
-from .structured_text import StructuredTextList
+from .structured_text import StructuredTextList, StructuredTextListField
 from stix.base import ElementField
+from mixbox.entities import Entity
 
 class InformationSource(stix.Entity):
     _binding = stix_common_binding
@@ -23,24 +24,24 @@ class InformationSource(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
 
     identity = ElementField("Identity", Identity)
+    descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
+    contributing_sources = ElementField("Contributing_Sources")
+    time = ElementField("Time", cybox.common.Time)
+
+    @classmethod
+    def initClassFields(cls):
+        cls.contributing_sources.type_ = ContributingSources
 
     def __init__(self, description=None, identity=None, time=None, tools=None, contributing_sources=None, references=None):
-        self._fields = {}
-        self.description = description
+        super(InformationSource, self).__init__()
+        #self._fields = {}
         self.identity = identity
+        self.description = description
         self.contributing_sources = contributing_sources
         self.time = time
         self.tools = tools
         self.references = references
         self.roles = None
-    
-    @property
-    def contributing_sources(self):
-        return self._contributing_sources
-    
-    @contributing_sources.setter
-    def contributing_sources(self, value):
-        self._contributing_sources = ContributingSources(value)
     
     def add_contributing_source(self, value):
         self.contributing_sources.append(value)
@@ -67,53 +68,6 @@ class InformationSource(stix.Entity):
         # TODO: Check if it's a valid URI?
         self.references.append(value)
 
-    @property
-    def description(self):
-        """A single description about the contents or purpose of this object.
-
-        Default Value: ``None``
-
-        Note:
-            If this object has more than one description set, this will return
-            the description with the lowest ordinality value.
-
-        Returns:
-            An instance of
-            :class:`.StructuredText`
-
-        """
-        return next(iter(self.descriptions), None)
-
-    @description.setter
-    def description(self, value):
-        self.descriptions = value
-
-    @property
-    def descriptions(self):
-        """A :class:`.StructuredTextList` object, containing descriptions about
-        the purpose or intent of this object.
-
-        Iterating over this object will yield its contents sorted by their
-        ``ordinality`` value.
-
-        Default Value: Empty :class:`.StructuredTextList` object.
-
-        Note:
-            IF this is set to a value that is not an instance of
-            :class:`.StructuredText`, an effort will ne made to convert it.
-            If this is set to an iterable, any values contained that are not
-            an instance of :class:`.StructuredText` will be be converted.
-
-        Returns:
-            An instance of
-            :class:`.StructuredTextList`
-
-        """
-        return self._description
-
-    @descriptions.setter
-    def descriptions(self, value):
-        self._description = StructuredTextList(value)
 
     def add_description(self, description):
         """Adds a description to the ``descriptions`` collection.
@@ -122,14 +76,6 @@ class InformationSource(stix.Entity):
 
         """
         self.descriptions.add(description)
-
-    @property
-    def time(self):
-        return self._time
-
-    @time.setter
-    def time(self, value):
-        self._set_var(cybox.common.Time, try_cast=False, time=value)
 
     @property
     def tools(self):
@@ -197,35 +143,6 @@ class InformationSource(stix.Entity):
 
         return return_obj
 
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        # To resolve circular dependency
-        # TODO: Improve how this extension is handled.
-
-        if not dict_repr:
-            return None
-        if not return_obj:
-            return_obj = cls()
-
-        get = dict_repr.get
-        return_obj.description = StructuredTextList.from_dict(get('description'))
-        return_obj.references = get('references')
-        return_obj.contributing_sources = ContributingSources.from_dict(get('contributing_sources'))
-        return_obj.identity = Identity.from_dict(get('identity'))
-        return_obj.time = cybox.common.Time.from_dict(get('time'))
-        return_obj.tools = cybox.common.ToolInformationList.from_list(get('tools'))
-        return_obj.roles = _Roles.from_dict(get('roles'))
-
-        return return_obj
-
-    def to_dict(self):
-        #for i in range(10): print i
-        print "TO DICT INFORMATION_SOURCE CALLED"
-        print self.description
-        ret = super(InformationSource, self).to_dict()
-        print ret
-        print utils.to_dict(self)
-        return ret
 
 class ContributingSources(stix.EntityList):
     _namespace = "http://stix.mitre.org/common-1"
@@ -242,3 +159,6 @@ class _Roles(stix.TypedList):
 
     def _fix_value(self, value):
         return vocabs.InformationSourceRole(value)
+
+# finally, initialize field types that would be circular dependencies
+InformationSource.initClassFields()
