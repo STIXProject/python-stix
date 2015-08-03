@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # external
+from mixbox import signals
 from mixbox.cache import Cached
 
 # internal
@@ -143,6 +144,7 @@ class MarkingSpecification(Cached, stix.Entity):
         return_obj.marking_structures = _MarkingStructures.from_obj(obj.Marking_Structure)
         return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod

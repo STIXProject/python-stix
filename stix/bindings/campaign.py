@@ -74,6 +74,7 @@ class NamesType(GeneratedsSuper):
         for Name_ in self.Name:
             Name_.export(lwrite, level, nsmap, namespace_, name_='Name', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -142,6 +143,7 @@ class AssociatedCampaignsType(stix_common_binding.GenericRelationshipListType):
         for Associated_Campaign_ in self.Associated_Campaign:
             Associated_Campaign_.export(lwrite, level, nsmap, namespace_, name_='Associated_Campaign', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -211,6 +213,7 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
         for Related_Indicator_ in self.Related_Indicator:
             Related_Indicator_.export(lwrite, level, nsmap, namespace_, name_='Related_Indicator', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -280,6 +283,7 @@ class RelatedIncidentsType(stix_common_binding.GenericRelationshipListType):
         for Related_Incident_ in self.Related_Incident:
             Related_Incident_.export(lwrite, level, nsmap, namespace_, name_='Related_Incident', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -349,6 +353,7 @@ class RelatedTTPsType(stix_common_binding.GenericRelationshipListType):
         for Related_TTP_ in self.Related_TTP:
             Related_TTP_.export(lwrite, level, nsmap, namespace_, name_='Related_TTP', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -420,6 +425,7 @@ class AttributionType(stix_common_binding.GenericRelationshipListType):
         for Attributed_Threat_Actor_ in self.Attributed_Threat_Actor:
             Attributed_Threat_Actor_.export(lwrite, level, nsmap, namespace_, name_='Attributed_Threat_Actor', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -624,6 +630,7 @@ class CampaignType(stix_common_binding.CampaignBaseType):
         if self.Related_Packages is not None:
             self.Related_Packages.export(lwrite, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
