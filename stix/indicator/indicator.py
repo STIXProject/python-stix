@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # external
+from mixbox import signals
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
 
@@ -939,7 +940,8 @@ class Indicator(stix.BaseCoreComponent):
             return_obj.observable = Observable.from_obj(obj.Observable)
             return_obj.related_campaigns = RelatedCampaignRefs.from_obj(obj.Related_Campaigns)
             return_obj.related_packages = RelatedPackageRefs.from_obj(obj.Related_Packages)
-            
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):
