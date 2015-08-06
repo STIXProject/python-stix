@@ -39,7 +39,7 @@ extras_require = {
 install_requires = [
     'lxml>=2.3',
     'python-dateutil',
-    'cybox>=2.1.0.12.dev1,<2.1.1.0',
+    'cybox>=2.1.0.13.dev0,<2.1.1.0',
     'mixbox>=0.0.10',
 ]
 
