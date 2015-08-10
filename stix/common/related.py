@@ -19,6 +19,7 @@ from .vocabs import VocabString
 from .information_source import InformationSource
 from .confidence import Confidence
 
+Confidence.initClassFields()
 
 class GenericRelationship(stix.Entity):
     _namespace = "http://stix.mitre.org/common-1"

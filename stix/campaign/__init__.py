@@ -95,11 +95,12 @@ class Campaign(stix.BaseCoreComponent):
     _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = 'campaign'
 
-    descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
+    #descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
     activity = ElementField("Activity", multiple=True)
     associated_campaigns = ElementField("Associated_Campaigns", AssociatedCampaigns)
     attribution = ElementField("Attribution", multiple=True)
-    #confidence = ElementField("Confidence")
+    confidence = ElementField("Confidence", Confidence)
+    references = ElementField("Reference", multiple=True)
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):

@@ -17,6 +17,7 @@ from .identity import Identity
 from .structured_text import StructuredTextList, StructuredTextListField
 from stix.base import ElementField
 from mixbox.entities import Entity
+from cybox.common.tools import ToolInformationList
 
 class InformationSource(stix.Entity):
     _binding = stix_common_binding
@@ -27,6 +28,8 @@ class InformationSource(stix.Entity):
     descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
     contributing_sources = ElementField("Contributing_Sources")
     time = ElementField("Time", cybox.common.Time)
+    roles = ElementField("Role", multiple=True)
+    tools = ElementField("Tools", ToolInformationList)
 
     @classmethod
     def initClassFields(cls):
@@ -41,7 +44,7 @@ class InformationSource(stix.Entity):
         self.time = time
         self.tools = tools
         self.references = references
-        self.roles = None
+        #self.roles = None
     
     def add_contributing_source(self, value):
         self.contributing_sources.append(value)
@@ -77,25 +80,26 @@ class InformationSource(stix.Entity):
         """
         self.descriptions.add(description)
 
-    @property
-    def tools(self):
-        return self._tools
+    #@property
+    #def tools(self):
+    #    return self._tools
 
-    @tools.setter
-    def tools(self, value):
-        self._set_var(cybox.common.ToolInformationList, try_cast=False, tools=value)
+    #@tools.setter
+    #def tools(self, value):
+    #    self._set_var(cybox.common.ToolInformationList, try_cast=False, tools=value)
 
-    @property
-    def roles(self):
-        return self._roles
+    #@property
+    #def roles(self):
+    #    return self._roles
 
-    @roles.setter
-    def roles(self, value):
-        self._roles = _Roles(value)
+    #@roles.setter
+    #def roles(self, value):
+    #    self._roles = _Roles(value)
 
     def add_role(self, value):
         self.roles.append(value)
-
+        
+"""
     def to_obj(self, return_obj=None, ns_info=None):
         super(InformationSource, self).to_obj(
             return_obj=return_obj,
@@ -142,7 +146,7 @@ class InformationSource(stix.Entity):
             return_obj.tools = cybox.common.ToolInformationList.from_obj(obj.Tools)
 
         return return_obj
-
+"""
 
 class ContributingSources(stix.EntityList):
     _namespace = "http://stix.mitre.org/common-1"
@@ -154,11 +158,11 @@ class ContributingSources(stix.EntityList):
 
 
 # NOT AN ACTUAL STIX TYPE!
-class _Roles(stix.TypedList):
-    _contained_type = VocabString
-
-    def _fix_value(self, value):
-        return vocabs.InformationSourceRole(value)
+#class _Roles(stix.TypedList):
+#    _contained_type = VocabString
+#
+#    def _fix_value(self, value):
+#        return vocabs.InformationSourceRole(value)
 
 # finally, initialize field types that would be circular dependencies
 InformationSource.initClassFields()

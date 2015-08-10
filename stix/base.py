@@ -25,7 +25,6 @@ class ElementField(fields.TypedField):
 class IdField(AttributeField):
     pass
 
-
 class Entity(object):
     """Base class for all classes in the STIX API."""
     _namespace = None
@@ -767,17 +766,21 @@ class BaseCoreComponent(Entity):
     id_ = IdField("id")
     idref = IdField("idref")
     version = AttributeField("version")
+    timestamp = AttributeField("timestamp")
     information_source = ElementField("Information_Source")
-    #description = ElementField("Description")
+    descriptions = None
+    short_descriptions = None
     handling = ElementField("Handling")
 
     @classmethod
     def initClassFields(cls):
         import data_marking
         import common
-        BaseCoreComponent.handling.type_ = data_marking.Marking
-        #BaseCoreComponent.description.type_ = common.StructuredText
-        BaseCoreComponent.information_source.type_ = common.InformationSource
+        from stix.common.structured_text import StructuredTextList, StructuredTextListField
+        cls.handling.type_ = data_marking.Marking
+        cls.information_source.type_ = common.InformationSource
+        cls.descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
+        cls.short_descriptions = StructuredTextListField("Short_Description", StructuredTextList, key_name="short_description")
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
@@ -852,37 +855,6 @@ class BaseCoreComponent(Entity):
     def description(self, value):
         self.descriptions = value
 
-    @property
-    def descriptions(self):
-        """A :class:`.StructuredTextList` object, containing descriptions about
-        the purpose or intent of this object.
-
-        This is typically used for the purpose of providing multiple
-        descriptions with different classificaton markings.
-
-        Iterating over this object will yield its contents sorted by their
-        ``ordinality`` value.
-
-        Default Value: Empty :class:`.StructuredTextList` object.
-
-        Note:
-            IF this is set to a value that is not an instance of
-            :class:`.StructuredText`, an effort will ne made to convert it.
-            If this is set to an iterable, any values contained that are not
-            an instance of :class:`.StructuredText` will be be converted.
-
-        Returns:
-            An instance of
-            :class:`.StructuredTextList`
-
-        """
-        return self._description
-
-    @descriptions.setter
-    def descriptions(self, value):
-        from stix.common import StructuredTextList
-        self._description = StructuredTextList(value)
-
     def add_description(self, description):
         """Adds a description to the ``descriptions`` collection.
 
@@ -911,36 +883,6 @@ class BaseCoreComponent(Entity):
     @short_description.setter
     def short_description(self, value):
         self.short_descriptions = value
-
-    @property
-    def short_descriptions(self):
-        """A :class:`.StructuredTextList` object, containing short descriptions
-        about the purpose or intent of this object.
-
-        This is typically used for the purpose of providing multiple
-        short descriptions with different classificaton markings.
-
-        Iterating over this object will yield its contents sorted by their
-        ``ordinality`` value.
-
-        Default Value: Empty :class:`.StructuredTextList` object.
-
-        Note:
-            IF this is set to a value that is not an instance of
-            :class:`.StructuredText`, an effort will ne made to convert it.
-            If this is set to an iterable, any values contained that are not
-            an instance of :class:`.StructuredText` will be be converted.
-
-        Returns:
-            An instance of :class:`.StructuredTextList`
-
-        """
-        return self._short_description
-
-    @short_descriptions.setter
-    def short_descriptions(self, value):
-        from stix.common import StructuredTextList
-        self._short_description = StructuredTextList(value)
 
     def add_short_description(self, description):
         """Adds a description to the ``short_descriptions`` collection.
