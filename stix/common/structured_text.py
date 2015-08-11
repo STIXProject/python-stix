@@ -392,13 +392,15 @@ class StructuredTextList(stix.TypedCollection, collections.Sequence):
         """
         self._inner.remove(value)
 
-    def to_obj(self, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
         """Returns a binding object list for the StructuredTextList.
 
         If the list has a length of 1, and its member has an ordinality of 1,
         the ordinality will be unset.
 
         """
+        print "STList to_obj called"
+        
         if not self:
             return []
 

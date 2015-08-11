@@ -141,13 +141,17 @@ class Entity(object):
             unmodified.
             """
             try:
+                #print "objifying", value.to_obj
                 return value.to_obj(return_obj=return_obj, ns_info=ns_info)
-            except:
+            except AttributeError:
+                if type(value) == dict:
+                    print value
                 return value
         
         self._collect_ns_info(ns_info)
 
         entity_obj = self._binding_class()
+        print "entity", entity_obj
 
         vars = {}
         for klass in self.__class__.__mro__:
@@ -159,6 +163,7 @@ class Entity(object):
         #print "self", self.__dict__
 
         for name, field in vars.iteritems():
+            print name, field.__class__
             if isinstance(field, fields.TypedField):
                 val = getattr(self, field.attr_name)
 
@@ -169,6 +174,7 @@ class Entity(object):
                         val = []
                 else:
                     val = _objectify(val, return_obj, ns_info)
+                    #print "USING THE ABOVE FIELD", val
 
                 setattr(entity_obj, field.name, val)
 
@@ -674,6 +680,7 @@ class TypedCollection(object):
         return new_value
 
     def to_obj(self, ns_info=None):
+        print "TypedCollection to_obj called"
         return [x.to_obj(ns_info=ns_info) for x in self]
 
     def to_list(self):
@@ -861,6 +868,9 @@ class BaseCoreComponent(Entity):
         This is the same as calling "foo.descriptions.add(bar)".
 
         """
+        if self.descriptions is None:
+            from stix.common.structured_text import StructuredTextList
+            self.descriptions = StructuredTextList()
         self.descriptions.add(description)
 
     @property
@@ -890,6 +900,9 @@ class BaseCoreComponent(Entity):
         This is the same as calling "foo.short_descriptions.add(bar)".
 
         """
+        if self.short_descriptions is None:
+            from stix.common.structured_text import StructuredTextList
+            self.short_descriptions = StructuredTextList
         self.short_descriptions.add(description)
 
 """

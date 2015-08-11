@@ -28,8 +28,10 @@ class InformationSource(stix.Entity):
     descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
     contributing_sources = ElementField("Contributing_Sources")
     time = ElementField("Time", cybox.common.Time)
-    roles = ElementField("Role", multiple=True)
-    tools = ElementField("Tools", ToolInformationList)
+    roles = ElementField("Role", VocabString, multiple=True, key_name="roles")
+    
+    tools = ElementField("Tools", ToolInformationList) #TODO: shows up, but broken
+    references = ElementField("References") #TODO: list-setting behavior does not match
 
     @classmethod
     def initClassFields(cls):
@@ -49,21 +51,21 @@ class InformationSource(stix.Entity):
     def add_contributing_source(self, value):
         self.contributing_sources.append(value)
     
-    @property
-    def references(self):
-        return self._references
+    #@property
+    #def references(self):
+    #    return self._references
     
-    @references.setter
-    def references(self, value):
-        self._references = []
+    #@references.setter
+    #def references(self, value):
+    #    self._references = []
 
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_reference(v)
-        else:
-            self.add_reference(value)
+    #    if not value:
+    #        return
+    #    elif utils.is_sequence(value):
+    #        for v in value:
+    #            self.add_reference(v)
+    #    else:
+    #        self.add_reference(value)
     
     def add_reference(self, value):
         if not value:

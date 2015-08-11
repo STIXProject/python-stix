@@ -101,6 +101,12 @@ class Campaign(stix.BaseCoreComponent):
     attribution = ElementField("Attribution", multiple=True)
     confidence = ElementField("Confidence", Confidence)
     references = ElementField("Reference", multiple=True)
+    status = ElementField("Status", VocabString)
+    intended_effects = ElementField("Intended_Effect", Statement, multiple=True, key_name="intended_effects")
+    names = ElementField("Names", Names)
+    related_incidents = ElementField("Related_Incidents", RelatedIncidents)
+    related_indicators = ElementField("Related_Indicators", RelatedIndicators)
+    related_packages = ElementField("Related_Packages", RelatedPackageRefs)
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
@@ -125,24 +131,6 @@ class Campaign(stix.BaseCoreComponent):
         #self.activity = _Activities()
         self.related_packages = RelatedPackageRefs()
 
-    @property
-    def intended_effects(self):
-        """A collection of :class:`.Statement` objects. This behaves like a
-        ``MutableSequence`` type.
-
-        """
-        return self._intended_effects
-
-    @intended_effects.setter
-    def intended_effects(self, value):
-        """Adds a :class:`.Statement` object to the :attr:`intended_effects`
-        collection.
-
-        If `value` is not an instance of :class:`.Statement`, an attempt will
-        be made to convert it to one.
-
-        """
-        self._intended_effects = _IntendedEffects(value)
 
     def add_intended_effect(self, value):
         self.intended_effects.append(value)
@@ -156,19 +144,19 @@ class Campaign(stix.BaseCoreComponent):
         """
         self.activity.append(value)
 
-    @property
-    def status(self):
-        """The status of the Campaign. This is a :class:`VocabString` field.
+    #@property
+    #def status(self):
+    #    """The status of the Campaign. This is a :class:`VocabString` field.
 
-        If set to a string, an attempt will be made to convert it to a
-        :class:`.CampaignStatus` object.
+    #    If set to a string, an attempt will be made to convert it to a
+    #    :class:`.CampaignStatus` object.
 
-        """
-        return self._status
+    #    """
+    #    return self._status
 
-    @status.setter
-    def status(self, value):
-        self._set_vocab(vocabs.CampaignStatus, status=value)
+    #@status.setter
+    #def status(self, value):
+    #    self._set_vocab(vocabs.CampaignStatus, status=value)
 
 
 

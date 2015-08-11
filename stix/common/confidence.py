@@ -16,11 +16,11 @@ class Confidence(stix.Entity):
     _binding = common_binding
     _binding_class = common_binding.ConfidenceType
 
-    value = ElementField("value")
+    value = ElementField("Value", VocabString)
     descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
     timestamp = AttributeField("timestamp")
     timestamp_precision = AttributeField("timestamp_precision")
-    source = ElementField("source")
+    source = ElementField("Source")
     
     def __init__(self, value=None, timestamp=None, description=None, source=None):
         self._fields = {}
