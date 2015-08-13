@@ -23,24 +23,12 @@ class Confidence(stix.Entity):
     source = ElementField("Source")
     
     def __init__(self, value=None, timestamp=None, description=None, source=None):
-        import random
-        self._fields = { 'a': random.random() }
+        self._fields = {}
         self.timestamp = timestamp or utils.dates.now()
         self.timestamp_precision = "second"
         self.value = value
         self.description = description
         self.source = source
-        print "#######################################################"
-        print "#######################################################"
-        print "#######################################################"
-        print "#######################################################"
-        print "#######################################################"
-        print "#######################################################"
-        print "#######################################################"
-        print "#######################################################"
-        print "#######################################################"
-        print self, self.descriptions, self._fields
-        pass
         # TODO: support confidence_assertion_chain
         # self.confidence_assertion_chain = None
     

@@ -399,7 +399,7 @@ class StructuredTextList(stix.TypedCollection, collections.Sequence):
         the ordinality will be unset.
 
         """
-        print "STList to_obj called"
+        #print "STList to_obj called"
         
         if not self:
             return []

@@ -19,6 +19,8 @@ from .vocabs import VocabString
 from .information_source import InformationSource
 from .confidence import Confidence
 
+from stix.base import AttributeField
+
 Confidence.initClassFields()
 
 class GenericRelationship(stix.Entity):
@@ -92,7 +94,7 @@ class GenericRelationship(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        print "DICT", dict_repr
+        #print "DICT", dict_repr
 
         return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
         return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
@@ -190,7 +192,26 @@ class RelatedPackageRef(GenericRelationship):
 
         return return_obj
 
-
+class GenericRelationshipEntity(stix.Entity):
+    _namespace = "http://stix.mitre.org/common-1"
+    _binding = common_binding
+    _binding_class = _binding.GenericRelationshipListType
+    
+    _ALLOWED_SCOPE = ('inclusive', 'exclusive')
+    
+    scope = AttributeField("scope")
+    
+    def __init__(self, scope=None, *args):
+        _fields = {}
+        super(GenericRelationshipEntity, self).__init__(*args)
+        self.scope = scope
+    
+    def __nonzero__(self):
+        return (
+            super(GenericRelationshipList, self).__nonzero__() or
+            bool(self.scope)
+        )
+    
 class GenericRelationshipList(stix.EntityList):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding

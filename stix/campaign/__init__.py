@@ -22,14 +22,21 @@ class AssociatedCampaigns(GenericRelationshipList):
     _inner_name = "campaigns"
 
 
-class Attribution(GenericRelationshipList):
+class Attribution(stix.Entity):
+    threat_actors = ElementField("Attributed_Threat_Actor", RelatedThreatActor, multiple=True, key_name="threat_actors")
+    scope = AttributeField("scope")
+    
+    def __init__(self, scope=None, *args):
+        self._fields = {}
+        super(Attribution, self).__init__(*args)
+    
     _namespace = "http://stix.mitre.org/Campaign-1"
     _binding = campaign_binding
     _binding_class = campaign_binding.AttributionType
     _binding_var = "Attributed_Threat_Actor"
     _contained_type = RelatedThreatActor
     _inner_name = "threat_actors"
-
+   
 
 class RelatedIncidents(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Campaign-1"
@@ -95,12 +102,12 @@ class Campaign(stix.BaseCoreComponent):
     _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = 'campaign'
 
-    #descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
-    activity = ElementField("Activity", multiple=True)
+    descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
+    activity = ElementField("Activity", Activity, multiple=True)
     associated_campaigns = ElementField("Associated_Campaigns", AssociatedCampaigns)
-    attribution = ElementField("Attribution", multiple=True)
+    attribution = ElementField("Attribution", Attribution, multiple=True)
     confidence = ElementField("Confidence", Confidence)
-    references = ElementField("Reference", multiple=True)
+    #references = ElementField("Reference", multiple=True)
     status = ElementField("Status", VocabString)
     intended_effects = ElementField("Intended_Effect", Statement, multiple=True, key_name="intended_effects")
     names = ElementField("Names", Names)
@@ -126,7 +133,7 @@ class Campaign(stix.BaseCoreComponent):
         self.related_ttps = RelatedTTPs()
         self.related_incidents = RelatedIncidents()
         self.related_indicators = RelatedIndicators()
-        #self.attribution = _AttributionList()
+        self.attribution = Attribution()
         self.confidence = None
         #self.activity = _Activities()
         self.related_packages = RelatedPackageRefs()

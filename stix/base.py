@@ -144,21 +144,13 @@ class Entity(object):
                 return value.to_obj(return_obj=return_obj, ns_info=ns_info)
             except AttributeError:
                 if type(value) == dict:
-                    print value
+                    print "dict doesn't have to_obj", return_obj, value
                 return value
-            
-        import common
-        if isinstance(self, common.Confidence):
-            print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-            print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-            print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-            print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-            print self, self.descriptions, self._fields
         
         self._collect_ns_info(ns_info)
 
         entity_obj = self._binding_class()
-        print "entity", entity_obj, self
+        #print "entity", entity_obj, self
 
         vars = {}
         for klass in self.__class__.__mro__:
@@ -171,14 +163,7 @@ class Entity(object):
 
         for name, field in vars.iteritems():
             if isinstance(field, fields.TypedField):
-                print name, field.__class__, field.attr_name
-                import common
-                if field.attr_name == "descriptions" and isinstance(self, common.Confidence):
-                    print "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-                    print "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-                    print "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-                    print "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
-                    print getattr(self, field.attr_name), self.descriptions
+                #print name, field.__class__, field.attr_name
                 val = getattr(self, field.attr_name)
 
                 if field.multiple:
@@ -187,11 +172,11 @@ class Entity(object):
                     else:
                         val = []
                 else:
-                    print "objectifying", val
+                    #print "objectifying", val
                     val = _objectify(val, return_obj, ns_info)
-                    print "objectified", val
+                    #print "objectified", val
 
-                print "setting on binding", field.name, val
+                #print "setting on binding", field.name, val
                 setattr(entity_obj, field.name, val)
 
         self._finalize_obj(entity_obj)
@@ -603,7 +588,7 @@ class EntityList(collections.MutableSequence, Entity):
         if not contained_type:
             contained_type = cls._contained_type
 
-        print list_repr.__class__, isinstance(list_repr, GenericRelationshipList)
+        #print list_repr.__class__, isinstance(list_repr, GenericRelationshipList)
 
         # GenericRelationshipList is not actually a list; it's dict with a list member
         if issubclass(cls, GenericRelationshipList):
@@ -696,7 +681,7 @@ class TypedCollection(object):
         return new_value
 
     def to_obj(self, ns_info=None):
-        print "TypedCollection to_obj called"
+        #print "TypedCollection to_obj called"
         return [x.to_obj(ns_info=ns_info) for x in self]
 
     def to_list(self):
