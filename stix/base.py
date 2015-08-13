@@ -11,7 +11,6 @@ from mixbox import fields, entities
 # internal
 from . import bindings, utils
 
-
 def _override(*args, **kwargs):
     raise NotImplementedError()
 
@@ -147,11 +146,19 @@ class Entity(object):
                 if type(value) == dict:
                     print value
                 return value
+            
+        import common
+        if isinstance(self, common.Confidence):
+            print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+            print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+            print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+            print "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+            print self, self.descriptions, self._fields
         
         self._collect_ns_info(ns_info)
 
         entity_obj = self._binding_class()
-        print "entity", entity_obj
+        print "entity", entity_obj, self
 
         vars = {}
         for klass in self.__class__.__mro__:
@@ -163,8 +170,15 @@ class Entity(object):
         #print "self", self.__dict__
 
         for name, field in vars.iteritems():
-            print name, field.__class__
             if isinstance(field, fields.TypedField):
+                print name, field.__class__, field.attr_name
+                import common
+                if field.attr_name == "descriptions" and isinstance(self, common.Confidence):
+                    print "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+                    print "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+                    print "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+                    print "$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$"
+                    print getattr(self, field.attr_name), self.descriptions
                 val = getattr(self, field.attr_name)
 
                 if field.multiple:
@@ -173,9 +187,11 @@ class Entity(object):
                     else:
                         val = []
                 else:
+                    print "objectifying", val
                     val = _objectify(val, return_obj, ns_info)
-                    #print "USING THE ABOVE FIELD", val
+                    print "objectified", val
 
+                print "setting on binding", field.name, val
                 setattr(entity_obj, field.name, val)
 
         self._finalize_obj(entity_obj)
@@ -704,7 +720,7 @@ class TypedCollection(object):
     def from_list(cls, list_repr, contained_type=None):
 
         if not list_repr:
-            return None
+            return cls()
 
         if isinstance(list_repr, dict) or not utils.is_sequence(list_repr):
             list_repr = [list_repr]
@@ -860,7 +876,8 @@ class BaseCoreComponent(Entity):
 
     @description.setter
     def description(self, value):
-        self.descriptions = value
+        from stix.common.structured_text import StructuredTextList
+        self.descriptions = StructuredTextList(value)
 
     def add_description(self, description):
         """Adds a description to the ``descriptions`` collection.
@@ -868,9 +885,6 @@ class BaseCoreComponent(Entity):
         This is the same as calling "foo.descriptions.add(bar)".
 
         """
-        if self.descriptions is None:
-            from stix.common.structured_text import StructuredTextList
-            self.descriptions = StructuredTextList()
         self.descriptions.add(description)
 
     @property
@@ -892,7 +906,8 @@ class BaseCoreComponent(Entity):
 
     @short_description.setter
     def short_description(self, value):
-        self.short_descriptions = value
+        from stix.common.structured_text import StructuredTextList
+        self.short_descriptions = StructuredTextList(value)
 
     def add_short_description(self, description):
         """Adds a description to the ``short_descriptions`` collection.
@@ -900,9 +915,6 @@ class BaseCoreComponent(Entity):
         This is the same as calling "foo.short_descriptions.add(bar)".
 
         """
-        if self.short_descriptions is None:
-            from stix.common.structured_text import StructuredTextList
-            self.short_descriptions = StructuredTextList
         self.short_descriptions.add(description)
 
 """

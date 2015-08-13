@@ -144,6 +144,35 @@ class Campaign(stix.BaseCoreComponent):
         """
         self.activity.append(value)
 
+    @property
+    def description(self):
+        """A single description about the contents or purpose of this object.
+
+        Default Value: ``None``
+
+        Note:
+            If this object has more than one description set, this will return
+            the description with the lowest ordinality value.
+
+        Returns:
+            An instance of :class:`.StructuredText`
+
+        """
+        return next(iter(self.descriptions), None)
+
+    @description.setter
+    def description(self, value):
+        from stix.common.structured_text import StructuredTextList
+        self.descriptions = StructuredTextList(value)
+
+    def add_description(self, description):
+        """Adds a description to the ``descriptions`` collection.
+
+        This is the same as calling "foo.descriptions.add(bar)".
+
+        """
+        self.descriptions.add(description)
+
     #@property
     #def status(self):
     #    """The status of the Campaign. This is a :class:`VocabString` field.
