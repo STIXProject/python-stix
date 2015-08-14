@@ -728,6 +728,17 @@ class TypedCollection(object):
     def dict_from_object(cls, entity_obj):
         """Convert from object representation to dict representation."""
         return cls.from_obj(entity_obj).to_dict()
+    
+    @classmethod
+    def istypeof(cls, obj):
+        """Check if `cls` is the type of `obj`
+
+        In the normal case, as implemented here, a simple isinstance check is
+        used. However, there are more complex checks possible. For instance,
+        EmailAddress.istypeof(obj) checks if obj is an Address object with
+        a category of Address.CAT_EMAIL
+        """
+        return isinstance(obj, cls)
 
 
 class TypedList(TypedCollection, collections.MutableSequence):
@@ -775,7 +786,7 @@ class BaseCoreComponent(Entity):
     idref = IdField("idref")
     version = AttributeField("version")
     timestamp = AttributeField("timestamp")
-    information_source = ElementField("Information_Source")
+    #information_source = ElementField("Information_Source")
     descriptions = None
     short_descriptions = None
     handling = ElementField("Handling")
@@ -786,7 +797,7 @@ class BaseCoreComponent(Entity):
         import common
         from stix.common.structured_text import StructuredTextList, StructuredTextListField
         cls.handling.type_ = data_marking.Marking
-        cls.information_source.type_ = common.InformationSource
+        #cls.information_source.type_ = common.InformationSource
         cls.descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
         cls.short_descriptions = StructuredTextListField("Short_Description", StructuredTextList, key_name="short_description")
 
@@ -799,7 +810,7 @@ class BaseCoreComponent(Entity):
         self.description = description
         self.short_description = short_description
         self.version = None
-        self.information_source = None
+        #self.information_source = None
         self.handling = None
 
         if timestamp:
