@@ -20,7 +20,8 @@ from .external_id import ExternalID
 from .impact_assessment import ImpactAssessment
 from .coa import COATaken, COARequested, COATime # noqa
 from .history import History
-
+from stix.base import ElementField
+from stix.common.structured_text import StructuredTextListField
 
 class Incident(stix.BaseCoreComponent):
     """Implementation of the STIX Incident.
@@ -46,6 +47,40 @@ class Incident(stix.BaseCoreComponent):
     _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = 'incident'
 
+    status = ElementField("Status", vocabs.IncidentStatus)
+    time = ElementField("Time", Time)
+    victims = ElementField("Victim", Identity, multiple=True, key_name="victims")
+    attributed_threat_actors = ElementField("Attributed_Threat_Actors")
+    related_indicators = ElementField("Related_Indicators")
+    related_observables = ElementField("Related_Observables")
+    related_incidents = ElementField("Related_Incidents")
+    related_packages = ElementField("Related_Packages", RelatedPackageRefs)
+    affected_assets = ElementField("Affected_Assets")
+    categories = ElementField("Categories")
+    intended_effects = ElementField("Intended_Effect", Statement, multiple=True, key_name="intended_effects")
+    leveraged_ttps = ElementField("Leveraged_TTPs")
+    discovery_methods = ElementField("Discovery_Method", vocabs.DiscoveryMethod, multiple=True, key_name="discovery_methods")
+    reporter = ElementField("Reporter", InformationSource)
+    responders = ElementField("Responder", InformationSource, multiple=True, key_name="responders")
+    coordinators = ElementField("Coordinator", InformationSource, multiple=True, key_name="coordinators")
+    external_ids = ElementField("External_ID", ExternalID, multiple=True, key_name="external_ids")
+    impact_assessment = ElementField("Impact_Assessment", ImpactAssessment)
+    security_compromise = ElementField("Security_Compromise", vocabs.SecurityCompromise)
+    confidence = ElementField("Confidence", Confidence)
+    coa_taken = ElementField("COA_Taken", COATaken)
+    coa_requested = ElementField("COA_Requested", COARequested, multiple=True)
+    history = ElementField("History", History, multiple=True)
+
+    @classmethod
+    def initClassFields(cls):
+        cls.attributed_threat_actors.type_ = AttributedThreatActors
+        cls.related_indicators.type_ = RelatedIndicators
+        cls.related_observables.type_ = RelatedObservables
+        cls.related_incidents.type_ = RelatedIncidents
+        cls.affected_assets.type_ = AffectedAssets
+        cls.categories.type_ = IncidentCategories
+        cls.leveraged_ttps.type_ = LeveragedTTPs
+        
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         super(Incident, self).__init__(
             id_=id_,
@@ -80,47 +115,6 @@ class Incident(stix.BaseCoreComponent):
         self.coa_requested = None
         self.history = History()
 
-
-    @property
-    def status(self):
-        """A :class:`.VocabString` property. If set to a string, an attempt
-        will be made to convert it to an instance of :class:`.IncidentStatus`.
-
-        """
-        return self._status
-    
-    @status.setter
-    def status(self, value):
-        self._set_vocab(vocabs.IncidentStatus, status=value)
-
-    @property
-    def time(self):
-        """Time section of the Incident. This is a :class:`.time.Time` field.
-
-        """
-        return self._time
-
-    @time.setter
-    def time(self, value):
-        self._set_var(Time, try_cast=False, time=value)
-
-    @property
-    def intended_effects(self):
-        """The impact of this intended effects of this Incident. This is a
-        collection of :class:`.Statement` objects and behaves like a
-        ``MutableSequence`` type.
-
-        If set to a string, an attempt will be made to convert it into a
-        :class:`.Statement` object with its value set to an instance of
-        :class:`.IntendedEffect`.
-
-        """
-        return self._intended_effects
-
-    @intended_effects.setter
-    def intended_effects(self, value):
-        self._intended_effects = _IntendedEffects(value)
-
     def add_intended_effect(self, value):
         """Adds a :class:`.Statement` object to the :attr:`intended_effects`
         collection.
@@ -131,17 +125,6 @@ class Incident(stix.BaseCoreComponent):
         """
         self.intended_effects.append(value)
 
-    @property
-    def victims(self):
-        """A collection of victim :class:`.Identity` objects. This behaves like
-        a ``MutableSequence`` type.
-
-        """
-        return self._victims
-
-    @victims.setter
-    def victims(self, value):
-        self._victims = _Victims(value)
 
     def add_victim(self, victim):
         """Adds a :class:`.IdentityType` value to the :attr:`victims`
@@ -149,18 +132,6 @@ class Incident(stix.BaseCoreComponent):
 
         """
         self._victims.append(victim)
-
-    @property
-    def categories(self):
-        """A collection of :class:`.VocabString` objects. This behaves
-        like a ``MutableSequence`` type.
-
-        """
-        return self._categories
-
-    @categories.setter
-    def categories(self, value):
-        self._categories = IncidentCategories(value)
 
     def add_category(self, category):
         """Adds a :class:`.VocabString` object to the :attr:`categories`
@@ -171,18 +142,6 @@ class Incident(stix.BaseCoreComponent):
 
         """
         self.categories.append(category)
-
-    @property
-    def affected_assets(self):
-        """A collection of :class:`.AffectedAsset` objects. This behaves like
-        a ``MutableSequence`` type.
-
-        """
-        return self._affected_assets
-    
-    @affected_assets.setter
-    def affected_assets(self, value):
-        self._affected_assets = AffectedAssets(value)
     
     def add_affected_asset(self, v):
         """Adds a :class:`.AffectedAsset` object to the :attr:`affected_assets`
@@ -190,18 +149,6 @@ class Incident(stix.BaseCoreComponent):
 
         """
         self.affected_assets.append(v)
-
-    @property
-    def discovery_methods(self):
-        """A :class:`.VocabString` collection. This behaves like a
-        ``MutableSequence`` type.
-
-        """
-        return self._discovery_methods
-
-    @discovery_methods.setter
-    def discovery_methods(self, value):
-        self._discovery_methods = DiscoveryMethods(value)
 
     def add_discovery_method(self, value):
         """Adds a :class:`.VocabString` object to the :attr:`discovery_methods`
@@ -213,49 +160,12 @@ class Incident(stix.BaseCoreComponent):
         """
         self.discovery_methods.append(value)
 
-    @property
-    def reporter(self):
-        """A :class:`.InformationSource` field.
-
-        """
-        return self._reporter
-
-    @reporter.setter
-    def reporter(self, value):
-        self._set_var(InformationSource, try_cast=False, reporter=value)
-
-    @property
-    def responders(self):
-        """A class of :class:`.InformationSource` objects which contain
-        information about incident responders.
-
-        This behaves like a ``MutableSequence`` type.
-
-        """
-        return self._responders
-
-    @responders.setter
-    def responders(self, value):
-        self._responders = _InformationSources(value)
-
     def add_responder(self, value):
         """Adds a :class:`.InformationSource` object to the :attr:`responders`
         collection.
 
         """
         self.responders.append(value)
-
-    @property
-    def coordinators(self):
-        """A class of :class:`.InformationSource` objects. This behaves like a
-        ``MutableSequence`` type.
-
-        """
-        return self._coordinators
-
-    @coordinators.setter
-    def coordinators(self, value):
-        self._coordinators = _InformationSources(value)
 
     def add_coordinator(self, value):
         """Adds a :class:`.InformationSource` object to the :attr:`coordinators`
@@ -264,72 +174,12 @@ class Incident(stix.BaseCoreComponent):
         """
         self.coordinators.append(value)
 
-    @property
-    def external_ids(self):
-        return self._external_ids
-
-    @external_ids.setter
-    def external_ids(self, value):
-        """A collection of :class:`.ExternalID` objects for capturing
-        incident tracker identification information.
-
-        """
-        self._external_ids = _ExternalIDs(value)
-
     def add_external_id(self, value):
         """Adds a :class:`.ExternalID` object to the :attr:`external_ids`
         collection.
 
         """
         self.external_ids.append(value)
-
-    @property
-    def impact_assessment(self):
-        """A class :class:`.ImpactAssessment` field.
-
-        """
-        return self._impact_assessment
-
-    @impact_assessment.setter
-    def impact_assessment(self, value):
-        self._set_var(ImpactAssessment, try_cast=False, impact_assessment=value)
-
-    @property
-    def security_compromise(self):
-        """A :class:`.VocabString` field.  If set to a string, an attempt will
-        be made to convert it into an instance of :class:`.SecurityCompromise`.
-
-        """
-        return self._security_compromise
-
-    @security_compromise.setter
-    def security_compromise(self, value):
-        self._set_vocab(vocabs.SecurityCompromise, security_compromise=value)
-
-    @property
-    def confidence(self):
-        """A :class:`.Confidence` field.
-
-        """
-        return self._confidence
-    
-    @confidence.setter
-    def confidence(self, value):
-        self._set_var(Confidence, confidence=value)
-
-    @property
-    def coa_taken(self):
-        """A collection of :class:`.COATaken` objects which characterize
-        courses of action taken during the incident.
-
-        This behaves like a ``MutableSequence`` type.
-
-        """
-        return self._coa_taken
-    
-    @coa_taken.setter
-    def coa_taken(self, value):
-        self._coa_taken = _COAsTaken(value)
 
     def add_coa_taken(self, value):
         """Adds a :class:`.COATaken` object to the :attr:`coas_taken`
@@ -338,38 +188,12 @@ class Incident(stix.BaseCoreComponent):
         """
         self.coa_taken.append(value)
 
-    @property
-    def coa_requested(self):
-        """A collection of :class:`.COARequested` objects which characterize
-        courses of action requested for response to this incident.
-
-        This behaves like a ``MutableSequence`` type.
-
-        """
-        return self._coa_requested
-
-    @coa_requested.setter
-    def coa_requested(self, value):
-        self._coa_requested = _COAsRequested(value)
-
     def add_coa_requested(self, value):
         """Adds a :class:`.COARequested` object to the :attr:`coas_requested`
         collection.
 
         """
         self.coa_requested.append(value)
-
-    @property
-    def related_indicators(self):
-        """A collection of :class:`.RelatedIndicator` objects characterizing
-        indicators related to this incident.
-
-        """
-        return self._related_indicators
-
-    @related_indicators.setter
-    def related_indicators(self, value):
-        self._set_var(RelatedIndicators, related_indicators=value)
 
     def add_related_indicator(self, value):
         """Adds an Related Indicator to the :attr:`related_indicators` list
@@ -403,14 +227,6 @@ class Incident(stix.BaseCoreComponent):
         """
         self.related_indicators.append(value)
 
-    @property
-    def related_observables(self):
-        return self._related_observables
-
-    @related_observables.setter
-    def related_observables(self, value):
-        self._set_var(RelatedObservables, related_observables=value)
-
     def add_related_observable(self, value):
         """Adds a Related Observable to the ``related_observables`` list
         property of this :class:`Incident`.
@@ -443,17 +259,10 @@ class Incident(stix.BaseCoreComponent):
         """
         self.related_observables.append(value)
 
-    @property
-    def related_packages(self):
-        return self._related_packages
-
-    @related_packages.setter
-    def related_packages(self, value):
-        self._related_packages = RelatedPackageRefs(value)
-
     def add_related_package(self, value):
         self.related_packages.append(value)
 
+"""
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -585,7 +394,7 @@ class Incident(stix.BaseCoreComponent):
         return_obj.related_packages = RelatedPackageRefs.from_dict(get('related_packages'))
 
         return return_obj
-
+"""
 
 class AttributedThreatActors(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Incident-1"
@@ -692,3 +501,7 @@ class _IntendedEffects(stix.TypedList):
 
     def _fix_value(self, value):
         return Statement(value=vocabs.IntendedEffect(value))
+    
+    
+Incident.initClassFields()
+
