@@ -6,7 +6,8 @@ import stix.indicator.test_mechanism
 from stix.common import EncodedCDATA, StructuredTextList, VocabString
 from stix.indicator.test_mechanism import _BaseTestMechanism
 import stix.bindings.extensions.test_mechanism.generic as generic_tm_binding
-
+from stix.base import ElementField, AttributeField
+from stix.common.structured_text import StructuredTextListField
 
 @stix.register_extension
 class GenericTestMechanism(_BaseTestMechanism):
@@ -15,6 +16,11 @@ class GenericTestMechanism(_BaseTestMechanism):
     _binding_class = _binding.GenericTestMechanismType
     _XSI_TYPE = "genericTM:GenericTestMechanismType"
     
+    reference_location = ElementField("Reference_Location")
+    descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
+    specification = ElementField("Specification", EncodedCDATA)
+    type_ = AttributeField("type", VocabString, key_name="type")
+    
     def __init__(self, id_=None, idref=None):
         super(GenericTestMechanism, self).__init__(id_=id_, idref=idref)
         self.reference_location = None
@@ -22,6 +28,7 @@ class GenericTestMechanism(_BaseTestMechanism):
         self.type_ = None
         self.specification = None
         
+    """
     @property
     def specification(self):
         return self._specification
@@ -34,7 +41,8 @@ class GenericTestMechanism(_BaseTestMechanism):
             self._specification = value
         else:
             self._specification = EncodedCDATA(value=value)
-
+    """
+    
     @property
     def description(self):
         """A single description about the contents or purpose of this object.
@@ -54,34 +62,7 @@ class GenericTestMechanism(_BaseTestMechanism):
 
     @description.setter
     def description(self, value):
-        self.descriptions = value
-
-    @property
-    def descriptions(self):
-        """A :class:`.StructuredTextList` object, containing descriptions about
-        the purpose or intent of this object.
-
-        Iterating over this object will yield its contents sorted by their
-        ``ordinality`` value.
-
-        Default Value: Empty :class:`.StructuredTextList` object.
-
-        Note:
-            IF this is set to a value that is not an instance of
-            :class:`.StructuredText`, an effort will ne made to convert it.
-            If this is set to an iterable, any values contained that are not
-            an instance of :class:`.StructuredText` will be be converted.
-
-        Returns:
-            An instance of
-            :class:`.StructuredTextList`
-
-        """
-        return self._description
-
-    @descriptions.setter
-    def descriptions(self, value):
-        self._description = StructuredTextList(value)
+        self.descriptions = StructuredTextList(value)
 
     def add_description(self, description):
         """Adds a description to the ``descriptions`` collection.
@@ -91,6 +72,7 @@ class GenericTestMechanism(_BaseTestMechanism):
         """
         self.descriptions.add(description)
 
+    """
     @property
     def type_(self):
         return self._type
@@ -103,6 +85,7 @@ class GenericTestMechanism(_BaseTestMechanism):
             self._type = value
         else:
             self._type = VocabString(value)
+    """
     
     @classmethod
     def from_obj(cls, obj, return_obj=None):

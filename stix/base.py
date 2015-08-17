@@ -680,7 +680,7 @@ class TypedCollection(object):
 
         return new_value
 
-    def to_obj(self, ns_info=None):
+    def to_obj(self, return_obj=None, ns_info=None):
         #print "TypedCollection to_obj called"
         return [x.to_obj(ns_info=ns_info) for x in self]
 
@@ -786,7 +786,6 @@ class BaseCoreComponent(Entity):
     idref = IdField("idref")
     version = AttributeField("version")
     timestamp = AttributeField("timestamp")
-    #information_source = ElementField("Information_Source")
     descriptions = None
     short_descriptions = None
     handling = ElementField("Handling")
@@ -796,7 +795,7 @@ class BaseCoreComponent(Entity):
         import data_marking
         import common
         from stix.common.structured_text import StructuredTextList, StructuredTextListField
-        cls.handling.type_ = data_marking.Marking
+        cls.handling.type_ = data_marking.MarkingStructure
         #cls.information_source.type_ = common.InformationSource
         cls.descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
         cls.short_descriptions = StructuredTextListField("Short_Description", StructuredTextList, key_name="short_description")
@@ -826,9 +825,10 @@ class BaseCoreComponent(Entity):
             utils.check_version(self._ALL_VERSIONS, value)
             self._version = value
 
+    """
     @property
     def timestamp(self):
-        """The timestam property declares the time of creation and is
+        ""The timestam property declares the time of creation and is
         automatically set in ``__init__()``.
 
         This property can accept ``datetime.datetime`` or ``str`` values.
@@ -847,13 +847,14 @@ class BaseCoreComponent(Entity):
         Returns:
             An instance of ``datetime.datetime``.
 
-        """
+        ""
         return self._timestamp
 
     @timestamp.setter
     def timestamp(self, value):
         self._timestamp = utils.dates.parse_value(value)
-
+    """
+    
     @property
     def description(self):
         """A single description about the contents or purpose of this object.

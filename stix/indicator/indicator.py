@@ -183,27 +183,25 @@ class Indicator(stix.BaseCoreComponent):
 
     producer = ElementField("Producer", InformationSource)
     observable = ElementField("Observable", Observable, postset_hook = lambda inst,value: inst.set_observables([value]))
-    indicator_types = ElementField("Indicator_Types")
+    indicator_types = ElementField("Type", IndicatorType, multiple=True, key_name="indicator_types")
     confidence = ElementField("Confidence", Confidence)
-    indicated_ttps = ElementField("Indicated_ttps", RelatedTTP, multiple=True)
+    indicated_ttps = ElementField("Indicated_TTP", RelatedTTP, multiple=True, key_name="indicated_ttps")
     test_mechanisms = ElementField("Test_Mechanisms", TestMechanisms)
     alternative_id = ElementField("Alternative_ID", multiple=True)
     suggested_coas = ElementField("Suggested_COAs", SuggestedCOAs)
     sightings = ElementField("Sightings", Sightings)
     composite_indicator_expression = ElementField("Composite_Indicator_Expression", ObservableComposition)
     kill_chain_phases = ElementField("Kill_Chain_Phases", KillChainPhasesReference)
-    #TODO: should this be singular?
-    valid_time_positions = ElementField("Valid_Time_Position", ValidTime, multiple=True)
+    valid_time_positions = ElementField("Valid_Time_Position", ValidTime, multiple=True, key_name="valid_time_positions")
     related_indicators = ElementField("Related_Indicators", RelatedIndicators)
-    related_campaigns = ElementField("Related_Campagins")
+    related_campaigns = ElementField("Related_Campaigns")
     likely_impact = ElementField("Likely_Impact", Statement)
     negate = AttributeField("negate")
     related_packages = ElementField("Related_Packages", RelatedPackageRefs)
 
     @classmethod
     def initClassFields(cls):
-        cls.indicator_types.type_ = IndicatorTypes
-        cls.related_campaigns = RelatedCampaignRefs
+        cls.related_campaigns.type_ = RelatedCampaignRefs
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
@@ -764,7 +762,7 @@ class Indicator(stix.BaseCoreComponent):
                 root_observable = self.observables[0]
             obj.Observable = root_observable.to_obj(ns_info=ns_info)
 
-        return return_obj
+        return obj
     
     """
     @classmethod
@@ -806,6 +804,8 @@ class Indicator(stix.BaseCoreComponent):
 
         if self.negate:
             d['negate'] = True
+        else:
+            if 'negate' in d: del d['negate']
 
         if self.observables:
             if len(self.observables) == 1:

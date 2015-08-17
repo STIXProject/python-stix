@@ -4,35 +4,26 @@
 import stix
 from stix.common import InformationSource, Statement
 import stix.bindings.indicator as indicator_binding
-
+from stix.base import IdField, AttributeField, ElementField
 
 class _BaseTestMechanism(stix.Entity):
     _namespace = "http://stix.mitre.org/Indicator-2"
     _binding = indicator_binding
     _binding_class = indicator_binding.TestMechanismType()
     
+    id_ = IdField("id")
+    idref = IdField("idref")
+    efficacy = ElementField("Efficacy", Statement)
+    producer = ElementField("Producer", InformationSource)
+    
     def __init__(self, id_=None, idref=None):
+        self._fields = {}
         self.id_ = id_
         self.idref = idref
         self.efficacy = None
         self.producer = None
-    
-    @property
-    def efficacy(self):
-        return self._efficacy
-    
-    @efficacy.setter
-    def efficacy(self, value):
-        self._set_var(Statement, efficacy=value)
-    
-    @property
-    def producer(self):
-        return self._producer
-    
-    @producer.setter
-    def producer(self, value):
-        self._set_var(InformationSource, try_cast=False, producer=value)
 
+    
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:
@@ -103,7 +94,7 @@ class _BaseTestMechanism(stix.Entity):
         d = super(_BaseTestMechanism, self).to_dict()
         d['xsi:type'] = self._XSI_TYPE  # added by subclass
         return d
-
+    
 
 class TestMechanisms(stix.EntityList):
     _binding = indicator_binding

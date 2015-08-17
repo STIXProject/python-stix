@@ -21,7 +21,14 @@ class AssociatedCampaigns(GenericRelationshipList):
     _contained_type = RelatedCampaign
     _inner_name = "campaigns"
 
-
+class Attribution(GenericRelationshipList):
+    _namespace = "http://stix.mitre.org/Campaign-1"
+    _binding = campaign_binding
+    _binding_class = campaign_binding.AttributionType
+    _binding_var = "Attributed_Threat_Actor"
+    _contained_type = RelatedThreatActor
+    _inner_name = "threat_actors"
+"""
 class Attribution(stix.Entity):
     threat_actors = ElementField("Attributed_Threat_Actor", RelatedThreatActor, multiple=True, key_name="threat_actors")
     scope = AttributeField("scope")
@@ -36,7 +43,7 @@ class Attribution(stix.Entity):
     _binding_var = "Attributed_Threat_Actor"
     _contained_type = RelatedThreatActor
     _inner_name = "threat_actors"
-   
+"""   
 
 class RelatedIncidents(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Campaign-1"

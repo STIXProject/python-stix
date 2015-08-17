@@ -7,11 +7,15 @@ import stix.bindings.ttp as ttp_binding
 from stix.common import vocabs, Statement
 from stix.common.kill_chains import KillChainPhasesReference
 from stix.common.related import RelatedPackageRefs
+from stix.ttp.related_ttps import RelatedTTPs
+from stix.ttp.exploit_targets import ExploitTargets
 
 # relative
 from .behavior import Behavior
 from .resource import Resource
 from .victim_targeting import VictimTargeting
+from stix.base import ElementField
+from stix.common.vocabs import IntendedEffect
 
 
 class TTP(stix.BaseCoreComponent):
@@ -38,6 +42,15 @@ class TTP(stix.BaseCoreComponent):
     _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = "ttp"
 
+    behavior = ElementField("Behavior", Behavior)
+    related_ttps = ElementField("Related_TTPs", RelatedTTPs)
+    intended_effects = ElementField("Intended_Effect", IntendedEffect, multiple=True)
+    resources = ElementField("Resources", Resource)
+    victim_targeting = ElementField("Victim_Targeting", VictimTargeting)
+    exploit_targets = ElementField("Exploit_Targets", ExploitTargets)
+    related_packages = ElementField("Related_Pacakges", RelatedPackageRefs)
+    kill_chain_phases = ElementField("Kill_Chain_Phases", KillChainPhasesReference)
+
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
 
@@ -55,35 +68,9 @@ class TTP(stix.BaseCoreComponent):
         self.intended_effects = None
         self.resources = None
         self.victim_targeting = None
-        self.exploit_targets = ExploitTargets()
         self.related_packages = None
         self.kill_chain_phases = None
 
-    @property
-    def behavior(self):
-        """A :class:`.Behavior` field.
-
-        """
-        return self._behavior
-
-    @behavior.setter
-    def behavior(self, value):
-        self._set_var(Behavior, try_cast=False, behavior=value)
-
-    @property
-    def related_ttps(self):
-        """A collection of :class:`.RelatedTTP` objects. This behaves like a
-        ``MutableSequence`` Type.
-
-        """
-        return self._related_ttps
-
-    @related_ttps.setter
-    def related_ttps(self, value):
-        if isinstance(value, RelatedTTPs):
-            self._related_ttps = value
-        else:
-            self._related_ttps = RelatedTTPs(value)
 
     def add_related_ttp(self, value):
         """Adds an Related TTP to the :attr:`related_ttps` list
@@ -117,43 +104,12 @@ class TTP(stix.BaseCoreComponent):
         """
         self.related_ttps.append(value)
 
-    @property
-    def exploit_targets(self):
-        """A collection of :class:`.ExploitTarget` objects. This behaves like
-        a ``MutableSequence`` type.
-
-        """
-        return self._exploit_targets
-
-    @exploit_targets.setter
-    def exploit_targets(self, value):
-        if isinstance(value, ExploitTargets):
-            self._exploit_targets = value
-        else:
-            self._exploit_targets = ExploitTargets(value)
-
     def add_exploit_target(self, value):
         """Adds a :class:`.ExploitTarget` object to the :attr:`exploit_targets`
         collection.
 
         """
         self.exploit_targets.append(value)
-
-    @property
-    def intended_effects(self):
-        """A collection of :class:`.Statement` objects. This behaves like a
-        ``MutableSequence`` type.
-
-        If set to a string, an attempt will be made to convert it into a
-        :class:`.Statement` object with its value set to an instance of
-        :class:`.IntendedEffect`.
-
-        """
-        return self._intended_effects
-
-    @intended_effects.setter
-    def intended_effects(self, value):
-        self._intended_effects = _IntendedEffects(value)
 
     def add_intended_effect(self, value):
         """Adds a :class:`.Statement` object to the :attr:`intended_effects`
@@ -164,42 +120,6 @@ class TTP(stix.BaseCoreComponent):
 
         """
         self.intended_effects.append(value)
-
-    @property
-    def resources(self):
-        """A collection of :class:`.Resource` objects. This behaves like a
-        ``MutableSequence`` type.
-
-        """
-        return self._resources
-
-    @resources.setter
-    def resources(self, value):
-        self._set_var(Resource, resources=value)
-
-    @property
-    def victim_targeting(self):
-        """A collection of :class:`.VictimTargeting` objects. This behaves like
-        a ``MutableSequence`` type.
-
-        """
-        return self._victim_targeting
-
-    @victim_targeting.setter
-    def victim_targeting(self, value):
-        self._set_var(VictimTargeting, try_cast=False, victim_targeting=value)
-
-    @property
-    def kill_chain_phases(self):
-        """A collection of :class:`.KillChainPhaseReference` objects. This
-        behaves like a ``MutableSequence`` type.
-
-        """
-        return self._kill_chain_phases
-
-    @kill_chain_phases.setter
-    def kill_chain_phases(self, value):
-        self._kill_chain_phases = KillChainPhasesReference(value)
 
     def add_kill_chain_phase(self, value):
         """Adds a :class:`.KillChainPhaseReference` to the
@@ -236,6 +156,7 @@ class TTP(stix.BaseCoreComponent):
         """
         self.related_packages.append(value)
 
+    """
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -307,7 +228,7 @@ class TTP(stix.BaseCoreComponent):
         return_obj.kill_chain_phases = KillChainPhasesReference.from_dict(get('kill_chain_phases'))
 
         return return_obj
-
+    """
 
 # NOT ACTUAL STIX TYPE
 class _IntendedEffects(stix.TypedList):

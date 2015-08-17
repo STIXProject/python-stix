@@ -8,29 +8,40 @@ from stix.common import (
     InformationSource
 )
 import stix.bindings.indicator as indicator_binding
-
+from stix.base import AttributeField, ElementField
+from stix.common.structured_text import StructuredTextListField
 
 class Sighting(stix.Entity):
     _namespace = "http://stix.mitre.org/Indicator-2"
     _binding = indicator_binding
     _binding_class = _binding.SightingType
     
+    timestamp = AttributeField("timestamp")
+    timestamp_precision = AttributeField("timestamp_precision")
+    descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
+    source = ElementField("Source", InformationSource)
+    reference = ElementField("Reference")
+    confidence = ElementField("Confidence", Confidence)
+    related_observables = ElementField("Related_Observables")
+    
+    @classmethod
+    def initClassFields(cls):
+        cls.related_observables.type_ = RelatedObservables
+    
     def __init__(self, timestamp=None, timestamp_precision=None, description=None):
+        self._fields = {}
         self.timestamp = timestamp or utils.dates.now()
         self.timestamp_precision = timestamp_precision
-        self.description = description
+        self.descriptions = description
         self.source = None
         self.reference = None
         self.confidence = None
-        self.related_observables = RelatedObservables()
-        
-    @property
-    def timestamp(self):
-        return self._timestamp
 
+    """
     @timestamp.setter
     def timestamp(self, value):
         self._timestamp = utils.dates.parse_value(value)
+    """
     
     @property
     def description(self):
@@ -43,45 +54,14 @@ class Sighting(stix.Entity):
             the description with the lowest ordinality value.
 
         Returns:
-            An instance of
-            :class:`.StructuredText`
+            An instance of :class:`.StructuredText`
 
         """
         return next(iter(self.descriptions), None)
 
     @description.setter
     def description(self, value):
-        self.descriptions = value
-
-    @property
-    def descriptions(self):
-        """A :class:`.StructuredTextList` object, containing descriptions about
-        the purpose or intent of this object.
-
-        This is typically used for the purpose of providing multiple
-        descriptions with different classificaton markings.
-
-        Iterating over this object will yield its contents sorted by their
-        ``ordinality`` value.
-
-        Default Value: Empty :class:`.StructuredTextList` object.
-
-        Note:
-            IF this is set to a value that is not an instance of
-            :class:`.StructuredText`, an effort will ne made to convert it.
-            If this is set to an iterable, any values contained that are not
-            an instance of :class:`.StructuredText` will be be converted.
-
-        Returns:
-            An instance of
-            :class:`.StructuredTextList`
-
-        """
-        return self._description
-
-    @descriptions.setter
-    def descriptions(self, value):
-        self._description = StructuredTextList(value)
+        self.descriptions = StructuredTextList(value)
 
     def add_description(self, description):
         """Adds a description to the ``descriptions`` collection.
@@ -90,23 +70,8 @@ class Sighting(stix.Entity):
 
         """
         self.descriptions.add(description)
-
-    @property
-    def source(self):
-        return self._source
     
-    @source.setter
-    def source(self, value):
-        self._set_var(InformationSource, try_cast=False, source=value)
-
-    @property
-    def confidence(self):
-        return self._confidence
-    
-    @confidence.setter
-    def confidence(self, value):
-        self._set_var(Confidence, confidence=value)
-    
+    """
     def to_obj(self, return_obj=None, ns_info=None):
         super(Sighting, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
@@ -163,7 +128,7 @@ class Sighting(stix.Entity):
         return_obj.descriptions = StructuredTextList.from_dict(d.get('description'))
         return_obj.related_observables = RelatedObservables.from_dict(d.get('related_observables'))
         return return_obj
-
+    """
 
 class Sightings(stix.EntityList):
     _namespace = "http://stix.mitre.org/Indicator-2"
