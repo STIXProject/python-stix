@@ -67,9 +67,9 @@ class Incident(stix.BaseCoreComponent):
     impact_assessment = ElementField("Impact_Assessment", ImpactAssessment)
     security_compromise = ElementField("Security_Compromise", vocabs.SecurityCompromise)
     confidence = ElementField("Confidence", Confidence)
-    coa_taken = ElementField("COA_Taken", COATaken)
+    coa_taken = ElementField("COA_Taken", COATaken, multiple=True)
     coa_requested = ElementField("COA_Requested", COARequested, multiple=True)
-    history = ElementField("History", History, multiple=True)
+    history = ElementField("History", History)
 
     @classmethod
     def initClassFields(cls):
@@ -91,29 +91,6 @@ class Incident(stix.BaseCoreComponent):
             short_description=short_description
         )
 
-        self.status = None
-        self.time = None
-        self.victims = None
-        self.attributed_threat_actors = AttributedThreatActors()
-        self.related_indicators = RelatedIndicators()
-        self.related_observables = RelatedObservables()
-        self.related_incidents = RelatedIncidents()
-        self.related_packages = RelatedPackageRefs()
-        self.affected_assets = None
-        self.categories = None
-        self.intended_effects = None
-        self.leveraged_ttps = LeveragedTTPs()
-        self.discovery_methods = None
-        self.reporter = None
-        self.responders = None
-        self.coordinators = None
-        self.external_ids = None
-        self.impact_assessment = None
-        self.security_compromise = None
-        self.confidence = None
-        self.coa_taken = None
-        self.coa_requested = None
-        self.history = History()
 
     def add_intended_effect(self, value):
         """Adds a :class:`.Statement` object to the :attr:`intended_effects`

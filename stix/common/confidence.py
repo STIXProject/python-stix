@@ -37,7 +37,8 @@ class Confidence(stix.Entity):
     def initClassFields(cls):
         from .information_source import InformationSource
         cls.source.type_ = InformationSource
-        
+       
+    """ 
     @property
     def timestamp(self):
         return self._timestamp
@@ -45,6 +46,7 @@ class Confidence(stix.Entity):
     @timestamp.setter
     def timestamp(self, value):
         self._timestamp = utils.dates.parse_value(value)
+    """
 
     @property
     def description(self):

@@ -4,32 +4,36 @@
 # internal
 import stix
 import stix.bindings.stix_common as common_binding
-
+from stix.base import AttributeField, ElementField
 
 class KillChain(stix.Entity):
     _binding = common_binding
     _namespace = 'http://stix.mitre.org/common-1'
     _binding_class = _binding.KillChainType
 
+    id_ = AttributeField("id_")
+    name = AttributeField("name")
+    definer = AttributeField("definer")
+    reference = AttributeField("reference")
+    number_of_phases = AttributeField("number_of_phases")
+    kill_chain_phases = ElementField("Kill_Chain_Phase", multiple=True, key_name="kill_chain_phases")
+
+    @classmethod
+    def initClassField(cls):
+        cls.kill_chain_phases.type_ = KillChainPhase
+
     def __init__(self, id_=None, name=None, definer=None, reference=None):
+        self._fields = {}
         self.id_ = id_
         self.name = name
         self.definer = definer
         self.reference = reference
         self.number_of_phases = None  # can we just do len(self.kill_chain_phases)?
-        self.kill_chain_phases = None
-
-    @property
-    def kill_chain_phases(self):
-        return self._kill_chain_phases
-
-    @kill_chain_phases.setter
-    def kill_chain_phases(self, value):
-        self._kill_chain_phases = _KillChainPhases(value)
 
     def add_kill_chain_phase(self, value):
         self.kill_chain_phases.append(value)
 
+    """
     def to_obj(self, return_obj=None, ns_info=None):
         super(KillChain, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
@@ -44,7 +48,8 @@ class KillChain(stix.Entity):
         return_obj.Kill_Chain_Phase = self.kill_chain_phases.to_obj(ns_info=ns_info)
 
         return return_obj
-
+    """
+    
     def __eq__(self, other):
         if self is other:
             return True
@@ -57,6 +62,7 @@ class KillChain(stix.Entity):
     def __ne__(self, other):
         return not self.__eq__(other)
 
+    """
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:
@@ -90,7 +96,7 @@ class KillChain(stix.Entity):
             _KillChainPhases.from_dict(get('kill_chain_phases'))
 
         return return_obj
-
+    """
 
 class KillChains(stix.EntityList):
     _binding = common_binding
@@ -106,19 +112,18 @@ class KillChainPhase(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
     _binding_class = _binding.KillChainPhaseType
 
+    phase_id = AttributeField("phase_id")
+    name = AttributeField("name")
+    ordinality = AttributeField("ordinality")
+
     def __init__(self, phase_id=None, name=None, ordinality=None):
+        self._fields = {}
         self.phase_id = phase_id
         self.name = name
         self.ordinality = ordinality
 
-    @property
-    def phase_id(self):
-        return self._phase_id
 
-    @phase_id.setter
-    def phase_id(self, value):
-        self._set_var(basestring, try_cast=False, phase_id=value)
-
+    """
     @property
     def ordinality(self):
         return self._ordinality
@@ -129,7 +134,8 @@ class KillChainPhase(stix.Entity):
             self._ordinality = int(value)
         else:
             self._ordinality = None
-
+    """
+    """
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -141,7 +147,8 @@ class KillChainPhase(stix.Entity):
         return_obj.ordinality = self.ordinality
 
         return return_obj
-
+    """
+    
     def __eq__(self, other):
         if other is self:
             return True
@@ -157,6 +164,7 @@ class KillChainPhase(stix.Entity):
     def __hash__(self):
         return hash(tuple(sorted(self.to_dict().items())))
 
+    """
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:
@@ -186,18 +194,23 @@ class KillChainPhase(stix.Entity):
 
     def to_dict(self):
         return super(KillChainPhase, self).to_dict()
-
+    """
 
 class KillChainPhaseReference(KillChainPhase):
     _binding = common_binding
     _namespace = 'http://stix.mitre.org/common-1'
     _binding_class = _binding.KillChainPhaseReferenceType
 
+    kill_chain_id = AttributeField("kill_chain_id")
+    kill_chain_name = AttributeField("kill_chain_name")
+
     def __init__(self, phase_id=None, name=None, ordinality=None, kill_chain_id=None, kill_chain_name=None):
+        self._fields = {}
         super(KillChainPhaseReference, self).__init__(phase_id, name, ordinality)
         self.kill_chain_id = kill_chain_id
         self.kill_chain_name = kill_chain_name
 
+    """
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
@@ -234,7 +247,7 @@ class KillChainPhaseReference(KillChainPhase):
         return_obj.kill_chain_id = d.get('kill_chain_id')
         return_obj.kill_chain_name = d.get('kill_chain_name')
         return return_obj
-
+    """
 
 class KillChainPhasesReference(stix.EntityList):
     _binding = common_binding

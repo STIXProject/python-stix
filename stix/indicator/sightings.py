@@ -138,13 +138,17 @@ class Sightings(stix.EntityList):
     _binding_var = "Sighting"
     _inner_name = "sightings"
     
+    sightings_count = AttributeField("sightings_count")
+    
     def __init__(self, sightings_count=None, *args):
+        self._fields = {}
         super(Sightings, self).__init__(*args)
         self.sightings_count = sightings_count
 
     def __nonzero__(self):
         return super(Sightings, self).__nonzero__() or bool(self.sightings_count)
 
+    """
     @property
     def sightings_count(self):
         return self._sightings_count
@@ -152,7 +156,8 @@ class Sightings(stix.EntityList):
     @sightings_count.setter
     def sightings_count(self, value):
         self._set_var(int, sightings_count=value)
-
+    """
+    
     def to_obj(self, return_obj=None, ns_info=None):
         list_obj = super(Sightings, self).to_obj(return_obj=return_obj, ns_info=ns_info)
         list_obj.sightings_count = self.sightings_count
