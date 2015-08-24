@@ -79,11 +79,11 @@ class AttributionTests(EntityTestCase, unittest.TestCase):
 
 
 class AttributionListTests(TypedListTestCase, unittest.TestCase):
-    klass = campaign._AttributionList
+    klass = campaign.Campaign
 
-    _full_dict = [
+    _full_dict = { 'attribution': [
         AttributionTests._full_dict
-    ]
+    ] }
 
 
 class AssociatedCampaignsTests(EntityTestCase, unittest.TestCase):
@@ -97,12 +97,11 @@ class AssociatedCampaignsTests(EntityTestCase, unittest.TestCase):
     }
 
 
-class ActivitiesTests(TypedListTestCase, unittest.TestCase):
-    klass = campaign._Activities
+class ActivityTests(TypedListTestCase, unittest.TestCase):
+    klass = campaign.Activity
 
-    _full_dict = [
-        activity_test.ActivityTests._full_dict
-    ]
+    _full_dict = activity_test.ActivityTests._full_dict
+    
 
 
 class CampaignTest(EntityTestCase, unittest.TestCase):
@@ -123,10 +122,10 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
         'related_ttps': RelatedTTPsTest._full_dict,
         'related_incidents': RelatedIncidentsTests._full_dict,
         'related_indicators': RelatedIndicatorsTests._full_dict,
-        'attribution': AttributionListTests._full_dict,
+        'attribution': [AttributionTests._full_dict],
         'associated_campaigns': AssociatedCampaignsTests._full_dict,
         'confidence': confidence_test.ConfidenceTests._full_dict,
-        'activity': ActivitiesTests._full_dict,
+        'activity': [ActivityTests._full_dict],
         'information_source': information_source_test.InformationSourceTests._full_dict,
         'handling': data_marking_test.MarkingTests._full_dict,
         'related_packages': related_test.RelatedPackageRefsTests._full_dict

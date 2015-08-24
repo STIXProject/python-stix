@@ -414,13 +414,18 @@ class Entity(object):
         for field in cls._get_vars():
             val = cls_dict.get(field.key_name)
             if field.type_:
-                if issubclass(field.type_, EntityList):
-                    val = field.type_.from_list(val)
-                elif field.multiple:
+                if field.multiple:
                     if val is not None:
-                        val = [field.type_.from_dict(x) for x in val]
+                        if type(val) is list:
+                            val = [field.type_.from_dict(x) for x in val]
+                        else:
+                            # sometimes multiple fields are supplied with a single dict as input instead of a list
+                            # TypedList (now obsolete) used to do this; now TypedField has to
+                            val = [field.type_.from_dict(val)]
                     else:
                         val = []
+                elif issubclass(field.type_, EntityList):
+                    val = field.type_.from_list(val)
                 else:
                     val = field.type_.from_dict(val)
             else:
@@ -624,6 +629,9 @@ class EntityList(collections.MutableSequence, Entity):
         if not inner_name:
             inner_name = cls._inner_name
 
+        if inner_name == "attribution":
+            pass
+
         for item in dict_repr.get(inner_name, []):
             return_obj.append(contained_type.from_dict(item))
 
@@ -795,7 +803,7 @@ class BaseCoreComponent(Entity):
         import data_marking
         import common
         from stix.common.structured_text import StructuredTextList, StructuredTextListField
-        cls.handling.type_ = data_marking.MarkingStructure
+        cls.handling.type_ = data_marking.Marking
         #cls.information_source.type_ = common.InformationSource
         cls.descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
         cls.short_descriptions = StructuredTextListField("Short_Description", StructuredTextList, key_name="short_description")

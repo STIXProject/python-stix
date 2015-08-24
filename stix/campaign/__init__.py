@@ -12,6 +12,7 @@ from stix.common import vocabs
 import stix.bindings.campaign as campaign_binding
 from stix.common.structured_text import StructuredTextList, StructuredTextListField
 from stix.base import ElementField, AttributeField
+from stix.common.information_source import InformationSource
 
 class AssociatedCampaigns(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Campaign-1"
@@ -43,7 +44,7 @@ class Attribution(stix.Entity):
     _binding_var = "Attributed_Threat_Actor"
     _contained_type = RelatedThreatActor
     _inner_name = "threat_actors"
-"""   
+"""
 
 class RelatedIncidents(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Campaign-1"
@@ -121,6 +122,7 @@ class Campaign(stix.BaseCoreComponent):
     related_incidents = ElementField("Related_Incidents", RelatedIncidents)
     related_indicators = ElementField("Related_Indicators", RelatedIndicators)
     related_packages = ElementField("Related_Packages", RelatedPackageRefs)
+    information_source = ElementField("Information_Source", InformationSource)
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
@@ -134,22 +136,14 @@ class Campaign(stix.BaseCoreComponent):
             short_description=short_description
         )
 
-        self.names = None
-        self.intended_effects = _IntendedEffects()
-        self.status = None
         self.related_ttps = RelatedTTPs()
         self.related_incidents = RelatedIncidents()
         self.related_indicators = RelatedIndicators()
-        self.attribution = Attribution()
-        self.confidence = None
-        #self.activity = _Activities()
         self.related_packages = RelatedPackageRefs()
 
 
     def add_intended_effect(self, value):
         self.intended_effects.append(value)
-
-
 
     def add_activity(self, value):
         """Adds an :class:`.Activity` object to the :attr:`activity`
@@ -301,12 +295,8 @@ class Campaign(stix.BaseCoreComponent):
 """
 
 # Not Actual STIX Types!
-class _AttributionList(stix.TypedList):
-    _contained_type = Attribution
-
-
-class _Activities(stix.TypedList):
-    _contained_type = Activity
+#class _Activities(stix.TypedList):
+#    _contained_type = Activity
 
 
 class _IntendedEffects(stix.TypedList):
