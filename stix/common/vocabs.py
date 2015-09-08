@@ -1,6 +1,8 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from mixbox import signals
+
 import stix
 import stix.bindings.stix_common as stix_common_binding
 
@@ -120,6 +122,7 @@ class VocabString(stix.Entity):
         return_obj.vocab_reference = vocab_obj.vocab_reference
         return_obj.xsi_type = vocab_obj.xsi_type
 
+        signals.emit("Entity.created.from_obj", return_obj, vocab_obj)
         return return_obj
 
     @classmethod

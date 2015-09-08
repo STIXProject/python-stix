@@ -1,6 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
+# internal
 import stix
 import stix.bindings.incident as incident_binding
 from stix.common import vocabs, VocabString
@@ -76,6 +80,8 @@ class IndirectImpactSummary(stix.Entity):
         return_obj.brand_and_market_damage = VocabString.from_obj(obj.Brand_And_Market_Damage)
         return_obj.increased_operating_costs = VocabString.from_obj(obj.Increased_Operating_Costs)
         return_obj.legal_and_regulatory_costs = VocabString.from_obj(obj.Legal_And_Regulatory_Costs)
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):    

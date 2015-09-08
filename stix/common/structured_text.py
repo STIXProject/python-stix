@@ -1,6 +1,8 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from mixbox import signals
+
 import itertools
 import contextlib
 import collections
@@ -120,6 +122,7 @@ class StructuredText(stix.Entity):
         return_obj.ordinality = obj.ordinality
         return_obj.structuring_format = obj.structuring_format
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod

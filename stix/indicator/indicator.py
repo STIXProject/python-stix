@@ -1081,6 +1081,8 @@ class CompositeIndicatorExpression(stix.EntityList):
 
         super(CompositeIndicatorExpression, cls).from_obj(obj, return_obj=return_obj)
         return_obj.operator = obj.operator
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod

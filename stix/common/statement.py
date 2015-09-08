@@ -3,6 +3,8 @@
 
 from __future__ import absolute_import
 
+from mixbox import signals
+
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
@@ -152,6 +154,7 @@ class Statement(stix.Entity):
         return_obj.source = InformationSource.from_obj(obj.Source)
         return_obj.confidence = Confidence.from_obj(obj.Confidence)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod

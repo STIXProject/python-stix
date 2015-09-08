@@ -1,6 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
+# internal
 import stix
 import stix.bindings.threat_actor as threat_actor_binding
 from stix.common import vocabs, Confidence, Identity, Statement
@@ -270,6 +274,7 @@ class ThreatActor(stix.BaseCoreComponent):
             return_obj.confidence = Confidence.from_obj(obj.Confidence)
             return_obj.related_packages = RelatedPackageRefs.from_obj(obj.Related_Packages)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):

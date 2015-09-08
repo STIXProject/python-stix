@@ -1,6 +1,9 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
 # internal
 import stix
 import stix.bindings.incident as incident_binding
@@ -55,6 +58,8 @@ class TotalLossEstimation(stix.Entity):
 
         return_obj.initial_reported_total_loss_estimation = LossEstimation.from_obj(obj.Initial_Reported_Total_Loss_Estimation)
         return_obj.actual_total_loss_estimation = LossEstimation.from_obj(obj.Actual_Total_Loss_Estimation)
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):    

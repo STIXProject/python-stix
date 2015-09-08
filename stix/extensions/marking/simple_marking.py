@@ -1,6 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
+# internal
 import stix
 from stix.data_marking import MarkingStructure
 import stix.bindings.extensions.marking.simple_marking as simple_marking_binding
@@ -46,6 +50,7 @@ class SimpleMarkingStructure(MarkingStructure):
         MarkingStructure.from_obj(obj, return_obj)
         return_obj.statement = obj.Statement
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod

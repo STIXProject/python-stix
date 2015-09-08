@@ -1,6 +1,9 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
 # internal
 import stix
 import stix.utils as utils
@@ -60,6 +63,7 @@ class COATaken(stix.Entity):
         return_obj.contributors = Contributors.from_obj(obj.Contributors)
         return_obj.course_of_action = CourseOfAction.from_obj(obj.Course_Of_Action)
         
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_obj(self, return_obj=None, ns_info=None):
@@ -124,6 +128,7 @@ class COARequested(COATaken):
         super(COARequested, cls).from_obj(obj, return_obj=return_obj)
         return_obj.priority = obj.priority
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_obj(self, return_obj=None, ns_info=None):
@@ -186,6 +191,8 @@ class COATime(stix.Entity):
             
         return_obj.start = DateTimeWithPrecision.from_obj(obj.Start)
         return_obj.end = DateTimeWithPrecision.from_obj(obj.End)
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):

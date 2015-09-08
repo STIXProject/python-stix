@@ -3,6 +3,8 @@
 
 from __future__ import absolute_import
 
+from mixbox import signals
+
 from .structured_text import StructuredText, StructuredTextList  # noqa
 from .vocabs import VocabString   # noqa
 from .datetimewithprecision import DateTimeWithPrecision  # noqa
@@ -89,6 +91,7 @@ class EncodedCDATA(stix.Entity):
         return_obj.value = obj.valueOf_
         return_obj.encoded = obj.encoded
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):

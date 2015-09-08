@@ -1,6 +1,9 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
 # internal
 import stix
 import stix.utils as utils
@@ -69,6 +72,7 @@ class JournalEntry(stix.Entity):
         return_obj.time = obj.time
         return_obj.time_precision = obj.time_precision
         
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
         
     def to_dict(self):
@@ -139,6 +143,7 @@ class HistoryItem(stix.Entity):
         return_obj.action_entry = COATaken.from_obj(obj.Action_Entry)
         return_obj.journal_entry = JournalEntry.from_obj(obj.Journal_Entry)
         
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
             
     def to_dict(self):

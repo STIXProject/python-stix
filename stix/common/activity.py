@@ -1,6 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
+# internal
 import stix
 import stix.bindings.stix_common as common_binding
 
@@ -105,6 +109,7 @@ class Activity(stix.Entity):
         return_obj.date_time = DateTimeWithPrecision.from_obj(obj.Date_Time)
         return_obj.descriptions = StructuredTextList.from_obj(obj.Description)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):

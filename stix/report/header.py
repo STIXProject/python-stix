@@ -1,6 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
+# internal
 import stix
 import stix.bindings.report as report_binding
 from stix.common import InformationSource, StructuredTextList, VocabString
@@ -217,6 +221,7 @@ class Header(stix.Entity):
         return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
         return_obj.intents = _ReportIntents.from_obj(obj.Intent)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_obj(self, return_obj=None, ns_info=None):

@@ -3,6 +3,7 @@
 
 # external
 import cybox.common
+from mixbox import signals
 
 # internal
 import stix
@@ -117,7 +118,8 @@ class ToolInformation(stix.Entity, cybox.common.ToolInformation):
         
         return_obj.title = obj.Title
         return_obj.short_descriptions = StructuredTextList.from_obj(obj.Short_Description)
-        
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):

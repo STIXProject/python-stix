@@ -1,6 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
+# internal
 import stix
 from stix.data_marking import MarkingStructure
 import stix.bindings.extensions.marking.terms_of_use_marking as tou_marking_binding
@@ -47,6 +51,7 @@ class TermsOfUseMarkingStructure(MarkingStructure):
         MarkingStructure.from_obj(obj, return_obj=return_obj)
         return_obj.terms_of_use = obj.Terms_Of_Use
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod

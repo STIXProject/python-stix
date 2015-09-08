@@ -1,7 +1,8 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-from mixbox import idgen
+# external
+from mixbox import idgen, signals
 from mixbox.cache import Cached
 
 from cybox.core import Observable, Observables
@@ -410,6 +411,7 @@ class Report(Cached, stix.Entity):
             if obj.version:
                 return_obj.version = obj.version
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod

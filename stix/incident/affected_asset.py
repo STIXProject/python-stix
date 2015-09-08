@@ -3,6 +3,7 @@
 
 # external
 from cybox.core import Observables
+from mixbox import signals
 
 # internal
 import stix
@@ -174,6 +175,7 @@ class AffectedAsset(stix.Entity):
             n = obj.Nature_Of_Security_Effect
             return_obj.nature_of_security_effect = [PropertyAffected.from_obj(x) for x in n.Property_Affected]
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):
@@ -257,6 +259,8 @@ class AssetType(VocabString):
         
         super(AssetType, cls).from_obj(obj, return_obj=return_obj)
         return_obj.count_affected = obj.count_affected
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):

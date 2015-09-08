@@ -6,6 +6,7 @@ from StringIO import StringIO
 
 # external
 from lxml import etree
+from mixbox import signals
 import mixbox.xml
 
 # internal
@@ -80,6 +81,8 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
         
         super(OpenIOCTestMechanism, cls).from_obj(obj, return_obj)
         return_obj.ioc = obj.ioc
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):

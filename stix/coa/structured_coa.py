@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # external
+from mixbox import signals
 from mixbox.cache import Cached
 
 # internal
@@ -33,6 +34,7 @@ class _BaseStructuredCOA(Cached, stix.Entity):
             return_obj.id_ = obj.id
             return_obj.idref = obj.idref
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_obj(self, return_obj=None, ns_info=None):

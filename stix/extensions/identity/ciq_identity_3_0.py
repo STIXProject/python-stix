@@ -1,8 +1,11 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+#external
 import lxml.etree as et
+from mixbox import signals
 
+# internal
 import stix
 import stix.utils as utils
 import stix.common as common
@@ -103,6 +106,7 @@ class CIQIdentity3_0Instance(common.Identity):
         if specification is not None:
             return_obj.specification = STIXCIQIdentity3_0.from_obj(specification)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj 
 
     def to_dict(self):
@@ -343,6 +347,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         if contact_numbers is not None and len(contact_numbers) > 0:
             return_obj.contact_numbers = [ContactNumber.from_obj(x) for x in contact_numbers[0]]
         
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_obj(self, return_obj=None, ns_info=None):
@@ -513,6 +518,7 @@ class Address(stix.Entity):
         if len(administrative_area) > 0:
             return_obj.administrative_area = AdministrativeArea.from_obj(administrative_area[0])
         
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
     
     @classmethod
@@ -570,6 +576,7 @@ class AdministrativeArea(stix.Entity):
             for name_element in name_elements:
                 return_obj.name_elements.append(NameElement.from_obj(name_element))
         
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):
@@ -642,6 +649,7 @@ class Country(stix.Entity):
             for name_element in name_elements:
                 return_obj.name_elements.append(NameElement.from_obj(name_element))
         
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):
@@ -695,6 +703,8 @@ class NameElement(stix.Entity):
             return_obj = cls()
 
         return_obj.value = obj.text
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
     
     def to_dict(self):
@@ -749,7 +759,8 @@ class FreeTextAddress(stix.Entity):
         if address_lines:
             for address_line in address_lines:
                 return_obj.address_lines.append(address_line.text)
-        
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_obj(self, return_obj=None, ns_info=None):
@@ -872,6 +883,7 @@ class PartyName(stix.Entity):
                 org_name = OrganisationName.from_obj(organisation_name_obj)
                 return_obj.add_organisation_name(org_name)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):
@@ -963,6 +975,7 @@ class NameLine(stix.Entity):
         return_obj.value = obj.text
         return_obj.type = obj.get('Type')
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):
@@ -1032,6 +1045,7 @@ class PersonName(stix.Entity):
                 person_name_element = PersonNameElement.from_obj(name_element_obj)
                 return_obj.add_name_element(person_name_element)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):
@@ -1149,6 +1163,7 @@ class OrganisationName(stix.Entity):
                 sub_division_name = SubDivisionName.from_obj(sub_division_name_obj)
                 return_obj.add_subdivision_name(sub_division_name)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):
@@ -1209,6 +1224,8 @@ class _BaseNameElement(stix.Entity):
             raise ValueError("Must supply return_obj")
 
         return_obj.value = obj.valueOf_
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_obj(self, return_obj=None, ns_info=None):
@@ -1287,6 +1304,7 @@ class PersonNameElement(_BaseNameElement):
         return_obj.element_type = obj.get('ElementType')    
         return_obj.value = obj.text
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):
@@ -1360,6 +1378,7 @@ class OrganisationNameElement(_BaseNameElement):
         return_obj.element_type = obj.get('{%s}ElementType' % XML_NS_XNL)
         return_obj.value = obj.text
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):
@@ -1440,6 +1459,7 @@ class SubDivisionName(stix.Entity):
         return_obj.type = obj.get('{%s}Type' % XML_NS_XNL)
         return_obj.value = obj.text
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):
@@ -1484,6 +1504,8 @@ class Language(stix.Entity):
         
         return_obj = cls()
         return_obj.value = obj.text
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
     
     def to_dict(self):
@@ -1531,6 +1553,8 @@ class ElectronicAddressIdentifier(stix.Entity):
 
         return_obj.type_ = obj.attrib.get('{%s}Type' % XML_NS_XPIL)
         return_obj.value = obj.text
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
     
     def to_dict(self):
@@ -1579,6 +1603,8 @@ class OrganisationInfo(stix.Entity):
             return_obj = cls()
 
         return_obj.industry_type = obj.get('{%s}IndustryType' % cls._namespace)
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):
@@ -1628,6 +1654,8 @@ class FreeTextLine(stix.Entity):
 
         return_obj.type_ = obj.get('{%s}Type' % cls._namespace)
         return_obj.value = obj.text
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):
@@ -1730,6 +1758,7 @@ class ContactNumber(stix.Entity):
         if contact_number_elements is not None and len(contact_number_elements) > 0:
             return_obj.contact_number_elements = [ContactNumberElement.from_obj(x) for x in contact_number_elements]
         
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):
@@ -1812,6 +1841,8 @@ class ContactNumberElement(stix.Entity):
 
         return_obj.type_ = obj.get('{%s}Type' % cls._namespace)
         return_obj.value = obj.text
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):

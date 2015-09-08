@@ -1,6 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
+# internal
 import stix
 from stix.common import EncodedCDATA
 from stix.indicator import test_mechanism
@@ -82,6 +86,7 @@ class SnortTestMechanism(test_mechanism._BaseTestMechanism):
         return_obj.rate_filters = _EncodedCDATAs.from_obj(obj.Rate_Filter)
         return_obj.event_suppressions = _EncodedCDATAs.from_obj(obj.Event_Suppression)
         
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):

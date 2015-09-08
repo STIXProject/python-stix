@@ -1,6 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
+# internal
 import stix
 import stix.bindings.incident as incident_binding
 from stix.common import DateTimeWithPrecision
@@ -144,6 +148,7 @@ class Time(stix.Entity):
         return_obj.incident_reported = DateTimeWithPrecision.from_obj(obj.Incident_Reported)
         return_obj.incident_closed = DateTimeWithPrecision.from_obj(obj.Incident_Closed)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):

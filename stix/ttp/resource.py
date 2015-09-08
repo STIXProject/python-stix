@@ -1,6 +1,9 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
 # internal
 import stix
 from stix.common import ToolInformation, Identity
@@ -77,6 +80,7 @@ class Resource(stix.Entity):
         return_obj.tools = Tools.from_obj(obj.Tools)
         return_obj.personas = Personas.from_obj(obj.Personas)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):

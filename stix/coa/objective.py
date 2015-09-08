@@ -1,6 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
+# internal
 import stix
 from stix.common import StructuredTextList, Confidence
 import stix.bindings.course_of_action as coa_binding
@@ -166,6 +170,8 @@ class Objective(stix.Entity):
         return_obj.descriptions = StructuredTextList.from_obj(obj.Description)
         return_obj.short_descriptions = StructuredTextList.from_obj(obj.Short_Description)
         return_obj.applicability_confidence = Confidence.from_obj(obj.Applicability_Confidence)
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):

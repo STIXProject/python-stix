@@ -1,6 +1,9 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
 # internal
 import stix
 import stix.bindings.ttp as ttp_binding
@@ -281,6 +284,7 @@ class TTP(stix.BaseCoreComponent):
             return_obj.kill_chain_phases = KillChainPhasesReference.from_obj(obj.Kill_Chain_Phases)
             return_obj.related_packages = RelatedPackageRefs.from_obj(obj.Related_Packages)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):

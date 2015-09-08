@@ -4,6 +4,9 @@
 # stdlib
 from __future__ import absolute_import
 
+# external
+from mixbox import signals
+
 # internal
 import stix
 import stix.utils as utils
@@ -66,6 +69,7 @@ class GenericRelationship(stix.Entity):
         return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
         return_obj.relationship = VocabString.from_obj(obj.Relationship)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_obj(self, return_obj=None, ns_info=None):
@@ -170,6 +174,7 @@ class RelatedPackageRef(GenericRelationship):
         return_obj.idref = obj.idref
         return_obj.timestamp = obj.timestamp
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod
@@ -248,6 +253,7 @@ class GenericRelationshipList(stix.EntityList):
 
         return_obj.scope = obj.scope
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod
@@ -382,6 +388,7 @@ class _BaseRelated(GenericRelationship):
         contained_item = getattr(obj, cls._inner_var)
         return_obj.item = cls._base_type.from_obj(contained_item)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod

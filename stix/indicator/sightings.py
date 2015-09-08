@@ -1,6 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
+# internal
 import stix
 import stix.utils as utils
 from stix.common import (
@@ -146,6 +150,8 @@ class Sighting(stix.Entity):
         return_obj.confidence = Confidence.from_obj(obj.Confidence)
         return_obj.descriptions = StructuredTextList.from_obj(obj.Description)
         return_obj.related_observables = RelatedObservables.from_obj(obj.Related_Observables)
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod
@@ -208,6 +214,8 @@ class Sightings(stix.EntityList):
 
         super(Sightings, cls).from_obj(obj, return_obj=return_obj)
         return_obj.sightings_count = obj.sightings_count
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod

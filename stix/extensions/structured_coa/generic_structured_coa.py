@@ -1,6 +1,9 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
 # internal
 import stix
 from stix.common import EncodedCDATA, StructuredTextList, VocabString
@@ -110,6 +113,7 @@ class GenericStructuredCOA(_BaseStructuredCOA):
         return_obj.type_ = VocabString.from_obj(obj.Type)
         return_obj.specification = EncodedCDATA.from_obj(obj.Specification)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_obj(self, return_obj=None, ns_info=None):

@@ -1,7 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
 
+# internal
 import stix
 from stix.common import vocabs, VocabString, StructuredTextList
 import stix.bindings.incident as incident_binding
@@ -26,6 +29,8 @@ class NonPublicDataCompromised(VocabString):
         
         super(NonPublicDataCompromised, cls).from_obj(obj, return_obj=return_obj)
         return_obj.data_encrypted = obj.data_encrypted
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):
@@ -151,6 +156,8 @@ class PropertyAffected(stix.Entity):
         return_obj.type_of_availability_loss = VocabString.from_obj(obj.Type_Of_Availability_Loss)
         return_obj.duration_of_availability_loss = VocabString.from_obj(obj.Duration_Of_Availability_Loss)
         return_obj.non_public_data_compromised = NonPublicDataCompromised.from_obj(obj.Non_Public_Data_Compromised)
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):

@@ -1,6 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
+# internal
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
@@ -60,6 +64,8 @@ class DateTimeWithPrecision(stix.Entity):
 
         return_obj.value = obj.valueOf_
         return_obj.precision = obj.precision
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):

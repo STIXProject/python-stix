@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # external
+from mixbox import signals
 from mixbox.cache import Cached
 
 # internal
@@ -100,6 +101,7 @@ class Identity(Cached, stix.Entity):
             return_obj.related_identities = \
                 RelatedIdentities.from_obj(obj.Related_Identities)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):

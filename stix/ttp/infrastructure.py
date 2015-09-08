@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # external
+from mixbox import signals
 from mixbox.cache import Cached
 from cybox.core import Observables
 
@@ -256,6 +257,7 @@ class Infrastructure(Cached, stix.Entity):
         if obj.Type:
             return_obj.types = [VocabString.from_obj(x) for x in obj.Type]
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):

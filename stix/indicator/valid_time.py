@@ -1,6 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
+# internal
 import stix
 from stix.common import DateTimeWithPrecision
 import stix.bindings.indicator as indicator_binding
@@ -56,6 +60,8 @@ class ValidTime(stix.Entity):
 
         return_obj.start_time = DateTimeWithPrecision.from_obj(obj.Start_Time)
         return_obj.end_time = DateTimeWithPrecision.from_obj(obj.End_Time)
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod

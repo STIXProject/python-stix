@@ -5,6 +5,7 @@ from __future__ import absolute_import
 
 # external
 import cybox.common
+from mixbox import signals
 
 # internal
 import stix
@@ -200,6 +201,7 @@ class InformationSource(stix.Entity):
         if obj.Tools:
             return_obj.tools = cybox.common.ToolInformationList.from_obj(obj.Tools)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod

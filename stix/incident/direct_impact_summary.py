@@ -1,6 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
+# internal
 import stix
 from stix.common import VocabString
 from stix.common.vocabs import ImpactRating
@@ -65,6 +69,8 @@ class DirectImpactSummary(stix.Entity):
         return_obj.asset_losses = VocabString.from_obj(obj.Asset_Losses)
         return_obj.business_mission_disruption = VocabString.from_obj(obj.Business_Mission_Disruption)
         return_obj.response_and_recovery_costs = VocabString.from_obj(obj.Response_And_Recovery_Costs)
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):    

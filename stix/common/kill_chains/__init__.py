@@ -1,6 +1,9 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
 # internal
 import stix
 import stix.bindings.stix_common as common_binding
@@ -71,6 +74,7 @@ class KillChain(stix.Entity):
         return_obj.number_of_phases = obj.number_of_phases
         return_obj.kill_chain_phases = _KillChainPhases.from_obj(obj.Kill_Chain_Phase)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod
@@ -169,6 +173,7 @@ class KillChainPhase(stix.Entity):
         return_obj.name = obj.name
         return_obj.ordinality = obj.ordinality
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod
@@ -218,6 +223,8 @@ class KillChainPhaseReference(KillChainPhase):
 
         return_obj.kill_chain_id = obj.kill_chain_id
         return_obj.kill_chain_name = obj.kill_chain_name
+
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):

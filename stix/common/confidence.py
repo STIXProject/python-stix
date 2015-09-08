@@ -3,6 +3,8 @@
 
 from __future__ import absolute_import
 
+from mixbox import signals
+
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
@@ -156,6 +158,7 @@ class Confidence(stix.Entity):
         return_obj.descriptions = StructuredTextList.from_obj(obj.Description)
         return_obj.source = InformationSource.from_obj(obj.Source)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod

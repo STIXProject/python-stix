@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # external
+from mixbox import signals
 from cybox.core import Observables
 
 # internal
@@ -80,6 +81,7 @@ class VictimTargeting(stix.Entity):
         return_obj.targeted_systems = TargetedSystems.from_obj(obj.Targeted_Systems)
         return_obj.targeted_information = TargetedInformation.from_obj(obj.Targeted_Information)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):

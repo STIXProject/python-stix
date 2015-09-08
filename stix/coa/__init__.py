@@ -3,6 +3,7 @@
 
 # external
 from cybox.core import Observables
+from mixbox import signals
 
 # internal
 import stix
@@ -220,6 +221,7 @@ class CourseOfAction(stix.BaseCoreComponent):
             return_obj.structured_coa = \
                 _BaseStructuredCOA.from_obj(obj.Structured_COA)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):

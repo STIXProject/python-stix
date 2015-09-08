@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # external
+from mixbox import signals
 from mixbox.cache import Cached
 
 # internal
@@ -58,6 +59,7 @@ class _BaseTestMechanism(Cached, stix.Entity):
             return_obj.efficacy = Statement.from_obj(obj.Efficacy)
             return_obj.producer = InformationSource.from_obj(obj.Producer)
         
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):

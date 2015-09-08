@@ -1,6 +1,9 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
 # internal
 import stix
 import stix.utils as utils
@@ -73,6 +76,7 @@ class CampaignRef(stix.Entity):
         return_obj.timestamp = obj.timestamp
         return_obj.names = Names.from_obj(obj.Names)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod

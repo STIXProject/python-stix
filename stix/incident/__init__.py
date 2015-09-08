@@ -1,7 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
 
+# internal
 import stix
 import stix.bindings.incident as incident_binding
 from stix.common import (
@@ -573,6 +576,7 @@ class Incident(stix.BaseCoreComponent):
             return_obj.contacts = _InformationSources.from_obj(obj.Contact)
             return_obj.url = obj.URL
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):

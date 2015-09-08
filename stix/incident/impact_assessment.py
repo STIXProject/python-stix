@@ -1,6 +1,9 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# external
+from mixbox import signals
+
 # internal
 import stix
 import stix.bindings.incident as incident_binding
@@ -100,6 +103,7 @@ class ImpactAssessment(stix.Entity):
         return_obj.impact_qualification = VocabString.from_obj(obj.Impact_Qualification)
         return_obj.effects = Effects.from_obj(obj.Effects)
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     def to_dict(self):    
