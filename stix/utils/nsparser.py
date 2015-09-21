@@ -1,22 +1,23 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# stdlib
 import collections
-import warnings
 import itertools
+import warnings
 
-# external
+from mixbox import idgen
+from mixbox.entities import Entity
+
 import cybox
 import cybox.core
 import cybox.common
-import cybox.utils
+from cybox.utils.nsparser import CYBOX_NAMESPACES
 
 # internal
 import stix
 
 # relative
-from . import ignored, idgen
+from . import ignored
 from .walk import iterwalk
 
 
@@ -71,9 +72,9 @@ class NamespaceInfo(object):
 
     def _parse_collected_classes(self):
         collected = self._collected_classes
-        entity_klasses = (stix.Entity, cybox.Entity)
+        entity_klasses = (stix.Entity, Entity)
 
-        # Generator which yields all stix.Entity and cybox.Entity subclasses
+        # Generator which yields all stix.Entity and mixbox.Entity subclasses
         # that were collected.
         entity_subclasses = (
             klass for klass in collected if issubclass(klass, entity_klasses)
@@ -122,20 +123,19 @@ class NamespaceInfo(object):
         'http://example.com' by removing the former.
 
         """
-        ex_api_ns = idgen.EXAMPLE_NAMESPACE.keys()[0]
-        ex_prefix = 'example'  # Example ns prefix
-        id_alias = idgen.get_id_namespace_alias()
+        example_prefix = 'example'  # Example ns prefix
+        idgen_prefix = idgen.get_id_namespace_prefix()
 
         # If the ID namespace alias doesn't match the example alias, return.
-        if id_alias != ex_prefix:
+        if idgen_prefix != example_prefix:
             return
 
         # If the example namespace prefix isn't in the parsed namespace
         # prefixes, return.
-        if ex_prefix not in self._input_namespaces:
+        if example_prefix not in self._input_namespaces:
             return
 
-        self._input_namespaces[ex_prefix] = ex_api_ns
+        self._input_namespaces[example_prefix] = idgen.EXAMPLE_NAMESPACE.name
 
     def _check_namespaces(self, ns_dict):
         """Check that all the prefixes in `ns_dict` are mapped to only
@@ -431,7 +431,7 @@ STIX_NS_TO_SCHEMALOCATION = {
 
 #: Schema locations for namespaces defined by the CybOX language
 CYBOX_NS_TO_SCHEMALOCATION = dict(
-    (ns, loc) for ns, _, loc in cybox.utils.nsparser.NS_LIST if loc
+    (x.name, x.schema_location) for x in CYBOX_NAMESPACES if x.schema_location
 )
 
 #: Schema locations for namespaces not defined by STIX, but hosted on the STIX website
@@ -489,7 +489,7 @@ DEFAULT_EXT_TO_PREFIX = {
 
 #: Mapping of CybOX namespaces to default aliases
 DEFAULT_CYBOX_NAMESPACES = dict(
-    (ns, alias) for (ns, alias, _) in cybox.utils.nsparser.NS_LIST
+    (x.name, x.prefix) for x in CYBOX_NAMESPACES
 )
 
 
@@ -522,10 +522,10 @@ DEFAULT_STIX_SCHEMALOCATIONS = dict(
 
 # python-maec support code
 with ignored(ImportError):
-    from maec.utils.nsparser import NS_LIST
+    from maec.utils.nsparser import MAEC_NAMESPACES
 
     ns_to_prefix = dict(
-        (ns, prefix) for (ns, prefix, _) in NS_LIST
+        (x.name, x.prefix) for x in MAEC_NAMESPACES
     )
 
     del ns_to_prefix['http://maec.mitre.org/default_vocabularies-1']
@@ -535,7 +535,7 @@ with ignored(ImportError):
     )
 
     ns_to_schemalocation = dict(
-        (ns, schemaloc) for ns, _, schemaloc in NS_LIST if schemaloc
+        (x.name, x.schema_location) for x in MAEC_NAMESPACES if x.schema_location
     )
 
     DEFAULT_STIX_NAMESPACES.update(ns_to_prefix)

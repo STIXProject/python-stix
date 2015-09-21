@@ -1,7 +1,9 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# external
+from mixbox import idgen
+from mixbox.cache import Cached
+
 from cybox.core import Observable, Observables
 
 # internal
@@ -29,12 +31,12 @@ import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.report as report_binding
 
 
-class Report(stix.Entity):
+class Report(Cached, stix.Entity):
     """A STIX Report Object.
 
     Args:
         id_ (optional): An identifier. If ``None``, a value will be generated
-            via ``stix.utils.create_id()``. If set, this will unset the
+            via ``mixbox.idgen.create_id()``. If set, this will unset the
             ``idref`` property.
         idref (optional): An identifier reference. If set this will unset the
             ``id_`` property.
@@ -61,7 +63,7 @@ class Report(stix.Entity):
                  observables=None, incidents=None, threat_actors=None,
                  ttps=None, campaigns=None, related_reports=None):
         
-        self.id_ = id_ or stix.utils.create_id("Report")
+        self.id_ = id_ or idgen.create_id("Report")
         self.idref = idref
         self.version = self._version
         self.header = header

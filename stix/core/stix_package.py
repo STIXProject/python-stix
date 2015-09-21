@@ -1,7 +1,9 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# external
+from mixbox import idgen
+from mixbox.cache import Cached
+
 from cybox.core import Observable, Observables
 
 # base
@@ -35,12 +37,12 @@ from . import (Campaigns, CoursesOfAction, ExploitTargets, Incidents,
 import stix.bindings.stix_core as stix_core_binding
 
 
-class STIXPackage(stix.Entity):
+class STIXPackage(Cached, stix.Entity):
     """A STIX Package object.
 
     Args:
         id_ (optional): An identifier. If ``None``, a value will be generated
-            via ``stix.utils.create_id()``. If set, this will unset the
+            via ``mixbox.idgen.create_id()``. If set, this will unset the
             ``idref`` property.
         idref: **DEPRECATED** An identifier reference. If set this will unset
             the ``id_`` property.
@@ -71,9 +73,9 @@ class STIXPackage(stix.Entity):
                  ttps=None, campaigns=None, related_packages=None,
                  reports=None):
         
-        self.id_ = id_ or stix.utils.create_id("Package")
+        self.id_ = id_ or idgen.create_id("Package")
         self.idref = idref
-        self.version = STIXPackage._version
+        self._version = STIXPackage._version
         self.stix_header = stix_header
         self.campaigns = campaigns
         self.courses_of_action = courses_of_action
@@ -146,15 +148,6 @@ class STIXPackage(stix.Entity):
 
         """
         return self._version
-
-    @version.setter
-    def version(self, value):
-        if not value:
-            self._version = None
-        else:
-            utils.check_version(self._ALL_VERSIONS, value)
-            self._version = value
-
 
     @property
     def stix_header(self):
@@ -460,7 +453,7 @@ class STIXPackage(stix.Entity):
 
         # Don't overwrite this unless passed in.
         if obj.version:
-            return_obj.version = obj.version
+            return_obj._version = obj.version
 
         return return_obj
 
@@ -473,7 +466,7 @@ class STIXPackage(stix.Entity):
         return_obj.id_ = get('id')
         return_obj.idref = get('idref')
         return_obj.timestamp = get('timestamp')
-        return_obj.version = get('version', cls._version)
+        return_obj._version = get('version', cls._version)
         return_obj.stix_header = STIXHeader.from_dict(get('stix_header'))
         return_obj.campaigns = Campaigns.from_dict(get('campaigns'))
         return_obj.courses_of_action = CoursesOfAction.from_dict(get('courses_of_action'))

@@ -119,6 +119,16 @@ class AttackPatternTests(EntityTestCase, unittest.TestCase):
         'capec_id': '12345'
     }
 
+    def idref_test(self):
+        ap = attack_pattern.AttackPattern()
+        ap.id_ = 'foo'
+
+        self.assertEqual(ap.id_, 'foo')
+
+        ap.idref = 'bar'
+        self.assertEqual(ap.idref, 'bar')
+        self.assertEqual(ap.id_, None)
+
 
 class AttackPatternsTests(EntityTestCase, unittest.TestCase):
     klass = behavior.AttackPatterns

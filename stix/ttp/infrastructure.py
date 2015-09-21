@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # external
+from mixbox.cache import Cached
 from cybox.core import Observables
 
 # internal
@@ -11,18 +12,69 @@ from stix.common.vocabs import AttackerInfrastructureType
 import stix.bindings.ttp as ttp_binding
 
 
-class Infrastructure(stix.Entity):
+class Infrastructure(Cached, stix.Entity):
     _binding = ttp_binding
     _binding_class = _binding.InfrastructureType
     _namespace = "http://stix.mitre.org/TTP-1"
 
-    def __init__(self, id_=None, title=None, description=None, short_description=None):
+    def __init__(self, id_=None, idref=None, title=None, description=None, short_description=None):
         self.id_ = id_
+        self.idref = idref
         self.title = title
         self.description = description
         self.short_description = short_description
         self.types = None
         self.observable_characterization = None
+
+    @property
+    def id_(self):
+        """The ``id_`` property serves as an identifier.
+
+        Default Value: ``None``
+
+        Note:
+            Both the ``id_`` and ``idref`` properties cannot be set at the
+            same time. **Setting one will unset the other!**
+
+        Returns:
+            A string id.
+
+        """
+        return self._id
+
+    @id_.setter
+    def id_(self, value):
+        if not value:
+            self._id = None
+        else:
+            self._id = value
+            self.idref = None
+
+    @property
+    def idref(self):
+        """The ``idref`` property must be set to the ``id_`` value of another
+        object instance of the same type. An idref does not need to resolve to
+        a local object instance.
+
+        Default Value: ``None``.
+
+        Note:
+            Both the ``id_`` and ``idref`` properties cannot be set at the
+            same time. **Setting one will unset the other!**
+
+        Returns:
+            The value of the ``idref`` property
+
+        """
+        return self._idref
+
+    @idref.setter
+    def idref(self, value):
+        if not value:
+            self._idref = None
+        else:
+            self._idref = value
+            self.id_ = None  # unset id_ if idref is present
 
     @property
     def title(self):

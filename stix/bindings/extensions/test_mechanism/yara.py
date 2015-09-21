@@ -9,7 +9,10 @@
 #
 
 import sys
-from stix.bindings import *
+
+from mixbox.binding_utils import *
+
+from stix.bindings import register_extension
 import stix.bindings.indicator as indicator_binding
 import stix.bindings.stix_common as stix_common_binding
 

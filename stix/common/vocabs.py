@@ -56,14 +56,17 @@ class VocabString(stix.Entity):
     def is_plain(self):
         """Whether the VocabString can be represented as a single value."""
         return (
-            self._XSI_TYPE is None and
+            self.xsi_type is None and
             self.vocab_name is None and
             self.vocab_reference is None
         )
 
     @staticmethod
     def lookup_class(xsi_type):
-        return stix.lookup_extension(xsi_type, default=VocabString)
+        try:
+            return stix.lookup_extension(xsi_type, default=VocabString)
+        except ValueError:
+            return VocabString
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(VocabString, self).to_obj(return_obj=return_obj, ns_info=ns_info)
@@ -105,7 +108,7 @@ class VocabString(stix.Entity):
             return None
         
         if not return_obj:
-            klass = stix.lookup_extension(vocab_obj.xsi_type, default=cls)
+            klass = cls.lookup_class(vocab_obj.xsi_type)
             return klass.from_obj(vocab_obj, return_obj=klass())
            
         # xsi_type should be set automatically by the class's constructor.
@@ -127,7 +130,7 @@ class VocabString(stix.Entity):
         if not return_obj:
             if isinstance(vocab_dict, dict):
                 get = vocab_dict.get
-                klass = stix.lookup_extension(get('xsi:type'), default=cls)
+                klass = cls.lookup_class(get('xsi:type'))
                 return klass.from_dict(vocab_dict, return_obj=klass())
             else:
                 return_obj = cls()

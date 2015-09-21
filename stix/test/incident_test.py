@@ -468,6 +468,8 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
         'discovery_methods': DiscoveryMethodsTests._full_dict,
         'confidence': confidence_test.ConfidenceTests._full_dict,
         'related_packages': related_test.RelatedPackageRefsTests._full_dict,
+        'contacts': InformationSourcesTest._full_dict,
+        'url': 'http://www.example.com/'
     }
 
     def test_parse_category(self):

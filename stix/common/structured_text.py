@@ -8,7 +8,6 @@ import collections
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
-from  mixbox.fields import TypedField
 from stix.base import AttributeField, ElementField
 
 #: Default ordinality value for StructuredText.
@@ -16,14 +15,7 @@ DEFAULT_ORDINALITY = 1
 
 
 class StructuredTextListField(ElementField):
-
-    @TypedField.attr_name.getter
-    def attr_name(self):
-        return "descriptions"
-
-    @TypedField.key_name.getter
-    def key_name(self):
-        return "description"
+   pass
 
 
 class StructuredText(stix.Entity):
