@@ -29,6 +29,7 @@ class Attribution(GenericRelationshipList):
     _binding_var = "Attributed_Threat_Actor"
     _contained_type = RelatedThreatActor
     _inner_name = "threat_actors"
+
 """
 class Attribution(stix.Entity):
     threat_actors = ElementField("Attributed_Threat_Actor", RelatedThreatActor, multiple=True, key_name="threat_actors")

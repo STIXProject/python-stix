@@ -23,7 +23,8 @@ class Confidence(stix.Entity):
     source = ElementField("Source")
     
     def __init__(self, value=None, timestamp=None, description=None, source=None):
-        self._fields = {}
+        super(Confidence, self).__init__()
+
         self.timestamp = timestamp or utils.dates.now()
         self.timestamp_precision = "second"
         self.value = value
@@ -62,7 +63,7 @@ class Confidence(stix.Entity):
             An instance of :class:`.StructuredText`
 
         """
-        return next(iter(self.descriptions), "None")
+        return next(iter(self.descriptions), None)
 
     @description.setter
     def description(self, value):

@@ -1,8 +1,6 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-from __future__ import absolute_import
-
 # external
 import cybox.common
 
@@ -18,6 +16,7 @@ from .structured_text import StructuredTextList, StructuredTextListField
 from stix.base import ElementField
 from mixbox.entities import Entity
 from cybox.common.tools import ToolInformationList
+
 
 class InformationSource(stix.Entity):
     _binding = stix_common_binding
@@ -39,9 +38,9 @@ class InformationSource(stix.Entity):
 
     def __init__(self, description=None, identity=None, time=None, tools=None, contributing_sources=None, references=None):
         super(InformationSource, self).__init__()
-        #self._fields = {}
+
         self.identity = identity
-        self.description = description
+        self.descriptions = StructuredTextList(description)
         self.contributing_sources = contributing_sources
         self.time = time
         self.tools = tools

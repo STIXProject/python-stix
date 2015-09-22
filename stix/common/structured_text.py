@@ -26,8 +26,8 @@ class StructuredText(stix.Entity):
             structure xpath selectors.
         value: The text value of this object.
         structuring_format: The format of the text. For example, ``html5``.
-
     """
+
     _binding = stix_common_binding
     _binding_class = _binding.StructuredTextType
     _namespace = 'http://stix.mitre.org/common-1'
@@ -37,7 +37,8 @@ class StructuredText(stix.Entity):
     structuring_format = AttributeField("structuring_format")
     
     def __init__(self, value=None, ordinality=None):
-        self._fields = {}
+        super(StructuredText, self).__init__()
+
         self.id_ = None
         self.value = value
         self.structuring_format = None

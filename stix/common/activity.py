@@ -19,9 +19,9 @@ class Activity(stix.Entity):
     descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
 
     def __init__(self):
-        self._fields = {}
+        super(Activity, self).__init__()
         self.date_time = None
-        self.description = None
+        self.descriptions = StructuredTextList()
 
     @property
     def description(self):

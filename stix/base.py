@@ -1,19 +1,32 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# builtin
+# stdlib
 import json
 import collections
 import itertools
 import StringIO
-from mixbox import fields, entities
 
+# mixbox
 from mixbox import idgen
-from mixbox.binding_utils import save_encoding
+from mixbox import fields
+from mixbox import binding_utils
+
 from mixbox.cache import Cached
+from mixbox.entities import Entity as _MixboxEntity
+from mixbox.entities import EntityList as _MixboxEntityList
 
 # internal
 from . import utils
+
+def _structured_text_list(input):
+    from stix.common.structured_text import StructuredTextList
+
+    if input:
+        return StructuredTextList(input)
+    else:
+        return StructuredTextList()
+
 
 def _override(*args, **kwargs):
     raise NotImplementedError()
@@ -28,18 +41,10 @@ class ElementField(fields.TypedField):
 class IdField(AttributeField):
     pass
 
-class Entity(object):
+class Entity(_MixboxEntity):
     """Base class for all classes in the STIX API."""
     _namespace = None
     _XSI_TYPE = None
-
-    def __init__(self):
-        self._fields = {}
-
-    def _collect_ns_info(self, ns_info=None):
-        if not ns_info:
-            return
-        ns_info.collect(self)
 
     def _set_var(self, klass, try_cast=True, arg=None, **kwargs):
         """Sets an instance property value.
@@ -78,17 +83,6 @@ class Entity(object):
             error = error.format(name, klass, type(item))
             raise TypeError(error)
 
-    @classmethod
-    def _get_vars(cls):
-        import inspect
-        var_list = []
-        for (name, obj) in inspect.getmembers(cls, inspect.isdatadescriptor):
-            #print name + " " + str(type(obj)) + " " + str(obj.__class__)
-            if isinstance(obj, fields.TypedField):
-                var_list.append(obj)
-
-        return var_list
-
     def _set_vocab(self, klass=None, **kwargs):
         """Sets a controlled vocabulary property value.
 
@@ -115,105 +109,6 @@ class Entity(object):
             self._set_var(VocabString, **kwargs)
         else:
             self._set_var(klass, **kwargs)
-
-    @classmethod
-    def istypeof(cls, obj):
-        """Check if `cls` is the type of `obj`
-
-        In the normal case, as implemented here, a simple isinstance check is
-        used. However, there are more complex checks possible. For instance,
-        EmailAddress.istypeof(obj) checks if obj is an Address object with
-        a category of Address.CAT_EMAIL
-        """
-        return isinstance(obj, cls)
-
-    def to_obj(self, return_obj=None, ns_info=None):
-        """Convert to a GenerateDS binding object.
-
-        Subclasses can override this function.
-
-        Returns:
-            An instance of this Entity's ``_binding_class`` with properties
-            set from this Entity.
-        """
-        
-        def _objectify(value, return_obj, ns_info):
-            """Make `value` suitable for a binding object.
-        
-            If `value` is an Entity, call to_obj() on it. Otherwise, return it
-            unmodified.
-            """
-            try:
-                #print "objifying", value.to_obj
-                return value.to_obj(return_obj=return_obj, ns_info=ns_info)
-            except AttributeError:
-                if type(value) == dict:
-                    print "dict doesn't have to_obj", return_obj, value
-                return value
-        
-        self._collect_ns_info(ns_info)
-
-        entity_obj = self._binding_class()
-        #print "entity", entity_obj, self
-
-        vars = {}
-        for klass in self.__class__.__mro__:
-            if klass is Entity:
-                break
-            vars.update(klass.__dict__.iteritems())
-            
-        #print "vars", vars
-        #print "self", self.__dict__
-
-        for name, field in vars.iteritems():
-            if isinstance(field, fields.TypedField):
-                #print name, field.__class__, field.attr_name
-                val = getattr(self, field.attr_name)
-
-                if field.multiple:
-                    if val:
-                        val = [_objectify(x, return_obj, ns_info) for x in val]
-                    else:
-                        val = []
-                else:
-                    #print "objectifying", val
-                    val = _objectify(val, return_obj, ns_info)
-                    #print "objectified", val
-
-                #print "setting on binding", field.name, val
-                setattr(entity_obj, field.name, val)
-
-        self._finalize_obj(entity_obj)
-        return entity_obj
-
-    def _finalize_obj(self, entity_obj):
-        """Subclasses can define additional items in the binding object.
-
-        `entity_obj` should be modified in place.
-        """
-        pass
-
-    @classmethod
-    def from_obj(cls, cls_obj=None, return_obj=None):
-        """Create an object from a binding object"""
-        if not cls_obj:
-            return None
-
-        if return_obj is None:
-            entity = cls()
-        else:
-            entity = return_obj
-
-        for field in cls._get_vars():
-            val = getattr(cls_obj, field.name)
-            if field.type_:
-                if field.multiple and val is not None:
-                    val = [field.type_.from_obj(x) for x in val]
-                else:
-                    val = field.type_.from_obj(val)
-            setattr(entity, field.attr_name, val)
-
-        return entity
 
     def to_xml(self, include_namespaces=True, include_schemalocs=False,
                ns_dict=None, schemaloc_dict=None, pretty=True,
@@ -293,7 +188,7 @@ class Entity(object):
         if not pretty:
             namespace_def = namespace_def.replace('\n\t', ' ')
 
-        with save_encoding(encoding):
+        with binding_utils.save_encoding(encoding):
             sio = StringIO.StringIO()
             obj.export(
                 sio.write,                    # output buffer
@@ -311,144 +206,6 @@ class Entity(object):
 
         return s
 
-    def to_json(self):
-        return json.dumps(self.to_dict())
-
-    @classmethod
-    def from_json(cls, json_doc):
-        """Parses the JSON document `json_doc` and returns a STIX
-        :class:`Entity` implementation instance.
-
-        Arguments:
-            json_doc: Input JSON representation of a STIX entity. This can be
-                a readable object or a JSON string.
-
-        Returns:
-            An implementation of :class:`.Entity` (e.g.,
-            :class:`.STIXPackage`).
-
-        """
-        try:
-            d = json.load(json_doc)
-        except AttributeError:  # catch the read() error
-            d = json.loads(json_doc)
-
-        return cls.from_dict(d)
-
-    def to_dict(self):
-        """Converts a STIX :class:`Entity` implementation into a Python
-        dictionary. This may be overridden by derived classes.
-
-        Returns:
-            Python dict with keys set from this Entity.
-        """
-        def _dictify(value):
-            """Make `value` suitable for a dictionary.
-        
-            If `value` is an Entity, call to_dict() on it. Otherwise, return it
-            unmodified.
-            """
-            try:
-                return value.to_dict()
-            except:
-                return value
-        
-        entity_dict = { }
-        vars = { }
-        for klass in self.__class__.__mro__:
-            if klass is Entity:
-                break
-            vars.update(klass.__dict__.iteritems())
-
-        hasAnyTypedField = False
-        for name, field in vars.iteritems():
-            if isinstance(field, fields.TypedField):
-                hasAnyTypedField = True
-                
-                val = getattr(self, field.attr_name)
-
-                if field.multiple:
-                    if val:
-                        val = [_dictify(x) for x in val]
-                    else:
-                        val = []
-                else:
-                    val = _dictify(val)
-
-                # Only add non-None objects or non-empty lists
-                if val is not None and val != []:
-                    entity_dict[field.key_name] = val
-
-        # doesn't quite work, possibly because of inherited TypedFields?
-        #if not hasAnyTypedField:
-        #    return utils.to_dict(self)
-
-        self._finalize_dict(entity_dict)
-
-        return entity_dict
-    
-    def _finalize_dict(self, entity_dict):
-        """Subclasses can define additional items in the dictionary.
-
-        `entity_dict` should be modified in place.
-        """
-        pass
-
-    @classmethod
-    def from_dict(cls, cls_dict=None, return_obj=None):
-        """Convert from dict representation to object representation."""
-        if cls_dict is None:
-            return None
-
-        if return_obj is None:
-            entity = cls()
-        else:
-            entity = return_obj
-
-        # Shortcut if an actual dict is not provided:
-        if not isinstance(cls_dict, dict):
-            value = cls_dict
-            # Call the class's constructor
-            try:
-                return cls(value)
-            except TypeError:
-                raise TypeError("Could not instantiate a %s from a %s: %s" %
-                                (cls, type(value), value))
-
-        for field in cls._get_vars():
-            val = cls_dict.get(field.key_name)
-            if field.type_:
-                if field.multiple:
-                    if val is not None:
-                        if type(val) is list:
-                            val = [field.type_.from_dict(x) for x in val]
-                        else:
-                            # sometimes multiple fields are supplied with a single dict as input instead of a list
-                            # TypedList (now obsolete) used to do this; now TypedField has to
-                            val = [field.type_.from_dict(val)]
-                    else:
-                        val = []
-                elif issubclass(field.type_, EntityList):
-                    val = field.type_.from_list(val)
-                else:
-                    val = field.type_.from_dict(val)
-            else:
-                if field.multiple and not val:
-                    val = []
-            setattr(entity, field.attr_name, val)
-
-        return entity
-            
-    @classmethod
-    def object_from_dict(cls, entity_dict):
-        """Convert from dict representation to object representation."""
-        return cls.from_dict(entity_dict).to_obj()
-
-    @classmethod
-    def dict_from_object(cls, entity_obj):
-        """Convert from object representation to dict representation."""
-        return cls.from_obj(entity_obj).to_dict()
-
     def walk(self):
         return utils.walk.iterwalk(self)
 
@@ -465,93 +222,10 @@ class Entity(object):
                 return entity
 
 
-class EntityList(collections.MutableSequence, Entity):
-    _binding_class = _override
-    _binding_var = None
+class EntityList(_MixboxEntityList):
     _contained_type = _override
     _inner_name = None
     _dict_as_list = False
-
-    def __init__(self, *args):
-        super(EntityList, self).__init__()
-        self._inner = []
-
-        if not any(args):
-            return
-
-        for arg in args:
-            if utils.is_sequence(arg):
-                self.extend(arg)
-            else:
-                self.append(arg)
-
-    def __nonzero__(self):
-        return bool(self._inner)
-
-    def __getitem__(self, key):
-        return self._inner.__getitem__(key)
-
-    def __setitem__(self, key, value):
-        if not self._is_valid(value):
-            value = self._fix_value(value)
-        self._inner.__setitem__(key, value)
-
-    def __delitem__(self, key):
-        self._inner.__delitem__(key)
-
-    def __len__(self):
-        return len(self._inner)
-
-    def insert(self, idx, value):
-        if not value:
-            return
-        if not self._is_valid(value):
-            value = self._fix_value(value)
-        self._inner.insert(idx, value)
-
-    def _is_valid(self, value):
-        """Check if this is a valid object to add to the list."""
-        # Subclasses can override this function, but if it becomes common, it's
-        # probably better to use self._contained_type.istypeof(value)
-        return isinstance(value, self._contained_type)
-
-    def _fix_value(self, value):
-        """Attempt to coerce value into the correct type.
-
-        Subclasses can override this function.
-        """
-        try:
-            new_value = self._contained_type(value)
-        except:
-            error = "Can't put '{0}' ({1}) into a {2}. Expected a {3} object."
-            error = error.format(
-                value,                  # Input value
-                type(value),            # Type of input value
-                type(self),             # Type of collection
-                self._contained_type    # Expected type of input value
-            )
-            raise ValueError(error)
-
-        return new_value
-
-    # The next four functions can be overridden, but otherwise define the
-    # default behavior for EntityList subclasses which define the following
-    # class-level members:
-    # - _binding_class
-    # - _binding_var
-    # - _contained_type
-    # - _inner_name
-
-    def to_obj(self, return_obj=None, ns_info=None):
-        super(EntityList, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        objlist = [x.to_obj(ns_info=ns_info) for x in self]
-        setattr(return_obj, self._binding_var, objlist)
-
-        return return_obj
 
     def to_list(self):
         return [h.to_dict() for h in self]
@@ -604,7 +278,7 @@ class EntityList(collections.MutableSequence, Entity):
             return cls.from_dict(list_repr, return_obj)
 
         try:
-            list_repr = list_repr[getattr(cls, '_inner_name')]
+            list_repr = list_repr[cls._inner_name]
         except:
             pass
         
@@ -799,9 +473,11 @@ class BaseCoreComponent(Cached, Entity):
     idref = IdField("idref")
     version = AttributeField("version")
     timestamp = AttributeField("timestamp")
+    handling = ElementField("Handling")
+
+    # These are defined in init_typed_fields due to circular imports
     descriptions = None
     short_descriptions = None
-    handling = ElementField("Handling")
 
     @classmethod
     def initClassFields(cls):
@@ -821,8 +497,8 @@ class BaseCoreComponent(Cached, Entity):
         self.id_ = id_ or idgen.create_id(self._ID_PREFIX)
         self.idref = idref
         self.title = title
-        self.description = description
-        self.short_description = short_description
+        self.descriptions = _structured_text_list(description)
+        self.short_descriptions = _structured_text_list(short_description)
         self.version = None
         #self.information_source = None
         self.handling = None
@@ -831,6 +507,7 @@ class BaseCoreComponent(Cached, Entity):
             self.timestamp = timestamp
         else:
             self.timestamp = utils.dates.now() if not idref else None
+
 
     # TODO: add this as a callback_hook to version TypedField
     def check_version(self, value):
