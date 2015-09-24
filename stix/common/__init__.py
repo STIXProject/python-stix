@@ -131,3 +131,7 @@ class EncodedCDATA(stix.Entity):
 
     def __unicode__(self):
         return unicode(self.value)
+
+
+# Initialize typefield
+Statement._init_typed_fields()
