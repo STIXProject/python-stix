@@ -40,6 +40,10 @@ class ElementField(fields.TypedField):
     pass
 
 
+class ContentField(fields.TypedField):
+    pass
+
+
 class IdField(AttributeField):
     def __set__(self, instance, value):
         """Set the id field to `value`. If `value` is not None or an empty

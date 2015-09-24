@@ -10,7 +10,7 @@ import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
 
 # typed fields
-from stix.base import AttributeField, ElementField, IdField
+from stix.base import AttributeField, ElementField, IdField, ContentField
 
 #: Default ordinality value for StructuredText.
 DEFAULT_ORDINALITY = 1
@@ -36,7 +36,7 @@ class StructuredText(stix.Entity):
 
     id_ = IdField("id")
     ordinality = AttributeField("ordinality")
-    value = AttributeField("value")
+    value = ContentField("valueOf_", key_name="value")
     structuring_format = AttributeField("structuring_format")
     
     def __init__(self, value=None, ordinality=None):
@@ -46,25 +46,6 @@ class StructuredText(stix.Entity):
         self.value = value
         self.structuring_format = None
         self.ordinality = ordinality
-
-    def to_obj(self, return_obj=None, ns_info=None):
-        """Converts this object into a binding object.
-
-        """
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        super(StructuredText, self).to_obj(
-            return_obj=return_obj,
-            ns_info=ns_info
-        )
-
-        return_obj.id = self.id_
-        return_obj.valueOf_ = self.value
-        return_obj.ordinality = self.ordinality
-        return_obj.structuring_format = self.structuring_format
-
-        return return_obj
 
     def is_plain(self):
         plain = (
@@ -90,27 +71,6 @@ class StructuredText(stix.Entity):
             return super(StructuredText, self).to_dict()
 
     @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        """Create an object from the input binding object.
-
-        Args:
-            obj: A generateDS binding object.
-
-        """
-        if not obj:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        return_obj.id_ = obj.id
-        return_obj.value = obj.valueOf_
-        return_obj.ordinality = obj.ordinality
-        return_obj.structuring_format = obj.structuring_format
-
-        return return_obj
-
-    @classmethod
     def from_dict(cls, d, return_obj=None):
         """Creates an object from the input dictionary.
 
@@ -127,10 +87,7 @@ class StructuredText(stix.Entity):
         if not isinstance(d, dict):
             return_obj.value = d
         else:
-            return_obj.id_ = d.get('id')
-            return_obj.value = d.get('value')
-            return_obj.ordinality = d.get('ordinality')
-            return_obj.structuring_format = d.get('structuring_format')
+            return_obj = super(StructuredText, cls).from_dict(d, return_obj)
 
         return return_obj
     
