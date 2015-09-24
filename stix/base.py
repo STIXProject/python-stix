@@ -249,7 +249,7 @@ class Entity(_MixboxEntity):
                 return entity
 
 
-class EntityList(_MixboxEntityList):
+class EntityList(Entity, _MixboxEntityList):
     _contained_type = _override
     _inner_name = None
     _dict_as_list = False
