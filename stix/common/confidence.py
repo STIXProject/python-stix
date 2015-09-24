@@ -7,9 +7,11 @@ import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
-from . import vocabs, VocabString
-from .structured_text import StructuredTextList, StructuredTextListField
 from stix.base import ElementField, AttributeField
+
+from .vocabs import VocabString
+from .structured_text import StructuredTextList, StructuredTextListField
+
 
 class Confidence(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
@@ -30,6 +32,7 @@ class Confidence(stix.Entity):
         self.value = value
         self.description = description
         self.source = source
+
         # TODO: support confidence_assertion_chain
         # self.confidence_assertion_chain = None
     

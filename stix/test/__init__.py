@@ -113,7 +113,7 @@ def round_trip(o, output=False, list_=False):
         print str(ex)
         ns_info.finalize()
         print ns_info.finalized_namespaces
-        raise ex
+        raise
 
     if output:
         print(xml_string)

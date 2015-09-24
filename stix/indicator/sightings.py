@@ -24,10 +24,6 @@ class Sighting(stix.Entity):
     confidence = ElementField("Confidence", Confidence)
     related_observables = ElementField("Related_Observables")
     
-    @classmethod
-    def _init_typed_fields(cls):
-        cls.related_observables.type_ = RelatedObservables
-    
     def __init__(self, timestamp=None, timestamp_precision=None, description=None):
         self._fields = {}
         self.timestamp = timestamp or utils.dates.now()
@@ -36,6 +32,10 @@ class Sighting(stix.Entity):
         self.source = None
         self.reference = None
         self.confidence = None
+
+    @classmethod
+    def _init_typed_fields(cls):
+        cls.related_observables.type_ = RelatedObservables
 
     """
     @timestamp.setter
