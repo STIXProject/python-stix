@@ -25,7 +25,7 @@ class Sighting(stix.Entity):
     related_observables = ElementField("Related_Observables")
     
     @classmethod
-    def initClassFields(cls):
+    def _init_typed_fields(cls):
         cls.related_observables.type_ = RelatedObservables
     
     def __init__(self, timestamp=None, timestamp_precision=None, description=None):

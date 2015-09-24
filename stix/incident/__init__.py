@@ -72,7 +72,7 @@ class Incident(stix.BaseCoreComponent):
     history = ElementField("History", History)
 
     @classmethod
-    def initClassFields(cls):
+    def _init_typed_fields(cls):
         cls.attributed_threat_actors.type_ = AttributedThreatActors
         cls.related_indicators.type_ = RelatedIndicators
         cls.related_observables.type_ = RelatedObservables
@@ -484,5 +484,5 @@ class _IntendedEffects(stix.TypedList):
         return Statement(value=vocabs.IntendedEffect(value))
     
     
-Incident.initClassFields()
+Incident._init_typed_fields()
 

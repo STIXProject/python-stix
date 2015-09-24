@@ -35,7 +35,7 @@ class Confidence(stix.Entity):
     
     # called in stix.common.related
     @classmethod
-    def initClassFields(cls):
+    def _init_typed_fields(cls):
         from .information_source import InformationSource
         cls.source.type_ = InformationSource
        

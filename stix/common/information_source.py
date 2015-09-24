@@ -6,11 +6,9 @@ import cybox.common
 
 # internal
 import stix
-import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
 
 # relative
-from . import vocabs
 from .vocabs import VocabString
 from .references import References
 from .identity import Identity
@@ -34,7 +32,7 @@ class InformationSource(stix.Entity):
     references = ElementField("References", References)
 
     @classmethod
-    def initClassFields(cls):
+    def _init_typed_fields(cls):
         cls.contributing_sources.type_ = ContributingSources
 
     def __init__(self, description=None, identity=None, time=None, tools=None, contributing_sources=None, references=None):
@@ -102,4 +100,4 @@ class ContributingSources(stix.EntityList):
 
 
 # finally, initialize field types that would be circular dependencies
-InformationSource.initClassFields()
+InformationSource._init_typed_fields()

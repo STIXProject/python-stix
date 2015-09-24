@@ -200,7 +200,7 @@ class Indicator(stix.BaseCoreComponent):
     related_packages = ElementField("Related_Packages", RelatedPackageRefs)
 
     @classmethod
-    def initClassFields(cls):
+    def _init_typed_fields(cls):
         cls.related_campaigns.type_ = RelatedCampaignRefs
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
@@ -1024,4 +1024,4 @@ class _IndicatedTTPs(stix.TypedList):
 class _Observables(stix.TypedList):
     _contained_type = Observable
 
-Indicator.initClassFields()
+Indicator._init_typed_fields()

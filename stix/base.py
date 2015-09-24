@@ -507,7 +507,7 @@ class BaseCoreComponent(Cached, Entity):
     short_descriptions = None
 
     @classmethod
-    def initClassFields(cls):
+    def _init_typed_fields(cls):
         import data_marking
         import common
         from stix.common.structured_text import StructuredTextList, StructuredTextListField

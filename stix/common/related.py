@@ -21,7 +21,7 @@ from .confidence import Confidence
 
 from stix.base import AttributeField
 
-Confidence.initClassFields()
+Confidence._init_typed_fields()
 
 class GenericRelationship(stix.Entity):
     _namespace = "http://stix.mitre.org/common-1"
