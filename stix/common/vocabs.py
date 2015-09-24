@@ -4,9 +4,58 @@
 import stix
 import stix.bindings.stix_common as stix_common_binding
 
+from mixbox import fields
 
-# TODO: handle normalization
-# from cybox.utils import normalize_to_xml, denormalize_from_xml
+
+class VocabField(fields.TypedField):
+    """TypedField subclass for VocabString fields."""
+
+    def __init__(self, *args, **kwargs):
+        """Intercepts the __init__() call to TypedField.
+
+        Set the type that will be used in from_dict and from_obj calls to
+        :class:`VocabString`.
+
+        Set the type that will be used in ``__set__`` for casting as the
+        original ``type_`` argument, or :class:`VocabString` if no `type_`
+        argument was provided.
+
+        """
+        super(VocabField, self).__init__(*args, **kwargs)
+
+        if self.type_:
+            self.__vocab_impl = self.type_
+        else:
+            self.__vocab_impl = VocabString
+
+        # TODO: can we take this out. It shouldn't be necessary since type_
+        # should always be a subclass of VocabString.
+        self.type_ = VocabString  # Force this so from_dict/from_obj works.
+
+    def _clean(self, value):
+        """Validate and clean a candidate value for this Vocab. This overrides
+        the ``_clean()`` method on :class:`.TypedField`.
+
+        1) If the value is ``None``, return ``None``
+        2) If the value is an instance of ``VocabString``, return it.
+        3) Attempt to cast the value to the default VocabString type if there
+           is one, else try to cast it to VocabString.
+        4) raise a ValueError
+
+        """
+        vocab = self.__vocab_impl
+
+        if value is None:
+            return None
+        elif isinstance(value, VocabString):
+            return value
+        elif vocab._try_cast:  # noqa
+            return vocab(value)
+
+        error_fmt = "%s must be a %s, not a %s"
+        error = error_fmt % (self.name, self.type_, type(value))
+        raise ValueError(error)
+
 
 
 class VocabString(stix.Entity):
