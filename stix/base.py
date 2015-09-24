@@ -35,11 +35,34 @@ def _override(*args, **kwargs):
 class AttributeField(fields.TypedField):
     pass
 
+
 class ElementField(fields.TypedField):
     pass
 
+
 class IdField(AttributeField):
-    pass
+    def __set__(self, instance, value):
+        """Set the id field to `value`. If `value` is not None or an empty
+        string, unset the idref fields on `instance`.
+        """
+        super(IdField, self).__set__(instance, value)
+
+        if value:
+            fields.unset(instance, IdrefField)
+
+
+
+class IdrefField(AttributeField):
+    def __set__(self, instance, value):
+        """Set the idref field to `value`. If `value` is not None or an empty
+        string, unset the id fields on `instance`.
+        """
+        super(IdrefField, self).__set__(instance, value)
+
+        if value:
+            fields.unset(instance, IdField)
+
+
 
 class Entity(_MixboxEntity):
     """Base class for all classes in the STIX API."""
@@ -68,7 +91,7 @@ class Entity(_MixboxEntity):
                 and the field value is the value.
 
         """
-        name, item = kwargs.iteritems().next()
+        name, item = next(kwargs.iteritems())
         attr = utils.private_name(name)  # 'title' => '_title'
 
         if item is None:
@@ -103,7 +126,7 @@ class Entity(_MixboxEntity):
         from stix.common import VocabString
 
         klass = klass or VocabString
-        item  = kwargs.itervalues().next()
+        item  = next(kwargs.itervalues())
 
         if isinstance(item, VocabString):
             self._set_var(VocabString, **kwargs)
@@ -470,7 +493,7 @@ class BaseCoreComponent(Cached, Entity):
 
     title = ElementField("Title")
     id_ = IdField("id")
-    idref = IdField("idref")
+    idref = IdrefField("idref")
     version = AttributeField("version")
     timestamp = AttributeField("timestamp")
     handling = ElementField("Handling")

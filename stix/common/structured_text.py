@@ -8,7 +8,9 @@ import collections
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
-from stix.base import AttributeField, ElementField
+
+# typed fields
+from stix.base import AttributeField, ElementField, IdField
 
 #: Default ordinality value for StructuredText.
 DEFAULT_ORDINALITY = 1
@@ -32,6 +34,7 @@ class StructuredText(stix.Entity):
     _binding_class = _binding.StructuredTextType
     _namespace = 'http://stix.mitre.org/common-1'
 
+    id_ = IdField("id")
     ordinality = AttributeField("ordinality")
     value = AttributeField("value")
     structuring_format = AttributeField("structuring_format")

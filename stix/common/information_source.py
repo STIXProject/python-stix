@@ -10,7 +10,9 @@ import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
 
 # relative
-from . import vocabs, VocabString
+from . import vocabs
+from .vocabs import VocabString
+from .references import References
 from .identity import Identity
 from .structured_text import StructuredTextList, StructuredTextListField
 from stix.base import ElementField
@@ -28,9 +30,8 @@ class InformationSource(stix.Entity):
     contributing_sources = ElementField("Contributing_Sources")
     time = ElementField("Time", cybox.common.Time)
     roles = ElementField("Role", VocabString, multiple=True, key_name="roles")
-    
-    tools = ElementField("Tools", ToolInformationList) #TODO: shows up, but broken
-    references = ElementField("References") #TODO: list-setting behavior does not match
+    tools = ElementField("Tools", ToolInformationList)
+    references = ElementField("References", References)
 
     @classmethod
     def initClassFields(cls):
