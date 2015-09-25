@@ -24,7 +24,7 @@ def _validate_precision(instance, value):
         return
     else:
         error = "The precision must be one of {0}. Received '{1}'"
-        error = error.format(DATE_PRECISION_VALUES, value)
+        error = error.format(DATETIME_PRECISION_VALUES, value)
         raise ValueError(error)
 
 
