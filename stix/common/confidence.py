@@ -3,6 +3,8 @@
 
 from __future__ import absolute_import
 
+from mixbox.fields import DateTimeField
+
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
@@ -11,7 +13,7 @@ from stix.base import ElementField, AttributeField
 
 from .vocabs import VocabString
 from .structured_text import StructuredTextList, StructuredTextListField
-
+from .datetimewithprecision import validate_precision
 
 class Confidence(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
@@ -20,8 +22,8 @@ class Confidence(stix.Entity):
 
     value = ElementField("Value", VocabString)
     descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
-    timestamp = AttributeField("timestamp")
-    timestamp_precision = AttributeField("timestamp_precision")
+    timestamp = DateTimeField("timestamp")
+    timestamp_precision = AttributeField("timestamp_precision", preset_hook=validate_precision)
     source = ElementField("Source")
     
     def __init__(self, value=None, timestamp=None, description=None, source=None):
@@ -41,16 +43,6 @@ class Confidence(stix.Entity):
     def _init_typed_fields(cls):
         from .information_source import InformationSource
         cls.source.type_ = InformationSource
-       
-    """ 
-    @property
-    def timestamp(self):
-        return self._timestamp
-
-    @timestamp.setter
-    def timestamp(self, value):
-        self._timestamp = utils.dates.parse_value(value)
-    """
 
     @property
     def description(self):
@@ -83,15 +75,6 @@ class Confidence(stix.Entity):
 
         """
         self.descriptions.add(description)
-
-    # @property
-    # def confidence_assertion_chain(self):
-    #     return self._confidence_assertion_chain
-
-    # @confidence_assertion_chain.setter
-    # def confidence_assertion_chain(self, value):
-    #     if value:
-    #         raise NotImplementedError()
 
 
 # class ConfidenceAssertionChain(stix.Entity):
