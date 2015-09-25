@@ -499,7 +499,7 @@ class BaseCoreComponent(Cached, Entity):
     id_ = IdField("id")
     idref = IdrefField("idref")
     version = AttributeField("version")
-    timestamp = AttributeField("timestamp")
+    timestamp = fields.DateTimeField("timestamp")
     handling = ElementField("Handling")
 
     # These are defined in init_typed_fields due to circular imports
