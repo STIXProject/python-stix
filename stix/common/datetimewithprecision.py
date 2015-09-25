@@ -35,10 +35,8 @@ class DateTimeWithPrecision(stix.Entity):
 
     def __init__(self, value=None, precision='second'):
         super(DateTimeWithPrecision, self).__init__()
-
         self.value = value
         self.precision = precision
-
 
     def to_dict(self):
         if self.precision == 'second':

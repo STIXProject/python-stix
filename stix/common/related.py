@@ -11,6 +11,8 @@ import stix.bindings.stix_common as common_binding
 import stix.bindings.stix_core as core_binding
 import stix.bindings.report as report_binding
 
+from stix.base import AttributeField
+
 # deprecation warnings
 from stix.utils.deprecated import idref_deprecated, deprecated
 
@@ -19,9 +21,8 @@ from .vocabs import VocabString
 from .information_source import InformationSource
 from .confidence import Confidence
 
-from stix.base import AttributeField
 
-Confidence._init_typed_fields()
+
 
 class GenericRelationship(stix.Entity):
     _namespace = "http://stix.mitre.org/common-1"
@@ -29,6 +30,8 @@ class GenericRelationship(stix.Entity):
     _binding_class = common_binding.GenericRelationshipType
 
     def __init__(self, confidence=None, information_source=None, relationship=None):
+        super(GenericRelationship, self).__init__()
+
         self.confidence = confidence
         self.information_source = information_source
         self.relationship = relationship

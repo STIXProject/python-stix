@@ -7,8 +7,9 @@ from mixbox.cache import Cached
 # internal
 import stix
 import stix.bindings.stix_common as common_binding
-from stix.base import ElementField, IdField
+from stix.base import ElementField, IdField, IdrefField
 from stix.bindings.stix_common import IdentityType
+
 
 class Identity(Cached, stix.Entity):
     _binding = common_binding
@@ -16,13 +17,15 @@ class Identity(Cached, stix.Entity):
     _binding_class = IdentityType
 
     id_ = IdField("id")
-    idref = IdField("idref")
+    idref = IdrefField("idref")
     name = ElementField("Name")
-    related_identities = ElementField("Related_Identities")
+
+    # Set in _init_typed_fields() due to circular imports
+    related_identities = None
 
     @classmethod
-    def initializeClassFields(cls):
-        cls.related_identities.type = RelatedIdentities
+    def _init_typed_fields(cls):
+        cls.related_identities = ElementField("Related_Identities", RelatedIdentities)
 
     def __init__(self, id_=None, idref=None, name=None, related_identities=None):
         super(Identity, self).__init__()
@@ -31,23 +34,6 @@ class Identity(Cached, stix.Entity):
         self.idref = idref
         self.name = name
         self.related_identities = related_identities
-
-    def to_obj(self, return_obj=None, ns_info=None):
-        super(Identity, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
-        if not return_obj:
-            return_obj = self._binding.IdentityType()
-
-        return_obj.id = self.id_
-        return_obj.idref = self.idref
-
-        if self.name:
-            return_obj.Name = self.name
-        if self.related_identities:
-            return_obj.Related_Identities = \
-                self.related_identities.to_obj(ns_info=ns_info)
-
-        return return_obj
 
     @staticmethod
     def lookup_class(xsi_type):
@@ -75,8 +61,8 @@ class Identity(Cached, stix.Entity):
 
         return return_obj
 
-    def to_dict(self):
-        return super(Identity, self).to_dict()
+    # def to_dict(self):
+    #     return super(Identity, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):
@@ -112,8 +98,6 @@ class RelatedIdentities(stix.EntityList):
     _contained_type = RelatedIdentity
     _inner_name = "identities"
 
-# this must come after RelatedIdentities definition
-Identity.initializeClassFields()
 
 # Backwards compatibility
 add_extension = stix.add_extension

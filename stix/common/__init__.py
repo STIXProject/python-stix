@@ -83,5 +83,7 @@ class EncodedCDATA(stix.Entity):
         return unicode(self.value)
 
 
-# Initialize typefield
+# Initialize typed fields which could not be done in the class definition
 Statement._init_typed_fields()
+Identity._init_typed_fields()
+Confidence._init_typed_fields()
