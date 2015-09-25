@@ -7,10 +7,7 @@ import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
-from stix.base import ContentField, AttributeField
-
-
-
+from stix.base import AttributeField
 
 DATE_PRECISION_VALUES = ("year", "month", "day")
 TIME_PRECISION_VALUES = ("hour", "minute", "second")
