@@ -65,8 +65,7 @@ class IdrefField(AttributeField):
 
         if value:
             fields.unset(instance, IdField)
-
-
+            
 
 class Entity(_MixboxEntity):
     """Base class for all classes in the STIX API."""
