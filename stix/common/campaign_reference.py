@@ -22,8 +22,9 @@ class CampaignRef(stix.Entity):
     timestamp = DateTimeField("timestamp")
     names = ElementField("Names", Names)
 
-    def __init__(self, idref=None, timestamp=None, **kwargs):
-        super(CampaignRef, self).__init__(**kwargs)
+    def __init__(self, idref=None, timestamp=None):
+        super(CampaignRef, self).__init__()
+        
         self.idref = idref
         self.timestamp = timestamp
         self.names = None
