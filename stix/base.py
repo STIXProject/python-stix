@@ -20,7 +20,7 @@ from mixbox.entities import EntityList as _MixboxEntityList
 from . import utils
 
 def _structured_text_list(input):
-    from stix.common.structured_text import StructuredTextList
+
 
     if input:
         return StructuredTextList(input)
@@ -491,6 +491,11 @@ class TypedList(TypedCollection, collections.MutableSequence):
         self._inner.insert(idx, value)
 
 
+def _validate_version(cls, instance, value):
+    if value:
+        utils.check_version(instance._ALL_VERSIONS, value)
+
+
 class BaseCoreComponent(Cached, Entity):
     _ALL_VERSIONS = ()
     _ID_PREFIX = None
@@ -498,82 +503,42 @@ class BaseCoreComponent(Cached, Entity):
     title = ElementField("Title")
     id_ = IdField("id")
     idref = IdrefField("idref")
-    version = AttributeField("version")
+    version = AttributeField("version", preset_hook=_validate_version)
     timestamp = fields.DateTimeField("timestamp")
-    handling = ElementField("Handling")
 
     # These are defined in init_typed_fields due to circular imports
-    descriptions = None
-    short_descriptions = None
+    handling            = None
+    descriptions        = None
+    short_descriptions  = None
+
 
     @classmethod
     def _init_typed_fields(cls):
-        import data_marking
-        import common
+        from stix.data_marking import Marking
         from stix.common.structured_text import StructuredTextList, StructuredTextListField
-        cls.handling.type_ = data_marking.Marking
-        #cls.information_source.type_ = common.InformationSource
+
+        cls.handling = fields.TypedField("Handling", Marking)
         cls.descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
         cls.short_descriptions = StructuredTextListField("Short_Description", StructuredTextList, key_name="short_description")
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
-        
+
+        from stix.common.structured_text import StructuredTextList
+
         super(BaseCoreComponent, self).__init__()
-        
+
         self.id_ = id_ or idgen.create_id(self._ID_PREFIX)
         self.idref = idref
         self.title = title
-        self.descriptions = _structured_text_list(description)
-        self.short_descriptions = _structured_text_list(short_description)
-        self.version = None
-        #self.information_source = None
-        self.handling = None
+        self.descriptions = StructuredTextList(description)
+        self.short_descriptions = StructuredTextList(short_description)
 
         if timestamp:
             self.timestamp = timestamp
         else:
             self.timestamp = utils.dates.now() if not idref else None
 
-
-    # TODO: add this as a callback_hook to version TypedField
-    def check_version(self, value):
-        if not value:
-            self._version = None
-        else:
-            utils.check_version(self._ALL_VERSIONS, value)
-            self._version = value
-
-    # 
-    # @property
-    # def timestamp(self):
-    #     """The timestam property declares the time of creation and is
-    #     automatically set in ``__init__()``.
-    # 
-    #     This property can accept ``datetime.datetime`` or ``str`` values.
-    #     If an ``str`` value is supplied, a best-effort attempt is made to
-    #     parse it into an instance of ``datetime.datetime``.
-    # 
-    #     Default Value: A ``datetime.dateime`` instance with a value of the
-    #     date/time when ``__init__()`` was called.
-    # 
-    #     Note:
-    #         If an ``idref`` is set during ``__init__()``, the value of
-    #         ``timestamp`` will not automatically generated and instead default
-    #         to the ``timestamp`` parameter, which has a default value of
-    #         ``None``.
-    # 
-    #     Returns:
-    #         An instance of ``datetime.datetime``.
-    # 
-    #     """
-    #     return self._timestamp
-    # 
-    # @timestamp.setter
-    # def timestamp(self, value):
-    #     self._timestamp = utils.dates.parse_value(value)
-    # 
-    
     @property
     def description(self):
         """A single description about the contents or purpose of this object.
@@ -586,20 +551,17 @@ class BaseCoreComponent(Cached, Entity):
 
         Returns:
             An instance of :class:`.StructuredText`
-
         """
         return next(iter(self.descriptions), None)
 
     @description.setter
     def description(self, value):
-        from stix.common.structured_text import StructuredTextList
-        self.descriptions = StructuredTextList(value)
+        self.descriptions = value
 
     def add_description(self, description):
         """Adds a description to the ``descriptions`` collection.
 
         This is the same as calling "foo.descriptions.add(bar)".
-
         """
         self.descriptions.add(description)
 
@@ -616,107 +578,16 @@ class BaseCoreComponent(Cached, Entity):
 
         Returns:
             An instance of :class:`.StructuredText`
-
         """
         return next(iter(self.short_descriptions), None)
 
     @short_description.setter
     def short_description(self, value):
-        from stix.common.structured_text import StructuredTextList
-        self.short_descriptions = StructuredTextList(value)
+        self.short_descriptions = value
 
     def add_short_description(self, description):
         """Adds a description to the ``short_descriptions`` collection.
 
         This is the same as calling "foo.short_descriptions.add(bar)".
-
         """
         self.short_descriptions.add(description)
-
-    # 
-    # @classmethod
-    # def from_obj(cls, obj, return_obj=None):
-    #     from stix.common import StructuredTextList, InformationSource
-    #     from stix.data_marking import Marking
-    # 
-    #     if not return_obj:
-    #         raise ValueError("Must provide a return_obj argument")
-    # 
-    #     if not obj:
-    #         raise ValueError("Must provide an obj argument")
-    # 
-    #     return_obj.id_ = obj.id
-    #     return_obj.idref = obj.idref
-    #     return_obj.timestamp = obj.timestamp
-    # 
-    #     # These may not be found on the input obj if it isn't a full
-    #     # type definition (e.g., used as a reference)
-    #     return_obj.version = getattr(obj, 'version', None)
-    #     return_obj.title = getattr(obj, 'Title', None)
-    #     return_obj.descriptions = \
-    #         StructuredTextList.from_obj(getattr(obj, 'Description', None))
-    #     return_obj.short_descriptions = \
-    #         StructuredTextList.from_obj(getattr(obj, 'Short_Description', None))
-    #     return_obj.information_source = \
-    #         InformationSource.from_obj(getattr(obj, 'Information_Source', None))
-    #     return_obj.handling = \
-    #         Marking.from_obj(getattr(obj, 'Handling', None))
-    # 
-    #     return return_obj
-    # 
-    # def to_obj(self, return_obj=None, ns_info=None):
-    #     if not return_obj:
-    #         raise ValueError("Must provide a return_obj argument")
-    # 
-    #     super(BaseCoreComponent, self).to_obj(
-    #         return_obj=return_obj,
-    #         ns_info=ns_info
-    #     )
-    # 
-    #     return_obj.id = self.id_
-    #     return_obj.idref = self.idref
-    #     return_obj.version = self.version
-    #     return_obj.Title = self.title
-    # 
-    #     if self.timestamp:
-    #         return_obj.timestamp = utils.dates.serialize_value(self.timestamp)
-    #     if self.descriptions:
-    #         return_obj.Description = self.descriptions.to_obj(ns_info=ns_info)
-    #     if self.short_descriptions:
-    #         return_obj.Short_Description = self.short_descriptions.to_obj(ns_info=ns_info)
-    #     if self.information_source:
-    #         return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
-    #     if self.handling:
-    #         return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
-    # 
-    #     return return_obj
-    # 
-    # @classmethod
-    # def from_dict(cls, d, return_obj=None):
-    #     from stix.common import StructuredTextList, InformationSource
-    #     from stix.data_marking import Marking
-    # 
-    #     if not return_obj:
-    #         raise ValueError("Must provide a return_obj argument")
-    # 
-    #     get = d.get
-    #     return_obj.id_ = get('id')
-    #     return_obj.idref = get('idref')
-    #     return_obj.timestamp = get('timestamp')
-    #     return_obj.version = get('version')
-    #     return_obj.title = get('title')
-    #     return_obj.descriptions = \
-    #         StructuredTextList.from_dict(get('description'))
-    #     return_obj.short_descriptions = \
-    #         StructuredTextList.from_dict(get('short_description'))
-    #     return_obj.information_source = \
-    #         InformationSource.from_dict(get('information_source'))
-    #     return_obj.handling = \
-    #         Marking.from_dict(get('handling'))
-    # 
-    #     return return_obj
-    # 
-    # def to_dict(self):
-    #     return super(BaseCoreComponent, self).to_dict()
-    # 
-    # 
