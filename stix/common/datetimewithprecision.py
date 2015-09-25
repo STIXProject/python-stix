@@ -14,7 +14,7 @@ TIME_PRECISION_VALUES = ("hour", "minute", "second")
 DATETIME_PRECISION_VALUES = DATE_PRECISION_VALUES + TIME_PRECISION_VALUES
 
 
-def _validate_precision(instance, value):
+def validate_precision(instance, value):
     if value is None:
         return
     elif value in DATETIME_PRECISION_VALUES:
@@ -31,7 +31,7 @@ class DateTimeWithPrecision(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
 
     value = DateTimeField("valueOf_", key_name="value")
-    precision = AttributeField("precision", preset_hook=_validate_precision)
+    precision = AttributeField("precision", preset_hook=validate_precision)
 
     def __init__(self, value=None, precision='second'):
         super(DateTimeWithPrecision, self).__init__()
@@ -44,7 +44,7 @@ class DateTimeWithPrecision(stix.Entity):
         if self.precision == 'second':
             return utils.dates.serialize_value(self.value)
 
-        d  = {
+        d = {
             'value': utils.dates.serialize_value(self.value),
             'precision':self.precision
         }
