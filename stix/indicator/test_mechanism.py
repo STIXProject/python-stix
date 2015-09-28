@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # external
+from mixbox import fields
 from mixbox.cache import Cached
 
 # internal
@@ -10,15 +11,16 @@ from stix.common import InformationSource, Statement
 
 # bindings
 import stix.bindings.indicator as indicator_binding
-from stix.base import IdField, AttributeField, ElementField
+from stix.base import AttributeField, ElementField
+
 
 class _BaseTestMechanism(Cached, stix.Entity):
     _namespace = "http://stix.mitre.org/Indicator-2"
     _binding = indicator_binding
     _binding_class = indicator_binding.TestMechanismType()
     
-    id_ = IdField("id")
-    idref = IdField("idref")
+    id_ = fields.IdField("id")
+    idref = fields.IdField("idref")
     efficacy = ElementField("Efficacy", Statement)
     producer = ElementField("Producer", InformationSource)
     

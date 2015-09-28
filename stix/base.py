@@ -19,14 +19,6 @@ from mixbox.entities import EntityList as _MixboxEntityList
 # internal
 from . import utils
 
-def _structured_text_list(input):
-
-
-    if input:
-        return StructuredTextList(input)
-    else:
-        return StructuredTextList()
-
 
 def _override(*args, **kwargs):
     raise NotImplementedError()
@@ -44,28 +36,6 @@ class ContentField(fields.TypedField):
     pass
 
 
-class IdField(AttributeField):
-    def __set__(self, instance, value):
-        """Set the id field to `value`. If `value` is not None or an empty
-        string, unset the idref fields on `instance`.
-        """
-        super(IdField, self).__set__(instance, value)
-
-        if value:
-            fields.unset(instance, IdrefField)
-
-
-
-class IdrefField(AttributeField):
-    def __set__(self, instance, value):
-        """Set the idref field to `value`. If `value` is not None or an empty
-        string, unset the id fields on `instance`.
-        """
-        super(IdrefField, self).__set__(instance, value)
-
-        if value:
-            fields.unset(instance, IdField)
-            
 
 class Entity(_MixboxEntity):
     """Base class for all classes in the STIX API."""
@@ -500,8 +470,8 @@ class BaseCoreComponent(Cached, Entity):
     _ID_PREFIX = None
 
     title = ElementField("Title")
-    id_ = IdField("id")
-    idref = IdrefField("idref")
+    id_ = fields.IdField("id")
+    idref = fields.IdrefField("idref")
     version = AttributeField("version", preset_hook=_validate_version)
     timestamp = fields.DateTimeField("timestamp")
 

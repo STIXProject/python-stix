@@ -2,13 +2,17 @@
 # See LICENSE.txt for complete terms.
 
 # external
+from mixbox import fields
 from mixbox.cache import Cached
 
 # internal
 import stix
 import stix.bindings.stix_common as common_binding
-from stix.base import ElementField, IdField, IdrefField
+from stix.base import ElementField
 from stix.bindings.stix_common import IdentityType
+
+
+
 
 
 class Identity(Cached, stix.Entity):
@@ -16,8 +20,8 @@ class Identity(Cached, stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
     _binding_class = IdentityType
 
-    id_ = IdField("id")
-    idref = IdrefField("idref")
+    id_ = fields.IdField("id")
+    idref = fields.IdrefField("idref")
     name = ElementField("Name")
 
     # Set in _init_typed_fields() due to circular imports
@@ -60,9 +64,6 @@ class Identity(Cached, stix.Entity):
                 RelatedIdentities.from_obj(obj.Related_Identities)
 
         return return_obj
-
-    # def to_dict(self):
-    #     return super(Identity, self).to_dict()
 
     @classmethod
     def from_dict(cls, dict_repr, return_obj=None):

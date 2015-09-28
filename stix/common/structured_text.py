@@ -1,16 +1,17 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
-
 import itertools
 import contextlib
 import collections
+
+from mixbox import fields
 
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
 
 # typed fields
-from stix.base import AttributeField, ElementField, IdField, ContentField
+from stix.base import AttributeField, ElementField, ContentField
 
 #: Default ordinality value for StructuredText.
 DEFAULT_ORDINALITY = 1
@@ -34,7 +35,7 @@ class StructuredText(stix.Entity):
     _binding_class = _binding.StructuredTextType
     _namespace = 'http://stix.mitre.org/common-1'
 
-    id_ = IdField("id")
+    id_ = fields.IdField("id")
     ordinality = AttributeField("ordinality")
     value = ContentField("valueOf_", key_name="value")
     structuring_format = AttributeField("structuring_format")
