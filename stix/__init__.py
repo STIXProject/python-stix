@@ -131,7 +131,3 @@ def supported_stix_version():
 
     """
     return ('1.1.1', '1.2')
-
-# because common depends on base, we can only set the TypeFields types on
-# BaseCoreComponent to common classes after both common and base are imported
-BaseCoreComponent._init_typed_fields()

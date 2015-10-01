@@ -472,23 +472,12 @@ class BaseCoreComponent(Cached, Entity):
     title = ElementField("Title")
     id_ = fields.IdField("id")
     idref = fields.IdrefField("idref")
+    descriptions = fields.TypedField("Description", type_="stix.common.StructuredTextList", key_name="description")
+    short_descriptions = fields.TypedField("Short_Description", type_="stix.common.StructuredTextList", key_name="short_description")
     version = AttributeField("version", preset_hook=_validate_version)
     timestamp = fields.DateTimeField("timestamp")
+    handling = fields.TypedField("Handling", type_="stix.data_marking.Marking")
 
-    # These are defined in init_typed_fields due to circular imports
-    handling            = None
-    descriptions        = None
-    short_descriptions  = None
-
-
-    @classmethod
-    def _init_typed_fields(cls):
-        from stix.data_marking import Marking
-        from stix.common.structured_text import StructuredTextList, StructuredTextListField
-
-        cls.handling = fields.TypedField("Handling", Marking)
-        cls.descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
-        cls.short_descriptions = StructuredTextListField("Short_Description", StructuredTextList, key_name="short_description")
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):

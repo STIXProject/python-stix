@@ -194,14 +194,11 @@ class Indicator(stix.BaseCoreComponent):
     kill_chain_phases = ElementField("Kill_Chain_Phases", KillChainPhasesReference)
     valid_time_positions = ElementField("Valid_Time_Position", ValidTime, multiple=True, key_name="valid_time_positions")
     related_indicators = ElementField("Related_Indicators", RelatedIndicators)
-    related_campaigns = ElementField("Related_Campaigns")
+    related_campaigns = ElementField("Related_Campaigns", type_="stix.indicator.RelatedCampaigns")
     likely_impact = ElementField("Likely_Impact", Statement)
     negate = AttributeField("negate")
     related_packages = ElementField("Related_Packages", RelatedPackageRefs)
 
-    @classmethod
-    def _init_typed_fields(cls):
-        cls.related_campaigns.type_ = RelatedCampaignRefs
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
@@ -1023,5 +1020,3 @@ class _IndicatedTTPs(stix.TypedList):
 
 class _Observables(stix.TypedList):
     _contained_type = Observable
-
-Indicator._init_typed_fields()

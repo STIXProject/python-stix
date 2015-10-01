@@ -24,7 +24,7 @@ class Confidence(stix.Entity):
     descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
     timestamp = DateTimeField("timestamp")
     timestamp_precision = AttributeField("timestamp_precision", preset_hook=validate_precision)
-    source = ElementField("Source")
+    source = ElementField("Source", type_="stix.common.InformationSource")
     
     def __init__(self, value=None, timestamp=None, description=None, source=None):
         super(Confidence, self).__init__()
@@ -37,12 +37,6 @@ class Confidence(stix.Entity):
 
         # TODO: support confidence_assertion_chain
         # self.confidence_assertion_chain = None
-    
-    # called in stix.common.related
-    @classmethod
-    def _init_typed_fields(cls):
-        from .information_source import InformationSource
-        cls.source.type_ = InformationSource
 
     @property
     def description(self):

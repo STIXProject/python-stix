@@ -12,9 +12,6 @@ from stix.base import ElementField
 from stix.bindings.stix_common import IdentityType
 
 
-
-
-
 class Identity(Cached, stix.Entity):
     _binding = common_binding
     _namespace = 'http://stix.mitre.org/common-1'
@@ -23,13 +20,7 @@ class Identity(Cached, stix.Entity):
     id_ = fields.IdField("id")
     idref = fields.IdrefField("idref")
     name = ElementField("Name")
-
-    # Set in _init_typed_fields() due to circular imports
-    related_identities = None
-
-    @classmethod
-    def _init_typed_fields(cls):
-        cls.related_identities = ElementField("Related_Identities", RelatedIdentities)
+    related_identities = fields.TypedField("Related_Identities", type_="stix.common.identity.RelatedIdentities")
 
     def __init__(self, id_=None, idref=None, name=None, related_identities=None):
         super(Identity, self).__init__()

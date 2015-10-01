@@ -3,6 +3,8 @@
 
 from __future__ import absolute_import
 
+from mixbox import fields
+
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
@@ -25,9 +27,7 @@ class Statement(stix.Entity):
     value = VocabField("Value", HighMediumLow)
     descriptions = ElementField("Description", StructuredTextList)
     confidence = ElementField("Confidence", Confidence)
-
-    # Set by init_typed_fields() to avoid
-    source = None
+    source = fields.TypedField("Source", type_="stix.common.InformationSource")
 
     def __init__(self, value=None, timestamp=None, description=None,
                  source=None):
@@ -39,11 +39,6 @@ class Statement(stix.Entity):
         self.description = description
         self.source = source
         self.confidence = None
-
-    @classmethod
-    def _init_typed_fields(cls):
-        from stix.common.information_source import InformationSource
-        cls.source = ElementField("Source", InformationSource)
 
     @property
     def description(self):

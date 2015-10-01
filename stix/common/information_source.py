@@ -25,15 +25,11 @@ class InformationSource(stix.Entity):
 
     identity = ElementField("Identity", Identity)
     descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
-    contributing_sources = ElementField("Contributing_Sources")
+    contributing_sources = ElementField("Contributing_Sources", type_="stix.common.information_source.ContributingSources")
     time = ElementField("Time", cybox.common.Time)
     roles = ElementField("Role", VocabString, multiple=True, key_name="roles")
     tools = ElementField("Tools", ToolInformationList)
     references = ElementField("References", References)
-
-    @classmethod
-    def _init_typed_fields(cls):
-        cls.contributing_sources.type_ = ContributingSources
 
     def __init__(self, description=None, identity=None, time=None, tools=None, contributing_sources=None, references=None):
         super(InformationSource, self).__init__()
@@ -98,6 +94,3 @@ class ContributingSources(stix.EntityList):
     _contained_type = InformationSource
     _inner_name = "sources"
 
-
-# finally, initialize field types that would be circular dependencies
-InformationSource._init_typed_fields()

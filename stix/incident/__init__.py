@@ -50,15 +50,15 @@ class Incident(stix.BaseCoreComponent):
     status = ElementField("Status", vocabs.IncidentStatus)
     time = ElementField("Time", Time)
     victims = ElementField("Victim", Identity, multiple=True, key_name="victims")
-    attributed_threat_actors = ElementField("Attributed_Threat_Actors")
-    related_indicators = ElementField("Related_Indicators")
-    related_observables = ElementField("Related_Observables")
-    related_incidents = ElementField("Related_Incidents")
+    attributed_threat_actors = ElementField("Attributed_Threat_Actors", type_="stix.incident.AttributedThreatActors")
+    related_indicators = ElementField("Related_Indicators", type_="stix.incident.RelatedIndicators")
+    related_observables = ElementField("Related_Observables", type_="stix.incident.RelatedObservables")
+    related_incidents = ElementField("Related_Incidents", type_="stix.incident.RelatedIncidents")
     related_packages = ElementField("Related_Packages", RelatedPackageRefs)
-    affected_assets = ElementField("Affected_Assets")
-    categories = ElementField("Categories")
+    affected_assets = ElementField("Affected_Assets", type_="stix.incident.AffectedAssets")
+    categories = ElementField("Categories", type_="stix.incident.IncidentCategories")
     intended_effects = ElementField("Intended_Effect", Statement, multiple=True, key_name="intended_effects")
-    leveraged_ttps = ElementField("Leveraged_TTPs")
+    leveraged_ttps = ElementField("Leveraged_TTPs", type_="stix.incident.LeveragedTTPs")
     discovery_methods = ElementField("Discovery_Method", vocabs.DiscoveryMethod, multiple=True, key_name="discovery_methods")
     reporter = ElementField("Reporter", InformationSource)
     responders = ElementField("Responder", InformationSource, multiple=True, key_name="responders")
@@ -71,16 +71,6 @@ class Incident(stix.BaseCoreComponent):
     coa_requested = ElementField("COA_Requested", COARequested, multiple=True)
     history = ElementField("History", History)
 
-    @classmethod
-    def _init_typed_fields(cls):
-        cls.attributed_threat_actors.type_ = AttributedThreatActors
-        cls.related_indicators.type_ = RelatedIndicators
-        cls.related_observables.type_ = RelatedObservables
-        cls.related_incidents.type_ = RelatedIncidents
-        cls.affected_assets.type_ = AffectedAssets
-        cls.categories.type_ = IncidentCategories
-        cls.leveraged_ttps.type_ = LeveragedTTPs
-        
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         super(Incident, self).__init__(
             id_=id_,
@@ -482,7 +472,3 @@ class _IntendedEffects(stix.TypedList):
 
     def _fix_value(self, value):
         return Statement(value=vocabs.IntendedEffect(value))
-    
-    
-Incident._init_typed_fields()
-

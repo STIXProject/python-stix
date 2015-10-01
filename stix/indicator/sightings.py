@@ -11,6 +11,7 @@ import stix.bindings.indicator as indicator_binding
 from stix.base import AttributeField, ElementField
 from stix.common.structured_text import StructuredTextListField
 
+
 class Sighting(stix.Entity):
     _namespace = "http://stix.mitre.org/Indicator-2"
     _binding = indicator_binding
@@ -22,7 +23,7 @@ class Sighting(stix.Entity):
     source = ElementField("Source", InformationSource)
     reference = ElementField("Reference")
     confidence = ElementField("Confidence", Confidence)
-    related_observables = ElementField("Related_Observables")
+    related_observables = ElementField("Related_Observables", "stix.indicator.sightings.RelatedObservables")
     
     def __init__(self, timestamp=None, timestamp_precision=None, description=None):
         self._fields = {}
@@ -32,10 +33,6 @@ class Sighting(stix.Entity):
         self.source = None
         self.reference = None
         self.confidence = None
-
-    @classmethod
-    def _init_typed_fields(cls):
-        cls.related_observables.type_ = RelatedObservables
 
     """
     @timestamp.setter
