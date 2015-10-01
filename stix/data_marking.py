@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # external
+from mixbox import fields
 from mixbox.cache import Cached
 
 # internal
