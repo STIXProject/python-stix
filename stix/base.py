@@ -230,7 +230,7 @@ class EntityList(Entity, _MixboxEntityList):
         if self._dict_as_list:
             return self.to_list()
 
-        d = utils.to_dict(self, skip=('inner',))
+        d = super(EntityList, self).to_dict()
 
         if self._inner:
             d[self._inner_name] = [h.to_dict() for h in self]

@@ -38,4 +38,3 @@ def deprecated(value):
     fmt = "The use of this field has been deprecated. Received '{0}' object."
     msg = fmt.format(type(value).__name__)
     warnings.warn(msg)
-

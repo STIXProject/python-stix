@@ -135,6 +135,7 @@ class StructuredTextList(stix.TypedCollection, collections.Sequence):
 
     """
     _contained_type = StructuredText
+    _try_cast = True
 
     def __init__(self, *args):
         stix.TypedCollection.__init__(self, *args)

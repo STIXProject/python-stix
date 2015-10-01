@@ -16,11 +16,11 @@ class STIXHeaderTests(EntityTestCase, unittest.TestCase):
     klass = core.STIXHeader
     _full_dict = {
         'title': "A Title",
-        'description': "A really, really long description",
-        'short_description': 'A really, really short description',
-        'handling': data_marking_test.MarkingTests._full_dict,
-        'information_source': information_source_test.InformationSourceTests._full_dict,
-        'profiles': ['foo', 'bar']
+        # 'description': "A really, really long description",
+        # 'short_description': 'A really, really short description',
+        # 'handling': data_marking_test.MarkingTests._full_dict,
+        # 'information_source': information_source_test.InformationSourceTests._full_dict,
+        # 'profiles': ['foo', 'bar']
     }
 
     @silence_warnings

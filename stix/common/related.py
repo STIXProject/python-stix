@@ -1,8 +1,6 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
-
-# stdlib
-from __future__ import absolute_import
+from mixbox import fields
 
 # internal
 import stix
@@ -17,11 +15,12 @@ from stix.base import AttributeField
 from stix.utils.deprecated import idref_deprecated, deprecated
 
 # relative
-from .vocabs import VocabString
+from .vocabs import VocabString, VocabField
 from .information_source import InformationSource
 from .confidence import Confidence
 
 
+ALLOWED_SCOPE = ('inclusive', 'exclusive')
 
 
 class GenericRelationship(stix.Entity):
@@ -29,98 +28,104 @@ class GenericRelationship(stix.Entity):
     _binding = common_binding
     _binding_class = common_binding.GenericRelationshipType
 
+    confidence = fields.TypedField("Confidence", Confidence)
+    information_source = fields.TypedField("Information_Source", InformationSource)
+    relationship = VocabField("Relationship")
+
     def __init__(self, confidence=None, information_source=None, relationship=None):
         super(GenericRelationship, self).__init__()
-
         self.confidence = confidence
         self.information_source = information_source
         self.relationship = relationship
 
-    @property
-    def confidence(self):
-        return self._confidence
-
-    @confidence.setter
-    def confidence(self, value):
-        self._set_var(Confidence, confidence=value)
-
-    @property
-    def information_source(self):
-        return self._information_source
-
-    @information_source.setter
-    def information_source(self, value):
-        self._set_var(InformationSource, try_cast=False, information_source=value)
-
-    @property
-    def relationship(self):
-        return self._relationship
-
-    @relationship.setter
-    def relationship(self, value):
-        self._set_vocab(relationship=value)
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if not obj:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        return_obj.confidence = Confidence.from_obj(obj.Confidence)
-        return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
-        return_obj.relationship = VocabString.from_obj(obj.Relationship)
-
-        return return_obj
-
-    def to_obj(self, return_obj=None, ns_info=None):
-        super(GenericRelationship, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        if self.confidence:
-            return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
-        if self.information_source:
-            return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
-        if self.relationship:
-            return_obj.Relationship = self.relationship.to_obj(ns_info=ns_info)
-
-        return return_obj
-
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        if not dict_repr:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        #print "DICT", dict_repr
-
-        return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
-        return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
-        return_obj.relationship = VocabString.from_dict(dict_repr.get('relationship'))
-
-        return return_obj
-
-    def to_dict(self,):
-        d = {}
-        if self.confidence:
-            d['confidence'] = self.confidence.to_dict()
-        if self.information_source:
-            d['information_source'] = self.information_source.to_dict()
-        if self.relationship:
-            d['relationship'] = self.relationship.to_dict()
-
-        return d
+    # @property
+    # def confidence(self):
+    #     return self._confidence
+    #
+    # @confidence.setter
+    # def confidence(self, value):
+    #     self._set_var(Confidence, confidence=value)
+    #
+    # @property
+    # def information_source(self):
+    #     return self._information_source
+    #
+    # @information_source.setter
+    # def information_source(self, value):
+    #     self._set_var(InformationSource, try_cast=False, information_source=value)
+    #
+    # @property
+    # def relationship(self):
+    #     return self._relationship
+    #
+    # @relationship.setter
+    # def relationship(self, value):
+    #     self._set_vocab(relationship=value)
+    #
+    # @classmethod
+    # def from_obj(cls, obj, return_obj=None):
+    #     if not obj:
+    #         return None
+    #
+    #     if not return_obj:
+    #         return_obj = cls()
+    #
+    #     return_obj.confidence = Confidence.from_obj(obj.Confidence)
+    #     return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
+    #     return_obj.relationship = VocabString.from_obj(obj.Relationship)
+    #
+    #     return return_obj
+    #
+    # def to_obj(self, return_obj=None, ns_info=None):
+    #     super(GenericRelationship, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+    #
+    #     if not return_obj:
+    #         return_obj = self._binding_class()
+    #
+    #     if self.confidence:
+    #         return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
+    #     if self.information_source:
+    #         return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
+    #     if self.relationship:
+    #         return_obj.Relationship = self.relationship.to_obj(ns_info=ns_info)
+    #
+    #     return return_obj
+    #
+    # @classmethod
+    # def from_dict(cls, dict_repr, return_obj=None):
+    #     if not dict_repr:
+    #         return None
+    #
+    #     if not return_obj:
+    #         return_obj = cls()
+    #
+    #     #print "DICT", dict_repr
+    #
+    #     return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
+    #     return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
+    #     return_obj.relationship = VocabString.from_dict(dict_repr.get('relationship'))
+    #
+    #     return return_obj
+    #
+    # def to_dict(self,):
+    #     d = {}
+    #     if self.confidence:
+    #         d['confidence'] = self.confidence.to_dict()
+    #     if self.information_source:
+    #         d['information_source'] = self.information_source.to_dict()
+    #     if self.relationship:
+    #         d['relationship'] = self.relationship.to_dict()
+    #
+    #     return d
 
 
 class RelatedPackageRef(GenericRelationship):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedPackageRefType
+
+    idref = fields.IdrefField("idref")
+    timestamp = fields.DateTimeField("timestamp")
 
     def __init__(self, idref=None, timestamp=None, confidence=None,
                  information_source=None, relationship=None):
@@ -134,66 +139,66 @@ class RelatedPackageRef(GenericRelationship):
         self.idref = idref
         self.timestamp = timestamp
 
-    def to_obj(self, return_obj=None, ns_info=None):
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        return_obj = super(RelatedPackageRef, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
-        if self.idref:
-            return_obj.idref = self.idref
-        if self.timestamp:
-            return_obj.timestamp = self.timestamp
-
-        return return_obj
-
-    @property
-    def timestamp(self):
-        return self._timestamp
-
-    @timestamp.setter
-    def timestamp(self, value):
-        self._timestamp = utils.dates.parse_value(value)
-
-    def to_dict(self):
-        d = super(RelatedPackageRef, self).to_dict()
-
-        if self.idref:
-            d['idref'] = self.idref
-        if self.timestamp:
-            d['timestamp'] = utils.dates.serialize_value(self.timestamp)
-
-        return d
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if not obj:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        super(RelatedPackageRef, cls).from_obj(obj, return_obj)
-
-        return_obj.idref = obj.idref
-        return_obj.timestamp = obj.timestamp
-
-        return return_obj
-
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        if not dict_repr:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        super(RelatedPackageRef, cls).from_dict(dict_repr, return_obj)
-
-        return_obj.idref = dict_repr.get("idref")
-        return_obj.timestamp = dict_repr.get("timestamp")
-
-        return return_obj
+    # def to_obj(self, return_obj=None, ns_info=None):
+    #     if not return_obj:
+    #         return_obj = self._binding_class()
+    #
+    #     return_obj = super(RelatedPackageRef, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+    #
+    #     if self.idref:
+    #         return_obj.idref = self.idref
+    #     if self.timestamp:
+    #         return_obj.timestamp = self.timestamp
+    #
+    #     return return_obj
+    #
+    # @property
+    # def timestamp(self):
+    #     return self._timestamp
+    #
+    # @timestamp.setter
+    # def timestamp(self, value):
+    #     self._timestamp = utils.dates.parse_value(value)
+    #
+    # def to_dict(self):
+    #     d = super(RelatedPackageRef, self).to_dict()
+    #
+    #     if self.idref:
+    #         d['idref'] = self.idref
+    #     if self.timestamp:
+    #         d['timestamp'] = utils.dates.serialize_value(self.timestamp)
+    #
+    #     return d
+    #
+    # @classmethod
+    # def from_obj(cls, obj, return_obj=None):
+    #     if not obj:
+    #         return None
+    #
+    #     if not return_obj:
+    #         return_obj = cls()
+    #
+    #     super(RelatedPackageRef, cls).from_obj(obj, return_obj)
+    #
+    #     return_obj.idref = obj.idref
+    #     return_obj.timestamp = obj.timestamp
+    #
+    #     return return_obj
+    #
+    # @classmethod
+    # def from_dict(cls, dict_repr, return_obj=None):
+    #     if not dict_repr:
+    #         return None
+    #
+    #     if not return_obj:
+    #         return_obj = cls()
+    #
+    #     super(RelatedPackageRef, cls).from_dict(dict_repr, return_obj)
+    #
+    #     return_obj.idref = dict_repr.get("idref")
+    #     return_obj.timestamp = dict_repr.get("timestamp")
+    #
+    #     return return_obj
 
 class GenericRelationshipEntity(stix.Entity):
     _namespace = "http://stix.mitre.org/common-1"
@@ -205,7 +210,7 @@ class GenericRelationshipEntity(stix.Entity):
     scope = AttributeField("scope")
     
     def __init__(self, scope=None, *args):
-        _fields = {}
+
         super(GenericRelationshipEntity, self).__init__(*args)
         self.scope = scope
     
@@ -214,13 +219,24 @@ class GenericRelationshipEntity(stix.Entity):
             super(GenericRelationshipList, self).__nonzero__() or
             bool(self.scope)
         )
-    
+
+def _validate_scope(instance, value):
+    if not value:
+        return
+    elif value in ALLOWED_SCOPE:
+        return
+    else:
+        msg = "Scope must be one of {0}. Received '{1}'"
+        msg = msg.format(ALLOWED_SCOPE, value)
+        raise ValueError(msg)
+
+
 class GenericRelationshipList(stix.EntityList):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = _binding.GenericRelationshipListType
 
-    _ALLOWED_SCOPE = ('inclusive', 'exclusive')
+    scope = fields.TypedField("scope", preset_hook=_validate_scope)
 
     def __init__(self, scope=None, *args):
         super(GenericRelationshipList, self).__init__(*args)
@@ -231,74 +247,53 @@ class GenericRelationshipList(stix.EntityList):
             super(GenericRelationshipList, self).__nonzero__() or
             bool(self.scope)
         )
-        
-    #def __iter__(self):
-    #    print "ITER", self._inner_name, len(self)
-    #    return getattr(self, self._inner_name)
 
-    @property
-    def scope(self):
-        return self._scope
-
-    @scope.setter
-    def scope(self, value):
-        if value is None or value in self._ALLOWED_SCOPE:
-            self._scope = value
-            return
-
-        msg = "Scope must be one of {0}. Received '{1}'"
-        msg = msg.format(self._ALLOWED_SCOPE, value)
-        raise ValueError(msg)
-
-    def to_obj(self, return_obj=None, ns_info=None):
-        list_obj = super(GenericRelationshipList, self).to_obj(
-            return_obj=return_obj,
-            ns_info=ns_info
-        )
-
-        list_obj.scope = self.scope
-        return list_obj
-
-    def to_dict(self):
-        return super(GenericRelationshipList, self).to_dict()
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if not obj:
-            return None
-
-        if return_obj is None:
-            return_obj = cls()
-
-        super(GenericRelationshipList, cls).from_obj(
-            obj,
-            return_obj=return_obj,
-            contained_type=cls._contained_type,
-            binding_var=cls._binding_var
-        )
-
-        return_obj.scope = obj.scope
-
-        return return_obj
-
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        if not dict_repr:
-            return None
-
-        if return_obj is None:
-            return_obj = cls()
-
-        super(GenericRelationshipList, cls).from_dict(
-            dict_repr,
-            return_obj=return_obj,
-            contained_type=cls._contained_type,
-            inner_name=cls._inner_name
-        )
-
-        return_obj.scope = dict_repr.get('scope')
-
-        return return_obj
+    # def to_obj(self, return_obj=None, ns_info=None):
+    #     list_obj = super(GenericRelationshipList, self).to_obj(
+    #         return_obj=return_obj,
+    #         ns_info=ns_info
+    #     )
+    #
+    #     list_obj.scope = self.scope
+    #     return list_obj
+    #
+    # @classmethod
+    # def from_obj(cls, obj, return_obj=None):
+    #     if not obj:
+    #         return None
+    #
+    #     if return_obj is None:
+    #         return_obj = cls()
+    #
+    #     super(GenericRelationshipList, cls).from_obj(
+    #         obj,
+    #         return_obj=return_obj,
+    #         contained_type=cls._contained_type,
+    #         binding_var=cls._binding_var
+    #     )
+    #
+    #     return_obj.scope = obj.scope
+    #
+    #     return return_obj
+    #
+    # @classmethod
+    # def from_dict(cls, dict_repr, return_obj=None):
+    #     if not dict_repr:
+    #         return None
+    #
+    #     if return_obj is None:
+    #         return_obj = cls()
+    #
+    #     super(GenericRelationshipList, cls).from_dict(
+    #         dict_repr,
+    #         return_obj=return_obj,
+    #         contained_type=cls._contained_type,
+    #         inner_name=cls._inner_name
+    #     )
+    #
+    #     return_obj.scope = dict_repr.get('scope')
+    #
+    #     return return_obj
 
 
 class RelatedPackages(GenericRelationshipList):
