@@ -7,6 +7,21 @@ import stix.bindings.stix_common as stix_common_binding
 from mixbox import fields
 
 
+def validate_value(instance, value):
+    allowed = instance._ALLOWED_VALUES
+
+    if not value:
+        return
+    elif not allowed:
+        return
+    elif value in allowed:
+        return
+    else:
+        error = "Value must be one of {allowed}. Received '{value}'"
+        error = error.format(**locals())
+        raise ValueError(error)
+
+
 class VocabField(fields.TypedField):
     """TypedField subclass for VocabString fields."""
 
@@ -67,30 +82,17 @@ class VocabString(stix.Entity):
     _XSI_TYPE = None
     _ALLOWED_VALUES = None
 
+    value = fields.TypedField("valueOf_", key_name="value", preset_hook=validate_value)
+    vocab_name = fields.TypedField("vocab_name")
+    vocab_reference = fields.TypedField("vocab_reference")
+    xsi_type = fields.TypedField("xsi_type", key_name="xsi:type")
+
     def __init__(self, value=None):
         super(VocabString, self).__init__()
         self.value = value
         self.xsi_type = self._XSI_TYPE
-
         self.vocab_name = None
         self.vocab_reference = None
-
-    @property
-    def value(self):
-        return self._value
-    
-    @value.setter
-    def value(self, v):
-        allowed = self._ALLOWED_VALUES
-
-        if not v:
-            self._value = None
-        elif allowed and (v not in allowed):
-            error = "Value must be one of {0}. Received '{1}'"
-            error = error.format(allowed, v)
-            raise ValueError(error)
-        else:
-            self._value = v
 
     def __str__(self):
         return str(self.value)
@@ -117,39 +119,11 @@ class VocabString(stix.Entity):
         except ValueError:
             return VocabString
 
-    def to_obj(self, return_obj=None, ns_info=None):
-        super(VocabString, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        # TODO: handle normalization
-        # vocab_obj.valueOf_ = normalize_to_xml(self.value)
-        return_obj.valueOf_ = self.value
-        return_obj.xsi_type = self.xsi_type
-
-        if self.vocab_name is not None:
-            return_obj.vocab_name = self.vocab_name
-        if self.vocab_reference is not None:
-            return_obj.vocab_reference = self.vocab_reference
-
-        return return_obj
-
     def to_dict(self):
         if self.is_plain():
             return self.value
+        return super(VocabString, self).to_dict()
 
-        d = {}
-        if self.value is not None:
-            d['value'] = self.value
-        if self.xsi_type is not None:
-            d['xsi:type'] = self.xsi_type
-        if self.vocab_name is not None:
-            d['vocab_name'] = self.vocab_name
-        if self.vocab_reference is not None:
-            d['vocab_reference'] = self.vocab_reference
-
-        return d
 
     @classmethod
     def from_obj(cls, vocab_obj, return_obj=None):
