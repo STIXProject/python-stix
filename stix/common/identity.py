@@ -38,26 +38,25 @@ class Identity(Cached, stix.Entity):
         return stix.lookup_extension(xsi_type)
 
     @classmethod
-    def from_obj(cls, obj, return_obj=None):
+    def from_obj(cls, obj, partial=None):
         import stix.extensions.identity.ciq_identity_3_0  # noqa
         
         if not obj:
             return None
 
-        if not return_obj:
+        if not partial:
             klass = stix.lookup_extension(obj, default=cls)
-            return_obj = klass.from_obj(obj, return_obj=klass())
+            partial = klass.from_obj(obj, partial=klass())
         else:
-            return_obj.id_ = obj.id
-            return_obj.idref = obj.idref
-            return_obj.name = obj.Name
-            return_obj.related_identities = \
-                RelatedIdentities.from_obj(obj.Related_Identities)
+            partial.id_ = obj.id
+            partial.idref = obj.idref
+            partial.name = obj.Name
+            partial.related_identities = RelatedIdentities.from_obj(obj.Related_Identities)
 
-        return return_obj
+        return partial
 
     @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
+    def from_dict(cls, dict_repr, partial=None):
         import stix.extensions.identity.ciq_identity_3_0  # noqa
         
         if not dict_repr:
@@ -65,17 +64,17 @@ class Identity(Cached, stix.Entity):
 
         get = dict_repr.get
 
-        if not return_obj:
+        if not partial:
             klass = stix.lookup_extension(get('xsi:type'), default=cls)
-            return_obj = klass.from_dict(dict_repr, klass())
+            partial = klass.from_dict(dict_repr, klass())
         else:
-            return_obj.name = get('name')
-            return_obj.id_ = get('id')
-            return_obj.idref = get('idref')
-            return_obj.related_identities = \
+            partial.name = get('name')
+            partial.id_ = get('id')
+            partial.idref = get('idref')
+            partial.related_identities = \
                 RelatedIdentities.from_dict(get('related_identities'))
 
-        return return_obj
+        return partial
 
 
 # We can't import RelatedIdentity until we have defined the Identity class.

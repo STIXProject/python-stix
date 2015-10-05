@@ -36,7 +36,6 @@ class ContentField(fields.TypedField):
     pass
 
 
-
 class Entity(_MixboxEntity):
     """Base class for all classes in the STIX API."""
     _namespace = None
@@ -141,7 +140,6 @@ class Entity(_MixboxEntity):
             :class:`Entity` instance. Default character encoding is ``utf-8``.
 
         """
-
         from .utils import nsparser
         parser = nsparser.NamespaceParser()
 
@@ -276,7 +274,7 @@ class TypedCollection(object):
 
         return new_value
 
-    def to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, ns_info=None):
         #print "TypedCollection to_obj called"
         return [x.to_obj(ns_info=ns_info) for x in self]
 

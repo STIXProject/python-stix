@@ -37,13 +37,10 @@ class References(collections.MutableSequence, stix.Entity):
         return [x for x in self]
 
     @classmethod
-    def from_dict(cls, cls_dict=None, return_obj=None):
+    def from_dict(cls, cls_dict=None):
         if not cls_dict:
             return None
 
-        if not return_obj:
-            return_obj = cls()
-
-        return_obj.reference = [x for x in cls_dict]
-
-        return return_obj
+        obj = cls()
+        obj.reference = [x for x in cls_dict]
+        return obj

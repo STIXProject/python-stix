@@ -71,27 +71,6 @@ class StructuredText(stix.Entity):
         else:
             return super(StructuredText, self).to_dict()
 
-    @classmethod
-    def from_dict(cls, d, return_obj=None):
-        """Creates an object from the input dictionary.
-
-        Args:
-            d: A dictionary representation of this object.
-
-        """
-        if not d:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        if not isinstance(d, dict):
-            return_obj.value = d
-        else:
-            return_obj = super(StructuredText, cls).from_dict(d, return_obj)
-
-        return return_obj
-    
     def __str__(self):
         """Returns a UTF-8 encoded string representation of the ``value``.
 
@@ -347,7 +326,7 @@ class StructuredTextList(stix.TypedCollection, collections.Sequence):
         """
         self._inner.remove(value)
 
-    def to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, ns_info=None):
         """Returns a binding object list for the StructuredTextList.
 
         If the list has a length of 1, and its member has an ordinality of 1,

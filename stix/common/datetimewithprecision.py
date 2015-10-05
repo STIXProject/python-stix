@@ -41,26 +41,19 @@ class DateTimeWithPrecision(stix.Entity):
     def to_dict(self):
         if self.precision == 'second':
             return utils.dates.serialize_value(self.value)
-
-        d = {
-            'value': utils.dates.serialize_value(self.value),
-            'precision':self.precision
-        }
-
-        return d
+        return super(DateTimeWithPrecision, self).to_dict()
 
     @classmethod
-    def from_dict(cls, cls_dict=None, return_obj=None):
+    def from_dict(cls, cls_dict=None):
         if not cls_dict:
             return None
 
-        if not return_obj:
-            return_obj = cls()
+        obj = super(DateTimeWithPrecision, cls).from_dict(cls_dict)
 
         if not isinstance(cls_dict, dict):
-            return_obj.value = cls_dict
+            obj.value = cls_dict
         else:
-            return_obj.precision = cls_dict.get('precision')
-            return_obj.value = cls_dict.get('value')
+            obj.precision = cls_dict.get('precision')
+            obj.value = cls_dict.get('value')
 
-        return return_obj
+        return obj
