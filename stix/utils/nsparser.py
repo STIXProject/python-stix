@@ -1,52 +1,23 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-import collections
 import itertools
 import warnings
 
 from mixbox import idgen
 from mixbox.entities import Entity
-
-import cybox
-import cybox.core
-import cybox.common
-from cybox.utils.nsparser import CYBOX_NAMESPACES
+import mixbox.namespaces
 
 # internal
 import stix
 
-# relative
-from . import ignored
-from .walk import iterwalk
-
-
-class DuplicatePrefixError(Exception):
-    def __init__(self, message, prefix, namespaces):
-        super(DuplicatePrefixError, self).__init__(message)
-        self.prefix = prefix
-        self.namespaces = namespaces
-
 
 class NamespaceInfo(object):
-    # These appear in every exported document
-
-    _BASELINE_NAMESPACES = {
-        'xsi': 'http://www.w3.org/2001/XMLSchema-instance',
-        'stix': 'http://stix.mitre.org/stix-1',
-        'stixCommon': 'http://stix.mitre.org/common-1',
-        'stixVocabs': 'http://stix.mitre.org/default_vocabularies-1',
-        'cybox': 'http://cybox.mitre.org/cybox-2',
-        'cyboxCommon': 'http://cybox.mitre.org/common-2',
-        'cyboxVocabs': 'http://cybox.mitre.org/default_vocabularies-2'
-    }
 
     def __init__(self):
         # Namespaces that are "collected" from the Python objects during
-        # serialization. Key is the namespace alias/prefix. Value is the
-        # namespace. There are many classes without a defined prefix, so
-        # the ``None`` prefix is predefined as a ``set()``.
-        self._collected_namespaces = {None: set()}
+        # serialization.  This will be a (mixbox) NamespaceSet.
+        self._collected_namespaces = None
 
         # Namespaces and schemalocations that are attached to STIX/CybOX
         # entities when parsed from an external source.
@@ -80,11 +51,8 @@ class NamespaceInfo(object):
             klass for klass in collected if issubclass(klass, entity_klasses)
         )
 
-        # Local function for adding namespaces that have no defined prefix
-        # mapping at the class-level. These will be resolved in the
-        # self._finalize_namespaces() function.
-        no_alias = self._collected_namespaces[None].add
-
+        alias_to_ns_uri = {}
+        no_alias_ns_uris = []
         for klass in entity_subclasses:
             # Prevents exception being raised if/when
             # collections.MutableSequence or another base class appears in the
@@ -98,7 +66,7 @@ class NamespaceInfo(object):
             # used for its namespace.
             alias = getattr(klass, "_XSI_NS", None)
             if alias:
-                self._collected_namespaces[alias] = ns
+                alias_to_ns_uri[alias] = ns
                 continue
 
             # Many stix/cybox entity classes have an _XSI_TYPE attribute that
@@ -106,16 +74,34 @@ class NamespaceInfo(object):
             # associated xsi:type.
             xsi_type = getattr(klass, "_XSI_TYPE", None)
             if not xsi_type:
-                no_alias(ns)
+                no_alias_ns_uris.append(ns)
                 continue
 
             # Attempt to split the xsi:type attribute value into the ns alias
             # and the typename.
             typeinfo = xsi_type.split(":")
             if len(typeinfo) == 2:
-                self._collected_namespaces[typeinfo[0]] = ns
+                alias_to_ns_uri[typeinfo[0]] = ns
             else:
-                no_alias(ns)
+                no_alias_ns_uris.append(ns)
+
+        # Unrecognized namespace URIs will cause an error at this stage.
+        self._collected_namespaces = mixbox.namespaces.make_namespace_subset_from_uris(
+            itertools.chain(alias_to_ns_uri.itervalues(), no_alias_ns_uris)
+        )
+
+        # For some reason, prefixes are specified in API class vars and also in
+        # our big namespace tables.  From python-cybox issue #274 [1], I
+        # conclude that the tables may take priority here.  And those are
+        # already going to be preferred at this point.  So the only thing I can
+        # think to do with class var values is fill in any missing prefixes
+        # we may have (but I doubt there will be any).
+        #
+        # 1. https://github.com/CybOXProject/python-cybox/issues/274
+        for prefix, ns_uri in alias_to_ns_uri.iteritems():
+            if self._collected_namespaces.preferred_prefix_for_namespace(ns_uri) is None:
+                self._collected_namespaces.set_preferred_prefix_for_namespace(
+                    ns_uri, prefix, True)
 
     def _fix_example_namespace(self):
         """Attempts to resolve issues where our samples use
@@ -137,48 +123,6 @@ class NamespaceInfo(object):
 
         self._input_namespaces[example_prefix] = idgen.EXAMPLE_NAMESPACE.name
 
-    def _check_namespaces(self, ns_dict):
-        """Check that all the prefixes in `ns_dict` are mapped to only
-        one namespace.
-
-        Args:
-            ns_dict: A ``prefix: [namespaces]`` dictionary.
-
-        Raises:
-        `   .DuplicatePrefixError: If a prefix is mapped to more than one
-                namespace.
-
-        """
-        for prefix, namespaces in ns_dict.iteritems():
-            if len(namespaces) == 1:
-                continue
-
-            error = "Namespace prefix '{0}' mapped to multiple namespaces: {1}"
-            error = error.format(prefix, namespaces)
-
-            raise DuplicatePrefixError(
-                message=error,
-                prefix=prefix,
-                namespaces=tuple(namespaces)
-            )
-
-    def _resolve_unprefixed(self, no_prefix):
-        """Resolve namespace aliases for the unprefixed namespaces found on
-        collected python-stix objects.
-
-        Args:
-            A collection of namespaces that were not mapped to a namespace
-            prefix by a python Object.
-
-        """
-        collected_unprefixed = {}
-
-        for ns in no_prefix:
-            alias = DEFAULT_STIX_NAMESPACES[ns]
-            collected_unprefixed[alias] = ns
-
-        return collected_unprefixed
-
     def _finalize_namespaces(self, ns_dict=None):
         """Returns a dictionary of namespaces to be exported with an XML
         document.
@@ -187,69 +131,50 @@ class NamespaceInfo(object):
         during the execution of ``collect()`` and
         ``_parse_collected_classes()`` and attempts to merge them all.
 
-        Returns:
-            An ``alias: namespace`` dictionary containing all namespaces
-            required to be present on an exported document.
-
         Raises:
-            .DuplicatePrefixError: If namespace prefix was mapped to more than
-                one namespace.
+            mixbox.namespaces.DuplicatePrefixError: If namespace prefix was
+                mapped to more than one namespace.
 
         """
-        if not ns_dict:
-            ns_dict = {}
 
-        # Copy and flip the input dictionary from ns=>alias to alias=>ns
-        user_namespaces = {}
-        for ns, alias in ns_dict.iteritems():
-            user_namespaces[alias] = ns
-
-        # Our return value
-        ns_dict = collections.defaultdict(set)
+        if ns_dict:
+            # Add the user's entries to our set
+            for ns, alias in ns_dict.iteritems():
+                self._collected_namespaces.add_namespace_uri(ns, alias)
 
         # Add the ID namespaces
-        id_alias = idgen.get_id_namespace_alias()
-        id_ns = idgen.get_id_namespace()
-        ns_dict[id_alias].add(id_ns)
-
-        # Build namespace dictionaries from the collected Entity objects.
-        collected_prefixed = dict(self._collected_namespaces.iteritems())
-
-        # Pop the unprefixed entries.
-        no_prefix = collected_prefixed.pop(None, set())
-
-        # Resolve namespace aliases for the unprefixed namespaces.
-        collected_unprefixed = self._resolve_unprefixed(no_prefix)
+        self._collected_namespaces.add_namespace_uri(
+            idgen.get_id_namespace(),
+            idgen.get_id_namespace_alias()
+        )
 
         # Remap the example namespace to the one expected by the APIs if the
         # sample example namespace is found.
         self._fix_example_namespace()
 
-        # All the namespaces dictionaries we need to merge and export.
-        namespace_dicts = itertools.chain(
-            self._BASELINE_NAMESPACES.iteritems(),
-            self._input_namespaces.iteritems(),
-            collected_prefixed.iteritems(),
-            collected_unprefixed.iteritems(),
-            user_namespaces.iteritems()
-        )
+        # Add _input_namespaces
+        for prefix, uri in self._input_namespaces.iteritems():
+            self._collected_namespaces.add_namespace_uri(uri, prefix)
 
-        # Build our merged namespace dictionary. It will be inspected for
-        # duplicate ns prefix mappings.
-        for alias, ns in namespace_dicts:
-            ns_dict[alias].add(ns)
+        # Add some default XML namespaces to make sure they're there.
+        self._collected_namespaces.import_from(mixbox.namespaces.XML_NAMESPACES)
 
-        # Check that all the prefixes are mapped to only one namespace
-        self._check_namespaces(ns_dict)
+        # python-stix's generateDS-generated binding classes can't handle
+        # default namespaces.  So make sure there are no preferred defaults in
+        # the set.  Get prefixes from the global namespace set if we have to.
+        for ns_uri in self._collected_namespaces.namespace_uris:
+            if self._collected_namespaces.preferred_prefix_for_namespace(ns_uri) is None:
+                prefixes = self._collected_namespaces.get_prefixes(ns_uri)
+                if len(prefixes) > 0:
+                    prefix = next(iter(prefixes))
+                else:
+                    prefix = mixbox.namespaces.lookup_name(ns_uri)
 
-        # Flatten the dictionary by popping the namespace from the namespace
-        # set values in ns_dict.
-        flattened = {}
-        for alias, ns_set in ns_dict.iteritems():
-            flattened[alias] = ns_set.pop()
+                if prefix is None:
+                    raise mixbox.namespaces.NoPrefixesError(ns_uri)
 
-        # Return the flattened dictionary
-        return flattened
+                self._collected_namespaces.set_preferred_prefix_for_namespace(
+                    ns_uri, prefix, True)
 
     def _finalize_schemalocs(self, schemaloc_dict=None):
         # If schemaloc_dict was passed in, make a copy so we don't mistakenly
@@ -258,9 +183,6 @@ class NamespaceInfo(object):
             schemaloc_dict = dict(schemaloc_dict.iteritems())
         else:
             schemaloc_dict = {}
-
-        # Get our id namespace
-        id_ns = idgen.get_id_namespace()
 
         # Build our schemalocation dictionary!
         #
@@ -271,56 +193,51 @@ class NamespaceInfo(object):
         # If there is a schemalocation found in both the parsed schemalocs and
         # the schema_loc dict, use the schemaloc_dict value.
         for ns, loc in self._input_schemalocs.iteritems():
-            if ns in schemaloc_dict:
-                continue
-            schemaloc_dict[ns] = loc
+            if ns not in schemaloc_dict:
+                schemaloc_dict[ns] = loc
 
-        # Iterate over the finalized namespaces for a document and attempt
-        # to map them to schemalocations. Warn if the namespace should have a
-        # schemalocation and we can't find it anywhere.
-        nsset = set(self.finalized_namespaces.itervalues())
-        for ns in nsset:
-            if ns in DEFAULT_STIX_SCHEMALOCATIONS:
-                schemaloc_dict[ns] = DEFAULT_STIX_SCHEMALOCATIONS[ns]
-            elif ns in schemaloc_dict:
-                continue
-            elif (ns == id_ns) or (ns in XML_NAMESPACES):
-                continue
-            else:
+        # Now use the merged dict to update any schema locations we don't
+        # already have.
+        for ns, loc in schemaloc_dict.iteritems():
+            if self._collected_namespaces.contains_namespace(ns) and \
+                self._collected_namespaces.get_schema_location(ns) is None:
+                self._collected_namespaces.set_schema_location(ns, loc)
+
+        # Warn if we are missing any schemalocations
+        id_ns = idgen.get_id_namespace()
+        for ns in self._collected_namespaces.namespace_uris:
+            if self._collected_namespaces.get_schema_location(ns) is None:
+                if ns == id_ns or \
+                        mixbox.namespaces.XML_NAMESPACES.contains_namespace(ns) or \
+                        ns in schemaloc_dict:
+                    continue
+
                 error = "Unable to map namespace '{0}' to schemaLocation"
                 warnings.warn(error.format(ns))
 
-        return schemaloc_dict
-
-    def _finalize_binding_namespaces(self):
-        """Returns a namespace-to-prefix dictionary view of the
-        finalized_namespaces (which are mapped prefix-to-namespace).
-
-        The bindings expect an NS-to-prefix mapping, while our ns processing
-        code builds dictionaries that map prefix-to-Namespace(s). Because of
-        this, we need to flip our dictionaries before handing them off to the
-        bindings for serialization.
-
-        """
-        if not self.finalized_namespaces:
-            return {}  # TODO: Should this return the DEFAULT_STIX_NAMESPACES?
-
-        binding_namespaces = {}
-        for alias, ns in self.finalized_namespaces.iteritems():
-            binding_namespaces[ns] = alias
-
-        # Always use the default STIX prefixes for STIX namespaces.
-        # This is because of xsi:type prefixes used by the STIX/CybOX user-level
-        # API classes.
-        binding_namespaces.update(DEFAULT_STIX_NAMESPACES)
-
-        return binding_namespaces
-
     def finalize(self, ns_dict=None, schemaloc_dict=None):
         self._parse_collected_classes()
-        self.finalized_namespaces = self._finalize_namespaces(ns_dict)
-        self.finalized_schemalocs = self._finalize_schemalocs(schemaloc_dict)
-        self.binding_namespaces = self._finalize_binding_namespaces()
+        self._finalize_namespaces(ns_dict)
+        self._finalize_schemalocs(schemaloc_dict)
+
+        self.finalized_namespaces = \
+            self._collected_namespaces.get_prefix_uri_map()
+        self.finalized_schemalocs = \
+            self._collected_namespaces.get_uri_schemaloc_map()
+        self.binding_namespaces = \
+            self._collected_namespaces.get_uri_prefix_map()
+
+    def get_xmlns_string(self, delim):
+        if self._collected_namespaces is None:
+            return ""
+        return self._collected_namespaces.get_xmlns_string(
+            preferred_prefixes_only=False, delim=delim
+        )
+
+    def get_schema_location_string(self, delim):
+        if self._collected_namespaces is None:
+            return ""
+        return self._collected_namespaces.get_schemaloc_string(delim=delim)
 
     def collect(self, entity):
         # Collect all the classes we need to inspect for namespace information
@@ -337,208 +254,49 @@ class NamespaceInfo(object):
             self._input_schemalocs.update(entity.__input_schemalocations__)
 
 
-class NamespaceParser(object):
-    def __init__(self):
-        pass
+Namespace = mixbox.namespaces.Namespace
 
-    def get_namespaces(self, entity, ns_dict=None):
-        ns_info = NamespaceInfo()
+NS_CAMPAIGN_OBJECT = Namespace("http://stix.mitre.org/Campaign-1", "campaign", "http://stix.mitre.org/XMLSchema/campaign/1.2/campaign.xsd")
+NS_CAPEC_OBJECT = Namespace("http://capec.mitre.org/capec-2", "capec", "")
+NS_CIQIDENTITY_OBJECT = Namespace("http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1", "ciqIdentity", "http://stix.mitre.org/XMLSchema/extensions/identity/ciq_3.0/1.2/ciq_3.0_identity.xsd")
+NS_COA_OBJECT = Namespace("http://stix.mitre.org/CourseOfAction-1", "coa", "http://stix.mitre.org/XMLSchema/course_of_action/1.2/course_of_action.xsd")
+NS_CVRF_OBJECT = Namespace("http://www.icasi.org/CVRF/schema/cvrf/1.1", "cvrf", "")
+NS_ET_OBJECT = Namespace("http://stix.mitre.org/ExploitTarget-1", "et", "http://stix.mitre.org/XMLSchema/exploit_target/1.2/exploit_target.xsd")
+NS_GENERICSTRUCTUREDCOA_OBJECT = Namespace("http://stix.mitre.org/extensions/StructuredCOA#Generic-1", "genericStructuredCOA", "http://stix.mitre.org/XMLSchema/extensions/structured_coa/generic/1.2/generic_structured_coa.xsd")
+NS_GENERICTM_OBJECT = Namespace("http://stix.mitre.org/extensions/TestMechanism#Generic-1", "genericTM", "http://stix.mitre.org/XMLSchema/extensions/test_mechanism/generic/1.2/generic_test_mechanism.xsd")
+NS_INCIDENT_OBJECT = Namespace("http://stix.mitre.org/Incident-1", "incident", "http://stix.mitre.org/XMLSchema/incident/1.2/incident.xsd")
+NS_INDICATOR_OBJECT = Namespace("http://stix.mitre.org/Indicator-2", "indicator", "http://stix.mitre.org/XMLSchema/indicator/2.2/indicator.xsd")
+NS_IOC_OBJECT = Namespace("http://schemas.mandiant.com/2010/ioc", "ioc", "")
+NS_IOCTR_OBJECT = Namespace("http://schemas.mandiant.com/2010/ioc/TR/", "ioc-tr", "")
+NS_MARKING_OBJECT = Namespace("http://data-marking.mitre.org/Marking-1", "marking", "http://stix.mitre.org/XMLSchema/data_marking/1.2/data_marking.xsd")
+NS_OVALDEF_OBJECT = Namespace("http://oval.mitre.org/XMLSchema/oval-definitions-5", "oval-def", "")
+NS_OVALVAR_OBJECT = Namespace("http://oval.mitre.org/XMLSchema/oval-variables-5", "oval-var", "")
+NS_REPORT_OBJECT = Namespace("http://stix.mitre.org/Report-1", "report", "http://stix.mitre.org/XMLSchema/report/1.0/report.xsd")
+NS_SIMPLEMARKING_OBJECT = Namespace("http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1", "simpleMarking", "http://stix.mitre.org/XMLSchema/extensions/marking/simple/1.2/simple_marking.xsd")
+NS_SNORTTM_OBJECT = Namespace("http://stix.mitre.org/extensions/TestMechanism#Snort-1", "snortTM", "http://stix.mitre.org/XMLSchema/extensions/test_mechanism/snort/1.2/snort_test_mechanism.xsd")
+NS_STIX_OBJECT = Namespace("http://stix.mitre.org/stix-1", "stix", "http://stix.mitre.org/XMLSchema/core/1.2/stix_core.xsd")
+NS_STIXCAPEC_OBJECT = Namespace("http://stix.mitre.org/extensions/AP#CAPEC2.7-1", "stix-capec", "http://stix.mitre.org/XMLSchema/extensions/attack_pattern/capec_2.7/1.1/capec_2.7_attack_pattern.xsd")
+NS_STIXCIQADDRESS_OBJECT = Namespace("http://stix.mitre.org/extensions/Address#CIQAddress3.0-1", "stix-ciqaddress", "http://stix.mitre.org/XMLSchema/extensions/address/ciq_3.0/1.2/ciq_3.0_address.xsd")
+NS_STIXCVRF_OBJECT = Namespace("http://stix.mitre.org/extensions/Vulnerability#CVRF-1", "stix-cvrf", "http://stix.mitre.org/XMLSchema/extensions/vulnerability/cvrf_1.1/1.2/cvrf_1.1_vulnerability.xsd")
+NS_STIXMAEC_OBJECT = Namespace("http://stix.mitre.org/extensions/Malware#MAEC4.1-1", "stix-maec", "http://stix.mitre.org/XMLSchema/extensions/malware/maec_4.1/1.1/maec_4.1_malware.xsd")
+NS_STIXOPENIOC_OBJECT = Namespace("http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1", "stix-openioc", "http://stix.mitre.org/XMLSchema/extensions/test_mechanism/open_ioc_2010/1.2/open_ioc_2010_test_mechanism.xsd")
+NS_STIXOVAL_OBJECT = Namespace("http://stix.mitre.org/extensions/TestMechanism#OVAL5.10-1", "stix-oval", "http://stix.mitre.org/XMLSchema/extensions/test_mechanism/oval_5.10/1.2/oval_5.10_test_mechanism.xsd")
+NS_STIXCOMMON_OBJECT = Namespace("http://stix.mitre.org/common-1", "stixCommon", "http://stix.mitre.org/XMLSchema/common/1.2/stix_common.xsd")
+NS_STIXVOCABS_OBJECT = Namespace("http://stix.mitre.org/default_vocabularies-1", "stixVocabs", "http://stix.mitre.org/XMLSchema/default_vocabularies/1.2.0/stix_default_vocabularies.xsd")
+NS_TA_OBJECT = Namespace("http://stix.mitre.org/ThreatActor-1", "ta", "http://stix.mitre.org/XMLSchema/threat_actor/1.2/threat_actor.xsd")
+NS_TLPMARKING_OBJECT = Namespace("http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1", "tlpMarking", "http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.2/tlp_marking.xsd")
+NS_TOUMARKING_OBJECT = Namespace("http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1", "TOUMarking", "http://stix.mitre.org/XMLSchema/extensions/marking/terms_of_use/1.1/terms_of_use_marking.xsd")
+NS_TTP_OBJECT = Namespace("http://stix.mitre.org/TTP-1", "ttp", "http://stix.mitre.org/XMLSchema/ttp/1.2/ttp.xsd")
+NS_XAL_OBJECT = Namespace("urn:oasis:names:tc:ciq:xal:3", "xal", "http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xAL.xsd")
+NS_XNL_OBJECT = Namespace("urn:oasis:names:tc:ciq:xnl:3", "xnl", "http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xNL.xsd")
+NS_XPIL_OBJECT = Namespace("urn:oasis:names:tc:ciq:xpil:3", "xpil", "http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd")
+NS_YARATM_OBJECT = Namespace("http://stix.mitre.org/extensions/TestMechanism#YARA-1", "yaraTM", "http://stix.mitre.org/XMLSchema/extensions/test_mechanism/yara/1.2/yara_test_mechanism.xsd")
 
-        for node in iterwalk(entity):
-            ns_info.collect(node)
+STIX_NAMESPACES = mixbox.namespaces.NamespaceSet()
 
-        ns_info.finalize(ns_dict=ns_dict)
-        return ns_info.finalized_namespaces
+# Magic to automatically register all Namespaces defined in this module.
+for k, v in globals().items():
+    if k.startswith('NS_'):
+        mixbox.namespaces.register_namespace(v)
+        STIX_NAMESPACES.add_namespace(v)
 
-    def get_namespace_schemalocation_dict(self, entity, ns_dict=None, schemaloc_dict=None):
-        ns_info = NamespaceInfo()
-
-        for node in iterwalk(entity):
-            ns_info.collect(node)
-
-        ns_info.finalize(ns_dict=ns_dict, schemaloc_dict=schemaloc_dict)
-        return ns_info.finalized_schemalocs
-
-    def get_xmlns_str(self, ns_dict):
-        pairs = sorted(ns_dict.iteritems())
-        return "\n\t".join(
-            'xmlns:%s="%s"' % (alias, ns) for alias, ns in pairs
-        )
-
-    def get_schemaloc_str(self, schemaloc_dict):
-        if not schemaloc_dict:
-            return ""
-
-        schemaloc_str_start = 'xsi:schemaLocation="\n\t'
-        schemaloc_str_end = '"'
-
-        pairs = sorted(schemaloc_dict.iteritems())
-        schemaloc_str_content = "\n\t".join(
-            "%s %s" % (ns, loc) for ns, loc in pairs
-        )
-
-        return schemaloc_str_start + schemaloc_str_content + schemaloc_str_end
-
-    def get_namespace_def_str(self, namespaces, schemaloc_dict):
-        if not any((namespaces, schemaloc_dict)):
-            return ""
-
-        parts = (
-            self.get_xmlns_str(namespaces),
-            self.get_schemaloc_str(schemaloc_dict)
-        )
-
-        return "\n\t".join(parts)
-
-
-#: Schema locations for standard XML namespaces
-XML_NAMESPACES = {
-    'http://www.w3.org/2001/XMLSchema-instance': 'xsi',
-    'http://www.w3.org/2001/XMLSchema': 'xs',
-    'http://www.w3.org/1999/xlink': 'xlink',
-    'http://www.w3.org/2000/09/xmldsig#': 'ds'
-}
-
-#: Schema locations for namespaces defined by the STIX language
-STIX_NS_TO_SCHEMALOCATION = {
-    'http://data-marking.mitre.org/Marking-1': 'http://stix.mitre.org/XMLSchema/data_marking/1.2/data_marking.xsd',
-    'http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1': 'http://stix.mitre.org/XMLSchema/extensions/marking/simple/1.2/simple_marking.xsd',
-    'http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1': 'http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.2/tlp_marking.xsd',
-    'http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1': 'http://stix.mitre.org/XMLSchema/extensions/marking/terms_of_use/1.1/terms_of_use_marking.xsd',
-    'http://stix.mitre.org/Campaign-1': 'http://stix.mitre.org/XMLSchema/campaign/1.2/campaign.xsd',
-    'http://stix.mitre.org/CourseOfAction-1': 'http://stix.mitre.org/XMLSchema/course_of_action/1.2/course_of_action.xsd',
-    'http://stix.mitre.org/ExploitTarget-1': 'http://stix.mitre.org/XMLSchema/exploit_target/1.2/exploit_target.xsd',
-    'http://stix.mitre.org/Incident-1': 'http://stix.mitre.org/XMLSchema/incident/1.2/incident.xsd',
-    'http://stix.mitre.org/Indicator-2': 'http://stix.mitre.org/XMLSchema/indicator/2.2/indicator.xsd',
-    'http://stix.mitre.org/Report-1': 'http://stix.mitre.org/XMLSchema/report/1.0/report.xsd',
-    'http://stix.mitre.org/TTP-1': 'http://stix.mitre.org/XMLSchema/ttp/1.2/ttp.xsd',
-    'http://stix.mitre.org/ThreatActor-1': 'http://stix.mitre.org/XMLSchema/threat_actor/1.2/threat_actor.xsd',
-    'http://stix.mitre.org/common-1': 'http://stix.mitre.org/XMLSchema/common/1.2/stix_common.xsd',
-    'http://stix.mitre.org/default_vocabularies-1': 'http://stix.mitre.org/XMLSchema/default_vocabularies/1.2.0/stix_default_vocabularies.xsd',
-    'http://stix.mitre.org/extensions/AP#CAPEC2.7-1': 'http://stix.mitre.org/XMLSchema/extensions/attack_pattern/capec_2.7/1.1/capec_2.7_attack_pattern.xsd',
-    'http://stix.mitre.org/extensions/Address#CIQAddress3.0-1': 'http://stix.mitre.org/XMLSchema/extensions/address/ciq_3.0/1.2/ciq_3.0_address.xsd',
-    'http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1': 'http://stix.mitre.org/XMLSchema/extensions/identity/ciq_3.0/1.2/ciq_3.0_identity.xsd',
-    'http://stix.mitre.org/extensions/Malware#MAEC4.1-1': 'http://stix.mitre.org/XMLSchema/extensions/malware/maec_4.1/1.1/maec_4.1_malware.xsd',
-    'http://stix.mitre.org/extensions/StructuredCOA#Generic-1': 'http://stix.mitre.org/XMLSchema/extensions/structured_coa/generic/1.2/generic_structured_coa.xsd',
-    'http://stix.mitre.org/extensions/TestMechanism#Generic-1': 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/generic/1.2/generic_test_mechanism.xsd',
-    'http://stix.mitre.org/extensions/TestMechanism#OVAL5.10-1': 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/oval_5.10/1.2/oval_5.10_test_mechanism.xsd',
-    'http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1': 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/open_ioc_2010/1.2/open_ioc_2010_test_mechanism.xsd',
-    'http://stix.mitre.org/extensions/TestMechanism#Snort-1': 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/snort/1.2/snort_test_mechanism.xsd',
-    'http://stix.mitre.org/extensions/TestMechanism#YARA-1': 'http://stix.mitre.org/XMLSchema/extensions/test_mechanism/yara/1.2/yara_test_mechanism.xsd',
-    'http://stix.mitre.org/extensions/Vulnerability#CVRF-1': 'http://stix.mitre.org/XMLSchema/extensions/vulnerability/cvrf_1.1/1.2/cvrf_1.1_vulnerability.xsd',
-    'http://stix.mitre.org/stix-1': 'http://stix.mitre.org/XMLSchema/core/1.2/stix_core.xsd'
-}
-
-#: Schema locations for namespaces defined by the CybOX language
-CYBOX_NS_TO_SCHEMALOCATION = dict(
-    (x.name, x.schema_location) for x in CYBOX_NAMESPACES if x.schema_location
-)
-
-#: Schema locations for namespaces not defined by STIX, but hosted on the STIX website
-EXT_NS_TO_SCHEMALOCATION = {
-    'urn:oasis:names:tc:ciq:xal:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xAL.xsd',
-    'urn:oasis:names:tc:ciq:xpil:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd',
-    'urn:oasis:names:tc:ciq:xnl:3': 'http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xNL.xsd'
-}
-
-#: Default namespace->alias mappings. These can be overriden by user-provided dictionaries on export.
-DEFAULT_STIX_NS_TO_PREFIX = {
-    'http://cybox.mitre.org/common-2': 'cyboxCommon',
-    'http://cybox.mitre.org/cybox-2': 'cybox',
-    'http://data-marking.mitre.org/Marking-1': 'marking',
-    'http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1': 'simpleMarking',
-    'http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1': 'tlpMarking',
-    'http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1': 'TOUMarking',
-    'http://stix.mitre.org/Campaign-1': 'campaign',
-    'http://stix.mitre.org/CourseOfAction-1': 'coa',
-    'http://stix.mitre.org/ExploitTarget-1': 'et',
-    'http://stix.mitre.org/Incident-1': 'incident',
-    'http://stix.mitre.org/Indicator-2': 'indicator',
-    'http://stix.mitre.org/TTP-1': 'ttp',
-    'http://stix.mitre.org/ThreatActor-1': 'ta',
-    'http://stix.mitre.org/Report-1': 'report',
-    'http://stix.mitre.org/stix-1': 'stix',
-    'http://stix.mitre.org/common-1': 'stixCommon',
-    'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
-    'http://stix.mitre.org/extensions/AP#CAPEC2.7-1': 'stix-capec',
-    'http://stix.mitre.org/extensions/Address#CIQAddress3.0-1': 'stix-ciqaddress',
-    'http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1': 'ciqIdentity',
-    'http://stix.mitre.org/extensions/Malware#MAEC4.1-1': 'stix-maec',
-    'http://stix.mitre.org/extensions/StructuredCOA#Generic-1': 'genericStructuredCOA',
-    'http://stix.mitre.org/extensions/TestMechanism#Generic-1': 'genericTM',
-    'http://stix.mitre.org/extensions/TestMechanism#OVAL5.10-1': 'stix-oval',
-    'http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1': 'stix-openioc',
-    'http://stix.mitre.org/extensions/TestMechanism#Snort-1': 'snortTM',
-    'http://stix.mitre.org/extensions/TestMechanism#YARA-1': 'yaraTM',
-    'http://stix.mitre.org/extensions/Vulnerability#CVRF-1': 'stix-cvrf'
-}
-
-#: Mapping of extension namespaces to their (typical) prefixes.
-DEFAULT_EXT_TO_PREFIX = {
-    'http://capec.mitre.org/capec-2': 'capec',
-    'http://maec.mitre.org/XMLSchema/maec-package-2': 'maecPackage',
-    'http://oval.mitre.org/XMLSchema/oval-definitions-5': 'oval-def',
-    'http://oval.mitre.org/XMLSchema/oval-variables-5': 'oval-var',
-    'http://schemas.mandiant.com/2010/ioc': 'ioc',
-    'http://schemas.mandiant.com/2010/ioc/TR/': 'ioc-tr',
-    'http://www.icasi.org/CVRF/schema/cvrf/1.1': 'cvrf',
-    'urn:oasis:names:tc:ciq:xal:3': 'xal',
-    'urn:oasis:names:tc:ciq:xpil:3': 'xpil',
-    'urn:oasis:names:tc:ciq:xnl:3': 'xnl'
-}
-
-#: Mapping of CybOX namespaces to default aliases
-DEFAULT_CYBOX_NAMESPACES = dict(
-    (x.name, x.prefix) for x in CYBOX_NAMESPACES
-)
-
-
-#: Mapping of all STIX/STIX Extension/CybOX/XML namespaces
-DEFAULT_STIX_NAMESPACES  = dict(
-    itertools.chain(
-        DEFAULT_CYBOX_NAMESPACES.iteritems(),
-        XML_NAMESPACES.iteritems(),
-        DEFAULT_STIX_NS_TO_PREFIX.iteritems(),
-        DEFAULT_EXT_TO_PREFIX.iteritems()
-    )
-)
-
-#: Prefix-to-namespace mapping of the `DEFAULT_STIX_NAMESPACES` mapping
-DEFAULT_STIX_PREFIX_TO_NAMESPACE = dict(
-    (alias, ns) for ns, alias in DEFAULT_STIX_NAMESPACES.iteritems()
-)
-
-#: Tuple of all keys found in `DEFAULT_STIX_NAMESPACES` mapping.
-DEFAULT_STIX_NAMESPACES_TUPLE = tuple(DEFAULT_STIX_NAMESPACES.keys())
-
-#: Mapping of STIX/CybOX/STIX Extension namespaces to canonical schema locations
-DEFAULT_STIX_SCHEMALOCATIONS = dict(
-    itertools.chain(
-        STIX_NS_TO_SCHEMALOCATION.iteritems(),
-        EXT_NS_TO_SCHEMALOCATION.iteritems(),
-        CYBOX_NS_TO_SCHEMALOCATION.iteritems(),
-    )
-)
-
-# python-maec support code
-with ignored(ImportError):
-    from maec.utils.nsparser import MAEC_NAMESPACES
-
-    ns_to_prefix = dict(
-        (x.name, x.prefix) for x in MAEC_NAMESPACES
-    )
-
-    del ns_to_prefix['http://maec.mitre.org/default_vocabularies-1']
-
-    prefix_to_ns = dict(
-        (prefix, ns) for (ns, prefix) in ns_to_prefix.iteritems()
-    )
-
-    ns_to_schemalocation = dict(
-        (x.name, x.schema_location) for x in MAEC_NAMESPACES if x.schema_location
-    )
-
-    DEFAULT_STIX_NAMESPACES.update(ns_to_prefix)
-    DEFAULT_STIX_PREFIX_TO_NAMESPACE.update(prefix_to_ns)
-    DEFAULT_STIX_NAMESPACES_TUPLE = tuple(DEFAULT_STIX_NAMESPACES.iterkeys())
-    DEFAULT_STIX_SCHEMALOCATIONS.update(ns_to_schemalocation)

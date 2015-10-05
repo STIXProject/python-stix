@@ -3700,16 +3700,16 @@ class ControlledVocabularyStringType(GeneratedsSuper):
         if value is not None and 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
 
-            from stix.utils import DEFAULT_STIX_NAMESPACES
+            from mixbox.namespaces import lookup_name
             typeinfo = get_type_info(node)
 
             # Override the prefix if its mapped to a known STIX namespace.
             # This will help prevent class resolution failures in
             # stix.lookup_extension().
-            if typeinfo.ns in DEFAULT_STIX_NAMESPACES:
-                ns = typeinfo.ns
+            prefix = lookup_name(typeinfo.ns)
+            if prefix:
                 typename = typeinfo.typename
-                xsi_type = "%s:%s" % (DEFAULT_STIX_NAMESPACES[ns], typename)
+                xsi_type = "%s:%s" % (prefix, typename)
             else:
                 xsi_type = value
 

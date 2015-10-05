@@ -10,6 +10,7 @@ import StringIO
 from mixbox import idgen
 from mixbox.binding_utils import save_encoding
 from mixbox.cache import Cached
+import mixbox.namespaces
 
 # internal
 from . import utils
@@ -145,14 +146,6 @@ class Entity(object):
         """
 
         from .utils import nsparser
-        parser = nsparser.NamespaceParser()
-
-        if auto_namespace:
-            ns_info = nsparser.NamespaceInfo()
-        else:
-            ns_info = None
-
-        obj = self.to_obj(ns_info=ns_info)
 
         if (not auto_namespace) and (not ns_dict):
             raise Exception(
@@ -160,31 +153,30 @@ class Entity(object):
                 "or missing."
             )
 
+        ns_info = nsparser.NamespaceInfo()
+
+        obj = self.to_obj(ns_info=ns_info if auto_namespace else None)
+
+        ns_info.finalize(ns_dict=ns_dict, schemaloc_dict=schemaloc_dict)
+
         if auto_namespace:
-            ns_info.finalize(ns_dict=ns_dict, schemaloc_dict=schemaloc_dict)
             obj_ns_dict = ns_info.binding_namespaces
         else:
-            ns_info = nsparser.NamespaceInfo()
-            ns_info.finalized_namespaces = ns_dict or {}
-            ns_info.finalized_schemalocs = schemaloc_dict or {}
             obj_ns_dict = dict(
                 itertools.chain(
-                    ns_dict.iteritems(),
-                    nsparser.DEFAULT_STIX_NAMESPACES.iteritems()
+                    ns_info.binding_namespaces.iteritems(),
+                    mixbox.namespaces.get_full_ns_map().iteritems()
                 )
             )
 
         namespace_def = ""
         if include_namespaces:
-            xmlns = parser.get_xmlns_str(ns_info.finalized_namespaces)
-            namespace_def += ("\n\t" + xmlns)
-
-        if include_schemalocs and include_namespaces:
-            schemaloc = parser.get_schemaloc_str(ns_info.finalized_schemalocs)
-            namespace_def += ("\n\t" + schemaloc)
-
-        if not pretty:
-            namespace_def = namespace_def.replace('\n\t', ' ')
+            delim = "\n\t" if pretty else " "
+            xmlns = ns_info.get_xmlns_string(delim)
+            namespace_def += (delim + xmlns)
+            if include_schemalocs:
+                schemaloc = ns_info.get_schema_location_string(delim)
+                namespace_def += (delim + schemaloc)
 
         with save_encoding(encoding):
             sio = StringIO.StringIO()
