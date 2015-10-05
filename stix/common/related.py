@@ -45,6 +45,7 @@ class GenericRelationship(stix.Entity):
 
     def __init__(self, confidence=None, information_source=None, relationship=None):
         super(GenericRelationship, self).__init__()
+
         self.confidence = confidence
         self.information_source = information_source
         self.relationship = relationship
@@ -355,6 +356,7 @@ class _BaseRelated(GenericRelationship):
 
     def __init__(self, item=None, confidence=None,
                  information_source=None, relationship=None):
+
         super(_BaseRelated, self).__init__(
             confidence,
             information_source,
@@ -389,7 +391,7 @@ class _BaseRelated(GenericRelationship):
         return return_obj
 
     def to_dict(self):
-        d = utils.to_dict(self, skip=('item',))
+        d = super(_BaseRelated, self).to_dict()
 
         if self.item:
             d[self._inner_var.lower()] = self.item.to_dict()

@@ -15,5 +15,3 @@ class Names(stix.EntityList):
     _binding_class = _binding.NamesType
     _contained_type = VocabString
     _binding_var = 'Name'
-    _inner_name = 'names'
-    _dict_as_list = True

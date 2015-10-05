@@ -218,98 +218,12 @@ class Entity(_MixboxEntity):
                 return entity
 
 
-class EntityList(Entity, _MixboxEntityList):
+class EntityList(_MixboxEntityList, Entity):
     _contained_type = _override
     _inner_name = None
-    _dict_as_list = False
 
-    def to_list(self):
-        return [h.to_dict() for h in self]
-
-    def to_dict(self):
-        if self._dict_as_list:
-            return self.to_list()
-
-        d = super(EntityList, self).to_dict()
-
-        if self._inner:
-            d[self._inner_name] = [h.to_dict() for h in self]
-
-        return d
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None, contained_type=None,
-                 binding_var=None):
-        if not obj:
-            return None
-
-        if return_obj is None:
-            return_obj = cls()
-        if not contained_type:
-            contained_type = cls._contained_type
-        if not binding_var:
-            binding_var = cls._binding_var
-
-        for item in getattr(obj, binding_var):
-            return_obj.append(contained_type.from_obj(item))
-
-        return return_obj
-
-    @classmethod
-    def from_list(cls, list_repr, return_obj=None, contained_type=None):
-        from stix.common.related import GenericRelationshipList
-
-        if not utils.is_sequence(list_repr):
-            return None
-
-        if return_obj is None:
-            return_obj = cls()
-        if not contained_type:
-            contained_type = cls._contained_type
-
-        #print list_repr.__class__, isinstance(list_repr, GenericRelationshipList)
-
-        # GenericRelationshipList is not actually a list; it's dict with a list member
-        if issubclass(cls, GenericRelationshipList):
-            return cls.from_dict(list_repr, return_obj)
-
-        try:
-            list_repr = list_repr[cls._inner_name]
-        except:
-            pass
-        
-
-        return_obj.extend(contained_type.from_dict(x) for x in list_repr)
-        return return_obj
-
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None, contained_type=None,
-                  inner_name=None):
-
-        if cls._dict_as_list:
-            return cls.from_list(
-                dict_repr,
-                return_obj=return_obj,
-                contained_type=contained_type,
-            )
-
-        if not isinstance(dict_repr, dict):
-            return None
-
-        if return_obj is None:
-            return_obj = cls()
-        if not contained_type:
-            contained_type = cls._contained_type
-        if not inner_name:
-            inner_name = cls._inner_name
-
-        if inner_name == "attribution":
-            pass
-
-        for item in dict_repr.get(inner_name, []):
-            return_obj.append(contained_type.from_dict(item))
-
-        return return_obj
+    def to_xml(self, *args, **kwargs):
+        return Entity.to_xml(self, *args, **kwargs)
 
 
 class TypedCollection(object):

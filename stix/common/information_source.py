@@ -3,9 +3,11 @@
 
 # external
 import cybox.common
+from cybox.common.tools import ToolInformationList
 
 # internal
 import stix
+from stix.base import ElementField
 import stix.bindings.stix_common as stix_common_binding
 
 # relative
@@ -13,9 +15,6 @@ from .vocabs import VocabString
 from .references import References
 from .identity import Identity
 from .structured_text import StructuredTextList, StructuredTextListField
-from stix.base import ElementField
-
-from cybox.common.tools import ToolInformationList
 
 
 class InformationSource(stix.Entity):
