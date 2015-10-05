@@ -9,12 +9,10 @@ import StringIO
 
 # mixbox
 from mixbox import idgen
+from mixbox import entities
 from mixbox import fields
 from mixbox import binding_utils
-
 from mixbox.cache import Cached
-from mixbox.entities import Entity as _MixboxEntity
-from mixbox.entities import EntityList as _MixboxEntityList
 
 # internal
 from . import utils
@@ -36,7 +34,7 @@ class ContentField(fields.TypedField):
     pass
 
 
-class Entity(_MixboxEntity):
+class Entity(entities.Entity):
     """Base class for all classes in the STIX API."""
     _namespace = None
     _XSI_TYPE = None
@@ -216,7 +214,7 @@ class Entity(_MixboxEntity):
                 return entity
 
 
-class EntityList(_MixboxEntityList, Entity):
+class EntityList(entities.EntityList, Entity):
     _contained_type = _override
     _inner_name = None
 

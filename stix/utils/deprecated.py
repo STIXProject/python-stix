@@ -6,7 +6,7 @@ import warnings
 from . import is_sequence
 
 
-def idref_deprecated(entity):
+def idref(entity):
     """Raises a Python UserWarning if `entity` arguments contains an idref
     value.
 
@@ -21,7 +21,14 @@ def idref_deprecated(entity):
     warnings.warn(msg)
 
 
-def deprecated(value):
+def field(instance, value):
+    """Raise a Python UserWarning if the `value` is not None. This is to be
+    used with a TypedField preset or postset hook.
+    """
+    warn(value)
+
+
+def warn(value):
     """Raises a Python UserWarning if `value` is not None.
 
     This is typically going to be used inside setter functions for deprecated

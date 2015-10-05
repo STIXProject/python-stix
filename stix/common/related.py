@@ -4,7 +4,6 @@ from mixbox import fields
 
 # internal
 import stix
-import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 import stix.bindings.stix_core as core_binding
 import stix.bindings.report as report_binding
@@ -12,7 +11,7 @@ import stix.bindings.report as report_binding
 from stix.base import AttributeField
 
 # deprecation warnings
-from stix.utils.deprecated import idref_deprecated, deprecated
+from stix.utils import deprecated
 
 # relative
 from .vocabs import VocabString, VocabField
@@ -50,86 +49,6 @@ class GenericRelationship(stix.Entity):
         self.information_source = information_source
         self.relationship = relationship
 
-    # @property
-    # def confidence(self):
-    #     return self._confidence
-    #
-    # @confidence.setter
-    # def confidence(self, value):
-    #     self._set_var(Confidence, confidence=value)
-    #
-    # @property
-    # def information_source(self):
-    #     return self._information_source
-    #
-    # @information_source.setter
-    # def information_source(self, value):
-    #     self._set_var(InformationSource, try_cast=False, information_source=value)
-    #
-    # @property
-    # def relationship(self):
-    #     return self._relationship
-    #
-    # @relationship.setter
-    # def relationship(self, value):
-    #     self._set_vocab(relationship=value)
-    #
-    # @classmethod
-    # def from_obj(cls, obj, return_obj=None):
-    #     if not obj:
-    #         return None
-    #
-    #     if not return_obj:
-    #         return_obj = cls()
-    #
-    #     return_obj.confidence = Confidence.from_obj(obj.Confidence)
-    #     return_obj.information_source = InformationSource.from_obj(obj.Information_Source)
-    #     return_obj.relationship = VocabString.from_obj(obj.Relationship)
-    #
-    #     return return_obj
-    #
-    # def to_obj(self, return_obj=None, ns_info=None):
-    #     super(GenericRelationship, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-    #
-    #     if not return_obj:
-    #         return_obj = self._binding_class()
-    #
-    #     if self.confidence:
-    #         return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
-    #     if self.information_source:
-    #         return_obj.Information_Source = self.information_source.to_obj(ns_info=ns_info)
-    #     if self.relationship:
-    #         return_obj.Relationship = self.relationship.to_obj(ns_info=ns_info)
-    #
-    #     return return_obj
-    #
-    # @classmethod
-    # def from_dict(cls, dict_repr, return_obj=None):
-    #     if not dict_repr:
-    #         return None
-    #
-    #     if not return_obj:
-    #         return_obj = cls()
-    #
-    #     #print "DICT", dict_repr
-    #
-    #     return_obj.confidence = Confidence.from_dict(dict_repr.get('confidence'))
-    #     return_obj.information_source = InformationSource.from_dict(dict_repr.get('information_source'))
-    #     return_obj.relationship = VocabString.from_dict(dict_repr.get('relationship'))
-    #
-    #     return return_obj
-    #
-    # def to_dict(self,):
-    #     d = {}
-    #     if self.confidence:
-    #         d['confidence'] = self.confidence.to_dict()
-    #     if self.information_source:
-    #         d['information_source'] = self.information_source.to_dict()
-    #     if self.relationship:
-    #         d['relationship'] = self.relationship.to_dict()
-    #
-    #     return d
-
 
 class RelatedPackageRef(GenericRelationship):
     _namespace = "http://stix.mitre.org/common-1"
@@ -151,66 +70,6 @@ class RelatedPackageRef(GenericRelationship):
         self.idref = idref
         self.timestamp = timestamp
 
-    # def to_obj(self, return_obj=None, ns_info=None):
-    #     if not return_obj:
-    #         return_obj = self._binding_class()
-    #
-    #     return_obj = super(RelatedPackageRef, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-    #
-    #     if self.idref:
-    #         return_obj.idref = self.idref
-    #     if self.timestamp:
-    #         return_obj.timestamp = self.timestamp
-    #
-    #     return return_obj
-    #
-    # @property
-    # def timestamp(self):
-    #     return self._timestamp
-    #
-    # @timestamp.setter
-    # def timestamp(self, value):
-    #     self._timestamp = utils.dates.parse_value(value)
-    #
-    # def to_dict(self):
-    #     d = super(RelatedPackageRef, self).to_dict()
-    #
-    #     if self.idref:
-    #         d['idref'] = self.idref
-    #     if self.timestamp:
-    #         d['timestamp'] = utils.dates.serialize_value(self.timestamp)
-    #
-    #     return d
-    #
-    # @classmethod
-    # def from_obj(cls, obj, return_obj=None):
-    #     if not obj:
-    #         return None
-    #
-    #     if not return_obj:
-    #         return_obj = cls()
-    #
-    #     super(RelatedPackageRef, cls).from_obj(obj, return_obj)
-    #
-    #     return_obj.idref = obj.idref
-    #     return_obj.timestamp = obj.timestamp
-    #
-    #     return return_obj
-    #
-    # @classmethod
-    # def from_dict(cls, dict_repr, return_obj=None):
-    #     if not dict_repr:
-    #         return None
-    #
-    #     if not return_obj:
-    #         return_obj = cls()
-    #
-    #     super(RelatedPackageRef, cls).from_dict(dict_repr, return_obj)
-    #
-    #     return_obj.idref = dict_repr.get("idref")
-    #     return_obj.timestamp = dict_repr.get("timestamp")
-    #
-    #     return return_obj
 
 class GenericRelationshipEntity(stix.Entity):
     _namespace = "http://stix.mitre.org/common-1"
@@ -245,57 +104,8 @@ class GenericRelationshipList(stix.EntityList):
         self.scope = scope
 
     def __nonzero__(self):
-        return (
-            super(GenericRelationshipList, self).__nonzero__() or
-            bool(self.scope)
-        )
-
-    # def to_obj(self, return_obj=None, ns_info=None):
-    #     list_obj = super(GenericRelationshipList, self).to_obj(
-    #         return_obj=return_obj,
-    #         ns_info=ns_info
-    #     )
-    #
-    #     list_obj.scope = self.scope
-    #     return list_obj
-    #
-    # @classmethod
-    # def from_obj(cls, obj, return_obj=None):
-    #     if not obj:
-    #         return None
-    #
-    #     if return_obj is None:
-    #         return_obj = cls()
-    #
-    #     super(GenericRelationshipList, cls).from_obj(
-    #         obj,
-    #         return_obj=return_obj,
-    #         contained_type=cls._contained_type,
-    #         binding_var=cls._binding_var
-    #     )
-    #
-    #     return_obj.scope = obj.scope
-    #
-    #     return return_obj
-    #
-    # @classmethod
-    # def from_dict(cls, dict_repr, return_obj=None):
-    #     if not dict_repr:
-    #         return None
-    #
-    #     if return_obj is None:
-    #         return_obj = cls()
-    #
-    #     super(GenericRelationshipList, cls).from_dict(
-    #         dict_repr,
-    #         return_obj=return_obj,
-    #         contained_type=cls._contained_type,
-    #         inner_name=cls._inner_name
-    #     )
-    #
-    #     return_obj.scope = dict_repr.get('scope')
-    #
-    #     return return_obj
+        return (super(GenericRelationshipList, self).__nonzero__() or
+                bool(self.scope))
 
 
 class RelatedPackages(GenericRelationshipList):
@@ -336,7 +146,7 @@ class RelatedPackageRefs(stix.EntityList):
         raise TypeError(error)
 
     def _is_valid(self, value):
-        deprecated(value)
+        deprecated.warn(value)
         return stix.EntityList._is_valid(self, value)
 
 
@@ -499,7 +309,7 @@ class RelatedPackage(_BaseRelated):
 
     @_BaseRelated.item.setter
     def item(self, value):
-        idref_deprecated(value)
+        deprecated.idref(value)
         _BaseRelated.item.fset(self, value)
 
 class RelatedReport(_BaseRelated):

@@ -4,15 +4,11 @@
 from mixbox import fields
 
 import stix
-from stix.utils.deprecated import deprecated
+from stix.utils import deprecated
 from stix.common import InformationSource, StructuredTextList, Profiles
 from stix.common.vocabs import VocabField, PackageIntent
 from stix.data_marking import Marking
 import stix.bindings.stix_core as stix_core_binding
-
-
-def _deprecated(instance, value):
-    deprecated(value)
 
 
 class STIXHeader(stix.Entity):
@@ -40,10 +36,10 @@ class STIXHeader(stix.Entity):
     _binding_class = _binding.STIXHeaderType
     _namespace = 'http://stix.mitre.org/stix-1'
 
-    title = fields.TypedField("Title", preset_hook=_deprecated)
-    package_intents = VocabField("Package_Intent", PackageIntent, multiple=True, preset_hook=_deprecated)
-    descriptions = fields.TypedField("Description", type_=StructuredTextList, key_name="description", preset_hook=_deprecated)
-    short_descriptions = fields.TypedField("Short_Description", type_=StructuredTextList, key_name="short_description", preset_hook=_deprecated)
+    title = fields.TypedField("Title", preset_hook=deprecated.field)
+    package_intents = VocabField("Package_Intent", PackageIntent, multiple=True, preset_hook=deprecated.field)
+    descriptions = fields.TypedField("Description", type_=StructuredTextList, key_name="description", preset_hook=deprecated.field)
+    short_descriptions = fields.TypedField("Short_Description", type_=StructuredTextList, key_name="short_description", preset_hook=deprecated.field)
     handling = fields.TypedField("Handling", Marking)
     information_source = fields.TypedField("Information_Source", InformationSource)
     profiles = fields.TypedField("Profiles", Profiles)

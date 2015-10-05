@@ -2,7 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import stix
-from stix.utils.deprecated import deprecated
+from stix.utils import deprecated
 from stix.common import Activity, Confidence, Statement, VocabString
 from stix.common.related import (
     GenericRelationshipList, RelatedCampaign, RelatedIncident, RelatedIndicator,
@@ -65,7 +65,7 @@ class RelatedIndicators(GenericRelationshipList):
     _inner_name = "indicators"
 
     def _is_valid(self, value):
-        deprecated(value)
+        deprecated.warn(value)
         return super(RelatedIndicators, self)._is_valid(value)
 
 

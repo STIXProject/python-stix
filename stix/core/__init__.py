@@ -5,7 +5,7 @@
 import stix
 
 # deprecations
-from stix.utils.deprecated import idref_deprecated
+from stix.utils import deprecated
 
 # component imports
 from stix.campaign import Campaign
@@ -27,11 +27,9 @@ class Campaigns(stix.EntityList):
     _binding_class = _binding.CampaignsType
     _contained_type = Campaign
     _binding_var = "Campaign"
-    _inner_name = "campaigns"
-    _dict_as_list = True
 
     def _is_valid(self, value):
-        idref_deprecated(value)
+        deprecated.idref(value)
         return stix.EntityList._is_valid(self, value)
 
 
@@ -41,11 +39,9 @@ class CoursesOfAction(stix.EntityList):
     _binding_class = _binding.CoursesOfActionType
     _contained_type = CourseOfAction
     _binding_var = "Course_Of_Action"
-    _inner_name = "courses_of_action"
-    _dict_as_list = True
 
     def _is_valid(self, value):
-        idref_deprecated(value)
+        deprecated.idref(value)
         return stix.EntityList._is_valid(self, value)
 
 
@@ -55,11 +51,9 @@ class ExploitTargets(stix.EntityList):
     _binding_class = _binding.ExploitTargetsType
     _contained_type = ExploitTarget
     _binding_var = "Exploit_Target"
-    _inner_name = "exploit_targets"
-    _dict_as_list = True
 
     def _is_valid(self, value):
-        idref_deprecated(value)
+        deprecated.idref(value)
         return stix.EntityList._is_valid(self, value)
 
 
@@ -69,11 +63,9 @@ class Incidents(stix.EntityList):
     _binding_class = _binding.IncidentsType
     _contained_type = Incident
     _binding_var = "Incident"
-    _inner_name = "incidents"
-    _dict_as_list = True
 
     def _is_valid(self, value):
-        idref_deprecated(value)
+        deprecated.idref(value)
         return stix.EntityList._is_valid(self, value)
 
 
@@ -83,11 +75,9 @@ class Indicators(stix.EntityList):
     _binding_class = _binding.IndicatorsType
     _contained_type = Indicator
     _binding_var = "Indicator"
-    _inner_name = "indicators"
-    _dict_as_list = True
 
     def _is_valid(self, value):
-        idref_deprecated(value)
+        deprecated.idref(value)
         return stix.EntityList._is_valid(self, value)
 
 
@@ -97,11 +87,9 @@ class ThreatActors(stix.EntityList):
     _binding_class = _binding.ThreatActorsType
     _contained_type = ThreatActor
     _binding_var = "Threat_Actor"
-    _inner_name = "threat_actors"
-    _dict_as_list = True
 
     def _is_valid(self, value):
-        idref_deprecated(value)
+        deprecated.idref(value)
         return stix.EntityList._is_valid(self, value)
 
 
@@ -111,11 +99,9 @@ class Reports(stix.EntityList):
     _binding_class = _binding.ReportsType
     _contained_type = Report
     _binding_var = "Report"
-    _inner_name = "reports"
-    _dict_as_list = True
 
     def _is_valid(self, value):
-        idref_deprecated(value)
+        deprecated.idref(value)
         return stix.EntityList._is_valid(self, value)
 
 
