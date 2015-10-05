@@ -23,6 +23,17 @@ from .confidence import Confidence
 ALLOWED_SCOPE = ('inclusive', 'exclusive')
 
 
+def validate_scope(instance, value):
+    if not value:
+        return
+    elif value in ALLOWED_SCOPE:
+        return
+    else:
+        msg = "Scope must be one of {0}. Received '{1}'"
+        msg = msg.format(ALLOWED_SCOPE, value)
+        raise ValueError(msg)
+
+
 class GenericRelationship(stix.Entity):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
@@ -219,16 +230,6 @@ class GenericRelationshipEntity(stix.Entity):
             super(GenericRelationshipList, self).__nonzero__() or
             bool(self.scope)
         )
-
-def _validate_scope(instance, value):
-    if not value:
-        return
-    elif value in ALLOWED_SCOPE:
-        return
-    else:
-        msg = "Scope must be one of {0}. Received '{1}'"
-        msg = msg.format(ALLOWED_SCOPE, value)
-        raise ValueError(msg)
 
 
 class GenericRelationshipList(stix.EntityList):
