@@ -9,6 +9,7 @@ import unittest
 import lxml.etree
 
 # internal
+import mixbox.namespaces
 import stix
 from stix.core import STIXPackage
 from stix.utils import nsparser, silence_warnings
@@ -29,17 +30,17 @@ SCHEMALOCS = {
 
 
 class A(stix.Entity):
-    _namespace = "test:a"
+    _namespace = nsparser.NS_STIX_OBJECT.name
     _XSI_TYPE = "a:AType"
 
 
 class B(A):
-    _namespace = "test:b"
+    _namespace = nsparser.NS_STIXCOMMON_OBJECT.name
     _XSI_TYPE = "b:BType"
 
 
 class C(B):
-    _namespace = "test:c"
+    _namespace = nsparser.NS_INDICATOR_OBJECT.name
     _XSI_TYPE = "c:CType"
 
 
@@ -57,7 +58,7 @@ class NamespaceInfoTests(unittest.TestCase):
         # Parse collected classes
         nsinfo._parse_collected_classes()
 
-        self.assertEqual(len(nsinfo._collected_namespaces), 4)  # noqa
+        self.assertEqual(len(nsinfo._collected_namespaces), 3)  # noqa
 
     def test_namespace_collect(self):
         """Test that NamespaceInfo correctly pulls namespaces from all classes
@@ -82,10 +83,6 @@ class NamespaceInfoTests(unittest.TestCase):
 
         """
         p = STIXPackage()
-        nsinfo = nsparser.NamespaceInfo()
-
-        # Collect classes
-        nsinfo.collect(p)
 
         TEST_PREFIX = 'test'
         TEST_NS = 'a:unit:test'
@@ -96,12 +93,6 @@ class NamespaceInfoTests(unittest.TestCase):
             TEST_NS: TEST_PREFIX,
             NEW_STIX_NS: NEW_STIX_PREFIX
         }
-
-        finalized = nsinfo._finalize_namespaces(ns_dict=test_dict)
-        nsinfo.finalized_namespaces
-
-        self.assertEqual(finalized.get(TEST_PREFIX), TEST_NS)
-        self.assertEqual(finalized.get(NEW_STIX_PREFIX), NEW_STIX_NS)
 
         # Parse the exported document and make sure that the namespaces
         # made it through the serialization process.
@@ -119,19 +110,24 @@ class NamespaceInfoTests(unittest.TestCase):
         bad = {'bad:ns': 'stix'}  # 'stix' is already default ns prefix
 
         self.assertRaises(
-            nsparser.DuplicatePrefixError,
+            mixbox.namespaces.DuplicatePrefixError,
             p.to_xml,
             ns_dict=bad
         )
 
         # Build a valid stix document that has a default namespace remapped
-        # to another namespace. We remap 'cybox' to a bogus ns here.
+        # to another namespace. We remap 'stixCommon' to a bogus ns here.
         xml = (
             """<stix:STIX_Package
-                    xmlns:cybox="THISISGONNABEPROBLEM"
+                    xmlns:stixCommon="THISISGONNABEPROBLEM"
                     xmlns:stix="http://stix.mitre.org/stix-1"
+                    xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
                     version="1.2"
-                    timestamp="2015-04-09T14:22:25.620831+00:00"/>"""
+                    timestamp="2015-04-09T14:22:25.620831+00:00">
+                <stix:STIX_Header>
+                    <stix:Description>A unit test</stix:Description>
+                </stix:STIX_Header>
+            </stix:STIX_Package>"""
         )
 
         sio = StringIO.StringIO(xml)
@@ -139,7 +135,7 @@ class NamespaceInfoTests(unittest.TestCase):
 
         # Exporting should raise an error.
         self.assertRaises(
-            nsparser.DuplicatePrefixError,
+            mixbox.namespaces.DuplicatePrefixError,
             p.to_xml
         )
 
