@@ -16,6 +16,8 @@ from .statement import Statement  # noqa
 from .tools import ToolInformation  # noqa
 from .names import Names  # noqa
 from .campaign_reference import CampaignRef  # noqa
+from .references import References  # noqa
+from .profiles import Profiles  # noqa
 from .related import (   # noqa
     GenericRelationshipList, RelatedCampaign, RelatedCOA,
     RelatedExploitTarget, RelatedIdentity, RelatedIncident,
