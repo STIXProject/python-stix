@@ -237,7 +237,7 @@ class GenericRelationshipList(stix.EntityList):
     _binding = common_binding
     _binding_class = _binding.GenericRelationshipListType
 
-    scope = fields.TypedField("scope", preset_hook=_validate_scope)
+    scope = fields.TypedField("scope", preset_hook=validate_scope)
 
     def __init__(self, scope=None, *args):
         super(GenericRelationshipList, self).__init__(*args)
