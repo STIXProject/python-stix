@@ -379,16 +379,13 @@ class _BaseRelated(GenericRelationship):
 
         self._item = value
 
-    def to_obj(self, return_obj=None, ns_info=None):
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        super(_BaseRelated, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+    def to_obj(self, ns_info=None):
+        obj = super(_BaseRelated, self).to_obj(ns_info=ns_info)
 
         if self.item:
-            setattr(return_obj, self._inner_var, self.item.to_obj(ns_info=ns_info))
+            setattr(obj, self._inner_var, self.item.to_obj(ns_info=ns_info))
 
-        return return_obj
+        return obj
 
     def to_dict(self):
         d = super(_BaseRelated, self).to_dict()
@@ -399,34 +396,26 @@ class _BaseRelated(GenericRelationship):
         return d
 
     @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if not obj:
+    def from_obj(cls, cls_obj):
+        if not cls_obj:
             return None
 
-        if not return_obj:
-            return_obj = cls()
+        obj = super(_BaseRelated, cls).from_obj(cls_obj)
+        contained_item = getattr(cls_obj, cls._inner_var)
+        obj.item = cls._base_type.from_obj(contained_item)
 
-        super(_BaseRelated, cls).from_obj(obj, return_obj)
-
-        contained_item = getattr(obj, cls._inner_var)
-        return_obj.item = cls._base_type.from_obj(contained_item)
-
-        return return_obj
+        return obj
 
     @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        if not dict_repr:
+    def from_dict(cls, cls_dict):
+        if not cls_dict:
             return None
 
-        if not return_obj:
-            return_obj = cls()
+        obj = super(_BaseRelated, cls).from_dict(cls_dict)
+        contained_item = cls_dict.get(cls._inner_var.lower())
+        obj.item = cls._base_type.from_dict(contained_item)
 
-        super(_BaseRelated, cls).from_dict(dict_repr, return_obj)
-
-        contained_item = dict_repr.get(cls._inner_var.lower())
-        return_obj.item = cls._base_type.from_dict(contained_item)
-
-        return return_obj
+        return obj
 
 
 class RelatedCampaign(_BaseRelated):

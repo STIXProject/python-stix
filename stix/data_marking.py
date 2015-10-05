@@ -32,13 +32,8 @@ class Marking(stix.Entity):
     def add_marking(self, value):
         self._markings.append(value)
 
-    def to_obj(self, return_obj=None, ns_info=None):
-        super(Marking, self).to_obj(
-            return_obj=return_obj,
-            ns_info=ns_info
-        )
-
-        obj = self._binding_class()
+    def to_obj(self, ns_info=None):
+        obj = super(Marking, self).to_obj(ns_info=ns_info)
 
         if self.markings:
             obj.Marking = self.markings.to_obj(ns_info=ns_info)
@@ -49,29 +44,23 @@ class Marking(stix.Entity):
         return self.markings.to_list() if self.markings else []
 
     @classmethod
-    def from_obj(cls, obj, return_obj=None):
+    def from_obj(cls, obj):
         if not obj:
             return None
 
-        if not return_obj:
-            return_obj = cls()
-
-        return_obj.markings = _MarkingSpecifications.from_obj(obj.Marking)
-
-        return return_obj
+        obj = super(Marking, cls).from_obj(obj)
+        obj.markings = _MarkingSpecifications.from_obj(obj.Marking)
+        return obj
 
     @classmethod
-    def from_list(cls, markings_list, return_obj=None):
+    def from_list(cls, markings_list):
         if not markings_list:
             return None
 
-        if not return_obj:
-            return_obj = cls()
-
+        obj = cls()
         mlist = _MarkingSpecifications.from_list(markings_list)
-        return_obj.markings = mlist
-
-        return return_obj
+        obj.markings = mlist
+        return obj
 
     to_dict = to_list
     from_dict = from_list

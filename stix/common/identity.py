@@ -56,17 +56,17 @@ class Identity(Cached, stix.Entity):
         return partial
 
     @classmethod
-    def from_dict(cls, dict_repr, partial=None):
+    def from_dict(cls, cls_dict, partial=None):
         import stix.extensions.identity.ciq_identity_3_0  # noqa
         
-        if not dict_repr:
+        if not cls_dict:
             return None
 
-        get = dict_repr.get
+        get = cls_dict.get
 
         if not partial:
             klass = stix.lookup_extension(get('xsi:type'), default=cls)
-            partial = klass.from_dict(dict_repr, klass())
+            partial = klass.from_dict(cls_dict, klass())
         else:
             partial.name = get('name')
             partial.id_ = get('id')

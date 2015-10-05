@@ -116,7 +116,7 @@ class Campaign(stix.BaseCoreComponent):
     associated_campaigns = ElementField("Associated_Campaigns", AssociatedCampaigns)
     attribution = ElementField("Attribution", Attribution, multiple=True)
     confidence = ElementField("Confidence", Confidence)
-    #references = ElementField("Reference", multiple=True)
+    # references = ElementField("Reference", multiple=True)
     status = ElementField("Status", VocabString)
     intended_effects = ElementField("Intended_Effect", Statement, multiple=True, key_name="intended_effects")
     names = ElementField("Names", Names)

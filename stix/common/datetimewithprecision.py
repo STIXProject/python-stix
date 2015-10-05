@@ -44,16 +44,13 @@ class DateTimeWithPrecision(stix.Entity):
         return super(DateTimeWithPrecision, self).to_dict()
 
     @classmethod
-    def from_dict(cls, cls_dict=None):
+    def from_dict(cls, cls_dict):
         if not cls_dict:
             return None
-
-        obj = super(DateTimeWithPrecision, cls).from_dict(cls_dict)
-
-        if not isinstance(cls_dict, dict):
+        elif not isinstance(cls_dict, dict):
+            obj = cls()
             obj.value = cls_dict
         else:
-            obj.precision = cls_dict.get('precision')
-            obj.value = cls_dict.get('value')
+            obj = super(DateTimeWithPrecision, cls).from_dict(cls_dict)
 
         return obj

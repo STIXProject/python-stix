@@ -126,51 +126,47 @@ class VocabString(stix.Entity):
 
 
     @classmethod
-    def from_obj(cls, vocab_obj, return_obj=None):
-        if not vocab_obj:
+    def from_obj(cls, cls_obj, partial=None):
+        if not cls_obj:
             return None
         
-        if not return_obj:
-            klass = cls.lookup_class(vocab_obj.xsi_type)
-            return klass.from_obj(vocab_obj, return_obj=klass())
-           
-        # xsi_type should be set automatically by the class's constructor.
-        
-        # TODO: handle denormalization
-        # vocab_str.value = denormalize_from_xml(vocab_obj.valueOf_)
-        return_obj.value = vocab_obj.valueOf_
-        return_obj.vocab_name = vocab_obj.vocab_name
-        return_obj.vocab_reference = vocab_obj.vocab_reference
-        return_obj.xsi_type = vocab_obj.xsi_type
+        if not partial:
+            klass = cls.lookup_class(cls_obj.xsi_type)
+            return klass.from_obj(cls_obj, partial=klass())
 
-        return return_obj
+        partial.value = cls_obj.valueOf_
+        partial.vocab_name = cls_obj.vocab_name
+        partial.vocab_reference = cls_obj.vocab_reference
+        partial.xsi_type = cls_obj.xsi_type
+
+        return partial
 
     @classmethod
-    def from_dict(cls, vocab_dict, return_obj=None):
-        if not vocab_dict:
+    def from_dict(cls, cls_dict, partial=None):
+        if not cls_dict:
             return None
 
-        if not return_obj:
-            if isinstance(vocab_dict, dict):
-                get = vocab_dict.get
+        if not partial:
+            if isinstance(cls_dict, dict):
+                get = cls_dict.get
                 klass = cls.lookup_class(get('xsi:type'))
-                return klass.from_dict(vocab_dict, return_obj=klass())
+                return klass.from_dict(cls_dict, partial=klass())
             else:
-                return_obj = cls()
+                partial = cls()
             
         # xsi_type should be set automatically by the class's constructor.
 
         # In case this is a "plain" string, just set it.
-        if not isinstance(vocab_dict, dict):
-            return_obj.value = vocab_dict
+        if not isinstance(cls_dict, dict):
+            partial.value = cls_dict
         else:
-            get = vocab_dict.get
-            return_obj.value = get('value')
-            return_obj.vocab_name = get('vocab_name')
-            return_obj.vocab_reference = get('vocab_reference')
-            return_obj.xsi_type = get('xsi:type')
+            get = cls_dict.get
+            partial.value = get('value')
+            partial.vocab_name = get('vocab_name')
+            partial.vocab_reference = get('vocab_reference')
+            partial.xsi_type = get('xsi:type')
 
-        return return_obj
+        return partial
 
 
 def _get_terms(vocab_class):
