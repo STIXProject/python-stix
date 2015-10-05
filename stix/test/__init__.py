@@ -111,7 +111,7 @@ def round_trip(o, output=False, list_=False):
         print str(ex)
         ns_info.finalize()
         print ns_info.finalized_namespaces
-        raise ex
+        raise
 
     if output:
         print(xml_string)
@@ -157,7 +157,7 @@ class EntityTestCase(object):
     @silence_warnings
     def test_round_trip_full(self):
         # Don't run this test on the base class
-        if type(self) == type(EntityTestCase):
+        if type(self) is EntityTestCase:
             return
 
         ent = self.klass.from_dict(self._full_dict)
