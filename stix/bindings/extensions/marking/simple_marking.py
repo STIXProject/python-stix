@@ -33,6 +33,7 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
     xmlns          = XML_NS
     xmlns_prefix   = "simpleMarking"
     xml_type       = "SimpleMarkingStructureType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     subclass = None
     superclass = data_marking_binding.MarkingStructureType

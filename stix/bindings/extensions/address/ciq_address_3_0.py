@@ -33,6 +33,7 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
     xmlns          = XML_NS
     xmlns_prefix   = "ciqAddress"
     xml_type       = "CIQAddress3.0InstanceType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, Location=None):
         super(CIQAddress3_0InstanceType, self).__init__()

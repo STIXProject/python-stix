@@ -33,6 +33,7 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
     xmlns          = XML_NS
     xmlns_prefix   = "snortTM"
     xml_type       = "SnortTestMechanismType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, Product_Name=None, Version=None, Rule=None, Event_Filter=None, Rate_Filter=None, Event_Suppression=None):
         super(SnortTestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)

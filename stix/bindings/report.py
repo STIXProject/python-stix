@@ -568,6 +568,7 @@ class ReportType(common_binding.ReportBaseType):
     xmlns          = XML_NS
     xmlns_prefix   = "report"
     xml_type       = "ReportType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, timestamp=None, idref=None, id=None, version=None, Header=None, Observables=None, Indicators=None, TTPs=None, Exploit_Targets=None, Incidents=None, Courses_Of_Action=None, Campaigns=None, Threat_Actors=None, Related_Reports=None):
         super(ReportType, self).__init__(timestamp, idref, id, )

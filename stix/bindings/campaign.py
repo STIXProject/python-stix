@@ -447,6 +447,7 @@ class CampaignType(stix_common_binding.CampaignBaseType):
     xmlns          = "http://stix.mitre.org/Campaign-1"
     xmlns_prefix   = "campaign"
     xml_type       = "CampaignType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Description=None, Short_Description=None, Names=None, Intended_Effect=None, Status=None, Related_TTPs=None, Related_Incidents=None, Related_Indicators=None, Attribution=None, Associated_Campaigns=None, Confidence=None, Activity=None, Information_Source=None, Handling=None, Related_Packages=None):
         super(CampaignType, self).__init__(idref=idref, id=id, timestamp=timestamp)

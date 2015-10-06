@@ -33,6 +33,7 @@ class OpenIOC2010TestMechanismType(indicator_binding.TestMechanismType):
     xmlns          = XML_NS
     xmlns_prefix   = "stix-openioc"
     xml_type       = "OpenIOC2010TestMechanismType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, ioc=None):
         super(OpenIOC2010TestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
