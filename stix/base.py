@@ -379,14 +379,15 @@ class BaseCoreComponent(Cached, Entity):
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
+        from stix.common import StructuredTextList
 
         super(BaseCoreComponent, self).__init__()
 
         self.id_ = id_ or idgen.create_id(self._ID_PREFIX)
         self.idref = idref
         self.title = title
-        self.descriptions = fields.TypedField(description)
-        self.short_descriptions = fields.TypedField(short_description)
+        self.descriptions = StructuredTextList(description)
+        self.short_descriptions = StructuredTextList(short_description)
 
         if timestamp:
             self.timestamp = timestamp
