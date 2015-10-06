@@ -6,10 +6,9 @@ from mixbox import fields
 import stix
 from stix.utils import deprecated
 from stix.common import Activity, Confidence, Statement, VocabString
-from stix.common.related import (
-    GenericRelationshipList, RelatedCampaign, RelatedIncident, RelatedIndicator,
-    RelatedPackageRefs, RelatedThreatActor, RelatedTTP
-)
+from stix.common.related import (GenericRelationshipList, RelatedCampaign,
+    RelatedIncident, RelatedIndicator, RelatedPackageRefs, RelatedThreatActor,
+    RelatedTTP)
 from stix.common import vocabs
 import stix.bindings.campaign as campaign_binding
 from stix.common.structured_text import StructuredTextList
@@ -31,22 +30,6 @@ class Attribution(GenericRelationshipList):
     _contained_type = RelatedThreatActor
     _inner_name = "threat_actors"
 
-"""
-class Attribution(stix.Entity):
-    threat_actors = fields.TypedField("Attributed_Threat_Actor", RelatedThreatActor, multiple=True, key_name="threat_actors")
-    scope = fields.TypedField("scope")
-    
-    def __init__(self, scope=None, *args):
-        self._fields = {}
-        super(Attribution, self).__init__(*args)
-    
-    _namespace = "http://stix.mitre.org/Campaign-1"
-    _binding = campaign_binding
-    _binding_class = campaign_binding.AttributionType
-    _binding_var = "Attributed_Threat_Actor"
-    _contained_type = RelatedThreatActor
-    _inner_name = "threat_actors"
-"""
 
 class RelatedIncidents(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Campaign-1"

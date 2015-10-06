@@ -84,7 +84,7 @@ def lookup_extension(typeinfo, default=None):
             return default
 
         error = "Input %s is missing xml_type attribute. Cannot lookup class."
-        raise ValueError(error)
+        raise ValueError(error % type(typeinfo))
     
     # Extension binding classes usually (always?) have an `xmlns_prefix`
     # class attribute.

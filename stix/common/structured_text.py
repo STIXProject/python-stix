@@ -125,17 +125,6 @@ class StructuredTextList(stix.TypedCollection, collections.Sequence):
             else:
                 self.add(arg)
 
-    @classmethod
-    def istypeof(cls, obj):
-        """Check if `cls` is the type of `obj`
-
-        In the normal case, as implemented here, a simple isinstance check is
-        used. However, there are more complex checks possible. For instance,
-        EmailAddress.istypeof(obj) checks if obj is an Address object with
-        a category of Address.CAT_EMAIL
-        """
-        return isinstance(obj, cls)
-
     def with_id(self, id):
         """Returns a :class:`.StructuredText` object with a matching `id` or
         ``None`` if not found.

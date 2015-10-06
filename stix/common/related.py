@@ -140,6 +140,8 @@ class _BaseRelated(GenericRelationship):
         Subclasses must supply a TypedField named `item`!
     """
 
+    item = None  # override in subclass.
+
     def __init__(self, item=None, confidence=None,
                  information_source=None, relationship=None):
 

@@ -9,6 +9,7 @@ import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
+from .datetimewithprecision import validate_precision
 from .confidence import Confidence
 from .structured_text import StructuredTextList
 from .vocabs import VocabField, HighMediumLow
@@ -20,8 +21,8 @@ class Statement(stix.Entity):
     _binding_class = common_binding.StatementType
 
     # Fields
-    timestamp = fields.TypedField("timestamp")
-    timestamp_precision = fields.TypedField("timestamp_precision")
+    timestamp = fields.DateTimeField("timestamp")
+    timestamp_precision = fields.TypedField("timestamp_precision", preset_hook=validate_precision)
     value = VocabField("Value", HighMediumLow)
     descriptions = fields.TypedField("Description", StructuredTextList)
     confidence = fields.TypedField("Confidence", Confidence)

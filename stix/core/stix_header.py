@@ -87,7 +87,7 @@ class STIXHeader(stix.Entity):
         This is the same as calling "foo.descriptions.add(bar)".
 
         """
-        deprecated(description)
+        deprecated.warn(description)
         self.descriptions.add(description)
 
     @property
@@ -118,7 +118,7 @@ class STIXHeader(stix.Entity):
         This is the same as calling "foo.short_descriptions.add(bar)".
 
         """
-        deprecated(description)
+        deprecated.warn(description)
         self.short_descriptions.add(description)
 
 
@@ -130,7 +130,7 @@ class STIXHeader(stix.Entity):
         will be made to convert it into an instance of :class:`.PackageIntent`.
 
         """
-        deprecated(package_intent)
+        deprecated.warn(package_intent)
         self.package_intents.append(package_intent)
 
     def add_profile(self, profile):
