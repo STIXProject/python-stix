@@ -1,13 +1,14 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from mixbox import fields
+
 import stix
 import stix.bindings.stix_common as common_binding
 import stix.utils
-from stix.base import ElementField
 
 from .datetimewithprecision import DateTimeWithPrecision
-from .structured_text import StructuredTextList, StructuredTextListField
+from .structured_text import StructuredTextList
 
 
 class Activity(stix.Entity):
@@ -15,8 +16,8 @@ class Activity(stix.Entity):
     _binding_class = common_binding.ActivityType
     _namespace = 'http://stix.mitre.org/common-1'
 
-    date_time = ElementField("Date_Time", DateTimeWithPrecision)
-    descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
+    date_time = fields.TypedField("Date_Time", DateTimeWithPrecision)
+    descriptions = fields.TypedField("Description", StructuredTextList, key_name="description")
 
     def __init__(self):
         super(Activity, self).__init__()

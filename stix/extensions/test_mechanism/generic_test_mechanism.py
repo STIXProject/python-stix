@@ -1,13 +1,13 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from mixbox import fields
+
 import stix
 import stix.indicator.test_mechanism
 from stix.common import EncodedCDATA, StructuredTextList, VocabString
 from stix.indicator.test_mechanism import _BaseTestMechanism
 import stix.bindings.extensions.test_mechanism.generic as generic_tm_binding
-from stix.base import ElementField, AttributeField
-from stix.common.structured_text import StructuredTextListField
 
 @stix.register_extension
 class GenericTestMechanism(_BaseTestMechanism):
@@ -16,10 +16,10 @@ class GenericTestMechanism(_BaseTestMechanism):
     _binding_class = _binding.GenericTestMechanismType
     _XSI_TYPE = "genericTM:GenericTestMechanismType"
     
-    reference_location = ElementField("Reference_Location")
-    descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
-    specification = ElementField("Specification", EncodedCDATA)
-    type_ = AttributeField("type", VocabString, key_name="type")
+    reference_location = fields.TypedField("Reference_Location")
+    descriptions = fields.TypedField("Description", StructuredTextList, key_name="description")
+    specification = fields.TypedField("Specification", EncodedCDATA)
+    type_ = fields.TypedField("type", VocabString, key_name="type")
     
     def __init__(self, id_=None, idref=None):
         super(GenericTestMechanism, self).__init__(id_=id_, idref=idref)

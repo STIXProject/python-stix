@@ -11,7 +11,6 @@ from stix.common import InformationSource, Statement
 
 # bindings
 import stix.bindings.indicator as indicator_binding
-from stix.base import AttributeField, ElementField
 
 
 class _BaseTestMechanism(Cached, stix.Entity):
@@ -21,8 +20,8 @@ class _BaseTestMechanism(Cached, stix.Entity):
     
     id_ = fields.IdField("id")
     idref = fields.IdField("idref")
-    efficacy = ElementField("Efficacy", Statement)
-    producer = ElementField("Producer", InformationSource)
+    efficacy = fields.TypedField("Efficacy", Statement)
+    producer = fields.TypedField("Producer", InformationSource)
     
     def __init__(self, id_=None, idref=None):
         self._fields = {}

@@ -2,19 +2,19 @@
 # See LICENSE.txt for complete terms.
 
 # external
+from mixbox import fields
 import cybox.common
 from cybox.common.tools import ToolInformationList
 
 # internal
 import stix
-from stix.base import ElementField
 import stix.bindings.stix_common as stix_common_binding
 
 # relative
 from .vocabs import VocabString
 from .references import References
 from .identity import Identity
-from .structured_text import StructuredTextList, StructuredTextListField
+from .structured_text import StructuredTextList
 
 
 class InformationSource(stix.Entity):
@@ -22,13 +22,13 @@ class InformationSource(stix.Entity):
     _binding_class = stix_common_binding.InformationSourceType
     _namespace = 'http://stix.mitre.org/common-1'
 
-    identity = ElementField("Identity", Identity)
-    descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
-    contributing_sources = ElementField("Contributing_Sources", type_="stix.common.information_source.ContributingSources")
-    time = ElementField("Time", cybox.common.Time)
-    roles = ElementField("Role", VocabString, multiple=True, key_name="roles")
-    tools = ElementField("Tools", ToolInformationList)
-    references = ElementField("References", References)
+    identity = fields.TypedField("Identity", Identity)
+    descriptions = fields.TypedField("Description", StructuredTextList, key_name="description")
+    contributing_sources = fields.TypedField("Contributing_Sources", type_="stix.common.information_source.ContributingSources")
+    time = fields.TypedField("Time", cybox.common.Time)
+    roles = fields.TypedField("Role", VocabString, multiple=True, key_name="roles")
+    tools = fields.TypedField("Tools", ToolInformationList)
+    references = fields.TypedField("References", References)
 
     def __init__(self, description=None, identity=None, time=None, tools=None, contributing_sources=None, references=None):
         super(InformationSource, self).__init__()

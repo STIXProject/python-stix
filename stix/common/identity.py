@@ -8,7 +8,6 @@ from mixbox.cache import Cached
 # internal
 import stix
 import stix.bindings.stix_common as common_binding
-from stix.base import ElementField
 from stix.bindings.stix_common import IdentityType
 
 
@@ -19,7 +18,7 @@ class Identity(Cached, stix.Entity):
 
     id_ = fields.IdField("id")
     idref = fields.IdrefField("idref")
-    name = ElementField("Name")
+    name = fields.TypedField("Name")
     related_identities = fields.TypedField("Related_Identities", type_="stix.common.identity.RelatedIdentities")
 
     def __init__(self, id_=None, idref=None, name=None, related_identities=None):

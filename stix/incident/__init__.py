@@ -1,16 +1,15 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
-
+from mixbox import fields
 
 import stix
 import stix.bindings.incident as incident_binding
-from stix.common import (
-    vocabs, Identity, Statement, VocabString,InformationSource, Confidence
-)
-from stix.common.related import (
-    GenericRelationshipList, RelatedIndicator, RelatedThreatActor, RelatedTTP,
-    RelatedObservable, RelatedIncident, RelatedPackageRefs
-)
+from stix.common import vocabs
+from stix.common import (Identity, Statement, VocabString, InformationSource,
+    Confidence)
+from stix.common.related import (GenericRelationshipList, RelatedIndicator,
+    RelatedThreatActor, RelatedTTP, RelatedObservable, RelatedIncident,
+    RelatedPackageRefs)
 
 # relative
 from .affected_asset import AffectedAsset
@@ -20,8 +19,7 @@ from .external_id import ExternalID
 from .impact_assessment import ImpactAssessment
 from .coa import COATaken, COARequested, COATime # noqa
 from .history import History
-from stix.base import ElementField
-from stix.common.structured_text import StructuredTextListField
+
 
 class Incident(stix.BaseCoreComponent):
     """Implementation of the STIX Incident.
@@ -47,29 +45,29 @@ class Incident(stix.BaseCoreComponent):
     _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = 'incident'
 
-    status = ElementField("Status", vocabs.IncidentStatus)
-    time = ElementField("Time", Time)
-    victims = ElementField("Victim", Identity, multiple=True, key_name="victims")
-    attributed_threat_actors = ElementField("Attributed_Threat_Actors", type_="stix.incident.AttributedThreatActors")
-    related_indicators = ElementField("Related_Indicators", type_="stix.incident.RelatedIndicators")
-    related_observables = ElementField("Related_Observables", type_="stix.incident.RelatedObservables")
-    related_incidents = ElementField("Related_Incidents", type_="stix.incident.RelatedIncidents")
-    related_packages = ElementField("Related_Packages", RelatedPackageRefs)
-    affected_assets = ElementField("Affected_Assets", type_="stix.incident.AffectedAssets")
-    categories = ElementField("Categories", type_="stix.incident.IncidentCategories")
-    intended_effects = ElementField("Intended_Effect", Statement, multiple=True, key_name="intended_effects")
-    leveraged_ttps = ElementField("Leveraged_TTPs", type_="stix.incident.LeveragedTTPs")
-    discovery_methods = ElementField("Discovery_Method", vocabs.DiscoveryMethod, multiple=True, key_name="discovery_methods")
-    reporter = ElementField("Reporter", InformationSource)
-    responders = ElementField("Responder", InformationSource, multiple=True, key_name="responders")
-    coordinators = ElementField("Coordinator", InformationSource, multiple=True, key_name="coordinators")
-    external_ids = ElementField("External_ID", ExternalID, multiple=True, key_name="external_ids")
-    impact_assessment = ElementField("Impact_Assessment", ImpactAssessment)
-    security_compromise = ElementField("Security_Compromise", vocabs.SecurityCompromise)
-    confidence = ElementField("Confidence", Confidence)
-    coa_taken = ElementField("COA_Taken", COATaken, multiple=True)
-    coa_requested = ElementField("COA_Requested", COARequested, multiple=True)
-    history = ElementField("History", History)
+    status = fields.TypedField("Status", vocabs.IncidentStatus)
+    time = fields.TypedField("Time", Time)
+    victims = fields.TypedField("Victim", Identity, multiple=True, key_name="victims")
+    attributed_threat_actors = fields.TypedField("Attributed_Threat_Actors", type_="stix.incident.AttributedThreatActors")
+    related_indicators = fields.TypedField("Related_Indicators", type_="stix.incident.RelatedIndicators")
+    related_observables = fields.TypedField("Related_Observables", type_="stix.incident.RelatedObservables")
+    related_incidents = fields.TypedField("Related_Incidents", type_="stix.incident.RelatedIncidents")
+    related_packages = fields.TypedField("Related_Packages", RelatedPackageRefs)
+    affected_assets = fields.TypedField("Affected_Assets", type_="stix.incident.AffectedAssets")
+    categories = fields.TypedField("Categories", type_="stix.incident.IncidentCategories")
+    intended_effects = fields.TypedField("Intended_Effect", Statement, multiple=True, key_name="intended_effects")
+    leveraged_ttps = fields.TypedField("Leveraged_TTPs", type_="stix.incident.LeveragedTTPs")
+    discovery_methods = fields.TypedField("Discovery_Method", vocabs.DiscoveryMethod, multiple=True, key_name="discovery_methods")
+    reporter = fields.TypedField("Reporter", InformationSource)
+    responders = fields.TypedField("Responder", InformationSource, multiple=True, key_name="responders")
+    coordinators = fields.TypedField("Coordinator", InformationSource, multiple=True, key_name="coordinators")
+    external_ids = fields.TypedField("External_ID", ExternalID, multiple=True, key_name="external_ids")
+    impact_assessment = fields.TypedField("Impact_Assessment", ImpactAssessment)
+    security_compromise = fields.TypedField("Security_Compromise", vocabs.SecurityCompromise)
+    confidence = fields.TypedField("Confidence", Confidence)
+    coa_taken = fields.TypedField("COA_Taken", COATaken, multiple=True)
+    coa_requested = fields.TypedField("COA_Requested", COARequested, multiple=True)
+    history = fields.TypedField("History", History)
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         super(Incident, self).__init__(

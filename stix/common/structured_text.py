@@ -10,15 +10,9 @@ import stix
 import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
 
-# typed fields
-from stix.base import AttributeField, ElementField, ContentField
 
 #: Default ordinality value for StructuredText.
 DEFAULT_ORDINALITY = 1
-
-
-class StructuredTextListField(ElementField):
-   pass
 
 
 class StructuredText(stix.Entity):
@@ -36,10 +30,11 @@ class StructuredText(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
 
     id_ = fields.IdField("id")
-    ordinality = AttributeField("ordinality")
-    value = ContentField("valueOf_", key_name="value")
-    structuring_format = AttributeField("structuring_format")
-    
+    ordinality = fields.TypedField("ordinality")
+    value = fields.TypedField("valueOf_", key_name="value")
+    structuring_format = fields.TypedField("structuring_format")
+
+
     def __init__(self, value=None, ordinality=None):
         super(StructuredText, self).__init__()
 

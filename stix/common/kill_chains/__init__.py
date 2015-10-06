@@ -6,19 +6,18 @@ from mixbox import fields
 # internal
 import stix
 import stix.bindings.stix_common as common_binding
-from stix.base import AttributeField, ElementField
 
 class KillChain(stix.Entity):
     _binding = common_binding
     _namespace = 'http://stix.mitre.org/common-1'
     _binding_class = _binding.KillChainType
 
-    id_ = AttributeField("id")
-    name = AttributeField("name")
-    definer = AttributeField("definer")
-    reference = AttributeField("reference")
-    number_of_phases = AttributeField("number_of_phases")
-    kill_chain_phases = ElementField("Kill_Chain_Phase", type_="stix.common.kill_chains.KillChainPhase", multiple=True, key_name="kill_chain_phases")
+    id_ = fields.TypedField("id")
+    name = fields.TypedField("name")
+    definer = fields.TypedField("definer")
+    reference = fields.TypedField("reference")
+    number_of_phases = fields.TypedField("number_of_phases")
+    kill_chain_phases = fields.TypedField("Kill_Chain_Phase", type_="stix.common.kill_chains.KillChainPhase", multiple=True, key_name="kill_chain_phases")
 
     def __init__(self, id_=None, name=None, definer=None, reference=None):
         super(KillChain, self).__init__()
@@ -59,8 +58,8 @@ class KillChainPhase(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
     _binding_class = _binding.KillChainPhaseType
 
-    phase_id = AttributeField("phase_id")
-    name = AttributeField("name")
+    phase_id = fields.TypedField("phase_id")
+    name = fields.TypedField("name")
     ordinality = fields.IntegerField("ordinality")
 
     def __init__(self, phase_id=None, name=None, ordinality=None):
@@ -91,8 +90,8 @@ class KillChainPhaseReference(KillChainPhase):
     _namespace = 'http://stix.mitre.org/common-1'
     _binding_class = _binding.KillChainPhaseReferenceType
 
-    kill_chain_id = AttributeField("kill_chain_id")
-    kill_chain_name = AttributeField("kill_chain_name")
+    kill_chain_id = fields.TypedField("kill_chain_id")
+    kill_chain_name = fields.TypedField("kill_chain_name")
 
     def __init__(self, phase_id=None, name=None, ordinality=None, kill_chain_id=None, kill_chain_name=None):
         super(KillChainPhaseReference, self).__init__(phase_id, name, ordinality)

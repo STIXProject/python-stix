@@ -4,14 +4,12 @@
 from mixbox import fields
 
 import stix
-import stix.utils as utils
+from stix import utils
 from stix.common import (GenericRelationshipList, RelatedObservable,
     StructuredTextList, Confidence, InformationSource)
 from stix.common.datetimewithprecision import validate_precision
 
 import stix.bindings.indicator as indicator_binding
-from stix.base import AttributeField, ElementField
-from stix.common.structured_text import StructuredTextListField
 
 
 class Sighting(stix.Entity):
@@ -21,11 +19,11 @@ class Sighting(stix.Entity):
     
     timestamp = fields.DateTimeField("timestamp")
     timestamp_precision = fields.TypedField("timestamp_precision", preset_hook=validate_precision)
-    descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
-    source = ElementField("Source", InformationSource)
-    reference = ElementField("Reference")
-    confidence = ElementField("Confidence", Confidence)
-    related_observables = ElementField("Related_Observables", type_="stix.indicator.sightings.RelatedObservables")
+    descriptions = fields.TypedField("Description", StructuredTextList, key_name="description")
+    source = fields.TypedField("Source", InformationSource)
+    reference = fields.TypedField("Reference")
+    confidence = fields.TypedField("Confidence", Confidence)
+    related_observables = fields.TypedField("Related_Observables", type_="stix.indicator.sightings.RelatedObservables")
     
     def __init__(self, timestamp=None, timestamp_precision=None, description=None):
         super(Sighting, self).__init__()
@@ -132,7 +130,7 @@ class Sightings(stix.EntityList):
     _binding_var = "Sighting"
     _inner_name = "sightings"
     
-    sightings_count = AttributeField("sightings_count")
+    sightings_count = fields.TypedField("sightings_count")
     
     def __init__(self, sightings_count=None, *args):
         super(Sightings, self).__init__(*args)

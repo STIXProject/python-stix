@@ -2,6 +2,8 @@
 # See LICENSE.txt for complete terms.
 import collections
 
+from mixbox import fields
+
 import stix
 from stix.bindings import stix_common as stix_common_binding
 
@@ -12,7 +14,7 @@ class References(collections.MutableSequence, stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
 
     # Fields
-    reference = stix.ElementField("Reference", multiple=True)
+    reference = fields.TypedField("Reference", multiple=True)
 
     def __init__(self, references=None):
         super(References, self).__init__()

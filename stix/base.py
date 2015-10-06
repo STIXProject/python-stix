@@ -22,18 +22,6 @@ def _override(*args, **kwargs):
     raise NotImplementedError()
 
 
-class AttributeField(fields.TypedField):
-    pass
-
-
-class ElementField(fields.TypedField):
-    pass
-
-
-class ContentField(fields.TypedField):
-    pass
-
-
 class Entity(entities.Entity):
     """Base class for all classes in the STIX API."""
     _namespace = None
@@ -379,12 +367,12 @@ class BaseCoreComponent(Cached, Entity):
     _ALL_VERSIONS = ()
     _ID_PREFIX = None
 
-    title = ElementField("Title")
+    title = fields.TypedField("Title")
     id_ = fields.IdField("id")
     idref = fields.IdrefField("idref")
     descriptions = fields.TypedField("Description", type_="stix.common.StructuredTextList", key_name="description")
     short_descriptions = fields.TypedField("Short_Description", type_="stix.common.StructuredTextList", key_name="short_description")
-    version = AttributeField("version", preset_hook=_validate_version)
+    version = fields.TypedField("version", preset_hook=_validate_version)
     timestamp = fields.DateTimeField("timestamp")
     handling = fields.TypedField("Handling", type_="stix.data_marking.Marking")
 

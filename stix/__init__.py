@@ -3,7 +3,7 @@
 
 # Make sure base gets imported before common.
 from .base import (Entity, EntityList, TypedCollection, TypedList,  # noqa
-                   BaseCoreComponent, ElementField, AttributeField)
+                   BaseCoreComponent)
 
 #: Mapping of xsi:types to implementation/extension classes
 _EXTENSION_MAP = {}

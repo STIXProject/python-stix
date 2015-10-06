@@ -8,8 +8,6 @@ import stix.bindings.stix_common as common_binding
 import stix.bindings.stix_core as core_binding
 import stix.bindings.report as report_binding
 
-from stix.base import AttributeField
-
 # deprecation warnings
 from stix.utils import deprecated
 
@@ -78,7 +76,7 @@ class GenericRelationshipEntity(stix.Entity):
     
     _ALLOWED_SCOPE = ('inclusive', 'exclusive')
     
-    scope = AttributeField("scope")
+    scope = fields.TypedField("scope")
     
     def __init__(self, scope=None, *args):
 

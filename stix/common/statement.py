@@ -9,8 +9,6 @@ import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
-from stix.base import AttributeField, ElementField
-
 from .confidence import Confidence
 from .structured_text import StructuredTextList
 from .vocabs import VocabField, HighMediumLow
@@ -22,11 +20,11 @@ class Statement(stix.Entity):
     _binding_class = common_binding.StatementType
 
     # Fields
-    timestamp = AttributeField("timestamp")
-    timestamp_precision = AttributeField("timestamp_precision")
+    timestamp = fields.TypedField("timestamp")
+    timestamp_precision = fields.TypedField("timestamp_precision")
     value = VocabField("Value", HighMediumLow)
-    descriptions = ElementField("Description", StructuredTextList)
-    confidence = ElementField("Confidence", Confidence)
+    descriptions = fields.TypedField("Description", StructuredTextList)
+    confidence = fields.TypedField("Confidence", Confidence)
     source = fields.TypedField("Source", type_="stix.common.InformationSource")
 
     def __init__(self, value=None, timestamp=None, description=None,

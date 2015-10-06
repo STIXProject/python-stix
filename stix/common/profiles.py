@@ -3,6 +3,8 @@
 
 import collections
 
+from mixbox import fields
+
 import stix
 from stix.bindings import stix_common as stix_common_binding
 
@@ -13,7 +15,7 @@ class Profiles(collections.MutableSequence, stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
 
     # Fields
-    profile = stix.ElementField("Profile", multiple=True)
+    profile = fields.TypedField("Profile", multiple=True)
 
     def __init__(self, profiles=None):
         super(Profiles, self).__init__()

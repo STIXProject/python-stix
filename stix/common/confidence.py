@@ -3,16 +3,14 @@
 
 from __future__ import absolute_import
 
-from mixbox.fields import DateTimeField
+from mixbox import fields
 
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
-from stix.base import ElementField, AttributeField
-
 from .vocabs import VocabString
-from .structured_text import StructuredTextList, StructuredTextListField
+from .structured_text import StructuredTextList
 from .datetimewithprecision import validate_precision
 
 class Confidence(stix.Entity):
@@ -20,11 +18,11 @@ class Confidence(stix.Entity):
     _binding = common_binding
     _binding_class = common_binding.ConfidenceType
 
-    value = ElementField("Value", VocabString)
-    descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
-    timestamp = DateTimeField("timestamp")
-    timestamp_precision = AttributeField("timestamp_precision", preset_hook=validate_precision)
-    source = ElementField("Source", type_="stix.common.InformationSource")
+    value = fields.TypedField("Value", VocabString)
+    descriptions = fields.TypedField("Description", StructuredTextList, key_name="description")
+    timestamp = fields.DateTimeField("timestamp")
+    timestamp_precision = fields.TypedField("timestamp_precision", preset_hook=validate_precision)
+    source = fields.TypedField("Source", type_="stix.common.InformationSource")
     
     def __init__(self, value=None, timestamp=None, description=None, source=None):
         super(Confidence, self).__init__()
