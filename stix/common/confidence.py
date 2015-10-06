@@ -13,6 +13,7 @@ from .vocabs import VocabString
 from .structured_text import StructuredTextList
 from .datetimewithprecision import validate_precision
 
+
 class Confidence(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
     _binding = common_binding
