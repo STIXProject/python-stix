@@ -11,7 +11,7 @@ import stix
 import stix.bindings.stix_common as stix_common_binding
 
 # relative
-from .vocabs import VocabString
+from .vocabs import VocabField
 from .references import References
 from .identity import Identity, IdentityFactory
 from .structured_text import StructuredTextList
@@ -26,7 +26,7 @@ class InformationSource(stix.Entity):
     descriptions = fields.TypedField("Description", StructuredTextList)
     contributing_sources = fields.TypedField("Contributing_Sources", type_="stix.common.information_source.ContributingSources")
     time = fields.TypedField("Time", cybox.common.Time)
-    roles = fields.TypedField("Role", VocabString, multiple=True, key_name="roles")
+    roles = VocabField("Role", multiple=True, key_name="roles")
     tools = fields.TypedField("Tools", ToolInformationList)
     references = fields.TypedField("References", References)
 

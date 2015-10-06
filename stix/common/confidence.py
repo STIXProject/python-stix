@@ -9,7 +9,7 @@ import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
-from .vocabs import VocabString
+from .vocabs import VocabField
 from .structured_text import StructuredTextList
 from .datetimewithprecision import validate_precision
 
@@ -19,7 +19,7 @@ class Confidence(stix.Entity):
     _binding = common_binding
     _binding_class = common_binding.ConfidenceType
 
-    value = fields.TypedField("Value", VocabString)
+    value = VocabField("Value")
     descriptions = fields.TypedField("Description", StructuredTextList)
     timestamp = fields.DateTimeField("timestamp")
     timestamp_precision = fields.TypedField("timestamp_precision", preset_hook=validate_precision)

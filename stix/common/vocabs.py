@@ -1,10 +1,11 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from mixbox import fields
+from mixbox import entities
+
 import stix
 import stix.bindings.stix_common as stix_common_binding
-
-from mixbox import fields
 
 
 def validate_value(instance, value):
@@ -37,40 +38,22 @@ class VocabField(fields.TypedField):
 
         """
         super(VocabField, self).__init__(*args, **kwargs)
+        self.factory = VocabFactory  # force this factory
 
-        if self.type_:
-            self.__vocab_impl = self.type_
-        else:
-            self.__vocab_impl = VocabString
+        if self.type_ is None:
+            self.type_ = VocabString
 
-        # TODO: can we take this out. It shouldn't be necessary since type_
-        # should always be a subclass of VocabString.
-        self.type_ = VocabString  # Force this so from_dict/from_obj works.
+    def check_type(self, value):
+        return isinstance(value, VocabString)
 
-    def _clean(self, value):
-        """Validate and clean a candidate value for this Vocab. This overrides
-        the ``_clean()`` method on :class:`.TypedField`.
 
-        1) If the value is ``None``, return ``None``
-        2) If the value is an instance of ``VocabString``, return it.
-        3) Attempt to cast the value to the default VocabString type if there
-           is one, else try to cast it to VocabString.
-        4) raise a ValueError
-
-        """
-        vocab = self.__vocab_impl
-
-        if value is None:
-            return None
-        elif isinstance(value, VocabString):
-            return value
-        elif vocab._try_cast:  # noqa
-            return vocab(value)
-
-        error_fmt = "%s must be a %s, not a %s"
-        error = error_fmt % (self.name, self.type_, type(value))
-        raise ValueError(error)
-
+class VocabFactory(entities.EntityFactory):
+    @classmethod
+    def entity_class(cls, key):
+        try:
+            return stix.lookup_extension(key, default=VocabString)
+        except ValueError:
+            return VocabString
 
 
 class VocabString(stix.Entity):
@@ -112,13 +95,6 @@ class VocabString(stix.Entity):
             self.vocab_reference is None
         )
 
-    @staticmethod
-    def lookup_class(xsi_type):
-        try:
-            return stix.lookup_extension(xsi_type, default=VocabString)
-        except ValueError:
-            return VocabString
-
     def to_dict(self):
         if self.is_plain():
             return self.value
@@ -126,47 +102,16 @@ class VocabString(stix.Entity):
 
 
     @classmethod
-    def from_obj(cls, cls_obj, partial=None):
-        if not cls_obj:
-            return None
-        
-        if not partial:
-            klass = cls.lookup_class(cls_obj.xsi_type)
-            return klass.from_obj(cls_obj, partial=klass())
-
-        partial.value = cls_obj.valueOf_
-        partial.vocab_name = cls_obj.vocab_name
-        partial.vocab_reference = cls_obj.vocab_reference
-        partial.xsi_type = cls_obj.xsi_type
-
-        return partial
-
-    @classmethod
-    def from_dict(cls, cls_dict, partial=None):
+    def from_dict(cls, cls_dict):
         if not cls_dict:
-            return None
-
-        if not partial:
-            if isinstance(cls_dict, dict):
-                get = cls_dict.get
-                klass = cls.lookup_class(get('xsi:type'))
-                return klass.from_dict(cls_dict, partial=klass())
-            else:
-                partial = cls()
-            
-        # xsi_type should be set automatically by the class's constructor.
-
-        # In case this is a "plain" string, just set it.
-        if not isinstance(cls_dict, dict):
-            partial.value = cls_dict
+            vocab =  None
+        elif not isinstance(cls_dict, dict):
+            vocab = cls()
+            vocab.value = cls_dict
         else:
-            get = cls_dict.get
-            partial.value = get('value')
-            partial.vocab_name = get('vocab_name')
-            partial.vocab_reference = get('vocab_reference')
-            partial.xsi_type = get('xsi:type')
+            vocab = super(VocabString, cls).from_dict(cls_dict)
 
-        return partial
+        return vocab
 
 
 def _get_terms(vocab_class):

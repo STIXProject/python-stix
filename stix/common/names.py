@@ -6,7 +6,7 @@ import stix
 import stix.bindings.stix_common as common_binding
 
 # relative
-from .vocabs import VocabString
+from .vocabs import VocabString, VocabFactory
 
 
 class Names(stix.EntityList):
@@ -14,4 +14,5 @@ class Names(stix.EntityList):
     _binding = common_binding
     _binding_class = _binding.NamesType
     _contained_type = VocabString
+    _entity_factory = VocabFactory
     _binding_var = 'Name'
