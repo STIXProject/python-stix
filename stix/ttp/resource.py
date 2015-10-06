@@ -105,8 +105,6 @@ class Personas(stix.EntityList):
     _binding = ttp_binding
     _binding_class = _binding.PersonasType
     _binding_var = "Persona"
-    _inner_name = "personas"
-    _dict_as_list = True
 
     def _fix_value(self, value):
         return Identity(name=value)
@@ -118,5 +116,3 @@ class Tools(stix.EntityList):
     _binding = ttp_binding
     _binding_class = _binding.ToolsType
     _binding_var = "Tool"
-    _inner_name = "tools"
-    _dict_as_list = True

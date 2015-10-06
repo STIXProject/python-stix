@@ -13,7 +13,7 @@ import stix.bindings.stix_common as stix_common_binding
 # relative
 from .vocabs import VocabString
 from .references import References
-from .identity import Identity
+from .identity import Identity, IdentityFactory
 from .structured_text import StructuredTextList
 
 
@@ -22,7 +22,7 @@ class InformationSource(stix.Entity):
     _binding_class = stix_common_binding.InformationSourceType
     _namespace = 'http://stix.mitre.org/common-1'
 
-    identity = fields.TypedField("Identity", Identity)
+    identity = fields.TypedField("Identity", type_=Identity, factory=IdentityFactory)
     descriptions = fields.TypedField("Description", StructuredTextList)
     contributing_sources = fields.TypedField("Contributing_Sources", type_="stix.common.information_source.ContributingSources")
     time = fields.TypedField("Time", cybox.common.Time)

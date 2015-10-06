@@ -3,12 +3,20 @@
 
 # external
 from mixbox import fields
+from mixbox import entities
 from mixbox.cache import Cached
 
 # internal
 import stix
 import stix.bindings.stix_common as common_binding
 from stix.bindings.stix_common import IdentityType
+
+
+class IdentityFactory(entities.EntityFactory):
+    @classmethod
+    def entity_class(cls, key):
+        import stix.extensions.identity.ciq_identity_3_0  # noqa
+        return stix.lookup_extension(key, default=Identity)
 
 
 class Identity(Cached, stix.Entity):
@@ -28,52 +36,6 @@ class Identity(Cached, stix.Entity):
         self.idref = idref
         self.name = name
         self.related_identities = related_identities
-
-    @staticmethod
-    def lookup_class(xsi_type):
-        if not xsi_type:
-            raise ValueError("xsi:type is required")
-
-        return stix.lookup_extension(xsi_type)
-
-    @classmethod
-    def from_obj(cls, obj, partial=None):
-        import stix.extensions.identity.ciq_identity_3_0  # noqa
-        
-        if not obj:
-            return None
-
-        if not partial:
-            klass = stix.lookup_extension(obj, default=cls)
-            partial = klass.from_obj(obj, partial=klass())
-        else:
-            partial.id_ = obj.id
-            partial.idref = obj.idref
-            partial.name = obj.Name
-            partial.related_identities = RelatedIdentities.from_obj(obj.Related_Identities)
-
-        return partial
-
-    @classmethod
-    def from_dict(cls, cls_dict, partial=None):
-        import stix.extensions.identity.ciq_identity_3_0  # noqa
-        
-        if not cls_dict:
-            return None
-
-        get = cls_dict.get
-
-        if not partial:
-            klass = stix.lookup_extension(get('xsi:type'), default=cls)
-            partial = klass.from_dict(cls_dict, klass())
-        else:
-            partial.name = get('name')
-            partial.id_ = get('id')
-            partial.idref = get('idref')
-            partial.related_identities = \
-                RelatedIdentities.from_dict(get('related_identities'))
-
-        return partial
 
 
 # We can't import RelatedIdentity until we have defined the Identity class.

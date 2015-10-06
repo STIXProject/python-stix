@@ -5,8 +5,8 @@ from mixbox import fields
 import stix
 import stix.bindings.incident as incident_binding
 from stix.common import vocabs
-from stix.common import (Identity, Statement, VocabString, InformationSource,
-    Confidence)
+from stix.common import Statement, VocabString, InformationSource, Confidence
+from stix.common.identity import Identity, IdentityFactory
 from stix.common.related import (GenericRelationshipList, RelatedIndicator,
     RelatedThreatActor, RelatedTTP, RelatedObservable, RelatedIncident,
     RelatedPackageRefs)
@@ -47,7 +47,7 @@ class Incident(stix.BaseCoreComponent):
 
     status = fields.TypedField("Status", vocabs.IncidentStatus)
     time = fields.TypedField("Time", Time)
-    victims = fields.TypedField("Victim", Identity, multiple=True, key_name="victims")
+    victims = fields.TypedField("Victim", Identity, factory=IdentityFactory, multiple=True, key_name="victims")
     attributed_threat_actors = fields.TypedField("Attributed_Threat_Actors", type_="stix.incident.AttributedThreatActors")
     related_indicators = fields.TypedField("Related_Indicators", type_="stix.incident.RelatedIndicators")
     related_observables = fields.TypedField("Related_Observables", type_="stix.incident.RelatedObservables")

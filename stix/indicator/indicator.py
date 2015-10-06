@@ -9,8 +9,9 @@ from cybox.common import Time
 
 # internal
 import stix
-from stix.common import (Identity, InformationSource, VocabString, Confidence,
-    RelatedTTP, Statement, CampaignRef)
+from stix.common.identity import Identity
+from stix.common import (InformationSource, VocabString, Confidence, RelatedTTP,
+    Statement, CampaignRef)
 from stix.common.related import (GenericRelationshipList, RelatedCOA,
     RelatedIndicator, RelatedCampaignRef, RelatedPackageRefs)
 from stix.common.vocabs import IndicatorType
