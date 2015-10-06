@@ -1,6 +1,7 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 from mixbox import fields
+from cybox.core import Observable
 
 # internal
 import stix
@@ -12,7 +13,7 @@ import stix.bindings.report as report_binding
 from stix.utils import deprecated
 
 # relative
-from .vocabs import VocabString, VocabField
+from .vocabs import VocabField
 from .information_source import InformationSource
 from .confidence import Confidence
 
@@ -106,24 +107,6 @@ class GenericRelationshipList(stix.EntityList):
                 bool(self.scope))
 
 
-class RelatedPackages(GenericRelationshipList):
-    _namespace = 'http://stix.mitre.org/stix-1'
-    _binding = core_binding
-    _binding_class = core_binding.RelatedPackagesType
-    _binding_var = "Related_Package"
-    # _contained_type is patched in common/__init__.py
-    _inner_name = "related_packages"
-
-
-class RelatedReports(GenericRelationshipList):
-    _namespace = 'http://stix.mitre.org/Report-1'
-    _binding = report_binding
-    _binding_class = report_binding.RelatedReportsType
-    _binding_var = "Related_Report"
-    # _contained_type is patched in common/__init__.py
-    _inner_name = "related_reports"
-
-
 class RelatedPackageRefs(stix.EntityList):
     _namespace = 'http://stix.mitre.org/common-1'
     _binding = common_binding
@@ -152,15 +135,10 @@ class _BaseRelated(GenericRelationship):
     """A base class for related types.
 
     This class is not a real STIX type and should not be directly instantiated.
-    """
-    # Subclasses should define
-    # - _base_type
-    # - _inner_var (This is the name of the contained XML element, and the
-    #               lowercase version is used for the key name in the
-    #               dictionary representation).
 
-    _base_type = None
-    _inner_var = None
+    Note:
+        Subclasses must supply a TypedField named `item`!
+    """
 
     def __init__(self, item=None, confidence=None,
                  information_source=None, relationship=None):
@@ -172,155 +150,102 @@ class _BaseRelated(GenericRelationship):
         )
         self.item = item
 
-    @property
-    def item(self):
-        return self._item
-
-    @item.setter
-    def item(self, value):
-        self._set_item(value)
-
-    def _set_item(self, value):
-        if value and not isinstance(value, self._base_type):
-            error = "Value must be instance of %s" % self._base_type.__name__
-            raise ValueError(error)
-
-        self._item = value
-
-    def to_obj(self, ns_info=None):
-        obj = super(_BaseRelated, self).to_obj(ns_info=ns_info)
-
-        if self.item:
-            setattr(obj, self._inner_var, self.item.to_obj(ns_info=ns_info))
-
-        return obj
-
-    def to_dict(self):
-        d = super(_BaseRelated, self).to_dict()
-
-        if self.item:
-            d[self._inner_var.lower()] = self.item.to_dict()
-
-        return d
-
-    @classmethod
-    def from_obj(cls, cls_obj):
-        if not cls_obj:
-            return None
-
-        obj = super(_BaseRelated, cls).from_obj(cls_obj)
-        contained_item = getattr(cls_obj, cls._inner_var)
-        obj.item = cls._base_type.from_obj(contained_item)
-
-        return obj
-
-    @classmethod
-    def from_dict(cls, cls_dict):
-        if not cls_dict:
-            return None
-
-        obj = super(_BaseRelated, cls).from_dict(cls_dict)
-        contained_item = cls_dict.get(cls._inner_var.lower())
-        obj.item = cls._base_type.from_dict(contained_item)
-
-        return obj
-
 
 class RelatedCampaign(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedCampaignType
-    # _base_type is set in common/__init__.py
-    _inner_var = "Campaign"
+    item = fields.TypedField("Campaign", type_="stix.campaign.Campaign")
 
 
 class RelatedCOA(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedCourseOfActionType
-    # _base_type is set in common/__init__.py
-    _inner_var = "Course_Of_Action"
+    item = fields.TypedField("Course_Of_Action", type_="stix.coa.CourseOfAction")
 
 
 class RelatedExploitTarget(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedExploitTargetType
-    # _base_type is set in common/__init__.py
-    _inner_var = "Exploit_Target"
+    item = fields.TypedField("Exploit_Target", type_="stix.exploit_target.ExploitTarget")
 
 
 class RelatedIdentity(_BaseRelated):
     _namespace = 'http://stix.mitre.org/common-1'
     _binding = common_binding
     _binding_class = common_binding.RelatedIdentityType
-    # _base_type is set in common/__init__.py
-    _inner_var = "Identity"
+    item = fields.TypedField("Identity", type_="stix.common.identity.Identity", factory="stix.common.identity.IdentityFactory")
 
 
 class RelatedIncident(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedIncidentType
-    # _base_type is set in common/__init__.py
-    _inner_var = "Incident"
-
+    item = fields.TypedField("Incident", type_="stix.incident.Incident")
 
 class RelatedIndicator(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedIndicatorType
-    # _base_type is set in common/__init__.py
-    _inner_var = "Indicator"
+    item = fields.TypedField("Indicator", type_="stix.indicator.Indicator")
 
 
 class RelatedObservable(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedObservableType
-    # _base_type is set in common/__init__.py
-    _inner_var = "Observable"
-
+    item = fields.TypedField("Observable", type_=Observable)
 
 class RelatedThreatActor(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedThreatActorType
-    # _base_type is set in common/__init__.py
-    _inner_var = "Threat_Actor"
+    item = fields.TypedField("ThreatActor", type_="stix.threat_actor.ThreatActor")
 
 
 class RelatedTTP(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedTTPType
-    # _base_type is set in common/__init__.py
-    _inner_var = "TTP"
+    item = fields.TypedField("TTP", type_="stix.ttp.TTP")
 
 
 class RelatedPackage(_BaseRelated):
     _namespace = "http://stix.mitre.org/stix-1"
     _binding = core_binding
     _binding_class = core_binding.RelatedPackageType
-    # _base_type is set in common/__init__.py
-    _inner_var = "Package"
+    item = fields.TypedField("Package", type_="stix.core.STIXPackage", preset_hook=deprecated.field)
 
-    @_BaseRelated.item.setter
-    def item(self, value):
-        deprecated.idref(value)
-        _BaseRelated.item.fset(self, value)
 
 class RelatedReport(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedReportType
-    # _base_type is set in common/__init__.py
-    _inner_var = "Report"
+    item = fields.TypedField("Report", type_="stix.report.Report")
 
 
 class RelatedCampaignRef(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = _binding.RelatedCampaignReferenceType
-    # _base_type is set in common/__init__.py
-    _inner_var = "Campaign"
+    item = fields.TypedField("Campaign", type_="stix.common.CampaignRef")
+
+
+class RelatedPackages(GenericRelationshipList):
+    _namespace = 'http://stix.mitre.org/stix-1'
+    _binding = core_binding
+    _binding_class = core_binding.RelatedPackagesType
+    _binding_var = "Related_Package"
+    _contained_type = RelatedPackage
+    _inner_name = "related_packages"
+
+
+class RelatedReports(GenericRelationshipList):
+    _namespace = 'http://stix.mitre.org/Report-1'
+    _binding = report_binding
+    _binding_class = report_binding.RelatedReportsType
+    _binding_var = "Related_Report"
+    _contained_type = RelatedReport
+    _inner_name = "related_reports"

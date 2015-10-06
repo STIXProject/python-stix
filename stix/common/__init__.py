@@ -26,40 +26,9 @@ from .related import (   # noqa
     RelatedReport
 )
 
-# Patch in base types of Related* types
-from stix.core import STIXPackage
-from cybox.core import Observable
-from stix.campaign import Campaign
-from stix.coa import CourseOfAction
-from stix.exploit_target import ExploitTarget
-from stix.incident import Incident
-from stix.indicator import Indicator
-from stix.report import Report
-from stix.threat_actor import ThreatActor
-from stix.ttp import TTP
-
-
-RelatedCampaign._base_type = Campaign  # noqa
-RelatedCOA._base_type = CourseOfAction  # noqa
-RelatedExploitTarget._base_type = ExploitTarget  # noqa
-RelatedIdentity._base_type = Identity  # noqa
-RelatedIncident._base_type = Incident  # noqa
-RelatedIndicator._base_type = Indicator  # noqa
-RelatedThreatActor._base_type = ThreatActor  # noqa
-RelatedTTP._base_type = TTP  # noqa
-RelatedObservable._base_type = Observable  # noqa
-RelatedPackage._base_type = STIXPackage  # noqa
-RelatedReport._base_type = Report  # noqa
-RelatedCampaignRef._base_type = CampaignRef  # noqa
-
-# Patch contained types
-RelatedPackages._contained_type = RelatedPackage  # noqa
-RelatedReports._contained_type = RelatedReport  # noqa
-
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
-
 
 class EncodedCDATA(stix.Entity):
     _namespace = "http://stix.mitre.org/common-1"
