@@ -19,7 +19,7 @@ class Sighting(stix.Entity):
     
     timestamp = fields.DateTimeField("timestamp")
     timestamp_precision = fields.TypedField("timestamp_precision", preset_hook=validate_precision)
-    descriptions = fields.TypedField("Description", StructuredTextList, key_name="description")
+    descriptions = fields.TypedField("Description", StructuredTextList)
     source = fields.TypedField("Source", InformationSource)
     reference = fields.TypedField("Reference")
     confidence = fields.TypedField("Confidence", Confidence)

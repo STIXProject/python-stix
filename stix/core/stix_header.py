@@ -38,8 +38,8 @@ class STIXHeader(stix.Entity):
 
     title = fields.TypedField("Title", preset_hook=deprecated.field)
     package_intents = VocabField("Package_Intent", PackageIntent, multiple=True, preset_hook=deprecated.field)
-    descriptions = fields.TypedField("Description", type_=StructuredTextList, key_name="description", preset_hook=deprecated.field)
-    short_descriptions = fields.TypedField("Short_Description", type_=StructuredTextList, key_name="short_description", preset_hook=deprecated.field)
+    descriptions = fields.TypedField("Description", type_=StructuredTextList, preset_hook=deprecated.field)
+    short_descriptions = fields.TypedField("Short_Description", type_=StructuredTextList, preset_hook=deprecated.field)
     handling = fields.TypedField("Handling", Marking)
     information_source = fields.TypedField("Information_Source", InformationSource)
     profiles = fields.TypedField("Profiles", Profiles)

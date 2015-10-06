@@ -19,7 +19,7 @@ class Confidence(stix.Entity):
     _binding_class = common_binding.ConfidenceType
 
     value = fields.TypedField("Value", VocabString)
-    descriptions = fields.TypedField("Description", StructuredTextList, key_name="description")
+    descriptions = fields.TypedField("Description", StructuredTextList)
     timestamp = fields.DateTimeField("timestamp")
     timestamp_precision = fields.TypedField("timestamp_precision", preset_hook=validate_precision)
     source = fields.TypedField("Source", type_="stix.common.InformationSource")

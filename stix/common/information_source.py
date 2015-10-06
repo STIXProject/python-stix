@@ -23,7 +23,7 @@ class InformationSource(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
 
     identity = fields.TypedField("Identity", Identity)
-    descriptions = fields.TypedField("Description", StructuredTextList, key_name="description")
+    descriptions = fields.TypedField("Description", StructuredTextList)
     contributing_sources = fields.TypedField("Contributing_Sources", type_="stix.common.information_source.ContributingSources")
     time = fields.TypedField("Time", cybox.common.Time)
     roles = fields.TypedField("Role", VocabString, multiple=True, key_name="roles")

@@ -17,7 +17,7 @@ class Activity(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
 
     date_time = fields.TypedField("Date_Time", DateTimeWithPrecision)
-    descriptions = fields.TypedField("Description", StructuredTextList, key_name="description")
+    descriptions = fields.TypedField("Description", StructuredTextList)
 
     def __init__(self):
         super(Activity, self).__init__()

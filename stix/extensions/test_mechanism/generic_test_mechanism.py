@@ -17,7 +17,7 @@ class GenericTestMechanism(_BaseTestMechanism):
     _XSI_TYPE = "genericTM:GenericTestMechanismType"
     
     reference_location = fields.TypedField("Reference_Location")
-    descriptions = fields.TypedField("Description", StructuredTextList, key_name="description")
+    descriptions = fields.TypedField("Description", StructuredTextList)
     specification = fields.TypedField("Specification", EncodedCDATA)
     type_ = fields.TypedField("type", VocabString, key_name="type")
     

@@ -19,7 +19,7 @@ class ToolInformation(stix.Entity, cybox.common.ToolInformation):
     _binding_class = common_binding.ToolInformationType
 
     title = fields.TypedField("Title")
-    short_descriptions = fields.TypedField("Short_Description", StructuredTextList, key_name="short_description")
+    short_descriptions = fields.TypedField("Short_Description", StructuredTextList)
 
     def __init__(self, title=None, short_description=None, tool_name=None, tool_vendor=None):
         super(ToolInformation, self).__init__(tool_name=tool_name, tool_vendor=tool_vendor)

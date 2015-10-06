@@ -112,7 +112,7 @@ class Campaign(stix.BaseCoreComponent):
     _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = 'campaign'
 
-    descriptions = fields.TypedField("Description", StructuredTextList, key_name="description")
+    descriptions = fields.TypedField("Description", StructuredTextList)
     activity = fields.TypedField("Activity", Activity, multiple=True)
     associated_campaigns = fields.TypedField("Associated_Campaigns", AssociatedCampaigns)
     attribution = fields.TypedField("Attribution", Attribution, multiple=True)
