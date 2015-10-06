@@ -18,6 +18,7 @@ class HeaderTests(EntityTestCase, unittest.TestCase):
         'short_description': 'A really, really short description',
         'handling': data_marking_test.MarkingTests._full_dict,
         'information_source': information_source_test.InformationSourceTests._full_dict,
+        'intents': ["foo", "bar"]
     }
 
     def test_duplicate_package_intent(self):
