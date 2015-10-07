@@ -1,29 +1,18 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
-
 import itertools
 import contextlib
 import collections
 
+from mixbox import fields
+
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
-from  mixbox.fields import TypedField
-from stix.base import AttributeField, ElementField
+
 
 #: Default ordinality value for StructuredText.
 DEFAULT_ORDINALITY = 1
-
-
-class StructuredTextListField(ElementField):
-
-    @TypedField.attr_name.getter
-    def attr_name(self):
-        return "descriptions"
-
-    @TypedField.key_name.getter
-    def key_name(self):
-        return "description"
 
 
 class StructuredText(stix.Entity):
@@ -34,41 +23,25 @@ class StructuredText(stix.Entity):
             structure xpath selectors.
         value: The text value of this object.
         structuring_format: The format of the text. For example, ``html5``.
-
     """
+
     _binding = stix_common_binding
     _binding_class = _binding.StructuredTextType
     _namespace = 'http://stix.mitre.org/common-1'
 
-    ordinality = AttributeField("ordinality")
-    value = AttributeField("value")
-    structuring_format = AttributeField("structuring_format")
-    
+    id_ = fields.IdField("id")
+    ordinality = fields.TypedField("ordinality")
+    value = fields.TypedField("valueOf_", key_name="value")
+    structuring_format = fields.TypedField("structuring_format")
+
+
     def __init__(self, value=None, ordinality=None):
-        self._fields = {}
+        super(StructuredText, self).__init__()
+
         self.id_ = None
         self.value = value
         self.structuring_format = None
         self.ordinality = ordinality
-
-    def to_obj(self, return_obj=None, ns_info=None):
-        """Converts this object into a binding object.
-
-        """
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        super(StructuredText, self).to_obj(
-            return_obj=return_obj,
-            ns_info=ns_info
-        )
-
-        return_obj.id = self.id_
-        return_obj.valueOf_ = self.value
-        return_obj.ordinality = self.ordinality
-        return_obj.structuring_format = self.structuring_format
-
-        return return_obj
 
     def is_plain(self):
         plain = (
@@ -93,51 +66,6 @@ class StructuredText(stix.Entity):
         else:
             return super(StructuredText, self).to_dict()
 
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        """Create an object from the input binding object.
-
-        Args:
-            obj: A generateDS binding object.
-
-        """
-        if not obj:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        return_obj.id_ = obj.id
-        return_obj.value = obj.valueOf_
-        return_obj.ordinality = obj.ordinality
-        return_obj.structuring_format = obj.structuring_format
-
-        return return_obj
-
-    @classmethod
-    def from_dict(cls, d, return_obj=None):
-        """Creates an object from the input dictionary.
-
-        Args:
-            d: A dictionary representation of this object.
-
-        """
-        if not d:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        if not isinstance(d, dict):
-            return_obj.value = d
-        else:
-            return_obj.id_ = d.get('id')
-            return_obj.value = d.get('value')
-            return_obj.ordinality = d.get('ordinality')
-            return_obj.structuring_format = d.get('structuring_format')
-
-        return return_obj
-    
     def __str__(self):
         """Returns a UTF-8 encoded string representation of the ``value``.
 
@@ -181,6 +109,7 @@ class StructuredTextList(stix.TypedCollection, collections.Sequence):
 
     """
     _contained_type = StructuredText
+    _try_cast = True
 
     def __init__(self, *args):
         stix.TypedCollection.__init__(self, *args)
@@ -195,17 +124,6 @@ class StructuredTextList(stix.TypedCollection, collections.Sequence):
                 self.update(arg)
             else:
                 self.add(arg)
-
-    @classmethod
-    def istypeof(cls, obj):
-        """Check if `cls` is the type of `obj`
-
-        In the normal case, as implemented here, a simple isinstance check is
-        used. However, there are more complex checks possible. For instance,
-        EmailAddress.istypeof(obj) checks if obj is an Address object with
-        a category of Address.CAT_EMAIL
-        """
-        return isinstance(obj, cls)
 
     def with_id(self, id):
         """Returns a :class:`.StructuredText` object with a matching `id` or
@@ -392,7 +310,7 @@ class StructuredTextList(stix.TypedCollection, collections.Sequence):
         """
         self._inner.remove(value)
 
-    def to_obj(self, return_obj=None, ns_info=None):
+    def to_obj(self, ns_info=None):
         """Returns a binding object list for the StructuredTextList.
 
         If the list has a length of 1, and its member has an ordinality of 1,

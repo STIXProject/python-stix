@@ -9,7 +9,10 @@
 #
 
 import sys
-from stix.bindings import *
+
+from mixbox.binding_utils import *
+
+from stix.bindings import register_extension
 import stix.bindings.data_marking as data_marking_binding
 
 XML_NS = "http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1"
@@ -30,6 +33,7 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
     xmlns          = XML_NS
     xmlns_prefix   = "tlpMarking"
     xml_type       = "TLPMarkingStructureType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     subclass = None
     superclass = data_marking_binding.MarkingStructureType

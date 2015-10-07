@@ -8,9 +8,12 @@
 # Generated Thu Apr 11 15:06:24 2013 by generateDS.py version 2.9a.
 #
 import sys
-from stix.bindings import *
+
 import cybox.bindings.cybox_core as cybox_core_binding
 import cybox.bindings.cybox_common as cybox_common_binding
+from mixbox.binding_utils import *
+
+from stix.bindings import lookup_extension, register_extension
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
 
@@ -2147,6 +2150,7 @@ class IncidentType(stix_common_binding.IncidentBaseType):
     xmlns          = "http://stix.mitre.org/Incident-1"
     xmlns_prefix   = "incident"
     xml_type       = "IncidentType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, timestamp=None, URL=None, version=None, Title=None, External_ID=None, Time=None, Description=None, Short_Description=None, Categories=None, Reporter=None, Responder=None, Coordinator=None, Victim=None, Affected_Assets=None, Impact_Assessment=None, Status=None, Related_Indicators=None, Related_Observables=None, Leveraged_TTPs=None, Attributed_Threat_Actors=None, Intended_Effect=None, Security_Compromise=None, Discovery_Method=None, Related_Incidents=None, COA_Requested=None, COA_Taken=None, Confidence=None, Contact=None, History=None, Information_Source=None, Handling=None, Related_Packages=None):
         super(IncidentType, self).__init__(timestamp=timestamp, idref=idref, id=id)

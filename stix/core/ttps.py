@@ -8,7 +8,7 @@ from stix.common.kill_chains import KillChains
 from stix.bindings import stix_core as core_binding
 
 # deprecation warnings
-from stix.utils.deprecated import idref_deprecated
+from stix.utils import deprecated
 
 class TTPs(stix.EntityList):
     _binding = core_binding
@@ -42,7 +42,7 @@ class TTPs(stix.EntityList):
         self.append(ttp)
 
     def _is_valid(self, value):
-        idref_deprecated(value)
+        deprecated.idref(value)
         return stix.EntityList._is_valid(self, value)
 
     def to_obj(self, return_obj=None, ns_info=None):

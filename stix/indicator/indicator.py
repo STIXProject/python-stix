@@ -2,20 +2,18 @@
 # See LICENSE.txt for complete terms.
 
 # external
+from mixbox import fields
+
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
 
 # internal
 import stix
-import stix.utils as utils
-from stix.common import (
-    Identity, InformationSource, VocabString, Confidence,
-    RelatedTTP, Statement, CampaignRef
-)
-from stix.common.related import (
-    GenericRelationshipList, RelatedCOA, RelatedIndicator, RelatedCampaignRef,
-    RelatedPackageRefs
-)
+from stix.common.identity import Identity
+from stix.common import (InformationSource, VocabString, Confidence, RelatedTTP,
+    Statement, CampaignRef)
+from stix.common.related import (GenericRelationshipList, RelatedCOA,
+    RelatedIndicator, RelatedCampaignRef, RelatedPackageRefs)
 from stix.common.vocabs import IndicatorType
 from stix.common.kill_chains import KillChainPhasesReference
 import stix.bindings.indicator as indicator_binding
@@ -25,8 +23,6 @@ from .test_mechanism import TestMechanisms
 from .sightings import Sightings
 from .valid_time import ValidTime
 
-from stix.base import ElementField, AttributeField
-from stix.common.structured_text import StructuredTextListField
 from operator import isSequenceType
 
 class SuggestedCOAs(GenericRelationshipList):
@@ -162,7 +158,7 @@ class Indicator(stix.BaseCoreComponent):
 
     Args:
         id_ (optional): An identifier. If ``None``, a value will be generated
-            via ``stix.utils.create_id()``. If set, this will unset the
+            via ``mixbox.idgen.create_id()``. If set, this will unset the
             ``idref`` property.
         idref (optional): An identifier reference. If set this will unset the
             ``id_`` property.
@@ -181,27 +177,24 @@ class Indicator(stix.BaseCoreComponent):
     _ALLOWED_COMPOSITION_OPERATORS = ('AND', 'OR')
     _ID_PREFIX = "indicator"
 
-    producer = ElementField("Producer", InformationSource)
-    observable = ElementField("Observable", Observable, postset_hook = lambda inst,value: inst.set_observables([value]))
-    indicator_types = ElementField("Type", IndicatorType, multiple=True, key_name="indicator_types")
-    confidence = ElementField("Confidence", Confidence)
-    indicated_ttps = ElementField("Indicated_TTP", RelatedTTP, multiple=True, key_name="indicated_ttps")
-    test_mechanisms = ElementField("Test_Mechanisms", TestMechanisms)
-    alternative_id = ElementField("Alternative_ID", multiple=True)
-    suggested_coas = ElementField("Suggested_COAs", SuggestedCOAs)
-    sightings = ElementField("Sightings", Sightings)
-    composite_indicator_expression = ElementField("Composite_Indicator_Expression", ObservableComposition)
-    kill_chain_phases = ElementField("Kill_Chain_Phases", KillChainPhasesReference)
-    valid_time_positions = ElementField("Valid_Time_Position", ValidTime, multiple=True, key_name="valid_time_positions")
-    related_indicators = ElementField("Related_Indicators", RelatedIndicators)
-    related_campaigns = ElementField("Related_Campaigns")
-    likely_impact = ElementField("Likely_Impact", Statement)
-    negate = AttributeField("negate")
-    related_packages = ElementField("Related_Packages", RelatedPackageRefs)
+    producer = fields.TypedField("Producer", InformationSource)
+    observable = fields.TypedField("Observable", Observable, postset_hook = lambda inst,value: inst.set_observables([value]))
+    indicator_types = fields.TypedField("Type", IndicatorType, multiple=True, key_name="indicator_types")
+    confidence = fields.TypedField("Confidence", Confidence)
+    indicated_ttps = fields.TypedField("Indicated_TTP", RelatedTTP, multiple=True, key_name="indicated_ttps")
+    test_mechanisms = fields.TypedField("Test_Mechanisms", TestMechanisms)
+    alternative_id = fields.TypedField("Alternative_ID", multiple=True)
+    suggested_coas = fields.TypedField("Suggested_COAs", SuggestedCOAs)
+    sightings = fields.TypedField("Sightings", Sightings)
+    composite_indicator_expression = fields.TypedField("Composite_Indicator_Expression", ObservableComposition)
+    kill_chain_phases = fields.TypedField("Kill_Chain_Phases", KillChainPhasesReference)
+    valid_time_positions = fields.TypedField("Valid_Time_Position", ValidTime, multiple=True, key_name="valid_time_positions")
+    related_indicators = fields.TypedField("Related_Indicators", RelatedIndicators)
+    related_campaigns = fields.TypedField("Related_Campaigns", type_="stix.indicator.RelatedCampaigns")
+    likely_impact = fields.TypedField("Likely_Impact", Statement)
+    negate = fields.TypedField("negate")
+    related_packages = fields.TypedField("Related_Packages", RelatedPackageRefs)
 
-    @classmethod
-    def initClassFields(cls):
-        cls.related_campaigns.type_ = RelatedCampaignRefs
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
@@ -1023,5 +1016,3 @@ class _IndicatedTTPs(stix.TypedList):
 
 class _Observables(stix.TypedList):
     _contained_type = Observable
-
-Indicator.initClassFields()

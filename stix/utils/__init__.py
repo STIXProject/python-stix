@@ -1,18 +1,16 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# stdlib
 import contextlib
-import keyword
 import functools
+import keyword
 
-# external
-import cybox
 import lxml.etree
 
-# internal
+from mixbox.entities import Entity, EntityList
+import mixbox.xml
+
 import stix
-import stix.xmlconst as xmlconst
 
 # relative
 from . import dates
@@ -138,24 +136,27 @@ def is_stix(entity):
 
 
 def is_cybox(entity):
-    """Returns true if `entity` is an instance of :class:`cybox.Entity`."""
-    return isinstance(entity, cybox.Entity)
+    """Returns true if `entity` is an instance of
+    :class:`mixbox.entities.Entity`.
+    """
+    # TODO: once all entities subclass from mixbox.entities.Entity, how do we
+    # do this?
+    return isinstance(entity, Entity)
 
 
 def is_entity(entity):
     """Returns true if `entity` is an instance of :class:`.Entity` or
-    :class:`cybox.Entity`.
-
+    :class:`mixbox.Entity`.
     """
-    return isinstance(entity, (cybox.Entity, stix.Entity))
+    return isinstance(entity, (Entity, stix.Entity))
 
 
 def is_entitylist(entity):
     """Returns true if `entity` is an instance of :class:`.EntityList`
-    or :class:`cybox.EntityList`.
+    or :class:`mixbox.entities.EntityList`.
 
     """
-    return isinstance(entity, (cybox.EntityList, stix.EntityList))
+    return isinstance(entity, (EntityList, stix.EntityList))
 
 
 def is_typedlist(entity):
@@ -275,16 +276,6 @@ def is_bool(obj):
     return isinstance(obj, bool)
 
 
-def is_element(obj):
-    """Returns ``True`` if `obj` is an lxml ``Element``."""
-    return isinstance(obj, lxml.etree._Element)  # noqa
-
-
-def is_etree(obj):
-    """Returns ``True`` if `obj` is an lxml ``ElementTree``."""
-    return isinstance(obj, lxml.etree._ElementTree)  # noqa
-
-
 def has_value(var):
     """Returns ``True`` if `var` is not ``None`` and not empty."""
     if var is None:
@@ -326,7 +317,7 @@ def to_dict(entity, skip=()):
             d[key] = dates.serialize_value(field)
         elif is_date(field):
             d[key] = dates.serialize_date(field)
-        elif is_element(field) or is_etree(field):
+        elif mixbox.xml.is_element(field) or mixbox.xml.is_etree(field):
             d[key] = lxml.etree.tostring(field)
         elif is_sequence(field):
             d[key] = dict_iter(field)
@@ -345,10 +336,10 @@ def xml_bool(value):
     if value is None:
         return None
 
-    if value in xmlconst.FALSE:
+    if value in mixbox.xml.FALSE:
         return False
 
-    if value in xmlconst.TRUE:
+    if value in mixbox.xml.TRUE:
         return True
 
     error = "Unable to determine the xml boolean value of '{0}'".format(value)
@@ -387,6 +378,5 @@ def remove_entries(d, keys):
 # Namespace flattening
 from .nsparser import *  # noqa
 from .dates import *  # noqa
-from .idgen import *  # noqa
-from .nsparser import *  # noqa
+from .parser import *  # noqa
 from .walk import *  # noqa

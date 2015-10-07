@@ -1,35 +1,33 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from mixbox import fields
+
 import stix
-import stix.utils as utils
-from stix.common import (
-    GenericRelationshipList, RelatedObservable, StructuredTextList, Confidence,
-    InformationSource
-)
+from stix import utils
+from stix.common import (GenericRelationshipList, RelatedObservable,
+    StructuredTextList, Confidence, InformationSource)
+from stix.common.datetimewithprecision import validate_precision
+
 import stix.bindings.indicator as indicator_binding
-from stix.base import AttributeField, ElementField
-from stix.common.structured_text import StructuredTextListField
+
 
 class Sighting(stix.Entity):
     _namespace = "http://stix.mitre.org/Indicator-2"
     _binding = indicator_binding
     _binding_class = _binding.SightingType
     
-    timestamp = AttributeField("timestamp")
-    timestamp_precision = AttributeField("timestamp_precision")
-    descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
-    source = ElementField("Source", InformationSource)
-    reference = ElementField("Reference")
-    confidence = ElementField("Confidence", Confidence)
-    related_observables = ElementField("Related_Observables")
-    
-    @classmethod
-    def initClassFields(cls):
-        cls.related_observables.type_ = RelatedObservables
+    timestamp = fields.DateTimeField("timestamp")
+    timestamp_precision = fields.TypedField("timestamp_precision", preset_hook=validate_precision)
+    descriptions = fields.TypedField("Description", StructuredTextList)
+    source = fields.TypedField("Source", InformationSource)
+    reference = fields.TypedField("Reference")
+    confidence = fields.TypedField("Confidence", Confidence)
+    related_observables = fields.TypedField("Related_Observables", type_="stix.indicator.sightings.RelatedObservables")
     
     def __init__(self, timestamp=None, timestamp_precision=None, description=None):
-        self._fields = {}
+        super(Sighting, self).__init__()
+
         self.timestamp = timestamp or utils.dates.now()
         self.timestamp_precision = timestamp_precision
         self.descriptions = description
@@ -37,12 +35,6 @@ class Sighting(stix.Entity):
         self.reference = None
         self.confidence = None
 
-    """
-    @timestamp.setter
-    def timestamp(self, value):
-        self._timestamp = utils.dates.parse_value(value)
-    """
-    
     @property
     def description(self):
         """A single description about the contents or purpose of this object.
@@ -138,10 +130,9 @@ class Sightings(stix.EntityList):
     _binding_var = "Sighting"
     _inner_name = "sightings"
     
-    sightings_count = AttributeField("sightings_count")
+    sightings_count = fields.TypedField("sightings_count")
     
     def __init__(self, sightings_count=None, *args):
-        self._fields = {}
         super(Sightings, self).__init__(*args)
         self.sightings_count = sightings_count
 

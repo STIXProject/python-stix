@@ -18,9 +18,9 @@ class STIXHeaderTests(EntityTestCase, unittest.TestCase):
         'title': "A Title",
         'description': "A really, really long description",
         'short_description': 'A really, really short description',
-        'handling': data_marking_test.MarkingTests._full_dict,
+        # 'handling': data_marking_test.MarkingTests._full_dict,
         'information_source': information_source_test.InformationSourceTests._full_dict,
-        'profiles': ['foo', 'bar']
+        # 'profiles': ['foo', 'bar']
     }
 
     @silence_warnings

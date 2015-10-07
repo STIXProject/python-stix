@@ -9,7 +9,10 @@
 #
 
 import sys
-from stix.bindings import *
+
+from mixbox.binding_utils import *
+
+from stix.bindings import lookup_extension, register_extension
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
 
@@ -237,6 +240,7 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
     xmlns          = "http://stix.mitre.org/ThreatActor-1"
     xmlns_prefix   = "ta"
     xml_type       = "ThreatActorType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Description=None, Short_Description=None, Identity=None, Type=None, Motivation=None, Sophistication=None, Intended_Effect=None, Planning_And_Operational_Support=None, Observed_TTPs=None, Associated_Campaigns=None, Associated_Actors=None, Handling=None, Confidence=None, Information_Source=None, Related_Packages=None):
         super(ThreatActorType, self).__init__(idref=idref, id=id, timestamp=timestamp)

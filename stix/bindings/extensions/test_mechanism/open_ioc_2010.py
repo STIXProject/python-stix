@@ -9,7 +9,10 @@
 #
 
 import sys
-from stix.bindings import *
+
+from mixbox.binding_utils import *
+
+from stix.bindings import register_extension
 import stix.bindings.indicator as indicator_binding
 
 XML_NS = "http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1"
@@ -30,6 +33,7 @@ class OpenIOC2010TestMechanismType(indicator_binding.TestMechanismType):
     xmlns          = XML_NS
     xmlns_prefix   = "stix-openioc"
     xml_type       = "OpenIOC2010TestMechanismType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, ioc=None):
         super(OpenIOC2010TestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)

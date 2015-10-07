@@ -9,7 +9,10 @@
 #
 
 import sys
-from stix.bindings import *
+
+from mixbox.binding_utils import *
+
+from stix.bindings import register_extension
 import stix.bindings.data_marking as data_marking_binding
 
 XML_NS = "http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1"
@@ -37,6 +40,7 @@ class TermsOfUseMarkingStructureType(data_marking_binding.MarkingStructureType):
     xmlns          = XML_NS
     xmlns_prefix   = "TOUMarking"
     xml_type       = "TermsOfUseMarkingStructureType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, marking_model_ref=None, marking_model_name=None, id=None, Terms_Of_Use=None):
         super(TermsOfUseMarkingStructureType, self).__init__(idref=idref, marking_model_ref=marking_model_ref, marking_model_name=marking_model_name, id=id)

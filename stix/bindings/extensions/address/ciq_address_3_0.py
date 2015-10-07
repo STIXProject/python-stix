@@ -9,7 +9,10 @@
 #
 
 import sys
-from stix.bindings import *
+
+from mixbox.binding_utils import *
+
+from stix.bindings import register_extension
 import stix.bindings.stix_common as stix_common_binding
 
 XML_NS = "http://stix.mitre.org/extensions/Address#CIQAddress3.0-1"
@@ -30,6 +33,7 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
     xmlns          = XML_NS
     xmlns_prefix   = "ciqAddress"
     xml_type       = "CIQAddress3.0InstanceType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, Location=None):
         super(CIQAddress3_0InstanceType, self).__init__()

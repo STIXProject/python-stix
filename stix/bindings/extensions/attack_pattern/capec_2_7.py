@@ -9,7 +9,10 @@
 #
 
 import sys
-from stix.bindings import *
+
+from mixbox.binding_utils import *
+
+from stix.bindings import register_extension
 import stix.bindings.ttp as ttp_binding
 
 XML_NS = "http://stix.mitre.org/extensions/AP#CAPEC2.7-1"
@@ -29,6 +32,7 @@ class CAPEC2_7InstanceType(ttp_binding.AttackPatternType):
     xmlns          = XML_NS
     xmlns_prefix   = "capecInstance"
     xml_type       = "CAPEC2.7InstanceType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, capec_id=None, Description=None, CAPEC=None):
         super(CAPEC2_7InstanceType, self).__init__(capec_id=capec_id, Description=Description)

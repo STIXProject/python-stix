@@ -9,8 +9,11 @@
 #
 
 import sys
-from stix.bindings import *
+
 import cybox.bindings.cybox_core as cybox_core_binding
+from mixbox.binding_utils import *
+
+from stix.bindings import lookup_extension, register_extension
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
 
@@ -824,6 +827,7 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
     xmlns          = XML_NS
     xmlns_prefix   = "indicator"
     xml_type       = "IndicatorType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, timestamp=None, negate=False, version=None, Title=None, Type=None, Alternative_ID=None, Description=None, Short_Description=None, Valid_Time_Position=None, Observable=None, Composite_Indicator_Expression=None, Indicated_TTP=None, Kill_Chain_Phases=None, Test_Mechanisms=None, Likely_Impact=None, Suggested_COAs=None, Handling=None, Confidence=None, Sightings=None, Related_Indicators=None, Related_Campaigns=None, Related_Packages=None, Producer=None):
         super(IndicatorType, self).__init__(idref=idref, id=id, timestamp=timestamp)

@@ -9,7 +9,10 @@
 #
 
 import sys
-from stix.bindings import *
+
+from mixbox.binding_utils import *
+
+from stix.bindings import register_extension
 from stix.bindings.course_of_action import StructuredCOAType
 import stix.bindings.stix_common as stix_common_binding
 
@@ -31,6 +34,7 @@ class GenericStructuredCOAType(StructuredCOAType):
     xmlns          = XML_NS
     xmlns_prefix   = "genericStructuredCOA"
     xml_type       = "GenericStructuredCOAType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, reference_location=None, Description=None, Type=None, Specification=None):
         super(GenericStructuredCOAType, self).__init__(idref=idref, id=id)

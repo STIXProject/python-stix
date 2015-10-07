@@ -1,17 +1,17 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from mixbox import fields
+
 import stix
-from stix.utils.deprecated import deprecated
+from stix.utils import deprecated
 from stix.common import Activity, Confidence, Statement, VocabString
-from stix.common.related import (
-    GenericRelationshipList, RelatedCampaign, RelatedIncident, RelatedIndicator,
-    RelatedPackageRefs, RelatedThreatActor, RelatedTTP
-)
+from stix.common.related import (GenericRelationshipList, RelatedCampaign,
+    RelatedIncident, RelatedIndicator, RelatedPackageRefs, RelatedThreatActor,
+    RelatedTTP)
 from stix.common import vocabs
 import stix.bindings.campaign as campaign_binding
-from stix.common.structured_text import StructuredTextList, StructuredTextListField
-from stix.base import ElementField, AttributeField
+from stix.common.structured_text import StructuredTextList
 from stix.common.information_source import InformationSource
 
 class AssociatedCampaigns(GenericRelationshipList):
@@ -29,22 +29,7 @@ class Attribution(GenericRelationshipList):
     _binding_var = "Attributed_Threat_Actor"
     _contained_type = RelatedThreatActor
     _inner_name = "threat_actors"
-"""
-class Attribution(stix.Entity):
-    threat_actors = ElementField("Attributed_Threat_Actor", RelatedThreatActor, multiple=True, key_name="threat_actors")
-    scope = AttributeField("scope")
-    
-    def __init__(self, scope=None, *args):
-        self._fields = {}
-        super(Attribution, self).__init__(*args)
-    
-    _namespace = "http://stix.mitre.org/Campaign-1"
-    _binding = campaign_binding
-    _binding_class = campaign_binding.AttributionType
-    _binding_var = "Attributed_Threat_Actor"
-    _contained_type = RelatedThreatActor
-    _inner_name = "threat_actors"
-"""
+
 
 class RelatedIncidents(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Campaign-1"
@@ -64,7 +49,7 @@ class RelatedIndicators(GenericRelationshipList):
     _inner_name = "indicators"
 
     def _is_valid(self, value):
-        deprecated(value)
+        deprecated.warn(value)
         return super(RelatedIndicators, self)._is_valid(value)
 
 
@@ -91,7 +76,7 @@ class Campaign(stix.BaseCoreComponent):
 
     Args:
         id_ (optional): An identifier. If ``None``, a value will be generated
-            via ``stix.utils.create_id()``. If set, this will unset the
+            via ``mixbox.idgen.create_id()``. If set, this will unset the
             ``idref`` property.
         idref (optional): An identifier reference. If set this will unset the
             ``id_`` property.
@@ -110,19 +95,19 @@ class Campaign(stix.BaseCoreComponent):
     _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = 'campaign'
 
-    descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
-    activity = ElementField("Activity", Activity, multiple=True)
-    associated_campaigns = ElementField("Associated_Campaigns", AssociatedCampaigns)
-    attribution = ElementField("Attribution", Attribution, multiple=True)
-    confidence = ElementField("Confidence", Confidence)
-    #references = ElementField("Reference", multiple=True)
-    status = ElementField("Status", VocabString)
-    intended_effects = ElementField("Intended_Effect", Statement, multiple=True, key_name="intended_effects")
-    names = ElementField("Names", Names)
-    related_incidents = ElementField("Related_Incidents", RelatedIncidents)
-    related_indicators = ElementField("Related_Indicators", RelatedIndicators)
-    related_packages = ElementField("Related_Packages", RelatedPackageRefs)
-    information_source = ElementField("Information_Source", InformationSource)
+    descriptions = fields.TypedField("Description", StructuredTextList)
+    activity = fields.TypedField("Activity", Activity, multiple=True)
+    associated_campaigns = fields.TypedField("Associated_Campaigns", AssociatedCampaigns)
+    attribution = fields.TypedField("Attribution", Attribution, multiple=True)
+    confidence = fields.TypedField("Confidence", Confidence)
+    # references = fields.TypedField("Reference", multiple=True)
+    status = fields.TypedField("Status", VocabString)
+    intended_effects = fields.TypedField("Intended_Effect", Statement, multiple=True, key_name="intended_effects")
+    names = fields.TypedField("Names", Names)
+    related_incidents = fields.TypedField("Related_Incidents", RelatedIncidents)
+    related_indicators = fields.TypedField("Related_Indicators", RelatedIndicators)
+    related_packages = fields.TypedField("Related_Packages", RelatedPackageRefs)
+    information_source = fields.TypedField("Information_Source", InformationSource)
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):

@@ -84,7 +84,7 @@ def lookup_extension(typeinfo, default=None):
             return default
 
         error = "Input %s is missing xml_type attribute. Cannot lookup class."
-        raise ValueError(error)
+        raise ValueError(error % type(typeinfo))
     
     # Extension binding classes usually (always?) have an `xmlns_prefix`
     # class attribute.
@@ -131,7 +131,3 @@ def supported_stix_version():
 
     """
     return ('1.1.1', '1.2')
-
-# because common depends on base, we can only set the TypeFields types on
-# BaseCoreComponent to common classes after both common and base are imported
-BaseCoreComponent.initClassFields()

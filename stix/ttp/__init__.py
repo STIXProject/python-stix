@@ -1,10 +1,13 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
+from mixbox import fields
 
 # internal
 import stix
 import stix.bindings.ttp as ttp_binding
-from stix.common import vocabs, Statement
+from stix.common import vocabs
+from stix.common import Statement
+from stix.common.vocabs import IntendedEffect
 from stix.common.kill_chains import KillChainPhasesReference
 from stix.common.related import RelatedPackageRefs
 from stix.ttp.related_ttps import RelatedTTPs
@@ -14,8 +17,6 @@ from stix.ttp.exploit_targets import ExploitTargets
 from .behavior import Behavior
 from .resource import Resource
 from .victim_targeting import VictimTargeting
-from stix.base import ElementField
-from stix.common.vocabs import IntendedEffect
 
 
 class TTP(stix.BaseCoreComponent):
@@ -23,7 +24,7 @@ class TTP(stix.BaseCoreComponent):
 
     Args:
         id_ (optional): An identifier. If ``None``, a value will be generated
-            via ``stix.utils.create_id()``. If set, this will unset the
+            via ``mixbox.idgen.create_id()``. If set, this will unset the
             ``idref`` property.
         idref (optional): An identifier reference. If set this will unset the
             ``id_`` property.
@@ -42,14 +43,14 @@ class TTP(stix.BaseCoreComponent):
     _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = "ttp"
 
-    behavior = ElementField("Behavior", Behavior)
-    related_ttps = ElementField("Related_TTPs", RelatedTTPs)
-    intended_effects = ElementField("Intended_Effect", IntendedEffect, multiple=True)
-    resources = ElementField("Resources", Resource)
-    victim_targeting = ElementField("Victim_Targeting", VictimTargeting)
-    exploit_targets = ElementField("Exploit_Targets", ExploitTargets)
-    related_packages = ElementField("Related_Pacakges", RelatedPackageRefs)
-    kill_chain_phases = ElementField("Kill_Chain_Phases", KillChainPhasesReference)
+    behavior = fields.TypedField("Behavior", Behavior)
+    related_ttps = fields.TypedField("Related_TTPs", RelatedTTPs)
+    intended_effects = fields.TypedField("Intended_Effect", IntendedEffect, multiple=True)
+    resources = fields.TypedField("Resources", Resource)
+    victim_targeting = fields.TypedField("Victim_Targeting", VictimTargeting)
+    exploit_targets = fields.TypedField("Exploit_Targets", ExploitTargets)
+    related_packages = fields.TypedField("Related_Pacakges", RelatedPackageRefs)
+    kill_chain_phases = fields.TypedField("Kill_Chain_Phases", KillChainPhasesReference)
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):

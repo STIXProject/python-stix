@@ -25,16 +25,13 @@ with open('README.rst') as f:
 
 extras_require = {
     'docs': [
-        'Sphinx==1.2.1',
-        # TODO: remove when updating to Sphinx 1.3, since napoleon will be
-        # included as sphinx.ext.napoleon
-        'sphinxcontrib-napoleon==0.2.4',
-        'sphinx_rtd_theme==0.1.7',
+        'Sphinx==1.3.1',
+        'sphinx_rtd_theme==0.1.8',
     ],
     'test': [
         'nose==1.3.0',
         'tox==1.6.1',
-        'maec>=4.1.0.12,<4.1.1.0'
+        'maec>=4.1.0.13.dev1,<4.1.1.0',
     ],
 }
 
@@ -42,7 +39,8 @@ extras_require = {
 install_requires = [
     'lxml>=2.3',
     'python-dateutil',
-    'cybox>=2.1.0.11,<2.1.1.0'
+    'cybox>=2.1.0.13.dev0,<2.1.1.0',
+    'mixbox>=0.0.10',
 ]
 
 

@@ -9,8 +9,11 @@
 #
 
 import sys
-from stix.bindings import *
+
 import cybox.bindings.cybox_core as cybox_core_binding
+from mixbox.binding_utils import *
+
+from stix.bindings import lookup_extension, register_extension
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
 
@@ -222,6 +225,7 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     xmlns          = "http://stix.mitre.org/CourseOfAction-1"
     xmlns_prefix   = "coa"
     xml_type       = "CourseOfActionType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Stage=None, Type=None, Description=None, Short_Description=None, Objective=None, Parameter_Observables=None, Structured_COA=None, Impact=None, Cost=None, Efficacy=None, Information_Source=None, Handling=None, Related_COAs=None, Related_Packages=None):
         super(CourseOfActionType, self).__init__(idref=idref, id=id, timestamp=timestamp)

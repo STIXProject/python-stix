@@ -3,50 +3,39 @@
 
 from __future__ import absolute_import
 
+from mixbox import fields
+
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
-from . import vocabs, VocabString
-from .structured_text import StructuredTextList, StructuredTextListField
-from stix.base import ElementField, AttributeField
+from .vocabs import VocabField
+from .structured_text import StructuredTextList
+from .datetimewithprecision import validate_precision
+
 
 class Confidence(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
     _binding = common_binding
     _binding_class = common_binding.ConfidenceType
 
-    value = ElementField("Value", VocabString)
-    descriptions = StructuredTextListField("Description", StructuredTextList, key_name="description")
-    timestamp = AttributeField("timestamp")
-    timestamp_precision = AttributeField("timestamp_precision")
-    source = ElementField("Source")
+    value = VocabField("Value")
+    descriptions = fields.TypedField("Description", StructuredTextList)
+    timestamp = fields.DateTimeField("timestamp")
+    timestamp_precision = fields.TypedField("timestamp_precision", preset_hook=validate_precision)
+    source = fields.TypedField("Source", type_="stix.common.InformationSource")
     
     def __init__(self, value=None, timestamp=None, description=None, source=None):
-        self._fields = {}
+        super(Confidence, self).__init__()
+
         self.timestamp = timestamp or utils.dates.now()
         self.timestamp_precision = "second"
         self.value = value
         self.description = description
         self.source = source
+
         # TODO: support confidence_assertion_chain
         # self.confidence_assertion_chain = None
-    
-    # called in stix.common.related
-    @classmethod
-    def initClassFields(cls):
-        from .information_source import InformationSource
-        cls.source.type_ = InformationSource
-       
-    """ 
-    @property
-    def timestamp(self):
-        return self._timestamp
-
-    @timestamp.setter
-    def timestamp(self, value):
-        self._timestamp = utils.dates.parse_value(value)
-    """
 
     @property
     def description(self):
@@ -62,7 +51,7 @@ class Confidence(stix.Entity):
             An instance of :class:`.StructuredText`
 
         """
-        return next(iter(self.descriptions), "None")
+        return next(iter(self.descriptions), None)
 
     @description.setter
     def description(self, value):
@@ -79,15 +68,6 @@ class Confidence(stix.Entity):
 
         """
         self.descriptions.add(description)
-
-    # @property
-    # def confidence_assertion_chain(self):
-    #     return self._confidence_assertion_chain
-
-    # @confidence_assertion_chain.setter
-    # def confidence_assertion_chain(self, value):
-    #     if value:
-    #         raise NotImplementedError()
 
 
 # class ConfidenceAssertionChain(stix.Entity):

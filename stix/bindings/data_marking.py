@@ -7,11 +7,12 @@
 #
 # Generated Thu Apr 11 15:06:22 2013 by generateDS.py version 2.9a.
 #
-# stdlib
+
 import sys
 
-# internal
-from stix.bindings import *
+from mixbox.binding_utils import *
+
+from stix.bindings import lookup_extension
 from . import stix_common as stix_common_binding
 
 XML_NS  = "http://data-marking.mitre.org/Marking-1"
