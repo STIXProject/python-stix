@@ -110,7 +110,7 @@ def round_trip(o, output=False, list_=False):
     except KeyError as ex:
         print str(ex)
         ns_info.finalize()
-        print ns_info.finalized_namespaces
+        print ns_info.binding_namespaces
         raise
 
     if output:

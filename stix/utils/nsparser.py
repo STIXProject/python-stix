@@ -30,7 +30,6 @@ class NamespaceInfo(object):
 
         # Namespaces and schemalocations that will appear in the output
         # XML document.
-        self.finalized_namespaces = None
         self.finalized_schemalocs = None
 
         # Namespace dictionary that gets passed to the bindings.
@@ -220,8 +219,6 @@ class NamespaceInfo(object):
         self._finalize_namespaces(ns_dict)
         self._finalize_schemalocs(schemaloc_dict)
 
-        self.finalized_namespaces = \
-            self._collected_namespaces.get_prefix_uri_map()
         self.finalized_schemalocs = \
             self._collected_namespaces.get_uri_schemaloc_map()
         self.binding_namespaces = \

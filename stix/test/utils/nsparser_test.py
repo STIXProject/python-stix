@@ -72,7 +72,7 @@ class NamespaceInfoTests(unittest.TestCase):
 
         # finalize the namespace dictionary
         nsinfo.finalize(ns_dict=NSMAP, schemaloc_dict=SCHEMALOCS)
-        namespaces = nsinfo.finalized_namespaces.values()
+        namespaces = nsinfo.binding_namespaces.keys()
 
         self.assertTrue(all(ns in namespaces for ns in NSMAP.iterkeys()))
 
