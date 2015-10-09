@@ -145,7 +145,7 @@ class Entity(object):
 
         """
 
-        from .utils import nsparser
+        from mixbox.entities import NamespaceCollector
 
         if (not auto_namespace) and (not ns_dict):
             raise Exception(
@@ -153,7 +153,7 @@ class Entity(object):
                 "or missing."
             )
 
-        ns_info = nsparser.NamespaceInfo()
+        ns_info = NamespaceCollector()
 
         obj = self.to_obj(ns_info=ns_info if auto_namespace else None)
 
