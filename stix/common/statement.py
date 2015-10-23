@@ -13,7 +13,7 @@ from .datetimewithprecision import validate_precision
 from .confidence import Confidence
 from .structured_text import StructuredTextList
 from .vocabs import VocabField, HighMediumLow
-
+import mixbox
 
 class Statement(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
@@ -67,3 +67,21 @@ class Statement(stix.Entity):
 
         """
         self.descriptions.add(description)
+
+
+class StatementField(mixbox.fields.TypedField):
+    def __init__(self, *args, **kwargs):
+        self._vocab_type = kwargs.pop("vocab_type")
+        super(StatementField, self).__init__(*args, **kwargs)
+        self.type_ = Statement
+
+    def _clean(self, value):
+        if value is None:
+            return None
+        elif isinstance(value, Statement):
+            return value
+        elif isinstance(value, stix.common.VocabString):
+            return Statement(value)
+        else:
+            vocabklass = self._vocab_type
+            return Statement(vocabklass(value)) 

@@ -204,7 +204,7 @@ class RelatedThreatActor(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedThreatActorType
-    item = fields.TypedField("ThreatActor", type_="stix.threat_actor.ThreatActor")
+    item = fields.TypedField("Threat_Actor", type_="stix.threat_actor.ThreatActor")
 
 
 class RelatedTTP(_BaseRelated):
