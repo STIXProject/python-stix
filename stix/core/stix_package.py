@@ -38,9 +38,9 @@ from . import (Campaigns, CoursesOfAction, ExploitTargets, Incidents,
 
 # binding imports
 import stix.bindings.stix_core as stix_core_binding
+import mixbox.entities
 
-
-class STIXPackage(Cached, stix.Entity):
+class STIXPackage(Cached, mixbox.entities.Entity):
     """A STIX Package object.
 
     Args:
@@ -91,6 +91,8 @@ class STIXPackage(Cached, stix.Entity):
                  observables=None, incidents=None, threat_actors=None,
                  ttps=None, campaigns=None, related_packages=None,
                  reports=None):
+        
+        super(STIXPackage, self).__init__()
         
         self.id_ = id_ or idgen.create_id("Package")
         self.idref = idref
