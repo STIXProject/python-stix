@@ -2,7 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # external
-from mixbox import fields
+from mixbox import fields, entities
 
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
@@ -190,7 +190,7 @@ class Indicator(stix.BaseCoreComponent):
     kill_chain_phases = fields.TypedField("Kill_Chain_Phases", KillChainPhasesReference)
     valid_time_positions = fields.TypedField("Valid_Time_Position", ValidTime, multiple=True, key_name="valid_time_positions")
     related_indicators = fields.TypedField("Related_Indicators", RelatedIndicators)
-    related_campaigns = fields.TypedField("Related_Campaigns", type_="stix.indicator.RelatedCampaigns")
+    related_campaigns = fields.TypedField("Related_Campaigns", type_="stix.indicator.RelatedCampaignRefs")
     likely_impact = fields.TypedField("Likely_Impact", Statement)
     negate = fields.TypedField("negate")
     related_packages = fields.TypedField("Related_Packages", RelatedPackageRefs)
@@ -745,8 +745,8 @@ class Indicator(stix.BaseCoreComponent):
         self.add_observable(observable)
 
     
-    def to_obj(self, return_obj=None, ns_info=None):
-        obj = super(Indicator, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+    def to_obj(self, ns_info=None):
+        obj = super(Indicator, self).to_obj(ns_info=ns_info)
 
         if self.observables:
             if len(self.observables) > 1:
@@ -841,7 +841,7 @@ class Indicator(stix.BaseCoreComponent):
         return return_obj
     """
 
-class CompositeIndicatorExpression(stix.EntityList):
+class CompositeIndicatorExpression(entities.EntityList):
     """Implementation of the STIX ``CompositeIndicatorExpressionType``.
 
     The ``CompositeIndicatorExpression`` class implements methods found on
@@ -891,26 +891,20 @@ class CompositeIndicatorExpression(stix.EntityList):
     OP_OR = "OR"
     OPERATORS = (OP_AND, OP_OR)
     
-    def __init__(self, operator="OR", *args):
-        super(CompositeIndicatorExpression, self).__init__(*args)
-        self.operator = operator
-
-    @property
-    def operator(self):
-        return self._operator
-    
-    @operator.setter
-    def operator(self, value):
+    def check_operator(self, value):
+        raise ValueError("always")
         if not value:
             raise ValueError("operator must not be None or empty")
         elif value not in self.OPERATORS:
             raise ValueError("operator must be one of: %s" % (self.OPERATORS,))
-        else:
-            self._operator = value
+    
+    operator = fields.TypedField("operator", preset_hook=check_operator)
             
-    def __nonzero__(self):
-        return super(CompositeIndicatorExpression, self).__nonzero__()
+    def __init__(self, operator="OR", *args):
+        super(CompositeIndicatorExpression, self).__init__(*args)
+        self.operator = operator
 
+    """
     def to_obj(self, return_obj=None, ns_info=None):
         list_obj = super(CompositeIndicatorExpression, self).to_obj(return_obj=return_obj, ns_info=ns_info)
         list_obj.operator = self.operator
@@ -943,7 +937,7 @@ class CompositeIndicatorExpression(stix.EntityList):
         super(CompositeIndicatorExpression, cls).from_dict(dict_repr, return_obj=return_obj)
         return_obj.operator = dict_repr.get('operator')
         return return_obj
-
+    """
 
 class RelatedCampaignRefs(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Indicator-2"
