@@ -1,6 +1,14 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
+
+# stdlib
+import functools
+
+# mixbox
 from mixbox import fields
+from mixbox import typedlist
+
+# cybox
 from cybox.core import Observable
 
 # internal
@@ -92,6 +100,12 @@ class GenericRelationshipEntity(stix.Entity):
 
 
 class GenericRelationshipList(stix.EntityList):
+    """Base class for concrete GenericRelationshipList types.
+
+    Note:
+        Subclasses must supply exactly one multiple TypedField.
+    """
+
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = _binding.GenericRelationshipListType
@@ -107,13 +121,9 @@ class GenericRelationshipList(stix.EntityList):
                 bool(self.scope))
 
 
-class RelatedPackageRefs(stix.EntityList):
-    _namespace = 'http://stix.mitre.org/common-1'
-    _binding = common_binding
-    _binding_class = common_binding.RelatedPackageRefsType
-    _binding_var = "Package_Reference"
-    _contained_type = RelatedPackageRef
-    _inner_name = "packages"
+class _RelatedPackageList(typedlist.TypedList):
+    def __init__(self, *args):
+        super(_RelatedPackageList, self).__init__(RelatedPackageRef, True, *args)
 
     def _fix_value(self, value):
         from stix.core import STIXPackage
@@ -128,7 +138,21 @@ class RelatedPackageRefs(stix.EntityList):
 
     def _is_valid(self, value):
         deprecated.warn(value)
-        return stix.EntityList._is_valid(self, value)
+        super(_RelatedPackageList, self)._is_valid(self, value)
+
+
+class _RelatedPackageField(fields.TypedField):
+    def __init__(self, *args, **kwargs):
+        super(_RelatedPackageField, self).__init__(*args, **kwargs)
+        self.type_ = RelatedPackageRef
+        self.listclass = _RelatedPackageList
+
+
+class RelatedPackageRefs(stix.EntityList):
+    _namespace = 'http://stix.mitre.org/common-1'
+    _binding = common_binding
+    _binding_class = common_binding.RelatedPackageRefsType
+    package = _RelatedPackageField("Package_Reference", multiple=True, key_name="packages")
 
 
 class _BaseRelated(GenericRelationship):
@@ -150,6 +174,7 @@ class _BaseRelated(GenericRelationship):
             information_source,
             relationship
         )
+
         self.item = item
 
 

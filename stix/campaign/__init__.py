@@ -10,43 +10,58 @@ from stix.common.related import (GenericRelationshipList, RelatedCampaign,
     RelatedIncident, RelatedIndicator, RelatedPackageRefs, RelatedThreatActor,
     RelatedTTP)
 from stix.common import vocabs
+from stix.common.vocabs import VocabField
 import stix.bindings.campaign as campaign_binding
 from stix.common.structured_text import StructuredTextList
 from stix.common.information_source import InformationSource
+
 
 class AssociatedCampaigns(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Campaign-1"
     _binding = campaign_binding
     _binding_class = campaign_binding.AssociatedCampaignsType
-    _binding_var = "Associated_Campaign"
-    _contained_type = RelatedCampaign
-    _inner_name = "campaigns"
+
+    campaign = fields.TypedField("Associated_Campaign", RelatedCampaign, multiple=True, key_name="campaigns")
+
+    @classmethod
+    def _dict_as_list(cls):
+        return False
+
 
 class Attribution(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Campaign-1"
     _binding = campaign_binding
     _binding_class = campaign_binding.AttributionType
-    _binding_var = "Attributed_Threat_Actor"
-    _contained_type = RelatedThreatActor
-    _inner_name = "threat_actors"
+
+    threat_actor = fields.TypedField("Attributed_Threat_Actor", RelatedThreatActor, multiple=True, key_name="threat_actors")
+
+    @classmethod
+    def _dict_as_list(cls):
+        return False
 
 
 class RelatedIncidents(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Campaign-1"
     _binding = campaign_binding
     _binding_class = campaign_binding.RelatedIncidentsType
-    _binding_var = "Related_Incident"
-    _contained_type = RelatedIncident
-    _inner_name = "incidents"
+
+    incident = fields.TypedField("Related_Incident", RelatedIncident, multiple=True, key_name="incidents")
+
+    @classmethod
+    def _dict_as_list(cls):
+        return False
 
 
 class RelatedIndicators(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Campaign-1"
     _binding = campaign_binding
     _binding_class = campaign_binding.RelatedIndicatorsType
-    _binding_var = "Related_Indicator"
-    _contained_type = RelatedIndicator
-    _inner_name = "indicators"
+
+    indicator = fields.TypedField("Related_Indicator", RelatedIndicator, multiple=True, key_name="indicators")
+
+    @classmethod
+    def _dict_as_list(cls):
+        return False
 
     def _is_valid(self, value):
         deprecated.warn(value)
@@ -57,18 +72,24 @@ class RelatedTTPs(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Campaign-1"
     _binding = campaign_binding
     _binding_class = campaign_binding.RelatedTTPsType
-    _binding_var = "Related_TTP"
-    _contained_type = RelatedTTP
-    _inner_name = "ttps"
+
+    ttp = fields.TypedField("Related_TTP", RelatedTTP, multiple=True, key_name="ttps")
+
+    @classmethod
+    def _dict_as_list(cls):
+        return False
 
 
 class Names(stix.EntityList):
     _namespace = "http://stix.mitre.org/Campaign-1"
     _binding = campaign_binding
     _binding_class = campaign_binding.NamesType
-    _binding_var = "Name"
-    _contained_type = VocabString
-    _inner_name = "names"
+
+    name = VocabField("Name", multiple=True, key_name="names")
+
+    @classmethod
+    def _dict_as_list(cls):
+        return False
 
 
 class Campaign(stix.BaseCoreComponent):

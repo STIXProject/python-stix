@@ -89,7 +89,9 @@ class ContributingSources(stix.EntityList):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = stix_common_binding
     _binding_class = stix_common_binding.ContributingSourcesType
-    _binding_var = "Source"
-    _contained_type = InformationSource
-    _inner_name = "sources"
 
+    source = fields.TypedField("Source", InformationSource, multiple=True, key_name="sources")
+
+    @classmethod
+    def _dict_as_list(cls):
+        return False

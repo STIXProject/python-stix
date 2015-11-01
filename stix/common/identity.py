@@ -46,9 +46,11 @@ class RelatedIdentities(stix.EntityList):
     _namespace = 'http://stix.mitre.org/common-1'
     _binding = common_binding
     _binding_class = common_binding.RelatedIdentitiesType
-    _binding_var = "Related_Identity"
-    _contained_type = RelatedIdentity
-    _inner_name = "identities"
+    related_identity = fields.TypedField("Related_Identity", RelatedIdentity, multiple=True, key_name="identities")
+
+    @classmethod
+    def _dict_as_list(cls):
+        return False
 
 
 # Backwards compatibility

@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 from mixbox import fields
+from mixbox import typedlist
 
 # internal
 import stix
@@ -48,9 +49,12 @@ class KillChains(stix.EntityList):
     _binding = common_binding
     _namespace = 'http://stix.mitre.org/common-1'
     _binding_class = _binding.KillChainsType
-    _contained_type = KillChain
-    _binding_var = "Kill_Chain"
-    _inner_name = "kill_chains"
+
+    kill_chain = fields.TypedField("Kill_Chain", KillChain, multiple=True, key_name="kill_chains")
+
+    @classmethod
+    def _dict_as_list(cls):
+        return False
 
 
 class KillChainPhase(stix.Entity):
@@ -99,22 +103,37 @@ class KillChainPhaseReference(KillChainPhase):
         self.kill_chain_name = kill_chain_name
 
 
-class KillChainPhasesReference(stix.EntityList):
-    _binding = common_binding
-    _namespace = 'http://stix.mitre.org/common-1'
-    _binding_class = _binding.KillChainPhasesReferenceType
-    _contained_type = KillChainPhaseReference
-    _binding_var = "Kill_Chain_Phase"
-    _inner_name = "kill_chain_phases"
+class _KillChainPhaseReferenceList(typedlist.TypedList):
+    def __init__(self, *args):
+        super(_KillChainPhaseReferenceList, self).__init__(KillChainPhaseReference, True, *args)
 
     def _fix_value(self, value):
         if not isinstance(value, KillChainPhase):
-            return super(KillChainPhasesReference, self)._fix_value(value)
+            return super(_KillChainPhaseReferenceList, self)._fix_value(value)
 
         if value.phase_id:
             return KillChainPhaseReference(phase_id=value.phase_id)
 
         raise ValueError("KillChainPhase must have a phase_id.")
+
+
+class _KillChainPhaseReferenceField(fields.TypedField):
+    def __init__(self, *args, **kwargs):
+        super(_KillChainPhaseReferenceField, self).__init__(*args, **kwargs)
+        self.type_ = KillChainPhaseReference
+        self.listclass = _KillChainPhaseReferenceList
+
+
+class KillChainPhasesReference(stix.EntityList):
+    _binding = common_binding
+    _namespace = 'http://stix.mitre.org/common-1'
+    _binding_class = _binding.KillChainPhasesReferenceType
+
+    kill_chain_phase = _KillChainPhaseReferenceField("Kill_Chain_Phase", multiple=True, key_name="kill_chain_phases")
+
+    @classmethod
+    def _dict_as_list(cls):
+        return False
 
 
 # NOT AN ACTUAL STIX TYPE!
