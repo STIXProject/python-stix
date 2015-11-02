@@ -19,7 +19,7 @@ from stix.common.kill_chains import KillChainPhasesReference
 import stix.bindings.indicator as indicator_binding
 
 # relative
-from .test_mechanism import TestMechanisms
+from .test_mechanism import TestMechanisms, TestMechanismFactory
 from .sightings import Sightings
 from .valid_time import ValidTime
 
@@ -182,11 +182,11 @@ class Indicator(stix.BaseCoreComponent):
     indicator_types = fields.TypedField("Type", IndicatorType, multiple=True, key_name="indicator_types")
     confidence = fields.TypedField("Confidence", Confidence)
     indicated_ttps = fields.TypedField("Indicated_TTP", RelatedTTP, multiple=True, key_name="indicated_ttps")
-    test_mechanisms = fields.TypedField("Test_Mechanisms", TestMechanisms)
+    test_mechanisms = fields.TypedField("Test_Mechanisms", TestMechanisms, factory=TestMechanismFactory)
     alternative_id = fields.TypedField("Alternative_ID", multiple=True)
     suggested_coas = fields.TypedField("Suggested_COAs", SuggestedCOAs)
     sightings = fields.TypedField("Sightings", Sightings)
-    composite_indicator_expression = fields.TypedField("Composite_Indicator_Expression", ObservableComposition)
+    composite_indicator_expression = fields.TypedField("Composite_Indicator_Expression", "stix.indicator.CompositeIndicatorExpression")
     kill_chain_phases = fields.TypedField("Kill_Chain_Phases", KillChainPhasesReference)
     valid_time_positions = fields.TypedField("Valid_Time_Position", ValidTime, multiple=True, key_name="valid_time_positions")
     related_indicators = fields.TypedField("Related_Indicators", RelatedIndicators)
@@ -892,7 +892,6 @@ class CompositeIndicatorExpression(entities.EntityList):
     OPERATORS = (OP_AND, OP_OR)
     
     def check_operator(self, value):
-        raise ValueError("always")
         if not value:
             raise ValueError("operator must not be None or empty")
         elif value not in self.OPERATORS:
@@ -904,40 +903,6 @@ class CompositeIndicatorExpression(entities.EntityList):
         super(CompositeIndicatorExpression, self).__init__(*args)
         self.operator = operator
 
-    """
-    def to_obj(self, return_obj=None, ns_info=None):
-        list_obj = super(CompositeIndicatorExpression, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-        list_obj.operator = self.operator
-        return list_obj
-
-    def to_dict(self):
-        d = super(CompositeIndicatorExpression, self).to_dict()
-        if self.operator:
-            d['operator'] = self.operator
-        return d
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if not obj:
-            return None
-        if return_obj is None:
-            return_obj = cls()
-
-        super(CompositeIndicatorExpression, cls).from_obj(obj, return_obj=return_obj)
-        return_obj.operator = obj.operator
-        return return_obj
-
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        if not dict_repr:
-            return None
-        if return_obj is None:
-            return_obj = cls()
-
-        super(CompositeIndicatorExpression, cls).from_dict(dict_repr, return_obj=return_obj)
-        return_obj.operator = dict_repr.get('operator')
-        return return_obj
-    """
 
 class RelatedCampaignRefs(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Indicator-2"

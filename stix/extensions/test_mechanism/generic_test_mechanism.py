@@ -88,7 +88,7 @@ class GenericTestMechanism(_BaseTestMechanism):
     """
     
     @classmethod
-    def from_obj(cls, obj, return_obj=None):
+    def from_obj(cls, obj):
         if not obj:
             return None
         if not return_obj:
@@ -102,24 +102,13 @@ class GenericTestMechanism(_BaseTestMechanism):
         
         return return_obj
     
-    def to_obj(self, return_obj=None, ns_info=None):
-        if not return_obj:
-            return_obj = self._binding_class()
-            
-        super(GenericTestMechanism, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-        if self.reference_location:
-            return_obj.reference_location = self.reference_location
-        if self.description:
-            return_obj.Description = self.descriptions.to_obj(ns_info=ns_info)
-        if self.type_:
-            return_obj.Type = self.type_.to_obj(ns_info=ns_info)
-        if self.specification:
-            return_obj.Specification = self.specification.to_obj(ns_info=ns_info)
+    def to_obj(self, ns_info=None):
+        obj = super(GenericTestMechanism, self).to_obj(ns_info=ns_info)
         
-        return return_obj
+        return obj
     
     @classmethod
-    def from_dict(cls, d, return_obj=None):
+    def from_dict(cls, d):
         if not d:
             return None
         if not return_obj:

@@ -2,7 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 # external
-from mixbox import fields
+from mixbox import fields, entities
 from mixbox.cache import Cached
 
 # internal
@@ -13,7 +13,7 @@ from stix.common import InformationSource, Statement
 import stix.bindings.indicator as indicator_binding
 
 
-class _BaseTestMechanism(Cached, stix.Entity):
+class _BaseTestMechanism(Cached, entities.Entity):
     _namespace = "http://stix.mitre.org/Indicator-2"
     _binding = indicator_binding
     _binding_class = indicator_binding.TestMechanismType()
@@ -30,16 +30,13 @@ class _BaseTestMechanism(Cached, stix.Entity):
         self.efficacy = None
         self.producer = None
 
-    
+    """
     @classmethod
     def from_obj(cls, obj, return_obj=None):
         if not obj:
             return None
         
-        import stix.extensions.test_mechanism.snort_test_mechanism  # noqa
-        import stix.extensions.test_mechanism.open_ioc_2010_test_mechanism  # noqa
-        import stix.extensions.test_mechanism.yara_test_mechanism  # noqa
-        import stix.extensions.test_mechanism.generic_test_mechanism  # noqa
+        
         
         if not return_obj:
             klass = stix.lookup_extension(obj)
@@ -51,23 +48,7 @@ class _BaseTestMechanism(Cached, stix.Entity):
             return_obj.producer = InformationSource.from_obj(obj.Producer)
         
         return return_obj
-    
-    def to_obj(self, return_obj=None, ns_info=None):
-        super(_BaseTestMechanism, self).to_obj(return_obj=return_obj, ns_info=ns_info)
 
-        if not return_obj:
-            return_obj = self._binding_class()
-        
-        return_obj.id = self.id_
-        return_obj.idref = self.idref
-        # return_obj.xsi_type = self._XSI_TYPE
-
-        if self.efficacy:
-            return_obj.Efficacy = self.efficacy.to_obj(ns_info=ns_info)
-        if self.producer:
-            return_obj.Producer = self.producer.to_obj(ns_info=ns_info)
-        
-        return return_obj
     
     @staticmethod
     def lookup_class(xsi_type):
@@ -97,11 +78,28 @@ class _BaseTestMechanism(Cached, stix.Entity):
             
         return return_obj
     
+    """
+    
+    def to_obj(self, ns_info=None):
+        obj = super(_BaseTestMechanism, self).to_obj(ns_info=ns_info)
+        obj.xsi_type = self._XSI_TYPE
+        
+        return obj
+    
     def to_dict(self):
         d = super(_BaseTestMechanism, self).to_dict()
         d['xsi:type'] = self._XSI_TYPE  # added by subclass
         return d
     
+
+class TestMechanismFactory(entities.EntityFactory):
+    @classmethod
+    def entity_class(self, key):
+        import stix.extensions.test_mechanism.snort_test_mechanism  # noqa
+        import stix.extensions.test_mechanism.open_ioc_2010_test_mechanism  # noqa
+        import stix.extensions.test_mechanism.yara_test_mechanism  # noqa
+        import stix.extensions.test_mechanism.generic_test_mechanism  # noqa
+        stix.lookup_extension(key)
 
 class TestMechanisms(stix.EntityList):
     _binding = indicator_binding
@@ -111,7 +109,7 @@ class TestMechanisms(stix.EntityList):
     _binding_var = "Test_Mechanism"
     _inner_name = "test_mechanisms"
     _dict_as_list = True
-
+    _entity_factory=TestMechanismFactory
 
 # Backwards compatibility
 add_extension = stix.add_extension
