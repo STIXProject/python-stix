@@ -6,6 +6,7 @@ import stix
 import stix.bindings.incident as incident_binding
 from stix.common import vocabs
 from stix.common import Statement, VocabString, InformationSource, Confidence
+from stix.common.vocabs import VocabField
 from stix.common.identity import Identity, IdentityFactory
 from stix.common.related import (GenericRelationshipList, RelatedIndicator,
     RelatedThreatActor, RelatedTTP, RelatedObservable, RelatedIncident,
@@ -369,68 +370,91 @@ class AttributedThreatActors(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding = incident_binding
     _binding_class = incident_binding.AttributedThreatActorsType
-    _binding_var = "Threat_Actor"
-    _contained_type = RelatedThreatActor
-    _inner_name = "threat_actors"
+
+    threat_actor = fields.TypedField(
+        name="Threat_Actor",
+        type_=RelatedThreatActor,
+        multiple=True,
+        key_name="threat_actors"
+    )
 
 
 class RelatedIndicators(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding = incident_binding
     _binding_class = incident_binding.RelatedIndicatorsType
-    _binding_var = "Related_Indicator"
-    _contained_type = RelatedIndicator
-    _inner_name = "indicators"
+
+    indicator = fields.TypedField(
+        name="Related_Indicator",
+        type_=RelatedIndicator,
+        multiple=True,
+        key_name="indicators"
+    )
 
 
 class RelatedObservables(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding = incident_binding
     _binding_class = incident_binding.RelatedObservablesType
-    _binding_var = "Related_Observable"
-    _contained_type = RelatedObservable
-    _inner_name = "observables"
+
+    observable = fields.TypedField(
+        name="Related_Observable",
+        type_=RelatedObservable,
+        multiple=True,
+        key_name="observables"
+    )
 
 
 class LeveragedTTPs(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding = incident_binding
     _binding_class = _binding.LeveragedTTPsType
-    _binding_var = "Leveraged_TTP"
-    _contained_type = RelatedTTP
-    _inner_name = "ttps"
+
+    ttp = fields.TypedField(
+        name="Leverated_TTP",
+        type_=RelatedTTP,
+        multiple=True,
+        key_name="ttps"
+    )
     
 
 class RelatedIncidents(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding = incident_binding
     _binding_class = incident_binding.RelatedIncidentsType
-    _binding_var = "Related_Incident"
-    _contained_type = RelatedIncident
-    _inner_name = "incidents"
+
+    incident = fields.TypedField(
+        name="Related_Incident",
+        type_=RelatedIncident,
+        multiple=True,
+        key_name="incidents"
+    )
 
 
 class IncidentCategories(stix.EntityList):
     _namespace = "http://stix.mitre.org/Incident-1"
-    _contained_type = VocabString
     _binding = incident_binding
     _binding_class = _binding.CategoriesType
-    _binding_var = "Category"
-    _inner_name = "categories"
-    _dict_as_list = True
 
-    def _fix_value(self, value):
-        return vocabs.IncidentCategory(value)
+    category = VocabField(
+        name="Category",
+        type_=vocabs.IncidentCategory,
+        multiple=True,
+        key_name="categories"
+    )
 
 
 class AffectedAssets(stix.EntityList):
     _namespace = "http://stix.mitre.org/Incident-1"
-    _contained_type = AffectedAsset
     _binding = incident_binding
     _binding_class = _binding.AffectedAssetsType
-    _binding_var = "Affected_Asset"
-    _inner_name = "affected_assets"
-    _dict_as_list = True
+
+    affected_asset = fields.TypedField(
+        name="Affected_Asset",
+        type_=AffectedAsset,
+        multiple=True,
+        key_name="affected_assets"
+    )
 
 
 # NOT ACTUAL STIX TYPES!

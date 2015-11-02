@@ -1,9 +1,15 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# stdlib
+from functools import partial
+
+# mixbox
 from mixbox import fields
 from mixbox import entities
+from mixbox import typedlist
 
+# stix
 import stix
 import stix.bindings.stix_common as stix_common_binding
 
@@ -21,6 +27,19 @@ def validate_value(instance, value):
         error = "Value must be one of {allowed}. Received '{value}'"
         error = error.format(**locals())
         raise ValueError(error)
+
+class VocabList(typedlist.TypedList):
+    """VocabString fields can be any type of VocabString, though there is often
+    a preferred/default VocabString type.
+
+    The TypedList will attempt to make sure that every input item is an instance
+    of the default VocabString and throw an error if it isn't. This sublcass
+    overrides that behavior and allows any instance of VocabString to be
+    inserted.
+    """
+
+    def _is_valid(self, value):
+        return isinstance(value, VocabString)
 
 
 class VocabField(fields.TypedField):
@@ -42,6 +61,8 @@ class VocabField(fields.TypedField):
 
         if self.type_ is None:
             self.type_ = VocabString
+
+        self.listfunc = partial(VocabList, type=self.type_, ignore_none=True)
 
     def check_type(self, value):
         return isinstance(value, VocabString)

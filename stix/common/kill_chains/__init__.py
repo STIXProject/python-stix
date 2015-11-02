@@ -106,7 +106,7 @@ class KillChainPhaseReference(KillChainPhase):
 
 class _KillChainPhaseReferenceList(typedlist.TypedList):
     def __init__(self, *args):
-        super(_KillChainPhaseReferenceList, self).__init__(KillChainPhaseReference, True, *args)
+        super(_KillChainPhaseReferenceList, self).__init__(type=KillChainPhaseReference, *args)
 
     def _fix_value(self, value):
         if not isinstance(value, KillChainPhase):

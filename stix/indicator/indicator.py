@@ -1,9 +1,12 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# external
-from mixbox import fields, entities
+# mixbox
+from mixbox import fields
+from mixbox import entities
+from mixbox import typedlist
 
+# cybox
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
 
@@ -841,6 +844,17 @@ class Indicator(stix.BaseCoreComponent):
         return return_obj
     """
 
+def check_operator(composite_indicator_exp, value):
+    allowed = CompositeIndicatorExpression.OPERATORS
+
+    if not value:
+        raise ValueError("operator must not be None or empty")
+    elif value not in allowed:
+        raise ValueError("operator must be one of: %s" % allowed)
+    else:
+        return
+
+
 class CompositeIndicatorExpression(entities.EntityList):
     """Implementation of the STIX ``CompositeIndicatorExpressionType``.
 
@@ -883,80 +897,55 @@ class CompositeIndicatorExpression(entities.EntityList):
     _binding = indicator_binding
     _binding_class = indicator_binding.CompositeIndicatorExpressionType
     _namespace = 'http://stix.mitre.org/Indicator-2'
-    _contained_type = Indicator
-    _binding_var = "Indicator"
-    _inner_name = "indicators"
-    
+
     OP_AND = "AND"
     OP_OR = "OR"
     OPERATORS = (OP_AND, OP_OR)
-    
-    def check_operator(self, value):
-        raise ValueError("always")
-        if not value:
-            raise ValueError("operator must not be None or empty")
-        elif value not in self.OPERATORS:
-            raise ValueError("operator must be one of: %s" % (self.OPERATORS,))
-    
+
     operator = fields.TypedField("operator", preset_hook=check_operator)
-            
+    indicator = fields.TypedField(
+        name="Indicator",
+        type_=Indicator,
+        multiple=True,
+        key_name="indicators"
+    )
+
+    # TODO (bworrell): Change this to *args, **kwargs to get around the weirdness
+    # that occurs when creating with kwarg and arglist.
+    # E.g, CompositeIndicatorExpression(operator="AND", arg1, arg2, arg3)
+    # will raise an error.
     def __init__(self, operator="OR", *args):
         super(CompositeIndicatorExpression, self).__init__(*args)
         self.operator = operator
 
-    """
-    def to_obj(self, return_obj=None, ns_info=None):
-        list_obj = super(CompositeIndicatorExpression, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-        list_obj.operator = self.operator
-        return list_obj
 
-    def to_dict(self):
-        d = super(CompositeIndicatorExpression, self).to_dict()
-        if self.operator:
-            d['operator'] = self.operator
-        return d
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if not obj:
-            return None
-        if return_obj is None:
-            return_obj = cls()
-
-        super(CompositeIndicatorExpression, cls).from_obj(obj, return_obj=return_obj)
-        return_obj.operator = obj.operator
-        return return_obj
-
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        if not dict_repr:
-            return None
-        if return_obj is None:
-            return_obj = cls()
-
-        super(CompositeIndicatorExpression, cls).from_dict(dict_repr, return_obj=return_obj)
-        return_obj.operator = dict_repr.get('operator')
-        return return_obj
-    """
-
-class RelatedCampaignRefs(GenericRelationshipList):
-    _namespace = "http://stix.mitre.org/Indicator-2"
-    _binding = indicator_binding
-    _binding_class = _binding.RelatedCampaignReferencesType
-    _binding_var = 'Related_Campaign'
-    _contained_type = RelatedCampaignRef
-    _inner_name = "related_campaigns"
-
-    def __init__(self, related_campaign_refs=None, scope=None):
-        super(RelatedCampaignRefs, self).__init__(scope, related_campaign_refs)
+class _RelatedCampaignRefList(typedlist.TypedList):
+    def __init__(self, *args):
+        super(_RelatedCampaignRefList, self).__init__(type=RelatedCampaignRef, *args)
 
     def _fix_value(self, value):
         from stix.campaign import Campaign
 
         if isinstance(value, Campaign) and value.id_:
             return RelatedCampaignRef(CampaignRef(idref=value.id_))
-        else:
-            return super(RelatedCampaignRefs, self)._fix_value(value)
+        return super(_RelatedCampaignRefList, self)._fix_value(value)
+
+
+class RelatedCampaignRefs(GenericRelationshipList):
+    _namespace = "http://stix.mitre.org/Indicator-2"
+    _binding = indicator_binding
+    _binding_class = _binding.RelatedCampaignReferencesType
+
+    related_campaign = fields.TypedField(
+        name="Related_Campaign",
+        type_=RelatedCampaignRef,
+        multiple=True,
+        key_name="related_campaigns",
+        listfunc=_RelatedCampaignRefList
+    )
+
+    def __init__(self, related_campaign_refs=None, scope=None):
+        super(RelatedCampaignRefs, self).__init__(scope, related_campaign_refs)
 
 
 # NOT ACTUAL STIX TYPES!

@@ -1,5 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
+
+# mixbox
+from mixbox import fields
+
+# stix
 import stix
 import stix.bindings.ttp as ttp_binding
 
@@ -104,26 +109,21 @@ class Exploits(stix.EntityList):
     _contained_type = Exploit
     _binding = ttp_binding
     _binding_class = _binding.ExploitsType
-    _binding_var = "Exploit"
-    _inner_name = "exploits"
-    _dict_as_list = True
+
+    exploit = fields.TypedField("Exploit", Exploit, multiple=True, key_name="exploits")
 
 
 class MalwareInstances(stix.EntityList):
     _namespace = "http://stix.mitre.org/TTP-1"
-    _contained_type = MalwareInstance
     _binding = ttp_binding
     _binding_class = _binding.MalwareType
-    _binding_var = "Malware_Instance"
-    _inner_name = "malware_instances"
-    _dict_as_list = True
+
+    malware_instance = fields.TypedField("Malware_Instance", MalwareInstance, multiple=True, key_name="malware_instances")
 
 
 class AttackPatterns(stix.EntityList):
     _namespace = "http://stix.mitre.org/TTP-1"
-    _contained_type = AttackPattern
     _binding = ttp_binding
     _binding_class = _binding.AttackPatternsType
-    _binding_var = "Attack_Pattern"
-    _inner_name = "attack_patterns"
-    _dict_as_list = True
+
+    attack_pattern = fields.TypedField("Attack_Pattern", AttackPattern, multiple=True, key_name="attack_patterns")

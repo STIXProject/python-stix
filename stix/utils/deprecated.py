@@ -3,7 +3,8 @@
 
 import warnings
 
-from . import is_sequence
+from mixbox.datautils import is_sequence
+from mixbox.typedlist import TypedList
 
 
 def idref(entity):
@@ -45,3 +46,9 @@ def warn(value):
     fmt = "The use of this field has been deprecated. Received '{0}' object."
     msg = fmt.format(type(value).__name__)
     warnings.warn(msg)
+
+
+class IdrefDeprecatedList(TypedList):
+    def _is_valid(self, value):
+        idref(value)
+        return super(IdrefDeprecatedList, self)._is_valid(value)
