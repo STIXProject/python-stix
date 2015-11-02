@@ -141,18 +141,18 @@ class _RelatedPackageList(typedlist.TypedList):
         super(_RelatedPackageList, self)._is_valid(self, value)
 
 
-class _RelatedPackageField(fields.TypedField):
-    def __init__(self, *args, **kwargs):
-        super(_RelatedPackageField, self).__init__(*args, **kwargs)
-        self.type_ = RelatedPackageRef
-        self.listclass = _RelatedPackageList
-
-
 class RelatedPackageRefs(stix.EntityList):
     _namespace = 'http://stix.mitre.org/common-1'
     _binding = common_binding
     _binding_class = common_binding.RelatedPackageRefsType
-    package = _RelatedPackageField("Package_Reference", multiple=True, key_name="packages")
+
+    package = fields.TypedField(
+        name="Package_Reference",
+        type_=RelatedPackageRef,
+        multiple=True,
+        key_name="packages",
+        listfunc=_RelatedPackageList
+    )
 
 
 class _BaseRelated(GenericRelationship):

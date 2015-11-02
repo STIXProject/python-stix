@@ -86,6 +86,7 @@ class KillChainPhase(stix.Entity):
         return not self.__eq__(other)
 
     def __hash__(self):
+        # TODO (bworrell): Is all the tuple(sorted(...))) needed?
         return hash(tuple(sorted(self.to_dict().items())))
 
 
@@ -117,19 +118,18 @@ class _KillChainPhaseReferenceList(typedlist.TypedList):
         raise ValueError("KillChainPhase must have a phase_id.")
 
 
-class _KillChainPhaseReferenceField(fields.TypedField):
-    def __init__(self, *args, **kwargs):
-        super(_KillChainPhaseReferenceField, self).__init__(*args, **kwargs)
-        self.type_ = KillChainPhaseReference
-        self.listclass = _KillChainPhaseReferenceList
-
-
 class KillChainPhasesReference(stix.EntityList):
     _binding = common_binding
     _namespace = 'http://stix.mitre.org/common-1'
     _binding_class = _binding.KillChainPhasesReferenceType
 
-    kill_chain_phase = _KillChainPhaseReferenceField("Kill_Chain_Phase", multiple=True, key_name="kill_chain_phases")
+    kill_chain_phase = fields.TypedField(
+        name="Kill_Chain_Phase",
+        type_=KillChainPhaseReference,
+        multiple=True,
+        listfunc=_KillChainPhaseReferenceList,
+        key_name="kill_chain_phases"
+    )
 
     @classmethod
     def _dict_as_list(cls):
