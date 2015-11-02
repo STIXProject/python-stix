@@ -5,9 +5,11 @@ from mixbox import fields
 
 import stix
 import stix.indicator.test_mechanism
+from stix.common.vocabs import VocabField
 from stix.common import EncodedCDATA, StructuredTextList, VocabString
 from stix.indicator.test_mechanism import _BaseTestMechanism
 import stix.bindings.extensions.test_mechanism.generic as generic_tm_binding
+
 
 @stix.register_extension
 class GenericTestMechanism(_BaseTestMechanism):
@@ -16,33 +18,15 @@ class GenericTestMechanism(_BaseTestMechanism):
     _binding_class = _binding.GenericTestMechanismType
     _XSI_TYPE = "genericTM:GenericTestMechanismType"
     
-    reference_location = fields.TypedField("Reference_Location")
+    reference_location = fields.TypedField("reference_location")
     descriptions = fields.TypedField("Description", StructuredTextList)
     specification = fields.TypedField("Specification", EncodedCDATA)
-    type_ = fields.TypedField("type", VocabString, key_name="type")
+    type_ = VocabField("Type")
     
     def __init__(self, id_=None, idref=None):
         super(GenericTestMechanism, self).__init__(id_=id_, idref=idref)
-        self.reference_location = None
-        self.description = None
-        self.type_ = None
-        self.specification = None
-        
-    """
-    @property
-    def specification(self):
-        return self._specification
-    
-    @specification.setter
-    def specification(self, value):
-        if not value:
-            self._specification = None
-        if isinstance(value, EncodedCDATA):
-            self._specification = value
-        else:
-            self._specification = EncodedCDATA(value=value)
-    """
-    
+        self.descriptions = StructuredTextList()
+
     @property
     def description(self):
         """A single description about the contents or purpose of this object.
@@ -71,56 +55,3 @@ class GenericTestMechanism(_BaseTestMechanism):
 
         """
         self.descriptions.add(description)
-
-    """
-    @property
-    def type_(self):
-        return self._type
-    
-    @type_.setter
-    def type_(self, value):
-        if not value:
-            self._type = None
-        elif isinstance(value, VocabString):
-            self._type = value
-        else:
-            self._type = VocabString(value)
-    """
-    
-    @classmethod
-    def from_obj(cls, obj):
-        if not obj:
-            return None
-        if not return_obj:
-            return_obj = cls()
-        
-        super(GenericTestMechanism, cls).from_obj(obj, return_obj)
-        return_obj.reference_location = obj.reference_location
-        return_obj.descriptions = StructuredTextList.from_obj(obj.Description)
-        return_obj.type_ = VocabString.from_obj(obj.Type)
-        return_obj.specification = EncodedCDATA.from_obj(obj.Specification)
-        
-        return return_obj
-    
-    def to_obj(self, ns_info=None):
-        obj = super(GenericTestMechanism, self).to_obj(ns_info=ns_info)
-        
-        return obj
-    
-    @classmethod
-    def from_dict(cls, d):
-        if not d:
-            return None
-        if not return_obj:
-            return_obj = cls()
-            
-        super(GenericTestMechanism, cls).from_dict(d, return_obj)
-        return_obj.reference_location = d.get('reference_location')
-        return_obj.descriptions = StructuredTextList.from_dict(d.get('description'))
-        return_obj.type_ = VocabString.from_dict(d.get('type'))
-        return_obj.specification = EncodedCDATA.from_dict(d.get('specification'))
-        
-        return return_obj
-    
-    def to_dict(self):
-        return super(GenericTestMechanism, self).to_dict()

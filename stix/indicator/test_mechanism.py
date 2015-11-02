@@ -100,7 +100,7 @@ class TestMechanismFactory(entities.EntityFactory):
         import stix.extensions.test_mechanism.open_ioc_2010_test_mechanism  # noqa
         import stix.extensions.test_mechanism.yara_test_mechanism  # noqa
         import stix.extensions.test_mechanism.generic_test_mechanism  # noqa
-        stix.lookup_extension(key)
+        return stix.lookup_extension(key)
 
 
 class TestMechanisms(stix.EntityList):
@@ -109,9 +109,9 @@ class TestMechanisms(stix.EntityList):
     _binding_class = _binding.TestMechanismsType
     _contained_type = _BaseTestMechanism
     _binding_var = "Test_Mechanism"
-    _inner_name = "test_mechanisms"
-    _dict_as_list = True
-    _entity_factory=TestMechanismFactory
+    _entity_factory = TestMechanismFactory
+
+
 
 # Backwards compatibility
 add_extension = stix.add_extension

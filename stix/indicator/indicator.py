@@ -182,7 +182,7 @@ class Indicator(stix.BaseCoreComponent):
     indicator_types = fields.TypedField("Type", IndicatorType, multiple=True, key_name="indicator_types")
     confidence = fields.TypedField("Confidence", Confidence)
     indicated_ttps = fields.TypedField("Indicated_TTP", RelatedTTP, multiple=True, key_name="indicated_ttps")
-    test_mechanisms = fields.TypedField("Test_Mechanisms", TestMechanisms, factory=TestMechanismFactory)
+    test_mechanisms = fields.TypedField("Test_Mechanisms",  TestMechanisms)
     alternative_id = fields.TypedField("Alternative_ID", multiple=True)
     suggested_coas = fields.TypedField("Suggested_COAs", SuggestedCOAs)
     sightings = fields.TypedField("Sightings", Sightings)
