@@ -46,6 +46,7 @@ class RelatedIdentities(stix.EntityList):
     _namespace = 'http://stix.mitre.org/common-1'
     _binding = common_binding
     _binding_class = common_binding.RelatedIdentitiesType
+
     related_identity = fields.TypedField("Related_Identity", RelatedIdentity, multiple=True, key_name="identities")
 
     @classmethod

@@ -59,9 +59,6 @@ class RelatedIndicators(GenericRelationshipList):
 
     indicator = fields.TypedField("Related_Indicator", RelatedIndicator, multiple=True, key_name="indicators")
 
-    @classmethod
-    def _dict_as_list(cls):
-        return False
 
     def _is_valid(self, value):
         deprecated.warn(value)
