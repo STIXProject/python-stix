@@ -9,8 +9,9 @@ import stix.bindings.ttp as ttp_binding
 # relative
 from .infrastructure import Infrastructure
 
+from mixbox import entities, fields
 
-class Resource(stix.Entity):
+class Resource(entities.Entity):
     _binding = ttp_binding
     _binding_class = _binding.ResourceType
     _namespace = "http://stix.mitre.org/TTP-1"

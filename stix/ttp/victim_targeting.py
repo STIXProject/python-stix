@@ -8,26 +8,22 @@ from cybox.core import Observables
 import stix
 from stix.common import vocabs, VocabString, Identity
 import stix.bindings.ttp as ttp_binding
-
+from mixbox import fields
 
 class VictimTargeting(stix.Entity):
     _binding = ttp_binding
     _binding_class = _binding.VictimTargetingType
     _namespace = "http://stix.mitre.org/TTP-1"
 
+    identity = fields.TypedField("Identity", Identity)
+    targeted_systems = fields.TypedField("Targeted_Systems", "stix.ttp.victim_targeting.TargetedSystems")
+    targeted_information = fields.TypedField("Targeted_Information", "stix.ttp.victim_targeting.TargetedInformation")
+
     def __init__(self):
         self.identity = None
         self.targeted_systems = None
         self.targeted_information = None
         self.targeted_technical_details = None
-
-    @property
-    def targeted_systems(self):
-        return self._targeted_systems
-
-    @targeted_systems.setter
-    def targeted_systems(self, value):
-        self._targeted_systems = TargetedSystems(value)
 
     def add_targeted_system(self, system):
         self._targeted_systems.append(system)

@@ -112,7 +112,7 @@ class CIQIdentity3_0Instance(common.Identity):
         if not return_obj:
             return_obj = cls()
 
-        super(CIQIdentity3_0Instance, cls).from_dict(dict_repr, return_obj)
+        super(CIQIdentity3_0Instance, cls).from_dict(dict_repr)
 
         roles = dict_repr.get('roles', [])
         specification = dict_repr.get('specification')

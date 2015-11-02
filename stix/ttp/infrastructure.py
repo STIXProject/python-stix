@@ -10,79 +10,31 @@ import stix
 from stix.common import StructuredTextList, VocabString
 from stix.common.vocabs import AttackerInfrastructureType
 import stix.bindings.ttp as ttp_binding
+from mixbox import fields, entities
 
-
-class Infrastructure(Cached, stix.Entity):
+class Infrastructure(Cached, entities.Entity):
     _binding = ttp_binding
     _binding_class = _binding.InfrastructureType
     _namespace = "http://stix.mitre.org/TTP-1"
-
+    
+    
+    id_ = fields.IdField("id")
+    idref = fields.IdrefField("idref")
+    title = fields.TypedField("Title")
+    descriptions = fields.TypedField("Description", StructuredTextList)
+    short_descriptions = fields.TypedField("Short_Description", StructuredTextList)
+    types = fields.TypedField("Types", "stix.ttp.infrastructure.InfraStructureTypes")
+    observable_characterization = None
+    
+    
     def __init__(self, id_=None, idref=None, title=None, description=None, short_description=None):
+        super(Infrastructure, self).__init__()
         self.id_ = id_
         self.idref = idref
         self.title = title
         self.description = description
         self.short_description = short_description
-        self.types = None
-        self.observable_characterization = None
 
-    @property
-    def id_(self):
-        """The ``id_`` property serves as an identifier.
-
-        Default Value: ``None``
-
-        Note:
-            Both the ``id_`` and ``idref`` properties cannot be set at the
-            same time. **Setting one will unset the other!**
-
-        Returns:
-            A string id.
-
-        """
-        return self._id
-
-    @id_.setter
-    def id_(self, value):
-        if not value:
-            self._id = None
-        else:
-            self._id = value
-            self.idref = None
-
-    @property
-    def idref(self):
-        """The ``idref`` property must be set to the ``id_`` value of another
-        object instance of the same type. An idref does not need to resolve to
-        a local object instance.
-
-        Default Value: ``None``.
-
-        Note:
-            Both the ``id_`` and ``idref`` properties cannot be set at the
-            same time. **Setting one will unset the other!**
-
-        Returns:
-            The value of the ``idref`` property
-
-        """
-        return self._idref
-
-    @idref.setter
-    def idref(self, value):
-        if not value:
-            self._idref = None
-        else:
-            self._idref = value
-            self.id_ = None  # unset id_ if idref is present
-
-    @property
-    def title(self):
-        return self._title
-
-    @title.setter
-    def title(self, value):
-        self._title = value
 
     @property
     def description(self):
@@ -95,9 +47,7 @@ class Infrastructure(Cached, stix.Entity):
             the description with the lowest ordinality value.
 
         Returns:
-            An instance of
-            :class:`.StructuredText`
-
+            An instance of :class:`.StructuredText`
         """
         return next(iter(self.descriptions), None)
 
@@ -105,41 +55,10 @@ class Infrastructure(Cached, stix.Entity):
     def description(self, value):
         self.descriptions = value
 
-    @property
-    def descriptions(self):
-        """A :class:`.StructuredTextList` object, containing descriptions about
-        the purpose or intent of this object.
-
-        This is typically used for the purpose of providing multiple
-        descriptions with different classificaton markings.
-
-        Iterating over this object will yield its contents sorted by their
-        ``ordinality`` value.
-
-        Default Value: Empty :class:`.StructuredTextList` object.
-
-        Note:
-            IF this is set to a value that is not an instance of
-            :class:`.StructuredText`, an effort will ne made to convert it.
-            If this is set to an iterable, any values contained that are not
-            an instance of :class:`.StructuredText` will be be converted.
-
-        Returns:
-            An instance of
-            :class:`.StructuredTextList`
-
-        """
-        return self._description
-
-    @descriptions.setter
-    def descriptions(self, value):
-        self._description = StructuredTextList(value)
-
     def add_description(self, description):
         """Adds a description to the ``descriptions`` collection.
 
         This is the same as calling "foo.descriptions.add(bar)".
-
         """
         self.descriptions.add(description)
 
@@ -156,7 +75,6 @@ class Infrastructure(Cached, stix.Entity):
 
         Returns:
             An instance of :class:`.StructuredText`
-
         """
         return next(iter(self.short_descriptions), None)
 
@@ -164,50 +82,12 @@ class Infrastructure(Cached, stix.Entity):
     def short_description(self, value):
         self.short_descriptions = value
 
-    @property
-    def short_descriptions(self):
-        """A :class:`.StructuredTextList` object, containing short descriptions
-        about the purpose or intent of this object.
-
-        This is typically used for the purpose of providing multiple
-        short descriptions with different classificaton markings.
-
-        Iterating over this object will yield its contents sorted by their
-        ``ordinality`` value.
-
-        Default Value: Empty :class:`.StructuredTextList` object.
-
-        Note:
-            IF this is set to a value that is not an instance of
-            :class:`.StructuredText`, an effort will ne made to convert it.
-            If this is set to an iterable, any values contained that are not
-            an instance of :class:`.StructuredText` will be be converted.
-
-        Returns:
-            An instance of :class:`.StructuredTextList`
-
-        """
-        return self._short_description
-
-    @short_descriptions.setter
-    def short_descriptions(self, value):
-        self._short_description = StructuredTextList(value)
-
     def add_short_description(self, description):
         """Adds a description to the ``short_descriptions`` collection.
 
         This is the same as calling "foo.short_descriptions.add(bar)".
-
         """
         self.short_descriptions.add(description)
-
-    @property
-    def types(self):
-        return self._types
-
-    @types.setter
-    def types(self, value):
-        self._types = InfraStructureTypes(value)
 
     def add_type(self, type_):
         self.types.append(type_)
