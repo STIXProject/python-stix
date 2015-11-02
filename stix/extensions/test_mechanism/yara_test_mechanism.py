@@ -35,49 +35,45 @@ class YaraTestMechanism(_BaseTestMechanism):
             self._rule = EncodedCDATA(value=value)
     
     @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if not obj:
+    def from_obj(cls, cls_obj):
+        if not cls_obj:
             return None
-        if not return_obj:
-            return_obj = cls()
-        
-        super(YaraTestMechanism, cls).from_obj(obj, return_obj)
-        return_obj.version = obj.Version 
-        return_obj.rule = EncodedCDATA.from_obj(obj.Rule)
-        
-        return return_obj
+
+        obj = super(YaraTestMechanism, cls).from_obj(cls_obj)
+
+        obj.version = cls_obj.Version
+        obj.rule = EncodedCDATA.from_obj(cls_obj.Rule)
+
+        return obj
     
-    def to_obj(self, return_obj=None, ns_info=None):
-        if not return_obj:
-            return_obj = self._binding_class()
-            
-        super(YaraTestMechanism, self).to_obj(return_obj=return_obj, ns_info=ns_info)
+    def to_obj(self, ns_info=None):
+        obj = super(YaraTestMechanism, self).to_obj(ns_info=ns_info)
 
         if self.version:
-            return_obj.Version = self.version
+            obj.Version = self.version
         if self.rule:
-            return_obj.Rule = self.rule.to_obj(ns_info=ns_info)
+            obj.Rule = self.rule.to_obj(ns_info=ns_info)
         
-        return return_obj
+        return obj
     
     @classmethod
-    def from_dict(cls, d, return_obj=None):
-        if not d:
+    def from_dict(cls, cls_dict):
+        if not cls_dict:
             return None
-        if not return_obj:
-            return_obj = cls()
-            
-        super(YaraTestMechanism, cls).from_dict(d, return_obj)
-        return_obj.version = d.get('version')
-        return_obj.rule = EncodedCDATA.from_dict(d.get('rule'))
+
+        obj = super(YaraTestMechanism, cls).from_dict(cls_dict)
+
+        obj.version = cls_dict.get('version')
+        obj.rule = EncodedCDATA.from_dict(cls_dict.get('rule'))
         
-        return return_obj
+        return obj
     
     def to_dict(self):
         d = super(YaraTestMechanism, self).to_dict()
         
         if self.version:
             d['version'] = self.version
+
         if self.rule:
             d['rule'] = self.rule.to_dict()
         

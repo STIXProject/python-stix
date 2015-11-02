@@ -13,7 +13,7 @@ from stix.common import InformationSource, Statement
 import stix.bindings.indicator as indicator_binding
 
 
-class _BaseTestMechanism(Cached, entities.Entity):
+class _BaseTestMechanism(Cached, stix.Entity):
     _namespace = "http://stix.mitre.org/Indicator-2"
     _binding = indicator_binding
     _binding_class = indicator_binding.TestMechanismType()
@@ -24,7 +24,8 @@ class _BaseTestMechanism(Cached, entities.Entity):
     producer = fields.TypedField("Producer", InformationSource)
     
     def __init__(self, id_=None, idref=None):
-        self._fields = {}
+        super(_BaseTestMechanism, self).__init__()
+
         self.id_ = id_
         self.idref = idref
         self.efficacy = None
@@ -100,6 +101,7 @@ class TestMechanismFactory(entities.EntityFactory):
         import stix.extensions.test_mechanism.yara_test_mechanism  # noqa
         import stix.extensions.test_mechanism.generic_test_mechanism  # noqa
         stix.lookup_extension(key)
+
 
 class TestMechanisms(stix.EntityList):
     _binding = indicator_binding
