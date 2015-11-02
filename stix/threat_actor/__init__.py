@@ -1,6 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# mixbox
+from mixbox import fields
+
+# internal
 import stix
 import stix.bindings.threat_actor as threat_actor_binding
 from stix.common import vocabs, Confidence, Identity, Statement
@@ -8,35 +12,33 @@ from stix.common.related import (
     GenericRelationshipList, RelatedCampaign, RelatedPackageRefs, RelatedTTP,
     RelatedThreatActor
 )
-from mixbox import fields
+
 from stix.common.statement import StatementField
 from stix.common.information_source import InformationSource
+
 
 class ObservedTTPs(GenericRelationshipList):
     _namespace = 'http://stix.mitre.org/ThreatActor-1'
     _binding = threat_actor_binding
     _binding_class = threat_actor_binding.ObservedTTPsType
-    _binding_var = "Observed_TTP"
-    _contained_type = RelatedTTP
-    _inner_name = "ttps"
+
+    observed_ttp = fields.TypedField("Observed_TTP", RelatedTTP, multiple=True, key_name="ttps")
 
 
 class AssociatedActors(GenericRelationshipList):
     _namespace = 'http://stix.mitre.org/ThreatActor-1'
     _binding = threat_actor_binding
     _binding_class = threat_actor_binding.AssociatedActorsType
-    _binding_var = "Associated_Actor"
-    _contained_type = RelatedThreatActor
-    _inner_name = "threat_actors"
+
+    associated_actor = fields.TypedField("Associated_Actor", RelatedThreatActor, multiple=True, key_name="threat_actors")
 
 
 class AssociatedCampaigns(GenericRelationshipList):
     _namespace = 'http://stix.mitre.org/ThreatActor-1'
     _binding = threat_actor_binding
     _binding_class = threat_actor_binding.AssociatedCampaignsType
-    _binding_var = "Associated_Campaign"
-    _contained_type = RelatedCampaign
-    _inner_name = "campaigns"
+
+    associated_campaign = fields.TypedField("Associated_Campaigns", RelatedCampaign, multiple=True, key_name="campaigns")
 
 
 class ThreatActor(stix.BaseCoreComponent):

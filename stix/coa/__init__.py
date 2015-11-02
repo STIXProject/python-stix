@@ -32,6 +32,35 @@ class RelatedCOAs(GenericRelationshipList):
     _inner_name = "coas"
 
 
+class PotentialCOAs(GenericRelationshipList):
+    """
+    A list of ``Potential_COA`` objects, defaults to empty array
+    """
+    _namespace = "http://stix.mitre.org/ExploitTarget-1"
+    _binding = exploit_target_binding
+    _binding_class = exploit_target_binding.PotentialCOAsType
+
+    potential_coa = fields.TypedField("Potential_COA", RelatedCOA, multiple=True, key_name="coas")
+
+    def __init__(self, coas=None, scope=None):
+        super(PotentialCOAs, self).__init__(scope, coas)
+
+
+class RelatedExploitTargets(GenericRelationshipList):
+    """
+    A list of ``RelatedExploitTargets`` objects, defaults to empty array
+    """
+    _namespace = "http://stix.mitre.org/ExploitTarget-1"
+    _binding = exploit_target_binding
+    _binding_class = exploit_target_binding.RelatedExploitTargetsType
+
+    related_exploit_target = fields.TypedField("Related_Exploit_Target", RelatedExploitTarget, multiple=True, key_name="related_exploit_targets")
+
+    def __init__(self, related_exploit_targets=None, scope=None):
+        super(RelatedExploitTargets, self).__init__(scope, related_exploit_targets)
+
+
+
 class CourseOfAction(stix.BaseCoreComponent):
     """Implementation of the STIX Course of Action.
 

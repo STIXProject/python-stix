@@ -79,14 +79,13 @@ class SuggestedCOAs(GenericRelationshipList):
             or ``"exclusive"``. See
             :class:`stix.common.related.GenericRelationshipList` documentation
             for more information.
-
     """
+
     _namespace = "http://stix.mitre.org/Indicator-2"
     _binding = indicator_binding
     _binding_class = indicator_binding.SuggestedCOAsType
-    _binding_var = "Suggested_COA"
-    _contained_type = RelatedCOA
-    _inner_name = "suggested_coas"
+
+    suggested_coa = fields.TypedField("Suggested_COA", RelatedCOA, multiple=True, key_name="suggested_coas")
 
     def __init__(self, suggested_coas=None, scope=None):
         super(SuggestedCOAs, self).__init__(scope, suggested_coas)
@@ -148,9 +147,8 @@ class RelatedIndicators(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Indicator-2"
     _binding = indicator_binding
     _binding_class = indicator_binding.RelatedIndicatorsType
-    _binding_var = "Related_Indicator"
-    _contained_type = RelatedIndicator
-    _inner_name = "related_indicators"
+
+    related_indicator = fields.TypedField("Related_Indicator", RelatedIndicator, multiple=True, key_name="related_indicators")
 
     def __init__(self, related_indicators=None, scope=None):
         super(RelatedIndicators, self).__init__(scope, related_indicators)

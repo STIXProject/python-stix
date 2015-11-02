@@ -53,7 +53,6 @@ class Resource(stix.Entity):
 
     def __init__(self, tools=None, infrastructure=None, personas=None):
         super(Resource, self).__init__()
-
         self.tools = tools
         self.infrastructure = infrastructure
         self.personas = personas
