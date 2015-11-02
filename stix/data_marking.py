@@ -82,20 +82,10 @@ class Marking(stix.EntityList):
     _binding = stix_data_marking_binding
     _binding_class = stix_data_marking_binding.MarkingType
     _namespace = 'http://data-marking.mitre.org/Marking-1'
-    _contained_type = MarkingSpecification
-    _binding_var = "Marking"
+    marking = fields.TypedField("Marking", MarkingSpecification, multiple=True)
 
     def __init__(self, markings=None):
         super(Marking, self).__init__(markings)
-
-    @property
-    def markings(self):
-        return self._inner
-
-    @markings.setter
-    def markings(self, value):
-        self._inner = []
-        self.extend(value)
 
     def add_marking(self, value):
         self.markings.append(value)

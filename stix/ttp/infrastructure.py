@@ -1,8 +1,11 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# external
+# mixbox
+from mixbox import fields
 from mixbox.cache import Cached
+
+# cybox
 from cybox.core import Observables
 
 # internal
@@ -156,12 +159,3 @@ class Infrastructure(Cached, entities.Entity):
         return_obj.observable_characterization = Observables.from_dict(dict_repr.get('observable_characterization'))
 
         return return_obj
-
-
-class InfraStructureTypes(stix.EntityList):
-    _namespace = "http://stix.mitre.org/TTP-1"
-    _contained_type = VocabString
-    _dict_as_list = True
-
-    def _fix_value(self, value):
-        return AttackerInfrastructureType(value)

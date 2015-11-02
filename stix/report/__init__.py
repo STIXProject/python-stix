@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 from mixbox import idgen
+from mixbox import fields
 from mixbox.cache import Cached
 
 from cybox.core import Observable, Observables
@@ -440,40 +441,32 @@ class Campaigns(stix.EntityList):
     _binding = report_binding
     _namespace = 'http://stix.mitre.org/Report-1'
     _binding_class = _binding.CampaignsType
-    _contained_type = Campaign
-    _binding_var = "Campaign"
-    _inner_name = "campaigns"
-    _dict_as_list = True
+
+    campaign = fields.TypedField("Campaign", Campaign, multiple=True, key_name="campaigns")
 
 
 class CoursesOfAction(stix.EntityList):
     _binding = report_binding
     _namespace = 'http://stix.mitre.org/Report-1'
     _binding_class = _binding.CoursesOfActionType
-    _contained_type = CourseOfAction
-    _binding_var = "Course_Of_Action"
-    _inner_name = "courses_of_action"
-    _dict_as_list = True
+
+    course_of_action = fields.TypedField("Course_Of_Action", CourseOfAction, multiple=True, key_name="courses_of_action")
 
 
 class ExploitTargets(stix.EntityList):
     _binding = stix_common_binding
     _namespace = 'http://stix.mitre.org/common-1'
     _binding_class = _binding.ExploitTargetsType
-    _contained_type = ExploitTarget
-    _binding_var = "Exploit_Target"
-    _inner_name = "exploit_targets"
-    _dict_as_list = True
+
+    exploit_target = fields.TypedField("Exploit_Target", ExploitTarget, multiple=True, key_name="exploit_targets")
 
 
 class Incidents(stix.EntityList):
     _binding = report_binding
     _namespace = 'http://stix.mitre.org/Report-1'
     _binding_class = _binding.IncidentsType
-    _contained_type = Incident
-    _binding_var = "Incident"
-    _inner_name = "incidents"
-    _dict_as_list = True
+
+    incident = fields.TypedField("Incident", Incident, multiple=True, key_name="incidents")
 
 
 class Indicators(stix.EntityList):
@@ -481,16 +474,13 @@ class Indicators(stix.EntityList):
     _namespace = 'http://stix.mitre.org/Report-1'
     _binding_class = _binding.IndicatorsType
     _contained_type = Indicator
-    _binding_var = "Indicator"
-    _inner_name = "indicators"
-    _dict_as_list = True
+
+    indicator = fields.TypedField("Indicator", Indicator, multiple=True, key_name="indicators")
 
 
 class ThreatActors(stix.EntityList):
     _binding = report_binding
     _namespace = 'http://stix.mitre.org/Report-1'
     _binding_class = _binding.ThreatActorsType
-    _contained_type = ThreatActor
-    _binding_var = "Threat_Actor"
-    _inner_name = "threat_actors"
-    _dict_as_list = True
+
+    threat_actor = fields.TypedField("Threat_Actor", ThreatActor, multiple=True, key_name="threat_actors")

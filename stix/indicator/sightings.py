@@ -63,28 +63,31 @@ class Sighting(stix.Entity):
         """
         self.descriptions.add(description)
 
+
 class Sightings(stix.EntityList):
     _namespace = "http://stix.mitre.org/Indicator-2"
     _binding = indicator_binding
     _binding_class = _binding.SightingsType
-    _contained_type = Sighting
-    _binding_var = "Sighting"
-    _inner_name = "sightings"
-    
+
     sightings_count = fields.TypedField("sightings_count")
-    
+    sighting = fields.TypedField("Sighting", Sighting, multiple=True, key_name="sightings")
+
     def __init__(self, sightings_count=None, *args):
         super(Sightings, self).__init__(*args)
         self.sightings_count = sightings_count
 
     def __nonzero__(self):
-        return super(Sightings, self).__nonzero__() or bool(self.sightings_count)
+        return super(Sightings, self).__nonzero__() or (self.sightings_count is not None)
 
 
 class RelatedObservables(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Indicator-2"
     _binding = indicator_binding
     _binding_class = _binding.RelatedObservablesType
-    _binding_var = "Related_Observable"
-    _contained_type = RelatedObservable
-    _inner_name = "observables"
+
+    observable = fields.TypedField(
+        name="Related_Observable",
+        type_=RelatedObservable,
+        multiple=True,
+        key_name="observables"
+    )

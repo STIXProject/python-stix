@@ -1,6 +1,14 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
+
+# stdlib
+import functools
+
+# mixbox
 from mixbox import fields
+from mixbox import typedlist
+
+# cybox
 from cybox.core import Observable
 
 # internal
@@ -92,6 +100,12 @@ class GenericRelationshipEntity(stix.Entity):
 
 
 class GenericRelationshipList(stix.EntityList):
+    """Base class for concrete GenericRelationshipList types.
+
+    Note:
+        Subclasses must supply exactly one multiple TypedField.
+    """
+
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = _binding.GenericRelationshipListType
@@ -106,14 +120,14 @@ class GenericRelationshipList(stix.EntityList):
         return (super(GenericRelationshipList, self).__nonzero__() or
                 bool(self.scope))
 
+    @classmethod
+    def _dict_as_list(cls):
+        return False
 
-class RelatedPackageRefs(stix.EntityList):
-    _namespace = 'http://stix.mitre.org/common-1'
-    _binding = common_binding
-    _binding_class = common_binding.RelatedPackageRefsType
-    _binding_var = "Package_Reference"
-    _contained_type = RelatedPackageRef
-    _inner_name = "packages"
+
+class _RelatedPackageList(typedlist.TypedList):
+    def __init__(self, *args):
+        super(_RelatedPackageList, self).__init__(RelatedPackageRef, True, *args)
 
     def _fix_value(self, value):
         from stix.core import STIXPackage
@@ -128,7 +142,21 @@ class RelatedPackageRefs(stix.EntityList):
 
     def _is_valid(self, value):
         deprecated.warn(value)
-        return stix.EntityList._is_valid(self, value)
+        super(_RelatedPackageList, self)._is_valid(self, value)
+
+
+class RelatedPackageRefs(stix.EntityList):
+    _namespace = 'http://stix.mitre.org/common-1'
+    _binding = common_binding
+    _binding_class = common_binding.RelatedPackageRefsType
+
+    package = fields.TypedField(
+        name="Package_Reference",
+        type_=RelatedPackageRef,
+        multiple=True,
+        key_name="packages",
+        listfunc=_RelatedPackageList
+    )
 
 
 class _BaseRelated(GenericRelationship):
@@ -150,6 +178,7 @@ class _BaseRelated(GenericRelationship):
             information_source,
             relationship
         )
+
         self.item = item
 
 
@@ -157,6 +186,8 @@ class RelatedCampaign(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedCampaignType
+
+    # _BaseRelated requires an "item" field.
     item = fields.TypedField("Campaign", type_="stix.campaign.Campaign")
 
 
@@ -164,6 +195,8 @@ class RelatedCOA(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedCourseOfActionType
+
+    # _BaseRelated requires an "item" field.
     item = fields.TypedField("Course_Of_Action", type_="stix.coa.CourseOfAction")
 
 
@@ -171,6 +204,8 @@ class RelatedExploitTarget(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedExploitTargetType
+
+    # _BaseRelated requires an "item" field.
     item = fields.TypedField("Exploit_Target", type_="stix.exploit_target.ExploitTarget")
 
 
@@ -178,6 +213,8 @@ class RelatedIdentity(_BaseRelated):
     _namespace = 'http://stix.mitre.org/common-1'
     _binding = common_binding
     _binding_class = common_binding.RelatedIdentityType
+
+    # _BaseRelated requires an "item" field.
     item = fields.TypedField("Identity", type_="stix.common.identity.Identity", factory="stix.common.identity.IdentityFactory")
 
 
@@ -185,12 +222,16 @@ class RelatedIncident(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedIncidentType
+
+    # _BaseRelated requires an "item" field.
     item = fields.TypedField("Incident", type_="stix.incident.Incident")
 
 class RelatedIndicator(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedIndicatorType
+
+    # _BaseRelated requires an "item" field.
     item = fields.TypedField("Indicator", type_="stix.indicator.Indicator")
 
 
@@ -198,12 +239,16 @@ class RelatedObservable(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedObservableType
+
+    # _BaseRelated requires an "item" field.
     item = fields.TypedField("Observable", type_=Observable)
 
 class RelatedThreatActor(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedThreatActorType
+
+    # _BaseRelated requires an "item" field.
     item = fields.TypedField("Threat_Actor", type_="stix.threat_actor.ThreatActor")
 
 
@@ -211,6 +256,8 @@ class RelatedTTP(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedTTPType
+
+    # _BaseRelated requires an "item" field.
     item = fields.TypedField("TTP", type_="stix.ttp.TTP")
 
 
@@ -218,6 +265,8 @@ class RelatedPackage(_BaseRelated):
     _namespace = "http://stix.mitre.org/stix-1"
     _binding = core_binding
     _binding_class = core_binding.RelatedPackageType
+
+    # _BaseRelated requires an "item" field.
     item = fields.TypedField("Package", type_="stix.core.STIXPackage", preset_hook=deprecated.field)
 
 
@@ -225,6 +274,8 @@ class RelatedReport(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedReportType
+
+    # _BaseRelated requires an "item" field.
     item = fields.TypedField("Report", type_="stix.report.Report")
 
 
@@ -232,6 +283,8 @@ class RelatedCampaignRef(_BaseRelated):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = common_binding
     _binding_class = _binding.RelatedCampaignReferenceType
+
+    # _BaseRelated requires an "item" field.
     item = fields.TypedField("Campaign", type_="stix.common.CampaignRef")
 
 
@@ -239,15 +292,13 @@ class RelatedPackages(GenericRelationshipList):
     _namespace = 'http://stix.mitre.org/stix-1'
     _binding = core_binding
     _binding_class = core_binding.RelatedPackagesType
-    _binding_var = "Related_Package"
-    _contained_type = RelatedPackage
-    _inner_name = "related_packages"
+
+    related_package = fields.TypedField("Related_Package", RelatedPackage, multiple=True, key_name="related_packages")
 
 
 class RelatedReports(GenericRelationshipList):
     _namespace = 'http://stix.mitre.org/Report-1'
     _binding = report_binding
     _binding_class = report_binding.RelatedReportsType
-    _binding_var = "Related_Report"
-    _contained_type = RelatedReport
-    _inner_name = "related_reports"
+
+    related_report = fields.TypedField("Related_Report", RelatedReport, multiple=True, key_name="related_reports")

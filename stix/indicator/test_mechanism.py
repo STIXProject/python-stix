@@ -113,5 +113,7 @@ class TestMechanisms(stix.EntityList):
 
 
 
+
+
 # Backwards compatibility
 add_extension = stix.add_extension
