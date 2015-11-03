@@ -107,11 +107,13 @@ class TestMechanisms(stix.EntityList):
     _binding = indicator_binding
     _namespace = 'http://stix.mitre.org/Indicator-2'
     _binding_class = _binding.TestMechanismsType
-    _contained_type = _BaseTestMechanism
-    _binding_var = "Test_Mechanism"
-    _entity_factory = TestMechanismFactory
 
-
+    test_mechanism = fields.TypedField(
+        name="Test_Mechanism",
+        type_=_BaseTestMechanism,
+        factory=TestMechanismFactory,
+        multiple=True
+    )
 
 
 
