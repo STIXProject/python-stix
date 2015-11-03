@@ -105,25 +105,22 @@ class CIQIdentity3_0Instance(common.Identity):
         return d
 
     @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        if not dict_repr:
+    def from_dict(cls, cls_dict):
+        if not cls_dict:
             return None
 
-        if not return_obj:
-            return_obj = cls()
+        obj = super(CIQIdentity3_0Instance, cls).from_dict(cls_dict)
 
-        super(CIQIdentity3_0Instance, cls).from_dict(dict_repr)
-
-        roles = dict_repr.get('roles', [])
-        specification = dict_repr.get('specification')
+        roles = cls_dict.get('roles', [])
+        specification = cls_dict.get('specification')
 
         for role in roles:
-            return_obj.add_role(role)
+            obj.add_role(role)
 
         if specification:
-            return_obj.specification = STIXCIQIdentity3_0.from_dict(specification)
+            obj.specification = STIXCIQIdentity3_0.from_dict(specification)
 
-        return return_obj
+        return obj
 
 
 class STIXCIQIdentity3_0(stix.Entity):

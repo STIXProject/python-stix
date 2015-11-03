@@ -52,7 +52,7 @@ class IdrefDeprecatedList(TypedList):
     """TypedList specialization that raises a UserWarning on ever insert()
     call.
     """
-    
+
     def _is_valid(self, value):
         idref(value)
         return super(IdrefDeprecatedList, self)._is_valid(value)

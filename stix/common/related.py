@@ -127,7 +127,7 @@ class GenericRelationshipList(stix.EntityList):
 
 class _RelatedPackageList(typedlist.TypedList):
     def __init__(self, *args):
-        super(_RelatedPackageList, self).__init__(RelatedPackageRef, True, *args)
+        super(_RelatedPackageList, self).__init__(type=RelatedPackageRef, *args)
 
     def _fix_value(self, value):
         from stix.core import STIXPackage
@@ -142,7 +142,7 @@ class _RelatedPackageList(typedlist.TypedList):
 
     def _is_valid(self, value):
         deprecated.warn(value)
-        super(_RelatedPackageList, self)._is_valid(self, value)
+        return super(_RelatedPackageList, self)._is_valid(value)
 
 
 class RelatedPackageRefs(stix.EntityList):
@@ -157,6 +157,10 @@ class RelatedPackageRefs(stix.EntityList):
         key_name="packages",
         listfunc=_RelatedPackageList
     )
+
+    @classmethod
+    def _dict_as_list(cls):
+        return False
 
 
 class _BaseRelated(GenericRelationship):

@@ -17,12 +17,12 @@ from stix.common import (InformationSource, VocabString, Confidence, RelatedTTP,
     Statement, CampaignRef)
 from stix.common.related import (GenericRelationshipList, RelatedCOA,
     RelatedIndicator, RelatedCampaignRef, RelatedPackageRefs)
-from stix.common.vocabs import IndicatorType
+from stix.common.vocabs import VocabField, IndicatorType
 from stix.common.kill_chains import KillChainPhasesReference
 import stix.bindings.indicator as indicator_binding
 
 # relative
-from .test_mechanism import TestMechanisms, TestMechanismFactory
+from .test_mechanism import TestMechanisms
 from .sightings import Sightings
 from .valid_time import ValidTime
 
@@ -179,8 +179,8 @@ class Indicator(stix.BaseCoreComponent):
     _ID_PREFIX = "indicator"
 
     producer = fields.TypedField("Producer", InformationSource)
-    observable = fields.TypedField("Observable", Observable, postset_hook = lambda inst,value: inst.set_observables([value]))
-    indicator_types = fields.TypedField("Type", IndicatorType, multiple=True, key_name="indicator_types")
+    observable = fields.TypedField("Observable", Observable, postset_hook=lambda inst,value: inst.set_observables([value]))
+    indicator_types = VocabField("Type", IndicatorType, multiple=True, key_name="indicator_types")
     confidence = fields.TypedField("Confidence", Confidence)
     indicated_ttps = fields.TypedField("Indicated_TTP", RelatedTTP, multiple=True, key_name="indicated_ttps")
     test_mechanisms = fields.TypedField("Test_Mechanisms",  TestMechanisms)
@@ -195,7 +195,6 @@ class Indicator(stix.BaseCoreComponent):
     likely_impact = fields.TypedField("Likely_Impact", Statement)
     negate = fields.TypedField("negate")
     related_packages = fields.TypedField("Related_Packages", RelatedPackageRefs)
-
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
@@ -789,17 +788,15 @@ class Indicator(stix.BaseCoreComponent):
             
         return return_obj
     """
-    
+
     def to_dict(self):
         keys = ('observables', 'observable_composition_operator', 'negate')
         #d = utils.to_dict(self, skip=keys)
 
         d = super(Indicator, self).to_dict()
 
-        if self.negate:
-            d['negate'] = True
-        else:
-            if 'negate' in d: del d['negate']
+        if not self.negate:
+            d.pop("negate", None)
 
         if self.observables:
             if len(self.observables) == 1:
@@ -914,6 +911,21 @@ class CompositeIndicatorExpression(entities.EntityList):
     def __init__(self, operator="OR", *args):
         super(CompositeIndicatorExpression, self).__init__(*args)
         self.operator = operator
+
+
+class _RelatedCampaignRefList(typedlist.TypedList):
+    def __init__(self, *args):
+        super(_RelatedCampaignRefList, self).__init__(type=RelatedCampaignRef, *args)
+
+    def _fix_value(self, value):
+        from stix.campaign import Campaign
+
+        if isinstance(value, Campaign) and value.id_:
+            return RelatedCampaignRef(CampaignRef(idref=value.id_))
+
+        msg = "Cannot insert object of type '%s' into '%s'"
+        msg = msg % (type(value), self.__class__.__name__)
+        raise TypeError(msg)
 
 
 class RelatedCampaignRefs(GenericRelationshipList):

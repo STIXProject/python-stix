@@ -23,10 +23,6 @@ class AssociatedCampaigns(GenericRelationshipList):
 
     campaign = fields.TypedField("Associated_Campaign", RelatedCampaign, multiple=True, key_name="campaigns")
 
-    @classmethod
-    def _dict_as_list(cls):
-        return False
-
 
 class Attribution(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Campaign-1"
@@ -34,10 +30,6 @@ class Attribution(GenericRelationshipList):
     _binding_class = campaign_binding.AttributionType
 
     threat_actor = fields.TypedField("Attributed_Threat_Actor", RelatedThreatActor, multiple=True, key_name="threat_actors")
-
-    @classmethod
-    def _dict_as_list(cls):
-        return False
 
 
 class RelatedIncidents(GenericRelationshipList):
@@ -47,10 +39,6 @@ class RelatedIncidents(GenericRelationshipList):
 
     incident = fields.TypedField("Related_Incident", RelatedIncident, multiple=True, key_name="incidents")
 
-    @classmethod
-    def _dict_as_list(cls):
-        return False
-
 
 class RelatedIndicators(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Campaign-1"
@@ -58,7 +46,6 @@ class RelatedIndicators(GenericRelationshipList):
     _binding_class = campaign_binding.RelatedIndicatorsType
 
     indicator = fields.TypedField("Related_Indicator", RelatedIndicator, multiple=True, key_name="indicators")
-
 
     def _is_valid(self, value):
         deprecated.warn(value)
@@ -71,10 +58,6 @@ class RelatedTTPs(GenericRelationshipList):
     _binding_class = campaign_binding.RelatedTTPsType
 
     ttp = fields.TypedField("Related_TTP", RelatedTTP, multiple=True, key_name="ttps")
-
-    @classmethod
-    def _dict_as_list(cls):
-        return False
 
 
 class Names(stix.EntityList):

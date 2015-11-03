@@ -203,9 +203,6 @@ class Entity(entities.Entity):
 
 
 class EntityList(entities.EntityList, Entity):
-    _contained_type = _override
-    _inner_name = None
-
     def to_xml(self, *args, **kwargs):
         return Entity.to_xml(self, *args, **kwargs)
 
