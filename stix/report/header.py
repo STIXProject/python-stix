@@ -67,7 +67,7 @@ class Header(stix.Entity):
             :class:`.StructuredText`
 
         """
-        return next(iter(self.descriptions), None)
+        return next(iter(self.descriptions or []), None)
 
     @description.setter
     def description(self, value):
@@ -96,7 +96,7 @@ class Header(stix.Entity):
             An instance of :class:`.StructuredText`
 
         """
-        return next(iter(self.short_descriptions), None)
+        return next(iter(self.short_descriptions or []), None)
 
     @short_description.setter
     def short_description(self, value):

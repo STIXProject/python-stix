@@ -49,7 +49,7 @@ class TTP(stix.BaseCoreComponent):
     resources = fields.TypedField("Resources", Resource)
     victim_targeting = fields.TypedField("Victim_Targeting", VictimTargeting)
     exploit_targets = fields.TypedField("Exploit_Targets", ExploitTargets)
-    related_packages = fields.TypedField("Related_Pacakges", RelatedPackageRefs)
+    related_packages = fields.TypedField("Related_Packages", RelatedPackageRefs)
     kill_chain_phases = fields.TypedField("Kill_Chain_Phases", KillChainPhasesReference)
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
@@ -64,13 +64,7 @@ class TTP(stix.BaseCoreComponent):
             short_description=short_description
         )
 
-        self.behavior = None
-        self.related_ttps = None
-        self.intended_effects = None
-        self.resources = None
-        self.victim_targeting = None
-        self.related_packages = None
-        self.kill_chain_phases = None
+        self.related_packages = RelatedPackageRefs()
 
 
     def add_related_ttp(self, value):
@@ -133,18 +127,6 @@ class TTP(stix.BaseCoreComponent):
                 STIX package separately.
         """
         self.kill_chain_phases.append(value)
-
-    @property
-    def related_packages(self):
-        """**DEPRECATED**: A collection of :class:`.RelatedPackageRef`
-        objects. This behaves like a ``MutableSequence``.
-
-        """
-        return self._related_packages
-
-    @related_packages.setter
-    def related_packages(self, value):
-        self._related_packages = RelatedPackageRefs(value)
 
     def add_related_package(self, value):
         """Adds a :class:`.RelatedPackageRef` object to the

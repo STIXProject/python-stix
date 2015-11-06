@@ -40,7 +40,7 @@ class Tools(stix.EntityList):
 
     @classmethod
     def _dict_as_list(cls):
-        return False
+        return True
 
 
 class Resource(stix.Entity):

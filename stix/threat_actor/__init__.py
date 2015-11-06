@@ -38,7 +38,7 @@ class AssociatedCampaigns(GenericRelationshipList):
     _binding = threat_actor_binding
     _binding_class = threat_actor_binding.AssociatedCampaignsType
 
-    associated_campaign = fields.TypedField("Associated_Campaigns", RelatedCampaign, multiple=True, key_name="campaigns")
+    associated_campaign = fields.TypedField("Associated_Campaign", RelatedCampaign, multiple=True, key_name="campaigns")
 
 
 class ThreatActor(stix.BaseCoreComponent):

@@ -49,7 +49,7 @@ class Sighting(stix.Entity):
             An instance of :class:`.StructuredText`
 
         """
-        return next(iter(self.descriptions), None)
+        return next(iter(self.descriptions or []), None)
 
     @description.setter
     def description(self, value):
