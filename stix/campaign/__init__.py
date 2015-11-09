@@ -108,6 +108,7 @@ class Campaign(stix.BaseCoreComponent):
     related_incidents = fields.TypedField("Related_Incidents", RelatedIncidents)
     related_indicators = fields.TypedField("Related_Indicators", RelatedIndicators)
     related_packages = fields.TypedField("Related_Packages", RelatedPackageRefs)
+    related_ttps = fields.TypedField("Related_TTPs", RelatedTTPs)
     information_source = fields.TypedField("Information_Source", InformationSource)
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
