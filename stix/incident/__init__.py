@@ -79,6 +79,11 @@ class Incident(stix.BaseCoreComponent):
             description=description,
             short_description=short_description
         )
+        self.related_indicators = RelatedIndicators()
+        self.related_observables = RelatedObservables()
+        self.related_incidents = RelatedIncidents()
+        self.related_packages = RelatedPackageRefs()
+        
     def add_intended_effect(self, value):
         """Adds a :class:`.Statement` object to the :attr:`intended_effects`
         collection.
@@ -411,7 +416,7 @@ class LeveragedTTPs(GenericRelationshipList):
     _binding_class = _binding.LeveragedTTPsType
 
     ttp = fields.TypedField(
-        name="Leverated_TTP",
+        name="Leveraged_TTP",
         type_=RelatedTTP,
         multiple=True,
         key_name="ttps"

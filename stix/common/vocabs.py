@@ -77,7 +77,7 @@ class VocabFactory(entities.EntityFactory):
             return VocabString
 
 
-class VocabString(stix.Entity):
+class VocabString(entities.Entity):
     _binding = stix_common_binding
     _binding_class = stix_common_binding.ControlledVocabularyStringType
     _namespace = 'http://stix.mitre.org/common-1'
@@ -95,8 +95,6 @@ class VocabString(stix.Entity):
         super(VocabString, self).__init__()
         self.value = value
         self.xsi_type = self._XSI_TYPE
-        self.vocab_name = None
-        self.vocab_reference = None
 
     def __str__(self):
         return str(self.value)
