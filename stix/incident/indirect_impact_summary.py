@@ -4,6 +4,7 @@
 import stix
 import stix.bindings.incident as incident_binding
 from stix.common import vocabs, VocabString
+from stix.common.vocabs import VocabField
 from mixbox import entities, fields
 
 class IndirectImpactSummary(entities.Entity):
@@ -11,10 +12,10 @@ class IndirectImpactSummary(entities.Entity):
     _binding  = incident_binding
     _binding_class = incident_binding.IndirectImpactSummaryType
 
-    loss_of_competitive_advantage = fields.TypedField("Loss_Of_Competitive_Advantage", vocabs.SecurityCompromise)
-    brand_and_market_damage = fields.TypedField("Brand_And_Market_Damage", vocabs.SecurityCompromise)
-    increased_operating_costs = fields.TypedField("Increased_Operating_Costs", vocabs.SecurityCompromise)
-    legal_and_regulatory_costs = fields.TypedField("Legal_And_Regulatory_Costs", vocabs.SecurityCompromise)
+    loss_of_competitive_advantage = VocabField("Loss_Of_Competitive_Advantage", vocabs.SecurityCompromise)
+    brand_and_market_damage = VocabField("Brand_And_Market_Damage", vocabs.SecurityCompromise)
+    increased_operating_costs = VocabField("Increased_Operating_Costs", vocabs.SecurityCompromise)
+    legal_and_regulatory_costs = VocabField("Legal_And_Regulatory_Costs", vocabs.SecurityCompromise)
 
     def __init__(self):
         super(IndirectImpactSummary, self).__init__()

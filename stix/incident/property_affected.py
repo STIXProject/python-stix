@@ -6,6 +6,7 @@ import stix
 from stix.common import vocabs, VocabString, StructuredTextList
 import stix.bindings.incident as incident_binding
 from mixbox import fields, entities
+from stix.common.vocabs import VocabField
 
 class NonPublicDataCompromised(VocabString):
     _namespace = "http://stix.mitre.org/Incident-1"
@@ -15,42 +16,9 @@ class NonPublicDataCompromised(VocabString):
     data_encrypted = fields.TypedField("data_encrypted")
     
     def __init__(self, value=None, data_encrypted=None):
-        super(NonPublicDataCompromised, self).__init__(value)
         self.data_encrypted = data_encrypted
-        
-    
-#     @classmethod
-#     def from_obj(cls, obj, return_obj=None):
-#         if not obj:
-#             return None
-# 
-#         if not return_obj:
-#             return_obj = cls()
-#         
-#         super(NonPublicDataCompromised, cls).from_obj(obj, return_obj=return_obj)
-#         return_obj.data_encrypted = obj.data_encrypted
-#         return return_obj
-#     
-#     def to_obj(self, return_obj=None, ns_info=None):
-#         if not return_obj:
-#             return_obj = self._binding_class()
-#         
-#         super(NonPublicDataCompromised, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-#         return_obj.data_encrypted = self.data_encrypted
-#         return return_obj
-#     
-#     @classmethod
-#     def from_dict(cls, d, return_obj=None):
-#         if not d:
-#             return None
-# 
-#         if not return_obj:
-#             return_obj = cls()
-#             
-#         super(NonPublicDataCompromised, cls).from_dict(d, return_obj=return_obj)
-#         return_obj.data_encrypted = d.get('data_encrypted')
-#         return return_obj
-   
+        super(NonPublicDataCompromised, self).__init__(value)
+ 
     def is_plain(self):
         return False
   
@@ -68,11 +36,11 @@ class PropertyAffected(stix.Entity):
     _binding = incident_binding
     _binding_class = incident_binding.PropertyAffectedType
     
-    property_ = fields.TypedField("Property", vocabs.LossProperty, key_name="property_")
+    property_ = VocabField("Property", vocabs.LossProperty, key_name="property")
     descriptions_of_effect = fields.TypedField("Description_Of_Effect", StructuredTextList)
-    type_of_availability_loss = fields.TypedField("Type_Of_Availability_Loss", vocabs.AvailabilityLossType)
-    duration_of_availability_loss = fields.TypedField("Duration_Of_Availability_Loss", vocabs.LossDuration)
-    non_public_data_compromised = fields.TypedField("Non_Public_Data_Compromised", NonPublicDataCompromised)
+    type_of_availability_loss = VocabField("Type_Of_Availability_Loss", vocabs.AvailabilityLossType)
+    duration_of_availability_loss = VocabField("Duration_Of_Availability_Loss", vocabs.LossDuration)
+    non_public_data_compromised = VocabField("Non_Public_Data_Compromised", NonPublicDataCompromised)
     
     def __init__(self):
         super(PropertyAffected, self).__init__()
