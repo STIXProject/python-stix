@@ -18,7 +18,7 @@ def validate_precision(instance, value):
         error = error.format(DATETIME_PRECISION_VALUES, value)
         raise ValueError(error)
 
-class JournalEntry(entities.Entity):
+class JournalEntry(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding = incident_binding
     _binding_class = incident_binding.JournalEntryType
@@ -80,7 +80,7 @@ class JournalEntry(entities.Entity):
 #         return return_obj
 
 
-class HistoryItem(entities.Entity):
+class HistoryItem(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding = incident_binding
     _binding_class = incident_binding.HistoryItemType

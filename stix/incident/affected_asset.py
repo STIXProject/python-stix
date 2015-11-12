@@ -7,7 +7,6 @@ from cybox.core import Observables
 # internal
 import stix
 from stix.common import vocabs, VocabString, StructuredTextList
-from stix.common.vocabs import VocabField
 import stix.bindings.incident as incident_binding
 
 # relative
@@ -15,20 +14,20 @@ from .property_affected import PropertyAffected
 
 from mixbox import entities, fields
 
-class AffectedAsset(entities.Entity):
+class AffectedAsset(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding = incident_binding
     _binding_class = incident_binding.AffectedAssetType
     
     descriptions = fields.TypedField("Description", StructuredTextList)
     business_function_or_roles = fields.TypedField("Business_Function_Or_Role", StructuredTextList)
-    ownership_class = VocabField("Ownership_Class", vocabs.OwnershipClass)
-    management_class = VocabField("Management_Class", vocabs.ManagementClass)
-    location_class = VocabField("location_Class", vocabs.LocationClass)
+    ownership_class = fields.TypedField("Ownership_Class", vocabs.OwnershipClass)
+    management_class = fields.TypedField("Management_Class", vocabs.ManagementClass)
+    location_class = fields.TypedField("location_Class", vocabs.LocationClass)
     # location = fields.TypedField("Location")
-    nature_of_security_effect = VocabField("Nature_Of_Security_Effect", type_="stix.incident.affected_asset.NatureOfSecurityEffect")
+    nature_of_security_effect = fields.TypedField("Nature_Of_Security_Effect", type_="stix.incident.affected_asset.NatureOfSecurityEffect")
     structured_description = fields.TypedField("Structured_Description", Observables)
-    type_ = VocabField("Type", type_="stix.incident.affected_asset.AssetType", key_name="type")
+    type_ = fields.TypedField("Type", type_="stix.incident.affected_asset.AssetType", key_name="type")
     
     def __init__(self):
         super(AffectedAsset, self).__init__()

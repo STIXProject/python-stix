@@ -13,7 +13,7 @@ from .contributors import Contributors
 
 from mixbox import entities, fields
 
-class COATaken(entities.Entity):
+class COATaken(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding = incident_binding
     _binding_class = _binding.COATakenType
@@ -123,7 +123,7 @@ class COARequested(COATaken):
 #         return d
 
 
-class COATime(entities.Entity):
+class COATime(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding = incident_binding
     _binding_class = _binding.COATimeType

@@ -10,7 +10,7 @@ from .loss_estimation import LossEstimation
 
 from mixbox import entities, fields
 
-class TotalLossEstimation(entities.Entity):
+class TotalLossEstimation(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding  = incident_binding
     _binding_class = incident_binding.TotalLossEstimationType

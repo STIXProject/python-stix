@@ -6,7 +6,6 @@ import stix
 from stix.common import vocabs, VocabString, StructuredTextList
 import stix.bindings.incident as incident_binding
 from mixbox import fields, entities
-from stix.common.vocabs import VocabField
 
 class NonPublicDataCompromised(VocabString):
     _namespace = "http://stix.mitre.org/Incident-1"
@@ -16,8 +15,8 @@ class NonPublicDataCompromised(VocabString):
     data_encrypted = fields.TypedField("data_encrypted")
     
     def __init__(self, value=None, data_encrypted=None):
-        self.data_encrypted = data_encrypted
         super(NonPublicDataCompromised, self).__init__(value)
+        self.data_encrypted = data_encrypted
  
     def is_plain(self):
         return False
@@ -36,11 +35,11 @@ class PropertyAffected(stix.Entity):
     _binding = incident_binding
     _binding_class = incident_binding.PropertyAffectedType
     
-    property_ = VocabField("Property", vocabs.LossProperty, key_name="property")
+    property_ = fields.TypedField("Property", vocabs.LossProperty, key_name="property")
     descriptions_of_effect = fields.TypedField("Description_Of_Effect", StructuredTextList)
-    type_of_availability_loss = VocabField("Type_Of_Availability_Loss", vocabs.AvailabilityLossType)
-    duration_of_availability_loss = VocabField("Duration_Of_Availability_Loss", vocabs.LossDuration)
-    non_public_data_compromised = VocabField("Non_Public_Data_Compromised", NonPublicDataCompromised)
+    type_of_availability_loss = fields.TypedField("Type_Of_Availability_Loss", vocabs.AvailabilityLossType)
+    duration_of_availability_loss = fields.TypedField("Duration_Of_Availability_Loss", vocabs.LossDuration)
+    non_public_data_compromised = fields.TypedField("Non_Public_Data_Compromised", NonPublicDataCompromised)
     
     def __init__(self):
         super(PropertyAffected, self).__init__()

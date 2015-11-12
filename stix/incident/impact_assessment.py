@@ -14,7 +14,7 @@ from .total_loss_estimation import TotalLossEstimation
 from mixbox import fields, entities
 from stix.common.vocabs import VocabField
 
-class ImpactAssessment(entities.Entity):
+class ImpactAssessment(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding  = incident_binding
     _binding_class = incident_binding.ImpactAssessmentType
@@ -22,7 +22,7 @@ class ImpactAssessment(entities.Entity):
     direct_impact_summary = fields.TypedField("Direct_Impact_Summary", DirectImpactSummary)
     indirect_impact_summary = fields.TypedField("Indirect_Impact_Summary", IndirectImpactSummary)
     total_loss_estimation = fields.TypedField("Total_Loss_Estimation", TotalLossEstimation)
-    impact_qualification = VocabField("Impact_Qualification", vocabs.ImpactQualification)
+    impact_qualification = fields.TypedField("Impact_Qualification", vocabs.ImpactQualification)
     effects = fields.TypedField("Effects", type_="stix.incident.impact_assessment.Effects")
 
     def __init__(self):
