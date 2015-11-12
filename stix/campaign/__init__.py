@@ -10,7 +10,7 @@ from stix.common.related import (GenericRelationshipList, RelatedCampaign,
     RelatedIncident, RelatedIndicator, RelatedPackageRefs, RelatedThreatActor,
     RelatedTTP)
 from stix.common import vocabs
-from stix.common.vocabs import VocabField
+from stix.common.vocabs import VocabField, CampaignStatus
 import stix.bindings.campaign as campaign_binding
 from stix.common.structured_text import StructuredTextList
 from stix.common.information_source import InformationSource
@@ -102,7 +102,7 @@ class Campaign(stix.BaseCoreComponent):
     attribution = fields.TypedField("Attribution", Attribution, multiple=True)
     confidence = fields.TypedField("Confidence", Confidence)
     # references = fields.TypedField("Reference", multiple=True)
-    status = fields.TypedField("Status", VocabString)
+    status = VocabField("Status", CampaignStatus)
     intended_effects = fields.TypedField("Intended_Effect", Statement, multiple=True, key_name="intended_effects")
     names = fields.TypedField("Names", Names)
     related_incidents = fields.TypedField("Related_Incidents", RelatedIncidents)

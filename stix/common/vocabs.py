@@ -77,7 +77,7 @@ class VocabFactory(entities.EntityFactory):
             return VocabString
 
 
-class VocabString(entities.Entity):
+class VocabString(stix.Entity):
     _binding = stix_common_binding
     _binding_class = stix_common_binding.ControlledVocabularyStringType
     _namespace = 'http://stix.mitre.org/common-1'

@@ -155,7 +155,10 @@ class Infrastructure(Cached, entities.Entity):
 class InfraStructureTypes(stix.EntityList):
     _namespace = "http://stix.mitre.org/TTP-1"
     _contained_type = VocabString
-    _dict_as_list = True
+    
+    @classmethod
+    def _dict_as_list(cls):
+        return True
 
     def _fix_value(self, value):
         return AttackerInfrastructureType(value)

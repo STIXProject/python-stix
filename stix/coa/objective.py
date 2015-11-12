@@ -22,7 +22,6 @@ class Objective(stix.Entity):
 
         self.description = description
         self.short_description = short_description
-        self.applicability_confidence = None
 
     @property
     def description(self):
