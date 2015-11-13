@@ -141,3 +141,7 @@ class History(stix.EntityList):
 
     history_items = fields.TypedField("History_Item", HistoryItem, multiple=True, key_name="history_items")
     
+    @classmethod
+    def _dict_as_list(cls):
+        return False
+    
