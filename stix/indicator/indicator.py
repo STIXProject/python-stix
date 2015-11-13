@@ -177,6 +177,7 @@ class Indicator(stix.BaseCoreComponent):
     _ALL_VERSIONS = ("2.0", "2.0.1", "2.1", "2.1.1", "2.2")
     _ALLOWED_COMPOSITION_OPERATORS = ('AND', 'OR')
     _ID_PREFIX = "indicator"
+    _try_cast = False
 
     producer = fields.TypedField("Producer", InformationSource)
     observable = fields.TypedField("Observable", Observable, postset_hook=lambda inst,value: inst.set_observables([value]))
