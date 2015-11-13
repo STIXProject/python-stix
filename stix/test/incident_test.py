@@ -537,7 +537,7 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
 
         # Test that this fails
         self.assertRaises(
-            ValueError,
+            TypeError,
             i.add_related_indicator,
             "THIS SHOULD FAIL"
         )
