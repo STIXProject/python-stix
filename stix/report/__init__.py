@@ -65,7 +65,7 @@ class Report(Cached, stix.Entity):
     version = fields.TypedField("version")
     header = fields.TypedField("Header", Header)
     campaigns = fields.TypedField("Campaigns", type_="stix.report.Campaigns")
-    courses_of_action = fields.TypedField("Courses_of_Action", type_="stix.report.CoursesOfAction")
+    courses_of_action = fields.TypedField("Courses_Of_Action", type_="stix.report.CoursesOfAction")
     exploit_targets = fields.TypedField("Exploit_Targets", type_="stix.report.ExploitTargets")
     observables = fields.TypedField("Observables", Observables)
     indicators = fields.TypedField("Indicators", type_="stix.report.Indicators")
