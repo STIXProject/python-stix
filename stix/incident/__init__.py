@@ -69,6 +69,9 @@ class Incident(stix.BaseCoreComponent):
     coa_taken = fields.TypedField("COA_Taken", COATaken, multiple=True)
     coa_requested = fields.TypedField("COA_Requested", COARequested, multiple=True)
     history = fields.TypedField("History", History)
+    information_source = fields.TypedField("Information_Source", InformationSource)
+    url = fields.TypedField("URL")
+    contacts = fields.TypedField("Contact", InformationSource, multiple=True, key_name="contacts")
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None, description=None, short_description=None):
         super(Incident, self).__init__(
