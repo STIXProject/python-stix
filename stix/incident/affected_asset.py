@@ -23,7 +23,7 @@ class AffectedAsset(stix.Entity):
     business_function_or_roles = fields.TypedField("Business_Function_Or_Role", StructuredTextList)
     ownership_class = fields.TypedField("Ownership_Class", vocabs.OwnershipClass)
     management_class = fields.TypedField("Management_Class", vocabs.ManagementClass)
-    location_class = fields.TypedField("location_Class", vocabs.LocationClass)
+    location_class = fields.TypedField("Location_Class", vocabs.LocationClass)
     # location = fields.TypedField("Location")
     nature_of_security_effect = fields.TypedField("Nature_Of_Security_Effect", type_="stix.incident.affected_asset.NatureOfSecurityEffect")
     structured_description = fields.TypedField("Structured_Description", Observables)
