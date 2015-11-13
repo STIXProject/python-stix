@@ -15,7 +15,7 @@ from stix.common.vocabs import AttackerInfrastructureType
 import stix.bindings.ttp as ttp_binding
 from mixbox import fields, entities
 
-class Infrastructure(Cached, entities.Entity):
+class Infrastructure(Cached, stix.Entity):
     _binding = ttp_binding
     _binding_class = _binding.InfrastructureType
     _namespace = "http://stix.mitre.org/TTP-1"

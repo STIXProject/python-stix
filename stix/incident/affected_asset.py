@@ -149,7 +149,7 @@ class AssetType(VocabString):
     _binding  = incident_binding
     _binding_class = incident_binding.AssetTypeType
     
-    count_affected = fields.TypedField("count_affected")
+    count_affected = fields.IntegerField("count_affected")
     
     def __init__(self, value=None, count_affected=None):
         super(AssetType, self).__init__(value)

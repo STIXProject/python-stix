@@ -5,7 +5,7 @@ import stix
 import stix.bindings.incident as incident_binding
 from mixbox import fields, entities
 
-class ExternalID(entities.Entity):
+class ExternalID(stix.Entity):
     _namespace = "http://stix.mitre.org/Incident-1"
     _binding  = incident_binding
     _binding_class = incident_binding.ExternalIDType

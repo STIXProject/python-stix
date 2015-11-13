@@ -40,7 +40,7 @@ from . import (Campaigns, CoursesOfAction, ExploitTargets, Incidents,
 import stix.bindings.stix_core as stix_core_binding
 import mixbox.entities
 
-class STIXPackage(Cached, mixbox.entities.Entity):
+class STIXPackage(Cached, stix.Entity):
     """A STIX Package object.
 
     Args:

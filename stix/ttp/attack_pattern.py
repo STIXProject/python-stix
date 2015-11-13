@@ -13,7 +13,7 @@ import stix.bindings.ttp as ttp_binding
 
 from mixbox import fields, entities
 
-class AttackPattern(Cached, entities.Entity):
+class AttackPattern(Cached, stix.Entity):
     _binding = ttp_binding
     _binding_class = _binding.AttackPatternType
     _namespace = "http://stix.mitre.org/TTP-1"

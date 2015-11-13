@@ -12,9 +12,7 @@ from .malware_instance import MalwareInstance
 from .exploit import Exploit
 from .attack_pattern import AttackPattern
 
-from mixbox import entities, fields
-
-class Behavior(entities.Entity):
+class Behavior(stix.Entity):
     _binding = ttp_binding
     _binding_class = _binding.BehaviorType
     _namespace = "http://stix.mitre.org/TTP-1"
