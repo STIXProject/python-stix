@@ -38,12 +38,11 @@ class STIXHeader(stix.Entity):
 
     title = fields.TypedField("Title", preset_hook=deprecated.field)
     package_intents = VocabField("Package_Intent", PackageIntent, multiple=True, preset_hook=deprecated.field)
-    descriptions = fields.TypedField("Description", type_=StructuredTextList, preset_hook=deprecated.field)
+    descriptions = fields.TypedField("Description", type_=StructuredTextList)#, preset_hook=deprecated.field)
     short_descriptions = fields.TypedField("Short_Description", type_=StructuredTextList, preset_hook=deprecated.field)
     handling = fields.TypedField("Handling", Marking)
     information_source = fields.TypedField("Information_Source", InformationSource)
     profiles = fields.TypedField("Profiles", Profiles)
-
 
     def __init__(self, package_intents=None, description=None, handling=None,
                  information_source=None, title=None, short_description=None):
@@ -78,7 +77,7 @@ class STIXHeader(stix.Entity):
 
     @description.setter
     def description(self, value):
-        self.descriptions = value
+        self.descriptions = StructuredTextList(value)
 
     def add_description(self, description):
         """**DEPRECATED**. Adds a description to the ``descriptions``
@@ -109,7 +108,7 @@ class STIXHeader(stix.Entity):
 
     @short_description.setter
     def short_description(self, value):
-        self.short_descriptions = value
+        self.short_descriptions = StructuredTextList(value)
 
     def add_short_description(self, description):
         """**DEPRECATED**. Adds a description to the ``short_descriptions``
