@@ -49,10 +49,19 @@ def warn(value):
 
 
 class IdrefDeprecatedList(TypedList):
-    """TypedList specialization that raises a UserWarning on ever insert()
-    call.
+    """TypedList specialization that raises a UserWarning if an inserted value
+    contains an idref.
     """
 
-    def _is_valid(self, value):
+    def insert(self, idx, value):
         idref(value)
-        return super(IdrefDeprecatedList, self)._is_valid(value)
+        super(IdrefDeprecatedList, self).insert(idx, value)
+
+
+class DeprecatedList(TypedList):
+    """TypedList specialization that raises a UserWarning if a non-None
+    value is inserted.
+    """
+    def insert(self, idx, value):
+        warn(value)
+        super(DeprecatedList, self).insert(idx, value)
