@@ -96,7 +96,7 @@ class STIXPackage(Cached, stix.Entity):
         
         self.id_ = id_ or idgen.create_id("Package")
         self.idref = idref
-        self._version = STIXPackage._version
+        self.version = STIXPackage._version
         self.stix_header = stix_header
         self.campaigns = campaigns
         self.courses_of_action = courses_of_action
