@@ -21,7 +21,6 @@ class Activity(stix.Entity):
 
     def __init__(self):
         super(Activity, self).__init__()
-        self.date_time = None
         self.descriptions = StructuredTextList()
 
     @property

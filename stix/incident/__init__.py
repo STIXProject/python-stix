@@ -7,6 +7,7 @@ import stix.bindings.incident as incident_binding
 from stix.common import vocabs
 from stix.common import Statement, VocabString, InformationSource, Confidence
 from stix.common.vocabs import VocabField
+from stix.common.statement import StatementField
 from stix.common.identity import Identity, IdentityFactory
 from stix.common.related import (GenericRelationshipList, RelatedIndicator,
     RelatedThreatActor, RelatedTTP, RelatedObservable, RelatedIncident,
@@ -56,7 +57,7 @@ class Incident(stix.BaseCoreComponent):
     related_packages = fields.TypedField("Related_Packages", RelatedPackageRefs)
     affected_assets = fields.TypedField("Affected_Assets", type_="stix.incident.AffectedAssets")
     categories = fields.TypedField("Categories", type_="stix.incident.IncidentCategories")
-    intended_effects = fields.TypedField("Intended_Effect", Statement, multiple=True, key_name="intended_effects")
+    intended_effects = StatementField("Intended_Effect", Statement, vocab_type=vocabs.IntendedEffect, multiple=True, key_name="intended_effects")
     leveraged_ttps = fields.TypedField("Leveraged_TTPs", type_="stix.incident.LeveragedTTPs")
     discovery_methods = vocabs.VocabField("Discovery_Method", vocabs.DiscoveryMethod, multiple=True, key_name="discovery_methods")
     reporter = fields.TypedField("Reporter", InformationSource)
@@ -323,42 +324,3 @@ class AffectedAssets(stix.EntityList):
         multiple=True,
         key_name="affected_assets"
     )
-
-
-# NOT ACTUAL STIX TYPES!
-# 
-# class DiscoveryMethods(stix.TypedList):
-#     _contained_type = VocabString
-# 
-#     def _fix_value(self, value):
-#         return vocabs.DiscoveryMethod(value)
-# 
-# 
-# class _COAsTaken(stix.TypedList):
-#     _contained_type = COATaken
-# 
-# 
-# class _COAsRequested(stix.TypedList):
-#     _contained_type = COARequested
-# 
-# 
-# class _ExternalIDs(stix.TypedList):
-#     _contained_type = ExternalID
-# 
-# 
-# class _InformationSources(stix.TypedList):
-#     _contained_type = InformationSource
-# 
-# 
-# class _Victims(stix.TypedList):
-#     _contained_type = Identity
-# 
-#     def _fix_value(self, value):
-#         return Identity(name=value)
-# 
-# 
-# class _IntendedEffects(stix.TypedList):
-#     _contained_type = Statement
-# 
-#     def _fix_value(self, value):
-#         return Statement(value=vocabs.IntendedEffect(value))

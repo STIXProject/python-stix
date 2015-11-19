@@ -29,13 +29,17 @@ class NamesTests(EntityTestCase, unittest.TestCase):
         ]
     }
 
-class IntendedEffectsTests(TypedListTestCase, unittest.TestCase):
-    klass = campaign._IntendedEffects
 
-    _full_dict = [
+class IntendedEffectsTests(TypedListTestCase, unittest.TestCase):
+    klass = campaign.Campaign
+
+    _partial_dict = [
         statement_test.StatementTests._full_dict
     ]
-
+    
+    _full_dict = {
+        'intended_effects': _partial_dict,    
+    }
 
 class RelatedTTPsTest(EntityTestCase, unittest.TestCase):
     klass = campaign.RelatedTTPs
@@ -114,7 +118,7 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
         'description': 'A pretty novice set of actors.',
         'short_description': 'novices',
         'names': NamesTests._full_dict,
-        'intended_effects': IntendedEffectsTests._full_dict,
+        'intended_effects': IntendedEffectsTests._partial_dict,
         'status': {
             'value': "Ongoing",
             'xsi:type':'stixVocabs:CampaignStatusVocab-1.0'

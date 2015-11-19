@@ -6,6 +6,7 @@ from mixbox import fields
 import stix
 from stix.utils import deprecated
 from stix.common import Activity, Confidence, Statement, VocabString
+from stix.common.statement import StatementField
 from stix.common.related import (GenericRelationshipList, RelatedCampaign,
     RelatedIncident, RelatedIndicator, RelatedPackageRefs, RelatedThreatActor,
     RelatedTTP)
@@ -103,7 +104,7 @@ class Campaign(stix.BaseCoreComponent):
     confidence = fields.TypedField("Confidence", Confidence)
     # references = fields.TypedField("Reference", multiple=True)
     status = VocabField("Status", CampaignStatus)
-    intended_effects = fields.TypedField("Intended_Effect", Statement, multiple=True, key_name="intended_effects")
+    intended_effects = StatementField("Intended_Effect", Statement, vocab_type=vocabs.IntendedEffect, multiple=True, key_name="intended_effects")
     names = fields.TypedField("Names", Names)
     related_incidents = fields.TypedField("Related_Incidents", RelatedIncidents)
     related_indicators = fields.TypedField("Related_Indicators", RelatedIndicators)
@@ -157,7 +158,6 @@ class Campaign(stix.BaseCoreComponent):
 
     @description.setter
     def description(self, value):
-        from stix.common.structured_text import StructuredTextList
         self.descriptions = StructuredTextList(value)
 
     def add_description(self, description):
@@ -167,128 +167,3 @@ class Campaign(stix.BaseCoreComponent):
 
         """
         self.descriptions.add(description)
-
-    #@property
-    #def status(self):
-    #    """The status of the Campaign. This is a :class:`VocabString` field.
-
-    #    If set to a string, an attempt will be made to convert it to a
-    #    :class:`.CampaignStatus` object.
-
-    #    """
-    #    return self._status
-
-    #@status.setter
-    #def status(self, value):
-    #    self._set_vocab(vocabs.CampaignStatus, status=value)
-
-
-
-"""    def to_obj(self, return_obj=None, ns_info=None):
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        super(Campaign, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
-        if self.names:
-            return_obj.Names = self.names.to_obj(ns_info=ns_info)
-        if self.intended_effects:
-            return_obj.Intended_Effect = self.intended_effects.to_obj(ns_info=ns_info)
-        if self.status:
-            return_obj.Status = self.status.to_obj(ns_info=ns_info)
-        if self.related_ttps:
-            return_obj.Related_TTPs = self.related_ttps.to_obj(ns_info=ns_info)
-        if self.related_incidents:
-            return_obj.Related_Incidents = self.related_incidents.to_obj(ns_info=ns_info)
-        if self.related_indicators:
-            return_obj.Related_Indicators = self.related_indicators.to_obj(ns_info=ns_info)
-        if self.attribution:
-            return_obj.Attribution = self.attribution.to_obj(ns_info=ns_info)
-        if self.associated_campaigns:
-            return_obj.Associated_Campaigns = self.associated_campaigns.to_obj(ns_info=ns_info)
-        if self.confidence:
-            return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
-        if self.activity:
-            return_obj.Activity = self.activity.to_obj(ns_info=ns_info)
-        if self.related_packages:
-            return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
-
-        return return_obj
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if not obj:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        super(Campaign, cls).from_obj(obj, return_obj=return_obj)
-
-        if isinstance(obj, cls._binding_class):
-            return_obj.names = Names.from_obj(obj.Names)
-            return_obj.intended_effects = \
-                _IntendedEffects.from_obj(obj.Intended_Effect)
-            return_obj.status = VocabString.from_obj(obj.Status)
-            return_obj.related_ttps = RelatedTTPs.from_obj(obj.Related_TTPs)
-            return_obj.related_incidents = \
-                RelatedIncidents.from_obj(obj.Related_Incidents)
-            return_obj.related_indicators = \
-                RelatedIndicators.from_obj(obj.Related_Indicators)
-            return_obj.attribution = _AttributionList.from_obj(obj.Attribution)
-            return_obj.associated_campaigns = \
-                AssociatedCampaigns.from_obj(obj.Associated_Campaigns)
-            return_obj.confidence = Confidence.from_obj(obj.Confidence)
-            return_obj.activity = _Activities.from_obj(obj.Activity)
-            return_obj.related_packages = \
-                RelatedPackageRefs.from_obj(obj.Related_Packages)
-
-        return return_obj
-
-    def to_dict(self):
-        return super(Campaign, self).to_dict()
-
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        if not dict_repr:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        super(Campaign, cls).from_dict(dict_repr, return_obj=return_obj)
-
-        get = dict_repr.get  # PEP 8 line lengths
-        return_obj.names = Names.from_dict(get('names'))
-        return_obj.intended_effects = \
-            _IntendedEffects.from_dict(get('intended_effects'))
-        return_obj.status = VocabString.from_dict(get('status'))
-        return_obj.related_ttps = \
-            RelatedTTPs.from_dict(get('related_ttps'))
-        return_obj.related_incidents = \
-            RelatedIncidents.from_dict(get('related_incidents'))
-        return_obj.related_indicators = \
-            RelatedIndicators.from_dict(get('related_indicators'))
-        return_obj.attribution = _AttributionList.from_list(get('attribution'))
-        return_obj.associated_campaigns = \
-            AssociatedCampaigns.from_dict(get('associated_campaigns'))
-        return_obj.confidence = \
-            Confidence.from_dict(get('confidence'))
-        return_obj.activity = _Activities.from_dict(get('activity'))
-        return_obj.related_packages = \
-            RelatedPackageRefs.from_dict(get('related_packages'))
-
-        return return_obj
-"""
-
-# Not Actual STIX Types!
-#class _Activities(stix.TypedList):
-#    _contained_type = Activity
-
-
-class _IntendedEffects(stix.TypedList):
-    _contained_type = Statement
-
-    def _fix_value(self, value):
-        intended_effect = vocabs.IntendedEffect(value)
-        return Statement(value=intended_effect)

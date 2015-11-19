@@ -54,4 +54,6 @@ class GenericTestMechanism(_BaseTestMechanism):
         This is the same as calling "foo.descriptions.add(bar)".
 
         """
+        if self.descriptions is None:
+            self.descriptions = StructuredTextList()
         self.descriptions.add(description)

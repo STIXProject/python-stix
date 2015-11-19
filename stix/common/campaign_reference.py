@@ -26,7 +26,6 @@ class CampaignRef(stix.Entity):
 
         self.idref = idref
         self.timestamp = timestamp
-        self.names = None
 
     def add_name(self, name):
         self.names.append(name)

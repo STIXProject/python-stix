@@ -409,14 +409,6 @@ class RelatedIncidentsTests(EntityTestCase, unittest.TestCase):
     }
 
 
-class IntendedEffectsTests(TypedListTestCase, unittest.TestCase):
-    klass = incident._IntendedEffects
-
-    _full_dict = [
-        statement_test.StatementTests._full_dict
-    ]
-
-
 class DiscoveryMethodsTests(TypedListTestCase, unittest.TestCase):
     klass = incident.DiscoveryMethods
 

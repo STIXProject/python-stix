@@ -37,53 +37,6 @@ class Behavior(stix.Entity):
     def add_exploit(self, exploit):
         self.exploits.append(exploit)
 
-#     def to_obj(self, return_obj=None, ns_info=None):
-#         super(Behavior, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-# 
-#         if not return_obj:
-#             return_obj = self._binding_class()
-# 
-#         if self.malware_instances:
-#             return_obj.Malware = self.malware_instances.to_obj(ns_info=ns_info)
-#         if self.exploits:
-#             return_obj.Exploits = self.exploits.to_obj(ns_info=ns_info)
-#         if self.attack_patterns:
-#             return_obj.Attack_Patterns = self.attack_patterns.to_obj(ns_info=ns_info)
-# 
-#         return return_obj
-# 
-#     @classmethod
-#     def from_obj(cls, obj, return_obj=None):
-#         if not obj:
-#             return None
-# 
-#         if not return_obj:
-#             return_obj = cls()
-# 
-#         return_obj.malware_instances = MalwareInstances.from_obj(obj.Malware)
-#         return_obj.exploits = Exploits.from_obj(obj.Exploits)
-#         return_obj.attack_patterns = AttackPatterns.from_obj(obj.Attack_Patterns)
-# 
-#         return return_obj
-# 
-#     def to_dict(self):
-#         return super(Behavior, self).to_dict()
-# 
-#     @classmethod
-#     def from_dict(cls, dict_repr, return_obj=None):
-#         if not dict_repr:
-#             return None
-#         if not return_obj:
-#             return_obj = cls()
-# 
-#         get = dict_repr.get
-# 
-#         return_obj.malware_instances = MalwareInstances.from_dict(get('malware_instances'))
-#         return_obj.exploits = Exploits.from_dict(get('exploits'))
-#         return_obj.attack_patterns = AttackPatterns.from_dict(get('attack_patterns'))
-# 
-#         return return_obj
-
 
 class Exploits(stix.EntityList):
     _namespace = "http://stix.mitre.org/TTP-1"

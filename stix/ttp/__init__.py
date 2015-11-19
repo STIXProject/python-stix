@@ -7,9 +7,9 @@ import stix
 import stix.bindings.ttp as ttp_binding
 from stix.common import vocabs
 from stix.common import Statement
-from stix.common.vocabs import IntendedEffect
 from stix.common.kill_chains import KillChainPhasesReference
 from stix.common.related import RelatedPackageRefs
+from stix.common.statement import StatementField
 from stix.ttp.related_ttps import RelatedTTPs
 from stix.ttp.exploit_targets import ExploitTargets
 
@@ -45,7 +45,7 @@ class TTP(stix.BaseCoreComponent):
 
     behavior = fields.TypedField("Behavior", Behavior)
     related_ttps = fields.TypedField("Related_TTPs", RelatedTTPs)
-    intended_effects = fields.TypedField("Intended_Effect", IntendedEffect, multiple=True)
+    intended_effects = StatementField("Intended_Effect", Statement, vocab_type=vocabs.IntendedEffect, multiple=True)
     resources = fields.TypedField("Resources", Resource)
     victim_targeting = fields.TypedField("Victim_Targeting", VictimTargeting)
     exploit_targets = fields.TypedField("Exploit_Targets", ExploitTargets)
@@ -138,89 +138,6 @@ class TTP(stix.BaseCoreComponent):
 
         """
         self.related_packages.append(value)
-
-    """
-    def to_obj(self, return_obj=None, ns_info=None):
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        super(TTP, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
-        if self.behavior:
-            return_obj.Behavior = self.behavior.to_obj(ns_info=ns_info)
-        if self.related_ttps:
-            return_obj.Related_TTPs = self.related_ttps.to_obj(ns_info=ns_info)
-        if self.exploit_targets:
-            return_obj.Exploit_Targets = self.exploit_targets.to_obj(ns_info=ns_info)
-        if self.intended_effects:
-            return_obj.Intended_Effect = self.intended_effects.to_obj(ns_info=ns_info)
-        if self.resources:
-            return_obj.Resources = self.resources.to_obj(ns_info=ns_info)
-        if self.victim_targeting:
-            return_obj.Victim_Targeting = self.victim_targeting.to_obj(ns_info=ns_info)
-        if self.kill_chain_phases:
-            return_obj.Kill_Chain_Phases = self.kill_chain_phases.to_obj(ns_info=ns_info)
-        if self.related_packages:
-            return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
-
-        return return_obj
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if not obj:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        super(TTP, cls).from_obj(obj, return_obj=return_obj)
-
-        if isinstance(obj, cls._binding_class):
-            return_obj.behavior = Behavior.from_obj(obj.Behavior)
-            return_obj.related_ttps = RelatedTTPs.from_obj(obj.Related_TTPs)
-            return_obj.exploit_targets = ExploitTargets.from_obj(obj.Exploit_Targets)
-            return_obj.resources = Resource.from_obj(obj.Resources)
-            return_obj.victim_targeting = VictimTargeting.from_obj(obj.Victim_Targeting)
-            return_obj.intended_effects = _IntendedEffects.from_obj(obj.Intended_Effect)
-            return_obj.kill_chain_phases = KillChainPhasesReference.from_obj(obj.Kill_Chain_Phases)
-            return_obj.related_packages = RelatedPackageRefs.from_obj(obj.Related_Packages)
-
-        return return_obj
-
-    def to_dict(self):
-        return super(TTP, self).to_dict()
-
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        if not dict_repr:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        super(TTP, cls).from_dict(dict_repr, return_obj=return_obj)
-
-        get = dict_repr.get
-        return_obj.behavior = Behavior.from_dict(get('behavior'))
-        return_obj.related_ttps = RelatedTTPs.from_dict(get('related_ttps'))
-        return_obj.exploit_targets = ExploitTargets.from_dict(get('exploit_targets'))
-        return_obj.intended_effects = _IntendedEffects.from_dict(get('intended_effects'))
-        return_obj.resources = Resource.from_dict(get('resources'))
-        return_obj.victim_targeting = VictimTargeting.from_dict(get('victim_targeting'))
-        return_obj.related_packages = RelatedPackageRefs.from_dict(get('related_packages'))
-        return_obj.kill_chain_phases = KillChainPhasesReference.from_dict(get('kill_chain_phases'))
-
-        return return_obj
-    """
-
-# NOT ACTUAL STIX TYPE
-class _IntendedEffects(stix.TypedList):
-    _contained_type = Statement
-
-    def _fix_value(self, value):
-        intended_effect = vocabs.IntendedEffect(value)
-        return Statement(value=intended_effect)
-
 
 # Avoid circular imports
 from .related_ttps import RelatedTTPs

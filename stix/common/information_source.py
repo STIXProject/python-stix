@@ -95,3 +95,4 @@ class ContributingSources(stix.EntityList):
     @classmethod
     def _dict_as_list(cls):
         return False
+    

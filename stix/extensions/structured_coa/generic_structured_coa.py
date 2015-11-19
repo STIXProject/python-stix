@@ -50,7 +50,7 @@ class GenericStructuredCOA(_BaseStructuredCOA):
 
     @description.setter
     def description(self, value):
-        self.descriptions = value
+        self.descriptions = StructuredTextList(value)
 
     def add_description(self, description):
         """Adds a description to the ``descriptions`` collection.
