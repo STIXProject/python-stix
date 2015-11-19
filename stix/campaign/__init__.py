@@ -1,11 +1,12 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from functools import partial
+
 from mixbox import fields
 
 import stix
-from stix.utils import deprecated
-from stix.common import Activity, Confidence, Statement, VocabString
+from stix.common import Activity, Confidence, Statement
 from stix.common.statement import StatementField
 from stix.common.related import (GenericRelationshipList, RelatedCampaign,
     RelatedIncident, RelatedIndicator, RelatedPackageRefs, RelatedThreatActor,
@@ -15,6 +16,7 @@ from stix.common.vocabs import VocabField, CampaignStatus
 import stix.bindings.campaign as campaign_binding
 from stix.common.structured_text import StructuredTextList
 from stix.common.information_source import InformationSource
+from stix.utils.deprecated import DeprecatedList
 
 
 class AssociatedCampaigns(GenericRelationshipList):
@@ -46,11 +48,13 @@ class RelatedIndicators(GenericRelationshipList):
     _binding = campaign_binding
     _binding_class = campaign_binding.RelatedIndicatorsType
 
-    indicator = fields.TypedField("Related_Indicator", RelatedIndicator, multiple=True, key_name="indicators")
-
-    def _is_valid(self, value):
-        deprecated.warn(value)
-        return super(RelatedIndicators, self)._is_valid(value)
+    indicator = fields.TypedField(
+        name="Related_Indicator",
+        type_=RelatedIndicator,
+        multiple=True,
+        key_name="indicators",
+        listfunc=partial(DeprecatedList, type=RelatedIndicator)
+    )
 
 
 class RelatedTTPs(GenericRelationshipList):
