@@ -46,7 +46,9 @@ class AttackPattern(Cached, stix.Entity):
         Returns:
             An instance of :class:`.StructuredText`
         """
-        return next(iter(self.descriptions or []), None)
+        if self.descriptions is None:
+            self.descriptions = StructuredTextList()
+        return next(iter(self.descriptions), None)
 
     @description.setter
     def description(self, value):
@@ -73,7 +75,9 @@ class AttackPattern(Cached, stix.Entity):
         Returns:
             An instance of :class:`.StructuredText`
         """
-        return next(iter(self.short_descriptions or []), None)
+        if self.short_descriptions is None:
+            self.short_descriptions = StructuredTextList()
+        return next(iter(self.short_descriptions), None)
 
     @short_description.setter
     def short_description(self, value):
