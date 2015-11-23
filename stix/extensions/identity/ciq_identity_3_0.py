@@ -862,7 +862,7 @@ class NameLine(stix.Entity):
             return_obj = et.Element(root_tag)
 
         if self.type:
-            return_obj.attrib['Type'] = self.type
+            return_obj.attrib['Type'] = None
 
         if self.value: 
             return_obj.text = self.value
@@ -878,7 +878,7 @@ class NameLine(stix.Entity):
             return_obj = cls()
 
         return_obj.value = obj.text
-        return_obj.type = obj.get('Type')
+        return_obj.type = None
 
         return return_obj
 
@@ -888,7 +888,7 @@ class NameLine(stix.Entity):
         d['value'] = self.value
 
         if self.type:
-            d['type'] = self.type
+            d['type'] = None
 
         return d
 
@@ -901,7 +901,7 @@ class NameLine(stix.Entity):
             return_obj = cls()
 
         return_obj.value = dict_repr.get('value', None)
-        return_obj.type = dict_repr.get('type', None)
+        return_obj.type = None
 
         return return_obj
 
@@ -1425,7 +1425,7 @@ class ElectronicAddressIdentifier(stix.Entity):
         return_obj.text = self.value
         
         if self.type_:
-            return_obj.attrib['Type'] = self.type_
+            return_obj.attrib['Type'] = None
         
         return return_obj
     
@@ -1435,7 +1435,7 @@ class ElectronicAddressIdentifier(stix.Entity):
             return None
         
         return_obj = cls()
-        return_obj.type_ = obj.attrib.get('Type')
+        return_obj.type_ = None
         return_obj.value = obj.text
         return return_obj
     
@@ -1444,7 +1444,7 @@ class ElectronicAddressIdentifier(stix.Entity):
         if self.value:
             d['value'] = self.value
         if self.type_:
-            d['type'] = self.type_
+            d['type'] = None
         return d
     
     @classmethod
@@ -1454,7 +1454,7 @@ class ElectronicAddressIdentifier(stix.Entity):
         
         return_obj = cls()
         return_obj.value = d.get('value')
-        return_obj.type_ = d.get('type')
+        return_obj.type_ = None
         return return_obj
 
 class OrganisationInfo(stix.Entity):
