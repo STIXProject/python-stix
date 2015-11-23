@@ -5,7 +5,7 @@ A python library for parsing, manipulating, and generating STIX v1.2 content.
 
 :Source: https://github.com/STIXProject/python-stix
 :Documentation: http://stix.readthedocs.org
-:Information: http://stix.mitre.org
+:Information: https://stixproject.github.io/
 
 |travis badge| |landscape.io badge| |version badge| |downloads badge|
 
