@@ -389,7 +389,7 @@ class Report(Cached, stix.Entity):
             return_obj = cls()
 
         # ReportBaseType fields
-        return_obj.id_ = obj.id
+        return_obj.id_ = obj.id_
         return_obj.idref = obj.idref
         return_obj.timestamp = obj.timestamp
 

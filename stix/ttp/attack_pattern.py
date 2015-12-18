@@ -225,7 +225,7 @@ class AttackPattern(Cached, stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = obj.id
+        return_obj.id_ = obj.id_
         return_obj.idref = obj.idref
         return_obj.capec_id = obj.capec_id
         return_obj.title = obj.Title

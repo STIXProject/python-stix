@@ -867,7 +867,7 @@ class BaseCoreComponent(Cached, Entity):
         if not obj:
             raise ValueError("Must provide an obj argument")
 
-        return_obj.id_ = obj.id
+        return_obj.id_ = obj.id_
         return_obj.idref = obj.idref
         return_obj.timestamp = obj.timestamp
 

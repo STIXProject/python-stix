@@ -436,7 +436,7 @@ class STIXPackage(Cached, stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = obj.id
+        return_obj.id_ = obj.id_
         return_obj.idref = obj.idref
         return_obj.timestamp = obj.timestamp
         return_obj.stix_header = STIXHeader.from_obj(obj.STIX_Header)
