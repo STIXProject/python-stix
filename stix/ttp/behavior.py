@@ -8,7 +8,7 @@ from mixbox import fields
 import stix
 import stix.bindings.ttp as ttp_binding
 
-from .malware_instance import MalwareInstance
+from .malware_instance import MalwareInstance, MalwareInstanceFactory
 from .exploit import Exploit
 from .attack_pattern import AttackPattern
 
@@ -52,7 +52,7 @@ class MalwareInstances(stix.EntityList):
     _binding = ttp_binding
     _binding_class = _binding.MalwareType
 
-    malware_instance = fields.TypedField("Malware_Instance", MalwareInstance, multiple=True, key_name="malware_instances")
+    malware_instance = fields.TypedField("Malware_Instance", MalwareInstance, multiple=True, factory=MalwareInstanceFactory, key_name="malware_instances")
 
 
 class AttackPatterns(stix.EntityList):
