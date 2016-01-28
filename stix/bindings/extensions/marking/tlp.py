@@ -87,6 +87,7 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
         super(TLPMarkingStructureType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

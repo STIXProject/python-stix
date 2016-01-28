@@ -95,6 +95,7 @@ class YaraTestMechanismType(indicator_binding.TestMechanismType):
         if self.Rule is not None:
             self.Rule.export(lwrite, level, nsmap, namespace_, name_='Rule', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

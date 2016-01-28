@@ -90,6 +90,7 @@ class CAPEC2_7InstanceType(ttp_binding.AttackPatternType):
             lwrite(etree_.tostring(self.CAPEC, pretty_print=pretty_print))
             #self.CAPEC.export(lwrite, level, nsmap, namespace_, name_='CAPEC', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

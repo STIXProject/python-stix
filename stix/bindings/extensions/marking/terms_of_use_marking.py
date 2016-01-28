@@ -93,6 +93,7 @@ class TermsOfUseMarkingStructureType(data_marking_binding.MarkingStructureType):
             showIndent(lwrite, level, pretty_print)
             lwrite('<%s:Terms_Of_Use>%s</%s:Terms_Of_Use>%s' % (nsmap[namespace_], quote_xml(self.Terms_Of_Use), nsmap[namespace_], eol_))
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

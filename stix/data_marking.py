@@ -57,7 +57,7 @@ class Marking(stix.Entity):
             return_obj = cls()
 
         return_obj.markings = _MarkingSpecifications.from_obj(obj.Marking)
-
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
 
     @classmethod
@@ -241,6 +241,7 @@ class MarkingStructure(Cached, stix.Entity):
             klass = stix.lookup_extension(obj, default=cls)
             m = klass.from_obj(obj, return_obj=klass())
 
+        signals.emit("Entity.created.from_obj", return_obj, obj)
         return m
 
     @classmethod

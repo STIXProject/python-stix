@@ -91,6 +91,7 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
             showIndent(lwrite, level, pretty_print)
             lwrite('<%s:Statement>%s</%s:Statement>%s' % (nsmap[namespace_], quote_xml(self.Statement), nsmap[namespace_], eol_))
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

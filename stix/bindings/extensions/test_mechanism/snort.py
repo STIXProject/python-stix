@@ -140,6 +140,7 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
         for Event_Suppression_ in self.Event_Suppression:
             Event_Suppression_.export(lwrite, level, nsmap, namespace_, name_='Event_Suppression', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

@@ -105,6 +105,7 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
             showIndent(lwrite, level, pretty_print)
             lwrite('<%s:Role>%s</%s:Role>%s' % (nsmap[namespace_], quote_xml(Role_), nsmap[namespace_], eol_))
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

@@ -91,6 +91,7 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
             lwrite(etree_.tostring(self.Location, pretty_print=pretty_print))
             #self.Location.export(lwrite, level, nsmap, namespace_, name_='Location', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
