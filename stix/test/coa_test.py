@@ -13,7 +13,6 @@ import stix.coa as coa
 import stix.coa.objective as objective
 
 
-
 class RelatedCOAsTests(EntityTestCase, unittest.TestCase):
     klass = coa.RelatedCOAs
 
@@ -98,12 +97,9 @@ class COATests(EntityTestCase, unittest.TestCase):
     def test_structured_coa(self):
         coa_ = coa.CourseOfAction()
 
-        def should_fail():
-            coa_.structured_coa = "ERROR"
-
         self.assertRaises(
             TypeError,
-            should_fail
+            setattr(coa_, "structured_coa", "ERROR")
         )
 
         from stix.extensions.structured_coa.generic_structured_coa import GenericStructuredCOA

@@ -1,11 +1,17 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# stdlib
+from functools import partial
+
+# mixbox
+from mixbox import fields
+
 # base import
 import stix
 
 # deprecations
-from stix.utils.deprecated import idref_deprecated
+from stix.utils.deprecated import IdrefDeprecatedList
 
 # component imports
 from stix.campaign import Campaign
@@ -25,98 +31,91 @@ class Campaigns(stix.EntityList):
     _binding = stix_core_binding
     _namespace = 'http://stix.mitre.org/stix-1'
     _binding_class = _binding.CampaignsType
-    _contained_type = Campaign
-    _binding_var = "Campaign"
-    _inner_name = "campaigns"
-    _dict_as_list = True
 
-    def _is_valid(self, value):
-        idref_deprecated(value)
-        return stix.EntityList._is_valid(self, value)
+    campaign = fields.TypedField(
+        name="Campaign",
+        type_=Campaign,
+        multiple=True,
+        listfunc=partial(IdrefDeprecatedList, type=Campaign)
+    )
 
 
 class CoursesOfAction(stix.EntityList):
     _binding = stix_core_binding
     _namespace = 'http://stix.mitre.org/stix-1'
     _binding_class = _binding.CoursesOfActionType
-    _contained_type = CourseOfAction
-    _binding_var = "Course_Of_Action"
-    _inner_name = "courses_of_action"
-    _dict_as_list = True
 
-    def _is_valid(self, value):
-        idref_deprecated(value)
-        return stix.EntityList._is_valid(self, value)
+    course_of_action = fields.TypedField(
+        name="Course_Of_Action",
+        type_=CourseOfAction,
+        multiple=True,
+        listfunc=partial(IdrefDeprecatedList, type=CourseOfAction)
+    )
 
 
 class ExploitTargets(stix.EntityList):
     _binding = stix_common_binding
     _namespace = 'http://stix.mitre.org/common-1'
     _binding_class = _binding.ExploitTargetsType
-    _contained_type = ExploitTarget
-    _binding_var = "Exploit_Target"
-    _inner_name = "exploit_targets"
-    _dict_as_list = True
 
-    def _is_valid(self, value):
-        idref_deprecated(value)
-        return stix.EntityList._is_valid(self, value)
+    exploit_target = fields.TypedField(
+        name="Exploit_Target",
+        type_=ExploitTarget,
+        multiple=True,
+        listfunc=partial(IdrefDeprecatedList, type=ExploitTarget)
+    )
 
 
 class Incidents(stix.EntityList):
     _binding = stix_core_binding
     _namespace = 'http://stix.mitre.org/stix-1'
     _binding_class = _binding.IncidentsType
-    _contained_type = Incident
-    _binding_var = "Incident"
-    _inner_name = "incidents"
-    _dict_as_list = True
 
-    def _is_valid(self, value):
-        idref_deprecated(value)
-        return stix.EntityList._is_valid(self, value)
+    incident = fields.TypedField(
+        name="Incident",
+        type_=Incident,
+        multiple=True,
+        listfunc=partial(IdrefDeprecatedList, type=Incident)
+    )
 
 
 class Indicators(stix.EntityList):
     _binding = stix_core_binding
     _namespace = 'http://stix.mitre.org/stix-1'
     _binding_class = _binding.IndicatorsType
-    _contained_type = Indicator
-    _binding_var = "Indicator"
-    _inner_name = "indicators"
-    _dict_as_list = True
 
-    def _is_valid(self, value):
-        idref_deprecated(value)
-        return stix.EntityList._is_valid(self, value)
+    indicator = fields.TypedField(
+        name="Indicator",
+        type_=Indicator,
+        multiple=True,
+        listfunc=partial(IdrefDeprecatedList, type=Indicator)
+    )
 
 
 class ThreatActors(stix.EntityList):
     _binding = stix_core_binding
     _namespace = 'http://stix.mitre.org/stix-1'
     _binding_class = _binding.ThreatActorsType
-    _contained_type = ThreatActor
-    _binding_var = "Threat_Actor"
-    _inner_name = "threat_actors"
-    _dict_as_list = True
 
-    def _is_valid(self, value):
-        idref_deprecated(value)
-        return stix.EntityList._is_valid(self, value)
+    threat_actor = fields.TypedField(
+        name="Threat_Actor",
+        type_=ThreatActor,
+        multiple=True,
+        listfunc=partial(IdrefDeprecatedList, type=ThreatActor)
+    )
 
 
 class Reports(stix.EntityList):
     _binding = stix_core_binding
     _namespace = 'http://stix.mitre.org/stix-1'
     _binding_class = _binding.ReportsType
-    _contained_type = Report
-    _binding_var = "Report"
-    _inner_name = "reports"
-    _dict_as_list = True
 
-    def _is_valid(self, value):
-        idref_deprecated(value)
-        return stix.EntityList._is_valid(self, value)
+    report = fields.TypedField(
+        name="Report",
+        type_=Report,
+        multiple=True,
+        listfunc=partial(IdrefDeprecatedList, type=Report)
+    )
 
 
 # Namespace flattening

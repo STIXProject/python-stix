@@ -227,6 +227,7 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     xmlns          = "http://stix.mitre.org/CourseOfAction-1"
     xmlns_prefix   = "coa"
     xml_type       = "CourseOfActionType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Stage=None, Type=None, Description=None, Short_Description=None, Objective=None, Parameter_Observables=None, Structured_COA=None, Impact=None, Cost=None, Efficacy=None, Information_Source=None, Handling=None, Related_COAs=None, Related_Packages=None):
         super(CourseOfActionType, self).__init__(idref=idref, id=id, timestamp=timestamp)

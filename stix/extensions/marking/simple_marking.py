@@ -1,10 +1,8 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# external
-from mixbox import signals
+from mixbox import fields
 
-# internal
 import stix
 from stix.data_marking import MarkingStructure
 import stix.bindings.extensions.marking.simple_marking as simple_marking_binding
@@ -17,52 +15,8 @@ class SimpleMarkingStructure(MarkingStructure):
     _namespace = 'http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1'
     _XSI_TYPE = "simpleMarking:SimpleMarkingStructureType"
 
+    statement = fields.TypedField("Statement")
+
     def __init__(self, statement=None):
         super(SimpleMarkingStructure, self).__init__()
         self.statement = statement
-
-    def to_obj(self, return_obj=None, ns_info=None):
-        super(SimpleMarkingStructure, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        MarkingStructure.to_obj(self, return_obj=return_obj, ns_info=ns_info)
-        return_obj.Statement = self.statement
-
-        return return_obj
-
-    def to_dict(self):
-        d = MarkingStructure.to_dict(self)
-        if self.statement:
-            d['statement'] = self.statement
-
-        return d
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if not obj:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        MarkingStructure.from_obj(obj, return_obj)
-        return_obj.statement = obj.Statement
-
-        signals.emit("Entity.created.from_obj", return_obj, obj)
-        return return_obj
-
-    @classmethod
-    def from_dict(cls, d, return_obj=None):
-        if not d:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        MarkingStructure.from_dict(d, return_obj=return_obj)
-        return_obj.statement = d.get('statement')
-
-        return return_obj
-

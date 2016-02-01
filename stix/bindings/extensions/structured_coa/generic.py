@@ -34,6 +34,7 @@ class GenericStructuredCOAType(StructuredCOAType):
     xmlns          = XML_NS
     xmlns_prefix   = "genericStructuredCOA"
     xml_type       = "GenericStructuredCOAType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, reference_location=None, Description=None, Type=None, Specification=None):
         super(GenericStructuredCOAType, self).__init__(idref=idref, id=id)

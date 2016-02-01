@@ -34,6 +34,8 @@ class GenericTestMechanismType(indicator_binding.TestMechanismType):
     xmlns          = XML_NS
     xmlns_prefix   = "genericTM"
     xml_type       = "GenericTestMechanismType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
+
 
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, reference_location=None, Description=None, Type=None, Specification=None):
         super(GenericTestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)

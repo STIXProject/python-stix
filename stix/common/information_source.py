@@ -1,20 +1,19 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-from __future__ import absolute_import
-
 # external
+from mixbox import fields
 import cybox.common
-from mixbox import signals
+from cybox.common.tools import ToolInformationList
 
 # internal
 import stix
-import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
 
 # relative
-from . import vocabs, VocabString
-from .identity import Identity
+from .vocabs import VocabField
+from .references import References
+from .identity import Identity, IdentityFactory
 from .structured_text import StructuredTextList
 
 
@@ -23,42 +22,29 @@ class InformationSource(stix.Entity):
     _binding_class = stix_common_binding.InformationSourceType
     _namespace = 'http://stix.mitre.org/common-1'
 
+    identity = fields.TypedField("Identity", type_=Identity, factory=IdentityFactory)
+    descriptions = fields.TypedField("Description", StructuredTextList)
+    contributing_sources = fields.TypedField("Contributing_Sources", type_="stix.common.information_source.ContributingSources")
+    time = fields.TypedField("Time", cybox.common.Time)
+    roles = VocabField("Role", multiple=True, key_name="roles")
+    tools = fields.TypedField("Tools", ToolInformationList)
+    references = fields.TypedField("References", References)
+
     def __init__(self, description=None, identity=None, time=None, tools=None, contributing_sources=None, references=None):
-        self.description = description
+        super(InformationSource, self).__init__()
+
         self.identity = identity
+        self.descriptions = StructuredTextList(description)
         self.contributing_sources = contributing_sources
         self.time = time
         self.tools = tools
         self.references = references
-        self.roles = None
-    
-    @property
-    def contributing_sources(self):
-        return self._contributing_sources
-    
-    @contributing_sources.setter
-    def contributing_sources(self, value):
-        self._contributing_sources = ContributingSources(value)
+        #self.roles = None
     
     def add_contributing_source(self, value):
         self.contributing_sources.append(value)
-    
-    @property
-    def references(self):
-        return self._references
-    
-    @references.setter
-    def references(self, value):
-        self._references = []
 
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            for v in value:
-                self.add_reference(v)
-        else:
-            self.add_reference(value)
-    
+
     def add_reference(self, value):
         if not value:
             return
@@ -76,42 +62,15 @@ class InformationSource(stix.Entity):
             the description with the lowest ordinality value.
 
         Returns:
-            An instance of
-            :class:`.StructuredText`
+            An instance of :class:`.StructuredText`
 
         """
         return next(iter(self.descriptions), None)
 
     @description.setter
     def description(self, value):
-        self.descriptions = value
-
-    @property
-    def descriptions(self):
-        """A :class:`.StructuredTextList` object, containing descriptions about
-        the purpose or intent of this object.
-
-        Iterating over this object will yield its contents sorted by their
-        ``ordinality`` value.
-
-        Default Value: Empty :class:`.StructuredTextList` object.
-
-        Note:
-            IF this is set to a value that is not an instance of
-            :class:`.StructuredText`, an effort will ne made to convert it.
-            If this is set to an iterable, any values contained that are not
-            an instance of :class:`.StructuredText` will be be converted.
-
-        Returns:
-            An instance of
-            :class:`.StructuredTextList`
-
-        """
-        return self._description
-
-    @descriptions.setter
-    def descriptions(self, value):
-        self._description = StructuredTextList(value)
+        from stix.common.structured_text import StructuredTextList
+        self.descriptions = StructuredTextList(value)
 
     def add_description(self, description):
         """Adds a description to the ``descriptions`` collection.
@@ -121,125 +80,19 @@ class InformationSource(stix.Entity):
         """
         self.descriptions.add(description)
 
-    @property
-    def identity(self):
-        return self._identity
-
-    @identity.setter
-    def identity(self, value):
-        self._set_var(Identity, try_cast=False, identity=value)
-
-    @property
-    def time(self):
-        return self._time
-
-    @time.setter
-    def time(self, value):
-        self._set_var(cybox.common.Time, try_cast=False, time=value)
-
-    @property
-    def tools(self):
-        return self._tools
-
-    @tools.setter
-    def tools(self, value):
-        self._set_var(cybox.common.ToolInformationList, try_cast=False, tools=value)
-
-    @property
-    def roles(self):
-        return self._roles
-
-    @roles.setter
-    def roles(self, value):
-        self._roles = _Roles(value)
 
     def add_role(self, value):
         self.roles.append(value)
 
-    def to_obj(self, return_obj=None, ns_info=None):
-        super(InformationSource, self).to_obj(
-            return_obj=return_obj,
-            ns_info=ns_info
-        )
-
-        if not return_obj:
-            return_obj = self._binding_class()
-            
-        if self.descriptions:
-            return_obj.Description = self.descriptions.to_obj(ns_info=ns_info)
-        if self.references:
-            return_obj.References = stix_common_binding.ReferencesType(Reference=self.references)
-        if self.contributing_sources:
-            return_obj.Contributing_Sources = self.contributing_sources.to_obj(ns_info=ns_info)
-        if self.identity:
-            return_obj.Identity = self.identity.to_obj(ns_info=ns_info)
-        if self.time:
-            return_obj.Time = self.time.to_obj(ns_info=ns_info)
-        if self.tools:
-            return_obj.Tools = self.tools.to_obj(ns_info=ns_info)
-        if self.roles:
-            return_obj.Role = self.roles.to_obj(ns_info=ns_info)
-
-        return return_obj
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if not obj:
-            return None
-        if not return_obj:
-            return_obj = cls()
-
-        return_obj.description = StructuredTextList.from_obj(obj.Description)
-        return_obj.identity = Identity.from_obj(obj.Identity)
-        return_obj.contributing_sources = ContributingSources.from_obj(obj.Contributing_Sources)
-        return_obj.roles = _Roles.from_obj(obj.Role)
-
-        if obj.References:
-            return_obj.references = obj.References.Reference
-        if obj.Time:
-            return_obj.time = cybox.common.Time.from_obj(obj.Time)
-        if obj.Tools:
-            return_obj.tools = cybox.common.ToolInformationList.from_obj(obj.Tools)
-
-        signals.emit("Entity.created.from_obj", return_obj, obj)
-        return return_obj
-
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        # To resolve circular dependency
-        # TODO: Improve how this extension is handled.
-
-        if not dict_repr:
-            return None
-        if not return_obj:
-            return_obj = cls()
-
-        get = dict_repr.get
-        return_obj.description = StructuredTextList.from_dict(get('description'))
-        return_obj.references = get('references')
-        return_obj.contributing_sources = ContributingSources.from_dict(get('contributing_sources'))
-        return_obj.identity = Identity.from_dict(get('identity'))
-        return_obj.time = cybox.common.Time.from_dict(get('time'))
-        return_obj.tools = cybox.common.ToolInformationList.from_list(get('tools'))
-        return_obj.roles = _Roles.from_dict(get('roles'))
-
-        return return_obj
-
-    def to_dict(self):
-       return super(InformationSource, self).to_dict()
 
 class ContributingSources(stix.EntityList):
     _namespace = "http://stix.mitre.org/common-1"
     _binding = stix_common_binding
     _binding_class = stix_common_binding.ContributingSourcesType
-    _binding_var = "Source"
-    _contained_type = InformationSource
-    _inner_name = "sources"
 
+    source = fields.TypedField("Source", InformationSource, multiple=True, key_name="sources")
 
-# NOT AN ACTUAL STIX TYPE!
-class _Roles(stix.TypedList):
-    _contained_type = VocabString
-
-    def _fix_value(self, value):
-        return vocabs.InformationSourceRole(value)
+    @classmethod
+    def _dict_as_list(cls):
+        return False
+    

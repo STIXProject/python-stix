@@ -33,6 +33,7 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
     xmlns          = XML_NS
     xmlns_prefix   = "ciqIdentity"
     xml_type       = "CIQIdentity3.0InstanceType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, Name=None, Related_Identities=None, Specification=None, Role=None):
         super(CIQIdentity3_0InstanceType, self).__init__(idref=idref, id=id, Name=Name, Related_Identities=Related_Identities)

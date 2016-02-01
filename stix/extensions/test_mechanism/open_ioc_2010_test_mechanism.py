@@ -6,13 +6,14 @@ from StringIO import StringIO
 
 # external
 from lxml import etree
-from mixbox import signals
 import mixbox.xml
+from mixbox.fields import TypedField
 
 # internal
 import stix
 from stix.indicator.test_mechanism import _BaseTestMechanism
 import stix.bindings.extensions.test_mechanism.open_ioc_2010 as open_ioc_tm_binding
+from mixbox.cache import instanceof
 
 
 @stix.register_extension
@@ -24,31 +25,13 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
     _XSI_TYPE = "stix-openioc:OpenIOC2010TestMechanismType"
     _TAG_IOC = "{%s}ioc" % _namespace
 
+    ioc = TypedField("ioc")
+
     def __init__(self, id_=None, idref=None):
         super(OpenIOCTestMechanism, self).__init__(id_=id_, idref=idref)
         self.ioc = None
         self.__input_namespaces__ = {}
         self.__input_schemalocations__ = {}
-
-    @property
-    def ioc(self):
-        return self._ioc
-    
-    @ioc.setter
-    def ioc(self, value):
-        if value is None:
-            self._ioc = None
-            return
-
-        tree = mixbox.xml.get_etree(value)
-        root = mixbox.xml.get_etree_root(tree)
-
-        if root.tag != self._TAG_IOC:
-            self._cast_ioc(root)
-
-        self._collect_namespaces(root)
-        self._collect_schemalocs(root)
-        self._ioc = tree
 
     def _collect_schemalocs(self, node):
         try:
@@ -72,35 +55,44 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
             error = error.format(self._TAG_IOC, node.tag)
             raise ValueError(error)
 
+    def _processed_ioc(self):
+        if self.ioc is None:
+            return None
+        
+        tree = mixbox.xml.get_etree(self.ioc)
+        root = mixbox.xml.get_etree_root(tree)
+
+        if root.tag != self._TAG_IOC:
+            self._cast_ioc(root)
+
+        self._collect_namespaces(root)
+        self._collect_schemalocs(root)
+        return tree
+
     @classmethod
-    def from_obj(cls, obj, return_obj=None):
+    def from_obj(cls, obj):
         if not obj:
             return None
-        if not return_obj:
-            return_obj = cls()
         
-        super(OpenIOCTestMechanism, cls).from_obj(obj, return_obj)
+        return_obj = super(OpenIOCTestMechanism, cls).from_obj(obj)
         return_obj.ioc = obj.ioc
-
-        signals.emit("Entity.created.from_obj", return_obj, obj)
         return return_obj
     
     def to_obj(self, return_obj=None, ns_info=None):
         if not return_obj:
             return_obj = self._binding_class()
             
-        super(OpenIOCTestMechanism, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-        return_obj.ioc = self.ioc
+        super(OpenIOCTestMechanism, self).to_obj(ns_info=ns_info)
+        return_obj.ioc = self._processed_ioc()
         return return_obj
     
     @classmethod
-    def from_dict(cls, d, return_obj=None):
+    def from_dict(cls, d):
         if not d:
             return None
-        if not return_obj:
-            return_obj = cls()
-            
-        super(OpenIOCTestMechanism, cls).from_dict(d, return_obj)
+         
+        return_obj = super(OpenIOCTestMechanism, cls).from_dict(d)
+        
         if 'ioc' in d:
             parser = mixbox.xml.get_xml_parser()
             return_obj.ioc = etree.parse(StringIO(d['ioc']), parser=parser)
@@ -111,7 +103,7 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
         d = super(OpenIOCTestMechanism, self).to_dict()
 
         if self.ioc:
-            d['ioc'] = etree.tostring(self.ioc)
+            d['ioc'] = etree.tostring(self._processed_ioc())
 
         return d
 

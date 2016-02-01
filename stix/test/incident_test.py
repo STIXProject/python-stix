@@ -409,14 +409,6 @@ class RelatedIncidentsTests(EntityTestCase, unittest.TestCase):
     }
 
 
-class IntendedEffectsTests(TypedListTestCase, unittest.TestCase):
-    klass = incident._IntendedEffects
-
-    _full_dict = [
-        statement_test.StatementTests._full_dict
-    ]
-
-
 class DiscoveryMethodsTests(TypedListTestCase, unittest.TestCase):
     klass = incident.DiscoveryMethods
 
@@ -516,7 +508,7 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
 
         # Test that this fails
         self.assertRaises(
-            ValueError,
+            TypeError,
             i.add_related_observable,
             "THIS SHOULD FAIL"
         )
@@ -537,7 +529,7 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
 
         # Test that this fails
         self.assertRaises(
-            ValueError,
+            TypeError,
             i.add_related_indicator,
             "THIS SHOULD FAIL"
         )

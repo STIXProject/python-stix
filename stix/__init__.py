@@ -84,7 +84,7 @@ def lookup_extension(typeinfo, default=None):
             return default
 
         error = "Input %s is missing xml_type attribute. Cannot lookup class."
-        raise ValueError(error)
+        raise ValueError(error % type(typeinfo))
     
     # Extension binding classes usually (always?) have an `xmlns_prefix`
     # class attribute.
@@ -122,10 +122,8 @@ def register_extension(cls):
     add_extension(cls)
     return cls
 
-
 from . import common  # noqa
 from .version import __version__  # noqa
-
 
 def supported_stix_version():
     """Returns a tuple of STIX version strings that this version of python-stix
@@ -133,4 +131,3 @@ def supported_stix_version():
 
     """
     return ('1.1.1', '1.2')
-

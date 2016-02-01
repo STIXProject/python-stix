@@ -1,15 +1,15 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
-
-from mixbox import signals
-
 import itertools
 import contextlib
 import collections
 
+from mixbox import fields
+
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
+
 
 #: Default ordinality value for StructuredText.
 DEFAULT_ORDINALITY = 1
@@ -23,62 +23,25 @@ class StructuredText(stix.Entity):
             structure xpath selectors.
         value: The text value of this object.
         structuring_format: The format of the text. For example, ``html5``.
-
     """
+
     _binding = stix_common_binding
     _binding_class = _binding.StructuredTextType
     _namespace = 'http://stix.mitre.org/common-1'
 
+    id_ = fields.IdField("id")
+    ordinality = fields.TypedField("ordinality")
+    value = fields.TypedField("valueOf_", key_name="value")
+    structuring_format = fields.TypedField("structuring_format")
+
+
     def __init__(self, value=None, ordinality=None):
+        super(StructuredText, self).__init__()
+
         self.id_ = None
         self.value = value
         self.structuring_format = None
         self.ordinality = ordinality
-
-    @property
-    def ordinality(self):
-        return self._ordinality
-
-    @ordinality.setter
-    def ordinality(self, value):
-        """An integer ordinality for this text item. This must be greater than
-        1.
-
-        This is used for displaying :class:`.StructuredTextList` items and
-        provides an order to display text items to a parser.
-
-        """
-        if value is None:
-            self._ordinality = None
-            return
-
-        value = int(value)
-
-        if value > 0:
-            self._ordinality = value
-            return
-
-        error = "Value must be an integer > 0. Received {0}".format(value)
-        raise ValueError(error)
-
-    def to_obj(self, return_obj=None, ns_info=None):
-        """Converts this object into a binding object.
-
-        """
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        super(StructuredText, self).to_obj(
-            return_obj=return_obj,
-            ns_info=ns_info
-        )
-
-        return_obj.id = self.id_
-        return_obj.valueOf_ = self.value
-        return_obj.ordinality = self.ordinality
-        return_obj.structuring_format = self.structuring_format
-
-        return return_obj
 
     def is_plain(self):
         plain = (
@@ -103,52 +66,6 @@ class StructuredText(stix.Entity):
         else:
             return super(StructuredText, self).to_dict()
 
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        """Create an object from the input binding object.
-
-        Args:
-            obj: A generateDS binding object.
-
-        """
-        if not obj:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        return_obj.id_ = obj.id
-        return_obj.value = obj.valueOf_
-        return_obj.ordinality = obj.ordinality
-        return_obj.structuring_format = obj.structuring_format
-
-        signals.emit("Entity.created.from_obj", return_obj, obj)
-        return return_obj
-
-    @classmethod
-    def from_dict(cls, d, return_obj=None):
-        """Creates an object from the input dictionary.
-
-        Args:
-            d: A dictionary representation of this object.
-
-        """
-        if not d:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        if not isinstance(d, dict):
-            return_obj.value = d
-        else:
-            return_obj.id_ = d.get('id')
-            return_obj.value = d.get('value')
-            return_obj.ordinality = d.get('ordinality')
-            return_obj.structuring_format = d.get('structuring_format')
-
-        return return_obj
-    
     def __str__(self):
         """Returns a UTF-8 encoded string representation of the ``value``.
 
@@ -192,6 +109,7 @@ class StructuredTextList(stix.TypedCollection, collections.Sequence):
 
     """
     _contained_type = StructuredText
+    _try_cast = True
 
     def __init__(self, *args):
         stix.TypedCollection.__init__(self, *args)
@@ -399,6 +317,8 @@ class StructuredTextList(stix.TypedCollection, collections.Sequence):
         the ordinality will be unset.
 
         """
+        #print "STList to_obj called"
+        
         if not self:
             return []
 

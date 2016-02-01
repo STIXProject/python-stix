@@ -1,15 +1,17 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
-
-# external
-from mixbox import signals
+from mixbox import fields
 
 # internal
 import stix
 import stix.bindings.ttp as ttp_binding
-from stix.common import vocabs, Statement
+from stix.common import vocabs
+from stix.common import Statement
 from stix.common.kill_chains import KillChainPhasesReference
 from stix.common.related import RelatedPackageRefs
+from stix.common.statement import StatementField
+from stix.ttp.related_ttps import RelatedTTPs
+from stix.ttp.exploit_targets import ExploitTargets
 
 # relative
 from .behavior import Behavior
@@ -41,6 +43,15 @@ class TTP(stix.BaseCoreComponent):
     _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = "ttp"
 
+    behavior = fields.TypedField("Behavior", Behavior)
+    related_ttps = fields.TypedField("Related_TTPs", RelatedTTPs)
+    intended_effects = StatementField("Intended_Effect", Statement, vocab_type=vocabs.IntendedEffect, multiple=True)
+    resources = fields.TypedField("Resources", Resource)
+    victim_targeting = fields.TypedField("Victim_Targeting", VictimTargeting)
+    exploit_targets = fields.TypedField("Exploit_Targets", ExploitTargets)
+    related_packages = fields.TypedField("Related_Packages", RelatedPackageRefs)
+    kill_chain_phases = fields.TypedField("Kill_Chain_Phases", KillChainPhasesReference)
+
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
 
@@ -53,40 +64,8 @@ class TTP(stix.BaseCoreComponent):
             short_description=short_description
         )
 
-        self.behavior = None
-        self.related_ttps = None
-        self.intended_effects = None
-        self.resources = None
-        self.victim_targeting = None
-        self.exploit_targets = ExploitTargets()
-        self.related_packages = None
-        self.kill_chain_phases = None
+        self.related_packages = RelatedPackageRefs()
 
-    @property
-    def behavior(self):
-        """A :class:`.Behavior` field.
-
-        """
-        return self._behavior
-
-    @behavior.setter
-    def behavior(self, value):
-        self._set_var(Behavior, try_cast=False, behavior=value)
-
-    @property
-    def related_ttps(self):
-        """A collection of :class:`.RelatedTTP` objects. This behaves like a
-        ``MutableSequence`` Type.
-
-        """
-        return self._related_ttps
-
-    @related_ttps.setter
-    def related_ttps(self, value):
-        if isinstance(value, RelatedTTPs):
-            self._related_ttps = value
-        else:
-            self._related_ttps = RelatedTTPs(value)
 
     def add_related_ttp(self, value):
         """Adds an Related TTP to the :attr:`related_ttps` list
@@ -120,43 +99,12 @@ class TTP(stix.BaseCoreComponent):
         """
         self.related_ttps.append(value)
 
-    @property
-    def exploit_targets(self):
-        """A collection of :class:`.ExploitTarget` objects. This behaves like
-        a ``MutableSequence`` type.
-
-        """
-        return self._exploit_targets
-
-    @exploit_targets.setter
-    def exploit_targets(self, value):
-        if isinstance(value, ExploitTargets):
-            self._exploit_targets = value
-        else:
-            self._exploit_targets = ExploitTargets(value)
-
     def add_exploit_target(self, value):
         """Adds a :class:`.ExploitTarget` object to the :attr:`exploit_targets`
         collection.
 
         """
         self.exploit_targets.append(value)
-
-    @property
-    def intended_effects(self):
-        """A collection of :class:`.Statement` objects. This behaves like a
-        ``MutableSequence`` type.
-
-        If set to a string, an attempt will be made to convert it into a
-        :class:`.Statement` object with its value set to an instance of
-        :class:`.IntendedEffect`.
-
-        """
-        return self._intended_effects
-
-    @intended_effects.setter
-    def intended_effects(self, value):
-        self._intended_effects = _IntendedEffects(value)
 
     def add_intended_effect(self, value):
         """Adds a :class:`.Statement` object to the :attr:`intended_effects`
@@ -167,42 +115,6 @@ class TTP(stix.BaseCoreComponent):
 
         """
         self.intended_effects.append(value)
-
-    @property
-    def resources(self):
-        """A collection of :class:`.Resource` objects. This behaves like a
-        ``MutableSequence`` type.
-
-        """
-        return self._resources
-
-    @resources.setter
-    def resources(self, value):
-        self._set_var(Resource, resources=value)
-
-    @property
-    def victim_targeting(self):
-        """A collection of :class:`.VictimTargeting` objects. This behaves like
-        a ``MutableSequence`` type.
-
-        """
-        return self._victim_targeting
-
-    @victim_targeting.setter
-    def victim_targeting(self, value):
-        self._set_var(VictimTargeting, try_cast=False, victim_targeting=value)
-
-    @property
-    def kill_chain_phases(self):
-        """A collection of :class:`.KillChainPhaseReference` objects. This
-        behaves like a ``MutableSequence`` type.
-
-        """
-        return self._kill_chain_phases
-
-    @kill_chain_phases.setter
-    def kill_chain_phases(self, value):
-        self._kill_chain_phases = KillChainPhasesReference(value)
 
     def add_kill_chain_phase(self, value):
         """Adds a :class:`.KillChainPhaseReference` to the
@@ -216,18 +128,6 @@ class TTP(stix.BaseCoreComponent):
         """
         self.kill_chain_phases.append(value)
 
-    @property
-    def related_packages(self):
-        """**DEPRECATED**: A collection of :class:`.RelatedPackageRef`
-        objects. This behaves like a ``MutableSequence``.
-
-        """
-        return self._related_packages
-
-    @related_packages.setter
-    def related_packages(self, value):
-        self._related_packages = RelatedPackageRefs(value)
-
     def add_related_package(self, value):
         """Adds a :class:`.RelatedPackageRef` object to the
         :attr:`related_packages` collection.
@@ -238,89 +138,6 @@ class TTP(stix.BaseCoreComponent):
 
         """
         self.related_packages.append(value)
-
-    def to_obj(self, return_obj=None, ns_info=None):
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        super(TTP, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
-        if self.behavior:
-            return_obj.Behavior = self.behavior.to_obj(ns_info=ns_info)
-        if self.related_ttps:
-            return_obj.Related_TTPs = self.related_ttps.to_obj(ns_info=ns_info)
-        if self.exploit_targets:
-            return_obj.Exploit_Targets = self.exploit_targets.to_obj(ns_info=ns_info)
-        if self.intended_effects:
-            return_obj.Intended_Effect = self.intended_effects.to_obj(ns_info=ns_info)
-        if self.resources:
-            return_obj.Resources = self.resources.to_obj(ns_info=ns_info)
-        if self.victim_targeting:
-            return_obj.Victim_Targeting = self.victim_targeting.to_obj(ns_info=ns_info)
-        if self.kill_chain_phases:
-            return_obj.Kill_Chain_Phases = self.kill_chain_phases.to_obj(ns_info=ns_info)
-        if self.related_packages:
-            return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
-
-        return return_obj
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if not obj:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        super(TTP, cls).from_obj(obj, return_obj=return_obj)
-
-        if isinstance(obj, cls._binding_class):
-            return_obj.behavior = Behavior.from_obj(obj.Behavior)
-            return_obj.related_ttps = RelatedTTPs.from_obj(obj.Related_TTPs)
-            return_obj.exploit_targets = ExploitTargets.from_obj(obj.Exploit_Targets)
-            return_obj.resources = Resource.from_obj(obj.Resources)
-            return_obj.victim_targeting = VictimTargeting.from_obj(obj.Victim_Targeting)
-            return_obj.intended_effects = _IntendedEffects.from_obj(obj.Intended_Effect)
-            return_obj.kill_chain_phases = KillChainPhasesReference.from_obj(obj.Kill_Chain_Phases)
-            return_obj.related_packages = RelatedPackageRefs.from_obj(obj.Related_Packages)
-
-        signals.emit("Entity.created.from_obj", return_obj, obj)
-        return return_obj
-
-    def to_dict(self):
-        return super(TTP, self).to_dict()
-
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        if not dict_repr:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        super(TTP, cls).from_dict(dict_repr, return_obj=return_obj)
-
-        get = dict_repr.get
-        return_obj.behavior = Behavior.from_dict(get('behavior'))
-        return_obj.related_ttps = RelatedTTPs.from_dict(get('related_ttps'))
-        return_obj.exploit_targets = ExploitTargets.from_dict(get('exploit_targets'))
-        return_obj.intended_effects = _IntendedEffects.from_dict(get('intended_effects'))
-        return_obj.resources = Resource.from_dict(get('resources'))
-        return_obj.victim_targeting = VictimTargeting.from_dict(get('victim_targeting'))
-        return_obj.related_packages = RelatedPackageRefs.from_dict(get('related_packages'))
-        return_obj.kill_chain_phases = KillChainPhasesReference.from_dict(get('kill_chain_phases'))
-
-        return return_obj
-
-
-# NOT ACTUAL STIX TYPE
-class _IntendedEffects(stix.TypedList):
-    _contained_type = Statement
-
-    def _fix_value(self, value):
-        intended_effect = vocabs.IntendedEffect(value)
-        return Statement(value=intended_effect)
-
 
 # Avoid circular imports
 from .related_ttps import RelatedTTPs
