@@ -191,6 +191,9 @@ def attr_name(name):
         'title
 
     """
+    if hasattr(name, "_key_name"):
+        return name.key_name
+
     name = name.lower()
 
     if name.startswith("_"):
