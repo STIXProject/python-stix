@@ -18,7 +18,7 @@ from . import dates
 
 CDATA_START = "<![CDATA["
 CDATA_END = "]]>"
-CONFLICTING_NAMES = keyword.kwlist + ['id', 'type', 'range', 'object']
+CONFLICTING_NAMES = keyword.kwlist + ['id', 'type', 'range']
 
 
 @contextlib.contextmanager
@@ -191,9 +191,6 @@ def attr_name(name):
         'title
 
     """
-    if hasattr(name, "_key_name"):
-        name = name.key_name
-
     name = name.lower()
 
     if name.startswith("_"):
