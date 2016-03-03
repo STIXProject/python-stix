@@ -32,7 +32,7 @@ class MarkingStructure(Cached, stix.Entity):
     id_ = fields.IdField("id")
     idref = fields.IdrefField("idref")
     marking_model_name = fields.TypedField("marking_model_name")
-    marking_mode_ref = fields.TypedField("marking_model_ref")
+    marking_model_ref = fields.TypedField("marking_model_ref")
 
     def __init__(self):
         super(MarkingStructure, self).__init__()
