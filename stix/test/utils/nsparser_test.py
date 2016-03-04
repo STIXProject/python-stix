@@ -10,72 +10,11 @@ import lxml.etree
 
 # internal
 import mixbox.namespaces
-import stix
 from stix.core import STIXPackage
-from stix.utils import nsparser, silence_warnings
-
-
-NSMAP = {
-    "test:a": "a",
-    "test:b": "b",
-    "test:c": "c"
-}
-
-
-SCHEMALOCS = {
-    "test:a": "/dev/null",
-    "test:b": "/dev/null",
-    "test:c": "/dev/null"
-}
-
-
-class A(stix.Entity):
-    _namespace = nsparser.NS_STIX_OBJECT.name
-    _XSI_TYPE = "a:AType"
-
-
-class B(A):
-    _namespace = nsparser.NS_STIXCOMMON_OBJECT.name
-    _XSI_TYPE = "b:BType"
-
-
-class C(B):
-    _namespace = nsparser.NS_INDICATOR_OBJECT.name
-    _XSI_TYPE = "c:CType"
+from stix.utils import silence_warnings
 
 
 class NamespaceInfoTests(unittest.TestCase):
-    def test_nsinfo_collect(self):
-        """Tests that the NamespaceInfo.collect() method correctly ascends the MRO
-        of input objects.
-
-        """
-        nsinfo = nsparser.NamespaceInfo()
-
-        # Collect classes
-        nsinfo.collect(C())
-
-        # Parse collected classes
-        nsinfo._parse_collected_classes()
-
-        self.assertEqual(len(nsinfo._collected_namespaces), 3)  # noqa
-
-    def test_namespace_collect(self):
-        """Test that NamespaceInfo correctly pulls namespaces from all classes
-        in an objects MRO.
-
-        """
-        nsinfo = nsparser.NamespaceInfo()
-
-        # Collect classes
-        nsinfo.collect(C())
-
-        # finalize the namespace dictionary
-        nsinfo.finalize(ns_dict=NSMAP, schemaloc_dict=SCHEMALOCS)
-        namespaces = nsinfo.binding_namespaces.keys()
-
-        self.assertTrue(all(ns in namespaces for ns in NSMAP.iterkeys()))
-
 
     @silence_warnings
     def test_user_provided_ns(self):

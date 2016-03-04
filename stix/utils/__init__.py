@@ -4,6 +4,7 @@
 import contextlib
 import functools
 import keyword
+import warnings
 
 import lxml.etree
 

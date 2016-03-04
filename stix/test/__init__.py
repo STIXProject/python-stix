@@ -9,8 +9,9 @@ import warnings
 
 import cybox.utils
 from mixbox.binding_utils import ExternalEncoding
+from mixbox.entities import NamespaceCollector
 
-from stix.utils import NamespaceInfo, silence_warnings
+from stix.utils import silence_warnings
 
 
 @contextlib.contextmanager
@@ -97,7 +98,7 @@ def round_trip(o, output=False, list_=False):
         o2 = klass.from_dict(d2)
 
     # 5. Entity -> Bindings Object
-    ns_info = NamespaceInfo()
+    ns_info = NamespaceCollector()
     xobj = o2.to_obj(ns_info=ns_info)
 
     try:
