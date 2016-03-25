@@ -71,7 +71,7 @@ class Report(Cached, stix.Entity):
     indicators = fields.TypedField("Indicators", type_="stix.report.Indicators")
     incidents = fields.TypedField("Incidents", type_="stix.report.Incidents")
     threat_actors = fields.TypedField("Threat_Actors", type_="stix.report.ThreatActors")
-    ttps = fields.TypedField("TTPs", type_="stix.report.TTPs")
+    ttps = fields.TypedField("TTPs", type_="stix.core.ttps.TTPs")
     related_reports = fields.TypedField("Related_Reports", type_="stix.report.RelatedReports")
 
     def __init__(self, id_=None, idref=None, timestamp=None, header=None,
