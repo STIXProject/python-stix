@@ -266,7 +266,7 @@ class TypedCollection(object):
 
     @classmethod
     def from_obj(cls, obj_list, contained_type=None):
-        if not obj_list:
+        if obj_list is None:
             return None
 
         if not contained_type:
@@ -367,7 +367,7 @@ class BaseCoreComponent(Cached, Entity):
     title = fields.TypedField("Title")
     id_ = fields.IdField("id")
     idref = fields.IdrefField("idref")
-    descriptions = fields.TypedField("Description", type_="stix.common.StructuredTextList")
+    descriptions = fields.TypedField("Description", type_="stix.common.StructuredTextList", )
     short_descriptions = fields.TypedField("Short_Description", type_="stix.common.StructuredTextList")
     version = fields.TypedField("version", preset_hook=_validate_version)
     timestamp = fields.DateTimeField("timestamp")
