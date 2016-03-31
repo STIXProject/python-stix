@@ -140,7 +140,7 @@ class EntityTestCase(object):
     @silence_warnings
     def test_round_trip_full_dict(self):
         # Don't run this test on the base class
-        if type(self) == type(EntityTestCase):
+        if type(self) is EntityTestCase:
             return
 
         dict2 = round_trip_dict(self.klass, self._full_dict)
@@ -159,7 +159,7 @@ class EntityTestCase(object):
     @silence_warnings
     def test_round_trip_full(self):
         # Don't run this test on the base class
-        if type(self) == type(EntityTestCase):
+        if type(self) is EntityTestCase:
             return
 
         ent = self.klass.from_dict(self._full_dict)
@@ -181,7 +181,7 @@ class TypedListTestCase(object):
 
     @silence_warnings
     def test_round_trip_rt(self):
-        if type(self) == type(TypedListTestCase):
+        if type(self) is TypedListTestCase:
             return
 
         obj = self.klass.from_dict(self._full_dict)
