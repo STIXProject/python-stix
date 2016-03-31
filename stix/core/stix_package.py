@@ -98,16 +98,16 @@ class STIXPackage(Cached, stix.Entity):
         self.idref = idref
         self.version = STIXPackage._version
         self.stix_header = stix_header
-        self.campaigns = campaigns
-        self.courses_of_action = courses_of_action
-        self.exploit_targets = exploit_targets
-        self.observables = observables
-        self.indicators = indicators
-        self.incidents = incidents
-        self.threat_actors = threat_actors
-        self.ttps = ttps
+        self.campaigns = campaigns or Campaigns()
+        self.courses_of_action = courses_of_action or CoursesOfAction()
+        self.exploit_targets = exploit_targets or ExploitTargets()
+        self.observables = observables or Observables()
+        self.indicators = indicators or Indicators()
+        self.incidents = incidents or Incidents()
+        self.threat_actors = threat_actors or ThreatActors()
+        self.ttps = ttps or TTPs()
         self.related_packages = related_packages
-        self.reports = reports
+        self.reports = reports or Reports()
         self.timestamp = timestamp
 
     def add_indicator(self, indicator):
