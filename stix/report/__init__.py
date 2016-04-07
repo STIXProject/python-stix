@@ -71,7 +71,7 @@ class Report(Cached, stix.Entity):
     indicators = fields.TypedField("Indicators", type_="stix.report.Indicators")
     incidents = fields.TypedField("Incidents", type_="stix.report.Incidents")
     threat_actors = fields.TypedField("Threat_Actors", type_="stix.report.ThreatActors")
-    ttps = fields.TypedField("TTPs", type_="stix.report.TTPs")
+    ttps = fields.TypedField("TTPs", type_="stix.core.ttps.TTPs")
     related_reports = fields.TypedField("Related_Reports", type_="stix.report.RelatedReports")
 
     def __init__(self, id_=None, idref=None, timestamp=None, header=None,
@@ -103,12 +103,16 @@ class Report(Cached, stix.Entity):
         collection.
 
         """
+        if self.indicators is None:
+            self.indicators = Indicators()
         self.indicators.append(indicator)
 
     def add_campaign(self, campaign):
         """Adds a :class:`Campaign` object to the :attr:`campaigns` collection.
 
         """
+        if self.campaigns is None:
+            self.campaigns = Campaigns()
         self.campaigns.append(campaign)
 
     def add_observable(self, observable):
@@ -128,6 +132,8 @@ class Report(Cached, stix.Entity):
         collection.
 
         """
+        if self.incidents is None:
+            self.incidents = Incidents()
         self.incidents.append(incident)
 
     def add_threat_actor(self, threat_actor):
@@ -135,6 +141,8 @@ class Report(Cached, stix.Entity):
         collection.
 
         """
+        if self.threat_actors is None:
+            self.threat_actors = ThreatActors()
         self._threat_actors.append(threat_actor)
 
     def add_course_of_action(self, course_of_action):
@@ -142,19 +150,25 @@ class Report(Cached, stix.Entity):
         :attr:`courses_of_action` collection.
 
         """
-        self._courses_of_action.append(course_of_action)
+        if self.courses_of_action is None:
+            self.courses_of_action = CoursesOfAction()
+        self.courses_of_action.append(course_of_action)
 
     def add_exploit_target(self, exploit_target):
         """Adds an :class:`.ExploitTarget` object to the
         :attr:`exploit_targets` collection.
 
         """
-        self._exploit_targets.append(exploit_target)
+        if self.exploit_targets is None:
+            self.exploit_targets = ExploitTargets()
+        self.exploit_targets.append(exploit_target)
 
     def add_ttp(self, ttp):
         """Adds an :class:`.TTP` object to the :attr:`ttps` collection.
 
         """
+        if self.ttps is None:
+            self.ttps = TTPs()
         self.ttps.append(ttp)
 
     def add_related_report(self, related_report):
@@ -162,6 +176,8 @@ class Report(Cached, stix.Entity):
         :attr:`related_reports` collection.
 
         """
+        if self.related_reports is None:
+            self.related_reports = RelatedReports()
         self.related_reports.append(related_report)
 
     def add(self, entity):

@@ -69,6 +69,8 @@ class VocabField(fields.TypedField):
 
 
 class VocabFactory(entities.EntityFactory):
+    _convert_strings = True
+    
     @classmethod
     def entity_class(cls, key):
         try:
