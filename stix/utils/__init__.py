@@ -137,12 +137,11 @@ def is_stix(entity):
 
 
 def is_cybox(entity):
-    """Returns true if `entity` is an instance of
-    :class:`mixbox.entities.Entity`.
-    """
-    # TODO: once all entities subclass from mixbox.entities.Entity, how do we
-    # do this?
-    return isinstance(entity, Entity)
+    """Returns true if `entity` is a Cybox object"""
+    try:
+        return entity.__module__.startswith("cybox.")
+    except AttributeError:
+        return False
 
 
 def is_entity(entity):

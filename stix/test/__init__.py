@@ -49,6 +49,8 @@ def round_trip_dict(cls, dict_):
     obj = cls.object_from_dict(dict_)
     dict2 = cls.dict_from_object(obj)
 
+    api_obj = cls.from_dict(dict_)
+    dict2 = cls.to_dict(api_obj)
     return dict2
 
 def round_trip(o, output=False, list_=False):
@@ -139,7 +141,7 @@ class EntityTestCase(object):
     @silence_warnings
     def test_round_trip_full_dict(self):
         # Don't run this test on the base class
-        if type(self) == type(EntityTestCase):
+        if type(self) is EntityTestCase:
             return
 
         dict2 = round_trip_dict(self.klass, self._full_dict)
@@ -180,7 +182,7 @@ class TypedListTestCase(object):
 
     @silence_warnings
     def test_round_trip_rt(self):
-        if type(self) == type(TypedListTestCase):
+        if type(self) is TypedListTestCase:
             return
 
         obj = self.klass.from_dict(self._full_dict)

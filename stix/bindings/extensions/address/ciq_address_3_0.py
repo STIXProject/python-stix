@@ -33,6 +33,7 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
     xmlns          = XML_NS
     xmlns_prefix   = "ciqAddress"
     xml_type       = "CIQAddress3.0InstanceType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, Location=None):
         super(CIQAddress3_0InstanceType, self).__init__()
@@ -91,6 +92,7 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
             lwrite(etree_.tostring(self.Location, pretty_print=pretty_print))
             #self.Location.export(lwrite, level, nsmap, namespace_, name_='Location', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

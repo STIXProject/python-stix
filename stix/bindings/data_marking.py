@@ -75,6 +75,7 @@ class MarkingType(GeneratedsSuper):
         for Marking_ in self.Marking:
             Marking_.export(lwrite, level, nsmap, namespace_, name_='Marking', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -197,6 +198,7 @@ class MarkingStructureType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='MarkingStructureType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -308,6 +310,7 @@ class MarkingSpecificationType(GeneratedsSuper):
         if self.Information_Source is not None:
             self.Information_Source.export(lwrite, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

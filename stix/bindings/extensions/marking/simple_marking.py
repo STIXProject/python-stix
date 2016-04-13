@@ -33,6 +33,7 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
     xmlns          = XML_NS
     xmlns_prefix   = "simpleMarking"
     xml_type       = "SimpleMarkingStructureType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     subclass = None
     superclass = data_marking_binding.MarkingStructureType
@@ -91,6 +92,7 @@ class SimpleMarkingStructureType(data_marking_binding.MarkingStructureType):
             showIndent(lwrite, level, pretty_print)
             lwrite('<%s:Statement>%s</%s:Statement>%s' % (nsmap[namespace_], quote_xml(self.Statement), nsmap[namespace_], eol_))
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

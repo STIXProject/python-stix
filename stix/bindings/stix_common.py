@@ -89,6 +89,7 @@ class GenericRelationshipType(GeneratedsSuper):
         if self.Relationship is not None:
             self.Relationship.export(lwrite, level, nsmap, namespace_, name_='Relationship', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -172,6 +173,7 @@ class DateTimeWithPrecisionType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='DateTimeWithPrecisionType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         self.valueOf_ = get_all_text_(node)
@@ -240,6 +242,7 @@ class ProfilesType(GeneratedsSuper):
             showIndent(lwrite, level, pretty_print)
             lwrite('<%s:Profile>%s</%s:Profile>%s' % (nsmap[namespace_],quote_xml(Profile_), nsmap[namespace_], eol_))
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -315,6 +318,7 @@ class RelatedPackageRefType(GenericRelationshipType):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedPackageRefType', fromsubclass_=False, pretty_print=True):
         super(RelatedPackageRefType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -392,6 +396,7 @@ class RelatedPackageRefsType(GeneratedsSuper):
         for Package_Reference_ in self.Package_Reference:
             Package_Reference_.export(lwrite, level, nsmap, namespace_, name_='Package_Reference', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -480,6 +485,7 @@ class ToolInformationType(cybox_common_binding.ToolInformationType):
         for Short_Description in self.Short_Description:
             Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -596,6 +602,7 @@ class InformationSourceType(GeneratedsSuper):
         if self.References is not None:
             self.References.export(lwrite, level, nsmap, namespace_, name_='References', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -717,6 +724,7 @@ class ConfidenceType(GeneratedsSuper):
         if self.Confidence_Assertion_Chain is not None:
             self.Confidence_Assertion_Chain.export(lwrite, level, nsmap, namespace_, name_='Confidence_Assertion_Chain', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -811,6 +819,7 @@ class ActivityType(GeneratedsSuper):
         for Description in self.Description:
             Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -880,6 +889,7 @@ class KillChainsType(GeneratedsSuper):
         for Kill_Chain_ in self.Kill_Chain:
             Kill_Chain_.export(lwrite, level, nsmap, namespace_, name_='Kill_Chain', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -981,6 +991,7 @@ class KillChainType(GeneratedsSuper):
         for Kill_Chain_Phase_ in self.Kill_Chain_Phase:
             Kill_Chain_Phase_.export(lwrite, level, nsmap, namespace_, name_='Kill_Chain_Phase', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1081,6 +1092,7 @@ class KillChainPhaseType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='KillChainPhaseType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1161,6 +1173,7 @@ class KillChainPhasesReferenceType(GeneratedsSuper):
         for Kill_Chain_Phase_ in self.Kill_Chain_Phase:
             Kill_Chain_Phase_.export(lwrite, level, nsmap, namespace_, name_='Kill_Chain_Phase', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1229,6 +1242,7 @@ class KillChainPhaseReferenceType(KillChainPhaseType):
         super(KillChainPhaseReferenceType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1326,6 +1340,7 @@ class IdentityType(GeneratedsSuper):
         if self.Related_Identities is not None:
             self.Related_Identities.export(lwrite, level, nsmap, namespace_, name_='Related_Identities', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1405,6 +1420,7 @@ class GenericRelationshipListType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='GenericRelationshipListType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1470,6 +1486,7 @@ class RelatedCampaignType(GenericRelationshipType):
         if self.Campaign is not None:
             self.Campaign.export(lwrite, level, nsmap, namespace_, name_='Campaign', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1536,6 +1553,7 @@ class RelatedCourseOfActionType(GenericRelationshipType):
         if self.Course_Of_Action is not None:
             self.Course_Of_Action.export(lwrite, level, nsmap, namespace_, name_='Course_Of_Action', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1602,6 +1620,7 @@ class RelatedExploitTargetType(GenericRelationshipType):
         if self.Exploit_Target is not None:
             self.Exploit_Target.export(lwrite, level, nsmap, namespace_, name_='Exploit_Target', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1667,6 +1686,7 @@ class RelatedIncidentType(GenericRelationshipType):
         if self.Incident is not None:
             self.Incident.export(lwrite, level, nsmap, namespace_, name_='Incident', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1733,6 +1753,7 @@ class RelatedIndicatorType(GenericRelationshipType):
         if self.Indicator is not None:
             self.Indicator.export(lwrite, level, nsmap, namespace_, name_='Indicator', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1799,6 +1820,7 @@ class RelatedObservableType(GenericRelationshipType):
         if self.Observable is not None:
             self.Observable.export(lwrite, level, "%s:" % (nsmap[namespace_]), name_='Observable', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1864,6 +1886,7 @@ class RelatedThreatActorType(GenericRelationshipType):
         if self.Threat_Actor is not None:
             self.Threat_Actor.export(lwrite, level, nsmap, namespace_, name_='Threat_Actor', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1930,6 +1953,7 @@ class RelatedTTPType(GenericRelationshipType):
         if self.TTP is not None:
             self.TTP.export(lwrite, level, nsmap, namespace_, name_='TTP', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1996,6 +2020,7 @@ class RelatedIdentityType(GenericRelationshipType):
         if self.Identity is not None:
             self.Identity.export(lwrite, level, nsmap, namespace_, name_='Identity', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2079,6 +2104,7 @@ class IndicatorBaseType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='IndicatorBaseType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2180,6 +2206,7 @@ class IncidentBaseType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='IncidentBaseType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2281,6 +2308,7 @@ class TTPBaseType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='TTPBaseType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2383,6 +2411,7 @@ class ExploitTargetBaseType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ExploitTargetBaseType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2484,6 +2513,7 @@ class CourseOfActionBaseType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='CourseOfActionBaseType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2560,6 +2590,7 @@ class RelatedCampaignReferenceType(GenericRelationshipType):
         if self.Campaign is not None:
             self.Campaign.export(lwrite, level, nsmap, namespace_, name_='Campaign', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2640,6 +2671,7 @@ class CampaignReferenceType(GeneratedsSuper):
         if self.Names is not None:
             self.Names.export(lwrite, level, nsmap, namespace_, name_='Names', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2715,6 +2747,7 @@ class NamesType(GeneratedsSuper):
         for Name_ in self.Name:
             Name_.export(lwrite, level, nsmap, namespace_, name_='Name', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2805,6 +2838,7 @@ class CampaignBaseType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='CampaignBaseType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2907,6 +2941,7 @@ class ThreatActorBaseType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ThreatActorBaseType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2984,6 +3019,7 @@ class ExploitTargetsType(GeneratedsSuper):
         for Exploit_Target_ in self.Exploit_Target:
             Exploit_Target_.export(lwrite, level, nsmap, namespace_, name_='Exploit_Target', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -3047,6 +3083,7 @@ class AddressAbstractType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AddressAbstractType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -3109,6 +3146,7 @@ class ContributingSourcesType(GeneratedsSuper):
         for Source_ in self.Source:
             Source_.export(lwrite, level, nsmap, namespace_, name_='Source', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -3175,6 +3213,7 @@ class ReferencesType(GeneratedsSuper):
             showIndent(lwrite, level, pretty_print)
             lwrite('<%s:Reference>%s</%s:Reference>%s' % (nsmap[namespace_], quote_xml(Reference_), nsmap[namespace_], eol_))
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -3240,6 +3279,7 @@ class RelatedIdentitiesType(GeneratedsSuper):
         for Related_Identity_ in self.Related_Identity:
             Related_Identity_.export(lwrite, level, nsmap, namespace_, name_='Related_Identity', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -3305,6 +3345,7 @@ class ConfidenceAssertionChainType(GeneratedsSuper):
         for Confidence_Assertion_ in self.Confidence_Assertion:
             Confidence_Assertion_.export(lwrite, level, nsmap, namespace_, name_='Confidence_Assertion', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -3409,6 +3450,7 @@ class StatementType(GeneratedsSuper):
         if self.Confidence is not None:
             self.Confidence.export(lwrite, level, nsmap, namespace_, name_='Confidence', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -3516,6 +3558,7 @@ class StructuredTextType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='StructuredTextType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         self.valueOf_ = get_all_text_(node)
@@ -3598,6 +3641,7 @@ class EncodedCDATAType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='EncodedCDATAType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         self.valueOf_ = get_all_text_(node)
@@ -3681,6 +3725,7 @@ class ControlledVocabularyStringType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ControlledVocabularyStringType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         self.valueOf_ = get_all_text_(node)
@@ -3802,6 +3847,7 @@ class ReportBaseType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ReportBaseType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -3881,6 +3927,7 @@ class RelatedReportType(GenericRelationshipType):
         if self.Report is not None:
             self.Report.export(lwrite, level, nsmap, namespace_, name_='Report', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

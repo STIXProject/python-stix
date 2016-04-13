@@ -99,6 +99,7 @@ class StructuredCOAType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='StructuredCOAType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -189,6 +190,7 @@ class ObjectiveType(GeneratedsSuper):
         if self.Applicability_Confidence is not None:
             self.Applicability_Confidence.export(lwrite, level, nsmap, namespace_, name_='Applicability_Confidence', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -225,6 +227,7 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     xmlns          = "http://stix.mitre.org/CourseOfAction-1"
     xmlns_prefix   = "coa"
     xml_type       = "CourseOfActionType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Stage=None, Type=None, Description=None, Short_Description=None, Objective=None, Parameter_Observables=None, Structured_COA=None, Impact=None, Cost=None, Efficacy=None, Information_Source=None, Handling=None, Related_COAs=None, Related_Packages=None):
         super(CourseOfActionType, self).__init__(idref=idref, id=id, timestamp=timestamp)
@@ -382,6 +385,7 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
         if self.Related_Packages is not None:
             self.Related_Packages.export(lwrite, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -513,6 +517,7 @@ class RelatedCOAsType(stix_common_binding.GenericRelationshipListType):
         for Related_COA_ in self.Related_COA:
             Related_COA_.export(lwrite, level, nsmap, namespace_, name_='Related_COA', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

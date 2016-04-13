@@ -1,30 +1,32 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# external
+# mixbox
+from mixbox import fields
+from mixbox import entities
+from mixbox import typedlist
+
+# cybox
 from cybox.core import Observable, ObservableComposition
 from cybox.common import Time
 
 # internal
 import stix
-import stix.utils as utils
-from stix.common import (
-    Identity, InformationSource, VocabString, Confidence,
-    RelatedTTP, Statement, CampaignRef
-)
-from stix.common.related import (
-    GenericRelationshipList, RelatedCOA, RelatedIndicator, RelatedCampaignRef,
-    RelatedPackageRefs
-)
-from stix.common.vocabs import IndicatorType
+from stix.common.identity import Identity
+from stix.common import (InformationSource, VocabString, Confidence, RelatedTTP,
+    Statement, CampaignRef)
+from stix.common.related import (GenericRelationshipList, RelatedCOA,
+    RelatedIndicator, RelatedCampaignRef, RelatedPackageRefs)
+from stix.common.vocabs import VocabField, IndicatorType
 from stix.common.kill_chains import KillChainPhasesReference
 import stix.bindings.indicator as indicator_binding
 
 # relative
 from .test_mechanism import TestMechanisms
 from .sightings import Sightings
-from .valid_time import _ValidTimePositions
+from .valid_time import ValidTime
 
+from operator import isSequenceType
 
 class SuggestedCOAs(GenericRelationshipList):
     """The ``SuggestedCOAs`` class provides functionality for adding
@@ -77,14 +79,13 @@ class SuggestedCOAs(GenericRelationshipList):
             or ``"exclusive"``. See
             :class:`stix.common.related.GenericRelationshipList` documentation
             for more information.
-
     """
+
     _namespace = "http://stix.mitre.org/Indicator-2"
     _binding = indicator_binding
     _binding_class = indicator_binding.SuggestedCOAsType
-    _binding_var = "Suggested_COA"
-    _contained_type = RelatedCOA
-    _inner_name = "suggested_coas"
+
+    suggested_coa = fields.TypedField("Suggested_COA", RelatedCOA, multiple=True, key_name="suggested_coas")
 
     def __init__(self, suggested_coas=None, scope=None):
         super(SuggestedCOAs, self).__init__(scope, suggested_coas)
@@ -146,9 +147,8 @@ class RelatedIndicators(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Indicator-2"
     _binding = indicator_binding
     _binding_class = indicator_binding.RelatedIndicatorsType
-    _binding_var = "Related_Indicator"
-    _contained_type = RelatedIndicator
-    _inner_name = "related_indicators"
+
+    related_indicator = fields.TypedField("Related_Indicator", RelatedIndicator, multiple=True, key_name="related_indicators")
 
     def __init__(self, related_indicators=None, scope=None):
         super(RelatedIndicators, self).__init__(scope, related_indicators)
@@ -177,6 +177,25 @@ class Indicator(stix.BaseCoreComponent):
     _ALL_VERSIONS = ("2.0", "2.0.1", "2.1", "2.1.1", "2.2")
     _ALLOWED_COMPOSITION_OPERATORS = ('AND', 'OR')
     _ID_PREFIX = "indicator"
+    _try_cast = False
+
+    producer = fields.TypedField("Producer", InformationSource)
+    observable = fields.TypedField("Observable", Observable, postset_hook=lambda inst,value: inst.set_observables([value]))
+    indicator_types = VocabField("Type", IndicatorType, multiple=True, key_name="indicator_types")
+    confidence = fields.TypedField("Confidence", Confidence)
+    indicated_ttps = fields.TypedField("Indicated_TTP", RelatedTTP, multiple=True, key_name="indicated_ttps")
+    test_mechanisms = fields.TypedField("Test_Mechanisms",  TestMechanisms)
+    alternative_id = fields.TypedField("Alternative_ID", multiple=True)
+    suggested_coas = fields.TypedField("Suggested_COAs", SuggestedCOAs)
+    sightings = fields.TypedField("Sightings", Sightings)
+    composite_indicator_expression = fields.TypedField("Composite_Indicator_Expression", "stix.indicator.CompositeIndicatorExpression")
+    kill_chain_phases = fields.TypedField("Kill_Chain_Phases", KillChainPhasesReference)
+    valid_time_positions = fields.TypedField("Valid_Time_Position", ValidTime, multiple=True, key_name="valid_time_positions")
+    related_indicators = fields.TypedField("Related_Indicators", RelatedIndicators)
+    related_campaigns = fields.TypedField("Related_Campaigns", type_="stix.indicator.RelatedCampaignRefs")
+    likely_impact = fields.TypedField("Likely_Impact", Statement)
+    negate = fields.TypedField("negate")
+    related_packages = fields.TypedField("Related_Packages", RelatedPackageRefs)
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
@@ -190,79 +209,18 @@ class Indicator(stix.BaseCoreComponent):
             short_description=short_description
         )
 
-        self.producer = None
         self.observables = None
         self.indicator_types = IndicatorTypes()
-        self.confidence = None
-        self.indicated_ttps = _IndicatedTTPs()
         self.test_mechanisms = TestMechanisms()
         self.alternative_id = None
         self.suggested_coas = SuggestedCOAs()
         self.sightings = Sightings()
         self.composite_indicator_expression = None
         self.kill_chain_phases = KillChainPhasesReference()
-        self.valid_time_positions = _ValidTimePositions()
         self.related_indicators = None
         self.related_campaigns = RelatedCampaignRefs()
         self.observable_composition_operator = "OR"
-        self.likely_impact = None
-        self.negate = None
         self.related_packages = RelatedPackageRefs()
-
-    @property
-    def producer(self):
-        """Contains information about the source of the :class:`Indicator`.
-
-        Default Value: ``None``
-
-        Returns:
-            An instance of
-            :class:`stix.common.information_source.InformationSource`
-
-        Raises:
-            ValueError: If set to a value that is not ``None`` and not an
-                instance of
-                :class:`stix.common.information_source.InformationSource`
-
-        """
-        return self._producer
-
-    @producer.setter
-    def producer(self, value):
-        self._set_var(InformationSource, try_cast=False, producer=value)
-
-    @property
-    def observable(self):
-        """A convenience property for accessing or setting the only
-        ``cybox.core.Observable`` instance held by this Indicator.
-
-        Default Value: Empty ``list``.
-
-        Setting this property results in the ``observables`` property being
-        reinitialized to an empty ``list`` and appending the input value,
-        resulting in a ``list`` containing one value.
-
-        Note:
-            If the ``observables`` list contains more than one item, this
-            property will only return the first item in the list.
-
-        Returns:
-            An instance of ``cybox.core.Observable``.
-
-        Raises:
-            ValueError: If set to a value that cannot be converted to an
-                instance of ``cybox.core.Observable``.
-
-
-        """
-        if self.observables:
-            return self.observables[0]
-        else:
-            return None
-    
-    @observable.setter
-    def observable(self, observable):
-        self._observables = _Observables(observable)
 
     @property
     def observables(self):
@@ -288,7 +246,15 @@ class Indicator(stix.BaseCoreComponent):
 
     @observables.setter
     def observables(self, value):
+        # this code causes infinite recursion; observables sets observable which sets obesrvables...
+        #try:
+        #    self.observable = value[0]
+        #except TypeError:
+        #    self.observable = value
         self._observables = _Observables(value)
+
+    def set_observables(self, value):
+        self.observables = value
 
     def add_observable(self, observable):
         """Adds an observable to the ``observables`` list property of the
@@ -317,34 +283,8 @@ class Indicator(stix.BaseCoreComponent):
                 instance of ``cybox.core.Observable``.
 
         """
-        self.observables.append(observable)
-                
-    @property
-    def alternative_id(self):
-        """An alternative identifi  er for this :class:`Indicator`
-
-        This property can be set to a single string identifier or a list of
-        identifiers. If set to a single object, the object will be inserted
-        into an empty list internally.
-
-        Default Value: Empty ``list``
-
-        Returns:
-            A list of alternative ids.
-
-        """
-        return self._alternative_id
-
-    @alternative_id.setter
-    def alternative_id(self, value):
-        self._alternative_id = []
-        if not value:
-            return
-        elif utils.is_sequence(value):
-            self._alternative_id.extend(x for x in value if x)
-        else:
-            self._alternative_id.append(value)
-
+        self.observables.append(observable)                
+    
     def add_alternative_id(self, value):
         """Adds an alternative id to the ``alternative_id`` list property.
 
@@ -360,29 +300,7 @@ class Indicator(stix.BaseCoreComponent):
             return
 
         self.alternative_id.append(value)
-                
-    @property
-    def valid_time_positions(self):
-        """A list of valid time positions for this :class:`Indicator`.
-
-        This property can be set to a single instance or a list of
-        :class:`stix.indicator.valid_time.ValidTime` instances. If set to a
-        single instance, that object is converted into a list containing
-        one item.
-
-        Default Value: Empty ``list``
-
-        Returns:
-            A list of
-            :class:`stix.indicator.valid_time.ValidTime` instances.
-
-        """
-        return self._valid_time_positions
-
-    @valid_time_positions.setter
-    def valid_time_positions(self, value):
-        self._valid_time_positions = _ValidTimePositions(value)
-
+    
     def add_valid_time_position(self, value):
         """Adds an valid time position to the ``valid_time_positions`` property
         list.
@@ -399,34 +317,6 @@ class Indicator(stix.BaseCoreComponent):
 
         """
         self.valid_time_positions.append(value)
-
-    @property
-    def indicator_types(self):
-        """A list of indicator types for this :class:`Indicator`.
-
-        This property can be set to lists or single instances of ``str``
-        or :class:`stix.common.vocabs.VocabString` or an instance
-        of :class:`IndicatorTypes`.
-
-        Note:
-            If an instance of ``str`` is passed in (or a ``list`` containing
-            ``str`` values) an attempt will be made to convert that string
-            value to an instance of :class:`stix.common.vocabs.IndicatorType`.
-
-        Default Value: An empty ``IndicatorTypes`` instance.
-
-        See Also:
-            Documentation for :class:`IndicatorTypes`.
-
-        Returns:
-            An instance of ``IndicatorTypes``.
-
-        """
-        return self._indicator_types
-
-    @indicator_types.setter
-    def indicator_types(self, value):
-        self._indicator_types = IndicatorTypes(value)
 
     def add_indicator_type(self, value):
         """Adds a value to the ``indicator_types`` list property.
@@ -450,44 +340,6 @@ class Indicator(stix.BaseCoreComponent):
         """
         self.indicator_types.append(value)
 
-    @property
-    def confidence(self):
-        """The confidence for this :class:`Indicator`.
-
-        This property can be set to an instance of ``str``,
-        :class:`stix.common.vocabs.VocabString`, or
-        :class:`stix.common.confidence.Confidence`.
-
-        Default Value: ``None``
-
-        Note:
-            If set to an instance of ``str`` or
-            :class:`stix.common.vocabs.VocabString`, that value will be wrapped
-            in an instance of
-            :class:`stix.common.confidence.Confidence`.
-
-        Returns:
-            An instance of of
-            :class:`stix.common.confidence.Confidence`.
-
-        Raises:
-            ValueError: If set to a ``str`` value that cannot be converted into
-                an instance of :class:`stix.common.confidence.Confidence`.
-
-        """
-        return self._confidence
-    
-    @confidence.setter
-    def confidence(self, value):
-        self._set_var(Confidence, confidence=value)
-
-    @property
-    def indicated_ttps(self):
-        return self._indicated_ttps
-    
-    @indicated_ttps.setter
-    def indicated_ttps(self, value):
-        self._indicated_ttps = _IndicatedTTPs(value)
 
     def add_indicated_ttp(self, v):
         """Adds an Indicated TTP to the ``indicated_ttps`` list property
@@ -515,13 +367,6 @@ class Indicator(stix.BaseCoreComponent):
         """
         self.indicated_ttps.append(v)
 
-    @property
-    def test_mechanisms(self):
-        return self._test_mechanisms
-    
-    @test_mechanisms.setter
-    def test_mechanisms(self, value):
-        self._test_mechanisms = TestMechanisms(value)
             
     def add_test_mechanism(self, tm):
         """Adds an Test Mechanism to the ``test_mechanisms`` list property
@@ -549,17 +394,6 @@ class Indicator(stix.BaseCoreComponent):
 
         """
         self.test_mechanisms.append(tm)
-
-    @property
-    def related_indicators(self):
-        return self._related_indicators
-
-    @related_indicators.setter
-    def related_indicators(self, value):
-        if isinstance(value, RelatedIndicators):
-            self._related_indicators = value
-        else:
-            self._related_indicators = RelatedIndicators(value)
 
     def add_related_indicator(self, indicator):
         """Adds an Related Indicator to the ``related_indicators`` list
@@ -593,17 +427,6 @@ class Indicator(stix.BaseCoreComponent):
 
         """
         self.related_indicators.append(indicator)
-
-    @property
-    def related_campaigns(self):
-        return self._related_campaigns
-
-    @related_campaigns.setter
-    def related_campaigns(self, value):
-        if isinstance(value, RelatedCampaignRefs):
-            self._related_campaigns = value
-        else:
-            self._related_campaigns = RelatedCampaignRefs(value)
 
     def add_related_campaign(self, value):
         """Adds a Related Campaign to this Indicator.
@@ -650,30 +473,6 @@ class Indicator(stix.BaseCoreComponent):
         error = error.format(self._ALLOWED_COMPOSITION_OPERATORS)
         raise ValueError(error)
 
-    @property
-    def likely_impact(self):
-        return self._likely_impact
-    
-    @likely_impact.setter
-    def likely_impact(self, value):
-        self._set_var(Statement, likely_impact=value)
-            
-    @property
-    def negate(self):
-        return self._negate
-    
-    @negate.setter
-    def negate(self, value):
-        self._negate = utils.xml_bool(value)
-
-    @property
-    def kill_chain_phases(self):
-        return self._kill_chain_phases
-
-    @kill_chain_phases.setter
-    def kill_chain_phases(self, value):
-        self._kill_chain_phases = KillChainPhasesReference(value)
-
     def add_kill_chain_phase(self, value):
         """Add a new Kill Chain Phase reference to this Indicator.
 
@@ -684,14 +483,6 @@ class Indicator(stix.BaseCoreComponent):
                 separately.
         """
         self.kill_chain_phases.append(value)
-
-    @property
-    def related_packages(self):
-        return self._related_packages
-
-    @related_packages.setter
-    def related_packages(self, value):
-        self._related_packages = RelatedPackageRefs(value)
 
     def add_related_package(self, value):
         self.related_packages.append(value)
@@ -864,90 +655,27 @@ class Indicator(stix.BaseCoreComponent):
 
         observable = Observable(object_)
         self.add_observable(observable)
+    
+    def to_obj(self, ns_info=None):
+        obj = super(Indicator, self).to_obj(ns_info=ns_info)
 
-    def to_obj(self, return_obj=None, ns_info=None):
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        super(Indicator, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
-        return_obj.negate = True if self.negate else None
-
-        if self.confidence:
-            return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
-        if self.indicator_types:
-            return_obj.Type = self.indicator_types.to_obj(ns_info=ns_info)
-        if self.indicated_ttps:
-            return_obj.Indicated_TTP = self.indicated_ttps.to_obj(ns_info=ns_info)
-        if self.producer:
-            return_obj.Producer = self.producer.to_obj(ns_info=ns_info)
-        if self.test_mechanisms:
-            return_obj.Test_Mechanisms = self.test_mechanisms.to_obj(ns_info=ns_info)
-        if self.likely_impact:
-            return_obj.Likely_Impact = self.likely_impact.to_obj(ns_info=ns_info)
-        if self.alternative_id:
-            return_obj.Alternative_ID = self.alternative_id
-        if self.valid_time_positions:
-            return_obj.Valid_Time_Position = self.valid_time_positions.to_obj(ns_info=ns_info)
-        if self.suggested_coas:
-            return_obj.Suggested_COAs = self.suggested_coas.to_obj(ns_info=ns_info)
-        if self.sightings:
-            return_obj.Sightings = self.sightings.to_obj(ns_info=ns_info)
-        if self.composite_indicator_expression:
-            return_obj.Composite_Indicator_Expression = self.composite_indicator_expression.to_obj(ns_info=ns_info)
-        if self.kill_chain_phases:
-            return_obj.Kill_Chain_Phases = self.kill_chain_phases.to_obj(ns_info=ns_info)
-        if self.related_indicators:
-            return_obj.Related_Indicators = self.related_indicators.to_obj(ns_info=ns_info)
-        if self.related_campaigns:
-            return_obj.Related_Campaigns = self.related_campaigns.to_obj(ns_info=ns_info)
-        if self.related_packages:
-            return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
         if self.observables:
             if len(self.observables) > 1:
                 root_observable = self._merge_observables(self.observables)
             else:
                 root_observable = self.observables[0]
-            return_obj.Observable = root_observable.to_obj(ns_info=ns_info)
+            obj.Observable = root_observable.to_obj(ns_info=ns_info)
 
-        return return_obj
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):        
-        if not obj:
-            return None
-        if not return_obj:
-            return_obj = cls()
-
-        super(Indicator, cls).from_obj(obj, return_obj=return_obj)
-
-        if isinstance(obj, cls._binding_class):
-            return_obj.negate = obj.negate
-            return_obj.producer = InformationSource.from_obj(obj.Producer)
-            return_obj.confidence = Confidence.from_obj(obj.Confidence)
-            return_obj.sightings = Sightings.from_obj(obj.Sightings)
-            return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_obj(obj.Composite_Indicator_Expression)
-            return_obj.kill_chain_phases = KillChainPhasesReference.from_obj(obj.Kill_Chain_Phases)
-            return_obj.related_indicators = RelatedIndicators.from_obj(obj.Related_Indicators)
-            return_obj.likely_impact = Statement.from_obj(obj.Likely_Impact)
-            return_obj.indicator_types = IndicatorTypes.from_obj(obj.Type)
-            return_obj.test_mechanisms = TestMechanisms.from_obj(obj.Test_Mechanisms)
-            return_obj.suggested_coas = SuggestedCOAs.from_obj(obj.Suggested_COAs)
-            return_obj.alternative_id = obj.Alternative_ID
-            return_obj.indicated_ttps = _IndicatedTTPs.from_obj(obj.Indicated_TTP)
-            return_obj.valid_time_positions = _ValidTimePositions.from_obj(obj.Valid_Time_Position)
-            return_obj.observable = Observable.from_obj(obj.Observable)
-            return_obj.related_campaigns = RelatedCampaignRefs.from_obj(obj.Related_Campaigns)
-            return_obj.related_packages = RelatedPackageRefs.from_obj(obj.Related_Packages)
-            
-        return return_obj
-
+        return obj
+    
     def to_dict(self):
         keys = ('observables', 'observable_composition_operator', 'negate')
-        d = utils.to_dict(self, skip=keys)
+        #d = utils.to_dict(self, skip=keys)
 
-        if self.negate:
-            d['negate'] = True
+        d = super(Indicator, self).to_dict()
+
+        if not self.negate:
+            d.pop("negate", None)
 
         if self.observables:
             if len(self.observables) == 1:
@@ -957,39 +685,20 @@ class Indicator(stix.BaseCoreComponent):
                 d['observable'] = composite_observable.to_dict()
 
         return d
+    
 
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        if not dict_repr:
-            return None
-        if not return_obj:
-            return_obj = cls()
+def check_operator(composite_indicator_exp, value):
+    allowed = CompositeIndicatorExpression.OPERATORS
 
-        super(Indicator, cls).from_dict(dict_repr, return_obj=return_obj)
-
-        get = dict_repr.get
-        return_obj.negate    = get('negate')
-        return_obj.alternative_id = get('alternative_id')
-        return_obj.indicated_ttps = _IndicatedTTPs.from_dict(get('indicated_ttps'))
-        return_obj.test_mechanisms = TestMechanisms.from_list(get('test_mechanisms'))
-        return_obj.suggested_coas = SuggestedCOAs.from_dict(get('suggested_coas'))
-        return_obj.sightings = Sightings.from_dict(get('sightings'))
-        return_obj.composite_indicator_expression = CompositeIndicatorExpression.from_dict(get('composite_indicator_expression'))
-        return_obj.kill_chain_phases = KillChainPhasesReference.from_dict(get('kill_chain_phases'))
-        return_obj.related_indicators = RelatedIndicators.from_dict(get('related_indicators'))
-        return_obj.likely_impact = Statement.from_dict(get('likely_impact'))
-        return_obj.indicator_types = IndicatorTypes.from_list(get('indicator_types'))
-        return_obj.confidence = Confidence.from_dict(get('confidence'))
-        return_obj.valid_time_positions = _ValidTimePositions.from_dict(get('valid_time_positions'))
-        return_obj.observable = Observable.from_dict(get('observable'))
-        return_obj.producer = InformationSource.from_dict(get('producer'))
-        return_obj.related_campaigns = RelatedCampaignRefs.from_dict(get('related_campaigns'))
-        return_obj.related_packages = RelatedPackageRefs.from_dict(get('related_packages'))
-
-        return return_obj
+    if not value:
+        raise ValueError("operator must not be None or empty")
+    elif value not in allowed:
+        raise ValueError("operator must be one of: %s" % allowed)
+    else:
+        return
 
 
-class CompositeIndicatorExpression(stix.EntityList):
+class CompositeIndicatorExpression(entities.EntityList):
     """Implementation of the STIX ``CompositeIndicatorExpressionType``.
 
     The ``CompositeIndicatorExpression`` class implements methods found on
@@ -1031,86 +740,57 @@ class CompositeIndicatorExpression(stix.EntityList):
     _binding = indicator_binding
     _binding_class = indicator_binding.CompositeIndicatorExpressionType
     _namespace = 'http://stix.mitre.org/Indicator-2'
-    _contained_type = Indicator
-    _binding_var = "Indicator"
-    _inner_name = "indicators"
-    
+
     OP_AND = "AND"
     OP_OR = "OR"
     OPERATORS = (OP_AND, OP_OR)
-    
+    operator = fields.TypedField("operator", preset_hook=check_operator)
+    indicator = fields.TypedField(
+        name="Indicator",
+        type_=Indicator,
+        multiple=True,
+        key_name="indicators"
+    )
+
+    # TODO (bworrell): Change this to *args, **kwargs to get around the weirdness
+    # that occurs when creating with kwarg and arglist.
+    # E.g, CompositeIndicatorExpression(operator="AND", arg1, arg2, arg3)
+    # will raise an error.
     def __init__(self, operator="OR", *args):
         super(CompositeIndicatorExpression, self).__init__(*args)
         self.operator = operator
 
-    @property
-    def operator(self):
-        return self._operator
-    
-    @operator.setter
-    def operator(self, value):
-        if not value:
-            raise ValueError("operator must not be None or empty")
-        elif value not in self.OPERATORS:
-            raise ValueError("operator must be one of: %s" % (self.OPERATORS,))
-        else:
-            self._operator = value
-            
-    def __nonzero__(self):
-        return super(CompositeIndicatorExpression, self).__nonzero__()
 
-    def to_obj(self, return_obj=None, ns_info=None):
-        list_obj = super(CompositeIndicatorExpression, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-        list_obj.operator = self.operator
-        return list_obj
-
-    def to_dict(self):
-        d = super(CompositeIndicatorExpression, self).to_dict()
-        if self.operator:
-            d['operator'] = self.operator
-        return d
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if not obj:
-            return None
-        if return_obj is None:
-            return_obj = cls()
-
-        super(CompositeIndicatorExpression, cls).from_obj(obj, return_obj=return_obj)
-        return_obj.operator = obj.operator
-        return return_obj
-
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        if not dict_repr:
-            return None
-        if return_obj is None:
-            return_obj = cls()
-
-        super(CompositeIndicatorExpression, cls).from_dict(dict_repr, return_obj=return_obj)
-        return_obj.operator = dict_repr.get('operator')
-        return return_obj
-
-
-class RelatedCampaignRefs(GenericRelationshipList):
-    _namespace = "http://stix.mitre.org/Indicator-2"
-    _binding = indicator_binding
-    _binding_class = _binding.RelatedCampaignReferencesType
-    _binding_var = 'Related_Campaign'
-    _contained_type = RelatedCampaignRef
-    _inner_name = "related_campaigns"
-
-    def __init__(self, related_campaign_refs=None, scope=None):
-        super(RelatedCampaignRefs, self).__init__(scope, related_campaign_refs)
+class _RelatedCampaignRefList(typedlist.TypedList):
+    def __init__(self, *args):
+        super(_RelatedCampaignRefList, self).__init__(type=RelatedCampaignRef, *args)
 
     def _fix_value(self, value):
         from stix.campaign import Campaign
 
         if isinstance(value, Campaign) and value.id_:
             return RelatedCampaignRef(CampaignRef(idref=value.id_))
-        else:
-            return super(RelatedCampaignRefs, self)._fix_value(value)
+
+        msg = "Cannot insert object of type '%s' into '%s'"
+        msg = msg % (type(value), self.__class__.__name__)
+        raise TypeError(msg)
+
+
+class RelatedCampaignRefs(GenericRelationshipList):
+    _namespace = "http://stix.mitre.org/Indicator-2"
+    _binding = indicator_binding
+    _binding_class = _binding.RelatedCampaignReferencesType
+
+    related_campaign = fields.TypedField(
+        name="Related_Campaign",
+        type_=RelatedCampaignRef,
+        multiple=True,
+        key_name="related_campaigns",
+        listfunc=_RelatedCampaignRefList
+    )
+
+    def __init__(self, related_campaign_refs=None, scope=None):
+        super(RelatedCampaignRefs, self).__init__(scope, related_campaign_refs)
 
 
 # NOT ACTUAL STIX TYPES!
@@ -1156,10 +836,6 @@ class IndicatorTypes(stix.TypedList):
 
     def _fix_value(self, value):
         return IndicatorType(value)
-
-
-class _IndicatedTTPs(stix.TypedList):
-    _contained_type = RelatedTTP
 
 
 class _Observables(stix.TypedList):

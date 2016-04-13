@@ -1,6 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# mixbox
+from mixbox import fields
+
+# internal
 import stix
 import stix.bindings.threat_actor as threat_actor_binding
 from stix.common import vocabs, Confidence, Identity, Statement
@@ -9,32 +13,32 @@ from stix.common.related import (
     RelatedThreatActor
 )
 
+from stix.common.statement import StatementField
+from stix.common.information_source import InformationSource
+
 
 class ObservedTTPs(GenericRelationshipList):
     _namespace = 'http://stix.mitre.org/ThreatActor-1'
     _binding = threat_actor_binding
     _binding_class = threat_actor_binding.ObservedTTPsType
-    _binding_var = "Observed_TTP"
-    _contained_type = RelatedTTP
-    _inner_name = "ttps"
+
+    observed_ttp = fields.TypedField("Observed_TTP", RelatedTTP, multiple=True, key_name="ttps")
 
 
 class AssociatedActors(GenericRelationshipList):
     _namespace = 'http://stix.mitre.org/ThreatActor-1'
     _binding = threat_actor_binding
     _binding_class = threat_actor_binding.AssociatedActorsType
-    _binding_var = "Associated_Actor"
-    _contained_type = RelatedThreatActor
-    _inner_name = "threat_actors"
+
+    associated_actor = fields.TypedField("Associated_Actor", RelatedThreatActor, multiple=True, key_name="threat_actors")
 
 
 class AssociatedCampaigns(GenericRelationshipList):
     _namespace = 'http://stix.mitre.org/ThreatActor-1'
     _binding = threat_actor_binding
     _binding_class = threat_actor_binding.AssociatedCampaignsType
-    _binding_var = "Associated_Campaign"
-    _contained_type = RelatedCampaign
-    _inner_name = "campaigns"
+
+    associated_campaign = fields.TypedField("Associated_Campaign", RelatedCampaign, multiple=True, key_name="campaigns")
 
 
 class ThreatActor(stix.BaseCoreComponent):
@@ -61,6 +65,19 @@ class ThreatActor(stix.BaseCoreComponent):
     _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = 'threatactor'
 
+    identity = fields.TypedField("Identity", Identity)
+    types = StatementField("Type", Statement, vocab_type=vocabs.ThreatActorType, multiple=True, key_name="types")
+    motivations = StatementField("Motivation", Statement, vocab_type=vocabs.Motivation, multiple=True, key_name="motivations")
+    sophistications = StatementField("Sophistication", Statement, vocab_type=vocabs.ThreatActorSophistication, multiple=True, key_name="sophistications")
+    intended_effects = StatementField("Intended_Effect", Statement, vocab_type=vocabs.IntendedEffect, multiple=True, key_name="intended_effects")
+    planning_and_operational_supports = StatementField("Planning_And_Operational_Support", Statement, vocab_type=vocabs.PlanningAndOperationalSupport, multiple=True, key_name="planning_and_operational_supports")
+    confidence = fields.TypedField("Confidence", Confidence)
+    observed_ttps = fields.TypedField("Observed_TTPs", ObservedTTPs)
+    associated_campaigns = fields.TypedField("Associated_Campaigns", AssociatedCampaigns)
+    associated_actors = fields.TypedField("Associated_Actors", AssociatedActors)
+    related_packages = fields.TypedField("Related_Packages", RelatedPackageRefs)
+    information_source = fields.TypedField("Information_Source", InformationSource)
+
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
 
@@ -73,43 +90,10 @@ class ThreatActor(stix.BaseCoreComponent):
             short_description=short_description
         )
 
-        self.identity = None
-        self.types = None
-        self.motivations = None
-        self.sophistications = None
-        self.intended_effects = None
-        self.planning_and_operational_supports = None
-        self.confidence = None
         self.observed_ttps = ObservedTTPs()
         self.associated_campaigns = AssociatedCampaigns()
         self.associated_actors = AssociatedActors()
         self.related_packages = RelatedPackageRefs()
-
-    @property
-    def identity(self):
-        """A :class:`.Identity` field characterizing information about the
-        threat actor.
-
-        """
-        return self._identity
-    
-    @identity.setter
-    def identity(self, value):
-        self._set_var(Identity, try_cast=False, identity=value)
-
-    @property
-    def types(self):
-        """A collection of :class:`.VocabString` objects. Default is
-        :class:`.ThreatActorType`.
-
-        This behaves like a ``MutableSequence`` type.
-
-        """
-        return self._types
-    
-    @types.setter
-    def types(self, value):
-        self._types = _Types(value)
             
     def add_type(self, value):
         """Adds a :class:`.VocabString` object to the :attr:`types` collection.
@@ -119,20 +103,6 @@ class ThreatActor(stix.BaseCoreComponent):
 
         """
         self.types.append(value)
-
-    @property
-    def motivations(self):
-        """A collection of :class:`.VocabString` objects. Default is
-        :class:`.Motivation`.
-
-        This behaves like a ``MutableSequence`` type.
-
-        """
-        return self._motivations
-    
-    @motivations.setter
-    def motivations(self, value):
-        self._motivations = _Motivations(value)
             
     def add_motivation(self, value):
         """Adds a :class:`.Motivation` object to the :attr:`motivations`
@@ -141,20 +111,6 @@ class ThreatActor(stix.BaseCoreComponent):
         """
         self.motivations.append(value)
 
-    @property
-    def sophistications(self):
-        """A collection of :class:`.VocabString` objects. Default is
-        :class:`.ThreatActorSophistication`.
-
-        This behaves like a ``MutableSequence`` type.
-
-        """
-        return self._sophistications
-    
-    @sophistications.setter
-    def sophistications(self, value):
-        self._sophistications = _Sophistications(value)
-            
     def add_sophistication(self, value):
         """Adds a :class:`.VocabString` object to the :attr:`sophistications`
         collection.
@@ -164,22 +120,6 @@ class ThreatActor(stix.BaseCoreComponent):
 
         """
         self._sophistications.append(value)
-
-    @property
-    def intended_effects(self):
-        """A collection of :class:`.Statement` objects. This behaves like a
-        ``MutableSequence`` type.
-
-        If set to a string, an attempt will be made to convert it into a
-        :class:`.Statement` object with its value set to an instance of
-        :class:`.IntendedEffect`.
-
-        """
-        return self._intended_effects
-    
-    @intended_effects.setter
-    def intended_effects(self, value):
-        self._intended_effects = _IntendedEffects(value)
             
     def add_intended_effect(self, value):
         """Adds a :class:`.Statement` object to the :attr:`intended_effects`
@@ -191,20 +131,6 @@ class ThreatActor(stix.BaseCoreComponent):
         """
         self.intended_effects.append(value)
 
-    @property
-    def planning_and_operational_supports(self):
-        """A collection of :class:`.VocabString` objects. Default is
-        :class:`.PlanningAndOperationalSupport`.
-
-        This behaves like a ``MutableSequence`` type.
-
-        """
-        return self._planning_and_operational_supports
-    
-    @planning_and_operational_supports.setter
-    def planning_and_operational_supports(self, value):
-        self._planning_and_operational_supports = _PlanningAndOperationalSupports(value)
-            
     def add_planning_and_operational_support(self, value):
         """Adds a :class:`.VocabString` object to the
         :attr:`planning_and_operational_supports` collection.
@@ -214,130 +140,3 @@ class ThreatActor(stix.BaseCoreComponent):
 
         """
         self.planning_and_operational_supports.append(value)
-
-    def to_obj(self, return_obj=None, ns_info=None):
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        super(ThreatActor, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
-        if self.identity:
-            return_obj.Identity = self.identity.to_obj(ns_info=ns_info)
-        if self.types:
-            return_obj.Type = self.types.to_obj(ns_info=ns_info)
-        if self.motivations:
-            return_obj.Motivation = self.motivations.to_obj(ns_info=ns_info)
-        if self.sophistications:
-            return_obj.Sophistication = self.sophistications.to_obj(ns_info=ns_info)
-        if self.intended_effects:
-            return_obj.Intended_Effect = self.intended_effects.to_obj(ns_info=ns_info)
-        if self.planning_and_operational_supports:
-            return_obj.Planning_And_Operational_Support = \
-                self.planning_and_operational_supports.to_obj(ns_info=ns_info)
-        if self.observed_ttps:
-            return_obj.Observed_TTPs = self.observed_ttps.to_obj(ns_info=ns_info)
-        if self.associated_campaigns:
-            return_obj.Associated_Campaigns = self.associated_campaigns.to_obj(ns_info=ns_info)
-        if self.associated_actors:
-            return_obj.Associated_Actors = self.associated_actors.to_obj(ns_info=ns_info)
-        if self.confidence:
-            return_obj.Confidence = self.confidence.to_obj(ns_info=ns_info)
-        if self.related_packages:
-            return_obj.Related_Packages = self.related_packages.to_obj(ns_info=ns_info)
-
-        return return_obj
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if not obj:
-            return None
-        if not return_obj:
-            return_obj = cls()
-
-        super(ThreatActor, cls).from_obj(obj, return_obj=return_obj)
-
-        if isinstance(obj, cls._binding_class):  # ThreatActorType properties
-            return_obj.identity = Identity.from_obj(obj.Identity)
-            return_obj.types = _Types.from_obj(obj.Type)
-            return_obj.motivations = _Motivations.from_obj(obj.Motivation)
-            return_obj.sophistications = _Sophistications.from_obj(obj.Sophistication)
-            return_obj.intended_effects = _IntendedEffects.from_obj(obj.Intended_Effect)
-            return_obj.planning_and_operational_supports = \
-                _PlanningAndOperationalSupports.from_obj(obj.Planning_And_Operational_Support)
-            return_obj.observed_ttps = ObservedTTPs.from_obj(obj.Observed_TTPs)
-            return_obj.associated_campaigns = AssociatedCampaigns.from_obj(obj.Associated_Campaigns)
-            return_obj.associated_actors = AssociatedActors.from_obj(obj.Associated_Actors)
-            return_obj.confidence = Confidence.from_obj(obj.Confidence)
-            return_obj.related_packages = RelatedPackageRefs.from_obj(obj.Related_Packages)
-
-        return return_obj
-
-    def to_dict(self):
-        return super(ThreatActor, self).to_dict()
-
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        if not dict_repr:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        super(ThreatActor, cls).from_dict(dict_repr, return_obj=return_obj)
-
-        get = dict_repr.get
-        return_obj.identity = Identity.from_dict(get('identity'))
-        return_obj.types = _Types.from_dict(get('types'))
-        return_obj.motivations = _Motivations.from_dict(get('motivations'))
-        return_obj.sophistications = _Sophistications.from_dict(get('sophistications'))
-        return_obj.intended_effects = _IntendedEffects.from_dict(get('intended_effects'))
-        return_obj.planning_and_operational_supports = \
-            _PlanningAndOperationalSupports.from_dict(get('planning_and_operational_supports'))
-        return_obj.observed_ttps = ObservedTTPs.from_dict(get('observed_ttps'))
-        return_obj.associated_campaigns = AssociatedCampaigns.from_dict(get('associated_campaigns'))
-        return_obj.associated_actors = AssociatedActors.from_dict(get('associated_actors'))
-        return_obj.confidence = Confidence.from_dict(get('confidence'))
-        return_obj.related_packages = RelatedPackageRefs.from_dict(get('related_packages'))
-
-        return return_obj
-
-
-# NOT ACTUAL STIX TYPES!
-class _Sophistications(stix.TypedList):
-    _contained_type = Statement
-
-    def _fix_value(self, value):
-        sophistication = vocabs.ThreatActorSophistication(value)
-        return Statement(value=sophistication)
-
-
-class _Motivations(stix.TypedList):
-    _contained_type = Statement
-
-    def _fix_value(self, value):
-        motivation = vocabs.Motivation(value)
-        return Statement(value=motivation)
-
-
-class _IntendedEffects(stix.TypedList):
-    _contained_type = Statement
-
-    def _fix_value(self, value):
-        intended_effect = vocabs.IntendedEffect(value)
-        return Statement(value=intended_effect)
-
-
-class _PlanningAndOperationalSupports(stix.TypedList):
-    _contained_type = Statement
-
-    def _fix_value(self, value):
-        pos = vocabs.PlanningAndOperationalSupport(value)
-        return Statement(value=pos)
-
-
-class _Types(stix.TypedList):
-    _contained_type = Statement
-
-    def _fix_value(self, value):
-        type_ = vocabs.ThreatActorType(value)
-        return Statement(value=type_)

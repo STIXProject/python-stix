@@ -33,6 +33,7 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
     xmlns          = XML_NS
     xmlns_prefix   = "tlpMarking"
     xml_type       = "TLPMarkingStructureType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     subclass = None
     superclass = data_marking_binding.MarkingStructureType
@@ -87,6 +88,7 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
         super(TLPMarkingStructureType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

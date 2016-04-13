@@ -98,6 +98,7 @@ class PropertyAffectedType(GeneratedsSuper):
         if self.Non_Public_Data_Compromised is not None:
             self.Non_Public_Data_Compromised.export(lwrite, level, nsmap, namespace_, name_='Non_Public_Data_Compromised', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -234,6 +235,7 @@ class AffectedAssetType(GeneratedsSuper):
         if self.Structured_Description is not None:
             self.Structured_Description.export(lwrite, level, "%s:" % (nsmap[namespace_]), name_='Structured_Description', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -359,6 +361,7 @@ class ImpactAssessmentType(GeneratedsSuper):
         if self.External_Impact_Assessment_Model is not None:
             self.External_Impact_Assessment_Model.export(lwrite, level, nsmap, namespace_, name_='External_Impact_Assessment_Model', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -461,6 +464,7 @@ class ExternalImpactAssessmentModelType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ExternalImpactAssessmentModelType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -544,6 +548,7 @@ class COATakenType(GeneratedsSuper):
         if self.Course_Of_Action is not None:
             self.Course_Of_Action.export(lwrite, level, nsmap, namespace_, name_='Course_Of_Action', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -639,6 +644,7 @@ class JournalEntryType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='JournalEntryType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         self.valueOf_ = get_all_text_(node)
@@ -714,6 +720,7 @@ class COARequestedType(COATakenType):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='COARequestedType', fromsubclass_=False, pretty_print=True):
         super(COARequestedType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -781,6 +788,7 @@ class ContributorsType(GeneratedsSuper):
         for Contributor_ in self.Contributor:
             Contributor_.export(lwrite, level, "%s:" % (nsmap[namespace_]), name_='Contributor', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -847,6 +855,7 @@ class COATimeType(GeneratedsSuper):
         if self.End is not None:
             self.End.export(lwrite, level, nsmap, namespace_, name_='End', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -916,6 +925,7 @@ class LossEstimationType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='LossEstimationType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -986,6 +996,7 @@ class TotalLossEstimationType(GeneratedsSuper):
         if self.Actual_Total_Loss_Estimation is not None:
             self.Actual_Total_Loss_Estimation.export(lwrite, level, nsmap, namespace_, name_='Actual_Total_Loss_Estimation', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1068,6 +1079,7 @@ class IndirectImpactSummaryType(GeneratedsSuper):
         if self.Legal_And_Regulatory_Costs is not None:
             self.Legal_And_Regulatory_Costs.export(lwrite, level, nsmap, namespace_, name_='Legal_And_Regulatory_Costs', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1152,6 +1164,7 @@ class DirectImpactSummaryType(GeneratedsSuper):
         if self.Response_And_Recovery_Costs is not None:
             self.Response_And_Recovery_Costs.export(lwrite, level, nsmap, namespace_, name_='Response_And_Recovery_Costs', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1225,6 +1238,7 @@ class NatureOfSecurityEffectType(GeneratedsSuper):
         for Property_Affected_ in self.Property_Affected:
             Property_Affected_.export(lwrite, level, nsmap, namespace_, name_='Property_Affected', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1291,6 +1305,7 @@ class HistoryItemType(GeneratedsSuper):
         if self.Journal_Entry is not None:
             self.Journal_Entry.export(lwrite, level, nsmap, namespace_, name_='Journal_Entry', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1360,6 +1375,7 @@ class HistoryType(GeneratedsSuper):
         for History_Item_ in self.History_Item:
             History_Item_.export(lwrite, level, nsmap, namespace_, name_='History_Item', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1425,6 +1441,7 @@ class AffectedAssetsType(GeneratedsSuper):
         for Affected_Asset_ in self.Affected_Asset:
             Affected_Asset_.export(lwrite, level, nsmap, namespace_, name_='Affected_Asset', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1533,6 +1550,7 @@ class TimeType(GeneratedsSuper):
         if self.Incident_Closed is not None:
             self.Incident_Closed.export(lwrite, level, nsmap, namespace_, name_='Incident_Closed', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1632,6 +1650,7 @@ class CategoriesType(GeneratedsSuper):
         for Category_ in self.Category:
             Category_.export(lwrite, level, nsmap, namespace_, name_='Category', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1699,6 +1718,7 @@ class EffectsType(GeneratedsSuper):
         for Effect_ in self.Effect:
             Effect_.export(lwrite, level, nsmap, namespace_, name_='Effect', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1769,6 +1789,7 @@ class AttributedThreatActorsType(stix_common_binding.GenericRelationshipListType
         for Threat_Actor_ in self.Threat_Actor:
             Threat_Actor_.export(lwrite, level, nsmap, namespace_, name_='Threat_Actor', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1838,6 +1859,7 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
         for Related_Indicator_ in self.Related_Indicator:
             Related_Indicator_.export(lwrite, level, nsmap, namespace_, name_='Related_Indicator', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1907,6 +1929,7 @@ class RelatedObservablesType(stix_common_binding.GenericRelationshipListType):
         for Related_Observable_ in self.Related_Observable:
             Related_Observable_.export(lwrite, level, nsmap, namespace_, name_='Related_Observable', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1976,6 +1999,7 @@ class LeveragedTTPsType(stix_common_binding.GenericRelationshipListType):
         for Leveraged_TTP_ in self.Leveraged_TTP:
             Leveraged_TTP_.export(lwrite, level, nsmap, namespace_, name_='Leveraged_TTP', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2045,6 +2069,7 @@ class RelatedIncidentsType(stix_common_binding.GenericRelationshipListType):
         for Related_Incident_ in self.Related_Incident:
             Related_Incident_.export(lwrite, level, nsmap, namespace_, name_='Related_Incident', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2121,6 +2146,7 @@ class AssetTypeType(stix_common_binding.ControlledVocabularyStringType):
         super(AssetTypeType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         self.valueOf_ = get_all_text_(node)
@@ -2150,6 +2176,7 @@ class IncidentType(stix_common_binding.IncidentBaseType):
     xmlns          = "http://stix.mitre.org/Incident-1"
     xmlns_prefix   = "incident"
     xml_type       = "IncidentType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, timestamp=None, URL=None, version=None, Title=None, External_ID=None, Time=None, Description=None, Short_Description=None, Categories=None, Reporter=None, Responder=None, Coordinator=None, Victim=None, Affected_Assets=None, Impact_Assessment=None, Status=None, Related_Indicators=None, Related_Observables=None, Leveraged_TTPs=None, Attributed_Threat_Actors=None, Intended_Effect=None, Security_Compromise=None, Discovery_Method=None, Related_Incidents=None, COA_Requested=None, COA_Taken=None, Confidence=None, Contact=None, History=None, Information_Source=None, Handling=None, Related_Packages=None):
         super(IncidentType, self).__init__(timestamp=timestamp, idref=idref, id=id)
@@ -2441,6 +2468,7 @@ class IncidentType(stix_common_binding.IncidentBaseType):
         if self.Related_Packages is not None:
             self.Related_Packages.export(lwrite, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2627,6 +2655,7 @@ class NonPublicDataCompromisedType(stix_common_binding.ControlledVocabularyStrin
         super(NonPublicDataCompromisedType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2695,6 +2724,7 @@ class ExternalIDType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ExternalIDType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         self.valueOf_ = get_all_text_(node)

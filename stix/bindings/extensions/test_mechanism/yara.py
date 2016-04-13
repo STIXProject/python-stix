@@ -33,6 +33,7 @@ class YaraTestMechanismType(indicator_binding.TestMechanismType):
     xmlns          = XML_NS
     xmlns_prefix   = "yaraTM"
     xml_type       = "YaraTestMechanismType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, Version=None, Rule=None):
         super(YaraTestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
@@ -95,6 +96,7 @@ class YaraTestMechanismType(indicator_binding.TestMechanismType):
         if self.Rule is not None:
             self.Rule.export(lwrite, level, nsmap, namespace_, name_='Rule', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

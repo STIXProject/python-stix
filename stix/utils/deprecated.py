@@ -3,10 +3,11 @@
 
 import warnings
 
-from . import is_sequence
+from mixbox.datautils import is_sequence
+from mixbox.typedlist import TypedList
 
 
-def idref_deprecated(entity):
+def idref(entity):
     """Raises a Python UserWarning if `entity` arguments contains an idref
     value.
 
@@ -21,7 +22,14 @@ def idref_deprecated(entity):
     warnings.warn(msg)
 
 
-def deprecated(value):
+def field(instance, value):
+    """Raise a Python UserWarning if the `value` is not None. This is to be
+    used with a TypedField preset or postset hook.
+    """
+    warn(value)
+
+
+def warn(value):
     """Raises a Python UserWarning if `value` is not None.
 
     This is typically going to be used inside setter functions for deprecated
@@ -39,3 +47,21 @@ def deprecated(value):
     msg = fmt.format(type(value).__name__)
     warnings.warn(msg)
 
+
+class IdrefDeprecatedList(TypedList):
+    """TypedList specialization that raises a UserWarning if an inserted value
+    contains an idref.
+    """
+
+    def insert(self, idx, value):
+        idref(value)
+        super(IdrefDeprecatedList, self).insert(idx, value)
+
+
+class DeprecatedList(TypedList):
+    """TypedList specialization that raises a UserWarning if a non-None
+    value is inserted.
+    """
+    def insert(self, idx, value):
+        warn(value)
+        super(DeprecatedList, self).insert(idx, value)
