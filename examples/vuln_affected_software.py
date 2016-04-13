@@ -16,7 +16,7 @@ from cybox.objects.product_object import Product
 # python-stix
 from stix.core import STIXPackage
 from stix.exploit_target import ExploitTarget
-from stix.exploit_target.vulnerability import Vulnerability
+from stix.exploit_target.vulnerability import Vulnerability, AffectedSoftware
 
 
 # Build a Product Object that characterizes our affected software
@@ -32,6 +32,7 @@ observable = Observable(software)
 # RelatedObservable instances. This wraps our Observable in a
 # RelatedObservable layer.
 vuln = Vulnerability()
+vuln.affected_software = AffectedSoftware()
 vuln.affected_software.append(observable)
 
 # Create the Exploit Target
