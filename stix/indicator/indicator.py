@@ -770,6 +770,8 @@ class _RelatedCampaignRefList(typedlist.TypedList):
 
         if isinstance(value, Campaign) and value.id_:
             return RelatedCampaignRef(CampaignRef(idref=value.id_))
+        elif isinstance(value, CampaignRef):
+            return RelatedCampaignRef(value)
 
         msg = "Cannot insert object of type '%s' into '%s'"
         msg = msg % (type(value), self.__class__.__name__)
