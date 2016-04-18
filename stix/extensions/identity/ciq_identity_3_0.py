@@ -65,45 +65,34 @@ class CIQIdentity3_0Instance(common.Identity):
 
         self._specification = value
 
-    def to_obj(self, return_obj=None, ns_info=None):
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        super(CIQIdentity3_0Instance, self).to_obj(return_obj)
-
-        # return_obj.id = self.id_
-        # return_obj.idref = self.idref_
-        return_obj.xsi_type = self._XSI_TYPE
+    def to_obj(self, ns_info=None):
+        obj = super(CIQIdentity3_0Instance, self).to_obj()
+        obj.xsi_type = self._XSI_TYPE
 
         if self.roles:
             for role in self.roles:
-                return_obj.add_Role(role)
+                obj.add_Role(role)
 
         if self.specification:
-            return_obj.Specification = self.specification.to_obj(ns_info=ns_info)
+            obj.Specification = self.specification.to_obj(ns_info=ns_info)
 
-        return return_obj
+        return obj
 
     @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if obj is None:
-            return None
-        if not return_obj:
-            return_obj = cls()
-
-        super(CIQIdentity3_0Instance, cls).from_obj(obj, return_obj)
+    def from_obj(cls, cls_obj):
+        obj = super(CIQIdentity3_0Instance, cls).from_obj(cls_obj)
 
         roles = obj.Role
         specification = obj.Specification
 
         if roles:
             for role in roles:
-                return_obj.add_role(role)
+                obj.add_role(role)
 
         if specification is not None:
-            return_obj.specification = STIXCIQIdentity3_0.from_obj(specification)
+            obj.specification = STIXCIQIdentity3_0.from_obj(specification)
 
-        return return_obj 
+        return obj
 
     def to_dict(self):
         d = super(CIQIdentity3_0Instance, self).to_dict()
@@ -116,25 +105,22 @@ class CIQIdentity3_0Instance(common.Identity):
         return d
 
     @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        if not dict_repr:
+    def from_dict(cls, cls_dict):
+        if not cls_dict:
             return None
 
-        if not return_obj:
-            return_obj = cls()
+        obj = super(CIQIdentity3_0Instance, cls).from_dict(cls_dict)
 
-        super(CIQIdentity3_0Instance, cls).from_dict(dict_repr, return_obj)
-
-        roles = dict_repr.get('roles', [])
-        specification = dict_repr.get('specification')
+        roles = cls_dict.get('roles', [])
+        specification = cls_dict.get('specification')
 
         for role in roles:
-            return_obj.add_role(role)
+            obj.add_role(role)
 
         if specification:
-            return_obj.specification = STIXCIQIdentity3_0.from_dict(specification)
+            obj.specification = STIXCIQIdentity3_0.from_dict(specification)
 
-        return return_obj
+        return obj
 
 
 class STIXCIQIdentity3_0(stix.Entity):

@@ -464,7 +464,7 @@ class RelatedCampaignReferencesTests(unittest.TestCase, EntityTestCase):
         l = RelatedCampaignRefs()
 
         self.assertRaises(
-            Exception,
+            TypeError,
             l.append,
             Indicator()
         )

@@ -33,6 +33,7 @@ class OpenIOC2010TestMechanismType(indicator_binding.TestMechanismType):
     xmlns          = XML_NS
     xmlns_prefix   = "stix-openioc"
     xml_type       = "OpenIOC2010TestMechanismType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, ioc=None):
         super(OpenIOC2010TestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
@@ -90,6 +91,7 @@ class OpenIOC2010TestMechanismType(indicator_binding.TestMechanismType):
             lwrite(etree_.tostring(self.ioc, pretty_print=pretty_print))
             #self.ioc.export(lwrite, level, nsmap, namespace_, name_='ioc', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

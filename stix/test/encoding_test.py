@@ -128,6 +128,7 @@ class EncodingTests(unittest.TestCase):
         s = STIXHeader()
         s.title = UNICODE_STR
         xml = s.to_xml(encoding=encoding)
+        print xml
         self.assertTrue(UNICODE_STR in xml.decode(encoding))
 
     @silence_warnings

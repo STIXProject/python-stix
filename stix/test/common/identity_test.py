@@ -14,7 +14,6 @@ class IdentityTests(EntityTestCase, unittest.TestCase):
         'id': "foo",       
         'name': "Me",
         'related_identities': {
-            #'scope': 'inclusive',
             'identities': [
                 {
                     'confidence': {'value': {'value': "Medium", 'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'}},
