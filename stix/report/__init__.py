@@ -14,7 +14,6 @@ import stix.utils as utils
 # components
 from stix.campaign import Campaign
 from stix.coa import CourseOfAction
-from stix.core.ttps import TTPs
 from stix.exploit_target import ExploitTarget
 from stix.indicator import Indicator
 from stix.incident import Incident
@@ -256,3 +255,5 @@ class ThreatActors(stix.EntityList):
     _binding_class = _binding.ThreatActorsType
 
     threat_actor = fields.TypedField("Threat_Actor", ThreatActor, multiple=True, key_name="threat_actors")
+
+from stix.core.ttps import TTPs
