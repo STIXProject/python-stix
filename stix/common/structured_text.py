@@ -108,6 +108,7 @@ class StructuredTextList(stix.TypedCollection, collections.Sequence):
             :class:`.StructuredText` objects or sequences of objects.
 
     """
+    _treat_none_as_empty_list = True
     _contained_type = StructuredText
     _try_cast = True
 
