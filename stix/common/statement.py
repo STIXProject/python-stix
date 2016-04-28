@@ -35,7 +35,7 @@ class Statement(stix.Entity):
         self.timestamp = timestamp or utils.dates.now()
         self.timestamp_precision = "second"
         self.value = value
-        self.description = description
+        self.description = StructuredTextList(description)
         self.source = source
         self.confidence = None
 
