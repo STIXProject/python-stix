@@ -31,6 +31,8 @@ class AffectedAsset(stix.Entity):
     
     def __init__(self):
         super(AffectedAsset, self).__init__()
+        self.description = StructuredTextList()
+        self.business_function_or_role = StructuredTextList()
 
     @property
     def description(self):

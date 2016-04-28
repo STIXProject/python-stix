@@ -20,8 +20,8 @@ class Objective(stix.Entity):
     def __init__(self, description=None, short_description=None):
         super(Objective, self).__init__()
 
-        self.description = description
-        self.short_description = short_description
+        self.description = StructuredTextList(description)
+        self.short_description = StructuredTextList(short_description)
 
     @property
     def description(self):

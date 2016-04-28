@@ -47,8 +47,8 @@ class Header(stix.Entity):
 
         self.intents = intents
         self.title = title
-        self.description = description
-        self.short_description = short_description
+        self.description = StructuredTextList(description)
+        self.short_description = StructuredTextList(short_description)
         self.handling = handling
         self.information_source = information_source
 

@@ -24,7 +24,7 @@ class ToolInformation(stix.Entity, cybox.common.ToolInformation):
     def __init__(self, title=None, short_description=None, tool_name=None, tool_vendor=None):
         super(ToolInformation, self).__init__(tool_name=tool_name, tool_vendor=tool_vendor)
         self.title = title
-        self.short_description = short_description
+        self.short_description = StructuredTextList(short_description)
 
     @property
     def short_description(self):

@@ -35,6 +35,7 @@ class PropertyAffected(stix.Entity):
     
     def __init__(self):
         super(PropertyAffected, self).__init__()
+        self.descriptions_of_effect = StructuredTextList()
 
     @property
     def description_of_effect(self):
