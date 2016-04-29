@@ -19,6 +19,7 @@ from stix.common.related import (GenericRelationshipList, RelatedCOA,
     RelatedIndicator, RelatedCampaignRef, RelatedPackageRefs)
 from stix.common.vocabs import VocabField, IndicatorType
 from stix.common.kill_chains import KillChainPhasesReference
+from stix import utils
 import stix.bindings.indicator as indicator_binding
 
 # relative
@@ -180,7 +181,7 @@ class Indicator(stix.BaseCoreComponent):
     _try_cast = False
 
     producer = fields.TypedField("Producer", InformationSource)
-    observable = fields.TypedField("Observable", Observable, postset_hook=lambda inst,value: inst.set_observables([value]))
+    observable = fields.TypedField("Observable", Observable)
     indicator_types = VocabField("Type", IndicatorType, multiple=True, key_name="indicator_types")
     confidence = fields.TypedField("Confidence", Confidence)
     indicated_ttps = fields.TypedField("Indicated_TTP", RelatedTTP, multiple=True, key_name="indicated_ttps")
@@ -209,7 +210,7 @@ class Indicator(stix.BaseCoreComponent):
             short_description=short_description
         )
 
-        self.observables = []
+        self.observable = None
         self.indicator_types = IndicatorTypes()
         self.test_mechanisms = TestMechanisms()
         self.alternative_id = None
@@ -228,50 +229,94 @@ class Indicator(stix.BaseCoreComponent):
         a single object instance or a list of objects.
 
         Note:
-            If the input value or values are not instance(s) of
-            ``cybox.core.Observable``, an attempt will be made to
-            convert the value to an instance of ``cybox.core.Observable``.
+            If only one Observable is set, this property will return a list
+            with the ``observable`` property.
 
-        Default Value: Empty ``list``
+            If multiple ``cybox.core.Observable`` this property will return
+            Observables under the ``cybox.core.ObservableComposition``.
+
+            Access to the top level ``cybox.core.Observable`` is made via
+            ``observable`` property.
+
+        Default Value:
+            Empty ``list``.
 
         Returns:
             A ``list`` of ``cybox.core.Observable`` instances.
 
-        Raises:
-            ValueError: If set to a value that cannot be converted to an
-                instance of ``cybox.core.Observable``.
-
         """
-        return self._observables
+        if not self.observable:
+            return []
+        elif self.observable.observable_composition:
+            return self.observable.observable_composition.observables
+
+        return []
 
     @observables.setter
     def observables(self, value):
-        # this code causes infinite recursion; observables sets observable which sets obesrvables...
-        #try:
-        #    self.observable = value[0]
-        #except TypeError:
-        #    self.observable = value
-        self._observables = _Observables(value)
+        """
+        The method will automatically create a top ``cybox.core.Observable`` and
+        append all ``cybox.core.Observable`` using ``observable_composition``
+        property when a ``list`` is given with length greater than 1.
+
+        Note:
+            The top level ``cybox.core.Observable`` will set the ``operator``
+            property for the ``cybox.core.ObservableComposition`` via the
+            ``observable_composition_operator`` property. The value of
+            ``operator`` can be changed via ``observable_composition_operator``
+            property. By default, the composition layer will be set to ``"OR"``.
+
+        Args:
+            value: A ``list`` of ``cybox.core.Observable`` instances or a single
+                ``cybox.core.Observable`` instance.
+
+        Raises:
+            ValueError: If set to a value that cannot be converted to an
+                instance of ``cybox.core.Observable``.
+        """
+        if not value:
+            return
+
+        if isinstance(value, Observable):
+            self.observable = value
+
+        elif utils.is_sequence(value):
+            if len(value) == 1:
+                self.observable = value
+                return
+
+            observable_comp = ObservableComposition()
+            observable_comp.operator = self.observable_composition_operator
+
+            for element in value:
+                observable_comp.add(element)
+
+            self.observable = Observable()
+            self.observable.observable_composition = observable_comp
 
     def set_observables(self, value):
         self.observables = value
 
     def add_observable(self, observable):
-        """Adds an observable to the ``observables`` list property of the
+        """Adds an observable to the ``observable`` property of the
         :class:`Indicator`.
 
         If the `observable` parameter is ``None``, no item will be added
-        to the ``observables`` list.
+        to the ``observable`` property.
 
         Note:
             The STIX Language dictates that an :class:`Indicator` can have only
-            one ``Observable`` under it. Because of this, the ``to_xml()``
-            method will convert the ``observables`` list into  an
-            ``cybox.core.ObservableComposition``  instance, in which each item
-            in the ``observables`` list will be added to the composition. By
+            one ``Observable`` under it. Because of this, when a user adds
+            another ``Observable`` a new, empty ``Observable`` will be crated
+            and append the existing and new ``observable`` using the
+            ``ObservableComposition`` property. To access the top level
+            ``Observable`` can be achieved by the ``observable`` property .By
             default, the ``operator`` of the composition layer will be set to
             ``"OR"``. The ``operator`` value can be changed via the
             ``observable_composition_operator`` property.
+
+            Setting ``observable`` or ``observables`` with re-initialize the
+            property and lose all ``Observable`` in the composition layer.
 
         Args:
             observable: An instance of ``cybox.core.Observable`` or an object
@@ -283,8 +328,29 @@ class Indicator(stix.BaseCoreComponent):
                 instance of ``cybox.core.Observable``.
 
         """
-        self.observables.append(observable)                
-    
+        if not observable:
+            return
+
+        # Sets the first observable.
+        elif not self.observable:
+            self.observable = observable
+
+        # When another is inserted. A "root" Observable is created and the
+        # user's Observables are appended to the composition.
+        elif not self.observable.observable_composition:
+            observable_comp = ObservableComposition()
+            observable_comp.operator = self.observable_composition_operator
+
+            observable_comp.add(self.observable)
+            observable_comp.add(observable)
+
+            self.observable = Observable()
+            self.observable.observable_composition = observable_comp
+
+        # Keep appending to "root" Observable.
+        else:
+            self.observable.observable_composition.add(observable)
+
     def add_alternative_id(self, value):
         """Adds an alternative id to the ``alternative_id`` list property.
 
@@ -300,7 +366,7 @@ class Indicator(stix.BaseCoreComponent):
             return
 
         self.alternative_id.append(value)
-    
+
     def add_valid_time_position(self, value):
         """Adds an valid time position to the ``valid_time_positions`` property
         list.
@@ -340,7 +406,6 @@ class Indicator(stix.BaseCoreComponent):
         """
         self.indicator_types.append(value)
 
-
     def add_indicated_ttp(self, v):
         """Adds an Indicated TTP to the ``indicated_ttps`` list property
         of this :class:`Indicator`.
@@ -367,7 +432,6 @@ class Indicator(stix.BaseCoreComponent):
         """
         self.indicated_ttps.append(v)
 
-            
     def add_test_mechanism(self, tm):
         """Adds an Test Mechanism to the ``test_mechanisms`` list property
         of this :class:`Indicator`.
@@ -467,6 +531,10 @@ class Indicator(stix.BaseCoreComponent):
     def observable_composition_operator(self, value):
         if value in self._ALLOWED_COMPOSITION_OPERATORS:
             self._observable_composition_operator = value
+
+            if self.observable and self.observable.observable_composition:
+                self.observable.observable_composition.operator = value
+
             return
 
         error = "observable_composition_operator must one of {0}"
@@ -655,37 +723,7 @@ class Indicator(stix.BaseCoreComponent):
 
         observable = Observable(object_)
         self.add_observable(observable)
-    
-    def to_obj(self, ns_info=None):
-        obj = super(Indicator, self).to_obj(ns_info=ns_info)
 
-        if self.observables:
-            if len(self.observables) > 1:
-                root_observable = self._merge_observables(self.observables)
-            else:
-                root_observable = self.observables[0]
-            obj.Observable = root_observable.to_obj(ns_info=ns_info)
-
-        return obj
-    
-    def to_dict(self):
-        keys = ('observables', 'observable_composition_operator', 'negate')
-        #d = utils.to_dict(self, skip=keys)
-
-        d = super(Indicator, self).to_dict()
-
-        if not self.negate:
-            d.pop("negate", None)
-
-        if self.observables:
-            if len(self.observables) == 1:
-                d['observable'] = self.observables[0].to_dict()
-            else:
-                composite_observable = self._merge_observables(self.observables)
-                d['observable'] = composite_observable.to_dict()
-
-        return d
-    
 
 def check_operator(composite_indicator_exp, value):
     allowed = CompositeIndicatorExpression.OPERATORS
@@ -770,8 +808,6 @@ class _RelatedCampaignRefList(typedlist.TypedList):
 
         if isinstance(value, Campaign) and value.id_:
             return RelatedCampaignRef(CampaignRef(idref=value.id_))
-        elif isinstance(value, CampaignRef):
-            return RelatedCampaignRef(value)
 
         msg = "Cannot insert object of type '%s' into '%s'"
         msg = msg % (type(value), self.__class__.__name__)
