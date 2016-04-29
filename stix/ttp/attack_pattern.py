@@ -30,8 +30,8 @@ class AttackPattern(Cached, stix.Entity):
         self.id_ = id_
         self.idref = idref
         self.title = title
-        self.description = description
-        self.short_description = short_description
+        self.description = StructuredTextList(description)
+        self.short_description = StructuredTextList(short_description)
 
     @property
     def description(self):

@@ -35,8 +35,8 @@ class Infrastructure(Cached, stix.Entity):
         self.id_ = id_
         self.idref = idref
         self.title = title
-        self.description = description
-        self.short_description = short_description
+        self.description = StructuredTextList(description)
+        self.short_description = StructuredTextList(short_description)
 
 
     @property
@@ -58,7 +58,7 @@ class Infrastructure(Cached, stix.Entity):
 
     @description.setter
     def description(self, value):
-        self.descriptions = value
+        self.descriptions = StructuredTextList(value)
 
     def add_description(self, description):
         """Adds a description to the ``descriptions`` collection.

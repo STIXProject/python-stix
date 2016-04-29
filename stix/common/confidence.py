@@ -31,7 +31,7 @@ class Confidence(stix.Entity):
         self.timestamp = timestamp or utils.dates.now()
         self.timestamp_precision = "second"
         self.value = value
-        self.description = description
+        self.description = StructuredTextList(description)
         self.source = source
 
         # TODO: support confidence_assertion_chain
