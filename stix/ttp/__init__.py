@@ -17,6 +17,7 @@ from stix.ttp.exploit_targets import ExploitTargets
 from .behavior import Behavior
 from .resource import Resource
 from .victim_targeting import VictimTargeting
+from stix.common.information_source import InformationSource
 
 
 class TTP(stix.BaseCoreComponent):
@@ -51,6 +52,7 @@ class TTP(stix.BaseCoreComponent):
     exploit_targets = fields.TypedField("Exploit_Targets", ExploitTargets)
     related_packages = fields.TypedField("Related_Packages", RelatedPackageRefs)
     kill_chain_phases = fields.TypedField("Kill_Chain_Phases", KillChainPhasesReference)
+    information_source = fields.TypedField("Information_Source", InformationSource)
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
