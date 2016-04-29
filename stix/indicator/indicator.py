@@ -209,7 +209,7 @@ class Indicator(stix.BaseCoreComponent):
             short_description=short_description
         )
 
-        self.observables = None
+        self.observables = []
         self.indicator_types = IndicatorTypes()
         self.test_mechanisms = TestMechanisms()
         self.alternative_id = None

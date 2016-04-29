@@ -87,6 +87,9 @@ class Incident(stix.BaseCoreComponent):
         self.related_observables = RelatedObservables()
         self.related_incidents = RelatedIncidents()
         self.related_packages = RelatedPackageRefs()
+        self.categories = IncidentCategories()
+        self.affected_assets = AffectedAssets()
+        self.leveraged_ttps = LeveragedTTPs()
         
     def add_intended_effect(self, value):
         """Adds a :class:`.Statement` object to the :attr:`intended_effects`
@@ -98,13 +101,19 @@ class Incident(stix.BaseCoreComponent):
         """
         self.intended_effects.append(value)
 
+    def add_leveraged_ttps(self, ttp):
+        """Adds a :class:`.RelatedTTP` value to the :attr:`leveraged_ttps`
+        collection.
+
+        """
+        self.leveraged_ttps.append(ttp)
 
     def add_victim(self, victim):
         """Adds a :class:`.IdentityType` value to the :attr:`victims`
         collection.
 
         """
-        self._victims.append(victim)
+        self.victims.append(victim)
 
     def add_category(self, category):
         """Adds a :class:`.VocabString` object to the :attr:`categories`
@@ -175,7 +184,7 @@ class Incident(stix.BaseCoreComponent):
         The `indicator` parameter must be an instance of
         :class:`.RelatedIndicator` or :class:`Indicator`.
 
-        If the `indicator` parameter is ``None``, no item wil be added to the
+        If the `indicator` parameter is ``None``, no item will be added to the
         ``related_indicators`` list property.
 
         Calling this method is the same as calling ``append()`` on the
@@ -234,6 +243,9 @@ class Incident(stix.BaseCoreComponent):
 
     def add_related_package(self, value):
         self.related_packages.append(value)
+        
+    def add_related_incidents(self, value):
+        self.related_incidents.append(value)
 
 class AttributedThreatActors(GenericRelationshipList):
     _namespace = "http://stix.mitre.org/Incident-1"

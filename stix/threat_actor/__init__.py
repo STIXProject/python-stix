@@ -119,7 +119,7 @@ class ThreatActor(stix.BaseCoreComponent):
         instance of :class:`.ThreatActorSophistication`.
 
         """
-        self._sophistications.append(value)
+        self.sophistications.append(value)
             
     def add_intended_effect(self, value):
         """Adds a :class:`.Statement` object to the :attr:`intended_effects`

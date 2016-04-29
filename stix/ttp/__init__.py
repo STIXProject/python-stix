@@ -65,6 +65,9 @@ class TTP(stix.BaseCoreComponent):
         )
 
         self.related_packages = RelatedPackageRefs()
+        self.exploit_targets = ExploitTargets()
+        self.related_ttps = RelatedTTPs()
+        self.kill_chain_phases = KillChainPhasesReference()
 
 
     def add_related_ttp(self, value):

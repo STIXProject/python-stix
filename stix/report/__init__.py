@@ -142,7 +142,7 @@ class Report(Cached, stix.Entity):
         """
         if self.threat_actors is None:
             self.threat_actors = ThreatActors()
-        self._threat_actors.append(threat_actor)
+        self.threat_actors.append(threat_actor)
 
     def add_course_of_action(self, course_of_action):
         """Adds an :class:`.CourseOfAction` object to the
@@ -196,7 +196,7 @@ class Report(Cached, stix.Entity):
             Incident: self.add_incident,
             Indicator: self.add_indicator,
             ThreatActor: self.add_threat_actor,
-            TTP: self.add_threat_actor,
+            TTP: self.add_ttp,
             Observable: self.add_observable,
         }
 

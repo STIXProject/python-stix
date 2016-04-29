@@ -23,9 +23,9 @@ class Behavior(stix.Entity):
 
     def __init__(self, malware_instances=None, attack_patterns=None, exploits=None):
         super(Behavior, self).__init__()
-        self.malware_instances = malware_instances
-        self.attack_patterns = attack_patterns
-        self.exploits = exploits
+        self.malware_instances = malware_instances or MalwareInstances()
+        self.attack_patterns = attack_patterns or AttackPatterns()
+        self.exploits = exploits or Exploits()
 
 
     def add_malware_instance(self, malware):

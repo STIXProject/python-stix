@@ -24,7 +24,7 @@ class VictimTargeting(stix.Entity):
         super(VictimTargeting, self).__init__()
 
     def add_targeted_system(self, system):
-        self._targeted_systems.append(system)
+        self.targeted_systems.append(system)
 
     def add_targeted_information(self, targeted_information):
-        self._targeted_information.append(targeted_information)
+        self.targeted_information.append(targeted_information)

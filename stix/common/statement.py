@@ -14,6 +14,7 @@ from .confidence import Confidence
 from .structured_text import StructuredTextList
 from .vocabs import VocabField, HighMediumLow
 import mixbox
+from stix.common.vocabs import VocabString
 
 class Statement(stix.Entity):
     _namespace = 'http://stix.mitre.org/common-1'
@@ -23,7 +24,7 @@ class Statement(stix.Entity):
     # Fields
     timestamp = fields.DateTimeField("timestamp")
     timestamp_precision = fields.TypedField("timestamp_precision", preset_hook=validate_precision)
-    value = VocabField("Value", HighMediumLow)
+    value = VocabField("Value", VocabString)
     descriptions = fields.TypedField("Description", StructuredTextList)
     confidence = fields.TypedField("Confidence", Confidence)
     source = fields.TypedField("Source", type_="stix.common.InformationSource")
