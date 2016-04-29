@@ -218,7 +218,7 @@ class Indicator(stix.BaseCoreComponent):
         self.sightings = Sightings()
         self.composite_indicator_expression = None
         self.kill_chain_phases = KillChainPhasesReference()
-        self.related_indicators = None
+        self.related_indicators = RelatedIndicators()
         self.related_campaigns = RelatedCampaignRefs()
         self.observable_composition_operator = "OR"
         self.related_packages = RelatedPackageRefs()
