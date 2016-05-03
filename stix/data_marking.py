@@ -88,7 +88,7 @@ class Marking(stix.EntityList):
         super(Marking, self).__init__(markings)
 
     def add_marking(self, value):
-        self.markings.append(value)
+        self.marking.append(value)
 
 
 # Backwards compatibility
