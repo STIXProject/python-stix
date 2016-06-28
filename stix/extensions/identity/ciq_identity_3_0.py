@@ -406,6 +406,7 @@ class STIXCIQIdentity3_0(stix.Entity):
             return_obj = cls()
 
         return_obj.party_name = PartyName.from_dict(dict_repr.get('party_name'))
+        return_obj.organisation_info = OrganisationInfo.from_dict(dict_repr.get('organisation_info'))
         return_obj.languages = [Language.from_dict(x) for x in dict_repr.get('languages', [])]
         return_obj.addresses = [Address.from_dict(x) for x in dict_repr.get('addresses', [])]
         return_obj.electronic_address_identifiers = [ElectronicAddressIdentifier.from_dict(x) for x in dict_repr.get('electronic_address_identifiers', [])]
@@ -420,6 +421,8 @@ class STIXCIQIdentity3_0(stix.Entity):
 
         if self.party_name:
             d['party_name'] = self.party_name.to_dict()
+        if self.organisation_info:
+            d['organisation_info'] = self.organisation_info.to_dict()
         if self.languages:
             d['languages'] = [x.to_dict() for x in self.languages]
         if self.addresses:
