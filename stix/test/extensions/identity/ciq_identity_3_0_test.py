@@ -47,6 +47,9 @@ class CIQIdentity3_0InstanceTests(EntityTestCase, unittest.TestCase):
                     }
                 ]
             },
+            'organisation_info': {
+               'industry_type': 'test industry'
+            },
             'languages': [
                 {'value': 'test language'}
             ],
