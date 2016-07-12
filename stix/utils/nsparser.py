@@ -7,6 +7,7 @@ import warnings
 
 from mixbox import idgen
 from mixbox.entities import Entity
+from mixbox.vendor.six import iteritems, itervalues
 
 import cybox
 import cybox.core
@@ -149,7 +150,7 @@ class NamespaceInfo(object):
                 namespace.
 
         """
-        for prefix, namespaces in ns_dict.iteritems():
+        for prefix, namespaces in iteritems(ns_dict):
             if len(namespaces) == 1:
                 continue
 
@@ -201,7 +202,7 @@ class NamespaceInfo(object):
 
         # Copy and flip the input dictionary from ns=>alias to alias=>ns
         user_namespaces = {}
-        for ns, alias in ns_dict.iteritems():
+        for ns, alias in iteritems(ns_dict):
             user_namespaces[alias] = ns
 
         # Our return value
@@ -213,7 +214,7 @@ class NamespaceInfo(object):
         ns_dict[id_alias].add(id_ns)
 
         # Build namespace dictionaries from the collected Entity objects.
-        collected_prefixed = dict(self._collected_namespaces.iteritems())
+        collected_prefixed = dict(iteritems(self._collected_namespaces))
 
         # Pop the unprefixed entries.
         no_prefix = collected_prefixed.pop(None, set())
@@ -227,11 +228,11 @@ class NamespaceInfo(object):
 
         # All the namespaces dictionaries we need to merge and export.
         namespace_dicts = itertools.chain(
-            self._BASELINE_NAMESPACES.iteritems(),
-            self._input_namespaces.iteritems(),
-            collected_prefixed.iteritems(),
-            collected_unprefixed.iteritems(),
-            user_namespaces.iteritems()
+            iteritems(self._BASELINE_NAMESPACES),
+            iteritems(self._input_namespaces),
+            iteritems(collected_prefixed),
+            iteritems(collected_unprefixed),
+            iteritems(user_namespaces)
         )
 
         # Build our merged namespace dictionary. It will be inspected for
@@ -245,7 +246,7 @@ class NamespaceInfo(object):
         # Flatten the dictionary by popping the namespace from the namespace
         # set values in ns_dict.
         flattened = {}
-        for alias, ns_set in ns_dict.iteritems():
+        for alias, ns_set in iteritems(ns_dict):
             flattened[alias] = ns_set.pop()
 
         # Return the flattened dictionary
@@ -255,7 +256,7 @@ class NamespaceInfo(object):
         # If schemaloc_dict was passed in, make a copy so we don't mistakenly
         # modify the original.
         if schemaloc_dict:
-            schemaloc_dict = dict(schemaloc_dict.iteritems())
+            schemaloc_dict = dict(iteritems(schemaloc_dict))
         else:
             schemaloc_dict = {}
 
@@ -270,7 +271,7 @@ class NamespaceInfo(object):
         #
         # If there is a schemalocation found in both the parsed schemalocs and
         # the schema_loc dict, use the schemaloc_dict value.
-        for ns, loc in self._input_schemalocs.iteritems():
+        for ns, loc in iteritems(self._input_schemalocs):
             if ns in schemaloc_dict:
                 continue
             schemaloc_dict[ns] = loc
@@ -278,7 +279,7 @@ class NamespaceInfo(object):
         # Iterate over the finalized namespaces for a document and attempt
         # to map them to schemalocations. Warn if the namespace should have a
         # schemalocation and we can't find it anywhere.
-        nsset = set(self.finalized_namespaces.itervalues())
+        nsset = set(itervalues(self.finalized_namespaces))
         for ns in nsset:
             if ns in DEFAULT_STIX_SCHEMALOCATIONS:
                 schemaloc_dict[ns] = DEFAULT_STIX_SCHEMALOCATIONS[ns]
@@ -306,7 +307,7 @@ class NamespaceInfo(object):
             return {}  # TODO: Should this return the DEFAULT_STIX_NAMESPACES?
 
         binding_namespaces = {}
-        for alias, ns in self.finalized_namespaces.iteritems():
+        for alias, ns in iteritems(self.finalized_namespaces):
             binding_namespaces[ns] = alias
 
         # Always use the default STIX prefixes for STIX namespaces.
@@ -360,7 +361,7 @@ class NamespaceParser(object):
         return ns_info.finalized_schemalocs
 
     def get_xmlns_str(self, ns_dict):
-        pairs = sorted(ns_dict.iteritems())
+        pairs = sorted(iteritems(ns_dict))
         return "\n\t".join(
             'xmlns:%s="%s"' % (alias, ns) for alias, ns in pairs
         )
@@ -372,7 +373,7 @@ class NamespaceParser(object):
         schemaloc_str_start = 'xsi:schemaLocation="\n\t'
         schemaloc_str_end = '"'
 
-        pairs = sorted(schemaloc_dict.iteritems())
+        pairs = sorted(iteritems(schemaloc_dict))
         schemaloc_str_content = "\n\t".join(
             "%s %s" % (ns, loc) for ns, loc in pairs
         )
@@ -496,16 +497,16 @@ DEFAULT_CYBOX_NAMESPACES = dict(
 #: Mapping of all STIX/STIX Extension/CybOX/XML namespaces
 DEFAULT_STIX_NAMESPACES  = dict(
     itertools.chain(
-        DEFAULT_CYBOX_NAMESPACES.iteritems(),
-        XML_NAMESPACES.iteritems(),
-        DEFAULT_STIX_NS_TO_PREFIX.iteritems(),
-        DEFAULT_EXT_TO_PREFIX.iteritems()
+        iteritems(DEFAULT_CYBOX_NAMESPACES),
+        iteritems(XML_NAMESPACES),
+        iteritems(DEFAULT_STIX_NS_TO_PREFIX),
+        iteritems(DEFAULT_EXT_TO_PREFIX)
     )
 )
 
 #: Prefix-to-namespace mapping of the `DEFAULT_STIX_NAMESPACES` mapping
 DEFAULT_STIX_PREFIX_TO_NAMESPACE = dict(
-    (alias, ns) for ns, alias in DEFAULT_STIX_NAMESPACES.iteritems()
+    (alias, ns) for ns, alias in iteritems(DEFAULT_STIX_NAMESPACES)
 )
 
 #: Tuple of all keys found in `DEFAULT_STIX_NAMESPACES` mapping.
@@ -514,9 +515,9 @@ DEFAULT_STIX_NAMESPACES_TUPLE = tuple(DEFAULT_STIX_NAMESPACES.keys())
 #: Mapping of STIX/CybOX/STIX Extension namespaces to canonical schema locations
 DEFAULT_STIX_SCHEMALOCATIONS = dict(
     itertools.chain(
-        STIX_NS_TO_SCHEMALOCATION.iteritems(),
-        EXT_NS_TO_SCHEMALOCATION.iteritems(),
-        CYBOX_NS_TO_SCHEMALOCATION.iteritems(),
+        iteritems(STIX_NS_TO_SCHEMALOCATION),
+        iteritems(EXT_NS_TO_SCHEMALOCATION),
+        iteritems(CYBOX_NS_TO_SCHEMALOCATION),
     )
 )
 
@@ -531,7 +532,7 @@ with ignored(ImportError):
     del ns_to_prefix['http://maec.mitre.org/default_vocabularies-1']
 
     prefix_to_ns = dict(
-        (prefix, ns) for (ns, prefix) in ns_to_prefix.iteritems()
+        (prefix, ns) for (ns, prefix) in iteritems(ns_to_prefix)
     )
 
     ns_to_schemalocation = dict(
@@ -540,5 +541,5 @@ with ignored(ImportError):
 
     DEFAULT_STIX_NAMESPACES.update(ns_to_prefix)
     DEFAULT_STIX_PREFIX_TO_NAMESPACE.update(prefix_to_ns)
-    DEFAULT_STIX_NAMESPACES_TUPLE = tuple(DEFAULT_STIX_NAMESPACES.iterkeys())
+    DEFAULT_STIX_NAMESPACES_TUPLE = tuple(DEFAULT_STIX_NAMESPACES)
     DEFAULT_STIX_SCHEMALOCATIONS.update(ns_to_schemalocation)

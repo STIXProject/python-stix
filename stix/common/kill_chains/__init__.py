@@ -5,6 +5,8 @@
 import stix
 import stix.bindings.stix_common as common_binding
 
+from mixbox.vendor.six import string_types
+
 
 class KillChain(stix.Entity):
     _binding = common_binding
@@ -117,7 +119,7 @@ class KillChainPhase(stix.Entity):
 
     @phase_id.setter
     def phase_id(self, value):
-        self._set_var(basestring, try_cast=False, phase_id=value)
+        self._set_var(string_types, try_cast=False, phase_id=value)
 
     @property
     def ordinality(self):

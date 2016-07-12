@@ -2,11 +2,11 @@
 # See LICENSE.txt for complete terms.
 
 # stdlib
-import StringIO
 import unittest
 
 # external
 import lxml.etree
+from mixbox.vendor.six import StringIO
 
 # internal
 import stix
@@ -73,7 +73,7 @@ class NamespaceInfoTests(unittest.TestCase):
         nsinfo.finalize(ns_dict=NSMAP, schemaloc_dict=SCHEMALOCS)
         namespaces = nsinfo.finalized_namespaces.values()
 
-        self.assertTrue(all(ns in namespaces for ns in NSMAP.iterkeys()))
+        self.assertTrue(all(ns in namespaces for ns in NSMAP))
 
 
     @silence_warnings
@@ -134,7 +134,7 @@ class NamespaceInfoTests(unittest.TestCase):
                     timestamp="2015-04-09T14:22:25.620831+00:00"/>"""
         )
 
-        sio = StringIO.StringIO(xml)
+        sio = StringIO(xml)
         p = STIXPackage.from_xml(sio)
 
         # Exporting should raise an error.
@@ -168,7 +168,7 @@ class NamespaceInfoTests(unittest.TestCase):
                     timestamp="2015-04-09T14:22:25.620831+00:00"/>"""
         )
 
-        sio = StringIO.StringIO(xml)
+        sio = StringIO(xml)
         p = STIXPackage.from_xml(sio)
 
         serialized = p.to_xml()

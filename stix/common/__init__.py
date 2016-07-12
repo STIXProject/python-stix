@@ -56,6 +56,7 @@ import stix
 import stix.utils as utils
 import stix.bindings.stix_common as common_binding
 
+from mixbox.vendor.six import text_type
 
 class EncodedCDATA(stix.Entity):
     _namespace = "http://stix.mitre.org/common-1"
@@ -130,4 +131,4 @@ class EncodedCDATA(stix.Entity):
         return self.__unicode__().encode("utf-8")
 
     def __unicode__(self):
-        return unicode(self.value)
+        return text_type(self.value)

@@ -5,8 +5,7 @@
 """Tests for various encoding issues throughout the library"""
 
 import unittest
-from StringIO import StringIO
-
+from mixbox.vendor.six import StringIO, text_type
 from mixbox import binding_utils
 
 from stix.core import STIXHeader, STIXPackage
@@ -142,7 +141,7 @@ class EncodingTests(unittest.TestCase):
         s = STIXHeader()
         s.title = UNICODE_STR
         xml = s.to_xml(encoding=None)
-        self.assertTrue(isinstance(xml, unicode))
+        self.assertTrue(isinstance(xml, text_type))
         self.assertTrue(UNICODE_STR in xml)
 
     @silence_warnings

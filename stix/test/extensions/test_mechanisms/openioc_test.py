@@ -2,12 +2,12 @@
 # See LICENSE.txt for complete terms.
 
 import unittest
-import StringIO
 
 import lxml
 
 from mixbox import idgen
 from mixbox.namespaces import Namespace
+from mixbox.vendor.six import StringIO
 import mixbox.xml
 
 from stix.test import EntityTestCase
@@ -130,7 +130,7 @@ class OpenIOCEtreeTests(unittest.TestCase):
     def _test_xml(self, obj):
         xml = obj.to_xml()
         parser = mixbox.xml.get_xml_parser()
-        tree = lxml.etree.parse(StringIO.StringIO(xml), parser=parser)
+        tree = lxml.etree.parse(StringIO(xml), parser=parser)
         root = tree.getroot()
 
         xpath = "//openioc:description"
@@ -142,7 +142,7 @@ class OpenIOCEtreeTests(unittest.TestCase):
 
     def test_etree(self):
         parser = mixbox.xml.get_xml_parser()
-        tree = lxml.etree.parse(StringIO.StringIO(self.XML), parser=parser)
+        tree = lxml.etree.parse(StringIO(self.XML), parser=parser)
 
         ext = OpenIOCTestMechanism()
         ext.ioc = tree
@@ -150,7 +150,7 @@ class OpenIOCEtreeTests(unittest.TestCase):
 
     def test_etree_dict(self):
         parser = mixbox.xml.get_xml_parser()
-        tree = lxml.etree.parse(StringIO.StringIO(self.XML), parser=parser)
+        tree = lxml.etree.parse(StringIO(self.XML), parser=parser)
         ext = OpenIOCTestMechanism()
         ext.ioc = tree
 

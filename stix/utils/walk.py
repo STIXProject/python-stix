@@ -6,6 +6,7 @@ import itertools
 
 # external
 from cybox.common import ObjectProperties
+from mixbox.vendor.six import iteritems
 
 # internal
 from . import is_entity, is_entitylist, attr_name, is_sequence
@@ -28,10 +29,10 @@ def _iter_vars(obj):
     attrs = []
 
     if hasattr(obj, "__dict__"):
-        attrs.append(vars(obj).iteritems())
+        attrs.append(iteritems(vars(obj)))
 
     if hasattr(obj, "_fields"):
-        attrs.append(obj._fields.iteritems())
+        attrs.append(iteritems(obj._fields))
 
     return itertools.chain.from_iterable(attrs)
 

@@ -330,7 +330,7 @@ class RelatedPackageRefType(GenericRelationshipType):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
         super(RelatedPackageRefType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -728,7 +728,7 @@ class ConfidenceType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
         
         value = find_attr_value_('timestamp_precision', node)
@@ -1092,7 +1092,7 @@ class KillChainPhaseType(GeneratedsSuper):
             already_processed.add('ordinality')
             try:
                 self.ordinality = int(value)
-            except ValueError, exp:
+            except ValueError as exp:
                 raise_parse_error(node, 'Bad integer attribute: %s' % exp)
         value = find_attr_value_('name', node)
         if value is not None and 'name' not in already_processed:
@@ -2098,7 +2098,7 @@ class IndicatorBaseType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
@@ -2199,7 +2199,7 @@ class IncidentBaseType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
@@ -2300,7 +2300,7 @@ class TTPBaseType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
@@ -2402,7 +2402,7 @@ class ExploitTargetBaseType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
@@ -2503,7 +2503,7 @@ class CourseOfActionBaseType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
@@ -2655,7 +2655,7 @@ class CampaignReferenceType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Names':
@@ -2824,7 +2824,7 @@ class CampaignBaseType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
@@ -2926,7 +2926,7 @@ class ThreatActorBaseType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
@@ -3420,7 +3420,7 @@ class StatementType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
         value = find_attr_value_('timestamp_precision', node)
         if value is not None and 'timestamp_precision' not in already_processed:
@@ -3813,7 +3813,7 @@ class ReportBaseType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
         value = find_attr_value_('idref', node)
         if value is not None and 'idref' not in already_processed:
@@ -3904,7 +3904,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 """
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 def get_root_tag(node):
@@ -3950,7 +3950,7 @@ def parseEtree(inFileName):
     return rootObj, rootElement
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

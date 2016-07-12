@@ -8,6 +8,8 @@ from stix.test import EntityTestCase, TypedListTestCase
 
 from stix import common
 
+from mixbox.vendor.six.moves import range
+
 
 class StructuredTextTests(unittest.TestCase, EntityTestCase):
     klass = common.StructuredText
@@ -36,7 +38,7 @@ class StructuredTextListTests(unittest.TestCase, TypedListTestCase):
     def _get_text_list(cls):
         slist = []
 
-        for ordinality in xrange(1, 10):
+        for ordinality in range(1, 10):
             text = common.StructuredText("Ordinality %s" % ordinality)
             text.ordinality = ordinality
             slist.append(text)
@@ -68,7 +70,7 @@ class StructuredTextListTests(unittest.TestCase, TypedListTestCase):
         # reset ordinalities
         slist.reset()
 
-        for o in xrange(1, len(ords) + 1):
+        for o in range(1, len(ords) + 1):
             self.assertEqual(o, slist[o].ordinality)
 
     def test_ordinalities(self):

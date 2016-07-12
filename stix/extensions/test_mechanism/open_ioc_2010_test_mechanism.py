@@ -1,12 +1,10 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# stdlib
-from StringIO import StringIO
-
 # external
 from lxml import etree
 import mixbox.xml
+from mixbox.vendor.six import StringIO, iteritems
 
 # internal
 import stix
@@ -57,7 +55,7 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
             self.__input_schemalocations__ = {}
 
     def _collect_namespaces(self, node):
-        self.__input_namespaces__ = dict(node.nsmap.iteritems())
+        self.__input_namespaces__ = dict(iteritems(node.nsmap))
 
     def _cast_ioc(self, node):
         ns_ioc = "http://schemas.mandiant.com/2010/ioc"

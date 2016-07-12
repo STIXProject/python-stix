@@ -9,6 +9,7 @@ import lxml.etree
 
 from mixbox.entities import Entity, EntityList
 import mixbox.xml
+from mixbox.vendor.six import iteritems, string_types
 
 import stix
 
@@ -221,7 +222,7 @@ def is_sequence(item):
     ``tuple``). String types will return ``False``.
 
     """
-    return hasattr(item, "__iter__")
+    return hasattr(item, "__iter__") and not isinstance(item, string_types)
 
 
 def check_version(expected, found):
@@ -252,7 +253,7 @@ def iter_vars(obj):
     def check(name):
         return name not in ('__input_namespaces__', '__input_schemalocations__')
 
-    instance_vars = vars(obj).iteritems()
+    instance_vars = iteritems(vars(obj))
     return ((attr_name(name), val) for name, val in instance_vars if check(name))
 
 
