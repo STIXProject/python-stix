@@ -5,15 +5,15 @@
 import json
 import collections
 import itertools
-import StringIO
+from sys import version_info
 
 from mixbox import idgen
 from mixbox.binding_utils import save_encoding
 from mixbox.cache import Cached
+from mixbox.vendor.six import StringIO, iteritems, itervalues, text_type, binary_type
 
 # internal
 from . import utils
-
 
 def _override(*args, **kwargs):
     raise NotImplementedError()
@@ -51,7 +51,7 @@ class Entity(object):
                 and the field value is the value.
 
         """
-        name, item = kwargs.iteritems().next()
+        name, item = next(iteritems(kwargs))
         attr = utils.private_name(name)  # 'title' => '_title'
 
         if item is None:
@@ -86,7 +86,7 @@ class Entity(object):
         from stix.common import VocabString
 
         klass = klass or VocabString
-        item  = kwargs.itervalues().next()
+        item  = next(itervalues(kwargs))
 
         if isinstance(item, VocabString):
             self._set_var(VocabString, **kwargs)
@@ -114,8 +114,8 @@ class Entity(object):
         """Serializes a :class:`Entity` instance to an XML string.
 
         The default character encoding is ``utf-8`` and can be set via the
-        `encoding` parameter. If `encoding` is ``None``, a unicode string
-        is returned.
+        `encoding` parameter. If `encoding` is ``None``, a string (unicode in
+        Python 2, str in Python 3) is returned.
 
         Args:
             auto_namespace: Automatically discover and export XML namespaces
@@ -136,7 +136,8 @@ class Entity(object):
                 only be included if `auto_namespace` is ``False``.
             pretty: Pretty-print the XML.
             encoding: The output character encoding. Default is ``utf-8``. If
-                `encoding` is set to ``None``, a unicode string is returned.
+                `encoding` is set to ``None``, a string (unicode in Python 2,
+                str in Python 3) is returned.
 
         Returns:
             An XML string for this
@@ -169,8 +170,8 @@ class Entity(object):
             ns_info.finalized_schemalocs = schemaloc_dict or {}
             obj_ns_dict = dict(
                 itertools.chain(
-                    ns_dict.iteritems(),
-                    nsparser.DEFAULT_STIX_NAMESPACES.iteritems()
+                    iteritems(ns_dict),
+                    iteritems(nsparser.DEFAULT_STIX_NAMESPACES)
                 )
             )
 
@@ -187,7 +188,7 @@ class Entity(object):
             namespace_def = namespace_def.replace('\n\t', ' ')
 
         with save_encoding(encoding):
-            sio = StringIO.StringIO()
+            sio = StringIO()
             obj.export(
                 sio.write,                    # output buffer
                 0,                            # output level
@@ -197,7 +198,7 @@ class Entity(object):
             )
 
         # Ensure that the StringIO buffer is unicode
-        s = unicode(sio.getvalue())
+        s = text_type(sio.getvalue())
 
         if encoding:
             return s.encode(encoding)

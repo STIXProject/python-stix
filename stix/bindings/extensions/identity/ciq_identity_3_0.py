@@ -99,7 +99,7 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
             eol_ = ''
         if self.Specification is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite(etree_.tostring(self.Specification, pretty_print=pretty_print))
+            lwrite(etree_.tostring(self.Specification, pretty_print=pretty_print).decode())
             #self.Specification.export(lwrite, level, nsmap, namespace_, name_='Specification', pretty_print=pretty_print)
         for Role_ in self.Role:
             showIndent(lwrite, level, pretty_print)

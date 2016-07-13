@@ -88,7 +88,7 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
             eol_ = ''
         if self.Location is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite(etree_.tostring(self.Location, pretty_print=pretty_print))
+            lwrite(etree_.tostring(self.Location, pretty_print=pretty_print).decode())
             #self.Location.export(lwrite, level, nsmap, namespace_, name_='Location', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()

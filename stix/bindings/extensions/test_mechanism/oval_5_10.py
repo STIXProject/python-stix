@@ -91,11 +91,11 @@ class OVAL5_10TestMechanismType(indicator_binding.TestMechanismType):
             eol_ = ''
         if self.oval_definitions is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite(etree_.tostring(self.oval_definitions, pretty_print=pretty_print))
+            lwrite(etree_.tostring(self.oval_definitions, pretty_print=pretty_print).decode())
             #self.oval_definitions.export(lwrite, level, nsmap, namespace_, name_='oval_definitions', pretty_print=pretty_print)
         if self.oval_variables is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite(etree_.tostring(self.oval_variables, pretty_print=pretty_print))
+            lwrite(etree_.tostring(self.oval_variables, pretty_print=pretty_print).decode())
             #self.oval_variables.export(lwrite, level, nsmap, namespace_, name_='oval_variables', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()

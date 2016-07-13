@@ -4,7 +4,7 @@
 # external
 from lxml import etree
 import mixbox.xml
-from mixbox.vendor.six import StringIO, iteritems
+from mixbox.vendor.six import BytesIO, iteritems
 
 # internal
 import stix
@@ -98,7 +98,7 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
         super(OpenIOCTestMechanism, cls).from_dict(d, return_obj)
         if 'ioc' in d:
             parser = mixbox.xml.get_xml_parser()
-            return_obj.ioc = etree.parse(StringIO(d['ioc']), parser=parser)
+            return_obj.ioc = etree.parse(BytesIO(d['ioc']), parser=parser)
         
         return return_obj
 

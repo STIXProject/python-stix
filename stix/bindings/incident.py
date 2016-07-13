@@ -2764,8 +2764,8 @@ def parseEtree(inFileName):
     return rootObj, rootElement
 
 def parseString(inString):
-    from mixbox.vendor.six import StringIO
-    doc = parsexml_(StringIO(inString))
+    from mixbox.vendor.six import BytesIO
+    doc = parsexml_(BytesIO(inString.encode('utf-8')))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:

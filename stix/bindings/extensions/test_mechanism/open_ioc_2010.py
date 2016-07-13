@@ -87,7 +87,7 @@ class OpenIOC2010TestMechanismType(indicator_binding.TestMechanismType):
             eol_ = ''
         if self.ioc is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite(etree_.tostring(self.ioc, pretty_print=pretty_print))
+            lwrite(etree_.tostring(self.ioc, pretty_print=pretty_print).decode())
             #self.ioc.export(lwrite, level, nsmap, namespace_, name_='ioc', pretty_print=pretty_print)
     def build(self, node):
         already_processed = set()

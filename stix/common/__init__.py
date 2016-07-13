@@ -2,6 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 from __future__ import absolute_import
+from sys import version_info
 
 from .structured_text import StructuredText, StructuredTextList  # noqa
 from .vocabs import VocabString   # noqa
@@ -128,7 +129,10 @@ class EncodedCDATA(stix.Entity):
         return d
 
     def __str__(self):
-        return self.__unicode__().encode("utf-8")
+        if version_info < (3,):
+            return self.__unicode__().encode("utf-8")
+        else:
+            return self.__unicode__()
 
     def __unicode__(self):
         return text_type(self.value)

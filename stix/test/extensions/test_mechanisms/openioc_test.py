@@ -7,7 +7,7 @@ import lxml
 
 from mixbox import idgen
 from mixbox.namespaces import Namespace
-from mixbox.vendor.six import StringIO
+from mixbox.vendor.six import StringIO, BytesIO
 import mixbox.xml
 
 from stix.test import EntityTestCase
@@ -41,12 +41,11 @@ class OpenIOCTestMechanismTests(EntityTestCase, unittest.TestCase):
 class OpenIOCEtreeTests(unittest.TestCase):
     DESCRIPTION = "Finds Zeus variants, twexts, sdra64, ntos"
     XML = (
-        """
+        r"""
         <stix-openioc:ioc
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns:mandiant-openioc="http://schemas.mandiant.com/2010/ioc"
-            xmlns="http://schemas.mandiant.com/2010/ioc"
             xmlns:stix-openioc="http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1"
             id="mandiant:6d2a1b03-b216-4cd8-9a9e-8827af6ebf93" last-modified="2011-10-28T19:28:20">
             <short_description>Zeus</short_description>
@@ -120,8 +119,8 @@ class OpenIOCEtreeTests(unittest.TestCase):
     )
 
     def setUp(self):
-        ioc_ns = Namespace("http://schemas.mandiant.com/2010/ioc",
-                           "mandiant-openioc", '')
+        ioc_ns = Namespace("http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1",
+                           "stix-openioc", '')
         idgen.set_id_namespace(ioc_ns)
 
     def tearDown(self):
@@ -130,11 +129,11 @@ class OpenIOCEtreeTests(unittest.TestCase):
     def _test_xml(self, obj):
         xml = obj.to_xml()
         parser = mixbox.xml.get_xml_parser()
-        tree = lxml.etree.parse(StringIO(xml), parser=parser)
+        tree = lxml.etree.parse(BytesIO(xml), parser=parser)
         root = tree.getroot()
 
-        xpath = "//openioc:description"
-        nodes = root.xpath(xpath, namespaces={'openioc': 'http://schemas.mandiant.com/2010/ioc'})
+        xpath = "//stix-openioc:ioc//description"
+        nodes = root.xpath(xpath, namespaces={'stix-openioc': 'http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1'})
 
         self.assertTrue(nodes is not None)
         self.assertEqual(len(nodes), 1)
