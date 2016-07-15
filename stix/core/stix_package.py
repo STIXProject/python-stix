@@ -374,7 +374,7 @@ class STIXPackage(Cached, stix.Entity):
             Incident: self.add_incident,
             Indicator: self.add_indicator,
             ThreatActor: self.add_threat_actor,
-            TTP: self.add_threat_actor,
+            TTP: self.add_ttp,
             Report: self.add_report,
             Observable: self.add_observable,
         }
