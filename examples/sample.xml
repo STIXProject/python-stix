@@ -15,7 +15,6 @@
     xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
     xmlns:example="http://example.com/"
     id="example:STIXPackage-33fe3b22-0201-47cf-85d0-97c02164528d"
-    timestamp="2014-05-08T09:00:00.000000Z"
     version="1.2">
     
     <stix:Indicators>
@@ -31,5 +30,11 @@
             </indicator:Observable>
         </stix:Indicator>
     </stix:Indicators>
+    <stix:Reports timestamp="2014-05-08T09:00:00.000000Z" xsi:type="report:ReportType">
+        <report:Header>
+            <report:Title>Example watchlist that contains IP information.</report:Title>
+            <report:Intent xsi:type="stixVocabs:ReportIntentVocab-1.0">Indicators - Watchlist</report:Intent>
+        </report:Header>
+    </stix:Reports>
 </stix:STIX_Package>
 
