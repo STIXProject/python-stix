@@ -59,6 +59,11 @@ class StructuredCOAType(GeneratedsSuper):
     def set_idref(self, idref): self.idref = idref
     def get_id(self): return self.id
     def set_id(self, id): self.id = id
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
 

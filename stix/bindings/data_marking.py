@@ -159,6 +159,11 @@ class MarkingStructureType(GeneratedsSuper):
     def set_marking_model_name(self, marking_model_name): self.marking_model_name = marking_model_name
     def get_id(self): return self.id
     def set_id(self, id): self.id = id
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
 
@@ -260,6 +265,11 @@ class MarkingSpecificationType(GeneratedsSuper):
     def set_id(self, id): self.id = id
     def get_version(self): return self.version
     def set_version(self, version): self.version = version
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
             self.Controlled_Structure is not None or

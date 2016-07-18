@@ -30,6 +30,16 @@ class Identity(Cached, stix.Entity):
         else:
             self._id = value
             self.idref = None
+
+    @property
+    def id(self):
+        """The ``id`` and ``id_`` properties reference the same variable.
+        """
+        return self.id_
+
+    @id.setter
+    def id(self, value):
+        self.id_(value)
     
     @property
     def idref(self):

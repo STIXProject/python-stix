@@ -613,6 +613,16 @@ class BaseCoreComponent(Cached, Entity):
             self.idref = None
 
     @property
+    def id(self):
+        """The ``id`` and ``id_`` properties reference the same variable.
+        """
+        return self.id_
+
+    @id.setter
+    def id(self, value):
+        self.id_(value)
+
+    @property
     def idref(self):
         """The ``idref`` property must be set to the ``id_`` value of another
         object instance of the same type. An idref does not need to resolve to

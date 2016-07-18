@@ -87,6 +87,11 @@ class STIXType(GeneratedsSuper):
     def set_version(self, version): self.version = version
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
             self.STIX_Header is not None or

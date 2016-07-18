@@ -934,6 +934,11 @@ class KillChainType(GeneratedsSuper):
     def set_definer(self, definer): self.definer = definer
     def get_name(self): return self.name
     def set_name(self, name): self.name = name
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
             self.Kill_Chain_Phase
@@ -1284,6 +1289,11 @@ class IdentityType(GeneratedsSuper):
     def set_idref(self, idref): self.idref = idref
     def get_id(self): return self.id
     def set_id(self, id): self.id = id
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
             self.Name is not None or
@@ -2044,6 +2054,11 @@ class IndicatorBaseType(GeneratedsSuper):
     def set_id(self, id): self.id = id
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
 
@@ -2145,6 +2160,11 @@ class IncidentBaseType(GeneratedsSuper):
     def set_id(self, id): self.id = id
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
 
@@ -2246,6 +2266,11 @@ class TTPBaseType(GeneratedsSuper):
     def set_id(self, id): self.id = id
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
 
@@ -2348,6 +2373,11 @@ class ExploitTargetBaseType(GeneratedsSuper):
     def set_id(self, id): self.id = id
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
 
@@ -2449,6 +2479,11 @@ class CourseOfActionBaseType(GeneratedsSuper):
     def set_id(self, id): self.id = id
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
 
@@ -2602,6 +2637,11 @@ class CampaignReferenceType(GeneratedsSuper):
     def set_idref(self, idref): self.idref = idref
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
             self.Names is not None
@@ -2770,6 +2810,11 @@ class CampaignBaseType(GeneratedsSuper):
     def set_id(self, id): self.id = id
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
 
@@ -2872,6 +2917,11 @@ class ThreatActorBaseType(GeneratedsSuper):
     def set_id(self, id): self.id = id
     def get_timestamp(self): return self.timestamp
     def set_timestamp(self, timestamp): self.timestamp = timestamp
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
 
@@ -3480,6 +3530,11 @@ class StructuredTextType(GeneratedsSuper):
     def set_id(self, id): self.id = id
     def get_ordinality(self): return self.ordinality
     def set_ordinality(self, ordinality): self.ordinality = ordinality
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
             self.valueOf_
@@ -3763,6 +3818,11 @@ class ReportBaseType(GeneratedsSuper):
     def set_id(self, id): self.id = id
     def get_extensiontype_(self): return self.extensiontype_
     def set_extensiontype_(self, extensiontype_): self.extensiontype_ = extensiontype_
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
 

@@ -245,6 +245,11 @@ class TestMechanismType(GeneratedsSuper):
     def set_id(self, id): self.id = id
     def get_xsi_type(self): return self.xsi_type
     def set_xsi_type(self, xsi_type): self.xsi_type = xsi_type
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
             self.Efficacy is not None and

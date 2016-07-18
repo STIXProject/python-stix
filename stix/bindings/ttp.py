@@ -77,6 +77,11 @@ class AttackPatternType(GeneratedsSuper):
     def set_capec_id(self, capec_id): self.capec_id = capec_id
     def get_id(self): return self.id
     def set_id(self, id): self.id = id
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
             self.Title is not None or
@@ -227,6 +232,11 @@ class MalwareInstanceType(GeneratedsSuper):
     def set_idref(self, idref): self.idref = idref
     def get_id(self): return self.id
     def set_id(self, id): self.id = id
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
             self.Type or
@@ -362,6 +372,11 @@ class ExploitType(GeneratedsSuper):
     def set_idref(self, idref): self.idref = idref
     def get_id(self): return self.id
     def set_id(self, id): self.id = id
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
             self.Title is not None or
@@ -489,6 +504,11 @@ class InfrastructureType(GeneratedsSuper):
     def set_idref(self, idref): self.idref = idref
     def get_id(self): return self.id
     def set_id(self, id): self.id = id
+    @property
+    def id_(self): return self.id
+    @id_.setter
+    def id_(self, value):
+        self.set_id(value)
     def hasContent_(self):
         if (
             self.Title is not None or
