@@ -614,6 +614,16 @@ class BaseCoreComponent(Cached, Entity):
             self.idref = None
 
     @property
+    def id(self):
+        """The ``id`` and ``id_`` properties reference the same variable.
+        """
+        return self.id_
+
+    @id.setter
+    def id(self, value):
+        self.id_(value)
+
+    @property
     def idref(self):
         """The ``idref`` property must be set to the ``id_`` value of another
         object instance of the same type. An idref does not need to resolve to
@@ -868,7 +878,7 @@ class BaseCoreComponent(Cached, Entity):
         if not obj:
             raise ValueError("Must provide an obj argument")
 
-        return_obj.id_ = obj.id
+        return_obj.id_ = obj.id_
         return_obj.idref = obj.idref
         return_obj.timestamp = obj.timestamp
 

@@ -30,7 +30,7 @@ class _BaseStructuredCOA(Cached, stix.Entity):
             klass = stix.lookup_extension(obj)
             return_obj = klass.from_obj(obj)
         else:
-            return_obj.id_ = obj.id
+            return_obj.id_ = obj.id_
             return_obj.idref = obj.idref
 
         return return_obj

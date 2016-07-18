@@ -66,7 +66,7 @@ class KillChain(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = obj.id
+        return_obj.id_ = obj.id_
         return_obj.name = obj.name
         return_obj.definer = obj.definer
         return_obj.reference = obj.reference

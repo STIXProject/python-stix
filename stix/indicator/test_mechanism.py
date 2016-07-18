@@ -53,7 +53,7 @@ class _BaseTestMechanism(Cached, stix.Entity):
             klass = stix.lookup_extension(obj)
             return_obj = klass.from_obj(obj)
         else:
-            return_obj.id_ = obj.id
+            return_obj.id_ = obj.id_
             return_obj.idref = obj.idref
             return_obj.efficacy = Statement.from_obj(obj.Efficacy)
             return_obj.producer = InformationSource.from_obj(obj.Producer)

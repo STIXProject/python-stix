@@ -117,7 +117,7 @@ class StructuredText(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = obj.id
+        return_obj.id_ = obj.id_
         return_obj.value = obj.valueOf_
         return_obj.ordinality = obj.ordinality
         return_obj.structuring_format = obj.structuring_format

@@ -51,6 +51,16 @@ class Infrastructure(Cached, stix.Entity):
             self.idref = None
 
     @property
+    def id(self):
+        """The ``id`` and ``id_`` properties reference the same variable.
+        """
+        return self.id_
+
+    @id.setter
+    def id(self, value):
+        self.id_(value)
+
+    @property
     def idref(self):
         """The ``idref`` property must be set to the ``id_`` value of another
         object instance of the same type. An idref does not need to resolve to
@@ -247,7 +257,7 @@ class Infrastructure(Cached, stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = obj.id
+        return_obj.id_ = obj.id_
         return_obj.title = obj.Title
         return_obj.descriptions = StructuredTextList.from_obj(obj.Description)
         return_obj.short_descriptions = StructuredTextList.from_obj(obj.Short_Description)

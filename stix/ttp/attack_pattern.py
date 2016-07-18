@@ -50,6 +50,16 @@ class AttackPattern(Cached, stix.Entity):
             self.idref = None
 
     @property
+    def id(self):
+        """The ``id`` and ``id_`` properties reference the same variable.
+        """
+        return self.id_
+
+    @id.setter
+    def id(self, value):
+        self.id_(value)
+
+    @property
     def idref(self):
         """The ``idref`` property must be set to the ``id_`` value of another
         object instance of the same type. An idref does not need to resolve to
@@ -225,7 +235,7 @@ class AttackPattern(Cached, stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = obj.id
+        return_obj.id_ = obj.id_
         return_obj.idref = obj.idref
         return_obj.capec_id = obj.capec_id
         return_obj.title = obj.Title

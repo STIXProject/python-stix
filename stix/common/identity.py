@@ -30,6 +30,16 @@ class Identity(Cached, stix.Entity):
         else:
             self._id = value
             self.idref = None
+
+    @property
+    def id(self):
+        """The ``id`` and ``id_`` properties reference the same variable.
+        """
+        return self.id_
+
+    @id.setter
+    def id(self, value):
+        self.id_(value)
     
     @property
     def idref(self):
@@ -94,7 +104,7 @@ class Identity(Cached, stix.Entity):
             klass = stix.lookup_extension(obj, default=cls)
             return_obj = klass.from_obj(obj, return_obj=klass())
         else:
-            return_obj.id_ = obj.id
+            return_obj.id_ = obj.id_
             return_obj.idref = obj.idref
             return_obj.name = obj.Name
             return_obj.related_identities = \

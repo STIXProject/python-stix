@@ -106,6 +106,16 @@ class STIXPackage(Cached, stix.Entity):
             self.idref = None
 
     @property
+    def id(self):
+        """The ``id`` and ``id_`` properties reference the same variable.
+        """
+        return self.id_
+
+    @id.setter
+    def id(self, value):
+        self.id_(value)
+
+    @property
     def idref(self):
         """A reference to another Report identifier. Setting this will unset
         any previous ``id`` values.
@@ -436,7 +446,7 @@ class STIXPackage(Cached, stix.Entity):
         if not return_obj:
             return_obj = cls()
 
-        return_obj.id_ = obj.id
+        return_obj.id_ = obj.id_
         return_obj.idref = obj.idref
         return_obj.timestamp = obj.timestamp
         return_obj.stix_header = STIXHeader.from_obj(obj.STIX_Header)

@@ -97,6 +97,16 @@ class Report(Cached, stix.Entity):
         else:
             self._id = value
             self.idref = None
+
+    @property
+    def id(self):
+        """The ``id`` and ``id_`` properties reference the same variable.
+        """
+        return self.id_
+
+    @id.setter
+    def id(self, value):
+        self.id_(value)
     
     @property
     def idref(self):
@@ -389,7 +399,7 @@ class Report(Cached, stix.Entity):
             return_obj = cls()
 
         # ReportBaseType fields
-        return_obj.id_ = obj.id
+        return_obj.id_ = obj.id_
         return_obj.idref = obj.idref
         return_obj.timestamp = obj.timestamp
 
