@@ -29,14 +29,17 @@ Creating a STIX Package
 
 .. code-block:: python
 	
-	from stix.core import STIXPackage, STIXHeader   # Import the STIX Package and STIX Header APIs
+	from stix.core import STIXPackage                      # Import the STIX Package API
+	from stix.report import Report                         # Import the STIX Report API
+	from stix.report.header import Header                  # Import the STIX Report Header API
 
-	stix_package = STIXPackage()                    # Create an instance of STIXPackage
-	stix_header = STIXHeader()                      # Create an instance of STIXHeader
-	stix_header.description = "Getting Started!"    # Set the description
-	stix_package.stix_header = stix_header          # Link the STIX Head to our STIX Package
+	stix_package = STIXPackage()                           # Create an instance of STIXPackage
+	stix_report = Report()                                 # Create a Report instance
+	stix_report.header = Header()                          # Create a header for the report
+	stix_report.header.description = "Getting Started!"    # Set the description
+	stix_package.add(stix_report)                          # Add the report to our STIX Package
 
-	print(stix_package.to_xml())                    # print the XML for this STIX Package
+	print(stix_package.to_xml())                           # Print the XML for this STIX Package
 	
 Parsing STIX XML
 ****************

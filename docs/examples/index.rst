@@ -21,26 +21,42 @@ Creating a STIX Package
 
 .. code-block:: python
 
-    from stix.core import STIXPackage, STIXHeader
+    from stix.core import STIXPackage
+    from stix.report import Report
+    from stix.report.header import Header
     from stix.utils import IDGenerator, set_id_method
 
     set_id_method(IDGenerator.METHOD_INT) # For testing and demonstration only!
 
     stix_package = STIXPackage()
-    stix_header = STIXHeader()
-    stix_header.description = "Getting Started!"
-    stix_package.stix_header = stix_header
+    stix_report = Report()
+    stix_report.header = Header()
+    stix_report.header.description = "Getting Started!"
+    stix_package.add(stix_report)
 
-    print stix_package.to_xml()
+    print(stix_package.to_xml())
 
 Which outputs:
 
 .. code-block:: xml
 
-    <stix:STIX_Package id="example:Package-1" version="1.2">
-        <stix:STIX_Header>
-            <stix:Description>Getting Started!</stix:Description>
-        </stix:STIX_Header>
+    <stix:STIX_Package
+            xmlns:cybox="http://cybox.mitre.org/cybox-2"
+            xmlns:cyboxCommon="http://cybox.mitre.org/common-2"
+            xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2"
+            xmlns:example="http://example.com"
+            xmlns:report="http://stix.mitre.org/Report-1"
+            xmlns:stix="http://stix.mitre.org/stix-1"
+            xmlns:stixCommon="http://stix.mitre.org/common-1"
+            xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="example:Package-1" version="1.2">
+        <stix:Reports>
+            <stix:Report timestamp="2016-07-15T15:27:43.847000+00:00" id="example:Report-2" xsi:type='report:ReportType' version="1.0">
+                <report:Header>
+                    <report:Description>Getting Started!</report:Description>
+                </report:Header>
+            </stix:Report>
+        </stix:Reports>
     </stix:STIX_Package>
 
 
