@@ -66,7 +66,7 @@ class CIQIdentity3_0Instance(common.Identity):
         self._specification = value
 
     def to_obj(self, ns_info=None):
-        obj = super(CIQIdentity3_0Instance, self).to_obj()
+        obj = super(CIQIdentity3_0Instance, self).to_obj(ns_info=ns_info)
         obj.xsi_type = self._XSI_TYPE
 
         if self.roles:
@@ -332,7 +332,13 @@ class STIXCIQIdentity3_0(stix.Entity):
         return return_obj
 
     def to_obj(self, return_obj=None, ns_info=None):
-        #super(STIXCIQIdentity3_0, self).to_obj(ns_info=ns_info)
+        # Throw away return value; this class has no _binding_class, so
+        # it will return None anyway.  This to_obj() is anomalous in that it
+        # returns an etree Element instead of a generateDS object.  Bindings
+        # have all been hacked up to make this work.  The super call does,
+        # however, do namespace collection (if ns_info is given), so it's
+        # still important.
+        super(STIXCIQIdentity3_0, self).to_obj(ns_info=ns_info)
 
         if not return_obj:
             root_tag = STIXCIQIdentity3_0.XML_TAG
@@ -1693,6 +1699,7 @@ class ContactNumber(stix.Entity):
             self._communication_media_type = value
         
     def to_obj(self, return_obj=None, ns_info=None):
+        super(ContactNumber, self).to_obj(ns_info=ns_info)
         return_obj = et.Element(self.XML_TAG)
         if self.communication_media_type:
             return_obj.attrib['{%s}CommunicationMediaType' % self._namespace] = self.communication_media_type
