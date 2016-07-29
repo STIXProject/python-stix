@@ -1,19 +1,16 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# stdlib
-from StringIO import StringIO
-
 # external
 from lxml import etree
 import mixbox.xml
 from mixbox.fields import TypedField
+from mixbox.vendor.six import BytesIO, iteritems
 
 # internal
 import stix
 from stix.indicator.test_mechanism import _BaseTestMechanism
 import stix.bindings.extensions.test_mechanism.open_ioc_2010 as open_ioc_tm_binding
-from mixbox.cache import instanceof
 
 
 @stix.register_extension
@@ -41,7 +38,7 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
             self.__input_schemalocations__ = {}
 
     def _collect_namespaces(self, node):
-        self.__input_namespaces__ = dict(node.nsmap.iteritems())
+        self.__input_namespaces__ = dict(iteritems(node.nsmap))
 
     def _cast_ioc(self, node):
         ns_ioc = "http://schemas.mandiant.com/2010/ioc"
@@ -95,7 +92,7 @@ class OpenIOCTestMechanism(_BaseTestMechanism):
         
         if 'ioc' in d:
             parser = mixbox.xml.get_xml_parser()
-            return_obj.ioc = etree.parse(StringIO(d['ioc']), parser=parser)
+            return_obj.ioc = etree.parse(BytesIO(d['ioc']), parser=parser)
         
         return return_obj
 

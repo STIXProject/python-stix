@@ -2,8 +2,9 @@
 # See LICENSE.txt for complete terms.
 
 import copy
-import StringIO
 import unittest
+
+from mixbox.vendor.six import BytesIO
 
 from stix.test import EntityTestCase, assert_warnings
 from stix.test import report_test
@@ -126,7 +127,7 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
 
         """
         package = core.STIXPackage.from_xml(
-            StringIO.StringIO(
+            BytesIO(
                 core.STIXPackage().to_xml()
             )
         )

@@ -8,6 +8,9 @@ from mixbox import typedlist
 import stix
 import stix.bindings.stix_common as common_binding
 
+from mixbox.vendor.six import string_types
+
+
 class KillChain(stix.Entity):
     _binding = common_binding
     _namespace = 'http://stix.mitre.org/common-1'

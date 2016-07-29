@@ -123,7 +123,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 """
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 def get_root_tag(node):
@@ -169,7 +169,7 @@ def parseEtree(inFileName):
     return rootObj, rootElement
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

@@ -3,12 +3,14 @@
 import itertools
 import contextlib
 import collections
+from sys import version_info
 
 from mixbox import fields
 
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
+from mixbox.vendor.six import text_type
 
 
 #: Default ordinality value for StructuredText.
@@ -70,13 +72,16 @@ class StructuredText(stix.Entity):
         """Returns a UTF-8 encoded string representation of the ``value``.
 
         """
-        return self.__unicode__().encode("utf-8")
+        if version_info < (3,):
+            return self.__unicode__().encode("utf-8")
+        else:
+            return self.__unicode__()
 
     def __unicode__(self):
         """Returns a ``unicode`` string representation of the ``value``.
 
         """
-        return unicode(self.value)
+        return text_type(self.value)
 
 
 @contextlib.contextmanager

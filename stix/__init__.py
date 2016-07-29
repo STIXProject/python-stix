@@ -5,6 +5,8 @@
 from .base import (Entity, EntityList, TypedCollection, TypedList,  # noqa
                    BaseCoreComponent)
 
+from mixbox.vendor.six import string_types, iteritems
+
 #: Mapping of xsi:types to implementation/extension classes
 _EXTENSION_MAP = {}
 
@@ -24,7 +26,7 @@ def _lookup_unprefixed(typename):
         ValueError: If no class has been registered for the input `typename`.
 
     """
-    for xsi_type, klass in _EXTENSION_MAP.iteritems():
+    for xsi_type, klass in iteritems(_EXTENSION_MAP):
         if typename in xsi_type:
             return klass
 
@@ -77,7 +79,7 @@ def lookup_extension(typeinfo, default=None):
         return default
 
     # If the `typeinfo` was a string, consider it a  full xsi:type value.
-    if isinstance(typeinfo, basestring):
+    if isinstance(typeinfo, string_types):
         return _lookup_extension(typeinfo)
 
     # Most extension bindings include this attribute.

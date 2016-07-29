@@ -48,4 +48,3 @@ for k, v in globals().items():
     if k.startswith('NS_'):
         mixbox.namespaces.register_namespace(v)
         STIX_NAMESPACES.add_namespace(v)
-

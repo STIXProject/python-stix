@@ -119,5 +119,5 @@ class Reports(stix.EntityList):
 
 
 # Namespace flattening
-from stix_package import STIXPackage  # noqa
-from stix_header import STIXHeader  # noqa
+from .stix_package import STIXPackage  # noqa
+from .stix_header import STIXHeader  # noqa

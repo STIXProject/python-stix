@@ -2,7 +2,8 @@
 # See LICENSE.txt for complete terms.
 
 import unittest
-import StringIO
+
+from mixbox.vendor.six import StringIO
 
 from stix.core import STIXPackage
 from cybox.common import StructuredText
@@ -433,7 +434,7 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
         assets.add_Affected_Asset(asset)
         incident.Affected_Assets = assets
 
-        s = StringIO.StringIO()
+        s = StringIO()
 
         incident.export(s.write, 0, {'http://stix.mitre.org/Incident-1': 'incident'})
         xml = s.getvalue()

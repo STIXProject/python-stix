@@ -2,11 +2,11 @@
 # See LICENSE.txt for complete terms.
 
 # stdlib
-import StringIO
 import unittest
 
 # external
 import lxml.etree
+from mixbox.vendor.six import StringIO
 
 # internal
 import mixbox.namespaces
@@ -69,7 +69,7 @@ class NamespaceInfoTests(unittest.TestCase):
             </stix:STIX_Package>"""
         )
 
-        sio = StringIO.StringIO(xml)
+        sio = StringIO(xml)
         p = STIXPackage.from_xml(sio)
 
         # Exporting should raise an error.
@@ -103,7 +103,7 @@ class NamespaceInfoTests(unittest.TestCase):
                     timestamp="2015-04-09T14:22:25.620831+00:00"/>"""
         )
 
-        sio = StringIO.StringIO(xml)
+        sio = StringIO(xml)
         p = STIXPackage.from_xml(sio)
 
         serialized = p.to_xml()

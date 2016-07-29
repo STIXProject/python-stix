@@ -88,7 +88,7 @@ class OpenIOC2010TestMechanismType(indicator_binding.TestMechanismType):
             eol_ = ''
         if self.ioc is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite(etree_.tostring(self.ioc, pretty_print=pretty_print))
+            lwrite(etree_.tostring(self.ioc, pretty_print=pretty_print).decode())
             #self.ioc.export(lwrite, level, nsmap, namespace_, name_='ioc', pretty_print=pretty_print)
     def build(self, node):
         self.__sourcenode__ = node
@@ -112,7 +112,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 """
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 def get_root_tag(node):
@@ -158,7 +158,7 @@ def parseEtree(inFileName):
     return rootObj, rootElement
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

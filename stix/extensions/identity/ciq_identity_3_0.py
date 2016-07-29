@@ -8,6 +8,8 @@ import stix.utils as utils
 import stix.common as common
 import stix.bindings.extensions.identity.ciq_identity_3_0 as ciq_identity_binding
 
+from mixbox.vendor.six import string_types
+
 
 XML_NS_XPIL     = "urn:oasis:names:tc:ciq:xpil:3"
 XML_NS_XNL      = "urn:oasis:names:tc:ciq:xnl:3"
@@ -49,8 +51,8 @@ class CIQIdentity3_0Instance(common.Identity):
             self.add_role(role)
 
     def add_role(self, role):
-        if not isinstance(role, basestring):
-            raise ValueError('role is not instance of basestring')
+        if not isinstance(role, string_types):
+            raise ValueError('role is not instance of string_types')
 
         self.roles.append(role)
 
@@ -398,6 +400,7 @@ class STIXCIQIdentity3_0(stix.Entity):
             return_obj = cls()
 
         return_obj.party_name = PartyName.from_dict(dict_repr.get('party_name'))
+        return_obj.organisation_info = OrganisationInfo.from_dict(dict_repr.get('organisation_info'))
         return_obj.languages = [Language.from_dict(x) for x in dict_repr.get('languages', [])]
         return_obj.addresses = [Address.from_dict(x) for x in dict_repr.get('addresses', [])]
         return_obj.electronic_address_identifiers = [ElectronicAddressIdentifier.from_dict(x) for x in dict_repr.get('electronic_address_identifiers', [])]
@@ -412,6 +415,8 @@ class STIXCIQIdentity3_0(stix.Entity):
 
         if self.party_name:
             d['party_name'] = self.party_name.to_dict()
+        if self.organisation_info:
+            d['organisation_info'] = self.organisation_info.to_dict()
         if self.languages:
             d['languages'] = [x.to_dict() for x in self.languages]
         if self.addresses:
@@ -797,23 +802,23 @@ class PartyName(stix.Entity):
                 self.add_organisation_name(value)
 
     def add_name_line(self, value):
-        if isinstance(value, basestring):
+        if isinstance(value, string_types):
             self.name_lines.append(NameLine(value))
         elif isinstance(value, NameLine):
             self.name_lines.append(value)
         else:
-            raise ValueError('value must be a basestring or NameLine instance')
+            raise ValueError('value must be a string_types or NameLine instance')
 
     def add_person_name(self, value):
-        if isinstance(value, basestring):
+        if isinstance(value, string_types):
             self.person_names.append(PersonName(name_elements=[value]))
         elif isinstance(value, PersonName):
             self.person_names.append(value) 
         else:
-            raise ValueError('value must be instance of PersonName or basestring')
+            raise ValueError('value must be instance of PersonName or string_types')
 
     def add_organisation_name(self, value):
-        if isinstance(value, basestring):
+        if isinstance(value, string_types):
             self.organisation_names.append(OrganisationName(name_elements=[value]))  
         elif isinstance(value, OrganisationName):
             self.organisation_names.append(value)
@@ -924,8 +929,8 @@ class NameLine(stix.Entity):
 
     @value.setter
     def value(self, value):
-        if value and not isinstance(value, basestring):
-            raise ValueError('value must be instance of basestring')
+        if value and not isinstance(value, string_types):
+            raise ValueError('value must be instance of string_types')
 
         self._value = value
 
@@ -991,7 +996,7 @@ class PersonName(stix.Entity):
                 self.add_name_element(name_element)
 
     def add_name_element(self, value):
-        if isinstance(value, basestring):
+        if isinstance(value, string_types):
             self.name_elements.append(PersonNameElement(value=value))
         elif isinstance(value, PersonNameElement):
             self.name_elements.append(value)
@@ -1076,7 +1081,7 @@ class OrganisationName(stix.Entity):
             self.add_organisation_name_element(value)
 
     def add_organisation_name_element(self, value):
-        if isinstance(value, basestring):
+        if isinstance(value, string_types):
             self.name_elements.append(OrganisationNameElement(value=value))
         elif isinstance(value, OrganisationNameElement):
             self.name_elements.append(value)

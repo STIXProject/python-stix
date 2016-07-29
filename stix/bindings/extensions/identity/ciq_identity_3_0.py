@@ -100,7 +100,7 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
             eol_ = ''
         if self.Specification is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite(etree_.tostring(self.Specification, pretty_print=pretty_print))
+            lwrite(etree_.tostring(self.Specification, pretty_print=pretty_print).decode())
             #self.Specification.export(lwrite, level, nsmap, namespace_, name_='Specification', pretty_print=pretty_print)
         for Role_ in self.Role:
             showIndent(lwrite, level, pretty_print)
@@ -131,7 +131,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 """
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 def get_root_tag(node):
@@ -177,7 +177,7 @@ def parseEtree(inFileName):
     return rootObj, rootElement
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

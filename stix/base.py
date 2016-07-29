@@ -5,7 +5,7 @@
 import json
 import collections
 import itertools
-import StringIO
+from sys import version_info
 
 # mixbox
 from mixbox import idgen
@@ -13,11 +13,11 @@ from mixbox import entities
 from mixbox import fields
 from mixbox import binding_utils
 from mixbox.cache import Cached
-import mixbox.namespaces
+from mixbox import namespaces
+from mixbox.vendor.six import StringIO, iteritems, itervalues, text_type, binary_type
 
 # internal
 from . import utils
-
 
 def _override(*args, **kwargs):
     raise NotImplementedError()
@@ -50,7 +50,7 @@ class Entity(entities.Entity):
                 and the field value is the value.
 
         """
-        name, item = next(kwargs.iteritems())
+        name, item = next(iteritems(kwargs))
         attr = utils.private_name(name)  # 'title' => '_title'
 
         if item is None:
@@ -85,7 +85,7 @@ class Entity(entities.Entity):
         from stix.common import VocabString
 
         klass = klass or VocabString
-        item  = next(kwargs.itervalues())
+        item  = next(itervalues(kwargs))
 
         if isinstance(item, VocabString):
             self._set_var(VocabString, **kwargs)
@@ -98,8 +98,8 @@ class Entity(entities.Entity):
         """Serializes a :class:`Entity` instance to an XML string.
 
         The default character encoding is ``utf-8`` and can be set via the
-        `encoding` parameter. If `encoding` is ``None``, a unicode string
-        is returned.
+        `encoding` parameter. If `encoding` is ``None``, a string (unicode in
+        Python 2, str in Python 3) is returned.
 
         Args:
             auto_namespace: Automatically discover and export XML namespaces
@@ -120,7 +120,8 @@ class Entity(entities.Entity):
                 only be included if `auto_namespace` is ``False``.
             pretty: Pretty-print the XML.
             encoding: The output character encoding. Default is ``utf-8``. If
-                `encoding` is set to ``None``, a unicode string is returned.
+                `encoding` is set to ``None``, a string (unicode in Python 2,
+                str in Python 3) is returned.
 
         Returns:
             An XML string for this
@@ -147,8 +148,8 @@ class Entity(entities.Entity):
         else:
             obj_ns_dict = dict(
                 itertools.chain(
-                    ns_info.binding_namespaces.iteritems(),
-                    mixbox.namespaces.get_full_ns_map().iteritems()
+                    iteritems(ns_info.binding_namespaces),
+                    iteritems(namespaces.get_full_ns_map())
                 )
             )
 
@@ -162,7 +163,7 @@ class Entity(entities.Entity):
                 namespace_def += (delim + schemaloc)
 
         with binding_utils.save_encoding(encoding):
-            sio = StringIO.StringIO()
+            sio = StringIO()
             obj.export(
                 sio.write,                    # output buffer
                 0,                            # output level
@@ -172,7 +173,7 @@ class Entity(entities.Entity):
             )
 
         # Ensure that the StringIO buffer is unicode
-        s = unicode(sio.getvalue())
+        s = text_type(sio.getvalue())
 
         if encoding:
             return s.encode(encoding)

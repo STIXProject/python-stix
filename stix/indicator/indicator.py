@@ -57,7 +57,7 @@ class SuggestedCOAs(GenericRelationshipList):
         >>> coa = CourseOfAction()
         >>> indicator = Indicator()
         >>> indicator.suggested_coas.append(coa)
-        >>> print type(indicator.suggested_coas[0])
+        >>> print(type(indicator.suggested_coas[0]))
         <class 'stix.common.related.RelatedCOA'>
 
         Iterate over the ``suggested_coas`` property of an :class:`Indicator`
@@ -65,7 +65,7 @@ class SuggestedCOAs(GenericRelationshipList):
         :class:`stix.coa.CourseOfAction` instance.
 
         >>> for related_coa in indicator.suggested_coas:
-        >>>     print related_coa.item.id_
+        >>>     print(related_coa.item.id_)
 
     Args:
         suggested_coas(list): A list of :class:`stix.coa.CourseOfAction`
@@ -120,7 +120,7 @@ class RelatedIndicators(GenericRelationshipList):
         >>> related = Indicator()
         >>> parent_indicator = Indicator()
         >>> parent_indicator.related_indicators.append(related)
-        >>> print type(indicator.related_indicators[0])
+        >>> print(type(indicator.related_indicators[0]))
         <class 'stix.common.related.RelatedIndicator'>
 
         Iterate over the ``related_indicators`` property of an
@@ -128,7 +128,7 @@ class RelatedIndicators(GenericRelationshipList):
         :class:`Indicator`` instance:
 
         >>> for related in indicator.related_indicators:
-        >>>     print related.item.id_
+        >>>     print(related.item.id_)
 
     Args:
         related_indicators (list, optional): A list of :class:`Indicator` or
@@ -851,7 +851,7 @@ class IndicatorTypes(stix.TypedList):
         >>> itypes = IndicatorTypes()
         >>> type_ = IndicatorType(IndicatorType.TERM_IP_WATCHLIST)
         >>> itypes.append(type_)
-        >>> print len(itypes)
+        >>> print(len(itypes))
         1
 
         Add a string value:
@@ -861,7 +861,7 @@ class IndicatorTypes(stix.TypedList):
         >>> type(IndicatorType.TERM_IP_WATCHLIST)
         <type 'str'>
         >>> itypes.append(IndicatorType.TERM_IP_WATCHLIST)
-        >>> print len(itypes)
+        >>> print(len(itypes))
         1
 
     Args:

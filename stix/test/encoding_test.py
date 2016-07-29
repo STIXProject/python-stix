@@ -5,8 +5,7 @@
 """Tests for various encoding issues throughout the library"""
 
 import unittest
-from StringIO import StringIO
-
+from mixbox.vendor.six import BytesIO, text_type
 from mixbox import binding_utils
 
 from stix.core import STIXHeader, STIXPackage
@@ -143,13 +142,13 @@ class EncodingTests(unittest.TestCase):
         s = STIXHeader()
         s.title = UNICODE_STR
         xml = s.to_xml(encoding=None)
-        self.assertTrue(isinstance(xml, unicode))
+        self.assertTrue(isinstance(xml, text_type))
         self.assertTrue(UNICODE_STR in xml)
 
     @silence_warnings
     def test_from_xml_utf16_encoded(self):
         utf16_xml = XML.encode('utf-16')
-        sio = StringIO(utf16_xml)
+        sio = BytesIO(utf16_xml)
         sp = STIXPackage.from_xml(sio, encoding='utf-16')
         header = sp.stix_header
         self.assertEqual(header.title, UNICODE_STR)
@@ -157,7 +156,7 @@ class EncodingTests(unittest.TestCase):
     @silence_warnings
     def test_from_xml_default_encoded(self):
         utf8_xml = XML.encode('utf-8')
-        sio = StringIO(utf8_xml)
+        sio = BytesIO(utf8_xml)
         sp = STIXPackage.from_xml(sio)
         header = sp.stix_header
         self.assertEqual(header.title, UNICODE_STR)
@@ -173,7 +172,7 @@ class EncodingTests(unittest.TestCase):
         xml16 = sp.to_xml(encoding='utf-16')
 
         # deserialize as utf-16
-        sp2 = STIXPackage.from_xml(StringIO(xml16), encoding='utf-16')
+        sp2 = STIXPackage.from_xml(BytesIO(xml16), encoding='utf-16')
         sh2 = sp2.stix_header
 
         # check that the titles align

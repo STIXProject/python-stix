@@ -845,7 +845,7 @@ def get_root_tag(node):
 
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
