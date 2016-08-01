@@ -722,6 +722,22 @@ class Indicator(stix.BaseCoreComponent):
         observable = Observable(object_)
         self.add_observable(observable)
 
+    def _finalize_obj(self, entity_obj):
+        """Omits the `negate` field if it is not equal to True.
+        """
+        if self.negate:
+            entity_obj.negate = True
+        elif hasattr(entity_obj, 'negate'):
+           entity_obj.negate = None
+
+    def _finalize_dict(self, entity_dict):
+        """Omits the `negate` field if it is not equal to True.
+        """
+        if self.negate:
+            entity_dict['negate'] = True
+        elif 'negate' in entity_dict:
+           del entity_dict['negate']
+
 
 def check_operator(composite_indicator_exp, value):
     allowed = CompositeIndicatorExpression.OPERATORS

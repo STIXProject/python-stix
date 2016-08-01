@@ -37,6 +37,9 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
         d2 = self.klass.from_dict(d).to_dict()
         self.assertTrue('negate' not in d2)
 
+        o2 = self.klass.from_dict(d).to_obj()
+        self.assertTrue(o2.negate is None)
+        
 
     def test_indicator_types(self):
         d = {
