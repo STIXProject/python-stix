@@ -27,8 +27,6 @@ from .test_mechanism import TestMechanisms
 from .sightings import Sightings
 from .valid_time import ValidTime
 
-from operator import isSequenceType
-
 class SuggestedCOAs(GenericRelationshipList):
     """The ``SuggestedCOAs`` class provides functionality for adding
     :class:`stix.common.related.RelatedCOA` instances to an :class:`Indicator`

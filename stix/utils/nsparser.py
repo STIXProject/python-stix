@@ -44,7 +44,7 @@ NS_YARATM_OBJECT = Namespace("http://stix.mitre.org/extensions/TestMechanism#YAR
 STIX_NAMESPACES = mixbox.namespaces.NamespaceSet()
 
 # Magic to automatically register all Namespaces defined in this module.
-for k, v in globals().items():
+for k, v in list(globals().items()):
     if k.startswith('NS_'):
         mixbox.namespaces.register_namespace(v)
         STIX_NAMESPACES.add_namespace(v)
