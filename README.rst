@@ -24,16 +24,20 @@ A python library for parsing, manipulating, and generating STIX v1.2 content.
 Installation
 ------------
 
-The python-stix library can be installed via the distutils setup.py script
-included at the root directory:
+The python-stix library is hosted on `PyPI
+<https://pypi.python.org/pypi/stix/>`_ and the most recent stable version can be 
+installed with `pip <https://pypi.python.org/pypi/pip>`_:
 
-    $ python setup.py install
-
-The python-stix library is also hosted on `PyPI
-<https://pypi.python.org/pypi/stix/>`_ and can be installed with `pip
-<https://pypi.python.org/pypi/pip>`_:
+::
 
     $ pip install stix
+
+The python-stix library can also be installed via the distutils setup.py script
+included at the root directory:
+
+::
+
+    $ python setup.py install
 
 Dependencies
 ------------
@@ -52,6 +56,18 @@ Installation on Ubuntu 14.04 (and older)
 
     $ sudo apt-get install python-dev python-pip libxml2-dev libxslt-dev zlib1g-dev
     $ sudo pip install stix
+
+Installation on Windows
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Download the Lxml wheel for your version of Python from
+http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml, then install it via "pip install 
+<filename>.whl". For example, to install it on 64-bit Windows running Python 2.7:
+
+::
+
+    > pip install lxml-3.6.1-cp27-cp27m-win_amd64.whl
+    > pip install stix
 
 Versioning
 ----------
