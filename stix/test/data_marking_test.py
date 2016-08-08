@@ -12,7 +12,7 @@ class MarkingSpecificationTests(EntityTestCase, unittest.TestCase):
     klass = dm.MarkingSpecification
     _full_dict = {
         'id': "foo",
-        'idref': "foo_ref",
+        # 'idref': "foo_ref",  # Cannot have both @id and @idref set at the same time.
         'version': "1234",
         'controlled_structure': "some xpath",
         'marking_structures': [
@@ -26,21 +26,13 @@ class MarkingSpecificationTests(EntityTestCase, unittest.TestCase):
 
 class MarkingStructureTests(unittest.TestCase):
 
-    def test_xsi_type_required(self):
-        d = {
-            'marking_model_name': 'TLP',
-        }
-
-        # If there's not an xsi:type in the dict, this will raise an error.
-        self.assertRaises(ValueError, dm.MarkingStructure.from_dict, d)
-
-    def test_xsi_type_required(self):
+    def test_bad_xsi_type(self):
         d = {
             'marking_model_name': 'TLP',
             'xsi:type': "UNKNOWN_XSI_TYPE",
         }
 
-        self.assertRaises(ValueError, dm.MarkingStructure.from_dict, d)
+        self.assertRaises(ValueError, dm.MarkingStructureFactory.from_dict, d)
 
 
 class MarkingTests(EntityTestCase, unittest.TestCase):

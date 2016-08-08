@@ -9,6 +9,8 @@ vocabulary implementations.
 # builtin
 from StringIO import StringIO
 
+import mixbox.namespaces
+
 # python-stix modules
 from stix.core import STIXPackage
 from stix.common import vocabs
@@ -37,6 +39,11 @@ class CustomVocab(vocabs.VocabString):
     _namespace = 'http://customvocabs.com/vocabs-1'
     _XSI_TYPE = 'customVocabs:CustomVocab-1.0'
     _ALLOWED_VALUES = ('FOO', 'BAR')
+
+# Register the namespace of the CustomVocab
+mixbox.namespaces.register_namespace(
+    mixbox.namespaces.Namespace(
+        'http://customvocabs.com/vocabs-1', 'customVocabs'))
 
 # Register our Custom Vocabulary class so parsing and serialization works
 vocabs.add_vocab(CustomVocab)

@@ -125,6 +125,7 @@ class AttackPatternType(GeneratedsSuper):
         for Short_Description in self.Short_Description:
             Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -278,6 +279,7 @@ class MalwareInstanceType(GeneratedsSuper):
         for Short_Description in self.Short_Description:
             Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -407,6 +409,7 @@ class ExploitType(GeneratedsSuper):
         for Short_Description in self.Short_Description:
             Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -540,6 +543,7 @@ class InfrastructureType(GeneratedsSuper):
         if self.Observable_Characterization is not None:
             self.Observable_Characterization.export(lwrite, level, "%s:" % (nsmap[namespace_]), name_='Observable_Characterization', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -629,6 +633,7 @@ class ToolsType(GeneratedsSuper):
         for Tool_ in self.Tool:
             Tool_.export(lwrite, level, nsmap, namespace_, name_='Tool', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -694,6 +699,7 @@ class ExploitsType(GeneratedsSuper):
         for Exploit_ in self.Exploit:
             Exploit_.export(lwrite, level, nsmap, namespace_, name_='Exploit', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -759,6 +765,7 @@ class MalwareType(GeneratedsSuper):
         for Malware_Instance_ in self.Malware_Instance:
             Malware_Instance_.export(lwrite, level, nsmap, namespace_, name_='Malware_Instance', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -825,6 +832,7 @@ class AttackPatternsType(GeneratedsSuper):
         for Attack_Pattern_ in self.Attack_Pattern:
             Attack_Pattern_.export(lwrite, level, nsmap, namespace_, name_='Attack_Pattern', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -898,6 +906,7 @@ class ResourceType(GeneratedsSuper):
         if self.Personas is not None:
             self.Personas.export(lwrite, level, nsmap, namespace_, name_='Personas', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -971,6 +980,7 @@ class PersonasType(GeneratedsSuper):
         for Persona_ in self.Persona:
             Persona_.export(lwrite, level, nsmap, namespace_, name_='Persona', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1044,6 +1054,7 @@ class BehaviorType(GeneratedsSuper):
         if self.Exploits is not None:
             self.Exploits.export(lwrite, level, nsmap, namespace_, name_='Exploits', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1141,6 +1152,7 @@ class VictimTargetingType(GeneratedsSuper):
             self.Targeted_Technical_Details.export(lwrite, level, "%s:" % (nsmap[namespace_]), name_='Targeted_Technical_Details', pretty_print=pretty_print)
 
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1222,6 +1234,7 @@ class RelatedTTPsType(stix_common_binding.GenericRelationshipListType):
         for Related_TTP_ in self.Related_TTP:
             Related_TTP_.export(lwrite, level, nsmap, namespace_, name_='Related_TTP', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1248,6 +1261,7 @@ class TTPType(stix_common_binding.TTPBaseType):
     xmlns          = "http://stix.mitre.org/TTP-1"
     xmlns_prefix   = "ttp"
     xml_type       = "TTPType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Description=None, Short_Description=None, Intended_Effect=None, Behavior=None, Resources=None, Victim_Targeting=None, Exploit_Targets=None, Related_TTPs=None, Kill_Chain_Phases=None, Information_Source=None, Kill_Chains=None, Handling=None, Related_Packages=None):
         super(TTPType, self).__init__(idref=idref, id=id, timestamp=timestamp)
@@ -1403,6 +1417,7 @@ class TTPType(stix_common_binding.TTPBaseType):
         if self.Related_Packages is not None:
             self.Related_Packages.export(lwrite, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1529,6 +1544,7 @@ class ExploitTargetsType(stix_common_binding.GenericRelationshipListType):
         for Exploit_Target_ in self.Exploit_Target:
             Exploit_Target_.export(lwrite, level, nsmap, namespace_, name_='Exploit_Target', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

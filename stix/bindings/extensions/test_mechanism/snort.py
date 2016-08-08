@@ -33,6 +33,7 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
     xmlns          = XML_NS
     xmlns_prefix   = "snortTM"
     xml_type       = "SnortTestMechanismType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, Product_Name=None, Version=None, Rule=None, Event_Filter=None, Rate_Filter=None, Event_Suppression=None):
         super(SnortTestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
@@ -140,6 +141,7 @@ class SnortTestMechanismType(indicator_binding.TestMechanismType):
         for Event_Suppression_ in self.Event_Suppression:
             Event_Suppression_.export(lwrite, level, nsmap, namespace_, name_='Event_Suppression', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

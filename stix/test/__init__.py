@@ -9,9 +9,10 @@ import warnings
 
 import cybox.utils
 from mixbox.binding_utils import ExternalEncoding
+from mixbox.entities import NamespaceCollector
 from mixbox.vendor.six import iteritems, text_type
 
-from stix.utils import NamespaceInfo, silence_warnings
+from stix.utils import silence_warnings
 
 
 @contextlib.contextmanager
@@ -49,6 +50,8 @@ def round_trip_dict(cls, dict_):
     obj = cls.object_from_dict(dict_)
     dict2 = cls.dict_from_object(obj)
 
+    api_obj = cls.from_dict(dict_)
+    dict2 = cls.to_dict(api_obj)
     return dict2
 
 def round_trip(o, output=False, list_=False):
@@ -98,7 +101,7 @@ def round_trip(o, output=False, list_=False):
         o2 = klass.from_dict(d2)
 
     # 5. Entity -> Bindings Object
-    ns_info = NamespaceInfo()
+    ns_info = NamespaceCollector()
     xobj = o2.to_obj(ns_info=ns_info)
 
     try:
@@ -111,7 +114,7 @@ def round_trip(o, output=False, list_=False):
     except KeyError as ex:
         print(str(ex))
         ns_info.finalize()
-        print(ns_info.finalized_namespaces)
+        print(ns_info.binding_namespaces)
         raise ex
 
     if output:
@@ -139,7 +142,7 @@ class EntityTestCase(object):
     @silence_warnings
     def test_round_trip_full_dict(self):
         # Don't run this test on the base class
-        if type(self) == type(EntityTestCase):
+        if type(self) is EntityTestCase:
             return
 
         dict2 = round_trip_dict(self.klass, self._full_dict)
@@ -158,7 +161,7 @@ class EntityTestCase(object):
     @silence_warnings
     def test_round_trip_full(self):
         # Don't run this test on the base class
-        if type(self) == type(EntityTestCase):
+        if type(self) is EntityTestCase:
             return
 
         ent = self.klass.from_dict(self._full_dict)
@@ -181,7 +184,7 @@ class TypedListTestCase(object):
 
     @silence_warnings
     def test_round_trip_rt(self):
-        if type(self) == type(TypedListTestCase):
+        if type(self) is TypedListTestCase:
             return
 
         obj = self.klass.from_dict(self._full_dict)

@@ -15,9 +15,9 @@ import stix.threat_actor as ta
 
 
 class TypesTests(TypedListTestCase, unittest.TestCase):
-    klass = ta._Types
+    klass = ta.ThreatActor
 
-    _full_dict = [
+    _partial_dict = [
         {
             'value': {
                 "value" : "Hacker",
@@ -26,57 +26,73 @@ class TypesTests(TypedListTestCase, unittest.TestCase):
         },
     ]
 
+    _full_dict = {
+          "types": _partial_dict
+    }
 
 class MotivationsTests(TypedListTestCase, unittest.TestCase):
-    klass = ta._Motivations
+    klass = ta.ThreatActor
 
-    _full_dict = [
-         {
+    _partial_dict = [{
              'value': {
                  "value" : "Ego",
                  "xsi:type" : "stixVocabs:MotivationVocab-1.1"
              }
-         },
-    ]
+         }]
+
+    _full_dict = {
+          "motivations": _partial_dict
+    }
 
 
 class SophisticationTests(TypedListTestCase, unittest.TestCase):
-    klass = ta._Sophistications
+    klass = ta.ThreatActor
 
-    _full_dict = [
+    _partial_dict = [
          {
-             'value': {
+          'value': {
                  "value" : "Novice",
                  "xsi:type" : "stixVocabs:ThreatActorSophisticationVocab-1.0"
-             }
-         },
+         }
+         }
     ]
 
-
+    _full_dict = {
+        "sophistications": _partial_dict
+    }
+    
 class IntendedEffectsTests(TypedListTestCase, unittest.TestCase):
-    klass = ta._IntendedEffects
+    klass = ta.ThreatActor
 
-    _full_dict = [
+    _partial_dict = [
         {
-            'value': {
+         'value': {
                 "value" : "Destruction",
                 "xsi:type" : "stixVocabs:IntendedEffectVocab-1.0"
-            }
+         }
         }
     ]
+    
+    _full_dict = {
+        "intended_effects": _partial_dict
+    }
 
 
 class PlanningAndOperationalSupportTests(TypedListTestCase, unittest.TestCase):
-    klass = ta._PlanningAndOperationalSupports
+    klass = ta.ThreatActor
 
-    _full_dict = [
+    _partial_dict = [
         {
-            'value': {
-                "value" : "Data Exploitation",
-                "xsi:type" : 'stixVocabs:PlanningAndOperationalSupportVocab-1.0.1'
-            }
-        },
+         'value': {
+            "value" : "Data Exploitation",
+            "xsi:type" : 'stixVocabs:PlanningAndOperationalSupportVocab-1.0.1'
+         }
+        }
     ]
+
+    _full_dict = {
+        "planning_and_operational_supports": _partial_dict
+    }
 
 
 class ObservedTTPsTests(EntityTestCase, unittest.TestCase):
@@ -122,11 +138,11 @@ class ThreatActorTests(EntityTestCase, unittest.TestCase):
         'description': "This is a long description about a threat actor.",
         'short_description': "A bad guy",
         'identity': identity_test.IdentityTests._full_dict,
-        'types': TypesTests._full_dict,
-        'motivations': MotivationsTests._full_dict,
-        'sophistications': SophisticationTests._full_dict,
-        'intended_effects': IntendedEffectsTests._full_dict,
-        'planning_and_operational_supports': PlanningAndOperationalSupportTests._full_dict,
+        'types': TypesTests._partial_dict,
+        'motivations': MotivationsTests._partial_dict,
+        'sophistications': SophisticationTests._partial_dict,
+        'intended_effects': IntendedEffectsTests._partial_dict,
+        'planning_and_operational_supports': PlanningAndOperationalSupportTests._partial_dict,
         'observed_ttps': ObservedTTPsTests._full_dict,
         'associated_campaigns': AssocaitedCampaignsTests._full_dict,
         'associated_actors': AssociatedActorsTests._full_dict,

@@ -77,6 +77,7 @@ class ObservedTTPsType(stix_common_binding.GenericRelationshipListType):
         for Observed_TTP_ in self.Observed_TTP:
             Observed_TTP_.export(lwrite, level, nsmap, namespace_, name_='Observed_TTP', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -146,6 +147,7 @@ class AssociatedCampaignsType(stix_common_binding.GenericRelationshipListType):
         for Associated_Campaign_ in self.Associated_Campaign:
             Associated_Campaign_.export(lwrite, level, nsmap, namespace_, name_='Associated_Campaign', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -215,6 +217,7 @@ class AssociatedActorsType(stix_common_binding.GenericRelationshipListType):
         for Associated_Actor_ in self.Associated_Actor:
             Associated_Actor_.export(lwrite, level, nsmap, namespace_, name_='Associated_Actor', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -240,6 +243,7 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
     xmlns          = "http://stix.mitre.org/ThreatActor-1"
     xmlns_prefix   = "ta"
     xml_type       = "ThreatActorType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Description=None, Short_Description=None, Identity=None, Type=None, Motivation=None, Sophistication=None, Intended_Effect=None, Planning_And_Operational_Support=None, Observed_TTPs=None, Associated_Campaigns=None, Associated_Actors=None, Handling=None, Confidence=None, Information_Source=None, Related_Packages=None):
         super(ThreatActorType, self).__init__(idref=idref, id=id, timestamp=timestamp)
@@ -427,6 +431,7 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
         if self.Related_Packages is not None:
             self.Related_Packages.export(lwrite, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

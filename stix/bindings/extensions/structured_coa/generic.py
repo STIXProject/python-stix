@@ -34,6 +34,7 @@ class GenericStructuredCOAType(StructuredCOAType):
     xmlns          = XML_NS
     xmlns_prefix   = "genericStructuredCOA"
     xml_type       = "GenericStructuredCOAType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, reference_location=None, Description=None, Type=None, Specification=None):
         super(GenericStructuredCOAType, self).__init__(idref=idref, id=id)
@@ -112,6 +113,7 @@ class GenericStructuredCOAType(StructuredCOAType):
         if self.Specification is not None:
             self.Specification.export(lwrite, level, nsmap, namespace_, name_='Specification', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

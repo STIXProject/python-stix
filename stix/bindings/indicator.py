@@ -77,6 +77,7 @@ class ValidTimeType(GeneratedsSuper):
         if self.End_Time is not None:
             self.End_Time.export(lwrite, level, nsmap, namespace_, name_='End_Time', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -155,6 +156,7 @@ class CompositeIndicatorExpressionType(GeneratedsSuper):
         for Indicator_ in self.Indicator:
             Indicator_.export(lwrite, level, nsmap, namespace_, name_='Indicator', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -290,6 +292,7 @@ class TestMechanismType(GeneratedsSuper):
         if self.Producer is not None:
             self.Producer.export(lwrite, level, nsmap, namespace_, name_='Producer', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -378,6 +381,7 @@ class SightingsType(GeneratedsSuper):
         for Sighting_ in self.Sighting:
             Sighting_.export(lwrite, level, nsmap, namespace_, name_='Sighting', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -494,6 +498,7 @@ class SightingType(GeneratedsSuper):
         if self.Related_Observables is not None:
             self.Related_Observables.export(lwrite, level, nsmap, namespace_, name_='Related_Observables', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -590,6 +595,7 @@ class RelatedObservablesType(stix_common_binding.GenericRelationshipListType):
         for Related_Observable_ in self.Related_Observable:
             Related_Observable_.export(lwrite, level, nsmap, namespace_, name_='Related_Observable', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -656,6 +662,7 @@ class TestMechanismsType(GeneratedsSuper):
         for Test_Mechanism_ in self.get_Test_Mechanism():
             Test_Mechanism_.export(lwrite, level, nsmap, namespace_, name_='Test_Mechanism', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -725,6 +732,7 @@ class SuggestedCOAsType(stix_common_binding.GenericRelationshipListType):
         for Suggested_COA_ in self.Suggested_COA:
             Suggested_COA_.export(lwrite, level, nsmap, namespace_, name_='Suggested_COA', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -794,6 +802,7 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
         for Related_Indicator_ in self.Related_Indicator:
             Related_Indicator_.export(lwrite, level, nsmap, namespace_, name_='Related_Indicator', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -827,6 +836,7 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
     xmlns          = XML_NS
     xmlns_prefix   = "indicator"
     xml_type       = "IndicatorType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, timestamp=None, negate=False, version=None, Title=None, Type=None, Alternative_ID=None, Description=None, Short_Description=None, Valid_Time_Position=None, Observable=None, Composite_Indicator_Expression=None, Indicated_TTP=None, Kill_Chain_Phases=None, Test_Mechanisms=None, Likely_Impact=None, Suggested_COAs=None, Handling=None, Confidence=None, Sightings=None, Related_Indicators=None, Related_Campaigns=None, Related_Packages=None, Producer=None):
         super(IndicatorType, self).__init__(idref=idref, id=id, timestamp=timestamp)
@@ -1041,6 +1051,7 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
         if self.Producer is not None:
             self.Producer.export(lwrite, level, nsmap, namespace_, name_='Producer', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1198,6 +1209,7 @@ class RelatedCampaignReferencesType(stix_common_binding.GenericRelationshipListT
         for Related_Campaign_ in self.Related_Campaign:
             Related_Campaign_.export(lwrite, level, nsmap, namespace_, name_='Related_Campaign', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

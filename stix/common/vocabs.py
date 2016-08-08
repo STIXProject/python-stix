@@ -1,12 +1,82 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+# stdlib
+from functools import partial
+
+# mixbox
+from mixbox import fields
+from mixbox import entities
+from mixbox import typedlist
+
+# stix
 import stix
 import stix.bindings.stix_common as stix_common_binding
 
 
-# TODO: handle normalization
-# from cybox.utils import normalize_to_xml, denormalize_from_xml
+def validate_value(instance, value):
+    allowed = instance._ALLOWED_VALUES
+
+    if not value:
+        return
+    elif not allowed:
+        return
+    elif value in allowed:
+        return
+    else:
+        error = "Value must be one of {allowed}. Received '{value}'"
+        error = error.format(**locals())
+        raise ValueError(error)
+
+class VocabList(typedlist.TypedList):
+    """VocabString fields can be any type of VocabString, though there is often
+    a preferred/default VocabString type.
+
+    The TypedList will attempt to make sure that every input item is an instance
+    of the default VocabString and throw an error if it isn't. This sublcass
+    overrides that behavior and allows any instance of VocabString to be
+    inserted.
+    """
+
+    def _is_valid(self, value):
+        return isinstance(value, VocabString)
+
+
+class VocabField(fields.TypedField):
+    """TypedField subclass for VocabString fields."""
+
+    def __init__(self, *args, **kwargs):
+        """Intercepts the __init__() call to TypedField.
+
+        Set the type that will be used in from_dict and from_obj calls to
+        :class:`VocabString`.
+
+        Set the type that will be used in ``__set__`` for casting as the
+        original ``type_`` argument, or :class:`VocabString` if no `type_`
+        argument was provided.
+
+        """
+        super(VocabField, self).__init__(*args, **kwargs)
+        self.factory = VocabFactory  # force this factory
+
+        if self._unresolved_type is None:
+            self.type_ = VocabString
+
+        self._listfunc = partial(VocabList, type=self._unresolved_type)
+
+    def check_type(self, value):
+        return isinstance(value, VocabString)
+
+
+class VocabFactory(entities.EntityFactory):
+    _convert_strings = True
+    
+    @classmethod
+    def entity_class(cls, key):
+        try:
+            return stix.lookup_extension(key, default=VocabString)
+        except ValueError:
+            return VocabString
 
 
 class VocabString(stix.Entity):
@@ -18,30 +88,15 @@ class VocabString(stix.Entity):
     _XSI_TYPE = None
     _ALLOWED_VALUES = None
 
+    value = fields.TypedField("valueOf_", key_name="value", preset_hook=validate_value)
+    vocab_name = fields.TypedField("vocab_name")
+    vocab_reference = fields.TypedField("vocab_reference")
+    xsi_type = fields.TypedField("xsi_type", key_name="xsi:type")
+
     def __init__(self, value=None):
         super(VocabString, self).__init__()
         self.value = value
         self.xsi_type = self._XSI_TYPE
-
-        self.vocab_name = None
-        self.vocab_reference = None
-
-    @property
-    def value(self):
-        return self._value
-    
-    @value.setter
-    def value(self, v):
-        allowed = self._ALLOWED_VALUES
-
-        if not v:
-            self._value = None
-        elif allowed and (v not in allowed):
-            error = "Value must be one of {0}. Received '{1}'"
-            error = error.format(allowed, v)
-            raise ValueError(error)
-        else:
-            self._value = v
 
     def __str__(self):
         return str(self.value)
@@ -61,93 +116,23 @@ class VocabString(stix.Entity):
             self.vocab_reference is None
         )
 
-    @staticmethod
-    def lookup_class(xsi_type):
-        try:
-            return stix.lookup_extension(xsi_type, default=VocabString)
-        except ValueError:
-            return VocabString
-
-    def to_obj(self, return_obj=None, ns_info=None):
-        super(VocabString, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        # TODO: handle normalization
-        # vocab_obj.valueOf_ = normalize_to_xml(self.value)
-        return_obj.valueOf_ = self.value
-        return_obj.xsi_type = self.xsi_type
-
-        if self.vocab_name is not None:
-            return_obj.vocab_name = self.vocab_name
-        if self.vocab_reference is not None:
-            return_obj.vocab_reference = self.vocab_reference
-
-        return return_obj
-
     def to_dict(self):
         if self.is_plain():
             return self.value
+        return super(VocabString, self).to_dict()
 
-        d = {}
-        if self.value is not None:
-            d['value'] = self.value
-        if self.xsi_type is not None:
-            d['xsi:type'] = self.xsi_type
-        if self.vocab_name is not None:
-            d['vocab_name'] = self.vocab_name
-        if self.vocab_reference is not None:
-            d['vocab_reference'] = self.vocab_reference
-
-        return d
 
     @classmethod
-    def from_obj(cls, vocab_obj, return_obj=None):
-        if not vocab_obj:
-            return None
-        
-        if not return_obj:
-            klass = cls.lookup_class(vocab_obj.xsi_type)
-            return klass.from_obj(vocab_obj, return_obj=klass())
-           
-        # xsi_type should be set automatically by the class's constructor.
-        
-        # TODO: handle denormalization
-        # vocab_str.value = denormalize_from_xml(vocab_obj.valueOf_)
-        return_obj.value = vocab_obj.valueOf_
-        return_obj.vocab_name = vocab_obj.vocab_name
-        return_obj.vocab_reference = vocab_obj.vocab_reference
-        return_obj.xsi_type = vocab_obj.xsi_type
-
-        return return_obj
-
-    @classmethod
-    def from_dict(cls, vocab_dict, return_obj=None):
-        if not vocab_dict:
-            return None
-
-        if not return_obj:
-            if isinstance(vocab_dict, dict):
-                get = vocab_dict.get
-                klass = cls.lookup_class(get('xsi:type'))
-                return klass.from_dict(vocab_dict, return_obj=klass())
-            else:
-                return_obj = cls()
-            
-        # xsi_type should be set automatically by the class's constructor.
-
-        # In case this is a "plain" string, just set it.
-        if not isinstance(vocab_dict, dict):
-            return_obj.value = vocab_dict
+    def from_dict(cls, cls_dict):
+        if not cls_dict:
+            vocab =  None
+        elif not isinstance(cls_dict, dict):
+            vocab = cls()
+            vocab.value = cls_dict
         else:
-            get = vocab_dict.get
-            return_obj.value = get('value')
-            return_obj.vocab_name = get('vocab_name')
-            return_obj.vocab_reference = get('vocab_reference')
-            return_obj.xsi_type = get('xsi:type')
+            vocab = super(VocabString, cls).from_dict(cls_dict)
 
-        return return_obj
+        return vocab
 
 
 def _get_terms(vocab_class):

@@ -33,6 +33,7 @@ class OVAL5_10TestMechanismType(indicator_binding.TestMechanismType):
     xmlns          = XML_NS
     xmlns_prefix   = "ovalTM"
     xml_type       = "OVAL5.10TestMechanismType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, oval_definitions=None, oval_variables=None):
         super(OVAL5_10TestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
@@ -98,6 +99,7 @@ class OVAL5_10TestMechanismType(indicator_binding.TestMechanismType):
             lwrite(etree_.tostring(self.oval_variables, pretty_print=pretty_print).decode())
             #self.oval_variables.export(lwrite, level, nsmap, namespace_, name_='oval_variables', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

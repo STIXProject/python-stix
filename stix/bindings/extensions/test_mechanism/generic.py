@@ -34,6 +34,8 @@ class GenericTestMechanismType(indicator_binding.TestMechanismType):
     xmlns          = XML_NS
     xmlns_prefix   = "genericTM"
     xml_type       = "GenericTestMechanismType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
+
 
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, reference_location=None, Description=None, Type=None, Specification=None):
         super(GenericTestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
@@ -112,6 +114,7 @@ class GenericTestMechanismType(indicator_binding.TestMechanismType):
         if self.Specification is not None:
             self.Specification.export(lwrite, level, nsmap, namespace_, name_='Specification', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

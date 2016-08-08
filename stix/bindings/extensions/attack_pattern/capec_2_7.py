@@ -32,6 +32,7 @@ class CAPEC2_7InstanceType(ttp_binding.AttackPatternType):
     xmlns          = XML_NS
     xmlns_prefix   = "capecInstance"
     xml_type       = "CAPEC2.7InstanceType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, capec_id=None, Description=None, CAPEC=None):
         super(CAPEC2_7InstanceType, self).__init__(capec_id=capec_id, Description=Description)
@@ -90,6 +91,7 @@ class CAPEC2_7InstanceType(ttp_binding.AttackPatternType):
             lwrite(etree_.tostring(self.CAPEC, pretty_print=pretty_print).decode())
             #self.CAPEC.export(lwrite, level, nsmap, namespace_, name_='CAPEC', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:

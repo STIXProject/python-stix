@@ -162,6 +162,7 @@ class STIXType(GeneratedsSuper):
         if self.Related_Packages is not None:
             self.Related_Packages.export(lwrite, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.nsmap = node.nsmap
         self.buildAttributes(node, node.attrib, already_processed)
@@ -290,6 +291,7 @@ class RelatedPackagesType(stix_common_binding.GenericRelationshipListType):
         for Related_Package_ in self.Related_Package:
             Related_Package_.export(lwrite, level, nsmap, namespace_, name_='Related_Package', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -355,6 +357,7 @@ class RelatedPackageType(stix_common_binding.GenericRelationshipType):
         if self.Package is not None:
             self.Package.export(lwrite, level, nsmap, namespace_, name_='Package', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -471,6 +474,7 @@ class STIXHeaderType(GeneratedsSuper):
         if self.Information_Source is not None:
             self.Information_Source.export(lwrite, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -560,6 +564,7 @@ class IndicatorsType(GeneratedsSuper):
         for Indicator_ in self.Indicator:
             Indicator_.export(lwrite, level, nsmap, namespace_, name_='Indicator', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -633,6 +638,7 @@ class TTPsType(GeneratedsSuper):
         if self.Kill_Chains is not None:
             self.Kill_Chains.export(lwrite, level, nsmap, namespace_, name_='Kill_Chains', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -704,6 +710,7 @@ class IncidentsType(GeneratedsSuper):
         for Incident_ in self.Incident:
             Incident_.export(lwrite, level, nsmap, namespace_, name_='Incident', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -771,6 +778,7 @@ class CoursesOfActionType(GeneratedsSuper):
         for Course_Of_Action_ in self.Course_Of_Action:
             Course_Of_Action_.export(lwrite, level, nsmap, namespace_, name_='Course_Of_Action', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -837,6 +845,7 @@ class CampaignsType(GeneratedsSuper):
         for Campaign_ in self.Campaign:
             Campaign_.export(lwrite, level, nsmap, namespace_, name_='Campaign', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -903,6 +912,7 @@ class ThreatActorsType(GeneratedsSuper):
         for Threat_Actor_ in self.Threat_Actor:
             Threat_Actor_.export(lwrite, level, nsmap, namespace_, name_='Threat_Actor', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -971,6 +981,7 @@ class ReportsType(GeneratedsSuper):
             Report_.export(lwrite, level, nsmap, namespace_, name_='Report', pretty_print=pretty_print)
 
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
