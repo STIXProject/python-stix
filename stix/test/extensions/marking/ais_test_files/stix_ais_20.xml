@@ -1,0 +1,412 @@
+<stix:STIX_Package xmlns:AIS="http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2" xmlns:CISCP="http://us-cert.gov/ciscp" xmlns:DomainNameObj="http://cybox.mitre.org/objects#DomainNameObject-1" xmlns:FileObj="http://cybox.mitre.org/objects#FileObject-2" xmlns:NCCIC="http://www.us-cert.gov/nccic" xmlns:TOUMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1" xmlns:cybox="http://cybox.mitre.org/cybox-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2" xmlns:edh2="urn:edm:edh:cyber:v3" xmlns:edh2cyberMarking="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:edh2cyberMarkingAssert="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd" xmlns:indicator="http://stix.mitre.org/Indicator-2" xmlns:isa="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:marking="http://data-marking.mitre.org/Marking-1" xmlns:stix="http://stix.mitre.org/stix-1" xmlns:stix-ciq="http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1" xmlns:stixCommon="http://stix.mitre.org/common-1" xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1" xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1" xmlns:xal="urn:oasis:names:tc:ciq:xal:3" xmlns:xnl="urn:oasis:names:tc:ciq:xnl:3" xmlns:xpil="urn:oasis:names:tc:ciq:xpil:3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:taxii="http://taxii.mitre.org/messages/taxii_xml_binding-1" xmlns:taxii_11="http://taxii.mitre.org/messages/taxii_xml_binding-1.1" xmlns:tdq="http://taxii.mitre.org/query/taxii_default_query-1" id="NCCIC:STIX_Package-95faabf9-cbca-45f7-bd78-12c2247a6796" timestamp="2016-07-19T00:00:00" version="1.1.1" xsi:schemaLocation="http://cybox.mitre.org/common-2 http://cybox.mitre.org/XMLSchema/common/2.1/cybox_common.xsd http://cybox.mitre.org/cybox-2 http://cybox.mitre.org/XMLSchema/core/2.1/cybox_core.xsd http://cybox.mitre.org/default_vocabularies-2 http://cybox.mitre.org/XMLSchema/default_vocabularies/2.1/cybox_default_vocabularies.xsd http://cybox.mitre.org/objects#DomainNameObject-1 http://cybox.mitre.org/XMLSchema/objects/Domain_Name/1.0/Domain_Name_Object.xsd http://cybox.mitre.org/objects#FileObject-2 http://cybox.mitre.org/XMLSchema/objects/File/2.1/File_Object.xsd http://data-marking.mitre.org/Marking-1 http://stix.mitre.org/XMLSchema/data_marking/1.1.1/data_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1 http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.1.1/tlp_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1 http://stix.mitre.org/XMLSchema/extensions/marking/terms_of_use/1.0.1/terms_of_use_marking.xsd http://stix.mitre.org/Indicator-2 http://stix.mitre.org/XMLSchema/indicator/2.1.1/indicator.xsd http://stix.mitre.org/common-1 http://stix.mitre.org/XMLSchema/common/1.1.1/stix_common.xsd http://stix.mitre.org/default_vocabularies-1 http://stix.mitre.org/XMLSchema/default_vocabularies/1.1.1/stix_default_vocabularies.xsd http://stix.mitre.org/stix-1 http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd http://us-cert.gov/ciscp http://www.us-cert.gov/sites/default/files/STIX_Namespace/ciscp_vocab_v1.1.1.xsd http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2 http://www.us-cert.gov/sites/default/files/STIX_Namespace/AIS_Bundle_Marking_1.1.1_v1.0.xsd http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1 http://stix.mitre.org/XMLSchema/extensions/identity/ciq_3.0/1.1.1/ciq_3.0_identity.xsd urn:oasis:names:tc:ciq:xpil:3 http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsAssertionsType.v2.xsd urn:edm:edh:cyber:v3 http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_SD-EDH_Profile_Cyber.v3.xsd">
+        <stix:STIX_Header>
+          <stix:Title>Sofacy APT</stix:Title>
+          <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Indicators - Watchlist</stix:Package_Intent>
+          <stix:Profiles>
+            <stixCommon:Profile>AIS Profile v1.1</stixCommon:Profile>
+          </stix:Profiles>
+          <stix:Handling>
+            <marking:Marking>
+              <marking:Controlled_Structure>//node() | //@*</marking:Controlled_Structure>
+              <marking:Marking_Structure xsi:type="AIS:AISMarkingStructure">
+                <AIS:Not_Proprietary CISA_Proprietary="false">
+                  <AIS:AISConsent consent="EVERYONE"/>
+                  <AIS:TLPMarking color="WHITE"/>
+                </AIS:Not_Proprietary>
+              </marking:Marking_Structure>
+            </marking:Marking>
+          </stix:Handling>
+          <stix:Information_Source>
+            <stixCommon:Contributing_Sources>
+              <stixCommon:Source>
+                <stixCommon:Identity xsi:type="stix-ciq:CIQIdentity3.0InstanceType">
+                  <stix-ciq:Specification>
+                    <xpil:PartyName>
+                      <xnl:OrganisationName>
+                        <xnl:NameElement>NCCIC</xnl:NameElement>
+                      </xnl:OrganisationName>
+                    </xpil:PartyName>
+                    <xpil:Addresses>
+                      <xpil:Address>
+                        <xal:Country>
+                          <xal:NameElement xal:NameCode="US" xal:NameCodeType="ISO_3166-1_alpha-2"/>
+                        </xal:Country>
+                        <xal:AdministrativeArea>
+                          <xal:NameElement xal:NameCode="US-DC" xal:NameCodeType="ISO_3166-2"/>
+                        </xal:AdministrativeArea>
+                      </xpil:Address>
+                    </xpil:Addresses>
+                    <xpil:OrganisationInfo xpil:IndustryType="Information Technology Sector"/>
+                  </stix-ciq:Specification>
+                </stixCommon:Identity>
+                <stixCommon:Tools>
+                  <cyboxCommon:Tool>
+                    <cyboxCommon:Metadata>
+                      <cyboxCommon:Value>AIS</cyboxCommon:Value>
+                    </cyboxCommon:Metadata>
+                  </cyboxCommon:Tool>
+                </stixCommon:Tools>
+              </stixCommon:Source>
+            </stixCommon:Contributing_Sources>
+            <stixCommon:Time>
+              <cyboxCommon:Produced_Time>2016-07-21T16:11:26Z</cyboxCommon:Produced_Time>
+            </stixCommon:Time>
+          </stix:Information_Source>
+        </stix:STIX_Header>
+        <stix:Indicators>
+          <stix:Indicator id="NCCIC:indicator-ef5ef230-4dc2-11e6-8f29-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Sofacy APT-Kaspersky   https://securelist.com/blog/research/72924/sofacy-apt-hits-high-profile-targets-with-updated-toolset/</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ef5ef232-4dc2-11e6-a10f-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-ef5ef231-4dc2-11e6-84a7-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">drivres-update.info</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-ef5ef233-4dc2-11e6-a10f-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Sofacy APT-Kaspersky   https://securelist.com/blog/research/72924/sofacy-apt-hits-high-profile-targets-with-updated-toolset/</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ef5ef235-4dc2-11e6-bf7d-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-ef5ef234-4dc2-11e6-b282-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">intelnetservice.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-ef5ef236-4dc2-11e6-9ec2-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Sofacy APT-Kaspersky   https://securelist.com/blog/research/72924/sofacy-apt-hits-high-profile-targets-with-updated-toolset/</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ef5ef238-4dc2-11e6-bc49-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-ef5ef237-4dc2-11e6-bd1a-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">intelsupport.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-ef5ef239-4dc2-11e6-a238-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Sofacy APT-Kaspersky   https://securelist.com/blog/research/72924/sofacy-apt-hits-high-profile-targets-with-updated-toolset/</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ef5ef23b-4dc2-11e6-b5da-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-ef5ef23a-4dc2-11e6-98bc-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">softupdates.info</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-ef5ef23c-4dc2-11e6-8dee-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Sofacy APT-Kaspersky   https://securelist.com/blog/research/72924/sofacy-apt-hits-high-profile-targets-with-updated-toolset/</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ef5ef23e-4dc2-11e6-9930-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-ef5ef23d-4dc2-11e6-af1f-eccd6d4fa460">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">N/A</FileObj:File_Name>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">a96f4b8ac7aa9dbf4624424b7602d4f7</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-ef5ef23f-4dc2-11e6-8f0e-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Sofacy APT-Kaspersky   https://securelist.com/blog/research/72924/sofacy-apt-hits-high-profile-targets-with-updated-toolset/</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ef5ef241-4dc2-11e6-ab9a-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-ef5ef240-4dc2-11e6-8a10-eccd6d4fa460">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">N/A</FileObj:File_Name>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">9d2f9e19db8c20dc0d20d50869c7a373</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-ef5ef242-4dc2-11e6-8cc6-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Sofacy APT-Kaspersky   https://securelist.com/blog/research/72924/sofacy-apt-hits-high-profile-targets-with-updated-toolset/</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ef5ef244-4dc2-11e6-97ee-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-ef5ef243-4dc2-11e6-ad7d-eccd6d4fa460">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">N/A</FileObj:File_Name>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">0369620eb139c3875a62e36bb7abdae8</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-ef5ef245-4dc2-11e6-be6f-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Sofacy APT-Kaspersky   https://securelist.com/blog/research/72924/sofacy-apt-hits-high-profile-targets-with-updated-toolset/</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ef5ef247-4dc2-11e6-8e51-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-ef5ef246-4dc2-11e6-a06d-eccd6d4fa460">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">N/A</FileObj:File_Name>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">8b238931a7f64fddcad3057a96855f6c</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-ef5ef248-4dc2-11e6-8e82-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Sofacy APT-Kaspersky   https://securelist.com/blog/research/72924/sofacy-apt-hits-high-profile-targets-with-updated-toolset/</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ef5ef24a-4dc2-11e6-81ac-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-ef5ef249-4dc2-11e6-94f6-eccd6d4fa460">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">N/A</FileObj:File_Name>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">ce151285e8f0e7b2b90162ba171a4b90</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-ef5ef24b-4dc2-11e6-88b8-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Sofacy APT-Kaspersky   https://securelist.com/blog/research/72924/sofacy-apt-hits-high-profile-targets-with-updated-toolset/</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ef5ef24d-4dc2-11e6-bc86-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-ef5ef24c-4dc2-11e6-9723-eccd6d4fa460">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">N/A</FileObj:File_Name>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">f6f88caf49a3e32174387cacfa144a89</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-ef5ef24e-4dc2-11e6-bbd0-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Sofacy APT-Kaspersky   https://securelist.com/blog/research/72924/sofacy-apt-hits-high-profile-targets-with-updated-toolset/</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ef5ef250-4dc2-11e6-96a8-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-ef5ef24f-4dc2-11e6-8ce3-eccd6d4fa460">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">N/A</FileObj:File_Name>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">8c4d896957c36ec4abeb07b2802268b9</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-ef5ef251-4dc2-11e6-884d-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Sofacy APT-Kaspersky   https://securelist.com/blog/research/72924/sofacy-apt-hits-high-profile-targets-with-updated-toolset/</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ef5ef253-4dc2-11e6-8c49-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-ef5ef252-4dc2-11e6-9826-eccd6d4fa460">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">N/A</FileObj:File_Name>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">ce8b99df8642c065b6af43fde1f786a3</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-ef5ef254-4dc2-11e6-8018-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Sofacy APT-Kaspersky   https://securelist.com/blog/research/72924/sofacy-apt-hits-high-profile-targets-with-updated-toolset/</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ef5ef256-4dc2-11e6-a028-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-ef5ef255-4dc2-11e6-87b8-eccd6d4fa460">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">N/A</FileObj:File_Name>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">f6f88caf49a3e32174387cacfa144a89</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-ef5ef257-4dc2-11e6-b7de-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Sofacy APT-Kaspersky   https://securelist.com/blog/research/72924/sofacy-apt-hits-high-profile-targets-with-updated-toolset/</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ef613c22-4dc2-11e6-91f7-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-ef613c21-4dc2-11e6-bcc0-eccd6d4fa460">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">N/A</FileObj:File_Name>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">c3ae4a37094ecfe95c2badecf40bf5bb</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+        </stix:Indicators>
+        <stix:TTPs>
+          <stix:Kill_Chains>
+            <stixCommon:Kill_Chain definer="LMCO" id="NCCIC:Kill_Chain-2d8dc98b-9c21-4145-84f0-35c6d06e4125" name="LM Cyber Kill Chain" number_of_phases="7" reference="http://www.lockheedmartin.com/content/dam/lockheed/data/corporate/documents/LM-White-Paper-Intel-Driven-Defense.pdf">
+              <stixCommon:Kill_Chain_Phase name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+              <stixCommon:Kill_Chain_Phase name="Weaponization" ordinality="2" phase_id="stix:KillChainPhase-445b4827-3cca-42bd-8421-f2e947133c16"/>
+              <stixCommon:Kill_Chain_Phase name="Delivery" ordinality="3" phase_id="stix:KillChainPhase-79a0e041-9d5f-49bb-ada4-8322622b162d"/>
+              <stixCommon:Kill_Chain_Phase name="Exploitation" ordinality="4" phase_id="stix:KillChainPhase-f706e4e7-53d8-44ef-967f-81535c9db7d0"/>
+              <stixCommon:Kill_Chain_Phase name="Installation" ordinality="5" phase_id="stix:KillChainPhase-e1e4e3f7-be3b-4b39-b80a-a593cfd99a4f"/>
+              <stixCommon:Kill_Chain_Phase name="Command and Control" ordinality="6" phase_id="stix:KillChainPhase-d6dc32b9-2538-4951-8733-3cb9ef1daae2"/>
+              <stixCommon:Kill_Chain_Phase name="Actions on Objectives" ordinality="7" phase_id="stix:KillChainPhase-786ca8f9-2d9a-4213-b38e-399af4a2e5d6"/>
+            </stixCommon:Kill_Chain>
+          </stix:Kill_Chains>
+        </stix:TTPs>
+      </stix:STIX_Package>
+    

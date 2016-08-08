@@ -1,0 +1,1132 @@
+<stix:STIX_Package xmlns:AIS="http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2" xmlns:AddressObj="http://cybox.mitre.org/objects#AddressObject-2" xmlns:CISCP="http://us-cert.gov/ciscp" xmlns:NCCIC="http://www.us-cert.gov/nccic" xmlns:TOUMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1" xmlns:URIObj="http://cybox.mitre.org/objects#URIObject-2" xmlns:cybox="http://cybox.mitre.org/cybox-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2" xmlns:edh2="urn:edm:edh:cyber:v3" xmlns:edh2cyberMarking="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:edh2cyberMarkingAssert="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd" xmlns:indicator="http://stix.mitre.org/Indicator-2" xmlns:isa="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:marking="http://data-marking.mitre.org/Marking-1" xmlns:stix="http://stix.mitre.org/stix-1" xmlns:stix-ciq="http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1" xmlns:stixCommon="http://stix.mitre.org/common-1" xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1" xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1" xmlns:xal="urn:oasis:names:tc:ciq:xal:3" xmlns:xnl="urn:oasis:names:tc:ciq:xnl:3" xmlns:xpil="urn:oasis:names:tc:ciq:xpil:3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:taxii="http://taxii.mitre.org/messages/taxii_xml_binding-1" xmlns:taxii_11="http://taxii.mitre.org/messages/taxii_xml_binding-1.1" xmlns:tdq="http://taxii.mitre.org/query/taxii_default_query-1" id="NCCIC:STIX_Package-b4ae5520-29b4-468a-a081-220b663772cc" timestamp="2016-07-20T00:00:00" version="1.1.1" xsi:schemaLocation="http://cybox.mitre.org/common-2 http://cybox.mitre.org/XMLSchema/common/2.1/cybox_common.xsd http://cybox.mitre.org/cybox-2 http://cybox.mitre.org/XMLSchema/core/2.1/cybox_core.xsd http://cybox.mitre.org/default_vocabularies-2 http://cybox.mitre.org/XMLSchema/default_vocabularies/2.1/cybox_default_vocabularies.xsd http://cybox.mitre.org/objects#AddressObject-2 http://cybox.mitre.org/XMLSchema/objects/Address/2.1/Address_Object.xsd http://cybox.mitre.org/objects#URIObject-2 http://cybox.mitre.org/XMLSchema/objects/URI/2.1/URI_Object.xsd http://data-marking.mitre.org/Marking-1 http://stix.mitre.org/XMLSchema/data_marking/1.1.1/data_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1 http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.1.1/tlp_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1 http://stix.mitre.org/XMLSchema/extensions/marking/terms_of_use/1.0.1/terms_of_use_marking.xsd http://stix.mitre.org/Indicator-2 http://stix.mitre.org/XMLSchema/indicator/2.1.1/indicator.xsd http://stix.mitre.org/common-1 http://stix.mitre.org/XMLSchema/common/1.1.1/stix_common.xsd http://stix.mitre.org/default_vocabularies-1 http://stix.mitre.org/XMLSchema/default_vocabularies/1.1.1/stix_default_vocabularies.xsd http://stix.mitre.org/stix-1 http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd http://us-cert.gov/ciscp http://www.us-cert.gov/sites/default/files/STIX_Namespace/ciscp_vocab_v1.1.1.xsd http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2 http://www.us-cert.gov/sites/default/files/STIX_Namespace/AIS_Bundle_Marking_1.1.1_v1.0.xsd http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1 http://stix.mitre.org/XMLSchema/extensions/identity/ciq_3.0/1.1.1/ciq_3.0_identity.xsd urn:oasis:names:tc:ciq:xpil:3 http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsAssertionsType.v2.xsd urn:edm:edh:cyber:v3 http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_SD-EDH_Profile_Cyber.v3.xsd">
+        <stix:STIX_Header>
+          <stix:Title>Malware spam:'Bank acount report' leads to Locky</stix:Title>
+          <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Indicators - Watchlist</stix:Package_Intent>
+          <stix:Profiles>
+            <stixCommon:Profile>AIS Profile v1.1</stixCommon:Profile>
+          </stix:Profiles>
+          <stix:Handling>
+            <marking:Marking>
+              <marking:Controlled_Structure>//node() | //@*</marking:Controlled_Structure>
+              <marking:Marking_Structure xsi:type="AIS:AISMarkingStructure">
+                <AIS:Not_Proprietary CISA_Proprietary="false">
+                  <AIS:AISConsent consent="EVERYONE"/>
+                  <AIS:TLPMarking color="WHITE"/>
+                </AIS:Not_Proprietary>
+              </marking:Marking_Structure>
+            </marking:Marking>
+          </stix:Handling>
+          <stix:Information_Source>
+            <stixCommon:Contributing_Sources>
+              <stixCommon:Source>
+                <stixCommon:Identity xsi:type="stix-ciq:CIQIdentity3.0InstanceType">
+                  <stix-ciq:Specification>
+                    <xpil:PartyName>
+                      <xnl:OrganisationName>
+                        <xnl:NameElement>NCCIC</xnl:NameElement>
+                      </xnl:OrganisationName>
+                    </xpil:PartyName>
+                    <xpil:Addresses>
+                      <xpil:Address>
+                        <xal:Country>
+                          <xal:NameElement xal:NameCode="US" xal:NameCodeType="ISO_3166-1_alpha-2"/>
+                        </xal:Country>
+                        <xal:AdministrativeArea>
+                          <xal:NameElement xal:NameCode="US-DC" xal:NameCodeType="ISO_3166-2"/>
+                        </xal:AdministrativeArea>
+                      </xpil:Address>
+                    </xpil:Addresses>
+                    <xpil:OrganisationInfo xpil:IndustryType="Information Technology Sector"/>
+                  </stix-ciq:Specification>
+                </stixCommon:Identity>
+                <stixCommon:Tools>
+                  <cyboxCommon:Tool>
+                    <cyboxCommon:Metadata>
+                      <cyboxCommon:Value>AIS</cyboxCommon:Value>
+                    </cyboxCommon:Metadata>
+                  </cyboxCommon:Tool>
+                </stixCommon:Tools>
+              </stixCommon:Source>
+            </stixCommon:Contributing_Sources>
+            <stixCommon:Time>
+              <cyboxCommon:Produced_Time>2016-07-20T14:28:49Z</cyboxCommon:Produced_Time>
+            </stixCommon:Time>
+          </stix:Information_Source>
+        </stix:STIX_Header>
+        <stix:Indicators>
+          <stix:Indicator id="NCCIC:indicator-d79ac480-4e85-11e6-abdf-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79aeb90-4e85-11e6-8254-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79aeb8f-4e85-11e6-8e06-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">acnek.com/fyxxbcsz</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79aeb91-4e85-11e6-bfd1-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79aeb93-4e85-11e6-9eb9-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79aeb92-4e85-11e6-b329-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">ahatv.com.au/twh7xv</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79aeb94-4e85-11e6-9fe6-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79aeb96-4e85-11e6-9a23-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79aeb95-4e85-11e6-a8c2-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">anchortron.com/hiqsij</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79aeb97-4e85-11e6-8983-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b129f-4e85-11e6-b459-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b129e-4e85-11e6-b494-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">aquatixbottle.com/ygyngc</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b12a0-4e85-11e6-9b02-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b12a2-4e85-11e6-8f1a-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b12a1-4e85-11e6-8f58-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">bailamecuba.com/4uyh5bex</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b12a3-4e85-11e6-b48e-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b12a5-4e85-11e6-aaca-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b12a4-4e85-11e6-a2e8-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">banthaoduoc.com/v5g9z0s</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b12a6-4e85-11e6-a6cf-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b12a8-4e85-11e6-b764-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b12a7-4e85-11e6-8e71-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">BenavidezHoy.com/8zrg48k</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b12a9-4e85-11e6-a23a-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b12ab-4e85-11e6-a783-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b12aa-4e85-11e6-b367-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">bigislandhawaiihilorealestate.com/16h9p</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b12ac-4e85-11e6-83f1-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b12ae-4e85-11e6-8162-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b12ad-4e85-11e6-8e32-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">bizconsulting.ro/bm8s7</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b39b0-4e85-11e6-8eb1-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b39b2-4e85-11e6-9f7e-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b39b1-4e85-11e6-a0ca-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">blackdildo.net/h9kyu</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b39b3-4e85-11e6-9a9c-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b39b5-4e85-11e6-89d5-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b39b4-4e85-11e6-9811-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">bridgeplacements.com/dhbuk</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b39b6-4e85-11e6-b810-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b39b8-4e85-11e6-bcc1-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b39b7-4e85-11e6-adf3-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">calcoastlogistics.com/pda6bms</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b39b9-4e85-11e6-8645-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b39bb-4e85-11e6-a5c9-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b39ba-4e85-11e6-8702-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">candobetter.net/5nt3ayk</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b39bc-4e85-11e6-b575-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b39be-4e85-11e6-9f25-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b39bd-4e85-11e6-b4c6-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">cbactive.com/jw7l6mlr</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b39bf-4e85-11e6-8ca8-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b60c0-4e85-11e6-9b18-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b39c0-4e85-11e6-96e3-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">christian-view.com/rwe24t</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b60c1-4e85-11e6-8025-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b60c3-4e85-11e6-9d3a-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b60c2-4e85-11e6-9b7a-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">cinerd.info/ebiyhv</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b60c4-4e85-11e6-adbc-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b60c6-4e85-11e6-beb8-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b60c5-4e85-11e6-9597-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">cloudbws.com/m0tu07b</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b60c7-4e85-11e6-93d0-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b60c9-4e85-11e6-a27c-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b60c8-4e85-11e6-b341-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">colleenthestylist.com/rdrfp</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b60ca-4e85-11e6-8b8c-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b60cc-4e85-11e6-896f-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b60cb-4e85-11e6-bff7-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">containermx.com/tb4u2v</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b60cd-4e85-11e6-b90f-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b60cf-4e85-11e6-8911-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b60ce-4e85-11e6-96d3-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">davisdoherty.co.nz/g0vi70</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b60d0-4e85-11e6-bbc9-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b87cf-4e85-11e6-ac7f-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b60d1-4e85-11e6-b142-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">deanstum.com/z9opr</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b87d0-4e85-11e6-be77-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b87d2-4e85-11e6-a60d-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b87d1-4e85-11e6-868d-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">dnp9.com/zpfqk2l</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b87d3-4e85-11e6-b598-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b87d5-4e85-11e6-be70-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b87d4-4e85-11e6-a096-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">ecpi.ro/cqema</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b87d6-4e85-11e6-a6d9-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b87d8-4e85-11e6-b523-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b87d7-4e85-11e6-a865-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">equalityindonesia.com/b229mg</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b87d9-4e85-11e6-8836-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b87db-4e85-11e6-9378-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b87da-4e85-11e6-b5ca-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">eurasian.fc2web.com/18nws9</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b87dc-4e85-11e6-93f1-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b87de-4e85-11e6-a029-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b87dd-4e85-11e6-9c96-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">findmobileauto.com/gh8ft</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79b87df-4e85-11e6-81fe-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79b87e1-4e85-11e6-a7b8-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79b87e0-4e85-11e6-b62d-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">fusofrance.fr/nengga</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79baee1-4e85-11e6-b4a4-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79baee3-4e85-11e6-b70b-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79baee2-4e85-11e6-8fb4-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">gruposoluciomatica.com.br/ryi81</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79baee4-4e85-11e6-8c7f-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79baee6-4e85-11e6-b6ce-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79baee5-4e85-11e6-951e-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">gv.com.my/qbnuau</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79baee7-4e85-11e6-a11a-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79baee9-4e85-11e6-851f-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79baee8-4e85-11e6-ac64-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">ilkhaberadana.com/rmegjezz</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79baeea-4e85-11e6-b1f5-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79baeec-4e85-11e6-a111-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79baeeb-4e85-11e6-b7a9-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">kouzoncorporation.com/jikkhl</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79baeed-4e85-11e6-a303-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79baeef-4e85-11e6-a582-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79baeee-4e85-11e6-a08c-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">leeplastic.com/w49a80y</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79baef0-4e85-11e6-9564-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79baef2-4e85-11e6-bfd4-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79baef1-4e85-11e6-8917-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">matthewmccright.org/sl8wu</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79bd5f0-4e85-11e6-b5b0-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79bd5f2-4e85-11e6-910a-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79bd5f1-4e85-11e6-8447-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">my-result.ru/0j1nlpj8</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79bd5f3-4e85-11e6-9b4f-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79bd5f5-4e85-11e6-89f0-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79bd5f4-4e85-11e6-8097-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">ormanstressrelief.com/uhgoz3b</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79bd5f6-4e85-11e6-a00a-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79bd5f8-4e85-11e6-950f-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79bd5f7-4e85-11e6-a1ed-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">otwayorchard.net/u96kt</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79bd5f9-4e85-11e6-ad8f-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79bd5fb-4e85-11e6-ac1b-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79bd5fa-4e85-11e6-9a3e-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">provincialpw.com/r0vaqf</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79bd5fc-4e85-11e6-bf8f-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79bd5fe-4e85-11e6-8b3d-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79bd5fd-4e85-11e6-a0b9-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">quest.agency/0ovl6v5z</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79bd5ff-4e85-11e6-85a2-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79bd601-4e85-11e6-8bac-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79bd600-4e85-11e6-8274-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">rsxxx.com/3vp8s83</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79bd602-4e85-11e6-95e2-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79bfd01-4e85-11e6-ba9c-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79bfd00-4e85-11e6-bfd3-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">s2mgmt.com/do40lc</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79bfd02-4e85-11e6-9cc3-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79bfd04-4e85-11e6-b83f-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79bfd03-4e85-11e6-ae05-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">serviceautoiasi.com/4tbvsfcz</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79bfd05-4e85-11e6-9172-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79bfd07-4e85-11e6-b438-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79bfd06-4e85-11e6-b0ac-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">smp.com.mx/hcoyv</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d79bfd08-4e85-11e6-99dc-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d79bfd0a-4e85-11e6-aa99-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d79bfd09-4e85-11e6-b9b2-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">thegracefamilychurch.com/ltxm3t</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d7a042c0-4e85-11e6-b455-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d7a042c2-4e85-11e6-9626-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d7a042c1-4e85-11e6-8c9f-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">tip.ub.ac.id/36k8m2xt</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d7a042c3-4e85-11e6-84d8-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d7a069d0-4e85-11e6-a161-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d7a069cf-4e85-11e6-ba34-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">trans-free.ru/2hx1l</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d7a069d1-4e85-11e6-ac45-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d7a069d3-4e85-11e6-bfd4-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d7a069d2-4e85-11e6-bbd8-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">travelabroadsecret.com/rxurfhqk</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d7a069d4-4e85-11e6-bfb5-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d7a069d6-4e85-11e6-8004-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d7a069d5-4e85-11e6-b1c1-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">travoxsb.com/qmi5u0n</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d7a069d7-4e85-11e6-a393-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d7a069d9-4e85-11e6-98f8-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d7a069d8-4e85-11e6-b00c-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">vakantiehuisinauvergne.com/apyd17</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d7a069da-4e85-11e6-b5de-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d7a069dc-4e85-11e6-8668-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d7a069db-4e85-11e6-a3c9-eccd6d4fa460">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">wcouto.com.br/9d207v</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d7a090de-4e85-11e6-b5b5-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d7a090e0-4e85-11e6-970c-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d7a090df-4e85-11e6-8ed1-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">77.222.54.202</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d7a090e1-4e85-11e6-b172-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d7a090e3-4e85-11e6-a6ca-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d7a090e2-4e85-11e6-a9d4-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">91.240.86.221</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d7a090e4-4e85-11e6-8db0-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d7a090e6-4e85-11e6-8f24-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d7a090e5-4e85-11e6-ad87-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">176.111.63.51</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-d7a090e7-4e85-11e6-a0e1-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>http://blog.dynamoo.com/2016/07/malware-spam-bank-account-report-leads.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d7a090e9-4e85-11e6-923d-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-d7a090e8-4e85-11e6-b402-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">209.126.112.14</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+        </stix:Indicators>
+        <stix:TTPs>
+          <stix:Kill_Chains>
+            <stixCommon:Kill_Chain definer="LMCO" id="NCCIC:Kill_Chain-2d8dc98b-9c21-4145-84f0-35c6d06e4125" name="LM Cyber Kill Chain" number_of_phases="7" reference="http://www.lockheedmartin.com/content/dam/lockheed/data/corporate/documents/LM-White-Paper-Intel-Driven-Defense.pdf">
+              <stixCommon:Kill_Chain_Phase name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+              <stixCommon:Kill_Chain_Phase name="Weaponization" ordinality="2" phase_id="stix:KillChainPhase-445b4827-3cca-42bd-8421-f2e947133c16"/>
+              <stixCommon:Kill_Chain_Phase name="Delivery" ordinality="3" phase_id="stix:KillChainPhase-79a0e041-9d5f-49bb-ada4-8322622b162d"/>
+              <stixCommon:Kill_Chain_Phase name="Exploitation" ordinality="4" phase_id="stix:KillChainPhase-f706e4e7-53d8-44ef-967f-81535c9db7d0"/>
+              <stixCommon:Kill_Chain_Phase name="Installation" ordinality="5" phase_id="stix:KillChainPhase-e1e4e3f7-be3b-4b39-b80a-a593cfd99a4f"/>
+              <stixCommon:Kill_Chain_Phase name="Command and Control" ordinality="6" phase_id="stix:KillChainPhase-d6dc32b9-2538-4951-8733-3cb9ef1daae2"/>
+              <stixCommon:Kill_Chain_Phase name="Actions on Objectives" ordinality="7" phase_id="stix:KillChainPhase-786ca8f9-2d9a-4213-b38e-399af4a2e5d6"/>
+            </stixCommon:Kill_Chain>
+          </stix:Kill_Chains>
+        </stix:TTPs>
+      </stix:STIX_Package>
+    

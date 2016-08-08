@@ -1,0 +1,1285 @@
+<stix:STIX_Package xmlns:AIS="http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2" xmlns:AddressObj="http://cybox.mitre.org/objects#AddressObject-2" xmlns:CISCP="http://us-cert.gov/ciscp" xmlns:DomainNameObj="http://cybox.mitre.org/objects#DomainNameObject-1" xmlns:NCCIC="http://www.us-cert.gov/nccic" xmlns:TOUMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1" xmlns:cybox="http://cybox.mitre.org/cybox-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2" xmlns:edh2="urn:edm:edh:cyber:v3" xmlns:edh2cyberMarking="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:edh2cyberMarkingAssert="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd" xmlns:indicator="http://stix.mitre.org/Indicator-2" xmlns:isa="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:marking="http://data-marking.mitre.org/Marking-1" xmlns:stix="http://stix.mitre.org/stix-1" xmlns:stix-ciq="http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1" xmlns:stixCommon="http://stix.mitre.org/common-1" xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1" xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1" xmlns:xal="urn:oasis:names:tc:ciq:xal:3" xmlns:xnl="urn:oasis:names:tc:ciq:xnl:3" xmlns:xpil="urn:oasis:names:tc:ciq:xpil:3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:taxii="http://taxii.mitre.org/messages/taxii_xml_binding-1" xmlns:taxii_11="http://taxii.mitre.org/messages/taxii_xml_binding-1.1" xmlns:tdq="http://taxii.mitre.org/query/taxii_default_query-1" id="NCCIC:STIX_Package-c2ce762f-191f-4727-9b90-7dfb2695e2bd" timestamp="2016-07-22T02:14:25+00:00" version="1.1.1" xsi:schemaLocation="http://cybox.mitre.org/common-2 http://cybox.mitre.org/XMLSchema/common/2.1/cybox_common.xsd http://cybox.mitre.org/cybox-2 http://cybox.mitre.org/XMLSchema/core/2.1/cybox_core.xsd http://cybox.mitre.org/default_vocabularies-2 http://cybox.mitre.org/XMLSchema/default_vocabularies/2.1/cybox_default_vocabularies.xsd http://cybox.mitre.org/objects#AddressObject-2 http://cybox.mitre.org/XMLSchema/objects/Address/2.1/Address_Object.xsd http://cybox.mitre.org/objects#DomainNameObject-1 http://cybox.mitre.org/XMLSchema/objects/Domain_Name/1.0/Domain_Name_Object.xsd http://data-marking.mitre.org/Marking-1 http://stix.mitre.org/XMLSchema/data_marking/1.1.1/data_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1 http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.1.1/tlp_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1 http://stix.mitre.org/XMLSchema/extensions/marking/terms_of_use/1.0.1/terms_of_use_marking.xsd http://stix.mitre.org/Indicator-2 http://stix.mitre.org/XMLSchema/indicator/2.1.1/indicator.xsd http://stix.mitre.org/common-1 http://stix.mitre.org/XMLSchema/common/1.1.1/stix_common.xsd http://stix.mitre.org/default_vocabularies-1 http://stix.mitre.org/XMLSchema/default_vocabularies/1.1.1/stix_default_vocabularies.xsd http://stix.mitre.org/stix-1 http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd http://us-cert.gov/ciscp http://www.us-cert.gov/sites/default/files/STIX_Namespace/ciscp_vocab_v1.1.1.xsd http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2 http://www.us-cert.gov/sites/default/files/STIX_Namespace/AIS_Bundle_Marking_1.1.1_v1.0.xsd http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1 http://stix.mitre.org/XMLSchema/extensions/identity/ciq_3.0/1.1.1/ciq_3.0_identity.xsd urn:oasis:names:tc:ciq:xpil:3 http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsAssertionsType.v2.xsd urn:edm:edh:cyber:v3 http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_SD-EDH_Profile_Cyber.v3.xsd">
+        <stix:STIX_Header>
+          <stix:Title>IIR 4 213 5408 16 - Indicators of Compromise - FO18</stix:Title>
+          <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Indicators - Watchlist</stix:Package_Intent>
+          <stix:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</stix:Description>
+          <stix:Profiles>
+            <stixCommon:Profile>AIS Profile v1.1</stixCommon:Profile>
+          </stix:Profiles>
+          <stix:Handling>
+            <marking:Marking>
+              <marking:Controlled_Structure>//node() | //@*</marking:Controlled_Structure>
+              <marking:Marking_Structure xsi:type="AIS:AISMarkingStructure">
+                <AIS:Not_Proprietary CISA_Proprietary="false">
+                  <AIS:AISConsent consent="EVERYONE"/>
+                  <AIS:TLPMarking color="AMBER"/>
+                </AIS:Not_Proprietary>
+              </marking:Marking_Structure>
+            </marking:Marking>
+          </stix:Handling>
+          <stix:Information_Source>
+            <stixCommon:Contributing_Sources>
+              <stixCommon:Source>
+                <stixCommon:Identity xsi:type="stix-ciq:CIQIdentity3.0InstanceType">
+                  <stix-ciq:Specification>
+                    <xpil:PartyName>
+                      <xnl:OrganisationName>
+                        <xnl:NameElement>NCCIC</xnl:NameElement>
+                      </xnl:OrganisationName>
+                    </xpil:PartyName>
+                    <xpil:Addresses>
+                      <xpil:Address>
+                        <xal:Country>
+                          <xal:NameElement xal:NameCode="US" xal:NameCodeType="ISO_3166-1_alpha-2"/>
+                        </xal:Country>
+                        <xal:AdministrativeArea>
+                          <xal:NameElement xal:NameCode="US-DC" xal:NameCodeType="ISO_3166-2"/>
+                        </xal:AdministrativeArea>
+                      </xpil:Address>
+                    </xpil:Addresses>
+                    <xpil:OrganisationInfo xpil:IndustryType="Information Technology Sector"/>
+                  </stix-ciq:Specification>
+                </stixCommon:Identity>
+                <stixCommon:Tools>
+                  <cyboxCommon:Tool>
+                    <cyboxCommon:Metadata>
+                      <cyboxCommon:Value>AIS</cyboxCommon:Value>
+                    </cyboxCommon:Metadata>
+                  </cyboxCommon:Tool>
+                </stixCommon:Tools>
+              </stixCommon:Source>
+            </stixCommon:Contributing_Sources>
+            <stixCommon:Time>
+              <cyboxCommon:Produced_Time>2016-07-22T02:20:24Z</cyboxCommon:Produced_Time>
+            </stixCommon:Time>
+          </stix:Information_Source>
+        </stix:STIX_Header>
+        <stix:Indicators>
+          <stix:Indicator id="NCCIC:Indicator-a54c7f3a-a342-478f-9a80-0ea999dd0d65" timestamp="2016-07-22T02:14:30.359000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-4b6500f8-56ba-4a8c-97e2-5928643aa725">
+              <cybox:Object id="NCCIC:Object-92ea47f0-4fae-11e6-9cca-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">10365.xicp.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-7ecb5756-58b8-408d-8583-a65d484c08d3" timestamp="2016-07-22T02:14:30.360000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-f680a336-d40c-4467-b482-7b009584fc29">
+              <cybox:Object id="NCCIC:Object-92ea47f3-4fae-11e6-8996-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">1365.xicp.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-217efacb-2c47-4aed-9a34-426149fb5489" timestamp="2016-07-22T02:14:30.360000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-35720bcc-720d-4e1d-9d51-27defae0402a">
+              <cybox:Object id="NCCIC:Object-92ea6f00-4fae-11e6-897b-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">416888108.f3322.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-c436e5cc-e502-458d-bd7a-20533727daef" timestamp="2016-07-22T02:14:30.360000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-7b57906d-5a2e-4ab0-8a0d-a922f219964f">
+              <cybox:Object id="NCCIC:Object-92ea6f03-4fae-11e6-9027-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">4success.oicp.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-d2e13312-b882-4221-b55e-f469bb92ae0a" timestamp="2016-07-22T02:14:30.360000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-47cc0ffe-5c49-415b-b33a-7faa06c5b945">
+              <cybox:Object id="NCCIC:Object-92ea6f06-4fae-11e6-959f-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">5365.xicp.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-56ba8162-c51b-4444-af8a-2ee2b0c21002" timestamp="2016-07-22T02:14:30.360000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-cbfa7920-df84-4e1c-9d8f-bff05d1915e4">
+              <cybox:Object id="NCCIC:Object-92ea9612-4fae-11e6-bbab-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">7365.xicp.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-de33723b-0a88-48a4-9f89-e9ae8e32e942" timestamp="2016-07-22T02:14:30.360000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-f4136d55-9b5e-4b15-bca3-f74317f27454">
+              <cybox:Object id="NCCIC:Object-92ea9615-4fae-11e6-95f6-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">accountip.dns2.us</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-769282ff-3803-4011-ae3c-1e1c489a5ed8" timestamp="2016-07-22T02:14:30.360000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-11013fbf-5411-4092-b3c8-0b1d74636da8">
+              <cybox:Object id="NCCIC:Object-92eabd21-4fae-11e6-be32-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">bbsupdate.ns01.biz</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-efc26e5c-f013-48eb-8c5f-5e76a7c71c14" timestamp="2016-07-22T02:14:30.360000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-f11a4e27-68b4-4372-bf61-0889aa395145">
+              <cybox:Object id="NCCIC:Object-92eabd24-4fae-11e6-a89a-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">bbsupdate.trickip.org</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-267e66a7-b354-4ad8-b905-677e84c21dcd" timestamp="2016-07-22T02:14:30.360000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-496f1b40-1cc6-45ab-9a4b-a6b60def4728">
+              <cybox:Object id="NCCIC:Object-92eabd27-4fae-11e6-b5c8-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">chaotuohw.xicp.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-c6d67a1b-ea7a-475c-a76f-a090d8db7c4e" timestamp="2016-07-22T02:14:30.360000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-9e9ca7f8-3b47-4585-a343-207a577c2b3e">
+              <cybox:Object id="NCCIC:Object-92eae431-4fae-11e6-b0a6-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">cokabug.3322.org</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-5c7e56c7-60c7-47bd-a000-129f5a21408f" timestamp="2016-07-22T02:14:30.361000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-0a455966-b721-49d4-8efa-90c1534122d0">
+              <cybox:Object id="NCCIC:Object-92eb0b40-4fae-11e6-a88e-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">creditbalance.toythieves.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-fcde802a-e68e-4bc0-bb1c-e923d55fc953" timestamp="2016-07-22T02:14:30.361000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-4666e47c-2838-4896-a779-7690e8ba9224">
+              <cybox:Object id="NCCIC:Object-92eb0b43-4fae-11e6-8e56-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">cseedavid.gicp.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-e926680c-64e1-41d5-9c45-29d9f55dcc1d" timestamp="2016-07-22T02:14:30.361000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3fc63bb4-9eae-47b4-b555-bf2c552b6a6b">
+              <cybox:Object id="NCCIC:Object-92eb3250-4fae-11e6-93bc-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">cteg.msname.org</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-4518b92b-fe02-4120-abcd-e59bad05806a" timestamp="2016-07-22T02:14:30.361000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-813032b2-4fc7-451f-8648-accca015e379">
+              <cybox:Object id="NCCIC:Object-92eb3253-4fae-11e6-80ff-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">customer.ddns.info</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-8fdeacfb-9b2e-44f8-9021-31487de0e1f2" timestamp="2016-07-22T02:14:30.361000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-1b6dab65-329f-4a0b-bd50-f9f15dc8fc72">
+              <cybox:Object id="NCCIC:Object-92eb595e-4fae-11e6-87eb-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">customer.toh.info</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-d55d80c1-c67a-4379-bcfb-623a06c0bd4e" timestamp="2016-07-22T02:14:30.361000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-5c03d0ea-1a63-4355-b31f-3b84e0a18eec">
+              <cybox:Object id="NCCIC:Object-92eb5961-4fae-11e6-92b5-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">data.fashpopstyle.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-e03a88ff-bac0-4840-9749-dba24d50efa8" timestamp="2016-07-22T02:14:30.361000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-1d1734d2-fd23-4d4f-949b-19d58734f2a1">
+              <cybox:Object id="NCCIC:Object-92eb806e-4fae-11e6-9cd9-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">dns.ddns01.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-46ea27f1-fd0d-4506-a4e8-50cfb96b3bb6" timestamp="2016-07-22T02:14:30.361000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-1f6010b3-f0e5-422d-92a0-91235d0ea66b">
+              <cybox:Object id="NCCIC:Object-92eb8071-4fae-11e6-9dad-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">dub.hdskip.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-3a007508-9433-4969-96f3-044ccf7257ad" timestamp="2016-07-22T02:14:30.361000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-8e9264a3-63b1-4eac-b45d-9efe6beac9eb">
+              <cybox:Object id="NCCIC:Object-92eba780-4fae-11e6-a049-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">egsy.msname.org</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-bf99f62a-e4d9-4ee7-a468-353fefc18d69" timestamp="2016-07-22T02:14:30.361000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-2f96b1fc-076a-4b91-9e6c-dc69e30da96d">
+              <cybox:Object id="NCCIC:Object-92eba783-4fae-11e6-940b-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">farryu.gnway.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-77803885-e6ac-40a8-a0d2-a474fd452091" timestamp="2016-07-22T02:14:30.362000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-4dbe68f6-e8c8-4a79-93a2-07c910dae4aa">
+              <cybox:Object id="NCCIC:Object-92ebce8f-4fae-11e6-8766-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">fox3.cleansite.info</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-7a90dfa7-04eb-4c9c-bc6d-afe566e46a14" timestamp="2016-07-22T02:14:30.362000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-5c857d42-155a-4ef7-8e16-8c3d0565abdc">
+              <cybox:Object id="NCCIC:Object-92ebce92-4fae-11e6-8f92-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">ftp.gameplayer.compress.to</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-c29b4f8d-5c5e-40bc-911f-cb5b09e6be0b" timestamp="2016-07-22T02:14:30.362000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-cb76969c-54dc-4109-b6f8-4c35d712b7cb">
+              <cybox:Object id="NCCIC:Object-92ebf59e-4fae-11e6-ab16-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">ftp.troubleble.longmusic.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-88812b53-f310-4437-85af-c47406d438eb" timestamp="2016-07-22T02:14:30.362000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-7aa31885-b3af-4e94-9a78-a2091bbe994e">
+              <cybox:Object id="NCCIC:Object-92ebf5a1-4fae-11e6-ad60-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">gameplayer.compress.to</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-ceffb6d8-8a6f-4184-a154-10f9ecc32ee6" timestamp="2016-07-22T02:14:30.362000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-8d61b87f-430a-41df-8b44-e3aa5cfd0e18">
+              <cybox:Object id="NCCIC:Object-92ebf5a4-4fae-11e6-bc73-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">gamma.hdskip.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-0af61bbc-01fe-4f17-8e97-b560e624d31a" timestamp="2016-07-22T02:14:30.362000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-97f4cf4f-bca7-437b-ac4d-91c8d85bc8b1">
+              <cybox:Object id="NCCIC:Object-92ec1cb0-4fae-11e6-9093-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">huayingdadi.wicp.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-542f9cd7-5c40-438e-a12e-0b3b5470fd58" timestamp="2016-07-22T02:14:30.362000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-f1ab6bcf-0a55-475e-8931-5923c1652848">
+              <cybox:Object id="NCCIC:Object-92ec1cb3-4fae-11e6-b116-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">itvirdata.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-0e95c1a0-84cc-413a-b3c2-71336e8c28e5" timestamp="2016-07-22T02:14:30.362000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-a20186ee-a117-42ba-9089-f7a9b230e75b">
+              <cybox:Object id="NCCIC:Object-92ec43c0-4fae-11e6-8432-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">jianjiangjidi.oicp.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-dff8faf4-9065-4e06-b927-9d8b0c9a090b" timestamp="2016-07-22T02:14:30.362000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ce98afbd-2205-424a-89b2-bba6a032aa09">
+              <cybox:Object id="NCCIC:Object-92ec43c3-4fae-11e6-ade1-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">kt.hdskip.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-21147476-fcc4-49e3-9919-2953058023cf" timestamp="2016-07-22T02:14:30.362000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-efaf4299-468b-490b-9420-ebd487fc2b61">
+              <cybox:Object id="NCCIC:Object-92ec6acf-4fae-11e6-a9b5-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">lionxg.gicp.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-2225ed95-dfd6-4ead-a956-d98495f43302" timestamp="2016-07-22T02:14:30.362000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-c72098ee-acc8-45cd-ae23-6fc8ce247091">
+              <cybox:Object id="NCCIC:Object-92ec6ad2-4fae-11e6-8949-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">messenger.hdskip.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-a530f4d7-b36c-47fd-abbf-5dfaedf6655e" timestamp="2016-07-22T02:14:30.363000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-835e41a4-9fa4-4486-81ee-f6187bf6a534">
+              <cybox:Object id="NCCIC:Object-92ec91e1-4fae-11e6-a1ee-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">mettlebj.imwork.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-1a268476-71d9-4f39-a85f-6f13f969577d" timestamp="2016-07-22T02:14:30.363000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d370cf87-932b-4a51-a344-80e352590347">
+              <cybox:Object id="NCCIC:Object-92ecb8f0-4fae-11e6-a04a-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">myfacebook.gnway.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-ee077b24-07d8-4918-b3f5-e8eee42b1f28" timestamp="2016-07-22T02:14:30.363000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-2488c945-b7d6-4b19-aa2a-016457bb9398">
+              <cybox:Object id="NCCIC:Object-92ecb8f3-4fae-11e6-9877-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">office365e.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-30d6e04f-6b31-4c6f-9c50-8df8cbace519" timestamp="2016-07-22T02:14:30.363000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d8ebcdaf-a6a4-499e-96b1-868ab34b4eac">
+              <cybox:Object id="NCCIC:Object-92ece000-4fae-11e6-93e1-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">pc.hdskip.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-121caf10-a355-4f96-a9df-00a50fe6e52d" timestamp="2016-07-22T02:14:30.363000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-20ff7a86-2b78-4614-8f9a-619d37237490">
+              <cybox:Object id="NCCIC:Object-92ece003-4fae-11e6-bf84-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">porscheting.mypop3.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-335425ac-bbb1-4163-b97e-1254938fab68" timestamp="2016-07-22T02:14:30.363000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-b91e0b9d-f80c-43bc-8e58-bd5b71926aac">
+              <cybox:Object id="NCCIC:Object-92ed070f-4fae-11e6-a331-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">registers.ssl443.org</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-3bb4d640-dc66-4cd4-ae76-19bdd9521685" timestamp="2016-07-22T02:14:30.363000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-475eeee3-ba83-4e3e-b599-4db1aac8f163">
+              <cybox:Object id="NCCIC:Object-92ed0712-4fae-11e6-95f8-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">rkis.hdskip.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-d46a5352-b7d8-4c8f-a944-68a84340325d" timestamp="2016-07-22T02:14:30.363000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d8c20b74-6ee8-42e1-89c5-a7a40fc475e3">
+              <cybox:Object id="NCCIC:Object-92ed2e21-4fae-11e6-ac4c-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">ruhello.hdskip.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-0fad2d19-52cf-47c6-86ae-d4147844c376" timestamp="2016-07-22T02:14:30.363000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-804ead5b-90ac-479e-b6f1-865c872f84fd">
+              <cybox:Object id="NCCIC:Object-92ed2e24-4fae-11e6-9dc2-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">ruidisiyuan.oicp.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-6508deee-6ae2-442a-8bbd-667720ce49f2" timestamp="2016-07-22T02:14:30.363000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-232daa6e-484b-4679-bae5-4d6390b39ee3">
+              <cybox:Object id="NCCIC:Object-92ed5530-4fae-11e6-85b7-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">rupk.hdskip.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-de8ac1d0-312c-4d05-99c4-b72cd7b928db" timestamp="2016-07-22T02:14:30.364000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-4b2c2620-1b9f-4fc7-8fdd-258746db5fb8">
+              <cybox:Object id="NCCIC:Object-92ed5533-4fae-11e6-97c0-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">rurs.hdskip.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-49d0ddde-d91e-424f-bdef-3a8464d071ad" timestamp="2016-07-22T02:14:30.364000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ee063710-d644-4373-861f-d4bf6cc56e28">
+              <cybox:Object id="NCCIC:Object-92ed7c40-4fae-11e6-b348-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">rus.hdskip.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-88fb72da-a7de-44d8-8a59-f1d0298d133e" timestamp="2016-07-22T02:14:30.364000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-074d2f0e-525f-4167-9873-feffcbc11e84">
+              <cybox:Object id="NCCIC:Object-92ed7c43-4fae-11e6-97e6-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">rusm.hdskip.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-1a86fec3-e532-4582-a29a-ecc8471ab80c" timestamp="2016-07-22T02:14:30.364000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ee3fd928-41bf-469e-aa01-e9bf62c7d446">
+              <cybox:Object id="NCCIC:Object-92eda351-4fae-11e6-a999-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">rutx.hdskip.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-58f6c931-4410-4990-9646-71bf881268eb" timestamp="2016-07-22T02:14:30.364000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-1e2e9553-95ca-4a7f-8589-d7f2e5f648ce">
+              <cybox:Object id="NCCIC:Object-92edca61-4fae-11e6-867c-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">safusolice.vicp.cc</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-df6d7b66-cbc2-4a4b-aec2-a2efaaaa6f8d" timestamp="2016-07-22T02:14:30.364000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3df320f8-3f9d-423a-92eb-e12f3a7834b8">
+              <cybox:Object id="NCCIC:Object-92edca64-4fae-11e6-9dac-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">safusolice.vicp.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-e15a1c28-1cff-4375-a41e-d2726ed6d310" timestamp="2016-07-22T02:14:30.364000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ff205d08-3065-4593-a26e-bd5ac7467f97">
+              <cybox:Object id="NCCIC:Object-92edf171-4fae-11e6-a534-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">saicheng.vicp.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-695195f0-0c3c-4e26-b8a6-8c8f997f0fe6" timestamp="2016-07-22T02:14:30.364000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-82727a48-1bfc-4431-9dec-0dd3a9153dc2">
+              <cybox:Object id="NCCIC:Object-92edf174-4fae-11e6-b2eb-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">shop.popanalysis.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-54ceafe5-b968-49f9-87a4-3c9104fcfdb1" timestamp="2016-07-22T02:14:30.364000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-cfd7e39d-bd35-4c87-aa42-ce852e65cc1d">
+              <cybox:Object id="NCCIC:Object-92ee1881-4fae-11e6-9303-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">signal.hdskip.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-aa05a61e-93b6-4d67-83e0-c69930532d46" timestamp="2016-07-22T02:14:30.364000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-357c1bab-9cdf-4508-a4af-3329cd45f163">
+              <cybox:Object id="NCCIC:Object-92ee1884-4fae-11e6-826b-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">sports.fashpopstyle.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-8f09c71a-8b1c-4e4c-8fda-daa0a5176103" timestamp="2016-07-22T02:14:30.365000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-62bd663d-34d9-46bd-8392-ca13276d6ecf">
+              <cybox:Object id="NCCIC:Object-92ee3f91-4fae-11e6-8e31-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">szerro.imwork.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-057fccc1-7f2c-4a79-8666-58dccccff91e" timestamp="2016-07-22T02:14:30.365000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-b0304452-0fe1-49d5-b4b0-0f207bad0c0b">
+              <cybox:Object id="NCCIC:Object-92ee669e-4fae-11e6-b252-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">tottiwsy.3322.org</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-6d9409d8-ac28-4468-bece-15cb870c9a07" timestamp="2016-07-22T02:14:30.365000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-e1d61395-7dba-4da5-a930-e336b9cfe4e5">
+              <cybox:Object id="NCCIC:Object-92ee66a1-4fae-11e6-aef9-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">tottiwsy.xicp.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-548a1adb-9db0-4405-8bbc-392b332cc144" timestamp="2016-07-22T02:14:30.365000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-641d4a19-e34a-461e-8d6f-f5485cde9fd4">
+              <cybox:Object id="NCCIC:Object-92ee8dae-4fae-11e6-b562-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">transfers.https443.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-16a1296f-5e6e-4558-a396-4e55c55c33b0" timestamp="2016-07-22T02:14:30.365000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d227346d-875e-4ec6-b137-f38bbcc8923f">
+              <cybox:Object id="NCCIC:Object-92ee8db1-4fae-11e6-b48b-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">troubleble.longmusic.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-2be76fff-88d2-4474-8413-617563b0d785" timestamp="2016-07-22T02:14:30.365000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-03d5a606-b863-421a-8432-e59cbea05cc6">
+              <cybox:Object id="NCCIC:Object-92eeb4c0-4fae-11e6-8846-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">ukoffering.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-86e6f89f-52ef-4e8f-8bcf-916a9e7af05b" timestamp="2016-07-22T02:14:30.365000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-5cf3ea5d-5427-482c-ad71-fab77e5e1b78">
+              <cybox:Object id="NCCIC:Object-92eedbcf-4fae-11e6-834e-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">useless.ddns.info</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-6edcb8dd-ee06-4e2a-acf5-480d9fff0fb1" timestamp="2016-07-22T02:14:30.365000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-72bdb500-1663-4cd5-a801-1882f35934b5">
+              <cybox:Object id="NCCIC:Object-92ef02de-4fae-11e6-b545-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">useless.xxxy.info</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-9fc052ea-2971-4a79-99b7-233d293a64e5" timestamp="2016-07-22T02:14:30.365000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-0c9a8db0-19e3-4344-b605-c3e4cb8884a8">
+              <cybox:Object id="NCCIC:Object-92ef02e1-4fae-11e6-8b2b-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">videos.popanalysis.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-b445cd15-e322-4737-86f3-3c8effe40f32" timestamp="2016-07-22T02:14:30.365000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-6706a560-ff6b-4819-996e-6cab55d984f8">
+              <cybox:Object id="NCCIC:Object-92ef02e4-4fae-11e6-b829-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">wciom.hdskip.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-f518c7a0-4a82-4408-80b2-bc39e9b04db8" timestamp="2016-07-22T02:14:30.366000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-533450a1-c583-470e-bff5-2fc6d37df763">
+              <cybox:Object id="NCCIC:Object-92ef29f1-4fae-11e6-8c30-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">westing17.freeddns.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-a52b9eaf-8c62-46f9-844a-3c701ef323f1" timestamp="2016-07-22T02:14:30.366000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-df414182-3ff7-4d71-91f1-f28d516bc5fe">
+              <cybox:Object id="NCCIC:Object-92f2101f-4fae-11e6-991b-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">www.gameplayer.compress.to</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-f4426f5f-bd2a-4f0c-9766-3c302861cc6b" timestamp="2016-07-22T02:14:30.366000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-550cbe36-ed59-4051-b96a-079bcdbe987d">
+              <cybox:Object id="NCCIC:Object-92f23730-4fae-11e6-a86d-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">www.msname.org</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-0daa42f2-bb2a-4800-abdc-7b7a3675cad3" timestamp="2016-07-22T02:14:30.366000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-65499544-ac3a-43cd-bd16-510661cb514b">
+              <cybox:Object id="NCCIC:Object-92f23733-4fae-11e6-a8d3-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">www.troubleble.longmusic.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-46320136-ae73-45d2-b6ef-725411ae4647" timestamp="2016-07-22T02:14:30.366000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-e5af9f7e-1c18-48f1-84fe-f557cf7a3882">
+              <cybox:Object id="NCCIC:Object-92f25e40-4fae-11e6-82bb-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">xh.hdskip.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-148f97b4-421f-4ae8-8696-26d8c9426bcc" timestamp="2016-07-22T02:14:30.366000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-31ea8f12-b9a8-44b2-a5a5-3f6faca6fcf0">
+              <cybox:Object id="NCCIC:Object-92f25e43-4fae-11e6-90f1-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">xvbvpn1.dyndns.biz</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-48e267ae-24af-430c-be85-8edcf0132296" timestamp="2016-07-22T02:14:30.366000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-86a700e3-e0d6-4dff-abca-b57c701049da">
+              <cybox:Object id="NCCIC:Object-92f2854f-4fae-11e6-9d16-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">yj520a.vicp.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-a0b26134-9d05-4c01-8712-a2d231b555e1" timestamp="2016-07-22T02:14:30.366000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-6197c56e-f6a7-40d4-9a11-3d7372aa84f2">
+              <cybox:Object id="NCCIC:Object-92f28552-4fae-11e6-b26d-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">zaa.msname.org</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-e9b0d0ec-e2e2-48dd-8a15-667af2bfe561" timestamp="2016-07-22T02:14:30.366000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ac32daf6-f6fd-4573-8295-06a9446dd7c7">
+              <cybox:Object id="NCCIC:Object-92f2ac61-4fae-11e6-9a26-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">zjjjjjjjjjw.eicp.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-8d412d8e-c0f1-4f3e-8389-18c97519c8b0" timestamp="2016-07-22T02:14:30.366000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-41dbecb9-84cf-49bc-8cec-797f83fb2bb6">
+              <cybox:Object id="NCCIC:Object-92f2ac64-4fae-11e6-823e-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">zjjjjjjjjjw.wicp.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-50a85663-518e-4615-9558-997cd715361f" timestamp="2016-07-22T02:14:30.367000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-53eb77c5-4151-4db1-bbe8-fbec2135d4aa">
+              <cybox:Object id="NCCIC:Object-92f2ac67-4fae-11e6-bd94-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">zym01284.imwork.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-be261d26-f85a-467d-bfdd-7b90faa9158b" timestamp="2016-07-22T02:14:30.367000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-af701f70-9164-4bdd-9f95-3527ad2f4737">
+              <cybox:Object id="NCCIC:Object-92f2d371-4fae-11e6-9e6a-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">103.30.43.116</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-10fbb6ff-a022-4327-8432-328c207dc1a1" timestamp="2016-07-22T02:14:30.367000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d47fcece-1c4e-40be-9cfc-605d5db02679">
+              <cybox:Object id="NCCIC:Object-92f2d374-4fae-11e6-b313-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">111.196.103.144</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-80724139-0a52-48d0-a022-83c0c1d97b50" timestamp="2016-07-22T02:14:30.367000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-930ba10f-a45f-482f-91ef-50726d88f049">
+              <cybox:Object id="NCCIC:Object-92f2fa81-4fae-11e6-8300-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">113.123.217.242</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-dcad97cb-910e-4dc6-ae2d-05aa69ab6997" timestamp="2016-07-22T02:14:30.367000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-8f093107-d7b9-4c76-9f80-aa16dca5b2fa">
+              <cybox:Object id="NCCIC:Object-92f2fa84-4fae-11e6-a5e9-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">114.248.110.202</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-b4f17ade-b4e7-415e-b039-77c38da40c74" timestamp="2016-07-22T02:14:30.367000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-fde258a3-4497-4769-ae11-0a867b8b6225">
+              <cybox:Object id="NCCIC:Object-92f32192-4fae-11e6-882b-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">114.248.80.80</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-3f25851b-7668-4d46-a288-461b592112be" timestamp="2016-07-22T02:14:30.367000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-657366c9-f5c1-4f81-ac18-d79fd334e226">
+              <cybox:Object id="NCCIC:Object-92f32195-4fae-11e6-91f4-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">114.248.84.238</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-09679d57-80d9-4ba9-a8dd-aee7b05f31bf" timestamp="2016-07-22T02:14:30.367000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-c672d16a-67e9-4203-9a37-f9ef8e83822d">
+              <cybox:Object id="NCCIC:Object-92f348a1-4fae-11e6-a9ff-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">114.248.89.176</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-1212795f-19ac-4c37-baa8-0d8363f08135" timestamp="2016-07-22T02:14:30.367000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-754d3c55-40b0-44e9-96a0-bfd199dfeb50">
+              <cybox:Object id="NCCIC:Object-92f348a4-4fae-11e6-aeac-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">116.212.115.12</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-ee570c46-54fe-493a-bf07-a51732fa2212" timestamp="2016-07-22T02:14:30.367000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-1d0dbd77-8181-4f21-9732-51d547769158">
+              <cybox:Object id="NCCIC:Object-92f36fb0-4fae-11e6-bc5d-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">118.193.147.115</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-66d35bcd-22db-4089-802c-7c5436af3830" timestamp="2016-07-22T02:14:30.368000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-c575ac82-9098-4a7c-af89-69ff92b08629">
+              <cybox:Object id="NCCIC:Object-92f36fb3-4fae-11e6-a35a-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">123.119.209.201</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-f3a0a2e8-cc49-4af6-b47a-050a292bba7a" timestamp="2016-07-22T02:14:30.368000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-83d60d49-3717-42d2-ba3e-1435c099f835">
+              <cybox:Object id="NCCIC:Object-92f396c0-4fae-11e6-8e5a-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">123.120.102.149</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-8474d1b1-318b-4795-b613-8714e2744bfb" timestamp="2016-07-22T02:14:30.368000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-6499a1c8-2080-4a28-8b8d-583d0b0202f9">
+              <cybox:Object id="NCCIC:Object-92f396c3-4fae-11e6-9713-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">123.120.108.244</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-5d93577f-1fa1-452d-8bd9-bf872b362650" timestamp="2016-07-22T02:14:30.368000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-50b86f26-32c2-4a8f-99aa-3596c0b716bf">
+              <cybox:Object id="NCCIC:Object-92f3bdcf-4fae-11e6-b88d-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">123.120.109.36</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-e265daf7-9e5a-4221-a64d-10a2604ad1b8" timestamp="2016-07-22T02:14:30.368000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-fe17d45b-86b1-4124-9b6e-27dcbf46b395">
+              <cybox:Object id="NCCIC:Object-92f3bdd2-4fae-11e6-b0b7-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">123.120.115.213</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-da3290a8-bd76-4582-8845-a0e94a6b96f7" timestamp="2016-07-22T02:14:30.368000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-e35f6857-c6db-4f18-aca6-094101c7082b">
+              <cybox:Object id="NCCIC:Object-92f3bdd5-4fae-11e6-955b-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">123.120.121.51</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-3e7b2fe1-ff19-44bb-9271-a313d292489f" timestamp="2016-07-22T02:14:30.368000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-a9de0373-3743-4113-9465-0329832a10a8">
+              <cybox:Object id="NCCIC:Object-92f3e4df-4fae-11e6-8665-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">123.120.125.92</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-db940b4c-a44f-4f74-bed7-945bb3d90e93" timestamp="2016-07-22T02:14:30.369000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-281e1621-89c3-4408-a11d-54ad40be7117">
+              <cybox:Object id="NCCIC:Object-92f3e4e2-4fae-11e6-8a57-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">123.120.98.126</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-ddbf0b7d-b9db-4ed1-8298-28f71b07acc6" timestamp="2016-07-22T02:14:30.369000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-29fec7c5-5e80-45fb-aa22-11e06cf22e3c">
+              <cybox:Object id="NCCIC:Object-92f40bee-4fae-11e6-813f-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">123.122.144.32</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-9b262bda-362f-4e29-8e6b-f128457575e2" timestamp="2016-07-22T02:14:30.369000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-e3291db1-7557-42ae-8dfd-31f23d7addb6">
+              <cybox:Object id="NCCIC:Object-92f40bf1-4fae-11e6-bfce-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">123.122.147.13</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-f93f32c2-0615-47dc-a3a1-d31f9ae20248" timestamp="2016-07-22T02:14:30.369000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-031e1896-8142-4b8d-b52d-3160219a4a2f">
+              <cybox:Object id="NCCIC:Object-92f43300-4fae-11e6-981b-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">123.122.148.136</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-954b0f0b-b206-4425-8f91-15896fdbfd0a" timestamp="2016-07-22T02:14:30.369000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3e90b97c-2b9b-41e1-90ed-7bb7861b9acb">
+              <cybox:Object id="NCCIC:Object-92f43303-4fae-11e6-90a2-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">123.122.149.190</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-91e58e0a-7759-46a1-a4ab-4cbf90a07ed6" timestamp="2016-07-22T02:14:30.369000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-4d12c3aa-5694-4e00-9a20-4014f1d92e64">
+              <cybox:Object id="NCCIC:Object-92f45a0f-4fae-11e6-a0bc-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">193.138.230.142</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-6d1bba59-0e77-477f-b999-3cfaf69336db" timestamp="2016-07-22T02:14:30.369000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-35cba449-dc1c-40ef-9df0-52d1b9c8e7e4">
+              <cybox:Object id="NCCIC:Object-92f4811e-4fae-11e6-a4f4-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">193.138.230.172</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-ca7b12a5-8f3c-45f1-a35b-f745eee05026" timestamp="2016-07-22T02:14:30.369000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-bf5cc5ae-4e57-4663-af83-9f1bbffc8160">
+              <cybox:Object id="NCCIC:Object-92f48121-4fae-11e6-95d4-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">198.74.116.100</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-7c02a8d8-97f0-4d78-8388-1ab9955a6ead" timestamp="2016-07-22T02:14:30.369000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-75e5aa0c-bd91-4a4b-9225-d0b7ae95d04f">
+              <cybox:Object id="NCCIC:Object-92f4a830-4fae-11e6-a116-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">221.223.238.99</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-183d1c06-821c-4a87-8804-a721ffab7ccd" timestamp="2016-07-22T02:14:30.370000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-c93f8bb5-c9d4-4e3e-a162-f8076675b389">
+              <cybox:Object id="NCCIC:Object-92f4a833-4fae-11e6-8aae-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">223.72.75.232</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-7a585d48-8c5f-40d7-a044-7b9243ae7e68" timestamp="2016-07-22T02:14:30.370000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-f0293be8-fd6d-49f3-a59e-0ef218de99ec">
+              <cybox:Object id="NCCIC:Object-92f4cf40-4fae-11e6-b5be-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">23.27.192.115</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-9410f3c3-e740-4176-b835-c43f95627b71" timestamp="2016-07-22T02:14:30.370000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 5408 16 - Indicators of Compromise - FO18</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-6240817a-1a86-4575-aea7-7ce9b27ff8d3">
+              <cybox:Object id="NCCIC:Object-92f4cf43-4fae-11e6-8bb4-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">77.4.7.92</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+        </stix:Indicators>
+        <stix:TTPs>
+          <stix:Kill_Chains>
+            <stixCommon:Kill_Chain definer="LMCO" id="NCCIC:Kill_Chain-2d8dc98b-9c21-4145-84f0-35c6d06e4125" name="LM Cyber Kill Chain" number_of_phases="7" reference="http://www.lockheedmartin.com/content/dam/lockheed/data/corporate/documents/LM-White-Paper-Intel-Driven-Defense.pdf">
+              <stixCommon:Kill_Chain_Phase name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+              <stixCommon:Kill_Chain_Phase name="Weaponization" ordinality="2" phase_id="stix:KillChainPhase-445b4827-3cca-42bd-8421-f2e947133c16"/>
+              <stixCommon:Kill_Chain_Phase name="Delivery" ordinality="3" phase_id="stix:KillChainPhase-79a0e041-9d5f-49bb-ada4-8322622b162d"/>
+              <stixCommon:Kill_Chain_Phase name="Exploitation" ordinality="4" phase_id="stix:KillChainPhase-f706e4e7-53d8-44ef-967f-81535c9db7d0"/>
+              <stixCommon:Kill_Chain_Phase name="Installation" ordinality="5" phase_id="stix:KillChainPhase-e1e4e3f7-be3b-4b39-b80a-a593cfd99a4f"/>
+              <stixCommon:Kill_Chain_Phase name="Command and Control" ordinality="6" phase_id="stix:KillChainPhase-d6dc32b9-2538-4951-8733-3cb9ef1daae2"/>
+              <stixCommon:Kill_Chain_Phase name="Actions on Objectives" ordinality="7" phase_id="stix:KillChainPhase-786ca8f9-2d9a-4213-b38e-399af4a2e5d6"/>
+            </stixCommon:Kill_Chain>
+          </stix:Kill_Chains>
+        </stix:TTPs>
+      </stix:STIX_Package>
+    

@@ -1,0 +1,193 @@
+<stix:STIX_Package xmlns:AIS="http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2" xmlns:CISCP="http://us-cert.gov/ciscp" xmlns:DomainNameObj="http://cybox.mitre.org/objects#DomainNameObject-1" xmlns:NCCIC="http://www.us-cert.gov/nccic" xmlns:TOUMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1" xmlns:cybox="http://cybox.mitre.org/cybox-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2" xmlns:edh2="urn:edm:edh:cyber:v3" xmlns:edh2cyberMarking="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:edh2cyberMarkingAssert="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd" xmlns:indicator="http://stix.mitre.org/Indicator-2" xmlns:isa="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:marking="http://data-marking.mitre.org/Marking-1" xmlns:stix="http://stix.mitre.org/stix-1" xmlns:stix-ciq="http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1" xmlns:stixCommon="http://stix.mitre.org/common-1" xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1" xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1" xmlns:xal="urn:oasis:names:tc:ciq:xal:3" xmlns:xnl="urn:oasis:names:tc:ciq:xnl:3" xmlns:xpil="urn:oasis:names:tc:ciq:xpil:3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:taxii="http://taxii.mitre.org/messages/taxii_xml_binding-1" xmlns:taxii_11="http://taxii.mitre.org/messages/taxii_xml_binding-1.1" xmlns:tdq="http://taxii.mitre.org/query/taxii_default_query-1" id="NCCIC:STIX_Package-ff9d4c2d-9a04-439c-8f15-5e539b70e776" timestamp="2016-07-26T02:27:41+00:00" version="1.1.1" xsi:schemaLocation="http://cybox.mitre.org/common-2 http://cybox.mitre.org/XMLSchema/common/2.1/cybox_common.xsd http://cybox.mitre.org/cybox-2 http://cybox.mitre.org/XMLSchema/core/2.1/cybox_core.xsd http://cybox.mitre.org/default_vocabularies-2 http://cybox.mitre.org/XMLSchema/default_vocabularies/2.1/cybox_default_vocabularies.xsd http://cybox.mitre.org/objects#DomainNameObject-1 http://cybox.mitre.org/XMLSchema/objects/Domain_Name/1.0/Domain_Name_Object.xsd http://data-marking.mitre.org/Marking-1 http://stix.mitre.org/XMLSchema/data_marking/1.1.1/data_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1 http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.1.1/tlp_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1 http://stix.mitre.org/XMLSchema/extensions/marking/terms_of_use/1.0.1/terms_of_use_marking.xsd http://stix.mitre.org/Indicator-2 http://stix.mitre.org/XMLSchema/indicator/2.1.1/indicator.xsd http://stix.mitre.org/common-1 http://stix.mitre.org/XMLSchema/common/1.1.1/stix_common.xsd http://stix.mitre.org/default_vocabularies-1 http://stix.mitre.org/XMLSchema/default_vocabularies/1.1.1/stix_default_vocabularies.xsd http://stix.mitre.org/stix-1 http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd http://us-cert.gov/ciscp http://www.us-cert.gov/sites/default/files/STIX_Namespace/ciscp_vocab_v1.1.1.xsd http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2 http://www.us-cert.gov/sites/default/files/STIX_Namespace/AIS_Bundle_Marking_1.1.1_v1.0.xsd http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1 http://stix.mitre.org/XMLSchema/extensions/identity/ciq_3.0/1.1.1/ciq_3.0_identity.xsd urn:oasis:names:tc:ciq:xpil:3 http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsAssertionsType.v2.xsd urn:edm:edh:cyber:v3 http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_SD-EDH_Profile_Cyber.v3.xsd">
+        <stix:STIX_Header>
+          <stix:Title>IIR 4 213 0770 16 - Indicators of Compromise - FO00</stix:Title>
+          <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Indicators - Watchlist</stix:Package_Intent>
+          <stix:Description>IIR 4 213 0770 16 - Indicators of Compromise - FO00</stix:Description>
+          <stix:Profiles>
+            <stixCommon:Profile>AIS Profile v1.1</stixCommon:Profile>
+          </stix:Profiles>
+          <stix:Handling>
+            <marking:Marking>
+              <marking:Controlled_Structure>//node() | //@*</marking:Controlled_Structure>
+              <marking:Marking_Structure xsi:type="AIS:AISMarkingStructure">
+                <AIS:Not_Proprietary CISA_Proprietary="false">
+                  <AIS:AISConsent consent="EVERYONE"/>
+                  <AIS:TLPMarking color="AMBER"/>
+                </AIS:Not_Proprietary>
+              </marking:Marking_Structure>
+            </marking:Marking>
+          </stix:Handling>
+          <stix:Information_Source>
+            <stixCommon:Contributing_Sources>
+              <stixCommon:Source>
+                <stixCommon:Identity xsi:type="stix-ciq:CIQIdentity3.0InstanceType">
+                  <stix-ciq:Specification>
+                    <xpil:PartyName>
+                      <xnl:OrganisationName>
+                        <xnl:NameElement>NCCIC</xnl:NameElement>
+                      </xnl:OrganisationName>
+                    </xpil:PartyName>
+                    <xpil:Addresses>
+                      <xpil:Address>
+                        <xal:Country>
+                          <xal:NameElement xal:NameCode="US" xal:NameCodeType="ISO_3166-1_alpha-2"/>
+                        </xal:Country>
+                        <xal:AdministrativeArea>
+                          <xal:NameElement xal:NameCode="US-DC" xal:NameCodeType="ISO_3166-2"/>
+                        </xal:AdministrativeArea>
+                      </xpil:Address>
+                    </xpil:Addresses>
+                    <xpil:OrganisationInfo xpil:IndustryType="Information Technology Sector"/>
+                  </stix-ciq:Specification>
+                </stixCommon:Identity>
+                <stixCommon:Tools>
+                  <cyboxCommon:Tool>
+                    <cyboxCommon:Metadata>
+                      <cyboxCommon:Value>AIS</cyboxCommon:Value>
+                    </cyboxCommon:Metadata>
+                  </cyboxCommon:Tool>
+                </stixCommon:Tools>
+              </stixCommon:Source>
+            </stixCommon:Contributing_Sources>
+            <stixCommon:Time>
+              <cyboxCommon:Produced_Time>2016-07-26T02:54:17Z</cyboxCommon:Produced_Time>
+            </stixCommon:Time>
+          </stix:Information_Source>
+        </stix:STIX_Header>
+        <stix:Indicators>
+          <stix:Indicator id="NCCIC:Indicator-38a1bbee-a09d-4e44-8bc8-b25ce21462b7" timestamp="2016-07-26T02:27:46.253000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 0770 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-bdf950b7-0bbd-4943-b6e6-2bd37c74a3f9">
+              <cybox:Object id="NCCIC:Object-73e0e170-52d8-11e6-916e-eccd6dca155c">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">goodlookfox.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-c1b19bbc-96e3-4980-a8d3-8f800450ae67" timestamp="2016-07-26T02:27:46.254000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 0770 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-0f35f1aa-1d36-4da5-b226-c81c7e8492cf">
+              <cybox:Object id="NCCIC:Object-73e10881-52d8-11e6-b268-eccd6dca155c">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">gsm-ec.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-df6b9e44-4b65-4b69-96f6-d707aca9deef" timestamp="2016-07-26T02:27:46.254000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 0770 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-2e9940e7-2434-46b3-9d50-b18bb56aedf5">
+              <cybox:Object id="NCCIC:Object-73e12f91-52d8-11e6-bd98-eccd6dca155c">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">zonasitalianrestaurant.net</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-9bce0f45-ae80-4dbf-a601-829e2fc16785" timestamp="2016-07-26T02:27:46.254000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 0770 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-521afc59-8089-406b-92ae-bffd3835ff6c">
+              <cybox:Object id="NCCIC:Object-73e12f94-52d8-11e6-a66e-eccd6dca155c">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">graffiti-group.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-4a6e4d2a-2580-45a0-bbe3-e8e3e1d23f50" timestamp="2016-07-26T02:27:46.254000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 0770 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3541e46e-bf96-4ce9-a1a6-b13a445b9379">
+              <cybox:Object id="NCCIC:Object-73e156a2-52d8-11e6-8018-eccd6dca155c">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">zwznaxmf.in</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-81a88883-033f-44b4-865f-50ce960eaf62" timestamp="2016-07-26T02:27:46.254000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 0770 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-973f186a-9001-40e0-a627-c7554f84858c">
+              <cybox:Object id="NCCIC:Object-73e17dae-52d8-11e6-a811-eccd6dca155c">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">6ebtu8ibvhwnog6sqy.biz</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-4762ffe8-90e0-48a0-ae8c-198f817013f1" timestamp="2016-07-26T02:27:46.254000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 0770 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-bd27591d-fb4c-45d8-9052-d67d2bdde41e">
+              <cybox:Object id="NCCIC:Object-73e17db1-52d8-11e6-b39c-eccd6dca155c">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">tornishineynarkkek.org</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-f52ea286-8d94-49b9-ab51-17998d285320" timestamp="2016-07-26T02:27:46.254000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 0770 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-69f79a37-c1ef-46e1-9ae8-41955dfe25b4">
+              <cybox:Object id="NCCIC:Object-73e1a4c0-52d8-11e6-92c4-eccd6dca155c">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">takemebeer.org</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-53cd0f54-29ff-4930-92b1-a1a5acee8fc3" timestamp="2016-07-26T02:27:46.254000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 0770 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-90cf0cda-242a-4d2b-8047-95133c361ccd">
+              <cybox:Object id="NCCIC:Object-73e1a4c3-52d8-11e6-863c-eccd6dca155c">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">rightwell.su</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-1a1273e2-2339-47f6-8609-bf14d9a2b39e" timestamp="2016-07-26T02:27:46.254000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 213 0770 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-5ae77684-1cff-406b-9e09-23697255cee7">
+              <cybox:Object id="NCCIC:Object-73e1cbcf-52d8-11e6-b07d-eccd6dca155c">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">masabodhi.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+        </stix:Indicators>
+        <stix:TTPs>
+          <stix:Kill_Chains>
+            <stixCommon:Kill_Chain definer="LMCO" id="NCCIC:Kill_Chain-2d8dc98b-9c21-4145-84f0-35c6d06e4125" name="LM Cyber Kill Chain" number_of_phases="7" reference="http://www.lockheedmartin.com/content/dam/lockheed/data/corporate/documents/LM-White-Paper-Intel-Driven-Defense.pdf">
+              <stixCommon:Kill_Chain_Phase name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+              <stixCommon:Kill_Chain_Phase name="Weaponization" ordinality="2" phase_id="stix:KillChainPhase-445b4827-3cca-42bd-8421-f2e947133c16"/>
+              <stixCommon:Kill_Chain_Phase name="Delivery" ordinality="3" phase_id="stix:KillChainPhase-79a0e041-9d5f-49bb-ada4-8322622b162d"/>
+              <stixCommon:Kill_Chain_Phase name="Exploitation" ordinality="4" phase_id="stix:KillChainPhase-f706e4e7-53d8-44ef-967f-81535c9db7d0"/>
+              <stixCommon:Kill_Chain_Phase name="Installation" ordinality="5" phase_id="stix:KillChainPhase-e1e4e3f7-be3b-4b39-b80a-a593cfd99a4f"/>
+              <stixCommon:Kill_Chain_Phase name="Command and Control" ordinality="6" phase_id="stix:KillChainPhase-d6dc32b9-2538-4951-8733-3cb9ef1daae2"/>
+              <stixCommon:Kill_Chain_Phase name="Actions on Objectives" ordinality="7" phase_id="stix:KillChainPhase-786ca8f9-2d9a-4213-b38e-399af4a2e5d6"/>
+            </stixCommon:Kill_Chain>
+          </stix:Kill_Chains>
+        </stix:TTPs>
+      </stix:STIX_Package>
+    

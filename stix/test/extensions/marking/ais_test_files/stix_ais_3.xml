@@ -1,0 +1,714 @@
+<stix:STIX_Package xmlns:AIS="http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2" xmlns:CISCP="http://us-cert.gov/ciscp" xmlns:DomainNameObj="http://cybox.mitre.org/objects#DomainNameObject-1" xmlns:NCCIC="http://www.us-cert.gov" xmlns:TOUMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1" xmlns:cybox="http://cybox.mitre.org/cybox-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2" xmlns:edh2="urn:edm:edh:cyber:v3" xmlns:edh2cyberMarking="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:edh2cyberMarkingAssert="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd" xmlns:indicator="http://stix.mitre.org/Indicator-2" xmlns:isa="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:marking="http://data-marking.mitre.org/Marking-1" xmlns:simpleMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1" xmlns:stix="http://stix.mitre.org/stix-1" xmlns:stix-ciq="http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1" xmlns:stixCommon="http://stix.mitre.org/common-1" xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1" xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1" xmlns:xal="urn:oasis:names:tc:ciq:xal:3" xmlns:xnl="urn:oasis:names:tc:ciq:xnl:3" xmlns:xpil="urn:oasis:names:tc:ciq:xpil:3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:taxii="http://taxii.mitre.org/messages/taxii_xml_binding-1" xmlns:taxii_11="http://taxii.mitre.org/messages/taxii_xml_binding-1.1" xmlns:tdq="http://taxii.mitre.org/query/taxii_default_query-1" id="NCCIC:STIX_Package-2d7c38c9-d9ca-4203-9e58-a5aa8c969414" timestamp="2016-07-30T01:52:58Z" version="1.1.1" xsi:schemaLocation="http://cybox.mitre.org/common-2 http://cybox.mitre.org/XMLSchema/common/2.1/cybox_common.xsd http://cybox.mitre.org/cybox-2 http://cybox.mitre.org/XMLSchema/core/2.1/cybox_core.xsd http://cybox.mitre.org/default_vocabularies-2 http://cybox.mitre.org/XMLSchema/default_vocabularies/2.1/cybox_default_vocabularies.xsd http://cybox.mitre.org/objects#DomainNameObject-1 http://cybox.mitre.org/XMLSchema/objects/Domain_Name/1.0/Domain_Name_Object.xsd http://data-marking.mitre.org/Marking-1 http://stix.mitre.org/XMLSchema/data_marking/1.1.1/data_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1 http://stix.mitre.org/XMLSchema/extensions/marking/simple/1.1.1/simple_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1 http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.1.1/tlp_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1 http://stix.mitre.org/XMLSchema/extensions/marking/terms_of_use/1.0.1/terms_of_use_marking.xsd http://stix.mitre.org/Indicator-2 http://stix.mitre.org/XMLSchema/indicator/2.1.1/indicator.xsd http://stix.mitre.org/common-1 http://stix.mitre.org/XMLSchema/common/1.1.1/stix_common.xsd http://stix.mitre.org/default_vocabularies-1 http://stix.mitre.org/XMLSchema/default_vocabularies/1.1.1/stix_default_vocabularies.xsd http://stix.mitre.org/stix-1 http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd http://us-cert.gov/ciscp http://www.us-cert.gov/sites/default/files/STIX_Namespace/ciscp_vocab_v1.1.1.xsd http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2 http://www.us-cert.gov/sites/default/files/STIX_Namespace/AIS_Bundle_Marking_1.1.1_v1.0.xsd http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1 http://stix.mitre.org/XMLSchema/extensions/identity/ciq_3.0/1.1.1/ciq_3.0_identity.xsd urn:oasis:names:tc:ciq:xpil:3 http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsAssertionsType.v2.xsd urn:edm:edh:cyber:v3 http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_SD-EDH_Profile_Cyber.v3.xsd http://stix.mitre.org/common-1 http://stix.mitre.org/XMLSchema/common/1.1.1/stix_common.xsd http://stix.mitre.org/stix-1 http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd http://stix.mitre.org/default_vocabularies-1 http://stix.mitre.org/XMLSchema/default_vocabularies/1.1.1/stix_default_vocabularies.xsd http://cybox.mitre.org/common-2 http://cybox.mitre.org/XMLSchema/common/2.1/cybox_common.xsd">
+        <stix:STIX_Header>
+          <stix:Title>IR 4 213 5416 16</stix:Title>
+          <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Indicators - Watchlist</stix:Package_Intent>
+          <stix:Description>IR 4 213 5416 16</stix:Description>
+          <stix:Handling>
+            <marking:Marking>
+              <marking:Controlled_Structure>//node() | //@*</marking:Controlled_Structure>
+              <marking:Marking_Structure xsi:type="AIS:AISMarkingStructure">
+                <AIS:Not_Proprietary CISA_Proprietary="false">
+                  <AIS:AISConsent consent="EVERYONE"/>
+                  <AIS:TLPMarking color="AMBER"/>
+                </AIS:Not_Proprietary>
+              </marking:Marking_Structure>
+            </marking:Marking>
+          </stix:Handling>
+          <stix:Information_Source>
+            <stixCommon:Contributing_Sources>
+              <stixCommon:Source>
+                <stixCommon:Identity xsi:type="stix-ciq:CIQIdentity3.0InstanceType">
+                  <stix-ciq:Specification>
+                    <xpil:PartyName>
+                      <xnl:OrganisationName>
+                        <xnl:NameElement>NCCIC</xnl:NameElement>
+                      </xnl:OrganisationName>
+                    </xpil:PartyName>
+                    <xpil:Addresses>
+                      <xpil:Address>
+                        <xal:Country>
+                          <xal:NameElement xal:NameCode="US" xal:NameCodeType="ISO_3166-1_alpha-2"/>
+                        </xal:Country>
+                        <xal:AdministrativeArea>
+                          <xal:NameElement xal:NameCode="US-DC" xal:NameCodeType="ISO_3166-2"/>
+                        </xal:AdministrativeArea>
+                      </xpil:Address>
+                    </xpil:Addresses>
+                    <xpil:OrganisationInfo xpil:IndustryType="Information Technology Sector"/>
+                  </stix-ciq:Specification>
+                </stixCommon:Identity>
+                <stixCommon:Tools>
+                  <cyboxCommon:Tool>
+                    <cyboxCommon:Metadata>
+                      <cyboxCommon:Value>AIS</cyboxCommon:Value>
+                    </cyboxCommon:Metadata>
+                  </cyboxCommon:Tool>
+                </stixCommon:Tools>
+              </stixCommon:Source>
+            </stixCommon:Contributing_Sources>
+            <stixCommon:Time>
+              <cyboxCommon:Produced_Time>2016-07-30T01:43:14Z</cyboxCommon:Produced_Time>
+            </stixCommon:Time>
+          </stix:Information_Source>
+        </stix:STIX_Header>
+        <stix:Indicators>
+          <stix:Indicator id="NCCIC:Indicator-e9ed166f-bfec-4fbf-89f3-aa828e93ca89" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-195e1352-d485-40ad-b90f-d48a79b15d17">
+              <cybox:Object id="NCCIC:Object-386e095f-cd50-492f-aff9-4cfc9b72c0dd">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">ROYARD.RU</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-eb528e1a-d4fc-4cf2-ad36-fdeae3ccdbe0" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d23fe94d-e5ef-4f9c-ae77-476aa96b016f">
+              <cybox:Object id="NCCIC:Object-8da84119-02db-41db-9355-a405780559e4">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">LUZZ.POKER</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-57ef846c-cc43-4108-afdc-6d9cf7e6516e" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-dd6d8a1e-c0b2-40fa-b310-fdf76fc658ac">
+              <cybox:Object id="NCCIC:Object-3dccf88e-7354-49fc-a006-4a1194dda9e9">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">LUZZ.TRADE</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-4e92543e-6b59-4728-9348-b335df63eaa9" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-38c3359f-7f0c-4ebb-a8c1-d79261750ee7">
+              <cybox:Object id="NCCIC:Object-cc84eaea-5e71-4d19-8168-b7ceacdb2cce">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">CHINCHINPHINPHIN.COM</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-16018d12-49c5-4160-8e80-87e6ac5bfba0" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-1ca2189f-ff56-4656-8462-4d850967896d">
+              <cybox:Object id="NCCIC:Object-d0be9c05-d547-4df1-938b-d158817096f5">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">ICSPAYPROCESSING.COM</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-cd8339f3-c576-4687-9301-9e2adc031d88" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-fa9ae6da-3148-414b-baeb-c4e0a6b6b079">
+              <cybox:Object id="NCCIC:Object-718f720b-8cf9-4500-a4a2-52fac94f56ee">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">ONLINEBANKINGCIBC.COM</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-83ff9661-da73-4415-8c15-2ab00ef4569d" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-cfd1e125-beaf-4d6f-be69-fc5397eb09e9">
+              <cybox:Object id="NCCIC:Object-b299c62c-283d-4233-8dce-da744cf62e87">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">SERVICES-E-CARTEBLEUE.COM</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-21d95973-d55c-4bc3-831f-4872cda204bc" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-1d518c30-5025-422f-bd8c-3eefa1a3dca5">
+              <cybox:Object id="NCCIC:Object-3c0748e2-42be-43ee-9d7e-8b6cc1f282de">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">VAUNTHY.RU</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-f5f421d5-c1cf-4c93-9f1e-7734aeffcd14" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ed058b96-b6e7-448b-91f9-5a89acca7186">
+              <cybox:Object id="NCCIC:Object-c35b3644-134f-45a7-a865-199eaa86e885">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">LIOKGAMEMU.AT</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-c4b0b8f4-ff86-420b-90d3-a6e7b2c99967" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ee12dc81-288b-48bc-9771-b4dfdf6839e6">
+              <cybox:Object id="NCCIC:Object-3f750f74-be97-44e0-a718-187a078c8fdf">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">SERVERQURRYES.RU</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-eff6a3d8-07db-4f89-9983-1ff90cbe1d59" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-7930356e-f8bc-4c25-ade1-4e60a3de4ffa">
+              <cybox:Object id="NCCIC:Object-1815e081-d00e-46ae-ae32-afcc7f022bf8">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">ROBINSON98.COM</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-0474bd9f-e65d-4207-b51e-1243905decef" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-6049b1eb-758a-4183-973a-dbbfc70c5a36">
+              <cybox:Object id="NCCIC:Object-9f797511-c3f2-46da-8703-aed6ac976539">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">MONPASEVASHUMAMIN.CM</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-4f0d59de-570a-4100-b017-a1093e5aa051" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-c662e8b5-9ca0-40d8-af31-e6c22c8f5014">
+              <cybox:Object id="NCCIC:Object-57bc8132-74e4-4617-8e1d-ee4700fa8fca">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">THEWHICHCORRESTSEC.RU</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-4bebb85e-5b3e-4fed-824f-1db38b4fca31" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-b66f4850-af0f-41e0-ba41-cce694e12137">
+              <cybox:Object id="NCCIC:Object-93ac7681-1167-417c-a03c-279da9fc3e8e">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">LICTHESHALLUNITEDENTEIT.RU</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-b02280ee-de59-44e0-9118-8b7f1c93de8f" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-79d0a407-471c-4b76-9eae-53687e2ee245">
+              <cybox:Object id="NCCIC:Object-2474ec39-8fdb-4df0-8601-4b10e9234fda">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">DEPENDANTZK.TOP</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-bade4ba8-359a-4083-97fd-c4eef1c70850" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-a89ee603-4ab0-4414-a6a0-7d5ef1635431">
+              <cybox:Object id="NCCIC:Object-a82ce3b8-eb38-418a-a0e0-804e8b04d416">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">MECHANISMWT.TOP</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-a9aa6978-dc7e-4e1b-bd78-6ebcb332a2a3" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-f11e5e75-cd05-41cc-80cc-d8e94088b558">
+              <cybox:Object id="NCCIC:Object-42489a8d-2cca-44b4-a04a-487da8248922">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">PRONOUNCEMF.TOP</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-3f59afe4-9621-4b06-b301-f4ed47289e6b" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-e66ff476-81fc-46bd-95fb-1a5b5a2b63ef">
+              <cybox:Object id="NCCIC:Object-3582d052-fa7e-4c53-aa66-ef2a24c9daa8">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">REBELLIOUSHG.TOP</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-9fa64fae-7af7-467d-975d-2c3ddd9bd7c3" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-edcb7cb1-8e43-49be-ac5c-da21d537c8c4">
+              <cybox:Object id="NCCIC:Object-174cd393-a7be-4f29-8704-f0e77237b373">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">REPETITIONXC.TOP</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-1aa71029-77d7-4f87-ac56-6051d6d4fb56" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-5373658e-189a-4144-9e39-0c7fdb7b8f49">
+              <cybox:Object id="NCCIC:Object-b96bb0ca-c147-4685-bae2-417bd443d8ea">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">DGWDUT1K3.COM</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-a88e345b-473e-4941-894a-3303354ec5d8" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-9cdeed79-a739-445e-b74a-8b873d45d37f">
+              <cybox:Object id="NCCIC:Object-73915d0c-c01c-4ac7-86b8-c966fc974f82">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">QYVT5QPC1.COM</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-53d2f400-ec0c-45eb-870e-c90b90132a11" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-b6e6d847-9130-4daa-bd9d-9204035da7ab">
+              <cybox:Object id="NCCIC:Object-b5352af8-a84c-4359-b1cc-d7c63f8b26ed">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">LNXYVWJ.COM</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-741524db-5297-4693-afc8-bfbfbc6dd959" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-a2c59929-f4cf-485d-a22c-0834dc1004ae">
+              <cybox:Object id="NCCIC:Object-4873cded-6594-477b-b4e6-0a7225957f5c">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">HQBUAYJQ.IN</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-0a1627e1-869a-4473-8391-0d8f613302d8" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-300740e8-ffa2-47ac-a479-05b03c8fb942">
+              <cybox:Object id="NCCIC:Object-6f2843b3-e0bd-4974-a20e-4fc601d954e9">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">ICSPAYSERVICE.COM</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-c137b180-f55e-49c4-96e0-9fe2589b0a09" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3e2ab6d2-97ed-47b7-b636-f10b6128dd93">
+              <cybox:Object id="NCCIC:Object-fdcff121-9b42-47a7-85f8-76eaada696e8">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">MOBILE-ROGERS.COM</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-758fa2a2-6513-4b5e-99ab-b47874118b38" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-4f2c7111-6f28-41ef-882b-5e17f3d1bda7">
+              <cybox:Object id="NCCIC:Object-2db6808a-8cff-4c25-b4b7-05688b87175a">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">VANILLA-MASTERCARD.COM</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-c1540c37-1825-4453-881f-30638e3ee774" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-f364bee0-a547-4036-b1d4-80cbf2cb0a5b">
+              <cybox:Object id="NCCIC:Object-acf1daa6-f502-432a-8cf6-4f579dafbc0a">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">CICBCOMMERCIALINTEREST.COM</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-7981021f-6899-48be-a31e-67195de088db" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>Malicious FQDN Indicator</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-f2f3acda-08ee-41b6-9539-e6485177949f">
+              <cybox:Object id="NCCIC:Object-eab16d1d-0d54-4760-a460-73ba25b437fa">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">VENGOSUPPORT.TW</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="simpleMarking:SimpleMarkingStructureType">
+                  <simpleMarking:Statement>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</simpleMarking:Statement>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted, distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid "need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+        </stix:Indicators>
+        <stix:TTPs>
+          <stix:Kill_Chains>
+            <stixCommon:Kill_Chain definer="LMCO" id="NCCIC:Kill_Chain-2d8dc98b-9c21-4145-84f0-35c6d06e4125" name="LM Cyber Kill Chain" number_of_phases="7" reference="http://www.lockheedmartin.com/content/dam/lockheed/data/corporate/documents/LM-White-Paper-Intel-Driven-Defense.pdf">
+              <stixCommon:Kill_Chain_Phase name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+              <stixCommon:Kill_Chain_Phase name="Weaponization" ordinality="2" phase_id="stix:KillChainPhase-445b4827-3cca-42bd-8421-f2e947133c16"/>
+              <stixCommon:Kill_Chain_Phase name="Delivery" ordinality="3" phase_id="stix:KillChainPhase-79a0e041-9d5f-49bb-ada4-8322622b162d"/>
+              <stixCommon:Kill_Chain_Phase name="Exploitation" ordinality="4" phase_id="stix:KillChainPhase-f706e4e7-53d8-44ef-967f-81535c9db7d0"/>
+              <stixCommon:Kill_Chain_Phase name="Installation" ordinality="5" phase_id="stix:KillChainPhase-e1e4e3f7-be3b-4b39-b80a-a593cfd99a4f"/>
+              <stixCommon:Kill_Chain_Phase name="Command and Control" ordinality="6" phase_id="stix:KillChainPhase-d6dc32b9-2538-4951-8733-3cb9ef1daae2"/>
+              <stixCommon:Kill_Chain_Phase name="Actions on Objectives" ordinality="7" phase_id="stix:KillChainPhase-786ca8f9-2d9a-4213-b38e-399af4a2e5d6"/>
+            </stixCommon:Kill_Chain>
+          </stix:Kill_Chains>
+        </stix:TTPs>
+      </stix:STIX_Package>
+    

@@ -1,0 +1,303 @@
+<stix:STIX_Package xmlns:AIS="http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2" xmlns:AddressObj="http://cybox.mitre.org/objects#AddressObject-2" xmlns:CISCP="http://us-cert.gov/ciscp" xmlns:DomainNameObj="http://cybox.mitre.org/objects#DomainNameObject-1" xmlns:FileObj="http://cybox.mitre.org/objects#FileObject-2" xmlns:MutexObj="http://cybox.mitre.org/objects#MutexObject-2" xmlns:NCCIC="http://www.us-cert.gov" xmlns:TOUMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1" xmlns:WinRegistryKeyObj="http://cybox.mitre.org/objects#WinRegistryKeyObject-2" xmlns:cybox="http://cybox.mitre.org/cybox-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2" xmlns:edh2="urn:edm:edh:cyber:v3" xmlns:edh2cyberMarking="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:edh2cyberMarkingAssert="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd" xmlns:indicator="http://stix.mitre.org/Indicator-2" xmlns:isa="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:marking="http://data-marking.mitre.org/Marking-1" xmlns:stix="http://stix.mitre.org/stix-1" xmlns:stix-ciq="http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1" xmlns:stixCommon="http://stix.mitre.org/common-1" xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1" xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1" xmlns:xal="urn:oasis:names:tc:ciq:xal:3" xmlns:xnl="urn:oasis:names:tc:ciq:xnl:3" xmlns:xpil="urn:oasis:names:tc:ciq:xpil:3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:taxii="http://taxii.mitre.org/messages/taxii_xml_binding-1" xmlns:taxii_11="http://taxii.mitre.org/messages/taxii_xml_binding-1.1" xmlns:tdq="http://taxii.mitre.org/query/taxii_default_query-1" id="NCCIC:STIX_Package-9e5c4b05-21b4-4589-b8af-5b65abba4393" timestamp="2016-07-28T17:30:47Z" version="1.1.1" xsi:schemaLocation="http://cybox.mitre.org/common-2 http://cybox.mitre.org/XMLSchema/common/2.1/cybox_common.xsd http://cybox.mitre.org/cybox-2 http://cybox.mitre.org/XMLSchema/core/2.1/cybox_core.xsd http://cybox.mitre.org/default_vocabularies-2 http://cybox.mitre.org/XMLSchema/default_vocabularies/2.1/cybox_default_vocabularies.xsd http://cybox.mitre.org/objects#AddressObject-2 http://cybox.mitre.org/XMLSchema/objects/Address/2.1/Address_Object.xsd http://cybox.mitre.org/objects#DomainNameObject-1 http://cybox.mitre.org/XMLSchema/objects/Domain_Name/1.0/Domain_Name_Object.xsd http://cybox.mitre.org/objects#FileObject-2 http://cybox.mitre.org/XMLSchema/objects/File/2.1/File_Object.xsd http://cybox.mitre.org/objects#MutexObject-2 http://cybox.mitre.org/XMLSchema/objects/Mutex/2.1/Mutex_Object.xsd http://cybox.mitre.org/objects#WinRegistryKeyObject-2 http://cybox.mitre.org/XMLSchema/objects/Win_Registry_Key/2.1/Win_Registry_Key_Object.xsd http://data-marking.mitre.org/Marking-1 http://stix.mitre.org/XMLSchema/data_marking/1.1.1/data_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1 http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.1.1/tlp_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1 http://stix.mitre.org/XMLSchema/extensions/marking/terms_of_use/1.0.1/terms_of_use_marking.xsd http://stix.mitre.org/Indicator-2 http://stix.mitre.org/XMLSchema/indicator/2.1.1/indicator.xsd http://stix.mitre.org/common-1 http://stix.mitre.org/XMLSchema/common/1.1.1/stix_common.xsd http://stix.mitre.org/default_vocabularies-1 http://stix.mitre.org/XMLSchema/default_vocabularies/1.1.1/stix_default_vocabularies.xsd http://stix.mitre.org/stix-1 http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd http://us-cert.gov/ciscp http://www.us-cert.gov/sites/default/files/STIX_Namespace/ciscp_vocab_v1.1.1.xsd http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2 http://www.us-cert.gov/sites/default/files/STIX_Namespace/AIS_Bundle_Marking_1.1.1_v1.0.xsd http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1 http://stix.mitre.org/XMLSchema/extensions/identity/ciq_3.0/1.1.1/ciq_3.0_identity.xsd urn:oasis:names:tc:ciq:xpil:3 http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsAssertionsType.v2.xsd urn:edm:edh:cyber:v3 http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_SD-EDH_Profile_Cyber.v3.xsd http://stix.mitre.org/common-1 http://stix.mitre.org/XMLSchema/common/1.1.1/stix_common.xsd http://stix.mitre.org/stix-1 http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd http://stix.mitre.org/default_vocabularies-1 http://stix.mitre.org/XMLSchema/default_vocabularies/1.1.1/stix_default_vocabularies.xsd http://cybox.mitre.org/common-2 http://cybox.mitre.org/XMLSchema/common/2.1/cybox_common.xsd">
+        <stix:STIX_Header>
+          <stix:Title>178598 16 Dated 20160725</stix:Title>
+          <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Indicators</stix:Package_Intent>
+          <stix:Description>178598 16
+
+R 252114Z JUL 16</stix:Description>
+          <stix:Handling>
+            <marking:Marking>
+              <marking:Controlled_Structure>//node() | //@*</marking:Controlled_Structure>
+              <marking:Marking_Structure xsi:type="AIS:AISMarkingStructure">
+                <AIS:Not_Proprietary CISA_Proprietary="false">
+                  <AIS:AISConsent consent="EVERYONE"/>
+                  <AIS:TLPMarking color="AMBER"/>
+                </AIS:Not_Proprietary>
+              </marking:Marking_Structure>
+            </marking:Marking>
+          </stix:Handling>
+          <stix:Information_Source>
+            <stixCommon:Contributing_Sources>
+              <stixCommon:Source>
+                <stixCommon:Identity xsi:type="stix-ciq:CIQIdentity3.0InstanceType">
+                  <stix-ciq:Specification>
+                    <xpil:PartyName>
+                      <xnl:OrganisationName>
+                        <xnl:NameElement>NCCIC</xnl:NameElement>
+                      </xnl:OrganisationName>
+                    </xpil:PartyName>
+                    <xpil:Addresses>
+                      <xpil:Address>
+                        <xal:Country>
+                          <xal:NameElement xal:NameCode="US" xal:NameCodeType="ISO_3166-1_alpha-2"/>
+                        </xal:Country>
+                        <xal:AdministrativeArea>
+                          <xal:NameElement xal:NameCode="US-DC" xal:NameCodeType="ISO_3166-2"/>
+                        </xal:AdministrativeArea>
+                      </xpil:Address>
+                    </xpil:Addresses>
+                    <xpil:OrganisationInfo xpil:IndustryType="Information Technology Sector"/>
+                  </stix-ciq:Specification>
+                </stixCommon:Identity>
+                <stixCommon:Tools>
+                  <cyboxCommon:Tool>
+                    <cyboxCommon:Metadata>
+                      <cyboxCommon:Value>AIS</cyboxCommon:Value>
+                    </cyboxCommon:Metadata>
+                  </cyboxCommon:Tool>
+                </stixCommon:Tools>
+              </stixCommon:Source>
+            </stixCommon:Contributing_Sources>
+            <stixCommon:Time>
+              <cyboxCommon:Produced_Time>2016-07-28T17:25:32Z</cyboxCommon:Produced_Time>
+            </stixCommon:Time>
+          </stix:Information_Source>
+        </stix:STIX_Header>
+        <stix:Indicators>
+          <stix:Indicator id="NCCIC:Indicator-f4b7320b-1bed-4eaa-8785-ca2dcf2cc675" timestamp="2016-07-28T17:30:47Z" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">File Hash Watchlist</indicator:Type>
+            <indicator:Description>178598 16
+
+R 252114Z JUL 16</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-9f397f6b-5628-465e-aae9-712686b89935">
+              <cybox:Object id="NCCIC:Object-89b98671-628b-4800-980c-139fb37d2310">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">oci.dll</FileObj:File_Name>
+                  <FileObj:Size_In_Bytes condition="Equals">231424</FileObj:Size_In_Bytes>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">F5C5BFB9BFA11B5BE89E6DAD71C0D6DB</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA1</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">E56303D1AAD7F365C881723920BBDC243BB95DD8</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2016-07-25T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-d6631e1e-1f34-415b-9bb6-eeae082e75e6" timestamp="2016-07-28T17:30:47Z" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">File Hash Watchlist</indicator:Type>
+            <indicator:Description>178598 16
+
+R 252114Z JUL 16</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-88d73091-b61e-4a39-a3b4-2f3e7225eb43">
+              <cybox:Object id="NCCIC:Object-b44d7145-c58a-4e40-87c4-2003ed2e2a1d">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">oci.dll</FileObj:File_Name>
+                  <FileObj:Size_In_Bytes condition="Equals">218112</FileObj:Size_In_Bytes>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">749B848797968B6365E4ED0C5C41F819</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA1</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">D5D788984394D220FD30B844ECD276CF5D7D9669</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2016-07-25T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-06a2f55b-b0ed-4e83-92f7-7dcacb23de16" timestamp="2016-07-28T17:30:47Z" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">File Hash Watchlist</indicator:Type>
+            <indicator:Description>178598 16
+
+R 252114Z JUL 16</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-13e638cf-16b7-4b94-8f8c-74aa8ac8a567">
+              <cybox:Object id="NCCIC:Object-4fa8994e-1e52-4dc2-b1df-26548d5b271f">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">oci_deocde.dll</FileObj:File_Name>
+                  <FileObj:Size_In_Bytes condition="Equals">252928</FileObj:Size_In_Bytes>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">86559C5CF06A2DE1E2F5E1DC36D7F6E1</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">SHA1</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">79F9DD3E4B665DE7DA2BCF5D27BFD2F68EC07C39</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2016-07-25T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-0d633cf3-3945-419c-b4d3-f6fdd4847aa4" timestamp="2016-07-28T17:30:47Z" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>178598 16
+
+R 252114Z JUL 16</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-66698390-e402-46b9-b913-ed5aa1d3a3ac">
+              <cybox:Object id="NCCIC:Object-27e37384-bbd7-4814-bca4-c6d75e4060fe">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">12.166.64.2</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2016-07-25T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-04eb868f-f3ce-4a4e-a0ac-30ec8fa4d408" timestamp="2016-07-28T17:30:47Z" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>178598 16
+
+R 252114Z JUL 16</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-9889c12f-258d-4965-846b-42d99dd59db7">
+              <cybox:Object id="NCCIC:Object-d8fb78f6-2e46-48f0-9b43-fb256f04087a">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">edjecasts.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2016-07-25T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-c2edf509-c2f8-49a9-9b92-3d086d111140" timestamp="2016-07-28T17:30:47Z" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious Registry Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Host Characteristics</indicator:Type>
+            <indicator:Description>178598 16
+
+R 252114Z JUL 16</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-4c76bdb3-8224-4511-bcee-f4f2abf76952">
+              <cybox:Object id="NCCIC:Object-32bb4d9a-dea0-445b-a932-e1ea01822531">
+                <cybox:Properties xsi:type="WinRegistryKeyObj:WindowsRegistryKeyObjectType">
+                  <WinRegistryKeyObj:Key condition="Equals">HKLM\SOFTWARE\MICROSOFT\Cryptography\RNG\Seed</WinRegistryKeyObj:Key>
+                  <WinRegistryKeyObj:Hive condition="Equals">HKEY_LOCAL_MACHINE</WinRegistryKeyObj:Hive>
+                  <WinRegistryKeyObj:Values>
+                    <WinRegistryKeyObj:Value/>
+                  </WinRegistryKeyObj:Values>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2016-07-25T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-f6bcd613-59a9-46c0-9d90-2e9a81ea6966" timestamp="2016-07-28T17:30:47Z" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious Mutex Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malware Artifacts</indicator:Type>
+            <indicator:Description>178598 16
+
+R 252114Z JUL 16</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-014fd7d5-d80a-4dde-9071-7336d7e07fa1">
+              <cybox:Object id="NCCIC:Object-9285ef25-dcee-47f3-9314-b8d97e31daf4">
+                <cybox:Properties xsi:type="MutexObj:MutexObjectType"/>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2016-07-25T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+        </stix:Indicators>
+        <stix:TTPs>
+          <stix:Kill_Chains>
+            <stixCommon:Kill_Chain definer="LMCO" id="NCCIC:Kill_Chain-2d8dc98b-9c21-4145-84f0-35c6d06e4125" name="LM Cyber Kill Chain" number_of_phases="7" reference="http://www.lockheedmartin.com/content/dam/lockheed/data/corporate/documents/LM-White-Paper-Intel-Driven-Defense.pdf">
+              <stixCommon:Kill_Chain_Phase name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+              <stixCommon:Kill_Chain_Phase name="Weaponization" ordinality="2" phase_id="stix:KillChainPhase-445b4827-3cca-42bd-8421-f2e947133c16"/>
+              <stixCommon:Kill_Chain_Phase name="Delivery" ordinality="3" phase_id="stix:KillChainPhase-79a0e041-9d5f-49bb-ada4-8322622b162d"/>
+              <stixCommon:Kill_Chain_Phase name="Exploitation" ordinality="4" phase_id="stix:KillChainPhase-f706e4e7-53d8-44ef-967f-81535c9db7d0"/>
+              <stixCommon:Kill_Chain_Phase name="Installation" ordinality="5" phase_id="stix:KillChainPhase-e1e4e3f7-be3b-4b39-b80a-a593cfd99a4f"/>
+              <stixCommon:Kill_Chain_Phase name="Command and Control" ordinality="6" phase_id="stix:KillChainPhase-d6dc32b9-2538-4951-8733-3cb9ef1daae2"/>
+              <stixCommon:Kill_Chain_Phase name="Actions on Objectives" ordinality="7" phase_id="stix:KillChainPhase-786ca8f9-2d9a-4213-b38e-399af4a2e5d6"/>
+            </stixCommon:Kill_Chain>
+          </stix:Kill_Chains>
+        </stix:TTPs>
+      </stix:STIX_Package>
+    

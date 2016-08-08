@@ -1,0 +1,221 @@
+<stix:STIX_Package xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:stix="http://stix.mitre.org/stix-1" xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1" xmlns:marking="http://data-marking.mitre.org/Marking-1" xmlns:AIS="http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2" xmlns:stixCommon="http://stix.mitre.org/common-1" xmlns:stix-ciq="http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1" xmlns:xpil="urn:oasis:names:tc:ciq:xpil:3" xmlns:xnl="urn:oasis:names:tc:ciq:xnl:3" xmlns:xal="urn:oasis:names:tc:ciq:xal:3" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:indicator="http://stix.mitre.org/Indicator-2" xmlns:cybox="http://cybox.mitre.org/cybox-2" xmlns:DomainNameObj="http://cybox.mitre.org/objects#DomainNameObject-1" xmlns:ttp="http://stix.mitre.org/TTP-1" xmlns:et="http://stix.mitre.org/ExploitTarget-1" xmlns:coa="http://stix.mitre.org/CourseOfAction-1" xmlns:NCCIC="https://www.us-cert.gov/" xsi:schemaLocation=" http://stix.mitre.org/stix-1 http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd  http://stix.mitre.org/default_vocabularies-1 http://stix.mitre.org/XMLSchema/default_vocabularies/1.1.1/stix_default_vocabularies.xsd  http://data-marking.mitre.org/Marking-1 http://stix.mitre.org/XMLSchema/data_marking/1.1.1/data_marking.xsd  http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2 http://www.us-cert.gov/sites/default/files/STIX_Namespace/AIS_Bundle_Marking_1.1.1_v1.0.xsd  http://stix.mitre.org/common-1 http://stix.mitre.org/XMLSchema/common/1.1.1/stix_common.xsd  http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1 http://stix.mitre.org/XMLSchema/extensions/identity/ciq_3.0/1.1.1/ciq_3.0_identity.xsd  urn:oasis:names:tc:ciq:xpil:3 http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd  http://cybox.mitre.org/common-2 http://cybox.mitre.org/XMLSchema/common/2.1/cybox_common.xsd  http://stix.mitre.org/Indicator-2 http://stix.mitre.org/XMLSchema/indicator/2.1.1/indicator.xsd  http://cybox.mitre.org/cybox-2 http://cybox.mitre.org/XMLSchema/core/2.1/cybox_core.xsd  http://cybox.mitre.org/objects#DomainNameObject-1 http://cybox.mitre.org/XMLSchema/objects/Domain_Name/1.0/Domain_Name_Object.xsd  http://stix.mitre.org/TTP-1 http://stix.mitre.org/XMLSchema/ttp/1.1.1/ttp.xsd  http://stix.mitre.org/ExploitTarget-1 http://stix.mitre.org/XMLSchema/exploit_target/1.1.1/exploit_target.xsd  http://stix.mitre.org/CourseOfAction-1 http://stix.mitre.org/XMLSchema/course_of_action/1.1.1/course_of_action.xsd  " version="1.1.1" id="NCCIC:Package-5db23985-e7d1-4e3a-a78e-d6be5a4b5f70" timestamp="2016-03-29T20:37:52.219Z">
+  <stix:STIX_Header>
+    <stix:Title>SQLi Sample 05</stix:Title>
+    <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Indicators - Watchlist</stix:Package_Intent>
+    <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Exploit Characterization</stix:Package_Intent>
+    <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Attack Pattern Characterization</stix:Package_Intent>
+    <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Courses of Action</stix:Package_Intent>
+    <stix:Description>This submission contains defensive measures (Course of Action - Title/Description)
+This submission contains new vulnerabilities (Exploit Target - Title/Description)
+This submission contains existing vulnerabilities (Exploit Target - CVE ids)
+This submission contains attack pattern characterization (TTP - Attack Pattern CAPEC ids)
+This submission contains indicator (Indicator - Observable)
+This submission links defensive measures to vulnerabilities (Exploit Target - Possible_COAs)
+This submission links attack patterns to vulnerabilities (TTP - Exploits)
+This submission links indicators to attack patterns (Indicators - Indicated_TTPs)
+
+
+
+--- SAMPLE ---
+Injection attacks occur when un-trusted data is sent to an interpreter which relays the data as part of a command or query. This data can deceive the interpreter into executing arbitrary commands or accessing data without proper authorization.
+One prominent form of injection attack called structured query language injection (SQLi) is a method which allows actors to communicate directly with a database by submitting SQL queries through vulnerable web applications.2 SQL is a computer language that provides the ability to store, manipulate, and retrieve data from a database and is necessary for web applications to communicate with databases.</stix:Description>
+    <stix:Handling>
+      <marking:Marking>
+        <marking:Controlled_Structure>//node()</marking:Controlled_Structure>
+        <marking:Marking_Structure xsi:type="AIS:AISMarkingStructure">
+          <AIS:Not_Proprietary CISA_Proprietary="false">
+            <AIS:AISConsent consent="NONE"/>
+            <AIS:TLPMarking color="AMBER"/>
+          </AIS:Not_Proprietary>
+        </marking:Marking_Structure>
+        <marking:Information_Source>
+          <stixCommon:Identity xsi:type="stix-ciq:CIQIdentity3.0InstanceType">
+            <stix-ciq:Specification>
+              <xpil:PartyName>
+                <xnl:OrganisationName>
+                  <xnl:NameElement>SAMPLE COMPANY NAME</xnl:NameElement>
+                </xnl:OrganisationName>
+              </xpil:PartyName>
+              <xpil:Addresses>
+                <xpil:Address>
+                  <xal:Country>
+                    <xal:NameElement xal:NameCode="US" xal:NameCodeType="ISO 3166-1 alpha-2"/>
+                  </xal:Country>
+                  <xal:AdministrativeArea>
+                    <xal:NameElement xal:NameCode="US-DC" xal:NameCodeType="ISO 3166-2"/>
+                  </xal:AdministrativeArea>
+                </xpil:Address>
+              </xpil:Addresses>
+              <xpil:OrganisationInfo xpil:IndustryType="Information Technology Sector"/>
+            </stix-ciq:Specification>
+          </stixCommon:Identity>
+          <stixCommon:Tools>
+            <cyboxCommon:Tool>
+              <cyboxCommon:Metadata>
+                <cyboxCommon:Value>EMAIL</cyboxCommon:Value>
+              </cyboxCommon:Metadata>
+            </cyboxCommon:Tool>
+          </stixCommon:Tools>
+        </marking:Information_Source>
+      </marking:Marking>
+    </stix:Handling>
+    <stix:Information_Source>
+      <stixCommon:Time/>
+    </stix:Information_Source>
+  </stix:STIX_Header>
+  <stix:Indicators>
+    <stix:Indicator xsi:type="indicator:IndicatorType" id="NCCIC:Indicator-a001b2c6-9662-4d8c-b5a7-a9904cd44aa3" timestamp="2016-03-29T21:20:24.344Z">
+      <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+      <indicator:Observable id="NCCIC:Observable-77b449b8-17ea-4052-a3ff-8733d816347f">
+        <cybox:Object id="NCCIC:Object-8fb7f3fe-4b78-4ca4-b98f-aeff08706d72">
+          <cybox:Properties xsi:type="DomainNameObj:DomainNameObjectType" type="FQDN">
+            <DomainNameObj:Value condition="Equals" is_case_sensitive="false" apply_condition="ANY">aisSubmissionSample.gov</DomainNameObj:Value>
+          </cybox:Properties>
+        </cybox:Object>
+      </indicator:Observable>
+      <indicator:Indicated_TTP>
+        <stixCommon:TTP idref="NCCIC:TTP-869399b1-b69c-4ab7-a9ff-1fbbde585044"/>
+      </indicator:Indicated_TTP>
+      <indicator:Indicated_TTP>
+        <stixCommon:TTP idref="NCCIC:TTP-0dee8cca-2447-4c42-b3ca-ba8b39d4b9fe"/>
+      </indicator:Indicated_TTP>
+      <indicator:Kill_Chain_Phases>
+        <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChain-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" kill_chain_name="LM Cyber Kill Chain" name=""/>
+      </indicator:Kill_Chain_Phases>
+    </stix:Indicator>
+    <stix:Indicator xsi:type="indicator:IndicatorType" id="NCCIC:Indicator-7ef27260-f156-45dc-a5c9-671276ae2440" timestamp="2016-03-29T21:20:24.344Z">
+      <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+      <indicator:Observable id="NCCIC:Observable-28138627-9c4b-4111-be69-04723e8b5dc3">
+        <cybox:Object id="NCCIC:Object-b87f5421-b85f-4f41-9486-546c3af9f6ca">
+          <cybox:Properties xsi:type="DomainNameObj:DomainNameObjectType" type="FQDN">
+            <DomainNameObj:Value condition="Equals" is_case_sensitive="false" apply_condition="ANY">aisSubmissionSample.org</DomainNameObj:Value>
+          </cybox:Properties>
+        </cybox:Object>
+      </indicator:Observable>
+      <indicator:Indicated_TTP>
+        <stixCommon:TTP idref="NCCIC:TTP-869399b1-b69c-4ab7-a9ff-1fbbde585044"/>
+      </indicator:Indicated_TTP>
+      <indicator:Indicated_TTP>
+        <stixCommon:TTP idref="NCCIC:TTP-0dee8cca-2447-4c42-b3ca-ba8b39d4b9fe"/>
+      </indicator:Indicated_TTP>
+      <indicator:Kill_Chain_Phases>
+        <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChain-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" kill_chain_name="LM Cyber Kill Chain" name=""/>
+      </indicator:Kill_Chain_Phases>
+    </stix:Indicator>
+    <stix:Indicator xsi:type="indicator:IndicatorType" id="NCCIC:Indicator-c89283f3-f795-486a-95fd-5469e89369ec" timestamp="2016-03-29T21:20:24.344Z">
+      <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+      <indicator:Observable id="NCCIC:Observable-caec1266-5f57-4bc3-948a-f125fca27aa5">
+        <cybox:Object id="NCCIC:Object-02596022-08bd-46fb-bfc2-591960846a7c">
+          <cybox:Properties xsi:type="DomainNameObj:DomainNameObjectType" type="FQDN">
+            <DomainNameObj:Value condition="Equals" is_case_sensitive="false" apply_condition="ANY">aisSubmissionSample.net</DomainNameObj:Value>
+          </cybox:Properties>
+        </cybox:Object>
+      </indicator:Observable>
+      <indicator:Indicated_TTP>
+        <stixCommon:TTP idref="NCCIC:TTP-869399b1-b69c-4ab7-a9ff-1fbbde585044"/>
+      </indicator:Indicated_TTP>
+      <indicator:Indicated_TTP>
+        <stixCommon:TTP idref="NCCIC:TTP-0dee8cca-2447-4c42-b3ca-ba8b39d4b9fe"/>
+      </indicator:Indicated_TTP>
+      <indicator:Kill_Chain_Phases>
+        <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChain-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" kill_chain_name="LM Cyber Kill Chain" name=""/>
+      </indicator:Kill_Chain_Phases>
+    </stix:Indicator>
+  </stix:Indicators>
+  <stix:TTPs>
+    <stix:TTP xsi:type="ttp:TTPType" id="NCCIC:TTP-869399b1-b69c-4ab7-a9ff-1fbbde585044" timestamp="2016-03-29T21:07:58.202Z">
+      <ttp:Behavior>
+        <ttp:Attack_Patterns>
+          <ttp:Attack_Pattern capec_id="CAPEC-152"/>
+        </ttp:Attack_Patterns>
+        <ttp:Exploits>
+          <ttp:Exploit idref="NCCIC:Exploit_Target-7721cf07-0d88-487a-ad6d-a448a4ce63f1"/>
+          <ttp:Exploit idref="NCCIC:Exploit_Target-7c733822-949a-483e-b1de-bc563fc79f04"/>
+        </ttp:Exploits>
+      </ttp:Behavior>
+      <ttp:Resources/>
+    </stix:TTP>
+    <stix:TTP xsi:type="ttp:TTPType" id="NCCIC:TTP-0dee8cca-2447-4c42-b3ca-ba8b39d4b9fe" timestamp="2016-03-29T21:13:02.812Z">
+      <ttp:Behavior>
+        <ttp:Attack_Patterns>
+          <ttp:Attack_Pattern capec_id="CAPEC-66"/>
+        </ttp:Attack_Patterns>
+        <ttp:Exploits>
+          <ttp:Exploit idref="NCCIC:Exploit_Target-7721cf07-0d88-487a-ad6d-a448a4ce63f1"/>
+          <ttp:Exploit idref="NCCIC:Exploit_Target-7c733822-949a-483e-b1de-bc563fc79f04"/>
+        </ttp:Exploits>
+      </ttp:Behavior>
+      <ttp:Resources/>
+    </stix:TTP>
+    <stix:Kill_Chains>
+      <stixCommon:Kill_Chain definer="LMCO" id="stix:KillChain-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="LM Cyber Kill Chain" number_of_phases="7" reference="http://www.lockheedmartin.com/content/dam/lockheed/data/corporate/documents/LM-White-Paper-Intel-Driven-Defense.pdf">
+        <stixCommon:Kill_Chain_Phase name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+        <stixCommon:Kill_Chain_Phase name="Weaponization" ordinality="2" phase_id="stix:KillChainPhase-445b4827-3cca-42bd-8421-f2e947133c16"/>
+        <stixCommon:Kill_Chain_Phase name="Delivery" ordinality="3" phase_id="stix:KillChainPhase-79a0e041-9d5f-49bb-ada4-8322622b162d"/>
+        <stixCommon:Kill_Chain_Phase name="Exploitation" ordinality="4" phase_id="stix:KillChainPhase-f706e4e7-53d8-44ef-967f-81535c9db7d0"/>
+        <stixCommon:Kill_Chain_Phase name="Installation" ordinality="5" phase_id="stix:KillChainPhase-e1e4e3f7-be3b-4b39-b80a-a593cfd99a4f"/>
+        <stixCommon:Kill_Chain_Phase name="Command and Control" ordinality="6" phase_id="stix:KillChainPhase-d6dc32b9-2538-4951-8733-3cb9ef1daae2"/>
+        <stixCommon:Kill_Chain_Phase name="Actions on Objectives" ordinality="7" phase_id="stix:KillChainPhase-786ca8f9-2d9a-4213-b38e-399af4a2e5d6"/>
+      </stixCommon:Kill_Chain>
+    </stix:Kill_Chains>
+  </stix:TTPs>
+  <stix:Exploit_Targets>
+    <stixCommon:Exploit_Target xsi:type="et:ExploitTargetType" id="NCCIC:Exploit_Target-7721cf07-0d88-487a-ad6d-a448a4ce63f1" timestamp="2016-03-29T20:57:13.460Z">
+      <et:Vulnerability>
+        <et:Title>New Vulnerability</et:Title>
+        <et:Description>This is the description of a new vulnerability</et:Description>
+      </et:Vulnerability>
+      <et:Vulnerability>
+        <et:Title>Another new (not really; just CVE-2016-2386)</et:Title>
+        <et:Description>SQL injection vulnerability in the UDDI server in SAP NetWeaver J2EE Engine 
+This is really the description of CVE-2016-2386
+7.40 allows remote attackers to execute arbitrary SQL commands via unspecified vectors, aka SAP Security Note 2101079.</et:Description>
+      </et:Vulnerability>
+      <et:Vulnerability>
+        <et:CVE_ID>CVE-2016-2386</et:CVE_ID>
+      </et:Vulnerability>
+      <et:Potential_COAs>
+        <et:Potential_COA>
+          <stixCommon:Course_Of_Action idref="NCCIC:Course_Of_Action-0a98b15e-706b-45bd-8bb2-fc8c3f98837e"/>
+        </et:Potential_COA>
+        <et:Potential_COA>
+          <stixCommon:Course_Of_Action idref="NCCIC:Course_Of_Action-6541d065-b060-448c-8f0f-7240cb070a9c"/>
+        </et:Potential_COA>
+      </et:Potential_COAs>
+    </stixCommon:Exploit_Target>
+    <stixCommon:Exploit_Target xsi:type="et:ExploitTargetType" id="NCCIC:Exploit_Target-7c733822-949a-483e-b1de-bc563fc79f04" timestamp="2016-03-29T21:03:59.521Z">
+      <et:Vulnerability>
+        <et:CVE_ID>CVE-2016-1308</et:CVE_ID>
+      </et:Vulnerability>
+      <et:Potential_COAs>
+        <et:Potential_COA>
+          <stixCommon:Course_Of_Action idref="NCCIC:Course_Of_Action-0a98b15e-706b-45bd-8bb2-fc8c3f98837e"/>
+        </et:Potential_COA>
+        <et:Potential_COA>
+          <stixCommon:Course_Of_Action idref="NCCIC:Course_Of_Action-6541d065-b060-448c-8f0f-7240cb070a9c"/>
+        </et:Potential_COA>
+      </et:Potential_COAs>
+    </stixCommon:Exploit_Target>
+  </stix:Exploit_Targets>
+  <stix:Courses_Of_Action>
+    <stix:Course_Of_Action xsi:type="coa:CourseOfActionType" id="NCCIC:Course_Of_Action-0a98b15e-706b-45bd-8bb2-fc8c3f98837e" timestamp="2016-03-29T20:52:52.716Z">
+      <coa:Title>Network Level Recommendations</coa:Title>
+      <coa:Description>-Deny access to the internet except through proxies for Store and Enterprise servers and workstations. 
+-Implement firewall rules to block or restrict internet and intranet access for database systems. 
+-Implement firewall rules to block known malicious IP addresses. 
+-Harden internal systems against the potential threat posed by a compromised system on the local network. (Do not rely on firewalls to prevent access to insecure systems; secure them.)</coa:Description>
+    </stix:Course_Of_Action>
+    <stix:Course_Of_Action xsi:type="coa:CourseOfActionType" id="NCCIC:Course_Of_Action-6541d065-b060-448c-8f0f-7240cb070a9c" timestamp="2016-03-29T20:53:29.636Z">
+      <coa:Title>System / Application Level Recommendations</coa:Title>
+      <coa:Description>-Secure both the OS and the application. 
+-Update and patch production servers regularly.
+-Disable potentially harmful SQL stored procedure calls. 
+-Deny extended URLs. 
+-Sanitize/validate input. 
+-Ensure error messages are generic and do not expose too much information. 
+-Use principles of least privilege. Enforce best practice password and account policies. 
+-Document all database accounts, stored procedures, and prepared statements along with their uses. 
+-Perform regular audits and penetration testing.</coa:Description>
+    </stix:Course_Of_Action>
+  </stix:Courses_Of_Action>
+</stix:STIX_Package>

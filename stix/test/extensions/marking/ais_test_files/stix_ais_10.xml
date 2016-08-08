@@ -1,0 +1,294 @@
+<stix:STIX_Package xmlns:AIS="http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2" xmlns:AddressObj="http://cybox.mitre.org/objects#AddressObject-2" xmlns:CISCP="http://us-cert.gov/ciscp" xmlns:DomainNameObj="http://cybox.mitre.org/objects#DomainNameObject-1" xmlns:FileObj="http://cybox.mitre.org/objects#FileObject-2" xmlns:NCCIC="http://www.us-cert.gov/nccic" xmlns:TOUMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1" xmlns:cybox="http://cybox.mitre.org/cybox-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2" xmlns:edh2="urn:edm:edh:cyber:v3" xmlns:edh2cyberMarking="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:edh2cyberMarkingAssert="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd" xmlns:indicator="http://stix.mitre.org/Indicator-2" xmlns:isa="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:marking="http://data-marking.mitre.org/Marking-1" xmlns:stix="http://stix.mitre.org/stix-1" xmlns:stix-ciq="http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1" xmlns:stixCommon="http://stix.mitre.org/common-1" xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1" xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1" xmlns:xal="urn:oasis:names:tc:ciq:xal:3" xmlns:xnl="urn:oasis:names:tc:ciq:xnl:3" xmlns:xpil="urn:oasis:names:tc:ciq:xpil:3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:taxii="http://taxii.mitre.org/messages/taxii_xml_binding-1" xmlns:taxii_11="http://taxii.mitre.org/messages/taxii_xml_binding-1.1" xmlns:tdq="http://taxii.mitre.org/query/taxii_default_query-1" id="NCCIC:STIX_Package-c1d03c7a-d563-4a99-bf22-eaae3de5d39e" timestamp="2016-07-06T00:00:00" version="1.1.1" xsi:schemaLocation="http://cybox.mitre.org/common-2 http://cybox.mitre.org/XMLSchema/common/2.1/cybox_common.xsd http://cybox.mitre.org/cybox-2 http://cybox.mitre.org/XMLSchema/core/2.1/cybox_core.xsd http://cybox.mitre.org/default_vocabularies-2 http://cybox.mitre.org/XMLSchema/default_vocabularies/2.1/cybox_default_vocabularies.xsd http://cybox.mitre.org/objects#AddressObject-2 http://cybox.mitre.org/XMLSchema/objects/Address/2.1/Address_Object.xsd http://cybox.mitre.org/objects#DomainNameObject-1 http://cybox.mitre.org/XMLSchema/objects/Domain_Name/1.0/Domain_Name_Object.xsd http://cybox.mitre.org/objects#FileObject-2 http://cybox.mitre.org/XMLSchema/objects/File/2.1/File_Object.xsd http://data-marking.mitre.org/Marking-1 http://stix.mitre.org/XMLSchema/data_marking/1.1.1/data_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1 http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.1.1/tlp_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1 http://stix.mitre.org/XMLSchema/extensions/marking/terms_of_use/1.0.1/terms_of_use_marking.xsd http://stix.mitre.org/Indicator-2 http://stix.mitre.org/XMLSchema/indicator/2.1.1/indicator.xsd http://stix.mitre.org/common-1 http://stix.mitre.org/XMLSchema/common/1.1.1/stix_common.xsd http://stix.mitre.org/default_vocabularies-1 http://stix.mitre.org/XMLSchema/default_vocabularies/1.1.1/stix_default_vocabularies.xsd http://stix.mitre.org/stix-1 http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd http://us-cert.gov/ciscp http://www.us-cert.gov/sites/default/files/STIX_Namespace/ciscp_vocab_v1.1.1.xsd http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2 http://www.us-cert.gov/sites/default/files/STIX_Namespace/AIS_Bundle_Marking_1.1.1_v1.0.xsd http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1 http://stix.mitre.org/XMLSchema/extensions/identity/ciq_3.0/1.1.1/ciq_3.0_identity.xsd urn:oasis:names:tc:ciq:xpil:3 http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsAssertionsType.v2.xsd urn:edm:edh:cyber:v3 http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_SD-EDH_Profile_Cyber.v3.xsd">
+        <stix:STIX_Header>
+          <stix:Title>FireEye-China IOCs</stix:Title>
+          <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Indicators - Watchlist</stix:Package_Intent>
+          <stix:Profiles>
+            <stixCommon:Profile>AIS Profile v1.1</stixCommon:Profile>
+          </stix:Profiles>
+          <stix:Handling>
+            <marking:Marking>
+              <marking:Controlled_Structure>//node() | //@*</marking:Controlled_Structure>
+              <marking:Marking_Structure xsi:type="AIS:AISMarkingStructure">
+                <AIS:Not_Proprietary CISA_Proprietary="false">
+                  <AIS:AISConsent consent="EVERYONE"/>
+                  <AIS:TLPMarking color="WHITE"/>
+                </AIS:Not_Proprietary>
+              </marking:Marking_Structure>
+            </marking:Marking>
+          </stix:Handling>
+          <stix:Information_Source>
+            <stixCommon:Contributing_Sources>
+              <stixCommon:Source>
+                <stixCommon:Identity xsi:type="stix-ciq:CIQIdentity3.0InstanceType">
+                  <stix-ciq:Specification>
+                    <xpil:PartyName>
+                      <xnl:OrganisationName>
+                        <xnl:NameElement>NCCIC</xnl:NameElement>
+                      </xnl:OrganisationName>
+                    </xpil:PartyName>
+                    <xpil:Addresses>
+                      <xpil:Address>
+                        <xal:Country>
+                          <xal:NameElement xal:NameCode="US" xal:NameCodeType="ISO_3166-1_alpha-2"/>
+                        </xal:Country>
+                        <xal:AdministrativeArea>
+                          <xal:NameElement xal:NameCode="US-DC" xal:NameCodeType="ISO_3166-2"/>
+                        </xal:AdministrativeArea>
+                      </xpil:Address>
+                    </xpil:Addresses>
+                    <xpil:OrganisationInfo xpil:IndustryType="Information Technology Sector"/>
+                  </stix-ciq:Specification>
+                </stixCommon:Identity>
+                <stixCommon:Tools>
+                  <cyboxCommon:Tool>
+                    <cyboxCommon:Metadata>
+                      <cyboxCommon:Value>AIS</cyboxCommon:Value>
+                    </cyboxCommon:Metadata>
+                  </cyboxCommon:Tool>
+                </stixCommon:Tools>
+              </stixCommon:Source>
+            </stixCommon:Contributing_Sources>
+            <stixCommon:Time>
+              <cyboxCommon:Produced_Time>2016-07-21T15:51:06Z</cyboxCommon:Produced_Time>
+            </stixCommon:Time>
+          </stix:Information_Source>
+        </stix:STIX_Header>
+        <stix:Indicators>
+          <stix:Indicator id="NCCIC:indicator-3f5dc44f-4dc3-11e6-b2c6-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious FQDN Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Domain Watchlist</indicator:Type>
+            <indicator:Description>https://www.fireeye.com/blog/threat-research/2015/11/china-based-threat.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3f5dc451-4dc3-11e6-b5cc-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-3f5dc450-4dc3-11e6-8233-eccd6d4fa460">
+                <cybox:Properties type="FQDN" xsi:type="DomainNameObj:DomainNameObjectType">
+                  <DomainNameObj:Value condition="Equals">accounts.serveftp.com</DomainNameObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-3f5dc452-4dc3-11e6-a0d0-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>https://www.fireeye.com/blog/threat-research/2015/11/china-based-threat.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3f600e41-4dc3-11e6-b805-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-3f600e40-4dc3-11e6-afd8-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">59.188.0.197</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-3f600e42-4dc3-11e6-9ad1-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">File Hash Watchlist</indicator:Type>
+            <indicator:Description>https://www.fireeye.com/blog/threat-research/2015/11/china-based-threat.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3f600e44-4dc3-11e6-b758-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-3f600e43-4dc3-11e6-bc71-eccd6d4fa460">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">N/A</FileObj:File_Name>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">b9208a5b0504cb2283b1144fc455eaaa</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-3f600e45-4dc3-11e6-84b8-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">File Hash Watchlist</indicator:Type>
+            <indicator:Description>https://www.fireeye.com/blog/threat-research/2015/11/china-based-threat.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3f600e47-4dc3-11e6-b7b9-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-3f600e46-4dc3-11e6-b66a-eccd6d4fa460">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">N/A</FileObj:File_Name>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">ec19ed7cddf92984906325da59f75351</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-3f600e48-4dc3-11e6-9238-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">File Hash Watchlist</indicator:Type>
+            <indicator:Description>https://www.fireeye.com/blog/threat-research/2015/11/china-based-threat.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3f600e4a-4dc3-11e6-b8e4-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-3f600e49-4dc3-11e6-8591-eccd6d4fa460">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">N/A</FileObj:File_Name>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">6495b384748188188d09e9d5a0c401a4</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-3f600e4b-4dc3-11e6-b5d6-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">File Hash Watchlist</indicator:Type>
+            <indicator:Description>https://www.fireeye.com/blog/threat-research/2015/11/china-based-threat.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3f600e4d-4dc3-11e6-b262-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-3f600e4c-4dc3-11e6-8c6d-eccd6d4fa460">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">time.exe</FileObj:File_Name>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">d76261ba3b624933a6ebb5dd73758db4</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-3f600e4e-4dc3-11e6-bf17-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">File Hash Watchlist</indicator:Type>
+            <indicator:Description>https://www.fireeye.com/blog/threat-research/2015/11/china-based-threat.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3f600e50-4dc3-11e6-9bf0-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-3f600e4f-4dc3-11e6-99f1-eccd6d4fa460">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">WmiApCom</FileObj:File_Name>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">d76261ba3b624933a6ebb5dd73758db4</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-3f600e51-4dc3-11e6-b559-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">File Hash Watchlist</indicator:Type>
+            <indicator:Description>https://www.fireeye.com/blog/threat-research/2015/11/china-based-threat.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3f600e53-4dc3-11e6-9190-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-3f600e52-4dc3-11e6-8aca-eccd6d4fa460">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">WmiApCom.bat</FileObj:File_Name>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">79b68cdd0044edd4fbf8067b22878644</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-3f600e54-4dc3-11e6-8d9e-eccd6d4fa460" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">File Hash Watchlist</indicator:Type>
+            <indicator:Description>https://www.fireeye.com/blog/threat-research/2015/11/china-based-threat.html</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3f600e56-4dc3-11e6-b115-eccd6d4fa460">
+              <cybox:Object id="NCCIC:Object-3f600e55-4dc3-11e6-a38f-eccd6d4fa460">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">N/A</FileObj:File_Name>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">0beb957923df2c885d29a9c1743dd94b</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: WHITE. Recipients may share TLP: WHITE information without restriction, but is subject to copyright controls.  For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp .</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+          </stix:Indicator>
+        </stix:Indicators>
+        <stix:TTPs>
+          <stix:Kill_Chains>
+            <stixCommon:Kill_Chain definer="LMCO" id="NCCIC:Kill_Chain-2d8dc98b-9c21-4145-84f0-35c6d06e4125" name="LM Cyber Kill Chain" number_of_phases="7" reference="http://www.lockheedmartin.com/content/dam/lockheed/data/corporate/documents/LM-White-Paper-Intel-Driven-Defense.pdf">
+              <stixCommon:Kill_Chain_Phase name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+              <stixCommon:Kill_Chain_Phase name="Weaponization" ordinality="2" phase_id="stix:KillChainPhase-445b4827-3cca-42bd-8421-f2e947133c16"/>
+              <stixCommon:Kill_Chain_Phase name="Delivery" ordinality="3" phase_id="stix:KillChainPhase-79a0e041-9d5f-49bb-ada4-8322622b162d"/>
+              <stixCommon:Kill_Chain_Phase name="Exploitation" ordinality="4" phase_id="stix:KillChainPhase-f706e4e7-53d8-44ef-967f-81535c9db7d0"/>
+              <stixCommon:Kill_Chain_Phase name="Installation" ordinality="5" phase_id="stix:KillChainPhase-e1e4e3f7-be3b-4b39-b80a-a593cfd99a4f"/>
+              <stixCommon:Kill_Chain_Phase name="Command and Control" ordinality="6" phase_id="stix:KillChainPhase-d6dc32b9-2538-4951-8733-3cb9ef1daae2"/>
+              <stixCommon:Kill_Chain_Phase name="Actions on Objectives" ordinality="7" phase_id="stix:KillChainPhase-786ca8f9-2d9a-4213-b38e-399af4a2e5d6"/>
+            </stixCommon:Kill_Chain>
+          </stix:Kill_Chains>
+        </stix:TTPs>
+      </stix:STIX_Package>
+    

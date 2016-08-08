@@ -1,0 +1,463 @@
+<stix:STIX_Package xmlns:AIS="http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2" xmlns:AddressObj="http://cybox.mitre.org/objects#AddressObject-2" xmlns:CISCP="http://us-cert.gov/ciscp" xmlns:NCCIC="http://www.us-cert.gov/nccic" xmlns:TOUMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1" xmlns:URIObj="http://cybox.mitre.org/objects#URIObject-2" xmlns:cybox="http://cybox.mitre.org/cybox-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2" xmlns:edh2="urn:edm:edh:cyber:v3" xmlns:edh2cyberMarking="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:edh2cyberMarkingAssert="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd" xmlns:indicator="http://stix.mitre.org/Indicator-2" xmlns:isa="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:marking="http://data-marking.mitre.org/Marking-1" xmlns:stix="http://stix.mitre.org/stix-1" xmlns:stix-ciq="http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1" xmlns:stixCommon="http://stix.mitre.org/common-1" xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1" xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1" xmlns:xal="urn:oasis:names:tc:ciq:xal:3" xmlns:xnl="urn:oasis:names:tc:ciq:xnl:3" xmlns:xpil="urn:oasis:names:tc:ciq:xpil:3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:taxii="http://taxii.mitre.org/messages/taxii_xml_binding-1" xmlns:taxii_11="http://taxii.mitre.org/messages/taxii_xml_binding-1.1" xmlns:tdq="http://taxii.mitre.org/query/taxii_default_query-1" id="NCCIC:STIX_Package-efb452ed-3a5d-4b7d-9b5f-b5a4d853e015" timestamp="2016-07-22T19:32:32+00:00" version="1.1.1" xsi:schemaLocation="http://cybox.mitre.org/common-2 http://cybox.mitre.org/XMLSchema/common/2.1/cybox_common.xsd http://cybox.mitre.org/cybox-2 http://cybox.mitre.org/XMLSchema/core/2.1/cybox_core.xsd http://cybox.mitre.org/default_vocabularies-2 http://cybox.mitre.org/XMLSchema/default_vocabularies/2.1/cybox_default_vocabularies.xsd http://cybox.mitre.org/objects#AddressObject-2 http://cybox.mitre.org/XMLSchema/objects/Address/2.1/Address_Object.xsd http://cybox.mitre.org/objects#URIObject-2 http://cybox.mitre.org/XMLSchema/objects/URI/2.1/URI_Object.xsd http://data-marking.mitre.org/Marking-1 http://stix.mitre.org/XMLSchema/data_marking/1.1.1/data_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1 http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.1.1/tlp_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1 http://stix.mitre.org/XMLSchema/extensions/marking/terms_of_use/1.0.1/terms_of_use_marking.xsd http://stix.mitre.org/Indicator-2 http://stix.mitre.org/XMLSchema/indicator/2.1.1/indicator.xsd http://stix.mitre.org/common-1 http://stix.mitre.org/XMLSchema/common/1.1.1/stix_common.xsd http://stix.mitre.org/default_vocabularies-1 http://stix.mitre.org/XMLSchema/default_vocabularies/1.1.1/stix_default_vocabularies.xsd http://stix.mitre.org/stix-1 http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd http://us-cert.gov/ciscp http://www.us-cert.gov/sites/default/files/STIX_Namespace/ciscp_vocab_v1.1.1.xsd http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2 http://www.us-cert.gov/sites/default/files/STIX_Namespace/AIS_Bundle_Marking_1.1.1_v1.0.xsd http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1 http://stix.mitre.org/XMLSchema/extensions/identity/ciq_3.0/1.1.1/ciq_3.0_identity.xsd urn:oasis:names:tc:ciq:xpil:3 http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsAssertionsType.v2.xsd urn:edm:edh:cyber:v3 http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_SD-EDH_Profile_Cyber.v3.xsd">
+        <stix:STIX_Header>
+          <stix:Title>DISA-P-Fusion-2014-005</stix:Title>
+          <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Indicators - Watchlist</stix:Package_Intent>
+          <stix:Description>DISA-P-Fusion-2014-005: Enhanced Mobile Satellite Services (EMSS) Short Burst Data System (SBD) Compromised</stix:Description>
+          <stix:Profiles>
+            <stixCommon:Profile>AIS Profile v1.1</stixCommon:Profile>
+          </stix:Profiles>
+          <stix:Handling>
+            <marking:Marking>
+              <marking:Controlled_Structure>//node() | //@*</marking:Controlled_Structure>
+              <marking:Marking_Structure xsi:type="AIS:AISMarkingStructure">
+                <AIS:Not_Proprietary CISA_Proprietary="false">
+                  <AIS:AISConsent consent="EVERYONE"/>
+                  <AIS:TLPMarking color="AMBER"/>
+                </AIS:Not_Proprietary>
+              </marking:Marking_Structure>
+            </marking:Marking>
+          </stix:Handling>
+          <stix:Information_Source>
+            <stixCommon:Contributing_Sources>
+              <stixCommon:Source>
+                <stixCommon:Identity xsi:type="stix-ciq:CIQIdentity3.0InstanceType">
+                  <stix-ciq:Specification>
+                    <xpil:PartyName>
+                      <xnl:OrganisationName>
+                        <xnl:NameElement>NCCIC</xnl:NameElement>
+                      </xnl:OrganisationName>
+                    </xpil:PartyName>
+                    <xpil:Addresses>
+                      <xpil:Address>
+                        <xal:Country>
+                          <xal:NameElement xal:NameCode="US" xal:NameCodeType="ISO_3166-1_alpha-2"/>
+                        </xal:Country>
+                        <xal:AdministrativeArea>
+                          <xal:NameElement xal:NameCode="US-DC" xal:NameCodeType="ISO_3166-2"/>
+                        </xal:AdministrativeArea>
+                      </xpil:Address>
+                    </xpil:Addresses>
+                    <xpil:OrganisationInfo xpil:IndustryType="Information Technology Sector"/>
+                  </stix-ciq:Specification>
+                </stixCommon:Identity>
+                <stixCommon:Tools>
+                  <cyboxCommon:Tool>
+                    <cyboxCommon:Metadata>
+                      <cyboxCommon:Value>AIS</cyboxCommon:Value>
+                    </cyboxCommon:Metadata>
+                  </cyboxCommon:Tool>
+                </stixCommon:Tools>
+              </stixCommon:Source>
+            </stixCommon:Contributing_Sources>
+            <stixCommon:Time>
+              <cyboxCommon:Produced_Time>2016-07-22T20:59:08Z</cyboxCommon:Produced_Time>
+            </stixCommon:Time>
+          </stix:Information_Source>
+        </stix:STIX_Header>
+        <stix:Indicators>
+          <stix:Indicator id="NCCIC:Indicator-38833ff3-e505-4559-af0e-b7bf72ac46d3" timestamp="2016-07-22T19:34:26.058000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>DISA-P-Fusion-2014-005</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-c7343ae4-e011-49b4-8979-e4563c0aa685">
+              <cybox:Object id="NCCIC:Object-f0658ef1-5042-11e6-b6a9-eccd6dca155c">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">http://pastebin.com/pJ8iSuaq</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2014-09-05T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-e32fd4ef-b71c-44a0-9a39-39ef03633e03" timestamp="2016-07-22T19:34:26.058000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>DISA-P-Fusion-2014-005</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-80069f4a-667f-4dec-832f-7ed9523a5cee">
+              <cybox:Object id="NCCIC:Object-f0658ef4-5042-11e6-8bb0-eccd6dca155c">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">http://oi60.tinypic.com/10eq1jr.jpg</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2014-09-05T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-1fc386c8-48b5-42c5-a6b3-3345bf5c1acf" timestamp="2016-07-22T19:34:26.058000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>DISA-P-Fusion-2014-005</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-bac6a650-59a6-4669-8641-ae0c1b07bdf9">
+              <cybox:Object id="NCCIC:Object-f0658ef7-5042-11e6-9ce0-eccd6dca155c">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">http://lookpic.com/O/i2/398/AiOoEDPE.png</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2014-09-05T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-4b57d48d-1415-4d52-9f44-57342027ef75" timestamp="2016-07-22T19:34:26.058000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>DISA-P-Fusion-2014-005</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-11471a97-aa17-4ce2-9906-4fe099255957">
+              <cybox:Object id="NCCIC:Object-f0658efa-5042-11e6-9357-eccd6dca155c">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">http://s9.postimg.org/31h7ktxi6/Do_D_01453.jpg</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2014-09-05T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-addad901-6a38-4939-855b-f89b09d2ad3d" timestamp="2016-07-22T19:34:26.058000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious URL Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>DISA-P-Fusion-2014-005</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-321cfce5-331d-4646-abd5-864c8dd4407b">
+              <cybox:Object id="NCCIC:Object-f0658efd-5042-11e6-900a-eccd6dca155c">
+                <cybox:Properties type="URL" xsi:type="URIObj:URIObjectType">
+                  <URIObj:Value condition="Equals">https://thefilebay.com/1BP4/DoD_0123.php.png</URIObj:Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2014-09-05T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-23493c88-c879-4621-81cc-58a638b83377" timestamp="2016-07-22T19:34:26.058000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>DISA-P-Fusion-2014-005</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-7384ef9b-6fb2-4bc6-b916-8eb7d9f9a528">
+              <cybox:Object id="NCCIC:Object-f065b601-5042-11e6-9daf-eccd6dca155c">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">77.98.61.178</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2014-09-05T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-d2ef5d8b-4a0d-4bcb-9976-403a2712d405" timestamp="2016-07-22T19:34:26.058000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>DISA-P-Fusion-2014-005</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-fe98c18c-7eb8-4ba0-877b-9ded125ecb1b">
+              <cybox:Object id="NCCIC:Object-f065b604-5042-11e6-aaf5-eccd6dca155c">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">67.221.255.55</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2014-09-05T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-0280a6d3-ca04-41cc-8fbb-3092615c4db6" timestamp="2016-07-22T19:34:26.058000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>DISA-P-Fusion-2014-005</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-5a7eb96f-e2d9-4f1a-bc4d-f4cdbd4eb7d5">
+              <cybox:Object id="NCCIC:Object-f065b607-5042-11e6-bc95-eccd6dca155c">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">79.11.141.116</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2014-09-05T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-6c6e039f-ee34-40d0-bb8f-97986914621b" timestamp="2016-07-22T19:34:26.058000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>DISA-P-Fusion-2014-005</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-a59a6f50-130e-4070-81b3-64772cab209f">
+              <cybox:Object id="NCCIC:Object-f065b60a-5042-11e6-8c1b-eccd6dca155c">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">79.40.131.47</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2014-09-05T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-813fb3df-a50b-4b20-a9ee-e7bcae82c279" timestamp="2016-07-22T19:34:26.058000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>DISA-P-Fusion-2014-005</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-fb9c6b75-f13c-40e7-b30d-bcbeec1c1f6c">
+              <cybox:Object id="NCCIC:Object-f065b60d-5042-11e6-a7b1-eccd6dca155c">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">190.151.107.227</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2014-09-05T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-47f2fe7f-12e5-4496-8b8e-cf42a6051259" timestamp="2016-07-22T19:34:26.058000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>DISA-P-Fusion-2014-005</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-55a1b40b-6c38-4269-8b46-982afb79c8ee">
+              <cybox:Object id="NCCIC:Object-f065b610-5042-11e6-ba8b-eccd6dca155c">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">93.115.84.202</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2014-09-05T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-71120956-08ed-4e8c-b563-1bb911eeb083" timestamp="2016-07-22T19:34:26.058000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>DISA-P-Fusion-2014-005</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-1f5c52fb-45e2-4fb6-9213-aded9d2c0b05">
+              <cybox:Object id="NCCIC:Object-f065b613-5042-11e6-860a-eccd6dca155c">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">178.67.253.140</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2014-09-05T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-338b02c2-9d89-44ce-8888-631ce8637414" timestamp="2016-07-22T19:34:26.058000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>DISA-P-Fusion-2014-005</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ed571f4b-bdf5-4eeb-a7c1-760bb89821bd">
+              <cybox:Object id="NCCIC:Object-f065b616-5042-11e6-be40-eccd6dca155c">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">75.23.229.142</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2014-09-05T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-ba9eb163-4f04-4a47-9415-fb8e3d1c758e" timestamp="2016-07-22T19:34:26.058000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>DISA-P-Fusion-2014-005</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-270647c6-0e03-40c9-84ce-47c9cb5aa35e">
+              <cybox:Object id="NCCIC:Object-f065b619-5042-11e6-91c7-eccd6dca155c">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">93.115.83.250</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2014-09-05T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-a9cae009-189d-4b9c-a5c0-69fa0c458553" timestamp="2016-07-22T19:34:26.058000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">URL Watchlist</indicator:Type>
+            <indicator:Description>DISA-P-Fusion-2014-005</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-a49a2f9a-5459-4e70-98e0-c887569d1514">
+              <cybox:Object id="NCCIC:Object-f065b61c-5042-11e6-94a5-eccd6dca155c">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">192.108.98.11</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2014-09-05T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+        </stix:Indicators>
+        <stix:TTPs>
+          <stix:Kill_Chains>
+            <stixCommon:Kill_Chain definer="LMCO" id="NCCIC:Kill_Chain-2d8dc98b-9c21-4145-84f0-35c6d06e4125" name="LM Cyber Kill Chain" number_of_phases="7" reference="http://www.lockheedmartin.com/content/dam/lockheed/data/corporate/documents/LM-White-Paper-Intel-Driven-Defense.pdf">
+              <stixCommon:Kill_Chain_Phase name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+              <stixCommon:Kill_Chain_Phase name="Weaponization" ordinality="2" phase_id="stix:KillChainPhase-445b4827-3cca-42bd-8421-f2e947133c16"/>
+              <stixCommon:Kill_Chain_Phase name="Delivery" ordinality="3" phase_id="stix:KillChainPhase-79a0e041-9d5f-49bb-ada4-8322622b162d"/>
+              <stixCommon:Kill_Chain_Phase name="Exploitation" ordinality="4" phase_id="stix:KillChainPhase-f706e4e7-53d8-44ef-967f-81535c9db7d0"/>
+              <stixCommon:Kill_Chain_Phase name="Installation" ordinality="5" phase_id="stix:KillChainPhase-e1e4e3f7-be3b-4b39-b80a-a593cfd99a4f"/>
+              <stixCommon:Kill_Chain_Phase name="Command and Control" ordinality="6" phase_id="stix:KillChainPhase-d6dc32b9-2538-4951-8733-3cb9ef1daae2"/>
+              <stixCommon:Kill_Chain_Phase name="Actions on Objectives" ordinality="7" phase_id="stix:KillChainPhase-786ca8f9-2d9a-4213-b38e-399af4a2e5d6"/>
+            </stixCommon:Kill_Chain>
+          </stix:Kill_Chains>
+        </stix:TTPs>
+      </stix:STIX_Package>
+    

@@ -1,0 +1,295 @@
+<stix:STIX_Package xmlns:AIS="http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2" xmlns:CISCP="http://us-cert.gov/ciscp" xmlns:FileObj="http://cybox.mitre.org/objects#FileObject-2" xmlns:NCCIC="http://www.us-cert.gov/nccic" xmlns:TOUMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1" xmlns:cybox="http://cybox.mitre.org/cybox-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2" xmlns:edh2="urn:edm:edh:cyber:v3" xmlns:edh2cyberMarking="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:edh2cyberMarkingAssert="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd" xmlns:indicator="http://stix.mitre.org/Indicator-2" xmlns:isa="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:marking="http://data-marking.mitre.org/Marking-1" xmlns:stix="http://stix.mitre.org/stix-1" xmlns:stix-ciq="http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1" xmlns:stixCommon="http://stix.mitre.org/common-1" xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1" xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1" xmlns:xal="urn:oasis:names:tc:ciq:xal:3" xmlns:xnl="urn:oasis:names:tc:ciq:xnl:3" xmlns:xpil="urn:oasis:names:tc:ciq:xpil:3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:taxii="http://taxii.mitre.org/messages/taxii_xml_binding-1" xmlns:taxii_11="http://taxii.mitre.org/messages/taxii_xml_binding-1.1" xmlns:tdq="http://taxii.mitre.org/query/taxii_default_query-1" id="NCCIC:STIX_Package-c781e9c9-48a8-4f51-8d56-e779026aff3f" timestamp="2016-07-22T20:04:27+00:00" version="1.1.1" xsi:schemaLocation="http://cybox.mitre.org/common-2 http://cybox.mitre.org/XMLSchema/common/2.1/cybox_common.xsd http://cybox.mitre.org/cybox-2 http://cybox.mitre.org/XMLSchema/core/2.1/cybox_core.xsd http://cybox.mitre.org/default_vocabularies-2 http://cybox.mitre.org/XMLSchema/default_vocabularies/2.1/cybox_default_vocabularies.xsd http://cybox.mitre.org/objects#FileObject-2 http://cybox.mitre.org/XMLSchema/objects/File/2.1/File_Object.xsd http://data-marking.mitre.org/Marking-1 http://stix.mitre.org/XMLSchema/data_marking/1.1.1/data_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1 http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.1.1/tlp_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1 http://stix.mitre.org/XMLSchema/extensions/marking/terms_of_use/1.0.1/terms_of_use_marking.xsd http://stix.mitre.org/Indicator-2 http://stix.mitre.org/XMLSchema/indicator/2.1.1/indicator.xsd http://stix.mitre.org/common-1 http://stix.mitre.org/XMLSchema/common/1.1.1/stix_common.xsd http://stix.mitre.org/default_vocabularies-1 http://stix.mitre.org/XMLSchema/default_vocabularies/1.1.1/stix_default_vocabularies.xsd http://stix.mitre.org/stix-1 http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd http://us-cert.gov/ciscp http://www.us-cert.gov/sites/default/files/STIX_Namespace/ciscp_vocab_v1.1.1.xsd http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2 http://www.us-cert.gov/sites/default/files/STIX_Namespace/AIS_Bundle_Marking_1.1.1_v1.0.xsd http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1 http://stix.mitre.org/XMLSchema/extensions/identity/ciq_3.0/1.1.1/ciq_3.0_identity.xsd urn:oasis:names:tc:ciq:xpil:3 http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsAssertionsType.v2.xsd urn:edm:edh:cyber:v3 http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_SD-EDH_Profile_Cyber.v3.xsd">
+        <stix:STIX_Header>
+          <stix:Title>CIG Circular 45 Mimikatz Malware Deployment</stix:Title>
+          <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Indicators</stix:Package_Intent>
+          <stix:Description>CIG Circular 45 Mimikatz Malware Deployment Leverages Windows Administrative Tools Dated 20150908</stix:Description>
+          <stix:Profiles>
+            <stixCommon:Profile>AIS Profile v1.1</stixCommon:Profile>
+          </stix:Profiles>
+          <stix:Handling>
+            <marking:Marking>
+              <marking:Controlled_Structure>//node() | //@*</marking:Controlled_Structure>
+              <marking:Marking_Structure xsi:type="AIS:AISMarkingStructure">
+                <AIS:Not_Proprietary CISA_Proprietary="false">
+                  <AIS:AISConsent consent="EVERYONE"/>
+                  <AIS:TLPMarking color="AMBER"/>
+                </AIS:Not_Proprietary>
+              </marking:Marking_Structure>
+            </marking:Marking>
+          </stix:Handling>
+          <stix:Information_Source>
+            <stixCommon:Contributing_Sources>
+              <stixCommon:Source>
+                <stixCommon:Identity xsi:type="stix-ciq:CIQIdentity3.0InstanceType">
+                  <stix-ciq:Specification>
+                    <xpil:PartyName>
+                      <xnl:OrganisationName>
+                        <xnl:NameElement>NCCIC</xnl:NameElement>
+                      </xnl:OrganisationName>
+                    </xpil:PartyName>
+                    <xpil:Addresses>
+                      <xpil:Address>
+                        <xal:Country>
+                          <xal:NameElement xal:NameCode="US" xal:NameCodeType="ISO_3166-1_alpha-2"/>
+                        </xal:Country>
+                        <xal:AdministrativeArea>
+                          <xal:NameElement xal:NameCode="US-DC" xal:NameCodeType="ISO_3166-2"/>
+                        </xal:AdministrativeArea>
+                      </xpil:Address>
+                    </xpil:Addresses>
+                    <xpil:OrganisationInfo xpil:IndustryType="Information Technology Sector"/>
+                  </stix-ciq:Specification>
+                </stixCommon:Identity>
+                <stixCommon:Tools>
+                  <cyboxCommon:Tool>
+                    <cyboxCommon:Metadata>
+                      <cyboxCommon:Value>AIS</cyboxCommon:Value>
+                    </cyboxCommon:Metadata>
+                  </cyboxCommon:Tool>
+                </stixCommon:Tools>
+              </stixCommon:Source>
+            </stixCommon:Contributing_Sources>
+            <stixCommon:Time>
+              <cyboxCommon:Produced_Time>2016-07-22T20:58:53Z</cyboxCommon:Produced_Time>
+            </stixCommon:Time>
+          </stix:Information_Source>
+        </stix:STIX_Header>
+        <stix:Indicators>
+          <stix:Indicator id="NCCIC:indicator-052b499e-5044-11e6-9d21-eccd6dca155c" timestamp="2016-07-22T20:06:06.281000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">File Hash Watchlist</indicator:Type>
+            <indicator:Description>CIG Circular 45 Mimikatz Malware Deployment Leverages Windows Administrative Tools Dated 20150908
+
+TRAFFIC LIGHT PROTOCOL (TLP) GREEN RECIPIENTS MAY SHARE TLP GREEN INFORMATION WITH PEERS, TRUSTED GOVERNMENT AND CRITICAL INFRASTRUCTURE PARTNER ORGANIZATIONS, AND SERVICE PROVIDERS WITH WHOM THEY HAVE A CONTRACTUAL RELATIONSHIP, BUT NOT VIA PUBLICLY ACCESSIBLE CHANNELS.
+
+Script file. Also used the file name wu_copy.ps1 and file path C:\Windows\</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-34eafe41-61fe-49d2-8579-e8f09f661e08">
+              <cybox:Object id="NCCIC:Object-052b49a0-5044-11e6-ad26-eccd6dca155c">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">wu.ps1</FileObj:File_Name>
+                  <FileObj:File_Path condition="Equals">C:\Windows\</FileObj:File_Path>
+                  <FileObj:Size_In_Bytes condition="Equals">1829476</FileObj:Size_In_Bytes>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">59CDAABE07F5AE504CC83DEF99FD7FE3</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2015-09-08T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-05e76dae-5044-11e6-89ab-eccd6dca155c" timestamp="2016-07-22T20:06:06.281000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">File Hash Watchlist</indicator:Type>
+            <indicator:Description>CIG Circular 45 Mimikatz Malware Deployment Leverages Windows Administrative Tools Dated 20150908
+
+TRAFFIC LIGHT PROTOCOL (TLP) GREEN RECIPIENTS MAY SHARE TLP GREEN INFORMATION WITH PEERS, TRUSTED GOVERNMENT AND CRITICAL INFRASTRUCTURE PARTNER ORGANIZATIONS, AND SERVICE PROVIDERS WITH WHOM THEY HAVE A CONTRACTUAL RELATIONSHIP, BUT NOT VIA PUBLICLY ACCESSIBLE CHANNELS.
+
+Mimikatz malware.</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-dfcea25d-c655-4db1-9d34-c687c7da0fcf">
+              <cybox:Object id="NCCIC:Object-05e76db0-5044-11e6-886c-eccd6dca155c">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">m64.exe</FileObj:File_Name>
+                  <FileObj:File_Path condition="Equals">C:\Windows\Temp</FileObj:File_Path>
+                  <FileObj:Size_In_Bytes condition="Equals">4460544</FileObj:Size_In_Bytes>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">3517B5D972955F86E02C5ABE2A1693BD</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2015-09-08T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-068e0df0-5044-11e6-8328-eccd6dca155c" timestamp="2016-07-22T20:06:06.281000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">File Hash Watchlist</indicator:Type>
+            <indicator:Description>CIG Circular 45 Mimikatz Malware Deployment Leverages Windows Administrative Tools Dated 20150908
+
+TRAFFIC LIGHT PROTOCOL (TLP) GREEN RECIPIENTS MAY SHARE TLP GREEN INFORMATION WITH PEERS, TRUSTED GOVERNMENT AND CRITICAL INFRASTRUCTURE PARTNER ORGANIZATIONS, AND SERVICE PROVIDERS WITH WHOM THEY HAVE A CONTRACTUAL RELATIONSHIP, BUT NOT VIA PUBLICLY ACCESSIBLE CHANNELS.</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-89953387-4f10-4962-9435-91138c63f625">
+              <cybox:Object id="NCCIC:Object-068e0df2-5044-11e6-a736-eccd6dca155c">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">mimi_morph.exe</FileObj:File_Name>
+                  <FileObj:File_Path condition="Equals">C:\Windows\Temp</FileObj:File_Path>
+                  <FileObj:Size_In_Bytes condition="Equals">2009088</FileObj:Size_In_Bytes>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">AFA6D09443ED9414E7AC395B77EC3144</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2015-09-08T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-081941d1-5044-11e6-8b6c-eccd6dca155c" timestamp="2016-07-22T20:06:06.281000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">File Hash Watchlist</indicator:Type>
+            <indicator:Description>CIG Circular 45 Mimikatz Malware Deployment Leverages Windows Administrative Tools Dated 20150908
+
+TRAFFIC LIGHT PROTOCOL (TLP) GREEN RECIPIENTS MAY SHARE TLP GREEN INFORMATION WITH PEERS, TRUSTED GOVERNMENT AND CRITICAL INFRASTRUCTURE PARTNER ORGANIZATIONS, AND SERVICE PROVIDERS WITH WHOM THEY HAVE A CONTRACTUAL RELATIONSHIP, BUT NOT VIA PUBLICLY ACCESSIBLE CHANNELS.
+
+LogonUI backdoor.</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3a8c2255-933d-4b57-9592-535af052d965">
+              <cybox:Object id="NCCIC:Object-081941d3-5044-11e6-ba04-eccd6dca155c">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">LogonUI.exe</FileObj:File_Name>
+                  <FileObj:File_Path condition="Equals">C:\Windows\</FileObj:File_Path>
+                  <FileObj:Size_In_Bytes condition="Equals">3158574</FileObj:Size_In_Bytes>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">7170EA924E749B4C9E26120BA5E72264</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2015-09-08T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-08cbc8ee-5044-11e6-be43-eccd6dca155c" timestamp="2016-07-22T20:06:06.282000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">File Hash Watchlist</indicator:Type>
+            <indicator:Description>CIG Circular 45 Mimikatz Malware Deployment Leverages Windows Administrative Tools Dated 20150908
+
+TRAFFIC LIGHT PROTOCOL (TLP) GREEN RECIPIENTS MAY SHARE TLP GREEN INFORMATION WITH PEERS, TRUSTED GOVERNMENT AND CRITICAL INFRASTRUCTURE PARTNER ORGANIZATIONS, AND SERVICE PROVIDERS WITH WHOM THEY HAVE A CONTRACTUAL RELATIONSHIP, BUT NOT VIA PUBLICLY ACCESSIBLE CHANNELS.</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-8dd5af93-3aad-464a-a4c4-fd9657aa8bdd">
+              <cybox:Object id="NCCIC:Object-08cbc8f0-5044-11e6-90e0-eccd6dca155c">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">LogonUI.exe</FileObj:File_Name>
+                  <FileObj:File_Path condition="Equals">C:\Windows\</FileObj:File_Path>
+                  <FileObj:Size_In_Bytes condition="Equals">4629550</FileObj:Size_In_Bytes>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">CC11B319BD53208649EB699045BD5053</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2015-09-08T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:indicator-09db160f-5044-11e6-8be2-eccd6dca155c" timestamp="2016-07-22T20:06:06.282000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious File Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">File Hash Watchlist</indicator:Type>
+            <indicator:Description>CIG Circular 45 Mimikatz Malware Deployment Leverages Windows Administrative Tools Dated 20150908
+
+TRAFFIC LIGHT PROTOCOL (TLP) GREEN RECIPIENTS MAY SHARE TLP GREEN INFORMATION WITH PEERS, TRUSTED GOVERNMENT AND CRITICAL INFRASTRUCTURE PARTNER ORGANIZATIONS, AND SERVICE PROVIDERS WITH WHOM THEY HAVE A CONTRACTUAL RELATIONSHIP, BUT NOT VIA PUBLICLY ACCESSIBLE CHANNELS.
+
+PKZIP Overlay. The LogonUI.exe embeds another file with the MD5 value below.</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-cc3d974d-2cc3-469f-8fc0-2b0f4f2c0b50">
+              <cybox:Object id="NCCIC:Object-09db1611-5044-11e6-b2b9-eccd6dca155c">
+                <cybox:Properties xsi:type="FileObj:FileObjectType">
+                  <FileObj:File_Name condition="Equals">Unknown</FileObj:File_Name>
+                  <FileObj:Hashes>
+                    <cyboxCommon:Hash>
+                      <cyboxCommon:Type condition="Equals" xsi:type="cyboxVocabs:HashNameVocab-1.0">MD5</cyboxCommon:Type>
+                      <cyboxCommon:Simple_Hash_Value condition="Equals">D571F0B0A6807FAF8ECCFB73238B00EF</cyboxCommon:Simple_Hash_Value>
+                    </cyboxCommon:Hash>
+                  </FileObj:Hashes>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Handling>
+              <marking:Marking>
+                <marking:Controlled_Structure>../../../descendant-or-self::node() | ../../../descendant-or-self::node()/@*</marking:Controlled_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>This Indicator Bulletin is provided "as is" for informational purposes only. The Department of Homeland Security (DHS) does not provide any warranties of any kind regarding any information contained within. The DHS does not endorse any commercial product or service, referenced in this bulletin or otherwise. This document is marked TLP: AMBER. Recipients may only share TLP: AMBER information with members of their own organization, and only as widely as necessary to act on that information. For more information on the Traffic Light Protocol, see http://www.us-cert.gov/tlp.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+                <marking:Marking_Structure xsi:type="TOUMarking:TermsOfUseMarkingStructureType">
+                  <TOUMarking:Terms_Of_Use>WARNING: This document is FOR OFFICIAL USE ONLY (FOUO). It contains information that may be exempt from public release under the Freedom of Information Act (5 U.S.C. 552). It is to be controlled, stored, handled, transmitted,distributed, and disposed of in accordance with DHS policy relating to FOUO information and is not to be released to the  public or other personnel who do not have a valid"need-to-know" without prior approval of an authorized DHS official.</TOUMarking:Terms_Of_Use>
+                </marking:Marking_Structure>
+              </marking:Marking>
+            </indicator:Handling>
+            <indicator:Sightings sightings_count="1">
+              <indicator:Sighting timestamp="2015-09-08T00:00:00"/>
+            </indicator:Sightings>
+          </stix:Indicator>
+        </stix:Indicators>
+        <stix:TTPs>
+          <stix:Kill_Chains>
+            <stixCommon:Kill_Chain definer="LMCO" id="NCCIC:Kill_Chain-2d8dc98b-9c21-4145-84f0-35c6d06e4125" name="LM Cyber Kill Chain" number_of_phases="7" reference="http://www.lockheedmartin.com/content/dam/lockheed/data/corporate/documents/LM-White-Paper-Intel-Driven-Defense.pdf">
+              <stixCommon:Kill_Chain_Phase name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+              <stixCommon:Kill_Chain_Phase name="Weaponization" ordinality="2" phase_id="stix:KillChainPhase-445b4827-3cca-42bd-8421-f2e947133c16"/>
+              <stixCommon:Kill_Chain_Phase name="Delivery" ordinality="3" phase_id="stix:KillChainPhase-79a0e041-9d5f-49bb-ada4-8322622b162d"/>
+              <stixCommon:Kill_Chain_Phase name="Exploitation" ordinality="4" phase_id="stix:KillChainPhase-f706e4e7-53d8-44ef-967f-81535c9db7d0"/>
+              <stixCommon:Kill_Chain_Phase name="Installation" ordinality="5" phase_id="stix:KillChainPhase-e1e4e3f7-be3b-4b39-b80a-a593cfd99a4f"/>
+              <stixCommon:Kill_Chain_Phase name="Command and Control" ordinality="6" phase_id="stix:KillChainPhase-d6dc32b9-2538-4951-8733-3cb9ef1daae2"/>
+              <stixCommon:Kill_Chain_Phase name="Actions on Objectives" ordinality="7" phase_id="stix:KillChainPhase-786ca8f9-2d9a-4213-b38e-399af4a2e5d6"/>
+            </stixCommon:Kill_Chain>
+          </stix:Kill_Chains>
+        </stix:TTPs>
+      </stix:STIX_Package>
+    
