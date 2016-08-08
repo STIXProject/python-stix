@@ -210,6 +210,7 @@ class MarkingStructure(stix.Entity):
         from stix.extensions.marking.tlp import TLPMarkingStructure
         from stix.extensions.marking.simple_marking import SimpleMarkingStructure
         from stix.extensions.marking.terms_of_use_marking import TermsOfUseMarkingStructure
+        from stix.extensions.marking.ais_marking import AISMarkingStructure
         
         if not obj:
             return None
@@ -230,6 +231,7 @@ class MarkingStructure(stix.Entity):
         from stix.extensions.marking.tlp import TLPMarkingStructure
         from stix.extensions.marking.simple_marking import SimpleMarkingStructure
         from stix.extensions.marking.terms_of_use_marking import TermsOfUseMarkingStructure
+        from stix.extensions.marking.ais_marking import AISMarkingStructure
         
         if not marking_dict:
             return None
