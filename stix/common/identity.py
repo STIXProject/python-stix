@@ -4,7 +4,6 @@
 # external
 from mixbox import fields
 from mixbox import entities
-from mixbox.cache import Cached
 
 # internal
 import stix
@@ -19,7 +18,7 @@ class IdentityFactory(entities.EntityFactory):
         return stix.lookup_extension(key, default=Identity)
 
 
-class Identity(Cached, stix.Entity):
+class Identity(stix.Entity):
     _binding = common_binding
     _namespace = 'http://stix.mitre.org/common-1'
     _binding_class = IdentityType

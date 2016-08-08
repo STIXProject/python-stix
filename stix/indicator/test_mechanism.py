@@ -3,7 +3,6 @@
 
 # external
 from mixbox import fields, entities
-from mixbox.cache import Cached
 
 # internal
 import stix
@@ -13,7 +12,7 @@ from stix.common import InformationSource, Statement
 import stix.bindings.indicator as indicator_binding
 
 
-class _BaseTestMechanism(Cached, stix.Entity):
+class _BaseTestMechanism(stix.Entity):
     _namespace = "http://stix.mitre.org/Indicator-2"
     _binding = indicator_binding
     _binding_class = indicator_binding.TestMechanismType()

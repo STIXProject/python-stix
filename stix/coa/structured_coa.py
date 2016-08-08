@@ -2,7 +2,6 @@
 # See LICENSE.txt for complete terms.
 
 # external
-from mixbox.cache import Cached
 from mixbox import entities
 from mixbox import fields
 
@@ -18,7 +17,7 @@ class StructuredCOAFactory(entities.EntityFactory):
         return stix.lookup_extension(key)
 
 
-class _BaseStructuredCOA(Cached, stix.Entity):
+class _BaseStructuredCOA(stix.Entity):
     _namespace = "http://stix.mitre.org/CourseOfAction-1"
     _binding = coa_binding
     _binding_class = coa_binding.StructuredCOAType

@@ -3,7 +3,6 @@
 
 # mixbox
 from mixbox import fields
-from mixbox.cache import Cached
 
 # cybox
 from cybox.core import Observables
@@ -15,7 +14,7 @@ from stix.common.vocabs import AttackerInfrastructureType
 import stix.bindings.ttp as ttp_binding
 from mixbox import fields, entities
 
-class Infrastructure(Cached, stix.Entity):
+class Infrastructure(stix.Entity):
     _binding = ttp_binding
     _binding_class = _binding.InfrastructureType
     _namespace = "http://stix.mitre.org/TTP-1"

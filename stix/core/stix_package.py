@@ -4,7 +4,6 @@
 # mixbox
 from mixbox import idgen
 from mixbox import fields
-from mixbox.cache import Cached
 
 # cybox
 from cybox.core import Observable, Observables
@@ -40,7 +39,7 @@ from . import (Campaigns, CoursesOfAction, ExploitTargets, Incidents,
 import stix.bindings.stix_core as stix_core_binding
 import mixbox.entities
 
-class STIXPackage(Cached, stix.Entity):
+class STIXPackage(stix.Entity):
     """A STIX Package object.
 
     Args:

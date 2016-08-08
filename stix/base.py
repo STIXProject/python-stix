@@ -12,7 +12,6 @@ from mixbox import idgen
 from mixbox import entities
 from mixbox import fields
 from mixbox import binding_utils
-from mixbox.cache import Cached
 from mixbox import namespaces
 from mixbox.vendor.six import StringIO, iteritems, itervalues, text_type, binary_type
 
@@ -354,7 +353,7 @@ def _validate_version(instance, value):
         utils.check_version(instance._ALL_VERSIONS, value)
 
 
-class BaseCoreComponent(Cached, Entity):
+class BaseCoreComponent(Entity):
     _ALL_VERSIONS = ()
     _ID_PREFIX = None
 

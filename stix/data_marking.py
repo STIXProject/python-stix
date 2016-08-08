@@ -4,7 +4,6 @@
 # external
 from mixbox import fields
 from mixbox import entities
-from mixbox.cache import Cached
 
 # internal
 import stix
@@ -23,7 +22,7 @@ class MarkingStructureFactory(entities.EntityFactory):
         return stix.lookup_extension(key, default=MarkingStructure)
 
 
-class MarkingStructure(Cached, stix.Entity):
+class MarkingStructure(stix.Entity):
     _binding = stix_data_marking_binding
     _binding_class = stix_data_marking_binding.MarkingStructureType
     _namespace = 'http://data-marking.mitre.org/Marking-1'
@@ -55,7 +54,7 @@ class MarkingStructure(Cached, stix.Entity):
         return stix.lookup_extension(xsi_type, default=MarkingStructure)
 
 
-class MarkingSpecification(Cached, stix.Entity):
+class MarkingSpecification(stix.Entity):
     _binding = stix_data_marking_binding
     _binding_class = stix_data_marking_binding.MarkingSpecificationType
     _namespace = 'http://data-marking.mitre.org/Marking-1'

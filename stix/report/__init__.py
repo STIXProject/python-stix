@@ -3,7 +3,6 @@
 
 from mixbox import idgen
 from mixbox import fields
-from mixbox.cache import Cached
 
 from cybox.core import Observable, Observables
 
@@ -31,7 +30,7 @@ import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.report as report_binding
 
 
-class Report(Cached, stix.Entity):
+class Report(stix.Entity):
     """A STIX Report Object.
 
     Args:
