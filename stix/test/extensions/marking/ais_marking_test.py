@@ -1,4 +1,5 @@
 import unittest
+import os
 from stix.core import STIXPackage, STIXHeader
 from stix.data_marking import Marking, MarkingSpecification
 from stix.extensions.marking.ais_marking import AISMarkingStructure
@@ -30,25 +31,46 @@ TLP_COLOR = 2
 class AISMarkingStructureConsumeTests(unittest.TestCase):
 
     def _test_base(self, filename, expected_values):
-        stix_package = STIXPackage.from_xml(filename)
-        for marking_structure in stix_package.stix_header.handling.markings:
+        stix_package = STIXPackage.from_xml(self._get_test_dir() + filename)
+        print len(stix_package.stix_header.handling.markings)
+        for marking_structure in stix_package.stix_header.handling.markings[0].marking_structures:
+
             if 'AISMarkingStructure' not in marking_structure._XSI_TYPE:
                 continue  # skip any non-AIS markings
 
             self.assertEqual(marking_structure.cisa_proprietary,
                              expected_values[CISA_PROPRIETARY],
-                             msg="Expected CISA %s; got CISA %s" %
+                             msg="Obj - Expected CISA %s; got CISA %s" %
                                  (marking_structure.cisa_proprietary, expected_values[CISA_PROPRIETARY]))
 
             self.assertEqual(marking_structure.consent,
                              expected_values[CONSENT],
-                             msg="Expected Consent %s; got Consent %s" %
+                             msg="Obj - Expected Consent %s; got Consent %s" %
                                  (marking_structure.consent, expected_values[CONSENT]))
 
             self.assertEqual(marking_structure.tlp_color,
                              expected_values[TLP_COLOR],
-                             msg="Expected TLP %s; got TLP %s" %
+                             msg="Obj - Expected TLP %s; got TLP %s" %
                                  (marking_structure.tlp_color, expected_values[TLP_COLOR]))
+
+            d = marking_structure.to_dict()
+            self.assertEqual(d.get('cisa_proprietary'),
+                             expected_values[CISA_PROPRIETARY],
+                             msg="Dict - Expected CISA %s; got CISA %s" %
+                                 (d.get('cisa_proprietary'), expected_values[CISA_PROPRIETARY]))
+
+            self.assertEqual(d.get('consent'),
+                             expected_values[CONSENT],
+                             msg="Dict - Expected Consent %s; got Consent %s" %
+                                 (d.get('consent'), expected_values[CONSENT]))
+
+            self.assertEqual(d.get('tlp_color'),
+                             expected_values[TLP_COLOR],
+                             msg="Dict - Expected TLP %s; got TLP %s" %
+                                 (d.get('tlp_color'), expected_values[TLP_COLOR]))
+
+    def _get_test_dir(self):
+        return os.getcwd() + '/stix/test/extensions/marking/ais_test_files/'
 
     def test_ais_0(self):
         return self._test_base('stix_ais_0.xml', FALSE_EVERYONE_AMBER)
@@ -188,6 +210,11 @@ class AISMarkingStructureProduceTests(unittest.TestCase):
         self.assertEqual(ais_structure.cisa_proprietary, cisa_proprietary)
         self.assertEqual(ais_structure.consent, consent)
         self.assertEqual(ais_structure.tlp_color, tlp_color)
+
+        d = ais_structure.to_dict()
+        self.assertEqual(d.get('cisa_proprietary'), cisa_proprietary)
+        self.assertEqual(d.get('consent'), consent)
+        self.assertEqual(d.get('tlp_color'), tlp_color)
 
     def test_1(self):
         return self._test_base(True, EVERYONE, WHITE)
