@@ -57,11 +57,11 @@ class AISMarkingStructure(MarkingStructure):
         return return_obj
 
     def to_dict(self):
-        d = AISMarkingStructure.to_dict(self)
-        if self.share_with:
-            d['cisa_proprietary'] = self.cisa_proprietary
-            d['consent'] = self.consent
-            d['tlp_color'] = self.tlp_color
+        d = super(AISMarkingStructure, self).to_dict()
+
+        d['cisa_proprietary'] = self.cisa_proprietary
+        d['consent'] = self.consent
+        d['tlp_color'] = self.tlp_color
 
         return d
 
