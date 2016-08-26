@@ -1,0 +1,2153 @@
+<stix:STIX_Package xmlns:AIS="http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2" xmlns:AddressObj="http://cybox.mitre.org/objects#AddressObject-2" xmlns:CISCP="http://us-cert.gov/ciscp" xmlns:EmailMessageObj="http://cybox.mitre.org/objects#EmailMessageObject-2" xmlns:NCCIC="http://www.us-cert.gov/nccic" xmlns:TOUMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1" xmlns:cybox="http://cybox.mitre.org/cybox-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2" xmlns:edh2="urn:edm:edh:cyber:v3" xmlns:edh2cyberMarking="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:edh2cyberMarkingAssert="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd" xmlns:indicator="http://stix.mitre.org/Indicator-2" xmlns:isa="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:marking="http://data-marking.mitre.org/Marking-1" xmlns:stix="http://stix.mitre.org/stix-1" xmlns:stix-ciq="http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1" xmlns:stixCommon="http://stix.mitre.org/common-1" xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1" xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1" xmlns:xal="urn:oasis:names:tc:ciq:xal:3" xmlns:xnl="urn:oasis:names:tc:ciq:xnl:3" xmlns:xpil="urn:oasis:names:tc:ciq:xpil:3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:taxii="http://taxii.mitre.org/messages/taxii_xml_binding-1" xmlns:taxii_11="http://taxii.mitre.org/messages/taxii_xml_binding-1.1" xmlns:tdq="http://taxii.mitre.org/query/taxii_default_query-1" id="NCCIC:STIX_Package-5316ed73-dd29-483e-be51-a008e997b441" timestamp="2016-07-22T02:14:55+00:00" version="1.1.1" xsi:schemaLocation="http://cybox.mitre.org/common-2 http://cybox.mitre.org/XMLSchema/common/2.1/cybox_common.xsd http://cybox.mitre.org/cybox-2 http://cybox.mitre.org/XMLSchema/core/2.1/cybox_core.xsd http://cybox.mitre.org/default_vocabularies-2 http://cybox.mitre.org/XMLSchema/default_vocabularies/2.1/cybox_default_vocabularies.xsd http://cybox.mitre.org/objects#AddressObject-2 http://cybox.mitre.org/XMLSchema/objects/Address/2.1/Address_Object.xsd http://cybox.mitre.org/objects#EmailMessageObject-2 http://cybox.mitre.org/XMLSchema/objects/Email_Message/2.1/Email_Message_Object.xsd http://data-marking.mitre.org/Marking-1 http://stix.mitre.org/XMLSchema/data_marking/1.1.1/data_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1 http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.1.1/tlp_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1 http://stix.mitre.org/XMLSchema/extensions/marking/terms_of_use/1.0.1/terms_of_use_marking.xsd http://stix.mitre.org/Indicator-2 http://stix.mitre.org/XMLSchema/indicator/2.1.1/indicator.xsd http://stix.mitre.org/common-1 http://stix.mitre.org/XMLSchema/common/1.1.1/stix_common.xsd http://stix.mitre.org/default_vocabularies-1 http://stix.mitre.org/XMLSchema/default_vocabularies/1.1.1/stix_default_vocabularies.xsd http://stix.mitre.org/stix-1 http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd http://us-cert.gov/ciscp http://www.us-cert.gov/sites/default/files/STIX_Namespace/ciscp_vocab_v1.1.1.xsd http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2 http://www.us-cert.gov/sites/default/files/STIX_Namespace/AIS_Bundle_Marking_1.1.1_v1.0.xsd http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1 http://stix.mitre.org/XMLSchema/extensions/identity/ciq_3.0/1.1.1/ciq_3.0_identity.xsd urn:oasis:names:tc:ciq:xpil:3 http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsAssertionsType.v2.xsd urn:edm:edh:cyber:v3 http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_SD-EDH_Profile_Cyber.v3.xsd">
+        <stix:STIX_Header>
+          <stix:Title>IIR 6 015 5463 16 - Indicators of Compromise - FO00</stix:Title>
+          <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Indicators - Watchlist</stix:Package_Intent>
+          <stix:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</stix:Description>
+          <stix:Profiles>
+            <stixCommon:Profile>AIS Profile v1.1</stixCommon:Profile>
+          </stix:Profiles>
+          <stix:Handling>
+            <marking:Marking>
+              <marking:Controlled_Structure>//node() | //@*</marking:Controlled_Structure>
+              <marking:Marking_Structure xsi:type="AIS:AISMarkingStructure">
+                <AIS:Not_Proprietary CISA_Proprietary="false">
+                  <AIS:AISConsent consent="EVERYONE"/>
+                  <AIS:TLPMarking color="AMBER"/>
+                </AIS:Not_Proprietary>
+              </marking:Marking_Structure>
+            </marking:Marking>
+          </stix:Handling>
+          <stix:Information_Source>
+            <stixCommon:Contributing_Sources>
+              <stixCommon:Source>
+                <stixCommon:Identity xsi:type="stix-ciq:CIQIdentity3.0InstanceType">
+                  <stix-ciq:Specification>
+                    <xpil:PartyName>
+                      <xnl:OrganisationName>
+                        <xnl:NameElement>NCCIC</xnl:NameElement>
+                      </xnl:OrganisationName>
+                    </xpil:PartyName>
+                    <xpil:Addresses>
+                      <xpil:Address>
+                        <xal:Country>
+                          <xal:NameElement xal:NameCode="US" xal:NameCodeType="ISO_3166-1_alpha-2"/>
+                        </xal:Country>
+                        <xal:AdministrativeArea>
+                          <xal:NameElement xal:NameCode="US-DC" xal:NameCodeType="ISO_3166-2"/>
+                        </xal:AdministrativeArea>
+                      </xpil:Address>
+                    </xpil:Addresses>
+                    <xpil:OrganisationInfo xpil:IndustryType="Information Technology Sector"/>
+                  </stix-ciq:Specification>
+                </stixCommon:Identity>
+                <stixCommon:Tools>
+                  <cyboxCommon:Tool>
+                    <cyboxCommon:Metadata>
+                      <cyboxCommon:Value>AIS</cyboxCommon:Value>
+                    </cyboxCommon:Metadata>
+                  </cyboxCommon:Tool>
+                </stixCommon:Tools>
+              </stixCommon:Source>
+            </stixCommon:Contributing_Sources>
+            <stixCommon:Time>
+              <cyboxCommon:Produced_Time>2016-07-22T02:22:05Z</cyboxCommon:Produced_Time>
+            </stixCommon:Time>
+          </stix:Information_Source>
+        </stix:STIX_Header>
+        <stix:Indicators>
+          <stix:Indicator id="NCCIC:Indicator-f6533fb4-74b7-41fe-a833-fff83ab54f0f" timestamp="2016-07-22T02:15:00.593000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-96b70099-cd38-4a17-b153-991017cdb098">
+              <cybox:Object id="NCCIC:Object-d6c7e8cf-4fb1-11e6-9f07-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">vaughnAllyson48145@tedata.net</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Insufficient Funds Transaction ID:29326907</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-1f76c35c-b715-4006-b0d8-917e69d33570" timestamp="2016-07-22T02:15:00.594000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-7f98ac31-c712-477c-8bcb-256365504331">
+              <cybox:Object id="NCCIC:Object-d6c7e8d2-4fb1-11e6-a11e-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">fearensideSherman888@dsldevice.lan</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Incoming Transaction Declined ID: 49821888</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-d1b708e3-eb32-4300-a1ab-4c05326348c9" timestamp="2016-07-22T02:15:00.594000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-7bd9bf6c-a4f5-4cda-88c1-72d1d2642bf1">
+              <cybox:Object id="NCCIC:Object-d6c7e8d5-4fb1-11e6-94b4-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">hainingLucille077@fabiolapiva.com.br</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 31356329</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-394dfa31-ffb4-448f-b484-0a7bfd353a16" timestamp="2016-07-22T02:15:00.594000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-dc9f3b06-657c-458c-8d94-690726246080">
+              <cybox:Object id="NCCIC:Object-d6c7e8d8-4fb1-11e6-aa40-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">mckieGuadalupe53159@vodafone.pt</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 27028996</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-f712620d-9e9d-4ac0-a04f-b39914bfea02" timestamp="2016-07-22T02:15:00.594000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-48561455-bd98-414b-bfb3-c275b7fc74f7">
+              <cybox:Object id="NCCIC:Object-d6c80fe1-4fb1-11e6-a033-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">jackWaylon03481@multidatahn.net</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 87910890</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-a3a911bd-6f43-4ff8-8d8c-cae7ffa229f6" timestamp="2016-07-22T02:15:00.594000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-a582b863-8736-4eb9-866f-f70e5b38551f">
+              <cybox:Object id="NCCIC:Object-d6c80fe4-4fb1-11e6-ad43-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">rowlinsonMillie8664@vanosdol.net</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 96001316</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-fa917a95-21df-4c56-b1ab-ca3ea2e98af1" timestamp="2016-07-22T02:15:00.594000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-8f343149-6b60-42b6-be32-e1765f8c40b8">
+              <cybox:Object id="NCCIC:Object-d6c80fe7-4fb1-11e6-9534-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">byresSpencer8235@tudocente.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 29021382</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-5968dada-7feb-469e-b604-643555fc8453" timestamp="2016-07-22T02:15:00.594000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-fcfdda20-aa86-4b9c-9871-97d063226f2b">
+              <cybox:Object id="NCCIC:Object-d6c80fea-4fb1-11e6-baa9-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">Kathy@alrasyid.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Dealers clearing lots for new models with huge incentives.</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-e8cd6bcc-a960-4c7e-b472-ff906eb26922" timestamp="2016-07-22T02:15:00.594000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-6c56d45c-956f-40cf-aeb6-61a02c38e559">
+              <cybox:Object id="NCCIC:Object-d6c836f0-4fb1-11e6-8f0f-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">wattersonLouise2915@fulphilthemind.org</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 22685286</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-b9429e31-1a03-4124-9d31-e8bb9430521c" timestamp="2016-07-22T02:15:00.595000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d729dcaf-f86b-4176-bead-a4cc9e657377">
+              <cybox:Object id="NCCIC:Object-d6c836f3-4fb1-11e6-8e5f-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">cunningtonWeston5802@i824u.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 48515595</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-03dbdfe2-5e35-4c84-a3e4-e8c62e475cb3" timestamp="2016-07-22T02:15:00.595000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-67d98f53-75b9-4582-9593-9ec8c1166890">
+              <cybox:Object id="NCCIC:Object-d6c85e00-4fb1-11e6-81bf-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">battyeCharlotte901@sherrnc.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 04040666</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-de8ae3a1-335c-4f0c-b1f4-2ef0bff1a596" timestamp="2016-07-22T02:15:00.595000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-06e3a32d-e9b0-4a9f-95e8-a03e54e45b00">
+              <cybox:Object id="NCCIC:Object-d6c85e03-4fb1-11e6-9252-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">doeTracie3557@nexlar.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Insufficient Funds Transaction ID:81860045</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-1badfc38-1e8b-4344-a09d-abae547faa33" timestamp="2016-07-22T02:15:00.595000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-962bcbeb-5c8a-4fb0-9d5b-a2756c2d4566">
+              <cybox:Object id="NCCIC:Object-d6c88511-4fb1-11e6-b5cf-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">toppinRonny82@ttnet.com.tr</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 04088722</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-a276e1c2-728e-4cdc-9c04-304de61e5a53" timestamp="2016-07-22T02:15:00.595000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-971f26e3-0e23-4606-ad47-851877957de5">
+              <cybox:Object id="NCCIC:Object-d6c88514-4fb1-11e6-bdda-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">tamlinsonEmma07@ttnet.com.tr</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 06442541</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-e87aa814-4807-4445-9433-7de47baf8970" timestamp="2016-07-22T02:15:00.595000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-f08e0be8-6dc6-4cc3-851c-9fa45c596b93">
+              <cybox:Object id="NCCIC:Object-d6c88517-4fb1-11e6-8a9d-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">woodheadJannie67@gabrieljacobs.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 18678332</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-77795d8f-3fc8-4b22-be43-f71ba4c33a51" timestamp="2016-07-22T02:15:00.595000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-507d544a-6751-4cea-b91f-5a0feec40b2d">
+              <cybox:Object id="NCCIC:Object-d6c8ac22-4fb1-11e6-ab7c-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">hampsonDeirdre7561@bigprofit.ru</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 50221485</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-6f9fca86-e918-4716-ab7b-8615654e4d54" timestamp="2016-07-22T02:15:00.595000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-29edd9dc-fedf-48d6-8e6d-798a595dfcfa">
+              <cybox:Object id="NCCIC:Object-d6c8ac25-4fb1-11e6-8ad9-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">plemmonsCyril27570@sbb.rs</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 66631101</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-b70d4da0-f574-487b-b1d7-9c0b4827c18e" timestamp="2016-07-22T02:15:00.596000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-011365e1-624b-4450-a9be-84401d00d2a7">
+              <cybox:Object id="NCCIC:Object-d6c8d330-4fb1-11e6-aa43-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">jennisonOmer50@tulsateens.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 12633020</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-fbe851c5-c829-46b7-aea3-e57bfa4c2a40" timestamp="2016-07-22T02:15:00.596000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-6b8a9394-9073-4146-83b6-aa464f5e3d29">
+              <cybox:Object id="NCCIC:Object-d6c8d333-4fb1-11e6-b4b5-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">keeneGregg7757@cowlogic.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 62863416</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-719e05e4-7dbb-4d21-ae64-76c85549d67e" timestamp="2016-07-22T02:15:00.596000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d7bad23c-999f-4507-a510-82de8c603ab1">
+              <cybox:Object id="NCCIC:Object-d6c8fa40-4fb1-11e6-aac3-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">storeyRex95144@afrihost.co.za</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 65592818</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-01da0bf8-6b0c-40f0-a976-1bbc7774fc0b" timestamp="2016-07-22T02:15:00.596000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-e114b454-3a8b-40d8-91f2-6dbd629cb74b">
+              <cybox:Object id="NCCIC:Object-d6c8fa43-4fb1-11e6-a861-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">vinterGarry14@hmi.co.nz</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 65694324</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-c72c7925-f7ae-48bc-98ad-155bde4a8b27" timestamp="2016-07-22T02:15:00.596000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d9cfbc87-6ed8-4d61-b589-60ac856a8f26">
+              <cybox:Object id="NCCIC:Object-d6c9214f-4fb1-11e6-bcc9-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">grasbyRon72162@stepintophonics.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Insufficient Funds Transaction ID:49723257</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-7ba03e7d-ae8e-40e7-aa35-65c76f32144b" timestamp="2016-07-22T02:15:00.596000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d5561099-da5e-4b29-bf7d-98fb1a61c27c">
+              <cybox:Object id="NCCIC:Object-d6c92152-4fb1-11e6-b3a9-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">ashburnerDanial540@ttnet.com.tr</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Insufficient Funds Transaction ID:37371415</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-d2429bec-2067-4c13-99b1-7a57e5c188af" timestamp="2016-07-22T02:15:00.596000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-a8748443-224e-4dcb-9652-cf9d9f7c40e9">
+              <cybox:Object id="NCCIC:Object-d6c9485e-4fb1-11e6-b1d0-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">partingtonStephanie06110@annmcnamee.ie</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Incoming Transaction Declined ID: 55622832</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-9fb13a9b-b3ce-4061-b177-9f2322ccc014" timestamp="2016-07-22T02:15:00.596000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-4aa694d7-5b35-420b-b84b-47ba3c0ab84d">
+              <cybox:Object id="NCCIC:Object-d6c94861-4fb1-11e6-9086-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">proudfootRufus62@sgvos.org</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Incoming Transaction Declined ID: 91195371</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-d49c4902-cf48-4239-91d4-ffde52e4d74e" timestamp="2016-07-22T02:15:00.597000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-2063d170-3508-4d27-a8d2-ab13eab66acf">
+              <cybox:Object id="NCCIC:Object-d6c96f6e-4fb1-11e6-af9f-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">flexneyTanisha8661@aircel.co.in</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 10998668</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-ab069c3d-6ed5-43cd-9beb-d5e671eff388" timestamp="2016-07-22T02:15:00.597000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-dbab1937-4f03-4cbd-af63-6e56f68b5ce0">
+              <cybox:Object id="NCCIC:Object-d6c96f71-4fb1-11e6-bc25-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">Kathy@alrasyid.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Dealers clearing lots for new models with huge incentives.</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-15aeec41-f57c-404f-94ef-cad066bce2f7" timestamp="2016-07-22T02:15:00.597000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ba804435-77db-435a-bcca-58126fbaf56a">
+              <cybox:Object id="NCCIC:Object-d6c96f74-4fb1-11e6-8874-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">Kathy@alrasyid.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Dealers clearing lots for new models with huge incentives.</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-604feb47-f70f-402b-b1fb-6b837b28adb3" timestamp="2016-07-22T02:15:00.597000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-e9e7e174-29c4-4050-9839-c2b326f2d0c5">
+              <cybox:Object id="NCCIC:Object-d6c99681-4fb1-11e6-81db-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">curdLaurie79@frigoconti.ro</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 99014829</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-6b87e40f-a46a-4c4b-b47e-b24d521bb2ce" timestamp="2016-07-22T02:15:00.597000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-e5c60e5c-183a-441a-bafd-a5446cbebc86">
+              <cybox:Object id="NCCIC:Object-d6c99684-4fb1-11e6-a01d-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">forrestRandi12825@pol.ir</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 84760682</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-dc572c9d-b4a4-45df-9bb4-7d270da089b6" timestamp="2016-07-22T02:15:00.597000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-c809f766-d87f-479e-a01f-3f2db056bc52">
+              <cybox:Object id="NCCIC:Object-d6c9bd8f-4fb1-11e6-a501-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">goldthorpMatilda22872@adsl.co.za</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 76570350</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-9dd8d7fe-eb18-4427-9a58-2989aecc4692" timestamp="2016-07-22T02:15:00.597000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d66c116d-b3b8-455b-be63-8d57c4ce4fb5">
+              <cybox:Object id="NCCIC:Object-d6c9bd92-4fb1-11e6-9803-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">bastimanAngeline1748@pinmouse.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 69309016</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-43e32fe9-b3fc-46b5-b0fc-f9aa1e4752da" timestamp="2016-07-22T02:15:00.597000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3aaeaf33-42c5-4263-93bb-40ca5602bab8">
+              <cybox:Object id="NCCIC:Object-d6c9e49e-4fb1-11e6-a868-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">mccallumJay9480@twankle.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 70751823</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-5bc2095a-3ac9-474d-b378-cead76e33fa1" timestamp="2016-07-22T02:15:00.597000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-1a25f8f8-e186-4b54-b599-8ce806ad37ad">
+              <cybox:Object id="NCCIC:Object-d6c9e4a1-4fb1-11e6-9b6c-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">hamerShelton988@londonpropertyphotography.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Insufficient Funds Transaction ID:56968469</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-424e00e1-50e9-4917-aee1-db0253a8e5e3" timestamp="2016-07-22T02:15:00.597000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-1b72bf7f-6b22-485d-bc84-b3706220e1e2">
+              <cybox:Object id="NCCIC:Object-d6ca0bb0-4fb1-11e6-8d85-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">newshamRico62622@elevagecodd.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Incoming Transaction Declined ID: 39344393</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-4686695e-2d06-4aa0-ade1-5807d509b408" timestamp="2016-07-22T02:15:00.598000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3e5884bf-d5e7-4958-be95-bb75a3aad211">
+              <cybox:Object id="NCCIC:Object-d6ca32c0-4fb1-11e6-8a6d-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">thirdFlorencio0336@spore.nu</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 09011669</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-71cab937-c12b-4a1e-bdcf-7e96c3924c53" timestamp="2016-07-22T02:15:00.598000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-7057ec88-f272-4765-b7c5-43061196d9ac">
+              <cybox:Object id="NCCIC:Object-d6ca32c3-4fb1-11e6-a1bf-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">shacklockBrittany581@itelkom.co</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 12029245</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-01b2cd82-c0d2-47f7-85b4-3cdc17aec986" timestamp="2016-07-22T02:15:00.598000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-b12fb073-530f-4297-93be-90d353e3d5d8">
+              <cybox:Object id="NCCIC:Object-d6ca59cf-4fb1-11e6-9897-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">portingtonBettie222@alshamil.net.ae</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 32891866</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-9156f561-5f96-4c24-a959-f1e318d8f493" timestamp="2016-07-22T02:15:00.598000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-5fa63d44-591f-48ec-bc47-ac96d0b87f51">
+              <cybox:Object id="NCCIC:Object-d6ca59d2-4fb1-11e6-9a9c-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">bettingtonBud6036@steelheadsnf.net</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 31491239</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-5e35c666-8dd1-420d-9c09-5e29096114d8" timestamp="2016-07-22T02:15:00.598000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-5692ad9c-6191-41cf-8265-4f1eb385dc19">
+              <cybox:Object id="NCCIC:Object-d6ca59d5-4fb1-11e6-80d8-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">harriesDick6002@corp-190-12-14-38-mec.puntonet.ec</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 49785137</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-3863fafd-6768-473b-9588-c97349525463" timestamp="2016-07-22T02:15:00.598000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-5ea8ea6e-8158-4bfd-bc6e-ebebebd4d43b">
+              <cybox:Object id="NCCIC:Object-d6ca80e1-4fb1-11e6-ab8d-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">tisdallGeorgina1719@kesselraum.de</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 70554412</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-47d3688b-057a-42a2-a7ed-2544df07a72b" timestamp="2016-07-22T02:15:00.598000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-0e39c624-95a9-4852-b71a-4e78678f46c7">
+              <cybox:Object id="NCCIC:Object-d6ca80e4-4fb1-11e6-9934-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">beresfordPetra0019@soas.net</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Insufficient Funds Transaction ID:23749980</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-1e92bbe4-5181-4186-ac7a-946006021856" timestamp="2016-07-22T02:15:00.598000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3fbecef4-733e-4afa-9686-18e66256a11c">
+              <cybox:Object id="NCCIC:Object-d6caa7f0-4fb1-11e6-a09d-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">bushellIva89479@stpaulspc.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Incoming Transaction Declined ID: 87161667</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-6dce5cac-105f-4db0-afbd-d904ec45160b" timestamp="2016-07-22T02:15:00.599000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-eafafad4-098a-4fc3-bb5e-fc9e84bde0eb">
+              <cybox:Object id="NCCIC:Object-d6cd4000-4fb1-11e6-898e-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">crispinConsuelo73@maxcap.nl</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 65508788</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-cc187589-7571-40a2-b4da-0a1a51e56dc1" timestamp="2016-07-22T02:15:00.599000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-80e759b3-02d6-4c96-8c57-6771b2d1fe36">
+              <cybox:Object id="NCCIC:Object-d6cd670f-4fb1-11e6-8c5e-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">bucknerCarla23232@net1.bg</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 50880795</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-75d81963-ebfe-48d0-a353-a8f614052add" timestamp="2016-07-22T02:15:00.599000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d13cfc29-daab-423d-b472-d30c223b1ca1">
+              <cybox:Object id="NCCIC:Object-d6cd8e21-4fb1-11e6-b10a-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">irvinCory69@static-186-121-216-104.acelerate.net</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 26905922</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-9fe79353-3dcf-4462-851c-385b6a8a63ff" timestamp="2016-07-22T02:15:00.599000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-704b34cf-c531-4099-9fdb-1089068167c7">
+              <cybox:Object id="NCCIC:Object-d6cd8e24-4fb1-11e6-9efb-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">heerDeidre537@tricom.net</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 86032624</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-788c3e4c-e103-4ac0-95a9-6daed3040a96" timestamp="2016-07-22T02:15:00.599000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3fddf301-01d5-4c99-b1cd-335db912ff13">
+              <cybox:Object id="NCCIC:Object-d6cdb530-4fb1-11e6-8e64-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">luthurJoan81266@njcforce.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 83046045</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-1620fcdc-5708-4589-be64-08cb228fc573" timestamp="2016-07-22T02:15:00.599000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-08f15c1b-a108-4692-8038-56a2aa2476d8">
+              <cybox:Object id="NCCIC:Object-d6cdb533-4fb1-11e6-a6c0-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">wardeLois4805@ztv.ro</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 99677315</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-770dbccd-a10d-4bee-baba-a2e0bcf4f75b" timestamp="2016-07-22T02:15:00.599000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ba40659d-1fca-4529-a44d-0b1223a48aa5">
+              <cybox:Object id="NCCIC:Object-d6cddc40-4fb1-11e6-9e30-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">yeoGraig10@ttnet.com.tr</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 22461016</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-704221b1-c003-4bcd-a86c-ecef203a17ae" timestamp="2016-07-22T02:15:00.599000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-e6e1527f-8eec-4a9a-bee7-0288124e57a0">
+              <cybox:Object id="NCCIC:Object-d6cddc43-4fb1-11e6-876e-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">slimpMargarita172@omisemassageandwellness.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Insufficient Funds Transaction ID:98195048</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-d4960551-6f63-414f-9b1c-b68f9d565f33" timestamp="2016-07-22T02:15:00.599000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-31eb0418-437e-48dd-a6b8-5ba1a28d9d4e">
+              <cybox:Object id="NCCIC:Object-d6ce0351-4fb1-11e6-aa5f-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">teullardMichale46009@inkidea.lt</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Incoming Transaction Declined ID: 32286384</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-82f0a9bf-437c-4cc7-8c95-737a14ba9ea8" timestamp="2016-07-22T02:15:00.600000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-21235420-01c9-4811-bbd4-b2536379db80">
+              <cybox:Object id="NCCIC:Object-d6ce0354-4fb1-11e6-8e4b-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">barclayTasha2719@avantel.net.mx</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 50038053</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-6a1ec166-dcad-4da1-b636-2b58c66c1e85" timestamp="2016-07-22T02:15:00.600000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-5ed65206-fab5-4c7b-b73a-7bc14eb07d49">
+              <cybox:Object id="NCCIC:Object-d6ce2a61-4fb1-11e6-a9ed-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">leveson-gowerJose27@mayatrotz.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 66454848</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-4df4cc65-3f7a-4c0a-91f4-c5b9542fa6e4" timestamp="2016-07-22T02:15:00.600000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-94f37a26-8982-4a68-a066-22f9314f190b">
+              <cybox:Object id="NCCIC:Object-d6ce2a64-4fb1-11e6-9761-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">buckenhamRena2761@cable.net.co</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 24589498</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-e9e9ed38-e618-4527-92ac-4d0737f56f80" timestamp="2016-07-22T02:15:00.600000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-5625155a-b6c2-49bd-9cdf-adbe91f2b313">
+              <cybox:Object id="NCCIC:Object-d6ce5170-4fb1-11e6-9375-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">onslowMaritza20@mweb.co.za</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 35970661</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-30efbeb1-4073-4941-90cf-f1bf2adc2ddd" timestamp="2016-07-22T02:15:00.600000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-0ef274f7-ef7d-4339-886d-b26d2bbcc3ee">
+              <cybox:Object id="NCCIC:Object-d6ce5173-4fb1-11e6-a5a2-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">bleeMarcia093@nevena.co.uk</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 92856751</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-c5353a2c-c18c-414b-979f-271df2a4a2c8" timestamp="2016-07-22T02:15:00.600000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-7f1dc576-e403-4862-a5e7-dffb3b161933">
+              <cybox:Object id="NCCIC:Object-d6ce7880-4fb1-11e6-b57f-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">rosonJoan04029@rem.netdelabs.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 34271381</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-67c17102-16ee-4bc0-a268-42df8e6c6e62" timestamp="2016-07-22T02:15:00.600000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ce539092-037e-43ae-87c8-ce2952fa4aac">
+              <cybox:Object id="NCCIC:Object-d6ce7883-4fb1-11e6-a123-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">ashfieldJillian4126@tlaadv.com.br</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 22581125</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-648918e4-8576-45b1-a0c3-8d4990cf39f5" timestamp="2016-07-22T02:15:00.600000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-cc26992d-776a-4fe6-873e-56751b5c450f">
+              <cybox:Object id="NCCIC:Object-d6ce9f91-4fb1-11e6-bed7-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">haskewShawn5738@englewoodvet.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 12389589</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-9ad01f17-69ec-464a-9f5f-11f07742e02a" timestamp="2016-07-22T02:15:00.600000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-c3218ab4-a75d-4817-91a6-e06d756c82bb">
+              <cybox:Object id="NCCIC:Object-d6ce9f94-4fb1-11e6-814a-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">kirkseyRose2413@islandclassicmustangclub.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Insufficient Funds Transaction ID:57045371</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-8a4c9596-4d23-4d3a-ac94-a4bbd044c8d2" timestamp="2016-07-22T02:15:00.601000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-cfabc25d-187f-470a-88e1-6d220a824ce7">
+              <cybox:Object id="NCCIC:Object-d6cec69e-4fb1-11e6-8b4c-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">secorCrystal33@kristanleeread.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Incoming Transaction Declined ID: 42977563</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-069d64ed-48ba-426f-a252-5315ef046276" timestamp="2016-07-22T02:15:00.601000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d60de815-0fa5-4a8b-ae17-d722823e7b4d">
+              <cybox:Object id="NCCIC:Object-d6cec6a1-4fb1-11e6-ba46-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">burroughsDiego368@core-encon.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 46988398</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-24e71d3e-018d-4f84-8f99-0de001d3d9a5" timestamp="2016-07-22T02:15:00.601000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-a22e2f6f-19c4-43ae-ba5d-066bc078cb7d">
+              <cybox:Object id="NCCIC:Object-d6ceedae-4fb1-11e6-8019-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">crosbyCliff2372@aviso.ci</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 17656255</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-160fc69b-6e99-430c-bd34-63a866ebba51" timestamp="2016-07-22T02:15:00.601000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-10ed3f9b-e121-45ec-9657-2f158ff1e510">
+              <cybox:Object id="NCCIC:Object-d6ceedb1-4fb1-11e6-8412-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">patersonIsabelle78496@songmookwan.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 34285008</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-e84a195e-4e37-41c1-96a5-3bccf621547e" timestamp="2016-07-22T02:15:00.601000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-207cd138-991c-4589-bea1-c59a57ae3d14">
+              <cybox:Object id="NCCIC:Object-d6ceedb4-4fb1-11e6-afda-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">tichbourneSarah85@pricepi54.ru</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 06280571</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-3836ab80-a976-4c37-98cc-136045193e10" timestamp="2016-07-22T02:15:00.601000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-5d030b9f-1ff5-4946-a600-5437b1de710d">
+              <cybox:Object id="NCCIC:Object-d6cf14c0-4fb1-11e6-a803-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">lockRosalind72496@teenstra.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 94104251</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-7bd4f534-d9cc-40c0-b566-84a01cd2651d" timestamp="2016-07-22T02:15:00.601000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-1246fe13-4b6e-49db-9313-5dc28a4abea0">
+              <cybox:Object id="NCCIC:Object-d6cf14c3-4fb1-11e6-bedd-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">baringMeredith05@zenhealingspace.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 54970944</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-40a1be20-d483-448b-b146-4be840e3f384" timestamp="2016-07-22T02:15:00.601000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-8f63fab3-dcea-430a-ae64-6a26742513cf">
+              <cybox:Object id="NCCIC:Object-d6cf3bcf-4fb1-11e6-84e7-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">stockCaleb75@avanticompany.ru</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Insufficient Funds Transaction ID:06815024</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-ba8edb22-c3d4-41e6-8f4d-09de6dcfb7c9" timestamp="2016-07-22T02:15:00.601000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-ff294662-a9b9-4595-acb9-c939cf2a18bb">
+              <cybox:Object id="NCCIC:Object-d6cf3bd2-4fb1-11e6-a7de-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">spodeMarlon926@ensystex.com.au</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Incoming Transaction Declined ID: 11981815</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-74b0192b-9ab9-4e7f-9eb8-c55860161207" timestamp="2016-07-22T02:15:00.602000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-35206a21-493a-4fcc-b330-aea3bc1d4ed3">
+              <cybox:Object id="NCCIC:Object-d6cf62de-4fb1-11e6-b6fa-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">tunneyLindsay56420@knipsalonpieko.nl</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 83913047</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-93b77371-96fd-4f14-b4f3-69778f48f61c" timestamp="2016-07-22T02:15:00.602000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-9299dfad-2a13-4aa3-a911-746eb96f39cf">
+              <cybox:Object id="NCCIC:Object-d6cf62e1-4fb1-11e6-b03c-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">batieEfrain43@ttnet.com.tr</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 32689658</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-2ba756cb-7c7d-4f11-91c3-c72f7e5f07dd" timestamp="2016-07-22T02:15:00.602000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-fdab1310-45c4-42d6-9306-5897025472f0">
+              <cybox:Object id="NCCIC:Object-d6cf89f0-4fb1-11e6-ba69-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">hadwinBrittney3548@airtelbroadband.in</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 47400548</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-6c59c477-c116-4c50-b60e-df153cc99fab" timestamp="2016-07-22T02:15:00.602000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-2f711831-7fb7-42d6-9c57-be42aaeec898">
+              <cybox:Object id="NCCIC:Object-d6cf89f3-4fb1-11e6-9ec8-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">schoppleWilton77@onthewaytravel.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 78765646</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-188f1589-2ef8-412f-a107-05b91ca0af43" timestamp="2016-07-22T02:15:00.602000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-412d14cf-ae20-4898-8624-e8866fc40d80">
+              <cybox:Object id="NCCIC:Object-d6cfb100-4fb1-11e6-88a9-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">thackstonChang10@grgservicos.com.br</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 29222186</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-8132db8f-5e3b-40f3-8b24-52135387afc5" timestamp="2016-07-22T02:15:00.602000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-39a329a8-3f50-46a1-8df3-a5d5989316e0">
+              <cybox:Object id="NCCIC:Object-d6cfb103-4fb1-11e6-8cc4-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">finneyLloyd33725@airtelbroadband.in</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 80421555</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-e5dfe5af-202f-4d95-b678-4e4467bd95aa" timestamp="2016-07-22T02:15:00.602000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-1174ad51-9bfa-4b67-b41d-747e6a815d04">
+              <cybox:Object id="NCCIC:Object-d6cfd80f-4fb1-11e6-b659-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">marjassonEdwardo92@steit.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Insufficient Funds Transaction ID:23287528</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-79d92641-e6a0-4e99-9d68-a8b6795e5ccf" timestamp="2016-07-22T02:15:00.602000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-0f135cec-7828-41fb-a45d-406eb6ce492f">
+              <cybox:Object id="NCCIC:Object-d6cfd812-4fb1-11e6-b2f6-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">leavesleyAntonia4599@static.vdc.vn</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Incoming Transaction Declined ID: 51224167</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-a4c22dbe-db2b-4171-8dac-ec4e85aac92b" timestamp="2016-07-22T02:15:00.603000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-5e8247e9-e022-48bd-a722-69f8fcc96982">
+              <cybox:Object id="NCCIC:Object-d6cfd815-4fb1-11e6-9250-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">keanRebekah77@nettoyageimperial.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 83126170</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-29ef2c81-13de-4112-9b14-778e93cff362" timestamp="2016-07-22T02:15:00.603000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-393dd06e-55b4-459b-95c9-bd745f2f2411">
+              <cybox:Object id="NCCIC:Object-d6cfff1f-4fb1-11e6-ac28-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">crabtreeSophie96165@hecticwebhost.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 60389071</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-b1759b4e-e5ed-4dad-9d7b-9403e08f98fe" timestamp="2016-07-22T02:15:00.603000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-0b8431a0-5c7f-424f-a3b7-4182aa4c965e">
+              <cybox:Object id="NCCIC:Object-d6cfff22-4fb1-11e6-91f4-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">sleighCary87@rdsnet.ro</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 53912231</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-a9c8006a-dbe9-4be1-af5c-b96d0ff429eb" timestamp="2016-07-22T02:15:00.603000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-37f20079-4c52-43cb-b379-f2a704254cc0">
+              <cybox:Object id="NCCIC:Object-d6d02630-4fb1-11e6-9890-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">urmstonEliseo396@tinja.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 23529569</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-227a2820-5ce0-4819-9ea7-8b938a7ffc56" timestamp="2016-07-22T02:15:00.603000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-6a2269cb-5517-4e68-9d50-c2ee44d21eaa">
+              <cybox:Object id="NCCIC:Object-d6d02633-4fb1-11e6-bbdb-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">jeffsJacquelyn21@nevadaoverhead.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 54579253</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-2e43ef81-a9e9-4289-b7e9-69a48f95f445" timestamp="2016-07-22T02:15:00.603000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-8562ecf0-3b66-4a84-95e3-ea73b3402305">
+              <cybox:Object id="NCCIC:Object-d6d04d40-4fb1-11e6-9962-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">branfordRosalie1358@smarttelecom.com.br</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 17900954</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-6c97dcfe-d83d-4877-89c8-271850d8bae1" timestamp="2016-07-22T02:15:00.603000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-f7313bf9-44c5-4df7-81b8-a2553f795c59">
+              <cybox:Object id="NCCIC:Object-d6d04d43-4fb1-11e6-9aa9-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">wombleLeslie96@grupoorla.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Insufficient Funds Transaction ID:56159658</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-bd6b4398-05f2-4303-8e5e-52559ce1e16c" timestamp="2016-07-22T02:15:00.603000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-7672b9d1-9350-49d1-bcb8-9c9e2da5e6ff">
+              <cybox:Object id="NCCIC:Object-d6d0744f-4fb1-11e6-9650-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">pointonDominique185@businesswealthreviews.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Incoming Transaction Declined ID: 13053595</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-0bed1f60-1f44-49f8-adbe-66c5c64be7a7" timestamp="2016-07-22T02:15:00.604000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3fd62d46-45e4-440c-9f6a-9a0fb5cee6f6">
+              <cybox:Object id="NCCIC:Object-d6d0c270-4fb1-11e6-b30d-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">bradhustMelinda23727@besser-ohne-brille.de</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 16901984</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-2dc97bdb-cb1f-4020-a564-d3a3f7a0154e" timestamp="2016-07-22T02:15:00.604000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-2498a09c-bd87-4161-bd6b-58f0ae4908dd">
+              <cybox:Object id="NCCIC:Object-d6d0c273-4fb1-11e6-b1d0-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">drydenWiley6776@jscconstruction.org</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 55016938</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-74532def-f45a-4c27-b6da-e6ef95df88f7" timestamp="2016-07-22T02:15:00.604000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-9044e47b-aceb-42c8-87d7-8ec409947c64">
+              <cybox:Object id="NCCIC:Object-d6d0e980-4fb1-11e6-9531-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">vavasourAmos1102@georgeusher.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 41902228</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-8e4ee96d-aa87-4da8-bfdd-f821cb6e9bec" timestamp="2016-07-22T02:15:00.605000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-be87f28e-b6e3-4c5c-9ac8-77e0e83abe00">
+              <cybox:Object id="NCCIC:Object-d6d0e983-4fb1-11e6-8520-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">rathayPenny1912@telkom.net.id</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 40120040</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-0f85c4db-b8ac-4e68-8b7c-348f1c582bfb" timestamp="2016-07-22T02:15:00.605000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-aba97b2e-5f92-46a0-8a2d-c509bf8bb873">
+              <cybox:Object id="NCCIC:Object-d6d11091-4fb1-11e6-b2e7-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">kirkpatrickVal379@perfumeriawiki.pl</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 45979260</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-f66ebcf9-a72a-454c-b9e0-6e2ea1258367" timestamp="2016-07-22T02:15:00.605000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-fbd35a39-3425-4960-a8f5-9db16e69af3c">
+              <cybox:Object id="NCCIC:Object-d6d11094-4fb1-11e6-87c1-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">farnworthCortez95@rationalselling.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 12934081</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-2c138469-2e6a-4acc-b5c3-ff506cfd46b1" timestamp="2016-07-22T02:15:00.605000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-970299b3-07dd-4061-a4bf-f91261bb6b53">
+              <cybox:Object id="NCCIC:Object-d6d137a1-4fb1-11e6-ac38-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">info@crakesh.de</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">The new project "We love Russia" has been started.</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-d7416f0d-dbf3-46e3-b6c6-b09fb5b2c615" timestamp="2016-07-22T02:15:00.605000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-6ae9d055-c2c9-43ce-965d-808182072933">
+              <cybox:Object id="NCCIC:Object-d6d137a4-4fb1-11e6-8a71-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">info@kaktus.org</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">The new project "We love Russia" has been started.</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-6659682f-24e9-4b7a-b2cf-1fae8e667bcb" timestamp="2016-07-22T02:15:00.605000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-623bfcde-fba3-443c-a0b3-d4c405a99dde">
+              <cybox:Object id="NCCIC:Object-d6d15eb0-4fb1-11e6-b8ba-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">duncanMorgan487@orthoton.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Insufficient Funds Transaction ID:99560801</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-dd51dada-5654-4b0d-abc5-b8815bfaf4bb" timestamp="2016-07-22T02:15:00.605000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-e3128876-16dd-4d99-a804-d5f3a1f10d00">
+              <cybox:Object id="NCCIC:Object-d6d15eb3-4fb1-11e6-81ce-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">valllanceTracy0179@wartburgkreisonline.de</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Incoming Transaction Declined ID: 73529396</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-ef1bcd1d-de00-4340-8d4f-4c225216f3c6" timestamp="2016-07-22T02:15:00.605000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-a1028c48-12de-4ebd-ae63-9822f7ada31a">
+              <cybox:Object id="NCCIC:Object-d6d15eb6-4fb1-11e6-b0b5-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">beckhamMason9698@ardo.com.br</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 17250581</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-da6be151-cae7-4fe7-9d16-d8be89e419de" timestamp="2016-07-22T02:15:00.605000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-2ce9a185-58fb-40ee-86b5-def1c3f638f8">
+              <cybox:Object id="NCCIC:Object-d6d185c0-4fb1-11e6-ab14-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">forfarHaywood8989@une.net.co</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 91180445</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-55eb6c5e-4ecf-49c8-95d4-b8e4e21c5329" timestamp="2016-07-22T02:15:00.606000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-5e6466f7-9845-42c0-b9e4-a6d9a9d17872">
+              <cybox:Object id="NCCIC:Object-d6d185c3-4fb1-11e6-9bdb-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">carruthersKatheryn00@purelightstudios.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 20573066</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-0d8f2f25-6e1a-4afd-bca7-2c7c447fe300" timestamp="2016-07-22T02:15:00.606000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-52b27f76-8726-4900-83aa-019ed6a4c860">
+              <cybox:Object id="NCCIC:Object-d6d1faee-4fb1-11e6-965e-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">gunsonMarguerite42230@venflow.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 04952883</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-65c05255-11f7-46e4-bfdb-21c62ce0867a" timestamp="2016-07-22T02:15:00.606000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-bbc5a315-5ada-4994-a25f-b24058171355">
+              <cybox:Object id="NCCIC:Object-d6d1faf1-4fb1-11e6-beb6-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">redmayneTyler25@yourextremepc.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 90852946</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-246938a5-02ef-4026-bd66-2b8a399f84db" timestamp="2016-07-22T02:15:00.606000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-c831482a-429f-4b36-af73-4ddc306c184e">
+              <cybox:Object id="NCCIC:Object-d6d22200-4fb1-11e6-9a22-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">stricklandKendra0614@txpsa.org</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Traffic report ID: 16008770</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-4b3ae56e-e45a-4e0e-8b56-04e213ef1f65" timestamp="2016-07-22T02:15:00.606000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d74550c3-739b-43e4-8fa8-92663cbf0e96">
+              <cybox:Object id="NCCIC:Object-d6d22203-4fb1-11e6-8ae8-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">starlingLou356@rptinstallations.com</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 16847977</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-93e604ab-1957-4ff5-b782-22a65013d96a" timestamp="2016-07-22T02:15:00.606000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious E-mail Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">Malicious E-mail</indicator:Type>
+            <indicator:Description>IIR 6 015 5463 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-6636c6c6-9c85-496e-ac72-7eb049ff0cae">
+              <cybox:Object id="NCCIC:Object-d6d2490f-4fb1-11e6-9214-eccd6d4fa460">
+                <cybox:Properties xsi:type="EmailMessageObj:EmailMessageObjectType">
+                  <EmailMessageObj:Header>
+                    <EmailMessageObj:From category="e-mail" xsi:type="AddressObj:AddressObjectType">
+                      <AddressObj:Address_Value condition="Equals">gaytonAlice591@ttnet.com.tr</AddressObj:Address_Value>
+                    </EmailMessageObj:From>
+                    <EmailMessageObj:Subject condition="Equals">Credit details ID: 98921220</EmailMessageObj:Subject>
+                  </EmailMessageObj:Header>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+            <indicator:Kill_Chain_Phases>
+              <stixCommon:Kill_Chain_Phase kill_chain_id="stix:KillChainPhase-af3e707f-2fb9-49e5-8c37-14026ca0a5ff" name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+            </indicator:Kill_Chain_Phases>
+          </stix:Indicator>
+        </stix:Indicators>
+        <stix:TTPs>
+          <stix:Kill_Chains>
+            <stixCommon:Kill_Chain definer="LMCO" id="NCCIC:Kill_Chain-2d8dc98b-9c21-4145-84f0-35c6d06e4125" name="LM Cyber Kill Chain" number_of_phases="7" reference="http://www.lockheedmartin.com/content/dam/lockheed/data/corporate/documents/LM-White-Paper-Intel-Driven-Defense.pdf">
+              <stixCommon:Kill_Chain_Phase name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+              <stixCommon:Kill_Chain_Phase name="Weaponization" ordinality="2" phase_id="stix:KillChainPhase-445b4827-3cca-42bd-8421-f2e947133c16"/>
+              <stixCommon:Kill_Chain_Phase name="Delivery" ordinality="3" phase_id="stix:KillChainPhase-79a0e041-9d5f-49bb-ada4-8322622b162d"/>
+              <stixCommon:Kill_Chain_Phase name="Exploitation" ordinality="4" phase_id="stix:KillChainPhase-f706e4e7-53d8-44ef-967f-81535c9db7d0"/>
+              <stixCommon:Kill_Chain_Phase name="Installation" ordinality="5" phase_id="stix:KillChainPhase-e1e4e3f7-be3b-4b39-b80a-a593cfd99a4f"/>
+              <stixCommon:Kill_Chain_Phase name="Command and Control" ordinality="6" phase_id="stix:KillChainPhase-d6dc32b9-2538-4951-8733-3cb9ef1daae2"/>
+              <stixCommon:Kill_Chain_Phase name="Actions on Objectives" ordinality="7" phase_id="stix:KillChainPhase-786ca8f9-2d9a-4213-b38e-399af4a2e5d6"/>
+            </stixCommon:Kill_Chain>
+          </stix:Kill_Chains>
+        </stix:TTPs>
+      </stix:STIX_Package>
+    

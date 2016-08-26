@@ -1,0 +1,577 @@
+<stix:STIX_Package xmlns:AIS="http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2" xmlns:AddressObj="http://cybox.mitre.org/objects#AddressObject-2" xmlns:CISCP="http://us-cert.gov/ciscp" xmlns:NCCIC="http://www.us-cert.gov/nccic" xmlns:TOUMarking="http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1" xmlns:cybox="http://cybox.mitre.org/cybox-2" xmlns:cyboxCommon="http://cybox.mitre.org/common-2" xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2" xmlns:edh2="urn:edm:edh:cyber:v3" xmlns:edh2cyberMarking="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:edh2cyberMarkingAssert="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd" xmlns:indicator="http://stix.mitre.org/Indicator-2" xmlns:isa="http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd" xmlns:marking="http://data-marking.mitre.org/Marking-1" xmlns:stix="http://stix.mitre.org/stix-1" xmlns:stix-ciq="http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1" xmlns:stixCommon="http://stix.mitre.org/common-1" xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1" xmlns:tlpMarking="http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1" xmlns:xal="urn:oasis:names:tc:ciq:xal:3" xmlns:xnl="urn:oasis:names:tc:ciq:xnl:3" xmlns:xpil="urn:oasis:names:tc:ciq:xpil:3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:taxii="http://taxii.mitre.org/messages/taxii_xml_binding-1" xmlns:taxii_11="http://taxii.mitre.org/messages/taxii_xml_binding-1.1" xmlns:tdq="http://taxii.mitre.org/query/taxii_default_query-1" id="NCCIC:STIX_Package-6e93ebc9-99fa-45ef-a1e6-93ddf6e20624" timestamp="2016-07-22T02:13:28+00:00" version="1.1.1" xsi:schemaLocation="http://cybox.mitre.org/common-2 http://cybox.mitre.org/XMLSchema/common/2.1/cybox_common.xsd http://cybox.mitre.org/cybox-2 http://cybox.mitre.org/XMLSchema/core/2.1/cybox_core.xsd http://cybox.mitre.org/default_vocabularies-2 http://cybox.mitre.org/XMLSchema/default_vocabularies/2.1/cybox_default_vocabularies.xsd http://cybox.mitre.org/objects#AddressObject-2 http://cybox.mitre.org/XMLSchema/objects/Address/2.1/Address_Object.xsd http://data-marking.mitre.org/Marking-1 http://stix.mitre.org/XMLSchema/data_marking/1.1.1/data_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1 http://stix.mitre.org/XMLSchema/extensions/marking/tlp/1.1.1/tlp_marking.xsd http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1 http://stix.mitre.org/XMLSchema/extensions/marking/terms_of_use/1.0.1/terms_of_use_marking.xsd http://stix.mitre.org/Indicator-2 http://stix.mitre.org/XMLSchema/indicator/2.1.1/indicator.xsd http://stix.mitre.org/common-1 http://stix.mitre.org/XMLSchema/common/1.1.1/stix_common.xsd http://stix.mitre.org/default_vocabularies-1 http://stix.mitre.org/XMLSchema/default_vocabularies/1.1.1/stix_default_vocabularies.xsd http://stix.mitre.org/stix-1 http://stix.mitre.org/XMLSchema/core/1.1.1/stix_core.xsd http://us-cert.gov/ciscp http://www.us-cert.gov/sites/default/files/STIX_Namespace/ciscp_vocab_v1.1.1.xsd http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2 http://www.us-cert.gov/sites/default/files/STIX_Namespace/AIS_Bundle_Marking_1.1.1_v1.0.xsd http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1 http://stix.mitre.org/XMLSchema/extensions/identity/ciq_3.0/1.1.1/ciq_3.0_identity.xsd urn:oasis:names:tc:ciq:xpil:3 http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/ISAMarkingsAssertionsType.v2.xsd http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_ISAMarkingsAssertionsType.v2.xsd urn:edm:edh:cyber:v3 http://www.us-cert.gov/sites/default/files/STIX_Namespace/local_SD-EDH_Profile_Cyber.v3.xsd">
+        <stix:STIX_Header>
+          <stix:Title>IIR 4 012 0064 16 - Indicators of Compromise - FO00</stix:Title>
+          <stix:Package_Intent xsi:type="stixVocabs:PackageIntentVocab-1.0">Indicators - Watchlist</stix:Package_Intent>
+          <stix:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</stix:Description>
+          <stix:Profiles>
+            <stixCommon:Profile>AIS Profile v1.1</stixCommon:Profile>
+          </stix:Profiles>
+          <stix:Handling>
+            <marking:Marking>
+              <marking:Controlled_Structure>//node() | //@*</marking:Controlled_Structure>
+              <marking:Marking_Structure xsi:type="AIS:AISMarkingStructure">
+                <AIS:Not_Proprietary CISA_Proprietary="false">
+                  <AIS:AISConsent consent="EVERYONE"/>
+                  <AIS:TLPMarking color="AMBER"/>
+                </AIS:Not_Proprietary>
+              </marking:Marking_Structure>
+            </marking:Marking>
+          </stix:Handling>
+          <stix:Information_Source>
+            <stixCommon:Contributing_Sources>
+              <stixCommon:Source>
+                <stixCommon:Identity xsi:type="stix-ciq:CIQIdentity3.0InstanceType">
+                  <stix-ciq:Specification>
+                    <xpil:PartyName>
+                      <xnl:OrganisationName>
+                        <xnl:NameElement>NCCIC</xnl:NameElement>
+                      </xnl:OrganisationName>
+                    </xpil:PartyName>
+                    <xpil:Addresses>
+                      <xpil:Address>
+                        <xal:Country>
+                          <xal:NameElement xal:NameCode="US" xal:NameCodeType="ISO_3166-1_alpha-2"/>
+                        </xal:Country>
+                        <xal:AdministrativeArea>
+                          <xal:NameElement xal:NameCode="US-DC" xal:NameCodeType="ISO_3166-2"/>
+                        </xal:AdministrativeArea>
+                      </xpil:Address>
+                    </xpil:Addresses>
+                    <xpil:OrganisationInfo xpil:IndustryType="Information Technology Sector"/>
+                  </stix-ciq:Specification>
+                </stixCommon:Identity>
+                <stixCommon:Tools>
+                  <cyboxCommon:Tool>
+                    <cyboxCommon:Metadata>
+                      <cyboxCommon:Value>AIS</cyboxCommon:Value>
+                    </cyboxCommon:Metadata>
+                  </cyboxCommon:Tool>
+                </stixCommon:Tools>
+              </stixCommon:Source>
+            </stixCommon:Contributing_Sources>
+            <stixCommon:Time>
+              <cyboxCommon:Produced_Time>2016-07-22T02:17:30Z</cyboxCommon:Produced_Time>
+            </stixCommon:Time>
+          </stix:Information_Source>
+        </stix:STIX_Header>
+        <stix:Indicators>
+          <stix:Indicator id="NCCIC:Indicator-c4c82993-3986-455a-89fb-4b8c6d92a79e" timestamp="2016-07-22T02:14:12.480000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-6ad98332-4dad-4bf2-b3ac-8b5912b5ee22">
+              <cybox:Object id="NCCIC:Object-e276a600-4faa-11e6-a849-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">4.15.180.21</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-0079b7b7-b7da-4646-9c97-032f37b2ff35" timestamp="2016-07-22T02:14:12.481000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3e9c3811-cf41-4334-b6ca-b85b030850fc">
+              <cybox:Object id="NCCIC:Object-e276a603-4faa-11e6-9ec6-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">5.154.240.145</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-44d01f5c-f049-4c3c-886c-2561c25575db" timestamp="2016-07-22T02:14:12.481000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-5172dda9-7990-4112-a687-a258a64c2453">
+              <cybox:Object id="NCCIC:Object-e276a606-4faa-11e6-bdc0-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">5.9.81.34</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-7a2619f9-295e-4659-8f67-8e09d7602104" timestamp="2016-07-22T02:14:12.481000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-3fe8c88d-a90c-44e2-8466-b6cec4bf7ca4">
+              <cybox:Object id="NCCIC:Object-e276cd0f-4faa-11e6-bdac-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">8.38.48.23</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-e78a8435-47a1-4128-9e45-1583b99a65d6" timestamp="2016-07-22T02:14:12.481000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-7fc7e577-0fff-4db0-b411-5e27173a9ec7">
+              <cybox:Object id="NCCIC:Object-e276cd12-4faa-11e6-ba9f-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">23.52.233.13</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-b1bb7abd-34b3-4178-bbe6-4a9cab58fc51" timestamp="2016-07-22T02:14:12.481000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-adbc688c-f25e-4cdb-af58-f716fc52b53b">
+              <cybox:Object id="NCCIC:Object-e276cd15-4faa-11e6-9dbe-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">50.28.9.115</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-d5b79791-f323-4d19-97fe-eed7f42c2b0c" timestamp="2016-07-22T02:14:12.481000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-0a0b6f36-21e1-43e5-8bfa-f75553e78e96">
+              <cybox:Object id="NCCIC:Object-e276cd18-4faa-11e6-9cea-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">50.63.202.61</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-c185a4d7-6009-4bbb-a3f8-b54c2a33c43d" timestamp="2016-07-22T02:14:12.481000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-6e466202-2dfc-48f3-863b-dd01f6db4310">
+              <cybox:Object id="NCCIC:Object-e276cd1b-4faa-11e6-a040-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">51.254.240.60</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-cc06828b-b2af-4081-a0b7-73e5781ef318" timestamp="2016-07-22T02:14:12.481000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-9c5cf9f8-06a6-4ebd-9dce-fb41e6a8d358">
+              <cybox:Object id="NCCIC:Object-e276f41f-4faa-11e6-bcea-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">52.53.174.241</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-885b2424-c4b5-4d89-8091-736a4a09e060" timestamp="2016-07-22T02:14:12.482000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-374e856c-1866-4dcd-b878-96736a1b684f">
+              <cybox:Object id="NCCIC:Object-e276f422-4faa-11e6-96b8-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">52.86.90.74</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-d4d5e3e3-689b-4199-bf5c-368dc7321fbe" timestamp="2016-07-22T02:14:12.482000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-8257fb63-fcc7-42af-bc51-ade07582c575">
+              <cybox:Object id="NCCIC:Object-e276f425-4faa-11e6-baf8-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">63.230.254.170</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-99d6c64c-8922-48c6-a020-ea1517a9c661" timestamp="2016-07-22T02:14:12.482000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-aa3a11c2-76fd-469d-9fa2-833c9841aea4">
+              <cybox:Object id="NCCIC:Object-e2771b30-4faa-11e6-b248-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">63.251.252.12</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-51ee5205-e825-4041-b178-78271a50421e" timestamp="2016-07-22T02:14:12.482000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-af9cf126-e200-43cc-8f97-953a81f93996">
+              <cybox:Object id="NCCIC:Object-e2771b33-4faa-11e6-a0f9-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">64.81.45.2</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-a65012c1-2edd-4bda-9fc0-2524530f1879" timestamp="2016-07-22T02:14:12.482000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-fdc53da8-7251-4edf-a65a-c9c5af81cb60">
+              <cybox:Object id="NCCIC:Object-e2774240-4faa-11e6-af7d-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">66.147.240.171</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-f7ee84f8-7552-4f3d-9eb5-924516f91afa" timestamp="2016-07-22T02:14:12.482000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-c2992f60-bde1-4eab-bd37-c1726d0fa3f6">
+              <cybox:Object id="NCCIC:Object-e2774243-4faa-11e6-b931-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">66.92.159.2</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-06ba0590-b2f2-4606-8e02-2024d6a76d05" timestamp="2016-07-22T02:14:12.482000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-b569edc5-4d8d-4251-972e-dc8c96f475cd">
+              <cybox:Object id="NCCIC:Object-e277694f-4faa-11e6-957c-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">68.2.16.30</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-2e95771c-b3a9-4ce8-b2ea-b3e4fddd1691" timestamp="2016-07-22T02:14:12.482000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-e8135476-be5b-4504-bd91-5c794fed4ddb">
+              <cybox:Object id="NCCIC:Object-e2776952-4faa-11e6-b9d6-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">72.195.165.50</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-5cec08f9-1ed3-46d6-a968-07785222eb3a" timestamp="2016-07-22T02:14:12.482000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-da24572f-890a-41ee-9e8c-ce33da6291d9">
+              <cybox:Object id="NCCIC:Object-e2779061-4faa-11e6-870a-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">74.103.253.38</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-1d2be8b1-c3d5-4359-b153-0597d3fbfe6a" timestamp="2016-07-22T02:14:12.482000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-67fdde8e-79db-472a-a81e-13a6d4e81697">
+              <cybox:Object id="NCCIC:Object-e2779064-4faa-11e6-88cc-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">74.85.244.2</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-ad683a8b-9920-4aaf-a449-06b592cc08c5" timestamp="2016-07-22T02:14:12.483000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-abedfd21-e863-4077-9580-3674279b7713">
+              <cybox:Object id="NCCIC:Object-e277b770-4faa-11e6-9991-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">75.109.192.183</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-92b07982-fa80-4c2a-9e7f-6ebf4be02c24" timestamp="2016-07-22T02:14:12.483000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-6b1e897c-95f5-4667-ba70-f099b63a2e70">
+              <cybox:Object id="NCCIC:Object-e277b773-4faa-11e6-b519-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">85.93.0.33</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-a0e3e784-6213-4752-8750-2ff8ac260308" timestamp="2016-07-22T02:14:12.483000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-f18dbe8d-8779-49ce-a0b8-5824833548ad">
+              <cybox:Object id="NCCIC:Object-e277de80-4faa-11e6-8c9f-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">91.227.79.91</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-cd1331e4-dad0-45e9-b4c4-bd820658c940" timestamp="2016-07-22T02:14:12.483000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-4a836834-24b9-47bf-80b9-3a1bf699c91b">
+              <cybox:Object id="NCCIC:Object-e277de83-4faa-11e6-9249-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">91.229.78.152</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-bfeacfcb-611b-404b-adf8-efc77412599a" timestamp="2016-07-22T02:14:12.483000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-73875383-415c-4504-a379-887face2d396">
+              <cybox:Object id="NCCIC:Object-e278058f-4faa-11e6-95be-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">104.24.102.204</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-d196d559-4260-481b-adbf-b5ef1149b5ba" timestamp="2016-07-22T02:14:12.483000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-761049f3-b2fd-471d-a02d-011031dc58a2">
+              <cybox:Object id="NCCIC:Object-e2780592-4faa-11e6-8aef-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">105.224.177.241</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-158329df-5f80-4e86-a223-e4093ad0155f" timestamp="2016-07-22T02:14:12.483000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-2017d8a9-40ce-4637-887e-62a2ba46c1bf">
+              <cybox:Object id="NCCIC:Object-e2780595-4faa-11e6-b833-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">129.250.35.250</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-e8fb1091-0444-4280-bd8e-5830f00713a5" timestamp="2016-07-22T02:14:12.483000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-f16aeebf-b996-4702-8566-7c65a34338ba">
+              <cybox:Object id="NCCIC:Object-e2782ca2-4faa-11e6-ab88-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">160.153.49.102</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-6d997b45-4dd4-4e03-b239-d95e2b89812d" timestamp="2016-07-22T02:14:12.483000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-de8d0a5d-65f1-4ca3-b3fc-91d74382d459">
+              <cybox:Object id="NCCIC:Object-e2782ca5-4faa-11e6-875a-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">167.114.67.172</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-59cf4413-6527-4880-a23b-dbb4b0988a7e" timestamp="2016-07-22T02:14:12.483000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-b07e041c-10ff-4a79-8030-2111a0e9a31e">
+              <cybox:Object id="NCCIC:Object-e27853b0-4faa-11e6-aefa-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">173.201.1.1</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-adafd278-f650-4bcb-a5f3-e706d9f529f0" timestamp="2016-07-22T02:14:12.484000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d1de67e2-09f7-43a8-b2b6-4bac8aec41b0">
+              <cybox:Object id="NCCIC:Object-e27853b3-4faa-11e6-9c53-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">185.106.120.168</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-1883a7a4-147f-4902-a492-1757503a1182" timestamp="2016-07-22T02:14:12.484000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d0d9bf67-8921-455b-b16d-36ab23369663">
+              <cybox:Object id="NCCIC:Object-e2787ac0-4faa-11e6-979d-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">185.17.184.11</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-10409a20-b59e-4283-a929-740c2d4b7c0a" timestamp="2016-07-22T02:14:12.484000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d75c7c45-931a-4329-856a-8a3616427804">
+              <cybox:Object id="NCCIC:Object-e2787ac3-4faa-11e6-a486-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">192.254.150.87</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-ac3f757e-f12b-4deb-83ec-f3a210bebe5e" timestamp="2016-07-22T02:14:12.484000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-80139eb4-5253-4e49-aa9d-0d6c44fd93ca">
+              <cybox:Object id="NCCIC:Object-e278a1d1-4faa-11e6-85b9-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">192.42.116.41</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-74e0942f-86bf-4660-8548-10b629ef205e" timestamp="2016-07-22T02:14:12.484000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-8406d036-b27f-49e3-8ae9-ecabfb8eed62">
+              <cybox:Object id="NCCIC:Object-e278a1d4-4faa-11e6-9846-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">195.22.26.248</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-eaa1f4df-0400-4a6a-a718-0ce3fcb86593" timestamp="2016-07-22T02:14:12.484000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-d90c01e7-efde-4775-b684-b1bf0b13aea1">
+              <cybox:Object id="NCCIC:Object-e278c8e1-4faa-11e6-9cec-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">199.2.252.10</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-48e6392f-ba69-4cf4-a71f-a0a3bd904fa7" timestamp="2016-07-22T02:14:12.484000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-68c61566-1134-4cb8-b498-36f36c27ed7e">
+              <cybox:Object id="NCCIC:Object-e278c8e4-4faa-11e6-867f-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">199.59.243.120</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-4e01624a-58f0-4bf7-a08f-8bcb565eec3c" timestamp="2016-07-22T02:14:12.484000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-642890ee-f262-4233-9678-10ea7b119066">
+              <cybox:Object id="NCCIC:Object-e278efee-4faa-11e6-847f-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">204.194.234.200</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-738079a0-0f00-40e5-ba61-3cb16e2f624c" timestamp="2016-07-22T02:14:12.484000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-cdd0a8ec-8375-4f6b-bd19-eec5a30132de">
+              <cybox:Object id="NCCIC:Object-e278eff1-4faa-11e6-8b56-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">205.186.179.225</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-b737491b-5639-42ad-bdf4-5c7a0af87591" timestamp="2016-07-22T02:14:12.484000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-68c0f353-931f-4f93-bdbc-a09003bfccf9">
+              <cybox:Object id="NCCIC:Object-e2791700-4faa-11e6-ab65-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">208.67.220.220</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-63587e94-4383-47ec-b0f3-0e62a4c10dd8" timestamp="2016-07-22T02:14:12.485000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-e0b7aade-4009-481e-8b8d-db9cbb822553">
+              <cybox:Object id="NCCIC:Object-e2791703-4faa-11e6-8a5a-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">208.67.222.222</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-f6fcdf1d-d430-4b5c-bcdf-bc765d6e9765" timestamp="2016-07-22T02:14:12.485000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-7f5f7867-66c4-4494-9823-7d954abe1999">
+              <cybox:Object id="NCCIC:Object-e2793e0f-4faa-11e6-8ef1-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">209.99.40.220</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+          <stix:Indicator id="NCCIC:Indicator-4aa3f9f4-2a29-4fd2-919a-bbbd3ab470c8" timestamp="2016-07-22T02:14:12.485000+00:00" xsi:type="indicator:IndicatorType">
+            <indicator:Title>Malicious IPv4 Indicator</indicator:Title>
+            <indicator:Type xsi:type="stixVocabs:IndicatorTypeVocab-1.1">IP Watchlist</indicator:Type>
+            <indicator:Description>IIR 4 012 0064 16 - Indicators of Compromise - FO00</indicator:Description>
+            <indicator:Observable id="NCCIC:Observable-770f9b20-9d78-4f56-8fcf-15dcb638f008">
+              <cybox:Object id="NCCIC:Object-e2793e12-4faa-11e6-9163-eccd6d4fa460">
+                <cybox:Properties category="ipv4-addr" is_spoofed="false" xsi:type="AddressObj:AddressObjectType">
+                  <AddressObj:Address_Value condition="Equals">212.205.2.234</AddressObj:Address_Value>
+                </cybox:Properties>
+              </cybox:Object>
+            </indicator:Observable>
+          </stix:Indicator>
+        </stix:Indicators>
+        <stix:TTPs>
+          <stix:Kill_Chains>
+            <stixCommon:Kill_Chain definer="LMCO" id="NCCIC:Kill_Chain-2d8dc98b-9c21-4145-84f0-35c6d06e4125" name="LM Cyber Kill Chain" number_of_phases="7" reference="http://www.lockheedmartin.com/content/dam/lockheed/data/corporate/documents/LM-White-Paper-Intel-Driven-Defense.pdf">
+              <stixCommon:Kill_Chain_Phase name="Reconnaissance" ordinality="1" phase_id="stix:KillChainPhase-af1016d6-a744-4ed7-ac91-00fe2272185a"/>
+              <stixCommon:Kill_Chain_Phase name="Weaponization" ordinality="2" phase_id="stix:KillChainPhase-445b4827-3cca-42bd-8421-f2e947133c16"/>
+              <stixCommon:Kill_Chain_Phase name="Delivery" ordinality="3" phase_id="stix:KillChainPhase-79a0e041-9d5f-49bb-ada4-8322622b162d"/>
+              <stixCommon:Kill_Chain_Phase name="Exploitation" ordinality="4" phase_id="stix:KillChainPhase-f706e4e7-53d8-44ef-967f-81535c9db7d0"/>
+              <stixCommon:Kill_Chain_Phase name="Installation" ordinality="5" phase_id="stix:KillChainPhase-e1e4e3f7-be3b-4b39-b80a-a593cfd99a4f"/>
+              <stixCommon:Kill_Chain_Phase name="Command and Control" ordinality="6" phase_id="stix:KillChainPhase-d6dc32b9-2538-4951-8733-3cb9ef1daae2"/>
+              <stixCommon:Kill_Chain_Phase name="Actions on Objectives" ordinality="7" phase_id="stix:KillChainPhase-786ca8f9-2d9a-4213-b38e-399af4a2e5d6"/>
+            </stixCommon:Kill_Chain>
+          </stix:Kill_Chains>
+        </stix:TTPs>
+      </stix:STIX_Package>
+    

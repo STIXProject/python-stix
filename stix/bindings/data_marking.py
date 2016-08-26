@@ -347,6 +347,9 @@ class MarkingSpecificationType(GeneratedsSuper):
                 elif type_name_ == "TermsOfUseMarkingStructureType":
                     import stix.bindings.extensions.marking.terms_of_use_marking as tou_marking_binding
                     obj_ = tou_marking_binding.TermsOfUseMarkingStructureType.factory()
+                elif type_name_ == "AISMarkingStructure":
+                    import stix.bindings.extensions.marking.ais_marking as ais_marking
+                    obj_ = ais_marking.AISMarkingStructure.factory()
                 else:
                     raise NotImplementedError('Marking structure type not implemented ' + type_name_)
             else:
