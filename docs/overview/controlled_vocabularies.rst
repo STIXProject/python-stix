@@ -59,7 +59,7 @@ values.
     header = STIXHeader()
     header.package_intents.append(PackageIntent.TERM_INDICATORS)
 
-    print header.to_xml()
+    print(header.to_xml())
 
 Which outputs:
 
@@ -92,7 +92,7 @@ requirements.
     non_default_term = VocabString("NON-DEFAULT VOCABULARY TERM")
     header.package_intents.append(non_default_term)
 
-    print header.to_xml()
+    print(header.to_xml())
 
 Which outputs:
 
@@ -248,6 +248,7 @@ XML Schema definition, but in Python!
     # python-stix modules
     from stix.core import STIXPackage
     from stix.common.vocabs import VocabString, register_vocab
+    from mixbox.namespaces import register_namespace, Namespace
 
     XML = \
     """
@@ -274,6 +275,7 @@ XML Schema definition, but in Python!
         _XSI_TYPE  = 'customVocabs:CustomVocab-1.0'
         TERM_FOO   = 'FOO'
         TERM_BAR   = 'BAR'
+    register_namespace(Namespace(CustomVocab._namespace, "customVocabNS"))
 
     # Parse the input document
     sio = StringIO(XML)
@@ -283,12 +285,12 @@ XML Schema definition, but in Python!
     package_intent = package.stix_header.package_intents[0]
 
     # Print information about the input Package_Intent
-    print type(package_intent), package_intent.xsi_type, package_intent
+    print('%s %s %s' % (type(package_intent), package_intent.xsi_type, package_intent))
 
     # Add another Package Intent
     bar = CustomVocab('BAR')
     package.stix_header.add_package_intent(bar)
 
     # This will include the 'BAR' CustomVocab entry
-    print package.to_xml()
+    print(package.to_xml())
 
