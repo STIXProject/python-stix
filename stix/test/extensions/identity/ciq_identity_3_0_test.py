@@ -57,8 +57,17 @@ class CIQIdentity3_0InstanceTests(EntityTestCase, unittest.TestCase):
                     },
                     'country': {
                         'name_elements': [
-                            {'value': 'name 1'},
-                            {'value': 'name 2'}
+                            {
+                                'value': 'name 1',
+                                'name_code': 'US',
+                                'name_code_type': 'ISO 3166-1 alpha-2'
+                            },
+                            {
+                                'value': 'name 2',
+                                'name_code': 'BZ',
+                                'name_code_type': 'ISO 3166-1 alpha-2',
+                                'name_type': 'ISO'
+                            }
                         ]
                     },
                     'administrative_area': {
