@@ -1,9 +1,11 @@
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
+# See LICENSE.txt for complete terms.
+
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import sys
 from stix.bindings import *
-import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
 
 XML_NS = "http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2"
@@ -11,194 +13,6 @@ XML_NS = "http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2"
 #
 # Data representation classes.
 #
-
-
-class AISHandling(data_marking_binding.MarkingType):
-    subclass = None
-    superclass = data_marking_binding.MarkingType
-
-    xmlns = XML_NS
-    xmlns_prefix = "AIS"
-    xml_type = "AISHandling"
-
-    def __init__(self, Marking=None):
-        self.Marking = Marking
-
-    def factory(*args_, **kwargs_):
-        if AISHandling.subclass:
-            return AISHandling.subclass(*args_, **kwargs_)
-        else:
-            return AISHandling(*args_, **kwargs_)
-    factory = staticmethod(factory)
-
-    def get_Marking(self):
-        return self.Marking
-
-    def set_Marking(self, Marking):
-        self.Marking = Marking
-
-    def hasContent_(self):
-        if (
-            self.Marking is not None or
-            super(AISHandling, self).hasContent_()
-        ):
-            return True
-        else:
-            return False
-
-    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AISHandling', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
-        showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
-        already_processed = set()
-        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='AISHandling')
-        if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
-            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
-        else:
-            lwrite('/>%s' % (eol_, ))
-
-    def exportAttributes(self, lwrite, level, already_processed, namespace_=XML_NS, name_='AISHandling'):
-        super(AISHandling, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='AISHandling')
-        if 'xsi:type' not in already_processed:
-            already_processed.add('xsi:type')
-            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
-            lwrite(xsi_type)
-
-    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AISHandling', fromsubclass_=False, pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
-
-        if self.Marking is not None:
-            self.Marking.export(lwrite, level, nsmap, namespace_, name_='Marking', pretty_print=pretty_print)
-
-    def build(self, node):
-        already_processed = set()
-        self.buildAttributes(node, node.attrib, already_processed)
-        for child in node:
-            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
-            self.buildChildren(child, node, nodeName_)
-
-    def buildAttributes(self, node, attrs, already_processed):
-        pass
-
-    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'Marking':
-            obj_ = MarkingSpecificationType.factory()
-            obj_.build(child_)
-            self.set_Marking(obj_)
-        super(AISHandling, self).buildChildren(child_, node, nodeName_, True)
-# end class AISHandling
-
-
-class MarkingSpecificationType(GeneratedsSuper):
-    subclass = None
-    superclass = None
-
-    def __init__(self, Controlled_Structure='//node() | //@*', Marking_Structure=None, Information_Source=None):
-        self.Controlled_Structure = Controlled_Structure
-        self.Marking_Structure = Marking_Structure
-        self.Information_Source = Information_Source
-
-    def factory(*args_, **kwargs_):
-        if MarkingSpecificationType.subclass:
-            return MarkingSpecificationType.subclass(*args_, **kwargs_)
-        else:
-            return MarkingSpecificationType(*args_, **kwargs_)
-    factory = staticmethod(factory)
-
-    def get_Controlled_Structure(self):
-        return self.Controlled_Structure
-
-    def set_Controlled_Structure(self, Controlled_Structure):
-        self.Controlled_Structure = Controlled_Structure
-
-    def get_Marking_Structure(self):
-        return self.Marking_Structure
-
-    def set_Marking_Structure(self, Marking_Structure):
-        self.Marking_Structure = Marking_Structure
-
-    def get_Information_Source(self):
-        return self.Information_Source
-
-    def set_Information_Source(self, Information_Source):
-        self.Information_Source = Information_Source
-
-    def hasContent_(self):
-        if (
-            self.Controlled_Structure is not None or
-            self.Marking_Structure is not None or
-            self.Information_Source is not None
-        ):
-            return True
-        else:
-            return False
-
-    def export(self, lwrite, level, nsmap, namespace_=XML_NS, name_='MarkingSpecificationType', namespacedef_='', pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
-        showIndent(lwrite, level, pretty_print)
-        lwrite('<%s:%s%s' % (nsmap[namespace_], name_, namespacedef_ and ' ' + namespacedef_ or '', ))
-        already_processed = set()
-        self.exportAttributes(lwrite, level, already_processed, namespace_, name_='MarkingSpecificationType')
-        if self.hasContent_():
-            lwrite('>%s' % (eol_, ))
-            self.exportChildren(lwrite, level + 1, nsmap, XML_NS, name_, pretty_print=pretty_print)
-            showIndent(lwrite, level, pretty_print)
-            lwrite('</%s:%s>%s' % (nsmap[namespace_], name_, eol_))
-        else:
-            lwrite('/>%s' % (eol_, ))
-
-    def exportAttributes(self, lwrite, level, already_processed, namespace_=XML_NS, name_='MarkingSpecificationType'):
-        pass
-
-    def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='MarkingSpecificationType', fromsubclass_=False, pretty_print=True):
-        if pretty_print:
-            eol_ = '\n'
-        else:
-            eol_ = ''
-        if self.Controlled_Structure is not None:
-            showIndent(lwrite, level, pretty_print)
-            lwrite('<%s:Controlled_Structure>%s</%s:Controlled_Structure>%s' % (nsmap[namespace_], self.gds_format_string(quote_xml(self.Controlled_Structure).encode(ExternalEncoding), input_name='Controlled_Structure'), nsmap[namespace_], eol_))
-        if self.Marking_Structure is not None:
-            self.Marking_Structure.export(lwrite, level, nsmap, namespace_, name_='Marking_Structure', pretty_print=pretty_print)
-        if self.Information_Source is not None:
-            self.Information_Source.export(lwrite, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
-
-    def build(self, node):
-        already_processed = set()
-        self.buildAttributes(node, node.attrib, already_processed)
-        for child in node:
-            nodeName_ = Tag_pattern_.match(child.tag).groups()[-1]
-            self.buildChildren(child, node, nodeName_)
-
-    def buildAttributes(self, node, attrs, already_processed):
-        pass
-
-    def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
-        if nodeName_ == 'Controlled_Structure':
-            Controlled_Structure_ = child_.text
-            Controlled_Structure_ = self.gds_validate_string(Controlled_Structure_, node, 'Controlled_Structure')
-            self.Controlled_Structure = Controlled_Structure_
-        elif nodeName_ == 'Marking_Structure':
-            obj_ = AISMarkingStructure.factory()
-            obj_.build(child_)
-            self.set_Marking_Structure(obj_)
-        elif nodeName_ == 'Information_Source':
-            obj_ = stix_common_binding.InformationSourceType.factory()
-            obj_.build(child_)
-            self.set_Information_Source(obj_)
-# end class MarkingSpecificationType
 
 
 class AISMarkingStructure(data_marking_binding.MarkingStructureType):
@@ -680,8 +494,8 @@ def parse(inFileName):
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
-        rootTag = 'AISHandling'
-        rootClass = AISHandling
+        rootTag = 'AISMarkingStructure'
+        rootClass = AISMarkingStructure
     rootObj = rootClass.factory()
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
@@ -698,8 +512,8 @@ def parseEtree(inFileName):
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
-        rootTag = 'AISHandling'
-        rootClass = AISHandling
+        rootTag = 'AISMarkingStructure'
+        rootClass = AISMarkingStructure
     rootObj = rootClass.factory()
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
@@ -718,8 +532,8 @@ def parseString(inString):
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
     if rootClass is None:
-        rootTag = 'AISHandling'
-        rootClass = AISHandling
+        rootTag = 'AISMarkingStructure'
+        rootClass = AISMarkingStructure
     rootObj = rootClass.factory()
     rootObj.build(rootNode)
     # Enable Python to collect the space used by the DOM.
@@ -742,9 +556,9 @@ if __name__ == '__main__':
     main()
 
 __all__ = [
-    "AISHandling",
-    "AISMarkingStructure",
     "NotProprietary",
+    "IsProprietary"
     "AISConsentType",
+    "AISMarkingStructure"
     "TLPMarkingType"
     ]
