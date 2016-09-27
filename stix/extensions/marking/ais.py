@@ -230,6 +230,28 @@ class IsProprietary(stix.Entity):
         self.ais_consent = ais_consent
         self.tlp_marking = tlp_marking
 
+    @property
+    def ais_consent(self):
+        return self._ais_consent
+
+    @ais_consent.setter
+    def ais_consent(self, value):
+        if isinstance(value, AISConsentType):
+            self._ais_consent = value
+        else:
+            self._set_var(AISConsentType, try_cast=False, ais_consent=value)
+
+    @property
+    def tlp_marking(self):
+        return self._tlp_marking
+
+    @tlp_marking.setter
+    def tlp_marking(self, value):
+        if isinstance(value, TLPMarkingType):
+            self._tlp_marking = value
+        else:
+            self._set_var(TLPMarkingType, try_cast=False, tlp_marking=value)
+
     def to_obj(self, return_obj=None, ns_info=None):
         super(IsProprietary, self).to_obj(return_obj=return_obj,
                                           ns_info=ns_info)
