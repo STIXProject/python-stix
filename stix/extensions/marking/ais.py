@@ -434,6 +434,34 @@ _update_schemalocations()
 
 
 def add_ais_marking(stix_package, proprietary, consent, color, **kwargs):
+    """
+    This utility functions aids in the creation of an AIS marking and appends
+    it to the provided STIX package.
+
+    Args:
+        stix_package: A stix.core.STIXPackage object.
+        proprietary: True if marking uses IsProprietary, False for
+        NotProprietary.
+        consent: A string with one of the following values: "EVERYONE", "NONE"
+            or "USG".
+        color: A string that corresponds to TLP values: "WHITE", "GREEN" or
+            "AMBER".
+        **kwargs: Six required keyword arguments that are used to create a CIQ
+            identity object. These are: country_name_code,
+            country_name_code_type, admin_area_name_code,
+            admin_area_name_code_type, organisation_name, industry_type.
+
+    Raises:
+        ValueError: When keyword arguments are missing. User did not supply
+            correct values for: proprietary, color and consent.
+
+    Note:
+        Any Markings under STIX Header will be removed. Please follow the
+        guidelines for `AIS`_.
+
+    .. _AIS:
+        https://www.us-cert.gov/ais
+    """
     from stix.common import InformationSource
     from stix.extensions.identity.ciq_identity_3_0 import (
         CIQIdentity3_0Instance, STIXCIQIdentity3_0, PartyName, Address,
@@ -483,6 +511,7 @@ def add_ais_marking(stix_package, proprietary, consent, color, **kwargs):
 
     if proprietary is True:
         proprietary_obj = IsProprietary()
+        consent = 'EVERYONE'
     elif proprietary is False:
         proprietary_obj = NotProprietary()
     else:
@@ -504,6 +533,9 @@ def add_ais_marking(stix_package, proprietary, consent, color, **kwargs):
     marking_spec.information_source = InformationSource()
     marking_spec.information_source.identity = identity
 
-    stix_package.stix_header = STIXHeader()
+    if not stix_package.stix_header:
+        stix_package.stix_header = STIXHeader()
+
+    # Removes any other Markings if present.
     stix_package.stix_header.handling = Marking()
     stix_package.stix_header.handling.add_marking(marking_spec)
