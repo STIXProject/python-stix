@@ -431,3 +431,79 @@ def _update_schemalocations():
 stix.data_marking.add_extension(AISMarkingStructure)
 _update_namespaces()
 _update_schemalocations()
+
+
+def add_ais_marking(stix_package, proprietary, consent, color, **kwargs):
+    from stix.common import InformationSource
+    from stix.extensions.identity.ciq_identity_3_0 import (
+        CIQIdentity3_0Instance, STIXCIQIdentity3_0, PartyName, Address,
+        Country, NameElement, OrganisationInfo, AdministrativeArea)
+    from stix.core.stix_header import STIXHeader
+    from stix.data_marking import MarkingSpecification, Marking
+
+    args = {"country_name_code", "country_name_code_type", "industry_type",
+            "admin_area_name_code", "admin_area_name_code_type",
+            "organisation_name"}
+
+    diff = args - set(kwargs.keys())
+
+    if diff:
+        msg = "All keyword arguments must be provided. Missing: {0}"
+        raise ValueError(msg.format(tuple(diff)))
+
+    party_name = PartyName()
+    party_name.add_organisation_name(kwargs["organisation_name"])
+
+    country = Country()
+    country_name = NameElement()
+    country_name.name_code = kwargs["country_name_code"]
+    country_name.name_code_type = kwargs["country_name_code_type"]
+    country.add_name_element(country_name)
+
+    admin_area = AdministrativeArea()
+    admin_area_name = NameElement()
+    admin_area_name.name_code = kwargs["admin_area_name_code"]
+    admin_area_name.name_code_type = kwargs["admin_area_name_code_type"]
+    admin_area.add_name_element(admin_area_name)
+
+    address = Address()
+    address.country = country
+    address.administrative_area = admin_area
+
+    org_info = OrganisationInfo()
+    org_info.industry_type = kwargs["organisation_name"]
+
+    id_spec = STIXCIQIdentity3_0()
+    id_spec.party_name = party_name
+    id_spec.add_address(address)
+    id_spec.organisation_info = org_info
+
+    identity = CIQIdentity3_0Instance()
+    identity.specification = id_spec
+
+    if proprietary is True:
+        proprietary_obj = IsProprietary()
+    elif proprietary is False:
+        proprietary_obj = NotProprietary()
+    else:
+        raise ValueError("proprietary expected True or False.")
+
+    proprietary_obj.ais_consent = AISConsentType(consent=consent)
+    proprietary_obj.tlp_marking = TLPMarkingType(color=color)
+
+    ais_marking = AISMarkingStructure()
+
+    if isinstance(proprietary_obj, IsProprietary):
+        ais_marking.is_proprietary = proprietary_obj
+    else:
+        ais_marking.not_proprietary = proprietary_obj
+
+    marking_spec = MarkingSpecification()
+    marking_spec.controlled_structure = '//node() | //@*'
+    marking_spec.marking_structures.append(ais_marking)
+    marking_spec.information_source = InformationSource()
+    marking_spec.information_source.identity = identity
+
+    stix_package.stix_header = STIXHeader()
+    stix_package.stix_header.handling = Marking()
+    stix_package.stix_header.handling.add_marking(marking_spec)
