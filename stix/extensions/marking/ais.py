@@ -469,11 +469,11 @@ def add_ais_marking(stix_package, proprietary, consent, color, **kwargs):
     from stix.core.stix_header import STIXHeader
     from stix.data_marking import MarkingSpecification, Marking
 
-    args = {"country_name_code", "country_name_code_type", "industry_type",
+    args = ("country_name_code", "country_name_code_type", "industry_type",
             "admin_area_name_code", "admin_area_name_code_type",
-            "organisation_name"}
+            "organisation_name")
 
-    diff = args - set(kwargs.keys())
+    diff = set(args) - set(kwargs.keys())
 
     if diff:
         msg = "All keyword arguments must be provided. Missing: {0}"
