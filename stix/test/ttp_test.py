@@ -6,6 +6,7 @@ import unittest
 from stix.test import EntityTestCase, assert_warnings
 from stix.test import data_marking_test
 from stix.test.common import related_test, identity_test, kill_chains_test
+from stix.test.extensions.identity import ciq_identity_3_0_test
 
 from stix.core import STIXPackage
 import stix.ttp as ttp
@@ -31,6 +32,14 @@ class PersonasTests(EntityTestCase, unittest.TestCase):
 
     _full_dict = [
         identity_test.IdentityTests._full_dict
+    ]
+
+
+class PersonasWithCIQTests(EntityTestCase, unittest.TestCase):
+    klass = resource.Personas
+
+    _full_dict = [
+        ciq_identity_3_0_test.CIQIdentity3_0InstanceTests._full_dict
     ]
 
 
@@ -192,6 +201,25 @@ class TTPTests(EntityTestCase, unittest.TestCase):
         t = ttp.TTP()
         t.related_packages.append(STIXPackage())
         self.assertEqual(len(t.related_packages), 1)
+
+
+class TTPIdentityTests(EntityTestCase, unittest.TestCase):
+    klass = ttp.TTP
+    _full_dict = {
+        "id": "example:ttp-775591f7-7e01-4546-9522-d4211df4aac7",
+        "timestamp": "2016-10-04T19:57:44.446575+00:00",
+        "title": "Victim Targeting: Electricity Sector and Industrial Control System Sector",
+        "victim_targeting": {
+            "identity": {
+                "specification": {
+                    "organisation_info": {
+                        "industry_type": "Electricity, Industrial Control Systems"
+                    }
+                },
+                "xsi:type": "ciqIdentity:CIQIdentity3.0InstanceType"
+            }
+        }
+    }
 
 
 if __name__ == "__main__":
