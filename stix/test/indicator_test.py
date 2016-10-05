@@ -4,10 +4,11 @@
 import unittest
 
 from stix.core import STIXPackage
-from stix.indicator import Indicator, RelatedCampaignRefs
+from stix.indicator import Indicator, RelatedCampaignRefs, ValidTime
 
 from stix.test import EntityTestCase, assert_warnings
 from stix.test.common import related_test
+from datetime import datetime
 
 
 class IndicatorTest(EntityTestCase, unittest.TestCase):
@@ -445,6 +446,15 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
         i = Indicator()
         i.related_packages.append(STIXPackage())
         self.assertEqual(len(i.related_packages), 1)
+
+    def test_datetime_format(self):
+        indicator = Indicator(title="title")
+        valid_time = ValidTime(start_time=datetime.strptime("2010-03-05",
+                                                            "%Y-%m-%d"))
+        indicator.add_valid_time_position(valid_time)
+
+        ixml = indicator.to_xml()
+        self.assertTrue("2010-03-05T" in ixml)
 
 
 class RelatedCampaignReferencesTests(unittest.TestCase, EntityTestCase):
