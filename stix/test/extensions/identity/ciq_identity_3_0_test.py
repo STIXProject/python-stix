@@ -2,10 +2,12 @@
 # See LICENSE.txt for complete terms.
 
 import unittest
+from six import StringIO
 
 from stix.threat_actor import ThreatActor
 import stix.extensions.identity.ciq_identity_3_0 as ciq
 from stix.test import EntityTestCase
+from stix.core import STIXPackage
 
 
 class CIQIdentity3_0InstanceTests(EntityTestCase, unittest.TestCase):
@@ -151,6 +153,14 @@ class IdentityInThreatActorTests(EntityTestCase, unittest.TestCase):
         "timestamp": "2016-10-04T19:43:57.382126+00:00",
         "title": "Disco Team Threat Actor Group"
     }
+
+    def test_identity_from_xml(self):
+        obj = self.klass.from_dict(self._full_dict)
+        sp = STIXPackage()
+        sp.add(obj)
+        s = StringIO(sp.to_xml())
+        pkg = STIXPackage.from_xml(s)
+        self.assertTrue("CIQIdentity3.0InstanceType" in pkg.to_xml())
 
 
 if __name__ == "__main__":
