@@ -2,13 +2,14 @@
 # See LICENSE.txt for complete terms.
 
 import unittest
+from datetime import datetime
+from mixbox.vendor.six import text_type
 
 from stix.core import STIXPackage
 from stix.indicator import Indicator, RelatedCampaignRefs, ValidTime
 
 from stix.test import EntityTestCase, assert_warnings
 from stix.test.common import related_test
-from datetime import datetime
 
 
 class IndicatorTest(EntityTestCase, unittest.TestCase):
@@ -454,7 +455,7 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
         indicator.add_valid_time_position(valid_time)
 
         ixml = indicator.to_xml()
-        self.assertTrue("2010-03-05T" in ixml)
+        self.assertTrue("2010-03-05T" in text_type(ixml))
 
 
 class RelatedCampaignReferencesTests(unittest.TestCase, EntityTestCase):
