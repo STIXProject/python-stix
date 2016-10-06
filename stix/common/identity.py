@@ -20,8 +20,8 @@ class IdentityFactory(entities.EntityFactory):
 
 class Identity(stix.Entity):
     _binding = common_binding
-    _namespace = 'http://stix.mitre.org/common-1'
     _binding_class = IdentityType
+    _namespace = 'http://stix.mitre.org/common-1'
 
     id_ = fields.IdField("id")
     idref = fields.IdrefField("idref")
@@ -36,6 +36,17 @@ class Identity(stix.Entity):
         self.name = name
         self.related_identities = related_identities
 
+    def to_dict(self):
+        d = super(Identity, self).to_dict()
+
+        if self._XSI_TYPE:
+            d['xsi:type'] = self._XSI_TYPE
+
+        return d
+
+    @staticmethod
+    def lookup_class(xsi_type):
+        return stix.lookup_extension(xsi_type, default=Identity)
 
 # We can't import RelatedIdentity until we have defined the Identity class.
 from stix.common.related import RelatedIdentity
