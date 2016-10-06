@@ -2,7 +2,7 @@
 # See LICENSE.txt for complete terms.
 
 import unittest
-from mixbox.vendor.six import StringIO, text_type
+from mixbox.vendor.six import BytesIO, text_type
 
 from stix.threat_actor import ThreatActor
 import stix.extensions.identity.ciq_identity_3_0 as ciq
@@ -158,7 +158,7 @@ class IdentityInThreatActorTests(EntityTestCase, unittest.TestCase):
         obj = self.klass.from_dict(self._full_dict)
         sp = STIXPackage()
         sp.add(obj)
-        s = StringIO(sp.to_xml())
+        s = BytesIO(sp.to_xml())
         pkg = STIXPackage.from_xml(s)
         self.assertTrue("CIQIdentity3.0InstanceType" in text_type(pkg.to_xml()))
 
