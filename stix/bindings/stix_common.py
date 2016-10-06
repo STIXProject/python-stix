@@ -1283,7 +1283,6 @@ class IdentityType(GeneratedsSuper):
         self.id = _cast(None, id)
         self.Name = Name
         self.Related_Identities = Related_Identities
-        self.xsi_type = None
     def factory(*args_, **kwargs_):
         if IdentityType.subclass:
             return IdentityType.subclass(*args_, **kwargs_)
