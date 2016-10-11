@@ -290,7 +290,20 @@ class STIXCIQIdentity3_0(stix.Entity):
         elif isinstance(value, Country):
             self.nationalities.append(value)
         else:
-           self.nationalities.append(Country(value))
+            self.nationalities.append(Country(value))
+
+    @property
+    def organisation_info(self):
+        return self._organisation_info
+
+    @organisation_info.setter
+    def organisation_info(self, value):
+        if not value:
+            self._organisation_info = None
+        elif isinstance(value, OrganisationInfo):
+            self._organisation_info = value
+        else:
+            raise ValueError('organisation_info must be instance of OrganisationInfo')
 
     @classmethod
     def from_obj(cls, obj, return_obj=None):
@@ -318,7 +331,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         organisation_info = obj.findall(OrganisationInfo.XML_TAG)
         if organisation_info is not None and len(organisation_info) > 0:
             return_obj.organisation_info = OrganisationInfo.from_obj(organisation_info[0])
-        
+
         electronic_address_identifiers = obj.findall("{%s}ElectronicAddressIdentifiers" % XML_NS_XPIL)
         if electronic_address_identifiers is not None and len(electronic_address_identifiers) > 0:
             return_obj.electronic_address_identifiers = [ElectronicAddressIdentifier.from_obj(x) for x in electronic_address_identifiers[0]]
@@ -375,7 +388,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         
         if self.organisation_info:
             return_obj.append(self.organisation_info.to_obj(ns_info=ns_info))
-        
+
         if self.languages:
             languages_root = et.Element("{%s}Languages" % XML_NS_XPIL)
             return_obj.append(languages_root)
@@ -407,6 +420,7 @@ class STIXCIQIdentity3_0(stix.Entity):
         return_obj.free_text_lines = [FreeTextLine.from_dict(x) for x in dict_repr.get('free_text_lines', [])]
         return_obj.contact_numbers = [ContactNumber.from_dict(x) for x in dict_repr.get('contact_numbers', [])]
         return_obj.nationalities = [Country.from_dict(x) for x in dict_repr.get('nationalities', [])]
+        return_obj.organisation_info = OrganisationInfo.from_dict(dict_repr.get('organisation_info'))
 
         return return_obj
 
@@ -429,6 +443,8 @@ class STIXCIQIdentity3_0(stix.Entity):
             d['contact_numbers'] = [x.to_dict() for x in self.contact_numbers]
         if self.nationalities:
             d['nationalities'] = [x.to_dict() for x in self.nationalities]
+        if self.organisation_info:
+            d['organisation_info'] = self.organisation_info.to_dict()
 
         return d
 
