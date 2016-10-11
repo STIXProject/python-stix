@@ -460,7 +460,7 @@ DEFAULT_STIX_NS_TO_PREFIX = {
     'http://stix.mitre.org/default_vocabularies-1': 'stixVocabs',
     'http://stix.mitre.org/extensions/AP#CAPEC2.7-1': 'stix-capec',
     'http://stix.mitre.org/extensions/Address#CIQAddress3.0-1': 'stix-ciqaddress',
-    'http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1': 'ciqIdentity',
+    'http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1': 'stix-ciqidentity',
     'http://stix.mitre.org/extensions/Malware#MAEC4.1-1': 'stix-maec',
     'http://stix.mitre.org/extensions/StructuredCOA#Generic-1': 'genericStructuredCOA',
     'http://stix.mitre.org/extensions/TestMechanism#Generic-1': 'genericTM',

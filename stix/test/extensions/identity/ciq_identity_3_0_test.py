@@ -113,7 +113,7 @@ class CIQIdentity3_0InstanceTests(EntityTestCase, unittest.TestCase):
                 'industry_type': 'SECTOR 1 | SECTOR 2',
             }
         },
-        'xsi:type': 'ciqIdentity:CIQIdentity3.0InstanceType'
+        'xsi:type': 'stix-ciqidentity:CIQIdentity3.0InstanceType'
     }
 
 

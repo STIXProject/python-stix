@@ -25,9 +25,9 @@ class CIQIdentity3_0Instance(common.Identity):
     _binding = ciq_identity_binding
     _binding_class = _binding.CIQIdentity3_0InstanceType
     _namespace = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
-    _XML_NS_PREFIX = "ciqIdentity"
+    _XML_NS_PREFIX = "stix-ciqidentity"
     _XML_TYPE = "CIQIdentity3.0InstanceType"
-    _XSI_TYPE = "ciqIdentity:CIQIdentity3.0InstanceType"
+    _XSI_TYPE = "stix-ciqidentity:CIQIdentity3.0InstanceType"
 
     def __init__(self, roles=None, specification=None):
         super(CIQIdentity3_0Instance, self).__init__()
