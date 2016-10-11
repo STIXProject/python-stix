@@ -145,10 +145,7 @@ class NotProprietary(stix.Entity):
 
     @ais_consent.setter
     def ais_consent(self, value):
-        if isinstance(value, AISConsentType):
-            self._ais_consent = value
-        else:
-            self._set_var(AISConsentType, try_cast=False, ais_consent=value)
+        self._set_var(AISConsentType, try_cast=False, ais_consent=value)
 
     @property
     def tlp_marking(self):
@@ -156,10 +153,7 @@ class NotProprietary(stix.Entity):
 
     @tlp_marking.setter
     def tlp_marking(self, value):
-        if isinstance(value, TLPMarkingType):
-            self._tlp_marking = value
-        else:
-            self._set_var(TLPMarkingType, try_cast=False, tlp_marking=value)
+        self._set_var(TLPMarkingType, try_cast=False, tlp_marking=value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(NotProprietary, self).to_obj(return_obj=return_obj,
@@ -168,7 +162,7 @@ class NotProprietary(stix.Entity):
         if not return_obj:
             return_obj = self._binding_class()
 
-        if self.cisa_proprietary:
+        if self.cisa_proprietary is not None:
             return_obj.CISA_Proprietary = self.cisa_proprietary
         if self.ais_consent:
             return_obj.AISConsent = self.ais_consent.to_obj(ns_info=ns_info)
@@ -180,7 +174,7 @@ class NotProprietary(stix.Entity):
     def to_dict(self):
         d = {}
 
-        if self.cisa_proprietary:
+        if self.cisa_proprietary is not None:
             d['cisa_proprietary'] = self.cisa_proprietary
         if self.ais_consent:
             d['ais_consent'] = self.ais_consent.to_dict()
@@ -236,10 +230,7 @@ class IsProprietary(stix.Entity):
 
     @ais_consent.setter
     def ais_consent(self, value):
-        if isinstance(value, AISConsentType):
-            self._ais_consent = value
-        else:
-            self._set_var(AISConsentType, try_cast=False, ais_consent=value)
+        self._set_var(AISConsentType, try_cast=False, ais_consent=value)
 
     @property
     def tlp_marking(self):
@@ -247,10 +238,7 @@ class IsProprietary(stix.Entity):
 
     @tlp_marking.setter
     def tlp_marking(self, value):
-        if isinstance(value, TLPMarkingType):
-            self._tlp_marking = value
-        else:
-            self._set_var(TLPMarkingType, try_cast=False, tlp_marking=value)
+        self._set_var(TLPMarkingType, try_cast=False, tlp_marking=value)
 
     def to_obj(self, return_obj=None, ns_info=None):
         super(IsProprietary, self).to_obj(return_obj=return_obj,
@@ -259,7 +247,7 @@ class IsProprietary(stix.Entity):
         if not return_obj:
             return_obj = self._binding_class()
 
-        if self.cisa_proprietary:
+        if self.cisa_proprietary is not None:
             return_obj.CISA_Proprietary = self.cisa_proprietary
         if self.ais_consent:
             return_obj.AISConsent = self.ais_consent.to_obj(ns_info=ns_info)
@@ -271,7 +259,7 @@ class IsProprietary(stix.Entity):
     def to_dict(self):
         d = {}
 
-        if self.cisa_proprietary:
+        if self.cisa_proprietary is not None:
             d['cisa_proprietary'] = self.cisa_proprietary
         if self.ais_consent:
             d['ais_consent'] = self.ais_consent.to_dict()
@@ -433,6 +421,61 @@ _update_namespaces()
 _update_schemalocations()
 
 
+# IndustryType allowed sectors
+CHEMICAL_SECTOR = 'CHEMICAL SECTOR'
+COMMERCIAL_FACILITIES_SECTOR = 'COMMERCIAL FACILITIES SECTOR'
+COMMUNICATIONS_SECTOR = 'COMMUNICATIONS SECTOR'
+CRITICAL_MANUFACTURING_SECTOR = 'CRITICAL MANUFACTURING SECTOR'
+DAMS_SECTOR = 'DAMS SECTOR'
+DEFENSE_INDUSTRIAL_BASE_SECTOR = 'DEFENSE INDUSTRIAL BASE SECTOR'
+EMERGENCY_SERVICES_SECTOR = 'EMERGENCY SERVICES SECTOR'
+ENERGY_SECTOR = 'ENERGY SECTOR'
+FINANCIAL_SERVICES_SECTOR = 'FINANCIAL SERVICES SECTOR'
+FOOD_AND_AGRICULTURE_SECTOR = 'FOOD AND AGRICULTURE SECTOR'
+GOVERNMENT_FACILITIES_SECTOR = 'GOVERNMENT FACILITIES SECTOR'
+HEALTH_CARE_AND_PUBLIC_HEALTH_SECTOR = 'HEALTHCARE AND PUBLIC HEALTH SECTOR'
+INFORMATION_TECHNOLOGY_SECTOR = 'INFORMATION TECHNOLOGY SECTOR'
+NUCLEAR_REACTORS_MATERIALS_AND_WASTE_SECTOR = 'NUCLEAR REACTORS MATERIALS, AND WASTE SECTOR'
+TRANSPORTATION_SYSTEMS_SECTOR = 'TRANSPORTATION SYSTEMS SECTOR'
+WATER_AND_WASTEWATER_SYSTEMS_SECTOR = 'WATER AND WASTEWATER SYSTEMS SECTOR'
+
+
+def _validate_and_create_industry_type(industry_type):
+    INDUSTRY_TYPE_SECTORS = (CHEMICAL_SECTOR, COMMERCIAL_FACILITIES_SECTOR,
+                             COMMUNICATIONS_SECTOR,
+                             CRITICAL_MANUFACTURING_SECTOR,
+                             DAMS_SECTOR, DEFENSE_INDUSTRIAL_BASE_SECTOR,
+                             EMERGENCY_SERVICES_SECTOR, ENERGY_SECTOR,
+                             FINANCIAL_SERVICES_SECTOR,
+                             FOOD_AND_AGRICULTURE_SECTOR,
+                             GOVERNMENT_FACILITIES_SECTOR,
+                             HEALTH_CARE_AND_PUBLIC_HEALTH_SECTOR,
+                             INFORMATION_TECHNOLOGY_SECTOR,
+                             NUCLEAR_REACTORS_MATERIALS_AND_WASTE_SECTOR,
+                             TRANSPORTATION_SYSTEMS_SECTOR,
+                             WATER_AND_WASTEWATER_SYSTEMS_SECTOR)
+
+    if isinstance(industry_type, str):
+        if industry_type.split(" | ") > 1:
+            val = industry_type.split(" | ")
+
+            # Pipe-delimited string supplied.
+            if all(x in INDUSTRY_TYPE_SECTORS for x in val):
+                return industry_type
+
+        # Single string supplied.
+        if industry_type in INDUSTRY_TYPE_SECTORS:
+            return industry_type
+
+    elif isinstance(industry_type, list):
+        # Create pipe-delimited string when list of strings is provided.
+        if all(x in INDUSTRY_TYPE_SECTORS for x in industry_type):
+            return " | ".join(industry_type)
+
+    msg = 'IndustryType must be one of the following: {0}. Received \'{1}\'.'
+    raise ValueError(msg.format(INDUSTRY_TYPE_SECTORS, industry_type))
+
+
 def add_ais_marking(stix_package, proprietary, consent, color, **kwargs):
     """
     This utility functions aids in the creation of an AIS marking and appends
@@ -459,6 +502,10 @@ def add_ais_marking(stix_package, proprietary, consent, color, **kwargs):
         Any Markings under STIX Header will be removed. Please follow the
         guidelines for `AIS`_.
 
+        The industry_type keyword argument accepts: a list of string based on
+        defined sectors, a pipe-delimited string of sectors, or a single
+        sector.
+
     .. _AIS:
         https://www.us-cert.gov/ais
     """
@@ -469,29 +516,29 @@ def add_ais_marking(stix_package, proprietary, consent, color, **kwargs):
     from stix.core.stix_header import STIXHeader
     from stix.data_marking import MarkingSpecification, Marking
 
-    args = ("country_name_code", "country_name_code_type", "industry_type",
-            "admin_area_name_code", "admin_area_name_code_type",
-            "organisation_name")
+    args = ('country_name_code', 'country_name_code_type', 'industry_type',
+            'admin_area_name_code', 'admin_area_name_code_type',
+            'organisation_name')
 
     diff = set(args) - set(kwargs.keys())
 
     if diff:
-        msg = "All keyword arguments must be provided. Missing: {0}"
+        msg = 'All keyword arguments must be provided. Missing: {0}'
         raise ValueError(msg.format(tuple(diff)))
 
     party_name = PartyName()
-    party_name.add_organisation_name(kwargs["organisation_name"])
+    party_name.add_organisation_name(kwargs['organisation_name'])
 
     country = Country()
     country_name = NameElement()
-    country_name.name_code = kwargs["country_name_code"]
-    country_name.name_code_type = kwargs["country_name_code_type"]
+    country_name.name_code = kwargs['country_name_code']
+    country_name.name_code_type = kwargs['country_name_code_type']
     country.add_name_element(country_name)
 
     admin_area = AdministrativeArea()
     admin_area_name = NameElement()
-    admin_area_name.name_code = kwargs["admin_area_name_code"]
-    admin_area_name.name_code_type = kwargs["admin_area_name_code_type"]
+    admin_area_name.name_code = kwargs['admin_area_name_code']
+    admin_area_name.name_code_type = kwargs['admin_area_name_code_type']
     admin_area.add_name_element(admin_area_name)
 
     address = Address()
@@ -499,7 +546,7 @@ def add_ais_marking(stix_package, proprietary, consent, color, **kwargs):
     address.administrative_area = admin_area
 
     org_info = OrganisationInfo()
-    org_info.industry_type = kwargs["organisation_name"]
+    org_info.industry_type = _validate_and_create_industry_type(kwargs['industry_type'])
 
     id_spec = STIXCIQIdentity3_0()
     id_spec.party_name = party_name
@@ -515,7 +562,7 @@ def add_ais_marking(stix_package, proprietary, consent, color, **kwargs):
     elif proprietary is False:
         proprietary_obj = NotProprietary()
     else:
-        raise ValueError("proprietary expected True or False.")
+        raise ValueError('proprietary expected True or False.')
 
     proprietary_obj.ais_consent = AISConsentType(consent=consent)
     proprietary_obj.tlp_marking = TLPMarkingType(color=color)
