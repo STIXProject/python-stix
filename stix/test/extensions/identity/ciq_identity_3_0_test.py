@@ -108,7 +108,7 @@ class CIQIdentity3_0InstanceTests(EntityTestCase, unittest.TestCase):
                 }
             ]
         },
-        'xsi:type': 'ciqIdentity:CIQIdentity3.0InstanceType'
+        'xsi:type': 'stix-ciqidentity:CIQIdentity3.0InstanceType'
     }
 
 

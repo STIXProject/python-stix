@@ -7,7 +7,7 @@ Namespace = mixbox.namespaces.Namespace
 
 NS_CAMPAIGN_OBJECT = Namespace("http://stix.mitre.org/Campaign-1", "campaign", "http://stix.mitre.org/XMLSchema/campaign/1.2/campaign.xsd")
 NS_CAPEC_OBJECT = Namespace("http://capec.mitre.org/capec-2", "capec", "")
-NS_CIQIDENTITY_OBJECT = Namespace("http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1", "ciqIdentity", "http://stix.mitre.org/XMLSchema/extensions/identity/ciq_3.0/1.2/ciq_3.0_identity.xsd")
+NS_CIQIDENTITY_OBJECT = Namespace("http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1", "stix-ciqidentity", "http://stix.mitre.org/XMLSchema/extensions/identity/ciq_3.0/1.2/ciq_3.0_identity.xsd")
 NS_COA_OBJECT = Namespace("http://stix.mitre.org/CourseOfAction-1", "coa", "http://stix.mitre.org/XMLSchema/course_of_action/1.2/course_of_action.xsd")
 NS_CVRF_OBJECT = Namespace("http://www.icasi.org/CVRF/schema/cvrf/1.1", "cvrf", "")
 NS_ET_OBJECT = Namespace("http://stix.mitre.org/ExploitTarget-1", "et", "http://stix.mitre.org/XMLSchema/exploit_target/1.2/exploit_target.xsd")

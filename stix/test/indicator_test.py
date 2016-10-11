@@ -190,7 +190,7 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
                             ]
                         }
                     },
-                    'xsi:type': 'ciqIdentity:CIQIdentity3.0InstanceType'
+                    'xsi:type': 'stix-ciqidentity:CIQIdentity3.0InstanceType'
                 },
                 'time': {'produced_time': '2014-02-21T10:16:14.947201'}
             }
