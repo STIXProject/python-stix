@@ -108,7 +108,10 @@ class CIQIdentity3_0InstanceTests(EntityTestCase, unittest.TestCase):
                         {'value': 'name 2'}
                     ]
                 }
-            ]
+            ],
+            'organisation_info': {
+                'industry_type': 'SECTOR 1 | SECTOR 2',
+            }
         },
         'xsi:type': 'ciqIdentity:CIQIdentity3.0InstanceType'
     }
