@@ -1,3 +1,17 @@
+Version 1.1.1.6
+2016-10-14
+- Add support for AIS Markings in STIX 1.1.1
+- Support additional fields in CIQ Identity
+
+Version 1.1.1.5
+2015-04-29
+- #200 Refactored ns_dict behavior in to_xml() to allow custom namespace mappings
+- #254 Added information_source to MarkingSpecification class.
+- #188 Added nationalities to CIQ Identity extension.
+- #246 Added coa_requested to Incident class.
+- #248 Set include_schemalocs to False by default in to_xml()
+- #249 Removed "Work In Progress" label from RTD documentation.
+
 Version 1.1.1.4
 2015-03-19
 - #44 Added StructuredCOA support. This completes the COA structure.
