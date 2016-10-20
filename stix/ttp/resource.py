@@ -7,7 +7,8 @@ from mixbox import typedlist
 
 # internal
 import stix
-from stix.common import ToolInformation, Identity
+from stix.common import ToolInformation
+from stix.common.identity import Identity, IdentityFactory
 import stix.bindings.ttp as ttp_binding
 
 # relative
@@ -28,7 +29,7 @@ class Personas(stix.EntityList):
     _binding = ttp_binding
     _binding_class = _binding.PersonasType
 
-    persona = fields.TypedField("Persona", Identity, multiple=True, listfunc=_IdentityList)
+    persona = fields.TypedField("Persona", Identity, multiple=True, factory=IdentityFactory, listfunc=_IdentityList)
 
 
 class Tools(stix.EntityList):

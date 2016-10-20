@@ -7,7 +7,8 @@ from mixbox import fields
 # internal
 import stix
 import stix.bindings.threat_actor as threat_actor_binding
-from stix.common import vocabs, Confidence, Identity, Statement
+from stix.common import vocabs, Confidence, Statement
+from stix.common.identity import Identity, IdentityFactory
 from stix.common.related import (
     GenericRelationshipList, RelatedCampaign, RelatedPackageRefs, RelatedTTP,
     RelatedThreatActor
@@ -65,7 +66,7 @@ class ThreatActor(stix.BaseCoreComponent):
     _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
     _ID_PREFIX = 'threatactor'
 
-    identity = fields.TypedField("Identity", Identity)
+    identity = fields.TypedField("Identity", Identity, factory=IdentityFactory)
     types = StatementField("Type", Statement, vocab_type=vocabs.ThreatActorType, multiple=True, key_name="types")
     motivations = StatementField("Motivation", Statement, vocab_type=vocabs.Motivation, multiple=True, key_name="motivations")
     sophistications = StatementField("Sophistication", Statement, vocab_type=vocabs.ThreatActorSophistication, multiple=True, key_name="sophistications")

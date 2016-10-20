@@ -37,7 +37,6 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
 
     def __init__(self, idref=None, id=None, Name=None, Related_Identities=None, Specification=None, Role=None):
         super(CIQIdentity3_0InstanceType, self).__init__(idref=idref, id=id, Name=Name, Related_Identities=Related_Identities)
-        self.xsi_type       = None
         self.Specification = Specification
         if Role is None:
             self.Role = []
