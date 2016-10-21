@@ -10,10 +10,6 @@ install:
 script:
   - tox
 
-branches:
-  only:
-    - master
-
 notifications:
   email:
     - stix-commits-list@lists.mitre.org
