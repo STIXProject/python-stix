@@ -443,18 +443,16 @@ WATER_AND_WASTEWATER_SYSTEMS_SECTOR = 'Water and Wastewater Systems Sector'
 
 def _validate_and_create_industry_type(industry_type):
     INDUSTRY_SECTORS = (CHEMICAL_SECTOR, COMMERCIAL_FACILITIES_SECTOR,
-                             COMMUNICATIONS_SECTOR,
-                             CRITICAL_MANUFACTURING_SECTOR,
-                             DAMS_SECTOR, DEFENSE_INDUSTRIAL_BASE_SECTOR,
-                             EMERGENCY_SERVICES_SECTOR, ENERGY_SECTOR,
-                             FINANCIAL_SERVICES_SECTOR,
-                             FOOD_AND_AGRICULTURE_SECTOR,
-                             GOVERNMENT_FACILITIES_SECTOR,
-                             HEALTH_CARE_AND_PUBLIC_HEALTH_SECTOR,
-                             INFORMATION_TECHNOLOGY_SECTOR,
-                             NUCLEAR_REACTORS_MATERIALS_AND_WASTE_SECTOR,
-                             TRANSPORTATION_SYSTEMS_SECTOR, OTHER,
-                             WATER_AND_WASTEWATER_SYSTEMS_SECTOR)
+                        COMMUNICATIONS_SECTOR, CRITICAL_MANUFACTURING_SECTOR,
+                        DAMS_SECTOR, DEFENSE_INDUSTRIAL_BASE_SECTOR,
+                        EMERGENCY_SERVICES_SECTOR, ENERGY_SECTOR,
+                        FINANCIAL_SERVICES_SECTOR, FOOD_AND_AGRICULTURE_SECTOR,
+                        GOVERNMENT_FACILITIES_SECTOR,
+                        HEALTH_CARE_AND_PUBLIC_HEALTH_SECTOR,
+                        INFORMATION_TECHNOLOGY_SECTOR,
+                        NUCLEAR_REACTORS_MATERIALS_AND_WASTE_SECTOR,
+                        TRANSPORTATION_SYSTEMS_SECTOR, OTHER,
+                        WATER_AND_WASTEWATER_SYSTEMS_SECTOR)
 
     lower_case_sectors = tuple(x.lower() for x in INDUSTRY_SECTORS)
     result = ""
@@ -485,7 +483,7 @@ def _validate_and_create_industry_type(industry_type):
             error = True
             break
 
-    if not error:
+    if not error and val:
         return result
 
     msg = 'IndustryType must be one of the following: {0}. Received \'{1}\'.'
