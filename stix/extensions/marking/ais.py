@@ -422,27 +422,27 @@ _update_schemalocations()
 
 
 # IndustryType allowed sectors
-CHEMICAL_SECTOR = 'CHEMICAL SECTOR'
-COMMERCIAL_FACILITIES_SECTOR = 'COMMERCIAL FACILITIES SECTOR'
-COMMUNICATIONS_SECTOR = 'COMMUNICATIONS SECTOR'
-CRITICAL_MANUFACTURING_SECTOR = 'CRITICAL MANUFACTURING SECTOR'
-DAMS_SECTOR = 'DAMS SECTOR'
-DEFENSE_INDUSTRIAL_BASE_SECTOR = 'DEFENSE INDUSTRIAL BASE SECTOR'
-EMERGENCY_SERVICES_SECTOR = 'EMERGENCY SERVICES SECTOR'
-ENERGY_SECTOR = 'ENERGY SECTOR'
-FINANCIAL_SERVICES_SECTOR = 'FINANCIAL SERVICES SECTOR'
-FOOD_AND_AGRICULTURE_SECTOR = 'FOOD AND AGRICULTURE SECTOR'
-GOVERNMENT_FACILITIES_SECTOR = 'GOVERNMENT FACILITIES SECTOR'
-HEALTH_CARE_AND_PUBLIC_HEALTH_SECTOR = 'HEALTHCARE AND PUBLIC HEALTH SECTOR'
-INFORMATION_TECHNOLOGY_SECTOR = 'INFORMATION TECHNOLOGY SECTOR'
-NUCLEAR_REACTORS_MATERIALS_AND_WASTE_SECTOR = 'NUCLEAR REACTORS MATERIALS, AND WASTE SECTOR'
-OTHER = 'OTHER'
-TRANSPORTATION_SYSTEMS_SECTOR = 'TRANSPORTATION SYSTEMS SECTOR'
-WATER_AND_WASTEWATER_SYSTEMS_SECTOR = 'WATER AND WASTEWATER SYSTEMS SECTOR'
+CHEMICAL_SECTOR = 'Chemical Sector'
+COMMERCIAL_FACILITIES_SECTOR = 'Commercial Facilities Sector'
+COMMUNICATIONS_SECTOR = 'Communications Sector'
+CRITICAL_MANUFACTURING_SECTOR = 'Critical Manufacturing Sector'
+DAMS_SECTOR = 'Dams Sector'
+DEFENSE_INDUSTRIAL_BASE_SECTOR = 'Defense Industrial Base Sector'
+EMERGENCY_SERVICES_SECTOR = 'Emergency Services Sector'
+ENERGY_SECTOR = 'Energy Sector'
+FINANCIAL_SERVICES_SECTOR = 'Financial Services Sector'
+FOOD_AND_AGRICULTURE_SECTOR = 'Food and Agriculture Sector'
+GOVERNMENT_FACILITIES_SECTOR = 'Government Facilities Sector'
+HEALTH_CARE_AND_PUBLIC_HEALTH_SECTOR = 'Healthcare and Public Health Sector'
+INFORMATION_TECHNOLOGY_SECTOR = 'Information Technology Sector'
+NUCLEAR_REACTORS_MATERIALS_AND_WASTE_SECTOR = 'Nuclear Reactors Materials, and Waste Sector'
+OTHER = 'Other'
+TRANSPORTATION_SYSTEMS_SECTOR = 'Transportation Systems Sector'
+WATER_AND_WASTEWATER_SYSTEMS_SECTOR = 'Water and Wastewater Systems Sector'
 
 
 def _validate_and_create_industry_type(industry_type):
-    INDUSTRY_TYPE_SECTORS = (CHEMICAL_SECTOR, COMMERCIAL_FACILITIES_SECTOR,
+    INDUSTRY_SECTORS = (CHEMICAL_SECTOR, COMMERCIAL_FACILITIES_SECTOR,
                              COMMUNICATIONS_SECTOR,
                              CRITICAL_MANUFACTURING_SECTOR,
                              DAMS_SECTOR, DEFENSE_INDUSTRIAL_BASE_SECTOR,
@@ -456,25 +456,40 @@ def _validate_and_create_industry_type(industry_type):
                              TRANSPORTATION_SYSTEMS_SECTOR, OTHER,
                              WATER_AND_WASTEWATER_SYSTEMS_SECTOR)
 
+    lower_case_sectors = tuple(x.lower() for x in INDUSTRY_SECTORS)
+    result = ""
+    error = False
+    val = []
+
     if isinstance(industry_type, str):
-        if industry_type.split(" | ") > 1:
-            val = industry_type.split(" | ")
+        # Pipe-delimited or single string supplied.
+        val = [x.lower().strip() for x in industry_type.split("|")]
 
-            # Pipe-delimited string supplied.
-            if all(x in INDUSTRY_TYPE_SECTORS for x in val):
-                return industry_type
-
-        # Single string supplied.
-        if industry_type in INDUSTRY_TYPE_SECTORS:
-            return industry_type
-
-    elif isinstance(industry_type, list):
+    elif isinstance(industry_type, (list, tuple)):
         # Create pipe-delimited string when list of strings is provided.
-        if all(x in INDUSTRY_TYPE_SECTORS for x in industry_type):
-            return " | ".join(industry_type)
+        val = [x.lower().strip() for x in industry_type]
+
+    else:
+        error = True
+
+    for item in val:
+        for idx, sector in enumerate(lower_case_sectors):
+            if item == sector:
+                if not result:
+                    result = INDUSTRY_SECTORS[idx]
+                else:
+                    result = "{0}|{1}".format(result, INDUSTRY_SECTORS[idx])
+                break
+        else:
+            # The sectors collection was exhausted. No match found.
+            error = True
+            break
+
+    if not error:
+        return result
 
     msg = 'IndustryType must be one of the following: {0}. Received \'{1}\'.'
-    raise ValueError(msg.format(INDUSTRY_TYPE_SECTORS, industry_type))
+    raise ValueError(msg.format(INDUSTRY_SECTORS, industry_type))
 
 
 def add_ais_marking(stix_package, proprietary, consent, color, **kwargs):
