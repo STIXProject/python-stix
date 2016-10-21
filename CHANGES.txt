@@ -1,3 +1,7 @@
+Version 1.1.1.7
+2016-10-21
+- Improved handling of Industry Sectors in CIQ Identity for AIS Markings
+
 Version 1.1.1.6
 2016-10-14
 - Add support for AIS Markings in STIX 1.1.1
