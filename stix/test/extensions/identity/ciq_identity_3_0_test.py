@@ -2,8 +2,12 @@
 # See LICENSE.txt for complete terms.
 
 import unittest
-from stix.test import EntityTestCase
+from mixbox.vendor.six import BytesIO, text_type
+
+from stix.threat_actor import ThreatActor
 import stix.extensions.identity.ciq_identity_3_0 as ciq
+from stix.test import EntityTestCase
+from stix.core import STIXPackage
 
 
 class CIQIdentity3_0InstanceTests(EntityTestCase, unittest.TestCase):
@@ -106,6 +110,57 @@ class CIQIdentity3_0InstanceTests(EntityTestCase, unittest.TestCase):
         },
         'xsi:type': 'ciqIdentity:CIQIdentity3.0InstanceType'
     }
+
+
+class IdentityInThreatActorTests(EntityTestCase, unittest.TestCase):
+    klass = ThreatActor
+    _full_dict = {
+        "id": "example:threatactor-c96266cf-ccb3-43f3-b44e-26dbd66273e5",
+        "identity": {
+            "specification": {
+                "addresses": [
+                    {
+                        "administrative_area": {
+                            "name_elements": [{"value": "California"}
+                            ]
+                        },
+                        "country": {
+                            "name_elements": [{"value": "United States"}]
+                        }
+                    }
+                ],
+                "electronic_address_identifiers": [
+                    {"value": "disco-team@stealthemail.com"},
+                    {"value": "facebook.com/thediscoteam"},
+                    {"value": "twitter.com/realdiscoteam"}
+                ],
+                "languages": [{"value": "Spanish"}],
+                "party_name": {
+                    "organisation_names": [
+                        {
+                            "name_elements": [{"value": "Disco Tean"}],
+                            "type": "CommonUse"
+                        },
+                        {
+                            "name_elements": [{"value": "Equipo del Discoteca"}],
+                            "type": "UnofficialName"
+                        }
+                    ]
+                }
+            },
+            "xsi:type": "ciqIdentity:CIQIdentity3.0InstanceType"
+        },
+        "timestamp": "2016-10-04T19:43:57.382126+00:00",
+        "title": "Disco Team Threat Actor Group"
+    }
+
+    def test_identity_from_xml(self):
+        obj = self.klass.from_dict(self._full_dict)
+        sp = STIXPackage()
+        sp.add(obj)
+        s = BytesIO(sp.to_xml())
+        pkg = STIXPackage.from_xml(s)
+        self.assertTrue("CIQIdentity3.0InstanceType" in text_type(pkg.to_xml()))
 
 
 if __name__ == "__main__":

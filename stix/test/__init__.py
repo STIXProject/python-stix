@@ -54,6 +54,7 @@ def round_trip_dict(cls, dict_):
     dict2 = cls.to_dict(api_obj)
     return dict2
 
+
 def round_trip(o, output=False, list_=False):
     """ Performs all eight conversions to verify import/export functionality.
 
@@ -124,13 +125,14 @@ def round_trip(o, output=False, list_=False):
     # Before parsing the XML, make sure the cache is clear
     cybox.utils.cache_clear()
 
-    #7. XML String -> Bindings Object
+    # 7. XML String -> Bindings Object
     xobj2 = klass._binding.parseString(xml_string)
 
     # 8. Bindings object -> cybox.Entity
     o3 = klass.from_obj(xobj2)
 
     return o3
+
 
 class EntityTestCase(object):
     """A base class for testing STIX Entities"""
@@ -157,7 +159,6 @@ class EntityTestCase(object):
 
         return dict(items)
 
-
     @silence_warnings
     def test_round_trip_full(self):
         # Don't run this test on the base class
@@ -165,7 +166,6 @@ class EntityTestCase(object):
             return
 
         ent = self.klass.from_dict(self._full_dict)
-        
         ent2 = round_trip(ent, output=True)
 
     @silence_warnings
@@ -190,4 +190,3 @@ class TypedListTestCase(object):
         obj = self.klass.from_dict(self._full_dict)
         dict2 = obj.to_dict()
         self.assertEqual(self._full_dict, dict2)
-
