@@ -48,7 +48,7 @@ def _lookup_extension(xsi_type):
 
     """
     import stix.extensions.malware.maec_4_1_malware
-    
+
     if xsi_type in _EXTENSION_MAP:
         return _EXTENSION_MAP[xsi_type]
 
@@ -89,7 +89,7 @@ def lookup_extension(typeinfo, default=None):
 
         error = "Input %s is missing xml_type attribute. Cannot lookup class."
         raise ValueError(error % type(typeinfo))
-    
+
     # Extension binding classes usually (always?) have an `xmlns_prefix`
     # class attribute.
     if hasattr(typeinfo, 'xmlns_prefix'):
@@ -134,5 +134,4 @@ def supported_stix_version():
     supports (i.e., can parse).
 
     """
-    return ('1.1.1', '1.2')
-
+    return ('1.1.1', '1.2', '1.2.1')
