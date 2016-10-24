@@ -15,7 +15,7 @@ from mixbox.binding_utils import *
 from stix.bindings import register_extension
 import stix.bindings.indicator as indicator_binding
 
-XML_NS = "http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1"
+XML_NS = "http://docs.oasis-open.org/cti/ns/stix/extensions/test-mechanism/openioc-2010-1"
 
 #
 # Data representation classes.

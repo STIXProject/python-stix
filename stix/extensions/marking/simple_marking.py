@@ -12,7 +12,7 @@ import stix.bindings.extensions.marking.simple_marking as simple_marking_binding
 class SimpleMarkingStructure(MarkingStructure):
     _binding = simple_marking_binding
     _binding_class = simple_marking_binding.SimpleMarkingStructureType
-    _namespace = 'http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/extensions/data-marking/simple-1'
     _XSI_TYPE = "simpleMarking:SimpleMarkingStructureType"
 
     statement = fields.TypedField("Statement")

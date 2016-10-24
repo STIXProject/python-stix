@@ -15,7 +15,7 @@ from mixbox import fields
 class VictimTargeting(stix.Entity):
     _binding = ttp_binding
     _binding_class = _binding.VictimTargetingType
-    _namespace = "http://stix.mitre.org/TTP-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/ttp-1"
 
     identity = fields.TypedField("Identity", Identity, factory=IdentityFactory)
 

@@ -29,7 +29,7 @@ class StructuredText(stix.Entity):
 
     _binding = stix_common_binding
     _binding_class = _binding.StructuredTextType
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
 
     id_ = fields.IdField("id")
     ordinality = fields.TypedField("ordinality")

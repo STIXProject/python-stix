@@ -27,7 +27,7 @@ def validate_precision(instance, value):
 class DateTimeWithPrecision(stix.Entity):
     _binding = common_binding
     _binding_class = _binding.DateTimeWithPrecisionType
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
 
     value = fields.DateTimeField("valueOf_", key_name="value")
     precision = fields.TypedField("precision", preset_hook=validate_precision)

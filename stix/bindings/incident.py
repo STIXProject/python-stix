@@ -17,7 +17,7 @@ from stix.bindings import lookup_extension, register_extension
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
 
-XML_NS = "http://stix.mitre.org/Incident-1"
+XML_NS = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
 
 #
 # Data representation classes.
@@ -2090,10 +2090,10 @@ class AssetTypeType(stix_common_binding.ControlledVocabularyStringType):
     This field is implemented through the xsi:type controlled
     vocabulary extension mechanism. The default vocabulary type is
     AssetTypeVocab-1.0 in the
-    http://stix.mitre.org/default_vocabularies-1 namespace. This
+    http://docs.oasis-open.org/cti/ns/stix/vocabularies-1 namespace. This
     type is defined in the stix_default_vocabularies.xsd file or at
-    the URL http://stix.mitre.org/XMLSchema/default_vocabularies/1.0
-    .0/stix_default_vocabularies.xsd . Users may also define their
+    the URL http://docs.oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/
+    vocabularies.xsd. Users may also define their
     own vocabulary using the type extension mechanism, specify a
     vocabulary name and reference using the attributes, or simply
     use this as a string field."""
@@ -2173,7 +2173,7 @@ class IncidentType(stix_common_binding.IncidentBaseType):
     subclass = None
     superclass = stix_common_binding.IncidentBaseType
 
-    xmlns          = "http://stix.mitre.org/Incident-1"
+    xmlns          = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     xmlns_prefix   = "incident"
     xml_type       = "IncidentType"
     xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)

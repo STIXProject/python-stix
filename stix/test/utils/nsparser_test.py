@@ -26,7 +26,7 @@ class NamespaceInfoTests(unittest.TestCase):
         TEST_PREFIX = 'test'
         TEST_NS = 'a:unit:test'
         NEW_STIX_PREFIX = 'newstix'
-        NEW_STIX_NS = "http://stix.mitre.org/stix-1"
+        NEW_STIX_NS = "http://docs.oasis-open.org/cti/ns/stix/core-1"
 
         test_dict = {
             TEST_NS: TEST_PREFIX,
@@ -59,8 +59,8 @@ class NamespaceInfoTests(unittest.TestCase):
         xml = (
             """<stix:STIX_Package
                     xmlns:stixCommon="THISISGONNABEPROBLEM"
-                    xmlns:stix="http://stix.mitre.org/stix-1"
-                    xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
+                    xmlns:stix="http://docs.oasis-open.org/cti/ns/stix/core-1"
+                    xmlns:stixVocabs="http://docs.oasis-open.org/cti/ns/stix/vocabularies-1"
                     version="1.2"
                     timestamp="2015-04-09T14:22:25.620831+00:00">
                 <stix:STIX_Header>
@@ -90,13 +90,13 @@ class NamespaceInfoTests(unittest.TestCase):
                     xmlns:TEST="a:test"
                     xmlns:FOO="a:foo"
                     xmlns:BAR="a:bar"
-                    xmlns:cybox="http://cybox.mitre.org/cybox-2"
-                    xmlns:cyboxCommon="http://cybox.mitre.org/common-2"
-                    xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2"
+                    xmlns:cybox="http://docs.oasis-open.org/cti/ns/cybox/core-2"
+                    xmlns:cyboxCommon="http://docs.oasis-open.org/cti/ns/cybox/common-2"
+                    xmlns:cyboxVocabs="http://docs.oasis-open.org/cti/ns/cybox/vocabularies-2"
                     xmlns:example="http://example.com"
-                    xmlns:stix="http://stix.mitre.org/stix-1"
-                    xmlns:stixCommon="http://stix.mitre.org/common-1"
-                    xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
+                    xmlns:stix="http://docs.oasis-open.org/cti/ns/stix/core-1"
+                    xmlns:stixCommon="http://docs.oasis-open.org/cti/ns/stix/common-1"
+                    xmlns:stixVocabs="http://docs.oasis-open.org/cti/ns/stix/vocabularies-1"
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                     id="example:Package-e2454ee8-e59c-43ac-a085-46ae4516fd6e"
                     version="1.2"

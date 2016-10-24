@@ -20,7 +20,7 @@ from .structured_text import StructuredTextList
 class InformationSource(stix.Entity):
     _binding = stix_common_binding
     _binding_class = stix_common_binding.InformationSourceType
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
 
     identity = fields.TypedField("Identity", type_=Identity, factory=IdentityFactory)
     descriptions = fields.TypedField("Description", StructuredTextList)
@@ -86,7 +86,7 @@ class InformationSource(stix.Entity):
 
 
 class ContributingSources(stix.EntityList):
-    _namespace = "http://stix.mitre.org/common-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/common-1"
     _binding = stix_common_binding
     _binding_class = stix_common_binding.ContributingSourcesType
 

@@ -46,7 +46,7 @@ class OpenIOCEtreeTests(unittest.TestCase):
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns:mandiant-openioc="http://schemas.mandiant.com/2010/ioc"
-            xmlns:stix-openioc="http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1"
+            xmlns:stix-openioc="http://docs.oasis-open.org/cti/ns/stix/extensions/test-mechanism/openioc-2010-1"
             id="mandiant:6d2a1b03-b216-4cd8-9a9e-8827af6ebf93" last-modified="2011-10-28T19:28:20">
             <short_description>Zeus</short_description>
               <description>{0}</description>
@@ -119,7 +119,7 @@ class OpenIOCEtreeTests(unittest.TestCase):
     )
 
     def setUp(self):
-        ioc_ns = Namespace("http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1",
+        ioc_ns = Namespace("http://docs.oasis-open.org/cti/ns/stix/extensions/test-mechanism/openioc-2010-1",
                            "stix-openioc", '')
         idgen.set_id_namespace(ioc_ns)
 
@@ -133,7 +133,7 @@ class OpenIOCEtreeTests(unittest.TestCase):
         root = tree.getroot()
 
         xpath = "//stix-openioc:ioc//description"
-        nodes = root.xpath(xpath, namespaces={'stix-openioc': 'http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1'})
+        nodes = root.xpath(xpath, namespaces={'stix-openioc': 'http://docs.oasis-open.org/cti/ns/stix/extensions/test-mechanism/openioc-2010-1'})
 
         self.assertTrue(nodes is not None)
         self.assertEqual(len(nodes), 1)

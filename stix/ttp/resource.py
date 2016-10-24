@@ -25,7 +25,7 @@ class _IdentityList(typedlist.TypedList):
 
 
 class Personas(stix.EntityList):
-    _namespace = "http://stix.mitre.org/TTP-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/ttp-1"
     _binding = ttp_binding
     _binding_class = _binding.PersonasType
 
@@ -33,7 +33,7 @@ class Personas(stix.EntityList):
 
 
 class Tools(stix.EntityList):
-    _namespace = "http://stix.mitre.org/TTP-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/ttp-1"
     _binding = ttp_binding
     _binding_class = _binding.ToolsType
 
@@ -47,7 +47,7 @@ class Tools(stix.EntityList):
 class Resource(stix.Entity):
     _binding = ttp_binding
     _binding_class = _binding.ResourceType
-    _namespace = "http://stix.mitre.org/TTP-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/ttp-1"
 
     tools = fields.TypedField("Tools", Tools)
     infrastructure = fields.TypedField("Infrastructure", Infrastructure)

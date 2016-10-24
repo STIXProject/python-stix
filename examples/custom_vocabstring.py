@@ -19,11 +19,11 @@ XML = \
 """
 <stix:STIX_Package
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:stix="http://stix.mitre.org/stix-1"
+    xmlns:stix="http://docs.oasis-open.org/cti/ns/stix/core-1"
     xmlns:customVocabs="http://customvocabs.com/vocabs-1"
     xmlns:example="http://example.com/"
     xsi:schemaLocation="
-    http://stix.mitre.org/stix-1 ../stix_core.xsd
+    http://docs.oasis-open.org/cti/ns/stix/core-1 ../stix_core.xsd
     http://customvocabs.com/vocabs-1 ../my_vocabs.xsd"
     id="example:STIXPackage-33fe3b22-0201-47cf-85d0-97c02164528d"
     timestamp="2014-05-08T09:00:00.000000Z"

@@ -16,7 +16,7 @@ from stix.bindings import register_extension
 import stix.bindings.indicator as indicator_binding
 import stix.bindings.stix_common as stix_common_binding
 
-XML_NS = "http://stix.mitre.org/extensions/TestMechanism#Snort-1"
+XML_NS = "http://docs.oasis-open.org/cti/ns/stix/extensions/test-mechanism/snort-1"
 
 #
 # Data representation classes.

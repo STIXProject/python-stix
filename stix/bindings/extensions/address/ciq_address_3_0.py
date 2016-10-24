@@ -15,7 +15,7 @@ from mixbox.binding_utils import *
 from stix.bindings import register_extension
 import stix.bindings.stix_common as stix_common_binding
 
-XML_NS = "http://stix.mitre.org/extensions/Address#CIQAddress3.0-1"
+XML_NS = "http://docs.oasis-open.org/cti/ns/stix/extensions/address/ciq-address-3.0-1"
 
 #
 # Data representation classes.

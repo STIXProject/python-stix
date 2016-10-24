@@ -15,7 +15,7 @@ from mixbox.binding_utils import *
 from stix.bindings import register_extension
 import stix.bindings.ttp as ttp_binding
 
-XML_NS = "http://stix.mitre.org/extensions/AP#CAPEC2.7-1"
+XML_NS = "http://docs.oasis-open.org/cti/ns/stix/extensions/attack-pattern/capec-2.7-1"
 
 #
 # Data representation classes.

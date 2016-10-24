@@ -29,7 +29,7 @@ from stix.bindings import stix_common as stix_common_binding
 
 class Campaigns(stix.EntityList):
     _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/core-1'
     _binding_class = _binding.CampaignsType
 
     campaign = fields.TypedField(
@@ -42,7 +42,7 @@ class Campaigns(stix.EntityList):
 
 class CoursesOfAction(stix.EntityList):
     _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/core-1'
     _binding_class = _binding.CoursesOfActionType
 
     course_of_action = fields.TypedField(
@@ -55,7 +55,7 @@ class CoursesOfAction(stix.EntityList):
 
 class ExploitTargets(stix.EntityList):
     _binding = stix_common_binding
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
     _binding_class = _binding.ExploitTargetsType
 
     exploit_target = fields.TypedField(
@@ -68,7 +68,7 @@ class ExploitTargets(stix.EntityList):
 
 class Incidents(stix.EntityList):
     _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/core-1'
     _binding_class = _binding.IncidentsType
 
     incident = fields.TypedField(
@@ -81,7 +81,7 @@ class Incidents(stix.EntityList):
 
 class Indicators(stix.EntityList):
     _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/core-1'
     _binding_class = _binding.IndicatorsType
 
     indicator = fields.TypedField(
@@ -94,7 +94,7 @@ class Indicators(stix.EntityList):
 
 class ThreatActors(stix.EntityList):
     _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/core-1'
     _binding_class = _binding.ThreatActorsType
 
     threat_actor = fields.TypedField(
@@ -107,7 +107,7 @@ class ThreatActors(stix.EntityList):
 
 class Reports(stix.EntityList):
     _binding = stix_core_binding
-    _namespace = 'http://stix.mitre.org/stix-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/core-1'
     _binding_class = _binding.ReportsType
 
     report = fields.TypedField(

@@ -8,7 +8,7 @@ import stix.bindings.indicator as indicator_binding
 from mixbox.entities import Entity
 
 class ValidTime(Entity):
-    _namespace = "http://stix.mitre.org/Indicator-2"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/indicator-1"
     _binding = indicator_binding
     _binding_class = _binding.ValidTimeType
     

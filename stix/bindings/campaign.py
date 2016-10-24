@@ -17,7 +17,7 @@ import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
 
 
-XML_NS = "http://stix.mitre.org/Campaign-1"
+XML_NS = "http://docs.oasis-open.org/cti/ns/stix/campaign-1"
 
 #
 # Data representation classes.
@@ -450,7 +450,7 @@ class CampaignType(stix_common_binding.CampaignBaseType):
     subclass = None
     superclass = stix_common_binding.CampaignBaseType
 
-    xmlns          = "http://stix.mitre.org/Campaign-1"
+    xmlns          = "http://docs.oasis-open.org/cti/ns/stix/campaign-1"
     xmlns_prefix   = "campaign"
     xml_type       = "CampaignType"
     xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)

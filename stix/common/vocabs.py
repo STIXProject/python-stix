@@ -82,7 +82,7 @@ class VocabFactory(entities.EntityFactory):
 class VocabString(stix.Entity):
     _binding = stix_common_binding
     _binding_class = stix_common_binding.ControlledVocabularyStringType
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
 
     # All subclasses should override these
     _XSI_TYPE = None
@@ -168,7 +168,7 @@ def register_vocab(cls):
 
 @register_vocab
 class AvailabilityLossType_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:AvailabilityLossTypeVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -183,7 +183,7 @@ class AvailabilityLossType_1_0(VocabString):
 
 @register_vocab
 class AvailabilityLossType_1_1_1(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:AvailabilityLossTypeVocab-1.1.1'
     _VOCAB_VERSION = '1.1.1'
 
@@ -198,7 +198,7 @@ class AvailabilityLossType_1_1_1(VocabString):
 
 @register_vocab
 class ThreatActorType_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:ThreatActorTypeVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -223,7 +223,7 @@ class ThreatActorType_1_0(VocabString):
 
 @register_vocab
 class AttackerInfrastructureType_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:AttackerInfrastructureTypeVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -255,7 +255,7 @@ class AttackerInfrastructureType_1_0(VocabString):
 
 @register_vocab
 class DiscoveryMethod_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:DiscoveryMethodVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -279,7 +279,7 @@ class DiscoveryMethod_1_0(VocabString):
 
 @register_vocab
 class DiscoveryMethod_2_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:DiscoveryMethodVocab-2.0'
     _VOCAB_VERSION = '2.0'
 
@@ -305,7 +305,7 @@ class DiscoveryMethod_2_0(VocabString):
 
 @register_vocab
 class AttackerToolType_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:AttackerToolTypeVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -320,7 +320,7 @@ class AttackerToolType_1_0(VocabString):
 
 @register_vocab
 class IndicatorType_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:IndicatorTypeVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -338,7 +338,7 @@ class IndicatorType_1_0(VocabString):
 
 @register_vocab
 class IndicatorType_1_1(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:IndicatorTypeVocab-1.1'
     _VOCAB_VERSION = '1.1'
 
@@ -360,7 +360,7 @@ class IndicatorType_1_1(VocabString):
 
 @register_vocab
 class SystemType_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:SystemTypeVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -395,7 +395,7 @@ class SystemType_1_0(VocabString):
 
 @register_vocab
 class CampaignStatus_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:CampaignStatusVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -406,7 +406,7 @@ class CampaignStatus_1_0(VocabString):
 
 @register_vocab
 class IncidentStatus_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:IncidentStatusVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -423,7 +423,7 @@ class IncidentStatus_1_0(VocabString):
 
 @register_vocab
 class ManagementClass_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:ManagementClassVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -435,7 +435,7 @@ class ManagementClass_1_0(VocabString):
 
 @register_vocab
 class Motivation_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:MotivationVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -457,7 +457,7 @@ class Motivation_1_0(VocabString):
 
 @register_vocab
 class Motivation_1_0_1(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:MotivationVocab-1.0.1'
     _VOCAB_VERSION = '1.0.1'
 
@@ -479,7 +479,7 @@ class Motivation_1_0_1(VocabString):
 
 @register_vocab
 class Motivation_1_1(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:MotivationVocab-1.1'
     _VOCAB_VERSION = '1.1'
 
@@ -501,7 +501,7 @@ class Motivation_1_1(VocabString):
 
 @register_vocab
 class IncidentCategory_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:IncidentCategoryVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -516,7 +516,7 @@ class IncidentCategory_1_0(VocabString):
 
 @register_vocab
 class ImpactQualification_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:ImpactQualificationVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -530,7 +530,7 @@ class ImpactQualification_1_0(VocabString):
 
 @register_vocab
 class PlanningAndOperationalSupport_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:PlanningAndOperationalSupportVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -560,7 +560,7 @@ class PlanningAndOperationalSupport_1_0(VocabString):
 
 @register_vocab
 class PlanningAndOperationalSupport_1_0_1(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:PlanningAndOperationalSupportVocab-1.0.1'
     _VOCAB_VERSION = '1.0.1'
 
@@ -590,7 +590,7 @@ class PlanningAndOperationalSupport_1_0_1(VocabString):
 
 @register_vocab
 class CourseOfActionType_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:CourseOfActionTypeVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -614,7 +614,7 @@ class CourseOfActionType_1_0(VocabString):
 
 @register_vocab
 class SecurityCompromise_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:SecurityCompromiseVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -626,7 +626,7 @@ class SecurityCompromise_1_0(VocabString):
 
 @register_vocab
 class ImpactRating_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:ImpactRatingVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -639,7 +639,7 @@ class ImpactRating_1_0(VocabString):
 
 @register_vocab
 class AssetType_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:AssetTypeVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -722,7 +722,7 @@ class AssetType_1_0(VocabString):
 
 @register_vocab
 class COAStage_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:COAStageVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -732,7 +732,7 @@ class COAStage_1_0(VocabString):
 
 @register_vocab
 class LocationClass_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:LocationClassVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -745,7 +745,7 @@ class LocationClass_1_0(VocabString):
 
 @register_vocab
 class InformationType_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:InformationTypeVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -762,7 +762,7 @@ class InformationType_1_0(VocabString):
 
 @register_vocab
 class ThreatActorSophistication_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:ThreatActorSophisticationVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -775,7 +775,7 @@ class ThreatActorSophistication_1_0(VocabString):
 
 @register_vocab
 class HighMediumLow_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:HighMediumLowVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -788,7 +788,7 @@ class HighMediumLow_1_0(VocabString):
 
 @register_vocab
 class LossProperty_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:LossPropertyVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -801,7 +801,7 @@ class LossProperty_1_0(VocabString):
 
 @register_vocab
 class IntendedEffect_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:IntendedEffectVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -833,7 +833,7 @@ class IntendedEffect_1_0(VocabString):
 
 @register_vocab
 class PackageIntent_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:PackageIntentVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -861,7 +861,7 @@ class PackageIntent_1_0(VocabString):
 
 @register_vocab
 class ReportIntent_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:ReportIntentVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -889,7 +889,7 @@ class ReportIntent_1_0(VocabString):
 
 @register_vocab
 class LossDuration_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:LossDurationVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -904,7 +904,7 @@ class LossDuration_1_0(VocabString):
 
 @register_vocab
 class OwnershipClass_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:OwnershipClassVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -917,7 +917,7 @@ class OwnershipClass_1_0(VocabString):
 
 @register_vocab
 class MalwareType_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:MalwareTypeVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -943,7 +943,7 @@ class MalwareType_1_0(VocabString):
 
 @register_vocab
 class IncidentEffect_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:IncidentEffectVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -965,7 +965,7 @@ class IncidentEffect_1_0(VocabString):
 
 @register_vocab
 class InformationSourceRole_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:InformationSourceRoleVocab-1.0'
     _VOCAB_VERSION = '1.0'
 
@@ -977,7 +977,7 @@ class InformationSourceRole_1_0(VocabString):
 
 @register_vocab
 class Versioning_1_0(VocabString):
-    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/vocabularies-1'
     _XSI_TYPE = 'stixVocabs:VersioningVocab-1.0'
     _VOCAB_VERSION = '1.0'
 

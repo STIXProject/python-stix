@@ -39,9 +39,9 @@ class TTP(stix.BaseCoreComponent):
     """
     _binding = ttp_binding
     _binding_class = _binding.TTPType
-    _namespace = "http://stix.mitre.org/TTP-1"
-    _version = "1.2"
-    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/ttp-1"
+    _version = "1.2.1"
+    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2", "1.2.1")
     _ID_PREFIX = "ttp"
 
     behavior = fields.TypedField("Behavior", Behavior)

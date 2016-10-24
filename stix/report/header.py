@@ -31,7 +31,7 @@ class Header(stix.Entity):
     """
     _binding = report_binding
     _binding_class = _binding.HeaderType
-    _namespace = 'http://stix.mitre.org/Report-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/report-1'
 
     title = fields.TypedField("Title")
     descriptions = fields.TypedField("Description", type_=StructuredTextList)

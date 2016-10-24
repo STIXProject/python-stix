@@ -13,7 +13,7 @@ from mixbox.vendor.six import string_types
 
 class KillChain(stix.Entity):
     _binding = common_binding
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
     _binding_class = _binding.KillChainType
 
     id_ = fields.TypedField("id")
@@ -50,7 +50,7 @@ class KillChain(stix.Entity):
 
 class KillChains(stix.EntityList):
     _binding = common_binding
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
     _binding_class = _binding.KillChainsType
 
     kill_chain = fields.TypedField("Kill_Chain", KillChain, multiple=True, key_name="kill_chains")
@@ -62,7 +62,7 @@ class KillChains(stix.EntityList):
 
 class KillChainPhase(stix.Entity):
     _binding = common_binding
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
     _binding_class = _binding.KillChainPhaseType
 
     phase_id = fields.TypedField("phase_id")
@@ -95,7 +95,7 @@ class KillChainPhase(stix.Entity):
 
 class KillChainPhaseReference(KillChainPhase):
     _binding = common_binding
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
     _binding_class = _binding.KillChainPhaseReferenceType
 
     kill_chain_id = fields.TypedField("kill_chain_id")
@@ -123,7 +123,7 @@ class _KillChainPhaseReferenceList(typedlist.TypedList):
 
 class KillChainPhasesReference(stix.EntityList):
     _binding = common_binding
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
     _binding_class = _binding.KillChainPhasesReferenceType
 
     kill_chain_phase = fields.TypedField(

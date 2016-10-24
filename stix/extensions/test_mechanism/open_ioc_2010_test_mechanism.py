@@ -15,7 +15,7 @@ import stix.bindings.extensions.test_mechanism.open_ioc_2010 as open_ioc_tm_bind
 
 @stix.register_extension
 class OpenIOCTestMechanism(_BaseTestMechanism):
-    _namespace = "http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/extensions/test-mechanism/openioc-2010-1"
     _binding = open_ioc_tm_binding
     _binding_class = _binding.OpenIOC2010TestMechanismType
     _xml_ns_prefix = "stix-openioc"

@@ -9,7 +9,7 @@ from mixbox import fields
 
 @stix.register_extension
 class SnortTestMechanism(test_mechanism._BaseTestMechanism):
-    _namespace = "http://stix.mitre.org/extensions/TestMechanism#Snort-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/extensions/test-mechanism/snort-1"
     _binding = snort_tm_binding
     _binding_class = _binding.SnortTestMechanismType
     _XSI_TYPE = "snortTM:SnortTestMechanismType"

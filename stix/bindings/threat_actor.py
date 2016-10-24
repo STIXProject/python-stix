@@ -16,7 +16,7 @@ from stix.bindings import lookup_extension, register_extension
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
 
-XML_NS = "http://stix.mitre.org/ThreatActor-1"
+XML_NS = "http://docs.oasis-open.org/cti/ns/stix/threat-actor-1"
 
 
 #
@@ -240,7 +240,7 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
     subclass = None
     superclass = stix_common_binding.ThreatActorBaseType
 
-    xmlns          = "http://stix.mitre.org/ThreatActor-1"
+    xmlns          = "http://docs.oasis-open.org/cti/ns/stix/threat-actor-1"
     xmlns_prefix   = "ta"
     xml_type       = "ThreatActorType"
     xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)

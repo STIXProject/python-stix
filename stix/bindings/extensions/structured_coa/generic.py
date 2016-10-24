@@ -16,7 +16,7 @@ from stix.bindings import register_extension
 from stix.bindings.course_of_action import StructuredCOAType
 import stix.bindings.stix_common as stix_common_binding
 
-XML_NS = "http://stix.mitre.org/extensions/StructuredCOA#Generic-1"
+XML_NS = "http://docs.oasis-open.org/cti/ns/stix/extensions/structured-coa/generic-1"
 
 #
 # Data representation classes.

@@ -17,7 +17,7 @@ from stix.bindings import lookup_extension, register_extension
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
 
-XML_NS  = "http://stix.mitre.org/Indicator-2"
+XML_NS  = "http://docs.oasis-open.org/cti/ns/stix/indicator-1"
 
 #
 # Data representation classes.
@@ -189,39 +189,39 @@ class TestMechanismType(GeneratedsSuper):
     the specification of any generic test mechanism through the use
     of a raw CDATA section. The type is named
     GenericTestMechanismType and is in the
-    http://stix.mitre.org/extensions/TestMechanism#Generic-1
+    http://docs.oasis-open.org/cti/ns/stix/extensions/test-mechanism/generic-1
     namespace. The extension is defined in the file
-    extensions/test_mechanism/generic.xsd or at the URL http://stix.
-    mitre.org/XMLSchema/extensions/test_mechanism/generic/1.0/generi
-    c.xsd. 2. OpenIOC: The OpenIOC test mechanism allows for the
+    extensions/test_mechanism/generic.xsd or at the URL http://docs.oasis-open
+    .org/cti/stix/v1.2.1/csd01/xml-schemas/extensions/test-mechanism/generic-
+    test-mechanism.xsd. 2. OpenIOC: The OpenIOC test mechanism allows for the
     specification of an OpenIOC test by importing the OpenIOC
     schema. The type is named IOCTestMechanismType and is in the
-    http://stix.mitre.org/extensions/TestMechanism#OpenIOC-1
-    namespace. The extension is defined in the file
-    extensions/test_mechanism/openioc-1.0.xsd or at the URL http://s
-    tix.mitre.org/XMLSchema/extensions/test_mechanism/openioc-1.0/1.
-    0/openioc-1.0.xsd. 3. OVAL: The OVAL test mechanism allows for
-    the specification of an OVAL definition through importing the
+    http://docs.oasis-open.org/cti/ns/stix/extensions/test-mechanism/openioc-
+    2010-1 namespace. The extension is defined in the file extensions/
+    test_mechanism/openioc-1.0.xsd or at the URL http://docs.oasis-
+    open.org/cti/stix/v1.2.1/csd01/xml-schemas/extensions/test-mechanism/
+    openioc-2010-test-mechanism.xsd. 3. OVAL: The OVAL test mechanism allows 
+    for the specification of an OVAL definition through importing the
     OVAL schemas. The type is named OVALTestMechanismType and is in
-    the http://stix.mitre.org/extensions/TestMechanism#OVAL-1
-    namespace. The extension is defined in the file
-    extensions/test_mechanism/oval-5.10.1.xsd or at the URL http://s
-    tix.mitre.org/XMLSchema/extensions/test_mechanism/oval-5.10.1/1.
-    0/oval-5.10.1.xsd. 4. Snort: The Snort test mechanism allows for
+    the http://docs.oasis-open.org/cti/ns/stix/extensions/test-mechanism/
+    oval-5.10-1 namespace. The extension is defined in the file
+    extensions/test_mechanism/oval-5.10.1.xsd or at the URL http://docs.oasis-
+    open.org/cti/stix/v1.2.1/csd01/xml-schemas/extensions/test-mechanism/
+    oval-5.10-test-mechanism.xsd. 4. Snort: The Snort test mechanism allows for
     the specification of a snort signature through the use of a raw
     CDATA section. The type is named SnortTestMechanismType and is
-    in the http://stix.mitre.org/extensions/TestMechanism#Snort-1
+    in the http://docs.oasis-open.org/cti/ns/stix/extensions/test-mechanism/
+    snort-1 namespace. The extension is defined in the file
+    extensions/test_mechanism/snort.xsd or at the URL http://docs.oasis-open
+    .org/cti/stix/v1.2.1/csd01/xml-schemas/extensions/test-mechanism/snort-test
+    -mechanism.xsd. 5. YARA: The YARA test mechanism allows for the
+    specification of a YARA test through the use of a raw CDATA section. The
+    type is named YaraTestMechanismType and is in the
+    http://docs.oasis-open.org/cti/ns/stix/extensions/test-mechanism/yara-1
     namespace. The extension is defined in the file
-    extensions/test_mechanism/snort.xsd or at the URL http://stix.mi
-    tre.org/XMLSchema/extensions/test_mechanism/snort/1.0/snort.xsd.
-    5. YARA: The YARA test mechanism allows for the specification of
-    a YARA test through the use of a raw CDATA section. The type is
-    named YaraTestMechanismType and is in the
-    http://stix.mitre.org/extensions/TestMechanism#YARA-1 namespace.
-    The extension is defined in the file
-    extensions/test_mechanism/yara.xsd or at the URL http://stix.mit
-    re.org/XMLSchema/extensions/test_mechanism/yara/1.0/yara.xsd.
-    Specifies a unique ID for this Test Mechanism.Specifies a
+    extensions/test_mechanism/yara.xsd or at the URL http://docs.oasis-open.org
+    /cti/stix/v1.2.1/csd01/xml-schemas/extensions/test-mechanism/yara-test-
+    mechanism.xsd. Specifies a unique ID for this Test Mechanism.Specifies a
     reference to the ID of a Test Mechanism specified elsewhere."""
     subclass = None
     superclass = None

@@ -17,7 +17,7 @@ from stix.bindings import lookup_extension, register_extension
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
 
-XML_NS = "http://stix.mitre.org/CourseOfAction-1"
+XML_NS = "http://docs.oasis-open.org/cti/ns/stix/course-of-action-1"
 
 #
 # Data representation classes.
@@ -36,11 +36,11 @@ class StructuredCOAType(GeneratedsSuper):
     externally defined structured courses of action in a CDATA
     block. This implementation is captured in the Generic Structured
     COA extension, which provides the GenericStructuredCOAType in
-    the http://stix.mitre.org/extensions/StructuredCOA#Generic-1
+    the http://docs.oasis-open.org/cti/ns/stix/extensions/structured-coa/generic-1
     namespace. The extension is defined in the
     extensions/structured_coa/generic.xsd file or at the URL http://
-    stix.mitre.org/XMLSchema/extensions/structured_coa/generic/1.0/g
-    eneric.xsd. Specifies a unique ID for this
+    docs.oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/extensions/structured
+    -coa/generic-structured-coa.xsd. Specifies a unique ID for this
     StructuredCOA.Specifies a reference to the ID for this
     StructuredCOA specified elsewhere."""
     subclass = None
@@ -224,7 +224,7 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     subclass = None
     superclass = stix_common_binding.CourseOfActionBaseType
 
-    xmlns          = "http://stix.mitre.org/CourseOfAction-1"
+    xmlns          = "http://docs.oasis-open.org/cti/ns/stix/course-of-action-1"
     xmlns_prefix   = "coa"
     xml_type       = "CourseOfActionType"
     xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)

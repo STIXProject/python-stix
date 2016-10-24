@@ -12,7 +12,7 @@ import stix.bindings.extensions.marking.terms_of_use_marking as tou_marking_bind
 class TermsOfUseMarkingStructure(MarkingStructure):
     _binding = tou_marking_binding
     _binding_class = tou_marking_binding.TermsOfUseMarkingStructureType
-    _namespace = 'http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/extensions/data-marking/terms-of-use-1'
     _XSI_TYPE = "TOUMarking:TermsOfUseMarkingStructureType"
 
     terms_of_use = fields.TypedField("Terms_Of_Use")

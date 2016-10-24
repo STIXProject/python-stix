@@ -13,7 +13,7 @@ from .vocabs import VocabField
 
 
 class Names(stix.EntityList):
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
     _binding = common_binding
     _binding_class = _binding.NamesType
 

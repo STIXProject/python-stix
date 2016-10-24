@@ -13,7 +13,7 @@ import stix.bindings.indicator as indicator_binding
 
 
 class Sighting(stix.Entity):
-    _namespace = "http://stix.mitre.org/Indicator-2"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/indicator-1"
     _binding = indicator_binding
     _binding_class = _binding.SightingType
     
@@ -65,7 +65,7 @@ class Sighting(stix.Entity):
 
 
 class Sightings(stix.EntityList):
-    _namespace = "http://stix.mitre.org/Indicator-2"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/indicator-1"
     _binding = indicator_binding
     _binding_class = _binding.SightingsType
 
@@ -81,7 +81,7 @@ class Sightings(stix.EntityList):
 
 
 class RelatedObservables(GenericRelationshipList):
-    _namespace = "http://stix.mitre.org/Indicator-2"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/indicator-1"
     _binding = indicator_binding
     _binding_class = _binding.RelatedObservablesType
 

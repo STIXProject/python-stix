@@ -15,7 +15,7 @@ from .attack_pattern import AttackPattern
 class Behavior(stix.Entity):
     _binding = ttp_binding
     _binding_class = _binding.BehaviorType
-    _namespace = "http://stix.mitre.org/TTP-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/ttp-1"
 
     malware_instances = fields.TypedField("Malware", type_="stix.ttp.behavior.MalwareInstances", key_name="malware_instances")
     attack_patterns = fields.TypedField("Attack_Patterns", type_="stix.ttp.behavior.AttackPatterns")
@@ -39,7 +39,7 @@ class Behavior(stix.Entity):
 
 
 class Exploits(stix.EntityList):
-    _namespace = "http://stix.mitre.org/TTP-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/ttp-1"
     _contained_type = Exploit
     _binding = ttp_binding
     _binding_class = _binding.ExploitsType
@@ -48,7 +48,7 @@ class Exploits(stix.EntityList):
 
 
 class MalwareInstances(stix.EntityList):
-    _namespace = "http://stix.mitre.org/TTP-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/ttp-1"
     _binding = ttp_binding
     _binding_class = _binding.MalwareType
 
@@ -56,7 +56,7 @@ class MalwareInstances(stix.EntityList):
 
 
 class AttackPatterns(stix.EntityList):
-    _namespace = "http://stix.mitre.org/TTP-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/ttp-1"
     _binding = ttp_binding
     _binding_class = _binding.AttackPatternsType
 

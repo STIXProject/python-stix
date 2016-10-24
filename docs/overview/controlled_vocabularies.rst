@@ -131,13 +131,13 @@ used wherever a ``ControlledVocabularyStringType`` instance is expected
     <xs:schema
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns:customVocabs="http://customvocabs.com/vocabs-1"
-        xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
-        xmlns:stixCommon="http://stix.mitre.org/common-1"
+        xmlns:stixVocabs="http://docs.oasis-open.org/cti/ns/stix/vocabularies-1"
+        xmlns:stixCommon="http://docs.oasis-open.org/cti/ns/stix/common-1"
         targetNamespace="http://customvocabs.com/vocabs-1"
         elementFormDefault="qualified"
         version="1.2"
         xml:lang="English">
-        <xs:import namespace="http://stix.mitre.org/common-1" schemaLocation="http://stix.mitre.org/XMLSchema/common/1.2/stix_common.xsd"/>
+        <xs:import namespace="http://docs.oasis-open.org/cti/ns/stix/common-1" schemaLocation="http://docs.oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/common.xsd"/>
         <xs:complexType name="CustomVocab-1.0">
             <xs:simpleContent>
                 <xs:restriction base="stixCommon:ControlledVocabularyStringType">
@@ -170,11 +170,11 @@ field.
 
     <stix:STIX_Package
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:stixExample="http://stix.mitre.org/example"
-        xmlns:stix="http://stix.mitre.org/stix-1"
+        xmlns:stixExample="http://docs.oasis-open.org/cti/ns/stix/example"
+        xmlns:stix="http://docs.oasis-open.org/cti/ns/stix/core-1"
         xmlns:customVocabs="http://customvocabs.com/vocabs-1"
         xsi:schemaLocation="
-        http://stix.mitre.org/stix-1 /path/to/stix_core.xsd
+        http://docs.oasis-open.org/cti/ns/stix/core-1 /path/to/stix_core.xsd
         http://customvocabs.com/vocabs-1 /path/to/customVocabs.xsd"
         id="stixExample:STIXPackage-33fe3b22-0201-47cf-85d0-97c02164528d"
         version="1.2">
@@ -254,11 +254,11 @@ XML Schema definition, but in Python!
     """
     <stix:STIX_Package
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:stix="http://stix.mitre.org/stix-1"
+        xmlns:stix="http://docs.oasis-open.org/cti/ns/stix/core-1"
         xmlns:customVocabs="http://customvocabs.com/vocabs-1"
         xmlns:example="http://example.com/"
         xsi:schemaLocation="
-        http://stix.mitre.org/stix-1 /path/to/stix_core.xsd
+        http://docs.oasis-open.org/cti/ns/stix/core-1 /path/to/stix_core.xsd
         http://customvocabs.com/vocabs-1 /path/to/customVocabs.xsd"
         id="example:STIXPackage-33fe3b22-0201-47cf-85d0-97c02164528d"
         version="1.2">

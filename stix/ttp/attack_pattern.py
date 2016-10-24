@@ -13,7 +13,7 @@ from mixbox import fields, entities
 class AttackPattern(stix.Entity):
     _binding = ttp_binding
     _binding_class = _binding.AttackPatternType
-    _namespace = "http://stix.mitre.org/TTP-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/ttp-1"
 
     id_ = fields.IdField("id")
     idref = fields.IdrefField("idref")

@@ -80,7 +80,7 @@ class SuggestedCOAs(GenericRelationshipList):
             for more information.
     """
 
-    _namespace = "http://stix.mitre.org/Indicator-2"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/indicator-1"
     _binding = indicator_binding
     _binding_class = indicator_binding.SuggestedCOAsType
 
@@ -143,7 +143,7 @@ class RelatedIndicators(GenericRelationshipList):
             for more information.
 
     """
-    _namespace = "http://stix.mitre.org/Indicator-2"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/indicator-1"
     _binding = indicator_binding
     _binding_class = indicator_binding.RelatedIndicatorsType
 
@@ -171,7 +171,7 @@ class Indicator(stix.BaseCoreComponent):
     """
     _binding = indicator_binding
     _binding_class = indicator_binding.IndicatorType
-    _namespace = 'http://stix.mitre.org/Indicator-2'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/indicator-1'
     _version = "2.2"
     _ALL_VERSIONS = ("2.0", "2.0.1", "2.1", "2.1.1", "2.2")
     _ALLOWED_COMPOSITION_OPERATORS = ('AND', 'OR')
@@ -791,7 +791,7 @@ class CompositeIndicatorExpression(entities.EntityList):
     """
     _binding = indicator_binding
     _binding_class = indicator_binding.CompositeIndicatorExpressionType
-    _namespace = 'http://stix.mitre.org/Indicator-2'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/indicator-1'
 
     OP_AND = "AND"
     OP_OR = "OR"
@@ -829,7 +829,7 @@ class _RelatedCampaignRefList(typedlist.TypedList):
 
 
 class RelatedCampaignRefs(GenericRelationshipList):
-    _namespace = "http://stix.mitre.org/Indicator-2"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/indicator-1"
     _binding = indicator_binding
     _binding_class = _binding.RelatedCampaignReferencesType
 
@@ -883,7 +883,7 @@ class IndicatorTypes(stix.TypedList):
             :class:`stix.common.vocabs.VocabString` instances.
 
     """
-    _namespace = "http://stix.mitre.org/Indicator-2"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/indicator-1"
     _contained_type = VocabString
 
     def _fix_value(self, value):

@@ -19,7 +19,7 @@ def validate_precision(instance, value):
         raise ValueError(error)
 
 class JournalEntry(stix.Entity):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding = incident_binding
     _binding_class = incident_binding.JournalEntryType
     
@@ -35,7 +35,7 @@ class JournalEntry(stix.Entity):
 
 
 class HistoryItem(stix.Entity):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding = incident_binding
     _binding_class = incident_binding.HistoryItemType
     
@@ -47,7 +47,7 @@ class HistoryItem(stix.Entity):
 
 
 class History(stix.EntityList):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding = incident_binding
     _binding_class = incident_binding.HistoryType
 

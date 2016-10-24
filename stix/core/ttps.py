@@ -22,7 +22,7 @@ from stix.utils.deprecated import IdrefDeprecatedList
 class TTPs(stix.EntityList):
     _binding = core_binding
     _binding_class = _binding.TTPsType
-    _namespace = 'http://stix.mitre.org/stix-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/core-1'
 
     ttps = fields.TypedField(
         name="TTP",

@@ -15,7 +15,7 @@ from mixbox.binding_utils import *
 from stix.bindings import lookup_extension
 from . import stix_common as stix_common_binding
 
-XML_NS  = "http://data-marking.mitre.org/Marking-1"
+XML_NS  = "http://docs.oasis-open.org/cti/ns/stix/data-marking-1"
 
 #
 # Data representation classes.
@@ -117,19 +117,18 @@ class MarkingStructureType(GeneratedsSuper):
     Simple: The Simple marking structures allows for the
     specification of unstructured statements through the use of a
     string field. The type is named SimpleMarkingStructureType and
-    is in the http://data-
-    marking.mitre.org/extensions/MarkingStructure#Simple-1
-    namespace. The extension is defined in the file
-    extensions/marking/simple_marking.xsd or at the URL http://stix.
-    mitre.org/XMLSchema/extensions/marking/simple_marking/1.1/simple
-    _marking.xsd.2. TLP: The TLP marking structure allows for the
+    is in the http://docs.oasis-open.org/cti/ns/stix/extensions/
+    data-marking/simple-1 namespace. The extension is defined in the file
+    extensions/marking/simple_marking.xsd or at the URL http://docs.oasis-open
+    .org/cti/stix/v1.2.1/csd01/xml-schemas/extensions/marking/
+    simple-marking.xsd. TLP: The TLP marking structure allows for the
     expression of Traffic Light Protocol statements through the use
     of a simple enumeration. The type is named
-    TLPMarkingStructureType and is in the http://data-
-    marking.mitre.org/extensions/MarkingStructure#TLP-1 namespace.
+    TLPMarkingStructureType and is in the http://docs.oasis-open.org/cti/ns/
+    stix/extensions/data-marking/tlp-1 namespace.
     The extension is defined in the file
-    extensions/marking/tlp_marking.xsd or at the URL http://stix.mit
-    re.org/XMLSchema/extensions/marking/tlp/1.1/tlp_marking.xsd.This
+    extensions/marking/tlp_marking.xsd or at the URL http://docs.oasis-open.org
+    /cti/stix/v1.2.1/csd01/xml-schemas/extensions/marking/tlp-marking.xsd. This
     field specifies the name of the marking model to be applied
     within this Marking_Structure.This field contains a reference to
     an authoritative source on the marking model to be applied

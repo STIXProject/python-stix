@@ -16,7 +16,7 @@ import stix.bindings.extensions.structured_coa.generic as generic_structured_coa
 
 @stix.register_extension
 class GenericStructuredCOA(_BaseStructuredCOA):
-    _namespace = "http://stix.mitre.org/extensions/StructuredCOA#Generic-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/extensions/structured-coa/generic-1"
     _binding = generic_structured_coa_binding
     _binding_class = _binding.GenericStructuredCOAType
     _XSI_TYPE = "genericStructuredCOA:GenericStructuredCOAType"

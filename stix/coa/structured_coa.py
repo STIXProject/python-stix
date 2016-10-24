@@ -18,7 +18,7 @@ class StructuredCOAFactory(entities.EntityFactory):
 
 
 class _BaseStructuredCOA(stix.Entity):
-    _namespace = "http://stix.mitre.org/CourseOfAction-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/course-of-action-1"
     _binding = coa_binding
     _binding_class = coa_binding.StructuredCOAType
 

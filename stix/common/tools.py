@@ -14,7 +14,7 @@ from .structured_text import StructuredTextList
 
 
 class ToolInformation(stix.Entity, cybox.common.ToolInformation):
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
     _binding = common_binding
     _binding_class = common_binding.ToolInformationType
 

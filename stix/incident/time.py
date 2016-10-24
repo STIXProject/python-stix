@@ -9,7 +9,7 @@ from mixbox import entities, fields
 class Time(stix.Entity):
     _binding = incident_binding
     _binding_class = _binding.TimeType
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
 
     first_malicious_action = fields.TypedField("First_Malicious_Action", DateTimeWithPrecision)
     initial_compromise = fields.TypedField("Initial_Compromise", DateTimeWithPrecision)

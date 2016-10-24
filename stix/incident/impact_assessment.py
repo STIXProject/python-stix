@@ -15,7 +15,7 @@ from mixbox import fields, entities
 from stix.common.vocabs import VocabField
 
 class ImpactAssessment(stix.Entity):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding  = incident_binding
     _binding_class = incident_binding.ImpactAssessmentType
 
@@ -36,7 +36,7 @@ class ImpactAssessment(stix.Entity):
 
 
 class Effects(stix.EntityList):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding = incident_binding
     _binding_class = _binding.EffectsType
 

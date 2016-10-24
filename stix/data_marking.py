@@ -25,7 +25,7 @@ class MarkingStructureFactory(entities.EntityFactory):
 class MarkingStructure(stix.Entity):
     _binding = stix_data_marking_binding
     _binding_class = stix_data_marking_binding.MarkingStructureType
-    _namespace = 'http://data-marking.mitre.org/Marking-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/data-marking-1'
     _XSI_TYPE = None  # overridden by subclasses
 
     id_ = fields.IdField("id")
@@ -57,7 +57,7 @@ class MarkingStructure(stix.Entity):
 class MarkingSpecification(stix.Entity):
     _binding = stix_data_marking_binding
     _binding_class = stix_data_marking_binding.MarkingSpecificationType
-    _namespace = 'http://data-marking.mitre.org/Marking-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/data-marking-1'
 
     id_ = fields.IdField("id")
     idref = fields.IdrefField("idref")
@@ -80,7 +80,7 @@ class MarkingSpecification(stix.Entity):
 class Marking(stix.EntityList):
     _binding = stix_data_marking_binding
     _binding_class = stix_data_marking_binding.MarkingType
-    _namespace = 'http://data-marking.mitre.org/Marking-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/data-marking-1'
     marking = fields.TypedField("Marking", MarkingSpecification, multiple=True)
 
     def __init__(self, markings=None):

@@ -15,7 +15,7 @@ from .datetimewithprecision import validate_precision
 
 
 class Confidence(stix.Entity):
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
     _binding = common_binding
     _binding_class = common_binding.ConfidenceType
 
@@ -71,7 +71,7 @@ class Confidence(stix.Entity):
 
 
 # class ConfidenceAssertionChain(stix.Entity):
-#     _namespace = 'http://stix.mitre.org/common-2'
+#     _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
 #     _binding = common_binding
 #
 #     def __init__(self):

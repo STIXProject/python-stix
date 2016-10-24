@@ -13,7 +13,7 @@ import stix.bindings.extensions.test_mechanism.generic as generic_tm_binding
 
 @stix.register_extension
 class GenericTestMechanism(_BaseTestMechanism):
-    _namespace = "http://stix.mitre.org/extensions/TestMechanism#Generic-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/extensions/test-mechanism/generic-1"
     _binding = generic_tm_binding
     _binding_class = _binding.GenericTestMechanismType
     _XSI_TYPE = "genericTM:GenericTestMechanismType"

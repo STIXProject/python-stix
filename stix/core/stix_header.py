@@ -34,7 +34,7 @@ class STIXHeader(stix.Entity):
     """
     _binding = stix_core_binding
     _binding_class = _binding.STIXHeaderType
-    _namespace = 'http://stix.mitre.org/stix-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/core-1'
 
     title = fields.TypedField("Title", preset_hook=deprecated.field)
     package_intents = VocabField("Package_Intent", PackageIntent, multiple=True, preset_hook=deprecated.field)

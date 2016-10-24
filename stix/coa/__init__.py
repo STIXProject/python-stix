@@ -24,7 +24,7 @@ COAType = vocabs.CourseOfActionType
 
 
 class RelatedCOAs(GenericRelationshipList):
-    _namespace = "http://stix.mitre.org/CourseOfAction-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/course-of-action-1"
     _binding = coa_binding
     _binding_class = coa_binding.RelatedCOAsType
 
@@ -55,9 +55,9 @@ class CourseOfAction(stix.BaseCoreComponent):
     """
     _binding = coa_binding
     _binding_class = coa_binding.CourseOfActionType
-    _namespace = "http://stix.mitre.org/CourseOfAction-1"
-    _version = "1.2"
-    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/course-of-action-1"
+    _version = "1.2.1"
+    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2", "1.2.1")
     _ID_PREFIX = 'coa'
 
     stage = VocabField("Stage", Stage)

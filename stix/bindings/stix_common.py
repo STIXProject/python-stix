@@ -15,7 +15,7 @@ import cybox.bindings.cybox_core as cybox_core_binding
 
 from stix.bindings import get_type_info, lookup_extension
 
-XML_NS = "http://stix.mitre.org/common-1"
+XML_NS = "http://docs.oasis-open.org/cti/ns/stix/common-1"
 
 #
 # Data representation classes.
@@ -1268,11 +1268,11 @@ class IdentityType(GeneratedsSuper):
     individuals and organizations. This type is extended through the
     xsi:type mechanism. The default type is
     CIQIdentity3.0InstanceType in the
-    http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1
-    namespace. This type is defined in the
-    extensions/identity/ciq_identity_3.0.xsd file or at the URL http
-    ://stix.mitre.org/XMLSchema/extensions/identity/ciq_identity_3.0
-    /1.0/ciq_identity_3.0.xsd. Those who wish to express a simple
+    http://docs.oasis-open.org/cti/ns/stix/extensions/identity/
+    ciq-3.0-identity-1 namespace. This type is defined in the
+    extensions/identity/ciq_identity_3.0.xsd file or at the URL http://docs.
+    oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/extensions/identity/ciq-
+    3.0-identity.xsd. Those who wish to express a simple
     name may also do so by not specifying an xsi:type and using the
     Name field of this type. Specifies a unique ID for this
     Identity.Specifies a reference to a unique ID defined elsewhere."""
@@ -2042,9 +2042,9 @@ class IndicatorBaseType(GeneratedsSuper):
     type itself. Users of this type who wish to express a full
     indicator using STIX must do so using the xsi:type extension
     feature. The STIX-defined Indicator type is IndicatorType in the
-    http://stix.mitre.org/Indicator-1 namespace. This type is
+    http://docs.oasis-open.org/cti/ns/stix/indicator-1 namespace. This type is
     defined in the indicator.xsd file or at the URL
-    http://stix.mitre.org/XMLSchema/indicator/1.2/indicator.xsd.
+    http://docs.oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/indicator.xsd.
     Alternatively, uses that require simply specifying an idref as a
     reference to an indicator defined elsewhere can do so without
     specifying an xsi:type. Specifies a unique ID for this
@@ -2135,9 +2135,9 @@ class IncidentBaseType(GeneratedsSuper):
     itself. Users of this type who wish to express a full incident
     using STIX must do so using the xsi:type extension feature. The
     STIX-defined Incident type is IncidentType in the
-    http://stix.mitre.org/Incident-1 namespace. This type is defined
-    in the incident.xsd file or at the URL http://stix.mitre.org/XML
-    Schema/incident/1.1/incident.xsd.Alternatively, uses that
+    http://docs.oasis-open.org/cti/ns/stix/incident-1 namespace. This type is
+    defined in the incident.xsd file or at the URL http://docs.oasis-open.org/
+    cti/stix/v1.2.1/csd01/xml-schemas/indicator.xsd. Alternatively, uses that
     require simply specifying an idref as a reference to an incident
     defined elsewhere can do so without specifying an
     xsi:type.Specifies a globally unique identifier for this cyber
@@ -2237,12 +2237,11 @@ class TTPBaseType(GeneratedsSuper):
     the XML Schema Extension feature by the STIX TTP type itself.
     Users of this type who wish to express a full TTP using STIX
     must do so using the xsi:type extension feature. The STIX-
-    defined TTP type is TTPType in the http://stix.mitre.org/TTP-1
-    namespace. This type is defined in the ttp.xsd file or at the
-    URL
-    http://stix.mitre.org/XMLSchema/ttp/1.1/ttp.xsd.Alternatively,
-    uses that require simply specifying an idref as a reference to a
-    TTP defined elsewhere can do so without specifying an
+    defined TTP type is TTPType in the http://docs.oasis-open.org/cti/ns/stix/
+    ttp-1 namespace. This type is defined in the ttp.xsd file or at the URL
+    http://docs.oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/ttp.xsd.
+    Alternatively, uses that require simply specifying an idref as a reference
+    to a TTP defined elsewhere can do so without specifying an
     xsi:type.Specifies a globally unique identifier for this TTP
     item. Specifies a globally unique identifier of a TTP item
     specified elsewhere.When idref is specified, the id attribute
@@ -2339,11 +2338,11 @@ class ExploitTargetBaseType(GeneratedsSuper):
     Exploit Target type itself. Users of this type who wish to
     express a full exploit target using STIX must do so using the
     xsi:type extension feature. The STIX-defined Exploit Target type
-    is ExploitTargetType in the
-    http://stix.mitre.org/ExploitTarget-1 namespace. This type is
-    defined in the exploit_target.xsd file or at the URL http://stix
-    .mitre.org/XMLSchema/exploit_target/1.1/exploit_target.xsd.Alter
-    natively, uses that require simply specifying an idref as a
+    is ExploitTargetType in the http://docs.oasis-open.org/cti/ns/stix/
+    exploit-target-1 namespace. This type is defined in the exploit_target.xsd
+    file or at the URL http://docs.oasis-open.org/cti/stix/v1.2.1/csd01/
+    xml-schemas/exploit-target.xsd.
+    Alternatively, uses that require simply specifying an idref as a
     reference to an exploit target defined elsewhere can do so
     without specifying an xsi:type.Specifies a globally unique
     identifier for this ExploitTarget. Specifies a globally unique
@@ -2443,10 +2442,10 @@ class CourseOfActionBaseType(GeneratedsSuper):
     express a full course of action using STIX must do so using the
     xsi:type extension feature. The STIX-defined Course of Action
     type is CourseOfActionType in the
-    http://stix.mitre.org/CourseOfAction-1 namespace. This type is
-    defined in the course_of_action.xsd file or at the URL http://st
-    ix.mitre.org/XMLSchema/course_of_action/1.1/course_of_action.xsd
-    .Alternatively, uses that require simply specifying an idref as
+    http://docs.oasis-open.org/cti/ns/stix/course-of-action-1 namespace. This
+    type is defined in the course_of_action.xsd file or at the URL http://docs.
+    oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/course-of-action.xsd.
+    Alternatively, uses that require simply specifying an idref as
     a reference to a course of action defined elsewhere can do so
     without specifying an xsi:type.Specifies a globally unique
     identifier for this COA. Specifies a globally unique identifier
@@ -2766,10 +2765,10 @@ class CampaignBaseType(GeneratedsSuper):
     using the XML Schema Extension feature by the STIX Campaign type
     itself. Users of this type who wish to express a full campaign
     using STIX must do so using the xsi:type extension feature. The
-    STIX-defined Campaign type is CampaignType in the
-    http://stix.mitre.org/Campaign-1 namespace. This type is defined
-    in the campaign.xsd file or at the URL http://stix.mitre.org/XML
-    Schema/campaign/1.1/campaign.xsd.Alternatively, uses that
+    STIX-defined Campaign type is CampaignType in the http://docs.oasis-open.
+    org/cti/ns/stix/campaign-1 namespace. This type is defined in the
+    campaign.xsd file or at the URL http://docs.oasis-open.org/cti/stix/v1.2.1/
+    csd01/xml-schemas/campaign.xsd. Alternatively, uses that
     require simply specifying an idref as a reference to a campaign
     defined elsewhere can do so without specifying an
     xsi:type.Specifies a globally unique identifier for this cyber
@@ -2870,14 +2869,14 @@ class ThreatActorBaseType(GeneratedsSuper):
     type itself. Users of this type who wish to express a full
     threat actor using STIX must do so using the xsi:type extension
     feature. The STIX-defined Threat Actor type is ThreatActorType
-    in the http://stix.mitre.org/ThreatActor-1 namespace. This type
-    is defined in the threat_actor.xsd file or at the URL http://sti
-    x.mitre.org/XMLSchema/threat_actor/1.1/threat_actor.xsd.Alternat
-    ively, uses that require simply specifying an idref as a
+    in the http://docs.oasis-open.org/cti/ns/stix/threat-actor-1 namespace.
+    This type is defined in the threat_actor.xsd file or at the URL http://
+    docs.oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/threat-actor.xsd.
+    Alternatively, uses that require simply specifying an idref as a
     reference to a threat actor defined elsewhere can do so without
-    specifying an xsi:type.Specifies a globally unique identifier
+    specifying an xsi:type. Specifies a globally unique identifier
     for this ThreatActor. Specifies a globally unique identifier of
-    a ThreatActor specified elsewhere.When idref is specified, the
+    a ThreatActor specified elsewhere. When idref is specified, the
     id attribute must not be specified, and any instance of this
     ThreatActor should not hold content.In conjunction with the
     idref, this field may be used to reference a specific version of
@@ -3040,11 +3039,10 @@ class AddressAbstractType(GeneratedsSuper):
     information. This type is intended to be extended through the
     xsi:type mechanism. The default type is
     CIQAddress3.0InstanceType in the
-    http://stix.mitre.org/extensions/Address#CIQAddress3.0-1
-    namespace. This type is defined in the
-    extensions/identity/ciq_address_3.0.xsd file or at the URL http:
-    //stix.mitre.org/XMLSchema/extensions/address/ciq_address_3.0/1.
-    0/ciq_address_3.0.xsd."""
+    http://docs.oasis-open.org/cti/ns/stix/extensions/address/ciq-address-3.0-1
+    namespace. This type is defined in the extensions/identity/
+    ciq_address_3.0.xsd file or at the URL http://docs.oasis-open.org/cti/stix/
+    v1.2.1/csd01/xml-schemas/extensions/address/ciq-3.0-address.xsd."""
     subclass = None
     superclass = None
     def __init__(self):
@@ -3769,14 +3767,13 @@ class ReportBaseType(GeneratedsSuper):
     the XML Schema Extension feature by the STIX Report type itself.
     Users of this type who wish to express a full report using STIX
     must do so using the xsi:type extension feature. The STIX-
-    defined Report type is ReportType in the
-    http://stix.mitre.org/Report-1 namespace. This type is defined
-    in the report.xsd file or at the URL http://stix.mitre.org/XMLSc
-    hema/report/1.2/report.xsd.Alternatively, uses that require
-    simply specifying an idref as a reference to a report defined
-    elsewhere can do so without specifying an xsi:type.Specifies a
-    globally unique identifier for this Report. Specifies a globally
-    unique identifier of a Report specified elsewhere.When idref is
+    defined Report type is ReportType in the http://docs.oasis-open.org/cti/ns/
+    stix/report-1 namespace. This type is defined in the report.xsd file or at
+    the URL http://docs.oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/
+    report.xsd. Alternatively, uses that require simply specifying an idref as
+    a reference to a report defined elsewhere can do so without specifying an
+    xsi:type.Specifies a globally unique identifier for this Report. Specifies
+    a globally unique identifier of a Report specified elsewhere. When idref is
     specified, the id attribute must not be specified, and any
     instance of this Report should not hold content.Specifies a
     timestamp for the definition of a specific version of a Report.

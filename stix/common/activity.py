@@ -14,7 +14,7 @@ from .structured_text import StructuredTextList
 class Activity(stix.Entity):
     _binding = common_binding
     _binding_class = common_binding.ActivityType
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
 
     date_time = fields.TypedField("Date_Time", DateTimeWithPrecision)
     descriptions = fields.TypedField("Description", StructuredTextList)

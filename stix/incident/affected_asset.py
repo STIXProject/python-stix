@@ -15,7 +15,7 @@ from .property_affected import PropertyAffected
 from mixbox import entities, fields
 
 class AffectedAsset(stix.Entity):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding = incident_binding
     _binding_class = incident_binding.AffectedAssetType
     
@@ -76,7 +76,7 @@ class AffectedAsset(stix.Entity):
 
 
 class AssetType(VocabString):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding  = incident_binding
     _binding_class = incident_binding.AssetTypeType
     
@@ -92,7 +92,7 @@ class AssetType(VocabString):
 
 
 class NatureOfSecurityEffect(stix.EntityList):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding = incident_binding
     _binding_class = _binding.NatureOfSecurityEffectType
     

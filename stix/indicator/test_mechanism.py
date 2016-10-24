@@ -13,7 +13,7 @@ import stix.bindings.indicator as indicator_binding
 
 
 class _BaseTestMechanism(stix.Entity):
-    _namespace = "http://stix.mitre.org/Indicator-2"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/indicator-1"
     _binding = indicator_binding
     _binding_class = indicator_binding.TestMechanismType()
     
@@ -54,7 +54,7 @@ class TestMechanismFactory(entities.EntityFactory):
 
 class TestMechanisms(stix.EntityList):
     _binding = indicator_binding
-    _namespace = 'http://stix.mitre.org/Indicator-2'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/indicator-1'
     _binding_class = _binding.TestMechanismsType
 
     test_mechanism = fields.TypedField(

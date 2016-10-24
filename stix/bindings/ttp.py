@@ -16,7 +16,7 @@ from stix.bindings import lookup_extension, register_extension
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
 
-XML_NS = "http://stix.mitre.org/TTP-1"
+XML_NS = "http://docs.oasis-open.org/cti/ns/stix/ttp-1"
 
 #
 # Data representation classes.
@@ -30,17 +30,16 @@ class AttackPatternType(GeneratedsSuper):
     XML Schema extension feature. The STIX default extension uses
     the Common Attack Pattern Enumeration and Classification (CAPEC)
     schema to do so. The extension that defines this is captured in
-    the CAPEC2.7InstanceType in the
-    http://stix.mitre.org/extensions/AP#CAPEC2.7-1 namespace. This
-    type is defined in the
-    extensions/attack_pattern/capec_2.7_attack_pattern.xsd file or
-    at the URL http://stix.mitre.org/XMLSchema/extensions/attack_pat
-    tern/capec_2.7/1.0/capec_2.7_attack_pattern.xsd.Specifies a
-    unique ID for this Attack Pattern.Specifies a reference to the
+    the CAPEC2.7InstanceType in the http://docs.oasis-open.org/cti/ns/stix/
+    extensions/attack-pattern/capec-2.7-1 namespace. This type is defined in
+    the extensions/attack_pattern/capec_2.7_attack_pattern.xsd file or
+    at the URL http://docs.oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/
+    extensions/attack-pattern/capec-2.7-attack-pattern.xsd. Specifies a
+    unique ID for this Attack Pattern. Specifies a reference to the
     ID for this Attack Pattern specified elsewhere.This field
     specifies a reference to a particular entry within the Common
     Attack Pattern Enumeration and Classification (CAPEC)"""
-    subclass =       None
+    subclass = None
     superclass = None
     def __init__(self, idref=None, capec_id=None, id=None, Title=None, Description=None, Short_Description=None):
         self.idref = _cast(None, idref)
@@ -168,12 +167,12 @@ class MalwareInstanceType(GeneratedsSuper):
     default extension uses the Malware Attribute Enumeration and
     Classification (MAEC) schema to do so. The extension that
     defines this is captured in the MAEC4.1InstanceType in the
-    http://stix.mitre.org/extensions/Malware#MAEC4.1-1 namespace.
-    This type is defined in the
-    extensions/malware/maec_4.1_malware.xsd file or at the URL http:
-    //stix.mitre.org/XMLSchema/extensions/malware/maec_4.1/1.0/maec_
-    4.1_malware.xsd.Specifies a unique ID for this Malware
-    Instance.Specifies a reference to the ID for this Malware
+    http://docs.oasis-open.org/cti/ns/stix/extensions/malware/maec-4.1-1
+    namespace. This type is defined in the extensions/malware/
+    maec_4.1_malware.xsd file or at the URL http://docs.oasis-open.org/cti/
+    stix/v1.2.1/csd01/xml-schemas/extensions/malware/maec-4.1-malware.xsd.
+    Specifies a unique ID for this Malware
+    Instance. Specifies a reference to the ID for this Malware
     Instance specified elsewhere."""
     subclass = None
     superclass = None
@@ -1258,7 +1257,7 @@ class TTPType(stix_common_binding.TTPBaseType):
     subclass = None
     superclass = stix_common_binding.TTPBaseType
 
-    xmlns          = "http://stix.mitre.org/TTP-1"
+    xmlns          = "http://docs.oasis-open.org/cti/ns/stix/ttp-1"
     xmlns_prefix   = "ttp"
     xml_type       = "TTPType"
     xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)

@@ -15,7 +15,7 @@ from mixbox.binding_utils import *
 from stix.bindings import register_extension
 import stix.bindings.data_marking as data_marking_binding
 
-XML_NS = "http://data-marking.mitre.org/extensions/MarkingStructure#Simple-1"
+XML_NS = "http://docs.oasis-open.org/cti/ns/stix/extensions/data-marking/simple-1"
 
 #
 # Data representation classes.

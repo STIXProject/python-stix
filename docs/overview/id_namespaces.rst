@@ -28,7 +28,7 @@ Which outputs:
     <stix:STIX_Package
         xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
         xmlns:myNS="http://MY-NAMESPACE.com"
-        xmlns:stix="http://stix.mitre.org/stix-1"
+        xmlns:stix="http://docs.oasis-open.org/cti/ns/stix/core-1"
         xmlns:xs="http://www.w3.org/2001/XMLSchema"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xmlns:xlink="http://www.w3.org/1999/xlink"

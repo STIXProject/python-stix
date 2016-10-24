@@ -14,7 +14,7 @@ from mixbox.vendor.six import string_types
 XML_NS_XPIL     = "urn:oasis:names:tc:ciq:xpil:3"
 XML_NS_XNL      = "urn:oasis:names:tc:ciq:xnl:3"
 XML_NS_XAL      = "urn:oasis:names:tc:ciq:xal:3"
-XML_NS_STIX_EXT = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
+XML_NS_STIX_EXT = "http://docs.oasis-open.org/cti/ns/stix/extensions/identity/ciq-3.0-identity-1"
 
 et.register_namespace('xpil', XML_NS_XPIL)
 et.register_namespace('xnl', XML_NS_XNL)
@@ -26,7 +26,7 @@ et.register_namespace('ExtSch', XML_NS_STIX_EXT)
 class CIQIdentity3_0Instance(common.Identity):
     _binding        = ciq_identity_binding
     _binding_class  = _binding.CIQIdentity3_0InstanceType
-    _namespace      = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
+    _namespace      = "http://docs.oasis-open.org/cti/ns/stix/extensions/identity/ciq-3.0-identity-1"
     _XML_NS_PREFIX  = "ciqIdentity"
     _XML_TYPE       = "CIQIdentity3.0InstanceType"
     _XSI_TYPE       = "ciqIdentity:CIQIdentity3.0InstanceType"
@@ -126,7 +126,7 @@ class CIQIdentity3_0Instance(common.Identity):
 
 
 class STIXCIQIdentity3_0(stix.Entity):
-    _namespace      = "http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
+    _namespace      = "http://docs.oasis-open.org/cti/ns/stix/extensions/identity/ciq-3.0-identity-1"
     XML_TAG = "{%s}Specification" % _namespace
 
     def __init__(self, party_name=None, languages=None, addresses=None, 

@@ -26,9 +26,9 @@ import stix.bindings.incident as incident_binding
 
 INCIDENT_CATEGORIES = """<?xml version="1.0" encoding="UTF-8"?>
 <incident:Incident
- xmlns:incident="http://stix.mitre.org/Incident-1"
+ xmlns:incident="http://docs.oasis-open.org/cti/ns/stix/incident-1"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
- xsi:schemaLocation="http://stix.mitre.org/Incident-1 http://stix.mitre.org/XMLSchema/incident/1.0.1/incident.xsd">
+ xsi:schemaLocation="http://docs.oasis-open.org/cti/ns/stix/incident-1 http://docs.oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/incident.xsd">
  <incident:Categories>
   <incident:Category>Foo</incident:Category>
   <incident:Category>Bar</incident:Category>
@@ -436,7 +436,7 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
 
         s = StringIO()
 
-        incident.export(s.write, 0, {'http://stix.mitre.org/Incident-1': 'incident'})
+        incident.export(s.write, 0, {'http://docs.oasis-open.org/cti/ns/stix/incident-1': 'incident'})
         xml = s.getvalue()
         self.assertTrue("A Description" in xml, "Description not exported")
 

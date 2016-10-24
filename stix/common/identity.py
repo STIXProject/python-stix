@@ -21,7 +21,7 @@ class IdentityFactory(entities.EntityFactory):
 class Identity(stix.Entity):
     _binding = common_binding
     _binding_class = IdentityType
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
 
     id_ = fields.IdField("id")
     idref = fields.IdrefField("idref")
@@ -53,7 +53,7 @@ from stix.common.related import RelatedIdentity
 
 
 class RelatedIdentities(stix.EntityList):
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
     _binding = common_binding
     _binding_class = common_binding.RelatedIdentitiesType
 

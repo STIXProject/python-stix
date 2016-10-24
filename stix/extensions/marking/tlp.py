@@ -11,7 +11,7 @@ import stix.bindings.extensions.marking.tlp as tlp_binding
 class TLPMarkingStructure(MarkingStructure):
     _binding = tlp_binding
     _binding_class = tlp_binding.TLPMarkingStructureType
-    _namespace = 'http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/extensions/data-marking/tlp-1'
     _XSI_TYPE = "tlpMarking:TLPMarkingStructureType"
 
     color = fields.TypedField("color")

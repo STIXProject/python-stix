@@ -8,7 +8,7 @@ import stix.bindings.incident as incident_binding
 from mixbox import fields, entities
 
 class DirectImpactSummary(stix.Entity):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding  = incident_binding
     _binding_class = incident_binding.DirectImpactSummaryType
 

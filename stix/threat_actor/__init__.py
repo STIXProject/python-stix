@@ -19,7 +19,7 @@ from stix.common.information_source import InformationSource
 
 
 class ObservedTTPs(GenericRelationshipList):
-    _namespace = 'http://stix.mitre.org/ThreatActor-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/threat-actor-1'
     _binding = threat_actor_binding
     _binding_class = threat_actor_binding.ObservedTTPsType
 
@@ -27,7 +27,7 @@ class ObservedTTPs(GenericRelationshipList):
 
 
 class AssociatedActors(GenericRelationshipList):
-    _namespace = 'http://stix.mitre.org/ThreatActor-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/threat-actor-1'
     _binding = threat_actor_binding
     _binding_class = threat_actor_binding.AssociatedActorsType
 
@@ -35,7 +35,7 @@ class AssociatedActors(GenericRelationshipList):
 
 
 class AssociatedCampaigns(GenericRelationshipList):
-    _namespace = 'http://stix.mitre.org/ThreatActor-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/threat-actor-1'
     _binding = threat_actor_binding
     _binding_class = threat_actor_binding.AssociatedCampaignsType
 
@@ -61,9 +61,9 @@ class ThreatActor(stix.BaseCoreComponent):
     """
     _binding = threat_actor_binding
     _binding_class = threat_actor_binding.ThreatActorType
-    _namespace = 'http://stix.mitre.org/ThreatActor-1'
-    _version = "1.2"
-    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/threat-actor-1'
+    _version = "1.2.1"
+    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2", "1.2.1")
     _ID_PREFIX = 'threatactor'
 
     identity = fields.TypedField("Identity", Identity, factory=IdentityFactory)

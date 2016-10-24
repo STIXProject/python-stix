@@ -11,7 +11,7 @@ import stix.bindings.course_of_action as coa_binding
 class Objective(stix.Entity):
     _binding = coa_binding
     _binding_class = coa_binding.ObjectiveType
-    _namespace = "http://stix.mitre.org/CourseOfAction-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/course-of-action-1"
 
     applicability_confidence = fields.TypedField("Applicability_Confidence", type_=Confidence)
     descriptions = fields.TypedField("Description", type_=StructuredTextList)

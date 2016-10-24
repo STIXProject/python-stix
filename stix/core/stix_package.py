@@ -65,9 +65,9 @@ class STIXPackage(stix.Entity):
     """
     _binding = stix_core_binding
     _binding_class = _binding.STIXType
-    _namespace = 'http://stix.mitre.org/stix-1'
-    _version = "1.2"
-    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/core-1'
+    _version = "1.2.1"
+    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2", "1.2.1")
 
     id_ = fields.IdField("id")
     idref = fields.IdrefField("idref", preset_hook=deprecated.field)

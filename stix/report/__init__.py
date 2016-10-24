@@ -54,7 +54,7 @@ class Report(stix.Entity):
     """
     _binding = report_binding
     _binding_class = _binding.ReportType
-    _namespace = 'http://stix.mitre.org/Report-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/report-1'
     _version = "1.0"
 
     id_ = fields.IdField("id")
@@ -209,7 +209,7 @@ class Report(stix.Entity):
 
 class Campaigns(stix.EntityList):
     _binding = report_binding
-    _namespace = 'http://stix.mitre.org/Report-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/report-1'
     _binding_class = _binding.CampaignsType
 
     campaign = fields.TypedField("Campaign", Campaign, multiple=True, key_name="campaigns")
@@ -217,7 +217,7 @@ class Campaigns(stix.EntityList):
 
 class CoursesOfAction(stix.EntityList):
     _binding = report_binding
-    _namespace = 'http://stix.mitre.org/Report-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/report-1'
     _binding_class = _binding.CoursesOfActionType
 
     course_of_action = fields.TypedField("Course_Of_Action", CourseOfAction, multiple=True, key_name="courses_of_action")
@@ -225,7 +225,7 @@ class CoursesOfAction(stix.EntityList):
 
 class ExploitTargets(stix.EntityList):
     _binding = stix_common_binding
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
     _binding_class = _binding.ExploitTargetsType
 
     exploit_target = fields.TypedField("Exploit_Target", ExploitTarget, multiple=True, key_name="exploit_targets")
@@ -233,7 +233,7 @@ class ExploitTargets(stix.EntityList):
 
 class Incidents(stix.EntityList):
     _binding = report_binding
-    _namespace = 'http://stix.mitre.org/Report-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/report-1'
     _binding_class = _binding.IncidentsType
 
     incident = fields.TypedField("Incident", Incident, multiple=True, key_name="incidents")
@@ -241,7 +241,7 @@ class Incidents(stix.EntityList):
 
 class Indicators(stix.EntityList):
     _binding = report_binding
-    _namespace = 'http://stix.mitre.org/Report-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/report-1'
     _binding_class = _binding.IndicatorsType
     _contained_type = Indicator
 
@@ -250,7 +250,7 @@ class Indicators(stix.EntityList):
 
 class ThreatActors(stix.EntityList):
     _binding = report_binding
-    _namespace = 'http://stix.mitre.org/Report-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/report-1'
     _binding_class = _binding.ThreatActorsType
 
     threat_actor = fields.TypedField("Threat_Actor", ThreatActor, multiple=True, key_name="threat_actors")

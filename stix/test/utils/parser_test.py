@@ -12,7 +12,7 @@ class ParserTests(unittest.TestCase):
 
     def test_valid(self):
         valid = """
-        <stix:STIX_Package xmlns:stix="http://stix.mitre.org/stix-1"
+        <stix:STIX_Package xmlns:stix="http://docs.oasis-open.org/cti/ns/stix/core-1"
             version="1.2" id="example:Package-1">
         </stix:STIX_Package>
         """
@@ -24,7 +24,7 @@ class ParserTests(unittest.TestCase):
 
     def test_wrong_root_element(self):
         wrong_root = """
-        <stix:NotAPackage xmlns:stix="http://stix.mitre.org/stix-1"
+        <stix:NotAPackage xmlns:stix="http://docs.oasis-open.org/cti/ns/stix/core-1"
             version="1.2" id="example:Package-1">
         </stix:NotAPackage>
         """
@@ -41,7 +41,7 @@ class ParserTests(unittest.TestCase):
 
     def test_wrong_version(self):
         wrong_version = """
-        <stix:STIX_Package xmlns:stix="http://stix.mitre.org/stix-1"
+        <stix:STIX_Package xmlns:stix="http://docs.oasis-open.org/cti/ns/stix/core-1"
             version="17.8.9" id="example:Package-1">
         </stix:STIX_Package>
         """
@@ -58,7 +58,7 @@ class ParserTests(unittest.TestCase):
 
     def test_missing_version(self):
         missing_version = """
-        <stix:STIX_Package xmlns:stix="http://stix.mitre.org/stix-1"
+        <stix:STIX_Package xmlns:stix="http://docs.oasis-open.org/cti/ns/stix/core-1"
             id="example:Package-1">
         </stix:STIX_Package>
         """

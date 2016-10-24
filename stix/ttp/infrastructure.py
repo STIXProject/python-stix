@@ -17,7 +17,7 @@ from mixbox import fields, entities
 class Infrastructure(stix.Entity):
     _binding = ttp_binding
     _binding_class = _binding.InfrastructureType
-    _namespace = "http://stix.mitre.org/TTP-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/ttp-1"
     
     
     id_ = fields.IdField("id")
@@ -100,7 +100,7 @@ class Infrastructure(stix.Entity):
 
 
 class InfraStructureTypes(stix.EntityList):
-    _namespace = "http://stix.mitre.org/TTP-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/ttp-1"
     _contained_type = VocabString
     
     @classmethod

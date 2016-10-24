@@ -41,14 +41,14 @@ Which outputs:
 .. code-block:: xml
 
     <stix:STIX_Package
-            xmlns:cybox="http://cybox.mitre.org/cybox-2"
-            xmlns:cyboxCommon="http://cybox.mitre.org/common-2"
-            xmlns:cyboxVocabs="http://cybox.mitre.org/default_vocabularies-2"
+            xmlns:cybox="http://docs.oasis-open.org/cti/ns/cybox/core-2"
+            xmlns:cyboxCommon="http://docs.oasis-open.org/cti/ns/cybox/common-2"
+            xmlns:cyboxVocabs="http://docs.oasis-open.org/cti/ns/cybox/vocabularies-2"
             xmlns:example="http://example.com"
-            xmlns:report="http://stix.mitre.org/Report-1"
-            xmlns:stix="http://stix.mitre.org/stix-1"
-            xmlns:stixCommon="http://stix.mitre.org/common-1"
-            xmlns:stixVocabs="http://stix.mitre.org/default_vocabularies-1"
+            xmlns:report="http://docs.oasis-open.org/cti/ns/stix/report-1"
+            xmlns:stix="http://docs.oasis-open.org/cti/ns/stix/core-1"
+            xmlns:stixCommon="http://docs.oasis-open.org/cti/ns/stix/common-1"
+            xmlns:stixVocabs="http://docs.oasis-open.org/cti/ns/stix/vocabularies-1"
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="example:Package-1" version="1.2">
         <stix:Reports>
             <stix:Report timestamp="2016-07-15T15:27:43.847000+00:00" id="example:Report-2" xsi:type='report:ReportType' version="1.0">

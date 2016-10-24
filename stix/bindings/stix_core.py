@@ -17,7 +17,7 @@ from stix.bindings import lookup_extension
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
 
-XML_NS = "http://stix.mitre.org/stix-1"
+XML_NS = "http://docs.oasis-open.org/cti/ns/stix/core-1"
 
 #
 # Data representation classes.

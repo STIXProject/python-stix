@@ -13,7 +13,7 @@ import stix.bindings.extensions.test_mechanism.yara as yara_tm_binding
 
 @stix.register_extension
 class YaraTestMechanism(_BaseTestMechanism):
-    _namespace = "http://stix.mitre.org/extensions/TestMechanism#YARA-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/extensions/test-mechanism/yara-1"
     _binding = yara_tm_binding
     _binding_class = _binding.YaraTestMechanismType
     _XSI_TYPE = "yaraTM:YaraTestMechanismType"

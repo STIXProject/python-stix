@@ -14,7 +14,7 @@ from .contributors import Contributors
 from mixbox import entities, fields
 
 class COATaken(stix.Entity):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding = incident_binding
     _binding_class = _binding.COATakenType
     
@@ -32,7 +32,7 @@ class COATaken(stix.Entity):
 
 
 class COARequested(COATaken):
-    namespace = "http://stix.mitre.org/Incident-1"
+    namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding = incident_binding
     _binding_class = _binding.COARequestedType
 
@@ -43,7 +43,7 @@ class COARequested(COATaken):
 
 
 class COATime(stix.Entity):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding = incident_binding
     _binding_class = _binding.COATimeType
     

@@ -20,7 +20,7 @@ from stix.utils.deprecated import DeprecatedList
 
 
 class AssociatedCampaigns(GenericRelationshipList):
-    _namespace = "http://stix.mitre.org/Campaign-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/campaign-1"
     _binding = campaign_binding
     _binding_class = campaign_binding.AssociatedCampaignsType
 
@@ -28,7 +28,7 @@ class AssociatedCampaigns(GenericRelationshipList):
 
 
 class Attribution(GenericRelationshipList):
-    _namespace = "http://stix.mitre.org/Campaign-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/campaign-1"
     _binding = campaign_binding
     _binding_class = campaign_binding.AttributionType
 
@@ -36,7 +36,7 @@ class Attribution(GenericRelationshipList):
 
 
 class RelatedIncidents(GenericRelationshipList):
-    _namespace = "http://stix.mitre.org/Campaign-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/campaign-1"
     _binding = campaign_binding
     _binding_class = campaign_binding.RelatedIncidentsType
 
@@ -44,7 +44,7 @@ class RelatedIncidents(GenericRelationshipList):
 
 
 class RelatedIndicators(GenericRelationshipList):
-    _namespace = "http://stix.mitre.org/Campaign-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/campaign-1"
     _binding = campaign_binding
     _binding_class = campaign_binding.RelatedIndicatorsType
 
@@ -58,7 +58,7 @@ class RelatedIndicators(GenericRelationshipList):
 
 
 class RelatedTTPs(GenericRelationshipList):
-    _namespace = "http://stix.mitre.org/Campaign-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/campaign-1"
     _binding = campaign_binding
     _binding_class = campaign_binding.RelatedTTPsType
 
@@ -66,7 +66,7 @@ class RelatedTTPs(GenericRelationshipList):
 
 
 class Names(stix.EntityList):
-    _namespace = "http://stix.mitre.org/Campaign-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/campaign-1"
     _binding = campaign_binding
     _binding_class = campaign_binding.NamesType
 
@@ -96,9 +96,9 @@ class Campaign(stix.BaseCoreComponent):
     """
     _binding = campaign_binding
     _binding_class = _binding.CampaignType
-    _namespace = "http://stix.mitre.org/Campaign-1"
-    _version = "1.2"
-    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/campaign-1"
+    _version = "1.2.1"
+    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2", "1.2.1")
     _ID_PREFIX = 'campaign'
 
     descriptions = fields.TypedField("Description", StructuredTextList)

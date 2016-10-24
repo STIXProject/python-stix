@@ -12,7 +12,7 @@ from stix.bindings import stix_common as stix_common_binding
 class Profiles(collections.MutableSequence, stix.Entity):
     _binding = stix_common_binding
     _binding_class = stix_common_binding.ProfilesType
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
 
     # Fields
     profile = fields.TypedField("Profile", multiple=True)

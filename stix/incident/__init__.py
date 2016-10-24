@@ -42,9 +42,9 @@ class Incident(stix.BaseCoreComponent):
     """
     _binding = incident_binding
     _binding_class = _binding.IncidentType
-    _namespace = "http://stix.mitre.org/Incident-1"
-    _version = "1.2"
-    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2")
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
+    _version = "1.2.1"
+    _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1", "1.2", "1.2.1")
     _ID_PREFIX = 'incident'
 
     status = vocabs.VocabField("Status", vocabs.IncidentStatus)
@@ -248,7 +248,7 @@ class Incident(stix.BaseCoreComponent):
         self.related_incidents.append(value)
 
 class AttributedThreatActors(GenericRelationshipList):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding = incident_binding
     _binding_class = incident_binding.AttributedThreatActorsType
 
@@ -261,7 +261,7 @@ class AttributedThreatActors(GenericRelationshipList):
 
 
 class RelatedIndicators(GenericRelationshipList):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding = incident_binding
     _binding_class = incident_binding.RelatedIndicatorsType
 
@@ -274,7 +274,7 @@ class RelatedIndicators(GenericRelationshipList):
 
 
 class RelatedObservables(GenericRelationshipList):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding = incident_binding
     _binding_class = incident_binding.RelatedObservablesType
 
@@ -287,7 +287,7 @@ class RelatedObservables(GenericRelationshipList):
 
 
 class LeveragedTTPs(GenericRelationshipList):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding = incident_binding
     _binding_class = _binding.LeveragedTTPsType
 
@@ -300,7 +300,7 @@ class LeveragedTTPs(GenericRelationshipList):
     
 
 class RelatedIncidents(GenericRelationshipList):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding = incident_binding
     _binding_class = incident_binding.RelatedIncidentsType
 
@@ -313,7 +313,7 @@ class RelatedIncidents(GenericRelationshipList):
 
 
 class IncidentCategories(stix.EntityList):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding = incident_binding
     _binding_class = _binding.CategoriesType
 
@@ -326,7 +326,7 @@ class IncidentCategories(stix.EntityList):
 
 
 class AffectedAssets(stix.EntityList):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding = incident_binding
     _binding_class = _binding.AffectedAssetsType
 

@@ -7,7 +7,7 @@ from stix.common import vocabs, VocabString
 from mixbox import entities, fields
 
 class IndirectImpactSummary(stix.Entity):
-    _namespace = "http://stix.mitre.org/Incident-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/incident-1"
     _binding  = incident_binding
     _binding_class = incident_binding.IndirectImpactSummaryType
 

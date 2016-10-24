@@ -41,7 +41,7 @@ def validate_scope(instance, value):
 
 
 class GenericRelationship(stix.Entity):
-    _namespace = "http://stix.mitre.org/common-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/common-1"
     _binding = common_binding
     _binding_class = common_binding.GenericRelationshipType
 
@@ -58,7 +58,7 @@ class GenericRelationship(stix.Entity):
 
 
 class RelatedPackageRef(GenericRelationship):
-    _namespace = "http://stix.mitre.org/common-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedPackageRefType
 
@@ -79,7 +79,7 @@ class RelatedPackageRef(GenericRelationship):
 
 
 class GenericRelationshipEntity(stix.Entity):
-    _namespace = "http://stix.mitre.org/common-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/common-1"
     _binding = common_binding
     _binding_class = _binding.GenericRelationshipListType
     
@@ -106,7 +106,7 @@ class GenericRelationshipList(stix.EntityList):
         Subclasses must supply exactly one multiple TypedField.
     """
 
-    _namespace = "http://stix.mitre.org/common-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/common-1"
     _binding = common_binding
     _binding_class = _binding.GenericRelationshipListType
 
@@ -146,7 +146,7 @@ class _RelatedPackageList(typedlist.TypedList):
 
 
 class RelatedPackageRefs(stix.EntityList):
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
     _binding = common_binding
     _binding_class = common_binding.RelatedPackageRefsType
 
@@ -187,7 +187,7 @@ class _BaseRelated(GenericRelationship):
 
 
 class RelatedCampaign(_BaseRelated):
-    _namespace = "http://stix.mitre.org/common-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedCampaignType
 
@@ -196,7 +196,7 @@ class RelatedCampaign(_BaseRelated):
 
 
 class RelatedCOA(_BaseRelated):
-    _namespace = "http://stix.mitre.org/common-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedCourseOfActionType
 
@@ -205,7 +205,7 @@ class RelatedCOA(_BaseRelated):
 
 
 class RelatedExploitTarget(_BaseRelated):
-    _namespace = "http://stix.mitre.org/common-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedExploitTargetType
 
@@ -214,7 +214,7 @@ class RelatedExploitTarget(_BaseRelated):
 
 
 class RelatedIdentity(_BaseRelated):
-    _namespace = 'http://stix.mitre.org/common-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/common-1'
     _binding = common_binding
     _binding_class = common_binding.RelatedIdentityType
 
@@ -223,7 +223,7 @@ class RelatedIdentity(_BaseRelated):
 
 
 class RelatedIncident(_BaseRelated):
-    _namespace = "http://stix.mitre.org/common-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedIncidentType
 
@@ -231,7 +231,7 @@ class RelatedIncident(_BaseRelated):
     item = fields.TypedField("Incident", type_="stix.incident.Incident")
 
 class RelatedIndicator(_BaseRelated):
-    _namespace = "http://stix.mitre.org/common-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedIndicatorType
 
@@ -240,7 +240,7 @@ class RelatedIndicator(_BaseRelated):
 
 
 class RelatedObservable(_BaseRelated):
-    _namespace = "http://stix.mitre.org/common-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedObservableType
 
@@ -248,7 +248,7 @@ class RelatedObservable(_BaseRelated):
     item = fields.TypedField("Observable", type_=Observable)
 
 class RelatedThreatActor(_BaseRelated):
-    _namespace = "http://stix.mitre.org/common-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedThreatActorType
 
@@ -257,7 +257,7 @@ class RelatedThreatActor(_BaseRelated):
 
 
 class RelatedTTP(_BaseRelated):
-    _namespace = "http://stix.mitre.org/common-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedTTPType
 
@@ -266,7 +266,7 @@ class RelatedTTP(_BaseRelated):
 
 
 class RelatedPackage(_BaseRelated):
-    _namespace = "http://stix.mitre.org/stix-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/core-1"
     _binding = core_binding
     _binding_class = core_binding.RelatedPackageType
 
@@ -275,7 +275,7 @@ class RelatedPackage(_BaseRelated):
 
 
 class RelatedReport(_BaseRelated):
-    _namespace = "http://stix.mitre.org/common-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/common-1"
     _binding = common_binding
     _binding_class = common_binding.RelatedReportType
 
@@ -284,7 +284,7 @@ class RelatedReport(_BaseRelated):
 
 
 class RelatedCampaignRef(_BaseRelated):
-    _namespace = "http://stix.mitre.org/common-1"
+    _namespace = "http://docs.oasis-open.org/cti/ns/stix/common-1"
     _binding = common_binding
     _binding_class = _binding.RelatedCampaignReferenceType
 
@@ -293,7 +293,7 @@ class RelatedCampaignRef(_BaseRelated):
 
 
 class RelatedPackages(GenericRelationshipList):
-    _namespace = 'http://stix.mitre.org/stix-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/core-1'
     _binding = core_binding
     _binding_class = core_binding.RelatedPackagesType
 
@@ -301,7 +301,7 @@ class RelatedPackages(GenericRelationshipList):
 
 
 class RelatedReports(GenericRelationshipList):
-    _namespace = 'http://stix.mitre.org/Report-1'
+    _namespace = 'http://docs.oasis-open.org/cti/ns/stix/report-1'
     _binding = report_binding
     _binding_class = report_binding.RelatedReportsType
 
