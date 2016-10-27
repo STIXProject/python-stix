@@ -490,7 +490,8 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
 
         ind2 = Indicator.from_dict(ind.to_dict())
 
-        self.assertEqual([obs], ind2.observables)
+        self.assertEqual([obs.to_dict()],
+                         [x.to_dict() for x in ind2.observables])
 
 
 class RelatedCampaignReferencesTests(unittest.TestCase, EntityTestCase):

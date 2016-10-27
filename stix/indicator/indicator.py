@@ -248,7 +248,8 @@ class Indicator(stix.BaseCoreComponent):
         elif self.observable.observable_composition:
             return self.observable.observable_composition.observables
 
-        return []
+        # self.observable is defined and not a composition.
+        return [self.observable]
 
     @observables.setter
     def observables(self, value):
