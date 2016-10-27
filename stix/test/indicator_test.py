@@ -1,8 +1,11 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-import unittest
 from datetime import datetime
+import unittest
+
+from cybox.core import Observable, ObservableComposition
+from cybox.objects.file_object import File
 from mixbox.vendor.six import text_type
 
 from stix.core import STIXPackage
@@ -41,7 +44,6 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
 
         o2 = self.klass.from_dict(d).to_obj()
         self.assertTrue(o2.negate is None)
-        
 
     def test_indicator_types(self):
         d = {
@@ -456,6 +458,39 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
 
         ixml = indicator.to_xml()
         self.assertTrue("2010-03-05T" in text_type(ixml))
+
+    def test_observables_property_empty(self):
+        ind = Indicator()
+        ind2 = Indicator.from_dict(ind.to_dict())
+
+        self.assertEqual([], ind2.observables)
+
+    def test_observables_property_composition(self):
+        f1 = File()
+        f1.file_name = "README.txt"
+        f2 = File()
+        f2.file_name = "README2.txt"
+        obs1 = Observable(f1)
+        obs2 = Observable(f2)
+
+        comp = Observable(ObservableComposition('AND', [obs1, obs2]))
+
+        ind = Indicator()
+        ind.observable = comp
+        ind2 = Indicator.from_dict(ind.to_dict())
+        self.assertEqual([obs1.to_dict(), obs2.to_dict()],
+                         [x.to_dict() for x in ind2.observables])
+
+    def test_observables_property_standard(self):
+        f = File()
+        f.file_name = "README.txt"
+        obs = Observable(f)
+        ind = Indicator()
+        ind.observable = obs
+
+        ind2 = Indicator.from_dict(ind.to_dict())
+
+        self.assertEqual([obs], ind2.observables)
 
 
 class RelatedCampaignReferencesTests(unittest.TestCase, EntityTestCase):
