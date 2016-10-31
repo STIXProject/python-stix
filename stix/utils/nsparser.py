@@ -36,9 +36,9 @@ NS_TA_OBJECT = Namespace("http://docs.oasis-open.org/cti/ns/stix/threat-actor-1"
 NS_TLPMARKING_OBJECT = Namespace("http://docs.oasis-open.org/cti/ns/stix/extensions/data-marking/tlp-1", "tlpMarking", "http://docs.oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/extensions/marking/tlp-marking.xsd")
 NS_TOUMARKING_OBJECT = Namespace("http://docs.oasis-open.org/cti/ns/stix/extensions/data-marking/terms-of-use-1", "TOUMarking", "http://docs.oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/extensions/marking/terms-of-use-marking.xsd")
 NS_TTP_OBJECT = Namespace("http://docs.oasis-open.org/cti/ns/stix/ttp-1", "ttp", "http://docs.oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/ttp.xsd")
-NS_XAL_OBJECT = Namespace("urn:oasis:names:tc:ciq:xal:3", "xal", "http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xAL.xsd")
-NS_XNL_OBJECT = Namespace("urn:oasis:names:tc:ciq:xnl:3", "xnl", "http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xNL.xsd")
-NS_XPIL_OBJECT = Namespace("urn:oasis:names:tc:ciq:xpil:3", "xpil", "http://stix.mitre.org/XMLSchema/external/oasis_ciq_3.0/xPIL.xsd")
+NS_XAL_OBJECT = Namespace("urn:oasis:names:tc:ciq:xal:3", "xal", "http://docs.oasis-open.org/ciq/v3.0/prd03/xsd/default/xsd/xAL.xsd")
+NS_XNL_OBJECT = Namespace("urn:oasis:names:tc:ciq:xnl:3", "xnl", "http://docs.oasis-open.org/ciq/v3.0/prd03/xsd/default/xsd/xNL.xsd")
+NS_XPIL_OBJECT = Namespace("urn:oasis:names:tc:ciq:xpil:3", "xpil", "http://docs.oasis-open.org/ciq/v3.0/prd03/xsd/default/xsd/xPIL.xsd")
 NS_YARATM_OBJECT = Namespace("http://docs.oasis-open.org/cti/ns/stix/extensions/test-mechanism/yara-1", "yaraTM", "http://docs.oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/extensions/test-mechanism/yara-test-mechanism.xsd")
 
 STIX_NAMESPACES = mixbox.namespaces.NamespaceSet()
