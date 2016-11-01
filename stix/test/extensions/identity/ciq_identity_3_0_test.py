@@ -151,7 +151,7 @@ class IdentityInThreatActorTests(EntityTestCase, unittest.TestCase):
                     ]
                 }
             },
-            "xsi:type": "ciqIdentity:CIQIdentity3.0InstanceType"
+            "xsi:type": "stix-ciqidentity:CIQIdentity3.0InstanceType"
         },
         "timestamp": "2016-10-04T19:43:57.382126+00:00",
         "title": "Disco Team Threat Actor Group"
