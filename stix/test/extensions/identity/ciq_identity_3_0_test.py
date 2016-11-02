@@ -51,9 +51,6 @@ class CIQIdentity3_0InstanceTests(EntityTestCase, unittest.TestCase):
                     }
                 ]
             },
-            'organisation_info': {
-               'industry_type': 'test industry'
-            },
             'languages': [
                 {'value': 'test language'}
             ],
@@ -64,8 +61,17 @@ class CIQIdentity3_0InstanceTests(EntityTestCase, unittest.TestCase):
                     },
                     'country': {
                         'name_elements': [
-                            {'value': 'name 1'},
-                            {'value': 'name 2'}
+                            {
+                                'value': 'name 1',
+                                'name_code': 'US',
+                                'name_code_type': 'ISO 3166-1 alpha-2'
+                            },
+                            {
+                                'value': 'name 2',
+                                'name_code': 'BZ',
+                                'name_code_type': 'ISO 3166-1 alpha-2',
+                                'name_type': 'ISO'
+                            }
                         ]
                     },
                     'administrative_area': {
@@ -124,11 +130,15 @@ class IdentityInThreatActorTests(EntityTestCase, unittest.TestCase):
                 "addresses": [
                     {
                         "administrative_area": {
-                            "name_elements": [{"value": "California"}
-                            ]
+                            "name_elements": [{"value": "California"}]
                         },
                         "country": {
-                            "name_elements": [{"value": "United States"}]
+                            "name_elements": [
+                                {
+                                    "name_code": "US",
+                                    "name_code_type": "ISO 3166-1 alpha-2"
+                                }
+                            ]
                         }
                     }
                 ],
