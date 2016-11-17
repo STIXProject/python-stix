@@ -31,7 +31,7 @@ extras_require = {
     'test': [
         'nose==1.3.0',
         'tox==1.6.1',
-        'maec>=4.1.0.13.dev4,<4.1.1.0',
+        'maec411',
     ],
 }
 
@@ -39,13 +39,13 @@ extras_require = {
 install_requires = [
     'lxml>=2.3',
     'python-dateutil',
-    'cybox>=2.1.0.13.dev1,<2.1.1.0',
+    'cybox211',
     'mixbox>=1.0.1',
 ]
 
 
 setup(
-    name="stix",
+    name="stix121",
     version=get_version(),
     author="STIX Project, MITRE Corporation",
     author_email="stix@mitre.org",
