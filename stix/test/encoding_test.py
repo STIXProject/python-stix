@@ -29,7 +29,7 @@ u"""
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:stix="http://docs.oasis-open.org/cti/ns/stix/core-1"
     xmlns:example="http://example.com/"
-    id="example:Indicator-ba1d406e-937c-414f-9231-6e1dbe64fe8b" version="1.2" timestamp="2014-05-08T09:00:00.000000Z">
+    id="example:Indicator-ba1d406e-937c-414f-9231-6e1dbe64fe8b" version="1.2.1" timestamp="2014-05-08T09:00:00.000000Z">
     <stix:STIX_Header>
         <stix:Title>{0}</stix:Title>
     </stix:STIX_Header>

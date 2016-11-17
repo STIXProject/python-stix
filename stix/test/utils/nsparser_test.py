@@ -61,7 +61,7 @@ class NamespaceInfoTests(unittest.TestCase):
                     xmlns:stixCommon="THISISGONNABEPROBLEM"
                     xmlns:stix="http://docs.oasis-open.org/cti/ns/stix/core-1"
                     xmlns:stixVocabs="http://docs.oasis-open.org/cti/ns/stix/vocabularies-1"
-                    version="1.2"
+                    version="1.2.1"
                     timestamp="2015-04-09T14:22:25.620831+00:00">
                 <stix:STIX_Header>
                     <stix:Description>A unit test</stix:Description>
@@ -99,7 +99,7 @@ class NamespaceInfoTests(unittest.TestCase):
                     xmlns:stixVocabs="http://docs.oasis-open.org/cti/ns/stix/vocabularies-1"
                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                     id="example:Package-e2454ee8-e59c-43ac-a085-46ae4516fd6e"
-                    version="1.2"
+                    version="1.2.1"
                     timestamp="2015-04-09T14:22:25.620831+00:00"/>"""
         )
 

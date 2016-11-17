@@ -13,7 +13,7 @@ class ParserTests(unittest.TestCase):
     def test_valid(self):
         valid = """
         <stix:STIX_Package xmlns:stix="http://docs.oasis-open.org/cti/ns/stix/core-1"
-            version="1.2" id="example:Package-1">
+            version="1.2.1" id="example:Package-1">
         </stix:STIX_Package>
         """
 
@@ -25,7 +25,7 @@ class ParserTests(unittest.TestCase):
     def test_wrong_root_element(self):
         wrong_root = """
         <stix:NotAPackage xmlns:stix="http://docs.oasis-open.org/cti/ns/stix/core-1"
-            version="1.2" id="example:Package-1">
+            version="1.2.1" id="example:Package-1">
         </stix:NotAPackage>
         """
 
@@ -37,7 +37,7 @@ class ParserTests(unittest.TestCase):
                                    check_root=False)
 
         self.assertEqual("example:Package-1", package.id_)
-        self.assertEqual("1.2", package.version)
+        self.assertEqual("1.2.1", package.version)
 
     def test_wrong_version(self):
         wrong_version = """

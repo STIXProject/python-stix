@@ -49,7 +49,7 @@ Which outputs:
             xmlns:stix="http://docs.oasis-open.org/cti/ns/stix/core-1"
             xmlns:stixCommon="http://docs.oasis-open.org/cti/ns/stix/common-1"
             xmlns:stixVocabs="http://docs.oasis-open.org/cti/ns/stix/vocabularies-1"
-            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="example:Package-1" version="1.2">
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" id="example:Package-1" version="1.2.1">
         <stix:Reports>
             <stix:Report timestamp="2016-07-15T15:27:43.847000+00:00" id="example:Report-2" xsi:type='report:ReportType' version="1.0">
                 <report:Header>

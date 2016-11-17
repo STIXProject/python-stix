@@ -134,4 +134,4 @@ def supported_stix_version():
     supports (i.e., can parse).
 
     """
-    return ('1.1.1', '1.2', '1.2.1')
+    return ('1.2.1',)
