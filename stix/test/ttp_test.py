@@ -216,7 +216,7 @@ class TTPIdentityTests(EntityTestCase, unittest.TestCase):
                         "industry_type": "Electricity, Industrial Control Systems"
                     }
                 },
-                "xsi:type": "ciqIdentity:CIQIdentity3.0InstanceType"
+                "xsi:type": "stix-ciqidentity:CIQIdentity3.0InstanceType"
             }
         }
     }

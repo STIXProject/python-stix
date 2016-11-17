@@ -31,7 +31,7 @@ class CIQIdentity3_0InstanceType(stix_common_binding.IdentityType):
     superclass = stix_common_binding.IdentityType
 
     xmlns          = XML_NS
-    xmlns_prefix   = "ciqIdentity"
+    xmlns_prefix   = "stix-ciqidentity"
     xml_type       = "CIQIdentity3.0InstanceType"
     xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 

@@ -1,3 +1,15 @@
+Version 1.2.0.2
+2016-11-02
+- #309 Correctly return a single observable from Indicator.observables.
+- #306 Incorporate mixbox 1.0.1, which handles dates correctly.
+- #303 Property serialize MAEC content to XML.
+- #302 Correctly handle CIQ Identity objects.
+- Add additional fields to CIQ Identity object.
+
+Version 1.1.1.7
+2016-10-21
+- Improved handling of Industry Sectors in CIQ Identity for AIS Markings
+
 Version 1.1.1.6
 2016-10-14
 - Add support for AIS Markings in STIX 1.1.1

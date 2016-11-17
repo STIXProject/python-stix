@@ -7,7 +7,7 @@ Namespace = mixbox.namespaces.Namespace
 
 NS_CAMPAIGN_OBJECT = Namespace("http://docs.oasis-open.org/cti/ns/stix/campaign-1", "campaign", "http://docs.oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/campaign.xsd")
 NS_CAPEC_OBJECT = Namespace("http://capec.mitre.org/capec-2", "capec", "")
-NS_CIQIDENTITY_OBJECT = Namespace("http://docs.oasis-open.org/cti/ns/stix/extensions/identity/ciq-3.0-identity-1", "ciqIdentity", "http://docs.oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/extensions/identity/ciq-3.0-identity.xsd")
+NS_CIQIDENTITY_OBJECT = Namespace("http://docs.oasis-open.org/cti/ns/stix/extensions/identity/ciq-3.0-identity-1", "stix-ciqidentity", "http://docs.oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/extensions/identity/ciq-3.0-identity.xsd")
 NS_COA_OBJECT = Namespace("http://docs.oasis-open.org/cti/ns/stix/course-of-action-1", "coa", "http://docs.oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/course-of-action.xsd")
 NS_CVRF_OBJECT = Namespace("http://www.icasi.org/CVRF/schema/cvrf/1.1", "cvrf", "")
 NS_ET_OBJECT = Namespace("http://docs.oasis-open.org/cti/ns/stix/exploit-target-1", "et", "http://docs.oasis-open.org/cti/stix/v1.2.1/csd01/xml-schemas/exploit-target.xsd")
