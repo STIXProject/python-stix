@@ -6,7 +6,7 @@ By default, **python-stix** sets the default ID namespace to
 id declarations that look like
 ``id="example:Package-2813128d-f45e-41f7-b10a-20a5656e3785"``.
 
-To change this, use the :meth:`stix.utils.idgen.set_id_namespace` method which takes
+To change this, use the :meth:`mixbox.idgen.set_id_namespace` method which takes
 a dictionary as a parameter.
 
 .. code-block:: python
