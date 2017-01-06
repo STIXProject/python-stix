@@ -1,4 +1,4 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 # stdlib
@@ -83,5 +83,5 @@ def serialize_date(value):
 
 
 def now():
-    """Returns the current UTC datetime.datetime."""
+    """Returns the current UTC ``datetime.datetime`` timestamp."""
     return datetime.datetime.now(tz=dateutil.tz.tzutc())

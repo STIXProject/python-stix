@@ -1,4 +1,4 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 # stdlib
@@ -6,6 +6,7 @@ import itertools
 
 # external
 from cybox.common import ObjectProperties
+from mixbox.vendor.six import iteritems
 
 # internal
 from . import is_entity, is_entitylist, attr_name, is_sequence
@@ -25,9 +26,15 @@ def _is_skippable(owner, varname, varobj):
 
 
 def _iter_vars(obj):
-    instance_vars = getattr(obj, "__dict__", {}).iteritems()
-    typed_fields  = getattr(obj, "_fields", {}).iteritems()
-    return itertools.chain(instance_vars, typed_fields)
+    attrs = []
+
+    if hasattr(obj, "__dict__"):
+        attrs.append(iteritems(vars(obj)))
+
+    if hasattr(obj, "_fields"):
+        attrs.append(iteritems(obj._fields))
+
+    return itertools.chain.from_iterable(attrs)
 
 
 def iterwalk(obj):

@@ -1,25 +1,59 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
+
+from mixbox import fields
 
 # internal
 import stix
 import stix.bindings.ttp as ttp_binding
-from stix.common import vocabs, Statement
-from stix.data_marking import Marking
+from stix.common import vocabs
+from stix.common import Statement
+from stix.common.kill_chains import KillChainPhasesReference
+from stix.common.related import RelatedPackageRefs
+from stix.common.statement import StatementField
+from stix.ttp.related_ttps import RelatedTTPs
+from stix.ttp.exploit_targets import ExploitTargets
 
 # relative
 from .behavior import Behavior
 from .resource import Resource
 from .victim_targeting import VictimTargeting
+from stix.common.information_source import InformationSource
 
 
 class TTP(stix.BaseCoreComponent):
+    """Implementation of the STIX TTP.
+
+    Args:
+        id_ (optional): An identifier. If ``None``, a value will be generated
+            via ``mixbox.idgen.create_id()``. If set, this will unset the
+            ``idref`` property.
+        idref (optional): An identifier reference. If set this will unset the
+            ``id_`` property.
+        timestamp (optional): A timestamp value. Can be an instance of
+            ``datetime.datetime`` or ``str``.
+        description: A description of the purpose or intent of this object.
+        short_description: A short description of the intent
+            or purpose of this object.
+        title: The title of this object.
+
+    """
     _binding = ttp_binding
     _binding_class = _binding.TTPType
     _namespace = "http://stix.mitre.org/TTP-1"
     _version = "1.1.1"
     _ALL_VERSIONS = ("1.0", "1.0.1", "1.1", "1.1.1")
     _ID_PREFIX = "ttp"
+
+    behavior = fields.TypedField("Behavior", Behavior)
+    related_ttps = fields.TypedField("Related_TTPs", RelatedTTPs)
+    intended_effects = StatementField("Intended_Effect", Statement, vocab_type=vocabs.IntendedEffect, multiple=True)
+    resources = fields.TypedField("Resources", Resource)
+    victim_targeting = fields.TypedField("Victim_Targeting", VictimTargeting)
+    exploit_targets = fields.TypedField("Exploit_Targets", ExploitTargets)
+    related_packages = fields.TypedField("Related_Packages", RelatedPackageRefs)
+    kill_chain_phases = fields.TypedField("Kill_Chain_Phases", KillChainPhasesReference)
+    information_source = fields.TypedField("Information_Source", InformationSource)
 
     def __init__(self, id_=None, idref=None, timestamp=None, title=None,
                  description=None, short_description=None):
@@ -33,156 +67,82 @@ class TTP(stix.BaseCoreComponent):
             short_description=short_description
         )
 
-        self.behavior = None
-        self.related_ttps = None
-        self.intended_effects = None
-        self.resources = None
-        self.victim_targeting = None
-        self.handling = None
+        self.related_packages = RelatedPackageRefs()
         self.exploit_targets = ExploitTargets()
+        self.related_ttps = RelatedTTPs()
+        self.kill_chain_phases = KillChainPhasesReference()
 
-    @property
-    def behavior(self):
-        return self._behavior
+    def add_related_ttp(self, value):
+        """Adds an Related TTP to the :attr:`related_ttps` list
+        property of this :class:`TTP`.
 
-    @behavior.setter
-    def behavior(self, value):
-        self._set_var(Behavior, try_cast=False, behavior=value)
+        The `TTP` parameter must be an instance of
+        :class:`.RelatedTTP` or :class:`TTP`.
 
-    @property
-    def related_ttps(self):
-        return self._related_ttps
+        If the `TTP` parameter is ``None``, no item wil be added to the
+        ``related_ttps`` list property.
 
-    @related_ttps.setter
-    def related_ttps(self, value):
-        if isinstance(value, RelatedTTPs):
-            self._related_ttps = value
-        else:
-            self._related_ttps = RelatedTTPs(value)
+        Calling this method is the same as calling ``append()`` on the
+        ``related_ttps`` property.
 
-    @property
-    def exploit_targets(self):
-        return self._exploit_targets
+        See Also:
+            The :class:`RelatedTTPs` documentation.
 
-    @exploit_targets.setter
-    def exploit_targets(self, value):
-        if isinstance(value, ExploitTargets):
-            self._exploit_targets = value
-        else:
-            self._exploit_targets = ExploitTargets(value)
+        Note:
+            If the `TTP` parameter is not an instance of
+            :class:`.RelatedTTP` an attempt will be
+            made to convert it to one.
 
-    @property
-    def intended_effects(self):
-        return self._intended_effects
+        Args:
+            value: An instance of :class:`TTP` or
+                :class:`.RelatedTTP`.
 
-    @intended_effects.setter
-    def intended_effects(self, value):
-        self._intended_effects = _IntendedEffects(value)
+        Raises:
+            ValueError: If the `TTP` parameter cannot be converted into
+                an instance of :class:`.RelatedTTP`
+
+        """
+        self.related_ttps.append(value)
+
+    def add_exploit_target(self, value):
+        """Adds a :class:`.ExploitTarget` object to the :attr:`exploit_targets`
+        collection.
+
+        """
+        self.exploit_targets.append(value)
 
     def add_intended_effect(self, value):
+        """Adds a :class:`.Statement` object to the :attr:`intended_effects`
+        collection.
+
+        If `value` is a string, an attempt will be made to convert it into an
+        instance of :class:`.Statement`.
+
+        """
         self.intended_effects.append(value)
 
-    @property
-    def resources(self):
-        return self._resources
+    def add_kill_chain_phase(self, value):
+        """Adds a :class:`.KillChainPhaseReference` to the
+        :attr:`kill_chain_phases` collection.
 
-    @resources.setter
-    def resources(self, value):
-        self._set_var(Resource, resources=value)
+        Args:
+            value: A :class:`.KillChainPhase`, :class:`.KillChainPhaseReference`
+                or a ``str`` representing the phase_id of. Note that you if you
+                are defining a custom Kill Chain, you need to add it to the
+                STIX package separately.
+        """
+        self.kill_chain_phases.append(value)
 
-    @property
-    def victim_targeting(self):
-        return self._victim_targeting
+    def add_related_package(self, value):
+        """Adds a :class:`.RelatedPackageRef` object to the
+        :attr:`related_packages` collection.
 
-    @victim_targeting.setter
-    def victim_targeting(self, value):
-        self._set_var(VictimTargeting, try_cast=False, victim_targeting=value)
+        Args:
+            value: A :class:`.RelatedPackageRef` or a :class:`.STIXPackage`
+                object.
 
-    @property
-    def handling(self):
-        return self._handling
-
-    @handling.setter
-    def handling(self, value):
-        self._set_var(Marking, try_cast=False, handling=value)
-
-    def to_obj(self, return_obj=None, ns_info=None):
-        if not return_obj:
-            return_obj = self._binding_class()
-
-        super(TTP, self).to_obj(return_obj=return_obj, ns_info=ns_info)
-
-        if self.behavior:
-            return_obj.Behavior = self.behavior.to_obj(ns_info=ns_info)
-        if self.related_ttps:
-            return_obj.Related_TTPs = self.related_ttps.to_obj(ns_info=ns_info)
-        if self.exploit_targets:
-            return_obj.Exploit_Targets = self.exploit_targets.to_obj(ns_info=ns_info)
-        if self.intended_effects:
-            return_obj.Intended_Effect = self.intended_effects.to_obj(ns_info=ns_info)
-        if self.resources:
-            return_obj.Resources = self.resources.to_obj(ns_info=ns_info)
-        if self.victim_targeting:
-            return_obj.Victim_Targeting = self.victim_targeting.to_obj(ns_info=ns_info)
-        if self.handling:
-            return_obj.Handling = self.handling.to_obj(ns_info=ns_info)
-
-        return return_obj
-
-    @classmethod
-    def from_obj(cls, obj, return_obj=None):
-        if not obj:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        super(TTP, cls).from_obj(obj, return_obj=return_obj)
-
-        if isinstance(obj, cls._binding_class):
-            return_obj.behavior = Behavior.from_obj(obj.Behavior)
-            return_obj.related_ttps = RelatedTTPs.from_obj(obj.Related_TTPs)
-            return_obj.exploit_targets = ExploitTargets.from_obj(obj.Exploit_Targets)
-            return_obj.resources = Resource.from_obj(obj.Resources)
-            return_obj.victim_targeting = VictimTargeting.from_obj(obj.Victim_Targeting)
-            return_obj.handling = Marking.from_obj(obj.Handling)
-            return_obj.intended_effects = _IntendedEffects.from_obj(obj.Intended_Effect)
-
-        return return_obj
-
-    def to_dict(self):
-        return super(TTP, self).to_dict()
-
-    @classmethod
-    def from_dict(cls, dict_repr, return_obj=None):
-        if not dict_repr:
-            return None
-
-        if not return_obj:
-            return_obj = cls()
-
-        super(TTP, cls).from_dict(dict_repr, return_obj=return_obj)
-
-        get = dict_repr.get
-        return_obj.behavior = Behavior.from_dict(get('behavior'))
-        return_obj.related_ttps = RelatedTTPs.from_dict(get('related_ttps'))
-        return_obj.exploit_targets = ExploitTargets.from_dict(get('exploit_targets'))
-        return_obj.intended_effects = _IntendedEffects.from_dict(get('intended_effects'))
-        return_obj.resources = Resource.from_dict(get('resources'))
-        return_obj.victim_targeting = VictimTargeting.from_dict(get('victim_targeting'))
-        return_obj.handling = Marking.from_dict(get('handling'))
-
-        return return_obj
-
-
-# NOT ACTUAL STIX TYPE
-class _IntendedEffects(stix.TypedList):
-    _contained_type = Statement
-
-    def _fix_value(self, value):
-        intended_effect = vocabs.IntendedEffect(value)
-        return Statement(value=intended_effect)
-
+        """
+        self.related_packages.append(value)
 
 # Avoid circular imports
 from .related_ttps import RelatedTTPs

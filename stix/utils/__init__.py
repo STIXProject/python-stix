@@ -1,19 +1,18 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
-# stdlib
-import collections
 import contextlib
+import functools
 import keyword
 import warnings
 
-# external
-import cybox
 import lxml.etree
 
-# internal
+from mixbox.entities import Entity, EntityList
+import mixbox.xml
+from mixbox.vendor.six import iteritems, string_types
+
 import stix
-import stix.xmlconst as xmlconst
 
 # relative
 from . import dates
@@ -36,7 +35,52 @@ def ignored(*exceptions):
         pass
 
 
+def raise_warnings(func):
+    """Function decorator that causes all Python warnings to be raised as
+    exceptions in the wrapped function.
+
+    Example:
+        >>> @raise_warnings
+        >>> def foo():
+        >>>     warnings.warn("this will raise an exception")
+
+    """
+    @functools.wraps(func)
+    def inner(*args, **kwargs):
+        with warnings.catch_warnings():
+            warnings.simplefilter('error')
+            return func(*args, **kwargs)
+    return inner
+
+
+def silence_warnings(func):
+    """Function decorator that silences/ignores all Python warnings in the
+    wrapped function.
+
+    Example:
+        >>> @silence_warnings
+        >>> def foo():
+        >>>     warnings.warn("this will not appear")
+
+    """
+    @functools.wraps(func)
+    def inner(*args, **kwargs):
+        with warnings.catch_warnings(record=True):
+            warnings.simplefilter('always')
+            return func(*args, **kwargs)
+    return inner
+
+
 def is_cdata(text):
+    """Returns ``True`` if `text` contains a CDATA block.
+
+    Example:
+        >>> is_cdata("<![CDATA[Foo]]>")
+        True
+        >>> is_cdata("NOPE")
+        False
+
+    """
     if not text:
         return False
 
@@ -66,7 +110,7 @@ def strip_cdata(text):
 
 
 def cdata(text):
-    """Wraps the input `text` in a <![CDATA[]]> block.
+    """Wraps the input `text` in a ``<![CDATA[ ]]>`` block.
 
     If the text contains CDATA sections already, they are stripped and replaced
     by the application of an outer-most CDATA block.
@@ -75,7 +119,7 @@ def cdata(text):
         text: A string to wrap in a CDATA block.
 
     Returns:
-        The `text` value wrapped in <![CDATA[]]>
+        The `text` value wrapped in ``<![CDATA[]]>``
 
     """
     if not text:
@@ -94,24 +138,26 @@ def is_stix(entity):
 
 
 def is_cybox(entity):
-    """Returns true if `entity` is an instance of :class:`cybox.Entity`."""
-    return isinstance(entity, cybox.Entity)
+    """Returns true if `entity` is a Cybox object"""
+    try:
+        return entity.__module__.startswith("cybox.")
+    except AttributeError:
+        return False
 
 
 def is_entity(entity):
     """Returns true if `entity` is an instance of :class:`.Entity` or
-    :class:`cybox.Entity`.
-
+    :class:`mixbox.Entity`.
     """
-    return isinstance(entity, (cybox.Entity, stix.Entity))
+    return isinstance(entity, (Entity, stix.Entity))
 
 
 def is_entitylist(entity):
     """Returns true if `entity` is an instance of :class:`.EntityList`
-    or :class:`cybox.EntityList`.
+    or :class:`mixbox.entities.EntityList`.
 
     """
-    return isinstance(entity, (cybox.EntityList, stix.EntityList))
+    return isinstance(entity, (EntityList, stix.EntityList))
 
 
 def is_typedlist(entity):
@@ -176,7 +222,7 @@ def is_sequence(item):
     ``tuple``). String types will return ``False``.
 
     """
-    return hasattr(item, "__iter__")
+    return hasattr(item, "__iter__") and not isinstance(item, string_types)
 
 
 def check_version(expected, found):
@@ -207,7 +253,7 @@ def iter_vars(obj):
     def check(name):
         return name not in ('__input_namespaces__', '__input_schemalocations__')
 
-    instance_vars = obj.__dict__.iteritems()
+    instance_vars = iteritems(vars(obj))
     return ((attr_name(name), val) for name, val in instance_vars if check(name))
 
 
@@ -231,16 +277,6 @@ def is_bool(obj):
     return isinstance(obj, bool)
 
 
-def is_element(obj):
-    """Returns ``True`` if `obj` is an lxml ``Element``."""
-    return isinstance(obj, lxml.etree._Element)  # noqa
-
-
-def is_etree(obj):
-    """Returns ``True`` if `obj` is an lxml ``ElementTree``."""
-    return isinstance(obj, lxml.etree._ElementTree)  # noqa
-
-
 def has_value(var):
     """Returns ``True`` if `var` is not ``None`` and not empty."""
     if var is None:
@@ -249,6 +285,7 @@ def has_value(var):
     return bool(var) or (var in (False, 0))
 
 
+@silence_warnings
 def to_dict(entity, skip=()):
     """Returns a dictionary representation of `entity`. This will iterate over
     the instance vars of `entity` and construct keys and values from those
@@ -267,33 +304,26 @@ def to_dict(entity, skip=()):
     def dict_iter(items):
         return [x.to_dict() if is_dictable(x) else x for x in items]
 
-    def dictify(entity):
-        d = {}
-        for name, field in iter_vars(entity):
-            key = key_name(name)
-
-            if key in skip or not has_value(field):
-                continue
-
-            if is_dictable(field):
-                d[key] = field.to_dict()
-            elif is_timestamp(field):
-                d[key] = dates.serialize_value(field)
-            elif is_date(field):
-                d[key] = dates.serialize_date(field)
-            elif is_element(field) or is_etree(field):
-                d[key] = lxml.etree.tostring(field)
-            elif is_sequence(field):
-                d[key] = dict_iter(field)
-            else:
-                d[key] = field
-
-        return d
 
     d = {}
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        d.update(dictify(entity))
+    for name, field in iter_vars(entity):
+        key = key_name(name)
+
+        if key in skip or not has_value(field):
+            continue
+
+        if is_dictable(field):
+            d[key] = field.to_dict()
+        elif is_timestamp(field):
+            d[key] = dates.serialize_value(field)
+        elif is_date(field):
+            d[key] = dates.serialize_date(field)
+        elif mixbox.xml.is_element(field) or mixbox.xml.is_etree(field):
+            d[key] = lxml.etree.tostring(field)
+        elif is_sequence(field):
+            d[key] = dict_iter(field)
+        else:
+            d[key] = field
 
     return d
 
@@ -307,10 +337,10 @@ def xml_bool(value):
     if value is None:
         return None
 
-    if value in xmlconst.FALSE:
+    if value in mixbox.xml.FALSE:
         return False
 
-    if value in xmlconst.TRUE:
+    if value in mixbox.xml.TRUE:
         return True
 
     error = "Unable to determine the xml boolean value of '{0}'".format(value)
@@ -334,9 +364,20 @@ def cast_var(item, klass, arg=None):
     return klass(**kwarg)   # klass(value='foobar')
 
 
+def remove_entries(d, keys):
+    """Removes all the `keys` from the dictionary `d`.
+
+    Args:
+        d: A dictionary.
+        keys: An iterable collection of dictionary keys to remove.
+
+    """
+    for key in keys:
+        d.pop(key, None)
+
+
 # Namespace flattening
 from .nsparser import *  # noqa
 from .dates import *  # noqa
-from .idgen import *  # noqa
-from .nsparser import *  # noqa
+from .parser import *  # noqa
 from .walk import *  # noqa
