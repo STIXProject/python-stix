@@ -1,4 +1,4 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 #!/usr/bin/env python
@@ -9,8 +9,11 @@
 #
 
 import sys
-from stix.bindings import *
+
 import cybox.bindings.cybox_core as cybox_core_binding
+from mixbox.binding_utils import *
+
+from stix.bindings import lookup_extension, register_extension
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
 
@@ -43,9 +46,6 @@ class StructuredCOAType(GeneratedsSuper):
     subclass = None
     superclass = None
     def __init__(self, idref=None, id=None):
-        self.xmlns          = "http://stix.mitre.org/CourseOfAction-1"
-        self.xmlns_prefix   = "coa"
-        self.xml_type       = "CourseOfActionType"
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
         pass
@@ -99,6 +99,7 @@ class StructuredCOAType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='StructuredCOAType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -176,6 +177,7 @@ class ObjectiveType(GeneratedsSuper):
         if self.Applicability_Confidence is not None:
             self.Applicability_Confidence.export(lwrite, level, nsmap, namespace_, name_='Applicability_Confidence', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -198,6 +200,8 @@ class ObjectiveType(GeneratedsSuper):
             self.set_Applicability_Confidence(obj_)
 # end class ObjectiveType
 
+
+@register_extension
 class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     """The CourseOfActionType characterizes a Course of Action to be taken
     in regards to one of more cyber threats. NOTE: This construct is
@@ -206,11 +210,15 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
     schema version for this content."""
     subclass = None
     superclass = stix_common_binding.CourseOfActionBaseType
+
+    xmlns          = "http://stix.mitre.org/CourseOfAction-1"
+    xmlns_prefix   = "coa"
+    xml_type       = "CourseOfActionType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
+
     def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Stage=None, Type=None, Description=None, Short_Description=None, Objective=None, Parameter_Observables=None, Structured_COA=None, Impact=None, Cost=None, Efficacy=None, Information_Source=None, Handling=None, Related_COAs=None, Related_Packages=None):
         super(CourseOfActionType, self).__init__(idref=idref, id=id, timestamp=timestamp)
-        self.xmlns          = "http://stix.mitre.org/CourseOfAction-1"
-        self.xmlns_prefix   = "coa"
-        self.xml_type       = "CourseOfActionType"
+
         self.version = _cast(None, version)
         self.Title = Title
         self.Stage = Stage
@@ -354,6 +362,7 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
         if self.Related_Packages is not None:
             self.Related_Packages.export(lwrite, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -395,24 +404,8 @@ class CourseOfActionType(stix_common_binding.CourseOfActionBaseType):
             obj_.build(child_)
             self.set_Parameter_Observables(obj_)
         elif nodeName_ == 'Structured_COA':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "GenericStructuredCOAType":
-                    from .extensions.structured_coa import generic
-                    obj_ = generic.GenericStructuredCOAType.factory()
-                else:
-                    raise NotImplementedError('No implementation class for Structured_COA: ' + type_name_)
-            else:
-                raise NotImplementedError('Structured_COA type not declared: missing xsi_type attribute') 
-
+            from .extensions.structured_coa import generic
+            obj_ = lookup_extension(child_).factory()
             obj_.build(child_)
             self.set_Structured_COA(obj_)
         elif nodeName_ == 'Impact':
@@ -501,6 +494,7 @@ class RelatedCOAsType(stix_common_binding.GenericRelationshipListType):
         for Related_COA_ in self.Related_COA:
             Related_COA_.export(lwrite, level, nsmap, namespace_, name_='Related_COA', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -523,7 +517,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 """
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 def get_root_tag(node):
@@ -569,7 +563,7 @@ def parseEtree(inFileName):
     return rootObj, rootElement
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

@@ -9,7 +9,10 @@
 #
 
 import sys
-from stix.bindings import *
+
+from mixbox.binding_utils import *
+
+from stix.bindings import register_extension
 import stix.bindings.stix_common as stix_common_binding
 
 XML_NS = "http://stix.mitre.org/extensions/Address#CIQAddress3.0-1"
@@ -18,6 +21,7 @@ XML_NS = "http://stix.mitre.org/extensions/Address#CIQAddress3.0-1"
 # Data representation classes.
 #
 
+@register_extension
 class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
     """The CIQAddress3.0InstanceType provides an extension to the
     stix_common_binding.AddressAbstractType which imports and leverages version 3.0 of
@@ -25,12 +29,15 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
     Addresses."""
     subclass = None
     superclass = stix_common_binding.AddressAbstractType
+
+    xmlns          = XML_NS
+    xmlns_prefix   = "ciqAddress"
+    xml_type       = "CIQAddress3.0InstanceType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
+
     def __init__(self, Location=None):
         super(CIQAddress3_0InstanceType, self).__init__()
         self.Location = Location
-        self.xmlns          = XML_NS
-        self.xmlns_prefix   = "ciqAddress"
-        self.xml_type       = "CIQAddress3.0InstanceType"
     def factory(*args_, **kwargs_):
         if CIQAddress3_0InstanceType.subclass:
             return CIQAddress3_0InstanceType.subclass(*args_, **kwargs_)
@@ -82,9 +89,10 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
             eol_ = ''
         if self.Location is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite(etree_.tostring(self.Location, pretty_print=pretty_print))
+            lwrite(etree_.tostring(self.Location, pretty_print=pretty_print).decode())
             #self.Location.export(lwrite, level, nsmap, namespace_, name_='Location', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -105,7 +113,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 """
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 def get_root_tag(node):
@@ -151,7 +159,7 @@ def parseEtree(inFileName):
     return rootObj, rootElement
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

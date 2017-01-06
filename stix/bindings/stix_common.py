@@ -1,4 +1,4 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 #!/usr/bin/env python
@@ -9,9 +9,11 @@
 #
 
 import sys
-from stix.bindings import *
+from mixbox.binding_utils import *
 import cybox.bindings.cybox_common as cybox_common_binding
 import cybox.bindings.cybox_core as cybox_core_binding
+
+from stix.bindings import get_type_info, lookup_extension
 
 XML_NS = "http://stix.mitre.org/common-1"
 
@@ -87,6 +89,7 @@ class GenericRelationshipType(GeneratedsSuper):
         if self.Relationship is not None:
             self.Relationship.export(lwrite, level, nsmap, namespace_, name_='Relationship', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -170,6 +173,7 @@ class DateTimeWithPrecisionType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='DateTimeWithPrecisionType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         self.valueOf_ = get_all_text_(node)
@@ -238,6 +242,7 @@ class ProfilesType(GeneratedsSuper):
             showIndent(lwrite, level, pretty_print)
             lwrite('<%s:Profile>%s</%s:Profile>%s' % (nsmap[namespace_],quote_xml(Profile_), nsmap[namespace_], eol_))
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -313,6 +318,7 @@ class RelatedPackageRefType(GenericRelationshipType):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='RelatedPackageRefType', fromsubclass_=False, pretty_print=True):
         super(RelatedPackageRefType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -328,7 +334,7 @@ class RelatedPackageRefType(GenericRelationshipType):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
         super(RelatedPackageRefType, self).buildAttributes(node, attrs, already_processed)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
@@ -390,6 +396,7 @@ class RelatedPackageRefsType(GeneratedsSuper):
         for Package_Reference_ in self.Package_Reference:
             Package_Reference_.export(lwrite, level, nsmap, namespace_, name_='Package_Reference', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -473,6 +480,7 @@ class ToolInformationType(cybox_common_binding.ToolInformationType):
         if self.Short_Description is not None:
             self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -584,6 +592,7 @@ class InformationSourceType(GeneratedsSuper):
         if self.References is not None:
             self.References.export(lwrite, level, nsmap, namespace_, name_='References', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -714,6 +723,7 @@ class ConfidenceType(GeneratedsSuper):
         if self.Confidence_Assertion_Chain is not None:
             self.Confidence_Assertion_Chain.export(lwrite, level, nsmap, namespace_, name_='Confidence_Assertion_Chain', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -725,7 +735,7 @@ class ConfidenceType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
         
         value = find_attr_value_('timestamp_precision', node)
@@ -803,6 +813,7 @@ class ActivityType(GeneratedsSuper):
         if self.Description is not None:
             self.Description.export(lwrite, level, nsmap, namespace_, name_='Description', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -872,6 +883,7 @@ class KillChainsType(GeneratedsSuper):
         for Kill_Chain_ in self.Kill_Chain:
             Kill_Chain_.export(lwrite, level, nsmap, namespace_, name_='Kill_Chain', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -973,6 +985,7 @@ class KillChainType(GeneratedsSuper):
         for Kill_Chain_Phase_ in self.Kill_Chain_Phase:
             Kill_Chain_Phase_.export(lwrite, level, nsmap, namespace_, name_='Kill_Chain_Phase', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1073,6 +1086,7 @@ class KillChainPhaseType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='KillChainPhaseType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1084,7 +1098,7 @@ class KillChainPhaseType(GeneratedsSuper):
             already_processed.add('ordinality')
             try:
                 self.ordinality = int(value)
-            except ValueError, exp:
+            except ValueError as exp:
                 raise_parse_error(node, 'Bad integer attribute: %s' % exp)
         value = find_attr_value_('name', node)
         if value is not None and 'name' not in already_processed:
@@ -1153,6 +1167,7 @@ class KillChainPhasesReferenceType(GeneratedsSuper):
         for Kill_Chain_Phase_ in self.Kill_Chain_Phase:
             Kill_Chain_Phase_.export(lwrite, level, nsmap, namespace_, name_='Kill_Chain_Phase', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1221,6 +1236,7 @@ class KillChainPhaseReferenceType(KillChainPhaseType):
         super(KillChainPhaseReferenceType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1318,6 +1334,7 @@ class IdentityType(GeneratedsSuper):
         if self.Related_Identities is not None:
             self.Related_Identities.export(lwrite, level, nsmap, namespace_, name_='Related_Identities', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1397,6 +1414,7 @@ class GenericRelationshipListType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='GenericRelationshipListType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1462,6 +1480,7 @@ class RelatedCampaignType(GenericRelationshipType):
         if self.Campaign is not None:
             self.Campaign.export(lwrite, level, nsmap, namespace_, name_='Campaign', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1626,6 +1645,7 @@ class RelatedExploitTargetType(GenericRelationshipType):
         if self.Exploit_Target is not None:
             self.Exploit_Target.export(lwrite, level, nsmap, namespace_, name_='Exploit_Target', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1708,6 +1728,7 @@ class RelatedIncidentType(GenericRelationshipType):
         if self.Incident is not None:
             self.Incident.export(lwrite, level, nsmap, namespace_, name_='Incident', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1790,6 +1811,7 @@ class RelatedIndicatorType(GenericRelationshipType):
         if self.Indicator is not None:
             self.Indicator.export(lwrite, level, nsmap, namespace_, name_='Indicator', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1872,6 +1894,7 @@ class RelatedObservableType(GenericRelationshipType):
         if self.Observable is not None:
             self.Observable.export(lwrite, level, "%s:" % (nsmap[namespace_]), name_='Observable', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1937,6 +1960,7 @@ class RelatedThreatActorType(GenericRelationshipType):
         if self.Threat_Actor is not None:
             self.Threat_Actor.export(lwrite, level, nsmap, namespace_, name_='Threat_Actor', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2019,6 +2043,7 @@ class RelatedTTPType(GenericRelationshipType):
         if self.TTP is not None:
             self.TTP.export(lwrite, level, nsmap, namespace_, name_='TTP', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2101,6 +2126,7 @@ class RelatedIdentityType(GenericRelationshipType):
         if self.Identity is not None:
             self.Identity.export(lwrite, level, nsmap, namespace_, name_='Identity', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2198,6 +2224,7 @@ class IndicatorBaseType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='IndicatorBaseType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2217,7 +2244,7 @@ class IndicatorBaseType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
@@ -2299,6 +2326,7 @@ class IncidentBaseType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='IncidentBaseType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2318,7 +2346,7 @@ class IncidentBaseType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
@@ -2400,6 +2428,7 @@ class TTPBaseType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='TTPBaseType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2419,7 +2448,7 @@ class TTPBaseType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
@@ -2502,6 +2531,7 @@ class ExploitTargetBaseType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ExploitTargetBaseType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2521,7 +2551,7 @@ class ExploitTargetBaseType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
@@ -2603,6 +2633,7 @@ class CourseOfActionBaseType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='CourseOfActionBaseType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2622,7 +2653,7 @@ class CourseOfActionBaseType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
@@ -2679,6 +2710,7 @@ class RelatedCampaignReferenceType(GenericRelationshipType):
         if self.Campaign is not None:
             self.Campaign.export(lwrite, level, nsmap, namespace_, name_='Campaign', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2759,6 +2791,7 @@ class CampaignReferenceType(GeneratedsSuper):
         if self.Names is not None:
             self.Names.export(lwrite, level, nsmap, namespace_, name_='Names', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2774,7 +2807,7 @@ class CampaignReferenceType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Names':
@@ -2834,6 +2867,7 @@ class NamesType(GeneratedsSuper):
         for Name_ in self.Name:
             Name_.export(lwrite, level, nsmap, namespace_, name_='Name', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2924,6 +2958,7 @@ class CampaignBaseType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='CampaignBaseType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -2943,7 +2978,7 @@ class CampaignBaseType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
@@ -3026,6 +3061,7 @@ class ThreatActorBaseType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ThreatActorBaseType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -3045,7 +3081,7 @@ class ThreatActorBaseType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         pass
@@ -3103,6 +3139,7 @@ class ExploitTargetsType(GeneratedsSuper):
         for Exploit_Target_ in self.Exploit_Target:
             Exploit_Target_.export(lwrite, level, nsmap, namespace_, name_='Exploit_Target', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -3183,6 +3220,7 @@ class AddressAbstractType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AddressAbstractType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -3245,6 +3283,7 @@ class ContributingSourcesType(GeneratedsSuper):
         for Source_ in self.Source:
             Source_.export(lwrite, level, nsmap, namespace_, name_='Source', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -3311,6 +3350,7 @@ class ReferencesType(GeneratedsSuper):
             showIndent(lwrite, level, pretty_print)
             lwrite('<%s:Reference>%s</%s:Reference>%s' % (nsmap[namespace_], quote_xml(Reference_), nsmap[namespace_], eol_))
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -3376,6 +3416,7 @@ class RelatedIdentitiesType(GeneratedsSuper):
         for Related_Identity_ in self.Related_Identity:
             Related_Identity_.export(lwrite, level, nsmap, namespace_, name_='Related_Identity', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -3441,6 +3482,7 @@ class ConfidenceAssertionChainType(GeneratedsSuper):
         for Confidence_Assertion_ in self.Confidence_Assertion:
             Confidence_Assertion_.export(lwrite, level, nsmap, namespace_, name_='Confidence_Assertion', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -3551,7 +3593,7 @@ class StatementType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
         value = find_attr_value_('timestamp_precision', node)
         if value is not None and 'timestamp_precision' not in already_processed:
@@ -3632,6 +3674,7 @@ class StructuredTextType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='StructuredTextType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         self.valueOf_ = get_all_text_(node)
@@ -3706,6 +3749,7 @@ class EncodedCDATAType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='EncodedCDATAType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         self.valueOf_ = get_all_text_(node)
@@ -3789,6 +3833,7 @@ class ControlledVocabularyStringType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='ControlledVocabularyStringType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         self.valueOf_ = get_all_text_(node)
@@ -3819,7 +3864,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 """
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 def get_root_tag(node):
@@ -3865,7 +3910,7 @@ def parseEtree(inFileName):
     return rootObj, rootElement
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

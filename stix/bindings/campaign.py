@@ -1,4 +1,4 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 #!/usr/bin/env python
@@ -9,7 +9,10 @@
 #
 
 import sys
-from stix.bindings import *
+
+from mixbox.binding_utils import *
+
+from stix.bindings import register_extension
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
 
@@ -71,6 +74,7 @@ class NamesType(GeneratedsSuper):
         for Name_ in self.Name:
             Name_.export(lwrite, level, nsmap, namespace_, name_='Name', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -139,6 +143,7 @@ class AssociatedCampaignsType(stix_common_binding.GenericRelationshipListType):
         for Associated_Campaign_ in self.Associated_Campaign:
             Associated_Campaign_.export(lwrite, level, nsmap, namespace_, name_='Associated_Campaign', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -208,6 +213,7 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
         for Related_Indicator_ in self.Related_Indicator:
             Related_Indicator_.export(lwrite, level, nsmap, namespace_, name_='Related_Indicator', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -277,6 +283,7 @@ class RelatedIncidentsType(stix_common_binding.GenericRelationshipListType):
         for Related_Incident_ in self.Related_Incident:
             Related_Incident_.export(lwrite, level, nsmap, namespace_, name_='Related_Incident', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -346,6 +353,7 @@ class RelatedTTPsType(stix_common_binding.GenericRelationshipListType):
         for Related_TTP_ in self.Related_TTP:
             Related_TTP_.export(lwrite, level, nsmap, namespace_, name_='Related_TTP', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -417,6 +425,7 @@ class AttributionType(stix_common_binding.GenericRelationshipListType):
         for Attributed_Threat_Actor_ in self.Attributed_Threat_Actor:
             Attributed_Threat_Actor_.export(lwrite, level, nsmap, namespace_, name_='Attributed_Threat_Actor', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -432,17 +441,22 @@ class AttributionType(stix_common_binding.GenericRelationshipListType):
         super(AttributionType, self).buildChildren(child_, node, nodeName_, True)
 # end class AttributionType
 
+
+@register_extension
 class CampaignType(stix_common_binding.CampaignBaseType):
     """The CampaignType characterizes a single cyber threat
     Campaign.Specifies the relevant STIX-Campaign schema version for
     this content."""
     subclass = None
     superclass = stix_common_binding.CampaignBaseType
+
+    xmlns          = "http://stix.mitre.org/Campaign-1"
+    xmlns_prefix   = "campaign"
+    xml_type       = "CampaignType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
+
     def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Description=None, Short_Description=None, Names=None, Intended_Effect=None, Status=None, Related_TTPs=None, Related_Incidents=None, Related_Indicators=None, Attribution=None, Associated_Campaigns=None, Confidence=None, Activity=None, Information_Source=None, Handling=None, Related_Packages=None):
         super(CampaignType, self).__init__(idref=idref, id=id, timestamp=timestamp)
-        self.xmlns          = "http://stix.mitre.org/Campaign-1"
-        self.xmlns_prefix   = "campaign"
-        self.xml_type       = "CampaignType"
         self.version = _cast(None, version)
         self.Title = Title
         self.Description = Description
@@ -607,6 +621,7 @@ class CampaignType(stix_common_binding.CampaignBaseType):
         if self.Related_Packages is not None:
             self.Related_Packages.export(lwrite, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -693,7 +708,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 """
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 def get_root_tag(node):
@@ -739,7 +754,7 @@ def parseEtree(inFileName):
     return rootObj, rootElement
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

@@ -1,4 +1,4 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 #!/usr/bin/env python
@@ -9,8 +9,11 @@
 #
 
 import sys
-from stix.bindings import *
+
 import cybox.bindings.cybox_core as cybox_core_binding
+from mixbox.binding_utils import *
+
+from stix.bindings import lookup_extension, register_extension
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
 
@@ -74,6 +77,7 @@ class ValidTimeType(GeneratedsSuper):
         if self.End_Time is not None:
             self.End_Time.export(lwrite, level, nsmap, namespace_, name_='End_Time', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -152,6 +156,7 @@ class CompositeIndicatorExpressionType(GeneratedsSuper):
         for Indicator_ in self.Indicator:
             Indicator_.export(lwrite, level, nsmap, namespace_, name_='Indicator', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -287,6 +292,7 @@ class TestMechanismType(GeneratedsSuper):
         if self.Producer is not None:
             self.Producer.export(lwrite, level, nsmap, namespace_, name_='Producer', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -375,6 +381,7 @@ class SightingsType(GeneratedsSuper):
         for Sighting_ in self.Sighting:
             Sighting_.export(lwrite, level, nsmap, namespace_, name_='Sighting', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -386,7 +393,7 @@ class SightingsType(GeneratedsSuper):
             already_processed.add('sightings_count')
             try:
                 self.sightings_count = int(value)
-            except ValueError, exp:
+            except ValueError as exp:
                 raise_parse_error(node, 'Bad integer attribute: %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Sighting':
@@ -486,6 +493,7 @@ class SightingType(GeneratedsSuper):
         if self.Related_Observables is not None:
             self.Related_Observables.export(lwrite, level, nsmap, namespace_, name_='Related_Observables', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -497,7 +505,7 @@ class SightingType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
         value = find_attr_value_('timestamp_precision', node)
         if value is not None and 'timestamp_precision' not in already_processed:
@@ -582,6 +590,7 @@ class RelatedObservablesType(stix_common_binding.GenericRelationshipListType):
         for Related_Observable_ in self.Related_Observable:
             Related_Observable_.export(lwrite, level, nsmap, namespace_, name_='Related_Observable', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -648,6 +657,7 @@ class TestMechanismsType(GeneratedsSuper):
         for Test_Mechanism_ in self.get_Test_Mechanism():
             Test_Mechanism_.export(lwrite, level, nsmap, namespace_, name_='Test_Mechanism', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -657,37 +667,8 @@ class TestMechanismsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Test_Mechanism':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-                    
-                if type_name_ == "OVAL5.10TestMechanismType":
-                    import stix.bindings.extensions.test_mechanism.oval_5_10 as oval_5_10_tm_binding
-                    obj_ = oval_5_10_tm_binding.OVAL5_10TestMechanismType.factory()
-                elif type_name_ == "YaraTestMechanismType":
-                    import stix.bindings.extensions.test_mechanism.yara as yara_tm_binding
-                    obj_ = yara_tm_binding.YaraTestMechanismType.factory()
-                elif type_name_ == "SnortTestMechanismType":
-                    import stix.bindings.extensions.test_mechanism.snort as snort_tm_binding
-                    obj_ = snort_tm_binding.SnortTestMechanismType.factory()
-                elif type_name_ == "OpenIOC2010TestMechanismType":
-                    import stix.bindings.extensions.test_mechanism.open_ioc_2010 as openioc_tm_binding
-                    obj_ = openioc_tm_binding.OpenIOC2010TestMechanismType.factory()
-                elif type_name_ == "GenericTestMechanismType":
-                    import stix.bindings.extensions.test_mechanism.generic as generic_tm_binding
-                    obj_ = generic_tm_binding.GenericTestMechanismType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for <Test_Mechanism> element: ' + type_name_)
-            else:
-                raise NotImplementedError(
-                    'Class not implemented for <Test_Mechanism> element: no xsi:type attribute found')
-
+            from .extensions.test_mechanism import (generic, oval_5_10, open_ioc_2010, snort, yara)
+            obj_ = lookup_extension(child_).factory()
             obj_.build(child_)
             self.Test_Mechanism.append(obj_)
 # end class TestMechanismsType
@@ -746,6 +727,7 @@ class SuggestedCOAsType(stix_common_binding.GenericRelationshipListType):
         for Suggested_COA_ in self.Suggested_COA:
             Suggested_COA_.export(lwrite, level, nsmap, namespace_, name_='Suggested_COA', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -815,6 +797,7 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
         for Related_Indicator_ in self.Related_Indicator:
             Related_Indicator_.export(lwrite, level, nsmap, namespace_, name_='Related_Indicator', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -830,6 +813,8 @@ class RelatedIndicatorsType(stix_common_binding.GenericRelationshipListType):
         super(RelatedIndicatorsType, self).buildChildren(child_, node, nodeName_, True)
 # end class RelatedIndicatorsType
 
+
+@register_extension
 class IndicatorType(stix_common_binding.IndicatorBaseType):
     """The IndicatorType characterizes a cyber threat indicator made up of
     a pattern identifying certain observable conditions as well as
@@ -842,11 +827,14 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
     specifies the absence of the pattern."""
     subclass = None
     superclass = stix_common_binding.IndicatorBaseType
+
+    xmlns          = XML_NS
+    xmlns_prefix   = "indicator"
+    xml_type       = "IndicatorType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
+
     def __init__(self, idref=None, id=None, timestamp=None, negate=False, version=None, Title=None, Type=None, Alternative_ID=None, Description=None, Short_Description=None, Valid_Time_Position=None, Observable=None, Composite_Indicator_Expression=None, Indicated_TTP=None, Kill_Chain_Phases=None, Test_Mechanisms=None, Likely_Impact=None, Suggested_COAs=None, Handling=None, Confidence=None, Sightings=None, Related_Indicators=None, Related_Campaigns=None, Related_Packages=None, Producer=None):
         super(IndicatorType, self).__init__(idref=idref, id=id, timestamp=timestamp)
-        self.xmlns          = "http://stix.mitre.org/Indicator-2"
-        self.xmlns_prefix   = "indicator"
-        self.xml_type       = "IndicatorType"
 
         self.negate = _cast(bool, negate)
         self.version = _cast(None, version)
@@ -1048,6 +1036,7 @@ class IndicatorType(stix_common_binding.IndicatorBaseType):
         if self.Producer is not None:
             self.Producer.export(lwrite, level, nsmap, namespace_, name_='Producer', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1205,6 +1194,7 @@ class RelatedCampaignReferencesType(stix_common_binding.GenericRelationshipListT
         for Related_Campaign_ in self.Related_Campaign:
             Related_Campaign_.export(lwrite, level, nsmap, namespace_, name_='Related_Campaign', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1228,7 +1218,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 """
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 def get_root_tag(node):
@@ -1274,7 +1264,7 @@ def parseEtree(inFileName):
     return rootObj, rootElement
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

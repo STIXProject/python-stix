@@ -1,4 +1,4 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 #!/usr/bin/env python
@@ -9,7 +9,10 @@
 #
 
 import sys
-from stix.bindings import *
+
+from mixbox.binding_utils import *
+
+from stix.bindings import register_extension
 import stix.bindings.ttp as ttp_binding
 
 XML_NS = "http://stix.mitre.org/extensions/AP#CAPEC2.7-1"
@@ -18,18 +21,22 @@ XML_NS = "http://stix.mitre.org/extensions/AP#CAPEC2.7-1"
 # Data representation classes.
 #
 
+@register_extension
 class CAPEC2_7InstanceType(ttp_binding.AttackPatternType):
     """The CAPECInstanceType provides an extension to the
     APStructureAbstractType which imports and leverages the CAPEC
     schema for structured characterization of Attack Patterns."""
     subclass = None
     superclass = ttp_binding.AttackPatternType
+
+    xmlns          = XML_NS
+    xmlns_prefix   = "capecInstance"
+    xml_type       = "CAPEC2.7InstanceType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
+
     def __init__(self, capec_id=None, Description=None, CAPEC=None):
         super(CAPEC2_7InstanceType, self).__init__(capec_id=capec_id, Description=Description)
         self.CAPEC = CAPEC
-        self.xmlns          = XML_NS
-        self.xmlns_prefix   = "capecInstance"
-        self.xml_type       = "CAPEC2.7InstanceType"
 
     def factory(*args_, **kwargs_):
         if CAPEC2_7InstanceType.subclass:
@@ -81,9 +88,10 @@ class CAPEC2_7InstanceType(ttp_binding.AttackPatternType):
             eol_ = ''
         if self.CAPEC is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite(etree_.tostring(self.CAPEC, pretty_print=pretty_print))
+            lwrite(etree_.tostring(self.CAPEC, pretty_print=pretty_print).decode())
             #self.CAPEC.export(lwrite, level, nsmap, namespace_, name_='CAPEC', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -104,7 +112,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 """
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 def get_root_tag(node):
@@ -150,7 +158,7 @@ def parseEtree(inFileName):
     return rootObj, rootElement
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

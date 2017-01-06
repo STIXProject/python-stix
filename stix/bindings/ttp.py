@@ -1,15 +1,19 @@
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
+# See LICENSE.txt for complete terms.
+
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
-# See LICENSE.txt for complete terms.
 
 #
 # Generated Thu Apr 11 15:06:30 2013 by generateDS.py version 2.9a.
 #
 
 import sys
-from stix.bindings import *
+
 import cybox.bindings.cybox_core as cybox_core_binding
+from mixbox.binding_utils import *
+
+from stix.bindings import lookup_extension, register_extension
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
 
@@ -112,6 +116,7 @@ class AttackPatternType(GeneratedsSuper):
         if self.Short_Description is not None:
             self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -252,6 +257,7 @@ class MalwareInstanceType(GeneratedsSuper):
         if self.Short_Description is not None:
             self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -368,6 +374,7 @@ class ExploitType(GeneratedsSuper):
         if self.Short_Description is not None:
             self.Short_Description.export(lwrite, level, nsmap, namespace_, name_='Short_Description', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -488,6 +495,7 @@ class InfrastructureType(GeneratedsSuper):
         if self.Observable_Characterization is not None:
             self.Observable_Characterization.export(lwrite, level, "%s:" % (nsmap[namespace_]), name_='Observable_Characterization', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -577,6 +585,7 @@ class ToolsType(GeneratedsSuper):
         for Tool_ in self.Tool:
             Tool_.export(lwrite, level, nsmap, namespace_, name_='Tool', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -642,6 +651,7 @@ class ExploitsType(GeneratedsSuper):
         for Exploit_ in self.Exploit:
             Exploit_.export(lwrite, level, nsmap, namespace_, name_='Exploit', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -707,6 +717,7 @@ class MalwareType(GeneratedsSuper):
         for Malware_Instance_ in self.Malware_Instance:
             Malware_Instance_.export(lwrite, level, nsmap, namespace_, name_='Malware_Instance', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -716,22 +727,8 @@ class MalwareType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Malware_Instance':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "MAEC4.1InstanceType":
-                    from .extensions.malware import maec_4_1
-                    obj_ = maec_4_1.MAEC4_1InstanceType.factory()
-            else:
-                obj_ = MalwareInstanceType.factory() # MalwareInstanceType is not abstract
-
+            from .extensions.malware import maec_4_1
+            obj_ = lookup_extension(child_, MalwareInstanceType).factory()
             obj_.build(child_)
             self.Malware_Instance.append(obj_)
 # end class MalwareType
@@ -787,6 +784,7 @@ class AttackPatternsType(GeneratedsSuper):
         for Attack_Pattern_ in self.Attack_Pattern:
             Attack_Pattern_.export(lwrite, level, nsmap, namespace_, name_='Attack_Pattern', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -796,24 +794,8 @@ class AttackPatternsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Attack_Pattern':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "CAPEC2.7InstanceType":
-                    from .extensions.attack_pattern import capec_2_7
-                    obj_ = capec_2_7.CAPEC2_7InstanceType.factory()
-                else:
-                    raise NotImplementedError('No implementation for type: ' + type_name_)
-            else:
-                obj_ = AttackPatternType.factory() # AttackPattern is not abstract
-
+            from .extensions.attack_pattern import capec_2_7
+            obj_ = lookup_extension(child_, AttackPatternType).factory()
             obj_.build(child_)
             self.Attack_Pattern.append(obj_)
 # end class AttackPatternsType
@@ -876,6 +858,7 @@ class ResourceType(GeneratedsSuper):
         if self.Personas is not None:
             self.Personas.export(lwrite, level, nsmap, namespace_, name_='Personas', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -949,6 +932,7 @@ class PersonasType(GeneratedsSuper):
         for Persona_ in self.Persona:
             Persona_.export(lwrite, level, nsmap, namespace_, name_='Persona', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -958,22 +942,8 @@ class PersonasType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Persona':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "CIQIdentity3.0InstanceType":
-                    from .extensions.identity import ciq_identity_3_0
-                    obj_ = ciq_identity_3_0.CIQIdentity3_0InstanceType.factory()
-            else:
-                obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
-
+            from .extensions.identity import ciq_identity_3_0
+            obj_ = lookup_extension(child_, stix_common_binding.IdentityType).factory()
             obj_.build(child_)
             self.Persona.append(obj_)
 # end class PersonasType
@@ -1036,6 +1006,7 @@ class BehaviorType(GeneratedsSuper):
         if self.Exploits is not None:
             self.Exploits.export(lwrite, level, nsmap, namespace_, name_='Exploits', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1133,6 +1104,7 @@ class VictimTargetingType(GeneratedsSuper):
             self.Targeted_Technical_Details.export(lwrite, level, "%s:" % (nsmap[namespace_]), name_='Targeted_Technical_Details', pretty_print=pretty_print)
 
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1142,22 +1114,8 @@ class VictimTargetingType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Identity':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "CIQIdentity3.0InstanceType":
-                    from .extensions.identity import ciq_identity_3_0
-                    obj_ = ciq_identity_3_0.CIQIdentity3_0InstanceType.factory()
-            else:
-                obj_ = stix_common_binding.IdentityType.factory() # IdentityType is not abstract
-
+            from .extensions.identity import ciq_identity_3_0
+            obj_ = lookup_extension(child_, stix_common_binding.IdentityType).factory()
             obj_.build(child_)
             self.set_Identity(obj_)
         elif nodeName_ == 'Targeted_Systems':
@@ -1228,6 +1186,7 @@ class RelatedTTPsType(stix_common_binding.GenericRelationshipListType):
         for Related_TTP_ in self.Related_TTP:
             Related_TTP_.export(lwrite, level, nsmap, namespace_, name_='Related_TTP', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1243,18 +1202,22 @@ class RelatedTTPsType(stix_common_binding.GenericRelationshipListType):
         super(RelatedTTPsType, self).buildChildren(child_, node, nodeName_, True)
 # end class RelatedTTPsType
 
+
+@register_extension
 class TTPType(stix_common_binding.TTPBaseType):
     """TTPType characterizes an individual adversary TTP.Specifies the
     relevant STIX-TTP schema version for this content."""
     subclass = None
     superclass = stix_common_binding.TTPBaseType
+
+    xmlns          = "http://stix.mitre.org/TTP-1"
+    xmlns_prefix   = "ttp"
+    xml_type       = "TTPType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
+
     def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Description=None, Short_Description=None, Intended_Effect=None, Behavior=None, Resources=None, Victim_Targeting=None, Exploit_Targets=None, Related_TTPs=None, Kill_Chain_Phases=None, Information_Source=None, Kill_Chains=None, Handling=None, Related_Packages=None):
         super(TTPType, self).__init__(idref=idref, id=id, timestamp=timestamp)
-        self.xmlns          = "http://stix.mitre.org/TTP-1"
-        self.xmlns_prefix   = "ttp"
-        self.xml_type       = "TTPType"
         self.version = _cast(None, version)
-
         self.Title = Title
         self.Description = Description
         self.Short_Description = Short_Description
@@ -1396,6 +1359,7 @@ class TTPType(stix_common_binding.TTPBaseType):
         if self.Related_Packages is not None:
             self.Related_Packages.export(lwrite, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1522,6 +1486,7 @@ class ExploitTargetsType(stix_common_binding.GenericRelationshipListType):
         for Exploit_Target_ in self.Exploit_Target:
             Exploit_Target_.export(lwrite, level, nsmap, namespace_, name_='Exploit_Target', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -1545,7 +1510,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 """
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 def get_root_tag(node):
@@ -1591,7 +1556,7 @@ def parseEtree(inFileName):
     return rootObj, rootElement
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

@@ -1,4 +1,4 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 #!/usr/bin/env python
@@ -7,12 +7,12 @@
 #
 # Generated Thu Apr 11 15:06:22 2013 by generateDS.py version 2.9a.
 #
-# stdlib
+
 import sys
 
-# internal
-from stix.bindings import *
-from stix import xmlconst
+from mixbox.binding_utils import *
+
+from stix.bindings import lookup_extension
 from . import stix_common as stix_common_binding
 
 XML_NS  = "http://data-marking.mitre.org/Marking-1"
@@ -75,6 +75,7 @@ class MarkingType(GeneratedsSuper):
         for Marking_ in self.Marking:
             Marking_.export(lwrite, level, nsmap, namespace_, name_='Marking', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -197,6 +198,7 @@ class MarkingStructureType(GeneratedsSuper):
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='MarkingStructureType', fromsubclass_=False, pretty_print=True):
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -308,6 +310,7 @@ class MarkingSpecificationType(GeneratedsSuper):
         if self.Information_Source is not None:
             self.Information_Source.export(lwrite, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -339,20 +342,7 @@ class MarkingSpecificationType(GeneratedsSuper):
 
             # Look for xsi:type. If not there, build an instance of
             # MarkingStructureType
-            if xmlconst.TAG_XSI_TYPE not in child_.attrib:
-                ref = MarkingStructureType.factory()
-                ref.build(child_)
-                self.Marking_Structure.append(ref)
-                return
-
-            # Extract the xsi:type associated type namespace and type name
-            typeinfo = get_type_info(child_)
-
-            if typeinfo not in _EXTENSION_MAP:
-                raise NotImplementedError('Marking structure type not implemented ' + typeinfo.typename)
-
-            klass = _EXTENSION_MAP[typeinfo]
-            obj_ = klass.factory()
+            obj_ = lookup_extension(child_, MarkingStructureType).factory()
             obj_.build(child_)
             self.Marking_Structure.append(obj_)
 
@@ -363,13 +353,6 @@ class MarkingSpecificationType(GeneratedsSuper):
 # end class MarkingSpecificationType
 
 
-_EXTENSION_MAP = {}
-
-def add_extension(klass):
-    typeinfo = TypeInfo(ns=klass.xmlns, typename=klass.xml_type)
-    _EXTENSION_MAP[typeinfo] = klass
-
-
 GDSClassesMapping = {}
 
 USAGE_TEXT = """
@@ -377,7 +360,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 """
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 def get_root_tag(node):
@@ -423,7 +406,7 @@ def parseEtree(inFileName):
     return rootObj, rootElement
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

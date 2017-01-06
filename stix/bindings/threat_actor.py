@@ -1,4 +1,4 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 #!/usr/bin/env python
@@ -9,7 +9,10 @@
 #
 
 import sys
-from stix.bindings import *
+
+from mixbox.binding_utils import *
+
+from stix.bindings import lookup_extension, register_extension
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
 
@@ -74,6 +77,7 @@ class ObservedTTPsType(stix_common_binding.GenericRelationshipListType):
         for Observed_TTP_ in self.Observed_TTP:
             Observed_TTP_.export(lwrite, level, nsmap, namespace_, name_='Observed_TTP', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -143,6 +147,7 @@ class AssociatedCampaignsType(stix_common_binding.GenericRelationshipListType):
         for Associated_Campaign_ in self.Associated_Campaign:
             Associated_Campaign_.export(lwrite, level, nsmap, namespace_, name_='Associated_Campaign', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -212,6 +217,7 @@ class AssociatedActorsType(stix_common_binding.GenericRelationshipListType):
         for Associated_Actor_ in self.Associated_Actor:
             Associated_Actor_.export(lwrite, level, nsmap, namespace_, name_='Associated_Actor', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -227,16 +233,20 @@ class AssociatedActorsType(stix_common_binding.GenericRelationshipListType):
         super(AssociatedActorsType, self).buildChildren(child_, node, nodeName_, True)
 # end class AssociatedActorsType
 
+@register_extension
 class ThreatActorType(stix_common_binding.ThreatActorBaseType):
     """Specifies the relevant STIX-ThreatActor schema version for this
     content."""
     subclass = None
     superclass = stix_common_binding.ThreatActorBaseType
+
+    xmlns          = "http://stix.mitre.org/ThreatActor-1"
+    xmlns_prefix   = "ta"
+    xml_type       = "ThreatActorType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
+
     def __init__(self, idref=None, id=None, timestamp=None, version=None, Title=None, Description=None, Short_Description=None, Identity=None, Type=None, Motivation=None, Sophistication=None, Intended_Effect=None, Planning_And_Operational_Support=None, Observed_TTPs=None, Associated_Campaigns=None, Associated_Actors=None, Handling=None, Confidence=None, Information_Source=None, Related_Packages=None):
         super(ThreatActorType, self).__init__(idref=idref, id=id, timestamp=timestamp)
-        self.xmlns          = "http://stix.mitre.org/ThreatActor-1"
-        self.xmlns_prefix   = "ta"
-        self.xml_type       = "ThreatActorType"
         self.version = _cast(None, version)
         self.Title = Title
         self.Description = Description
@@ -411,6 +421,7 @@ class ThreatActorType(stix_common_binding.ThreatActorBaseType):
         if self.Related_Packages is not None:
             self.Related_Packages.export(lwrite, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -512,7 +523,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 """
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 def get_root_tag(node):
@@ -558,7 +569,7 @@ def parseEtree(inFileName):
     return rootObj, rootElement
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

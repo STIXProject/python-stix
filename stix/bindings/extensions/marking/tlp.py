@@ -1,4 +1,4 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 #!/usr/bin/env python
@@ -9,7 +9,10 @@
 #
 
 import sys
-from stix.bindings import *
+
+from mixbox.binding_utils import *
+
+from stix.bindings import register_extension
 import stix.bindings.data_marking as data_marking_binding
 
 XML_NS = "http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1"
@@ -18,6 +21,7 @@ XML_NS = "http://data-marking.mitre.org/extensions/MarkingStructure#TLP-1"
 # Data representation classes.
 #
 
+@register_extension
 class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
     """The TLPMarkingStructureType is an implementation of the data marking
     schema that allows for a TLP Designation to be attached to an
@@ -29,6 +33,7 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
     xmlns          = XML_NS
     xmlns_prefix   = "tlpMarking"
     xml_type       = "TLPMarkingStructureType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     subclass = None
     superclass = data_marking_binding.MarkingStructureType
@@ -83,6 +88,7 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
         super(TLPMarkingStructureType, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
         pass
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -99,7 +105,6 @@ class TLPMarkingStructureType(data_marking_binding.MarkingStructureType):
         pass
 # end class TLPMarkingStructureType
 
-data_marking_binding.add_extension(TLPMarkingStructureType)
 
 GDSClassesMapping = {}
 
@@ -108,7 +113,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 """
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 def get_root_tag(node):
@@ -154,7 +159,7 @@ def parseEtree(inFileName):
     return rootObj, rootElement
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

@@ -1,4 +1,4 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 #!/usr/bin/env python
@@ -9,7 +9,10 @@
 #
 
 import sys
-from stix.bindings import *
+
+from mixbox.binding_utils import *
+
+from stix.bindings import register_extension
 import stix.bindings.indicator as indicator_binding
 
 XML_NS = "http://stix.mitre.org/extensions/TestMechanism#OVAL5.10-1"
@@ -18,17 +21,22 @@ XML_NS = "http://stix.mitre.org/extensions/TestMechanism#OVAL5.10-1"
 # Data representation classes.
 #
 
+
+@register_extension
 class OVAL5_10TestMechanismType(indicator_binding.TestMechanismType):
     """The OVALTestMechanismType provides an extension to the
     indicator_binding.TestMechanismType which imports and leverages the OVAL schema in
     order to include OVAL Definitions as the test mechanism."""
     subclass = None
     superclass = indicator_binding.TestMechanismType
+
+    xmlns          = XML_NS
+    xmlns_prefix   = "ovalTM"
+    xml_type       = "OVAL5.10TestMechanismType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
+
     def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, oval_definitions=None, oval_variables=None):
         super(OVAL5_10TestMechanismType, self).__init__(idref=idref, id=id, Efficacy=Efficacy, Producer=Producer)
-        self.xmlns          = XML_NS
-        self.xmlns_prefix   = "ovalTM"
-        self.xml_type       = "OVAL5.10TestMechanismType"
         self.oval_definitions = oval_definitions
         self.oval_variables = oval_variables
     def factory(*args_, **kwargs_):
@@ -72,10 +80,10 @@ class OVAL5_10TestMechanismType(indicator_binding.TestMechanismType):
         #     already_processed.add('xmlns')
         #     xmlns = " xmlns:%s='%s'" % (self.xmlns_prefix, self.xmlns)
         #     lwrite(xmlns)
-        # if 'xsi:type' not in already_processed:
-        #     already_processed.add('xsi:type')
-        #     xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
-        #     lwrite(xsi_type)
+        if 'xsi:type' not in already_processed:
+            already_processed.add('xsi:type')
+            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            lwrite(xsi_type)
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='OVAL5.10TestMechanismType', fromsubclass_=False, pretty_print=True):
         super(OVAL5_10TestMechanismType, self).exportChildren(lwrite, level, nsmap, indicator_binding.XML_NS, name_, True, pretty_print=pretty_print)
         if pretty_print:
@@ -84,13 +92,14 @@ class OVAL5_10TestMechanismType(indicator_binding.TestMechanismType):
             eol_ = ''
         if self.oval_definitions is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite(etree_.tostring(self.oval_definitions, pretty_print=pretty_print))
+            lwrite(etree_.tostring(self.oval_definitions, pretty_print=pretty_print).decode())
             #self.oval_definitions.export(lwrite, level, nsmap, namespace_, name_='oval_definitions', pretty_print=pretty_print)
         if self.oval_variables is not None:
             showIndent(lwrite, level, pretty_print)
-            lwrite(etree_.tostring(self.oval_variables, pretty_print=pretty_print))
+            lwrite(etree_.tostring(self.oval_variables, pretty_print=pretty_print).decode())
             #self.oval_variables.export(lwrite, level, nsmap, namespace_, name_='oval_variables', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -113,7 +122,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 """
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 def get_root_tag(node):
@@ -159,7 +168,7 @@ def parseEtree(inFileName):
     return rootObj, rootElement
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

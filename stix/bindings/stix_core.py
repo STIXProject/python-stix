@@ -1,4 +1,4 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 #!/usr/bin/env python
@@ -9,10 +9,13 @@
 #
 
 import sys
-from stix.bindings import *
+
+import cybox.bindings.cybox_core as cybox_core_binding
+from mixbox.binding_utils import *
+
+from stix.bindings import lookup_extension
 import stix.bindings.stix_common as stix_common_binding
 import stix.bindings.data_marking as data_marking_binding
-import cybox.bindings.cybox_core as cybox_core_binding
 
 XML_NS = "http://stix.mitre.org/stix-1"
 
@@ -126,10 +129,6 @@ class STIXType(GeneratedsSuper):
         if self.timestamp is not None and 'timestamp' not in already_processed:
             already_processed.add('timestamp')
             lwrite(' timestamp="%s"' % self.gds_format_datetime(self.timestamp, input_name='timestamp'))
-
-        #for ns, prefix in nsmap.iteritems():
-        #    lwrite(' xmlns:%s="%s"' % (prefix, ns))
-
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='STIXType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
             eol_ = '\n'
@@ -155,8 +154,8 @@ class STIXType(GeneratedsSuper):
             self.Threat_Actors.export(lwrite, level, nsmap, namespace_, name_='Threat_Actors', pretty_print=pretty_print)
         if self.Related_Packages is not None:
             self.Related_Packages.export(lwrite, level, nsmap, namespace_, name_='Related_Packages', pretty_print=pretty_print)
-            
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.nsmap = node.nsmap
         self.buildAttributes(node, node.attrib, already_processed)
@@ -181,7 +180,7 @@ class STIXType(GeneratedsSuper):
             already_processed.add('timestamp')
             try:
                 self.timestamp = self.gds_parse_datetime(value, node, 'timestamp')
-            except ValueError, exp:
+            except ValueError as exp:
                 raise ValueError('Bad date-time attribute (timestamp): %s' % exp)
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'STIX_Header':
@@ -281,6 +280,7 @@ class RelatedPackagesType(stix_common_binding.GenericRelationshipListType):
         for Related_Package_ in self.Related_Package:
             Related_Package_.export(lwrite, level, nsmap, namespace_, name_='Related_Package', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -346,6 +346,7 @@ class RelatedPackageType(stix_common_binding.GenericRelationshipType):
         if self.Package is not None:
             self.Package.export(lwrite, level, nsmap, namespace_, name_='Package', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -452,6 +453,7 @@ class STIXHeaderType(GeneratedsSuper):
         if self.Information_Source is not None:
             self.Information_Source.export(lwrite, level, nsmap, namespace_, name_='Information_Source', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -541,6 +543,7 @@ class IndicatorsType(GeneratedsSuper):
         for Indicator_ in self.Indicator:
             Indicator_.export(lwrite, level, nsmap, namespace_, name_='Indicator', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -550,26 +553,11 @@ class IndicatorsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Indicator':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "IndicatorType":
-                    import stix.bindings.indicator as indicator_binding
-                    obj_ = indicator_binding.IndicatorType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
-                obj_ = stix_common_binding.IndicatorBaseType.factory() # not abstract
-
+            from . import indicator
+            obj_ = lookup_extension(child_, stix_common_binding.IndicatorBaseType).factory()
             obj_.build(child_)
             self.Indicator.append(obj_)
+
 # end class IndicatorsType
 
 class TTPsType(GeneratedsSuper):
@@ -629,6 +617,7 @@ class TTPsType(GeneratedsSuper):
         if self.Kill_Chains is not None:
             self.Kill_Chains.export(lwrite, level, nsmap, namespace_, name_='Kill_Chains', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -638,26 +627,11 @@ class TTPsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'TTP':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "TTPType":
-                    import stix.bindings.ttp as ttp_binding
-                    obj_ = ttp_binding.TTPType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
-                obj_ = stix_common_binding.TTPBaseType.factory() # not abstract
-
+            from . import ttp
+            obj_ = lookup_extension(child_, stix_common_binding.TTPBaseType).factory()
             obj_.build(child_)
             self.TTP.append(obj_)
+
         elif nodeName_ == 'Kill_Chains':
             obj_ = stix_common_binding.KillChainsType.factory()
             obj_.build(child_)
@@ -715,6 +689,7 @@ class IncidentsType(GeneratedsSuper):
         for Incident_ in self.Incident:
             Incident_.export(lwrite, level, nsmap, namespace_, name_='Incident', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -724,26 +699,11 @@ class IncidentsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Incident':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "IncidentType":
-                    import stix.bindings.incident as incident_binding
-                    obj_ = incident_binding.IncidentType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
-                obj_ = stix_common_binding.IncidentBaseType.factory() # not abstract
-
+            from . import incident
+            obj_ = lookup_extension(child_, stix_common_binding.IncidentBaseType).factory()
             obj_.build(child_)
             self.Incident.append(obj_)
+
 # end class IncidentsType
 
 class CoursesOfActionType(GeneratedsSuper):
@@ -797,6 +757,7 @@ class CoursesOfActionType(GeneratedsSuper):
         for Course_Of_Action_ in self.Course_Of_Action:
             Course_Of_Action_.export(lwrite, level, nsmap, namespace_, name_='Course_Of_Action', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -806,24 +767,8 @@ class CoursesOfActionType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Course_Of_Action':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "CourseOfActionType":
-                    import stix.bindings.course_of_action as coa_binding
-                    obj_ = coa_binding.CourseOfActionType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
-                obj_ = stix_common_binding.CourseOfActionBaseType.factory() # not abstract
-
+            from . import course_of_action
+            obj_ = lookup_extension(child_, stix_common_binding.CourseOfActionBaseType).factory()
             obj_.build(child_)
             self.Course_Of_Action.append(obj_)
 # end class CoursesOfActionType
@@ -879,6 +824,7 @@ class CampaignsType(GeneratedsSuper):
         for Campaign_ in self.Campaign:
             Campaign_.export(lwrite, level, nsmap, namespace_, name_='Campaign', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -888,24 +834,8 @@ class CampaignsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Campaign':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "CampaignType":
-                    import stix.bindings.campaign as campaign_binding
-                    obj_ = campaign_binding.CampaignType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
-                obj_ = stix_common_binding.CampaignBaseType.factory() # not abstract
-
+            from . import campaign
+            obj_ = lookup_extension(child_, stix_common_binding.CampaignBaseType).factory()
             obj_.build(child_)
             self.Campaign.append(obj_)
 # end class CampaignsType
@@ -961,6 +891,7 @@ class ThreatActorsType(GeneratedsSuper):
         for Threat_Actor_ in self.Threat_Actor:
             Threat_Actor_.export(lwrite, level, nsmap, namespace_, name_='Threat_Actor', pretty_print=pretty_print)
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -970,24 +901,8 @@ class ThreatActorsType(GeneratedsSuper):
         pass
     def buildChildren(self, child_, node, nodeName_, fromsubclass_=False):
         if nodeName_ == 'Threat_Actor':
-            type_name_ = child_.attrib.get('{http://www.w3.org/2001/XMLSchema-instance}type')
-            if type_name_ is None:
-                type_name_ = child_.attrib.get('type')
-            if type_name_ is not None:
-                type_names_ = type_name_.split(':')
-                if len(type_names_) == 1:
-                    type_name_ = type_names_[0]
-                else:
-                    type_name_ = type_names_[1]
-
-                if type_name_ == "ThreatActorType":
-                    import stix.bindings.threat_actor as ta_binding
-                    obj_ = ta_binding.ThreatActorType.factory()
-                else:
-                    raise NotImplementedError('Class not implemented for element type: ' + type_name_)
-            else:
-                obj_ = stix_common_binding.ThreatActorBaseType.factory() # not abstract
-
+            from . import threat_actor
+            obj_ = lookup_extension(child_, stix_common_binding.ThreatActorBaseType).factory()
             obj_.build(child_)
             self.Threat_Actor.append(obj_)
 # end class ThreatActorsType
@@ -1000,7 +915,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 """
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 def get_root_tag(node):
@@ -1050,7 +965,7 @@ def parseEtree(inFileName):
     return rootObj, rootElement
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

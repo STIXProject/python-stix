@@ -1,4 +1,4 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 #!/usr/bin/env python
@@ -9,7 +9,10 @@
 #
 
 import sys
-from stix.bindings import *
+
+from mixbox.binding_utils import *
+
+from stix.bindings import register_extension
 import stix.bindings.data_marking as data_marking_binding
 
 XML_NS = "http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use-1"
@@ -18,6 +21,7 @@ XML_NS = "http://data-marking.mitre.org/extensions/MarkingStructure#Terms_Of_Use
 # Data representation classes.
 #
 
+@register_extension
 class TermsOfUseMarkingStructureType(data_marking_binding.MarkingStructureType):
     """The TermsOfUseMarkingStructureType is a basic implementation of the
     data marking schema that allows for a string statement
@@ -36,6 +40,7 @@ class TermsOfUseMarkingStructureType(data_marking_binding.MarkingStructureType):
     xmlns          = XML_NS
     xmlns_prefix   = "TOUMarking"
     xml_type       = "TermsOfUseMarkingStructureType"
+    xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, marking_model_ref=None, marking_model_name=None, id=None, Terms_Of_Use=None):
         super(TermsOfUseMarkingStructureType, self).__init__(idref=idref, marking_model_ref=marking_model_ref, marking_model_name=marking_model_name, id=id)
@@ -89,6 +94,7 @@ class TermsOfUseMarkingStructureType(data_marking_binding.MarkingStructureType):
             showIndent(lwrite, level, pretty_print)
             lwrite('<%s:Terms_Of_Use>%s</%s:Terms_Of_Use>%s' % (nsmap[namespace_], quote_xml(self.Terms_Of_Use), nsmap[namespace_], eol_))
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -104,8 +110,6 @@ class TermsOfUseMarkingStructureType(data_marking_binding.MarkingStructureType):
         super(TermsOfUseMarkingStructureType, self).buildChildren(child_, node, nodeName_, True)
 # end class TermsOfUseMarkingStructureType
 
-data_marking_binding.add_extension(TermsOfUseMarkingStructureType)
-
 GDSClassesMapping = {}
 
 USAGE_TEXT = """
@@ -113,7 +117,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 """
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 def get_root_tag(node):
@@ -159,7 +163,7 @@ def parseEtree(inFileName):
     return rootObj, rootElement
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)

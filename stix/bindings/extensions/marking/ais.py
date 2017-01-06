@@ -5,23 +5,31 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from stix.bindings import *
+
+from mixbox.binding_utils import *
 import stix.bindings.data_marking as data_marking_binding
+from stix.bindings import register_extension
 
 XML_NS = "http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2"
+
 
 #
 # Data representation classes.
 #
 
-
+@register_extension
 class AISMarkingStructure(data_marking_binding.MarkingStructureType):
+    """
+    The AISMarkingStructure is an implementation of the data marking schema
+    that allows determining consent to share information source attribution.
+    """
     subclass = None
     superclass = data_marking_binding.MarkingStructureType
 
-    xmlns = XML_NS
-    xmlns_prefix = "AIS"
-    xml_type = "AISMarkingStructure"
+    xmlns           = XML_NS
+    xmlns_prefix    = "AIS"
+    xml_type        = "AISMarkingStructure"
+    xsi_type        = "%s:%s" % (xmlns_prefix, xml_type)
 
     def __init__(self, idref=None, marking_model_ref=None, marking_model_name=None, id=None, Is_Proprietary=None, Not_Proprietary=None):
         super(AISMarkingStructure, self).__init__(idref=idref, marking_model_ref=marking_model_ref, marking_model_name=marking_model_name, id=id)
@@ -78,8 +86,7 @@ class AISMarkingStructure(data_marking_binding.MarkingStructureType):
         super(AISMarkingStructure, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='AISMarkingStructure')
         if 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
-            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
-            lwrite(xsi_type)
+            lwrite(" xsi:type=%s" % (self.gds_format_string(quote_attrib(self.xsi_type).encode(ExternalEncoding), input_name='xsi:type')))
 
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AISMarkingStructure', fromsubclass_=False, pretty_print=True):
         super(AISMarkingStructure, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
@@ -93,6 +100,7 @@ class AISMarkingStructure(data_marking_binding.MarkingStructureType):
             self.Not_Proprietary.export(lwrite, level, nsmap, namespace_, name_='Not_Proprietary', pretty_print=pretty_print)
 
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -191,6 +199,7 @@ class IsProprietary(GeneratedsSuper):
             self.TLPMarking.export(lwrite, level, nsmap, namespace_, name_='TLPMarking', pretty_print=pretty_print)
 
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -296,6 +305,7 @@ class NotProprietary(GeneratedsSuper):
             self.TLPMarking.export(lwrite, level, nsmap, namespace_, name_='TLPMarking', pretty_print=pretty_print)
 
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -379,6 +389,7 @@ class AISConsentType(GeneratedsSuper):
         pass
 
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -450,6 +461,7 @@ class TLPMarkingType(GeneratedsSuper):
         pass
 
     def build(self, node):
+        self.__sourcenode__ = node
         already_processed = set()
         self.buildAttributes(node, node.attrib, already_processed)
         for child in node:
@@ -466,9 +478,6 @@ class TLPMarkingType(GeneratedsSuper):
         pass
 # end class TLPMarkingType
 
-
-data_marking_binding.add_extension(AISMarkingStructure)
-
 GDSClassesMapping = {}
 
 USAGE_TEXT = """
@@ -477,7 +486,7 @@ Usage: python <Parser>.py [ -s ] <in_xml_file>
 
 
 def usage():
-    print USAGE_TEXT
+    print(USAGE_TEXT)
     sys.exit(1)
 
 
@@ -527,7 +536,7 @@ def parseEtree(inFileName):
 
 
 def parseString(inString):
-    from StringIO import StringIO
+    from mixbox.vendor.six import StringIO
     doc = parsexml_(StringIO(inString))
     rootNode = doc.getroot()
     rootTag, rootClass = get_root_tag(rootNode)
