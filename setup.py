@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2015 - The MITRE Corporation
-# For license information, see the LICENSE.txt file
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
+# See LICENSE.txt for complete terms.
 
 from os.path import abspath, dirname, join
 
@@ -10,6 +10,7 @@ from setuptools import setup, find_packages
 
 BASE_DIR = dirname(abspath(__file__))
 VERSION_FILE = join(BASE_DIR, 'stix', 'version.py')
+
 
 def get_version():
     with open(VERSION_FILE) as f:
@@ -42,7 +43,8 @@ extras_require = {
 install_requires = [
     'lxml>=2.3',
     'python-dateutil',
-    'cybox>=2.1.0.11,<2.1.0.13'
+    'cybox>=2.1.0.11,<2.1.1.0',
+    'mixbox>=1.0.1',
 ]
 
 
