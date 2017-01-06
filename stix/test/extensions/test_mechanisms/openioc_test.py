@@ -1,12 +1,15 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 import unittest
-import StringIO
 
 import lxml
 
-from stix import utils
+from mixbox import idgen
+from mixbox.namespaces import Namespace
+from mixbox.vendor.six import StringIO, BytesIO
+import mixbox.xml
+
 from stix.test import EntityTestCase
 from stix.extensions.test_mechanism.open_ioc_2010_test_mechanism import OpenIOCTestMechanism
 
@@ -38,12 +41,11 @@ class OpenIOCTestMechanismTests(EntityTestCase, unittest.TestCase):
 class OpenIOCEtreeTests(unittest.TestCase):
     DESCRIPTION = "Finds Zeus variants, twexts, sdra64, ntos"
     XML = (
-        """
+        r"""
         <stix-openioc:ioc
             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             xmlns:mandiant-openioc="http://schemas.mandiant.com/2010/ioc"
-            xmlns="http://schemas.mandiant.com/2010/ioc"
             xmlns:stix-openioc="http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1"
             id="mandiant:6d2a1b03-b216-4cd8-9a9e-8827af6ebf93" last-modified="2011-10-28T19:28:20">
             <short_description>Zeus</short_description>
@@ -117,35 +119,37 @@ class OpenIOCEtreeTests(unittest.TestCase):
     )
 
     def setUp(self):
-        utils.set_id_namespace({"http://schemas.mandiant.com/2010/ioc": "mandiant-openioc"})
+        ioc_ns = Namespace("http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1",
+                           "stix-openioc", '')
+        idgen.set_id_namespace(ioc_ns)
 
     def tearDown(self):
-        utils.set_id_namespace(utils.EXAMPLE_NAMESPACE)
+        idgen.set_id_namespace(idgen.EXAMPLE_NAMESPACE)
 
     def _test_xml(self, obj):
         xml = obj.to_xml()
-        parser = utils.parser.get_xml_parser()
-        tree = lxml.etree.parse(StringIO.StringIO(xml), parser=parser)
+        parser = mixbox.xml.get_xml_parser()
+        tree = lxml.etree.parse(BytesIO(xml), parser=parser)
         root = tree.getroot()
 
-        xpath = "//openioc:description"
-        nodes = root.xpath(xpath, namespaces={'openioc': 'http://schemas.mandiant.com/2010/ioc'})
+        xpath = "//stix-openioc:ioc//description"
+        nodes = root.xpath(xpath, namespaces={'stix-openioc': 'http://stix.mitre.org/extensions/TestMechanism#OpenIOC2010-1'})
 
         self.assertTrue(nodes is not None)
         self.assertEqual(len(nodes), 1)
         self.assertEqual(nodes[0].text, self.DESCRIPTION)
 
     def test_etree(self):
-        parser = utils.parser.get_xml_parser()
-        tree = lxml.etree.parse(StringIO.StringIO(self.XML), parser=parser)
+        parser = mixbox.xml.get_xml_parser()
+        tree = lxml.etree.parse(StringIO(self.XML), parser=parser)
 
         ext = OpenIOCTestMechanism()
         ext.ioc = tree
         self._test_xml(ext)
 
     def test_etree_dict(self):
-        parser = utils.parser.get_xml_parser()
-        tree = lxml.etree.parse(StringIO.StringIO(self.XML), parser=parser)
+        parser = mixbox.xml.get_xml_parser()
+        tree = lxml.etree.parse(StringIO(self.XML), parser=parser)
         ext = OpenIOCTestMechanism()
         ext.ioc = tree
 

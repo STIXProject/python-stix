@@ -1,12 +1,13 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 import copy
-import StringIO
 import unittest
 
+from mixbox.vendor.six import BytesIO
+
 from stix.test import EntityTestCase
-from stix.test.common import kill_chains_test
+from stix.test.common import kill_chains_test, related_test
 
 from . import stix_header_test
 
@@ -29,6 +30,7 @@ class COAsTests(EntityTestCase, unittest.TestCase):
         {'idref': 'example:test-1'}
     ]
 
+
 class ExploitTargetsTests(EntityTestCase, unittest.TestCase):
     klass = stix_package.ExploitTargets
 
@@ -36,12 +38,14 @@ class ExploitTargetsTests(EntityTestCase, unittest.TestCase):
         {'idref': 'example:test-1'}
     ]
 
+
 class IncidentsTests(EntityTestCase, unittest.TestCase):
     klass = stix_package.Incidents
 
     _full_dict = [
         {'idref': 'example:test-1'}
     ]
+
 
 class IndicatorsTests(EntityTestCase, unittest.TestCase):
     klass = stix_package.Indicators
@@ -57,6 +61,7 @@ class ThreatActorsTests(EntityTestCase, unittest.TestCase):
     _full_dict = [
         {'idref': 'example:test-1'}
     ]
+
 
 class TTPsTests(EntityTestCase, unittest.TestCase):
     klass = stix_package.TTPs
@@ -90,9 +95,9 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
         },
         'threat_actors': ThreatActorsTests._full_dict,
         'ttps': TTPsTests._full_dict,
+        'related_packages': related_test.RelatedPackagesTests._full_dict,
         'version': "1.1.1"
     }
-
 
     def test_deepcopy(self):
         """Test copy.deepcopy() against parsed document.
@@ -106,7 +111,7 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
 
         """
         package = core.STIXPackage.from_xml(
-            StringIO.StringIO(
+            BytesIO(
                 core.STIXPackage().to_xml()
             )
         )

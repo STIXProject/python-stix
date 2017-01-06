@@ -1,9 +1,10 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 import unittest
 
-from stix.test import EntityTestCase, TypedListTestCase, data_marking_test
+from stix.test import EntityTestCase, TypedListTestCase
+import stix.test.data_marking_test as data_marking_test
 from stix.test.common import (
     confidence_test, information_source_test, statement_test, related_test,
     activity_test
@@ -21,17 +22,22 @@ class NamesTests(EntityTestCase, unittest.TestCase):
             "Crazy Squirrels",
             {
                 'value': "Medium",
-                'xsi:type':'stixVocabs:HighMediumLowVocab-1.0'
+                'xsi:type': 'stixVocabs:HighMediumLowVocab-1.0'
             }
         ]
     }
 
-class IntendedEffectsTests(TypedListTestCase, unittest.TestCase):
-    klass = campaign._IntendedEffects
 
-    _full_dict = [
+class IntendedEffectsTests(TypedListTestCase, unittest.TestCase):
+    klass = campaign.Campaign
+
+    _partial_dict = [
         statement_test.StatementTests._full_dict
     ]
+
+    _full_dict = {
+        'intended_effects': _partial_dict,
+    }
 
 
 class RelatedTTPsTest(EntityTestCase, unittest.TestCase):
@@ -64,6 +70,7 @@ class RelatedIndicatorsTests(EntityTestCase, unittest.TestCase):
         ]
     }
 
+
 class AttributionTests(EntityTestCase, unittest.TestCase):
     klass = campaign.Attribution
 
@@ -76,11 +83,13 @@ class AttributionTests(EntityTestCase, unittest.TestCase):
 
 
 class AttributionListTests(TypedListTestCase, unittest.TestCase):
-    klass = campaign._AttributionList
+    klass = campaign.Campaign
 
-    _full_dict = [
-        AttributionTests._full_dict
-    ]
+    _full_dict = {
+        'attribution': [
+            AttributionTests._full_dict
+        ]
+    }
 
 
 class AssociatedCampaignsTests(EntityTestCase, unittest.TestCase):
@@ -94,12 +103,10 @@ class AssociatedCampaignsTests(EntityTestCase, unittest.TestCase):
     }
 
 
-class ActivitiesTests(TypedListTestCase, unittest.TestCase):
-    klass = campaign._Activities
+class ActivityTests(TypedListTestCase, unittest.TestCase):
+    klass = campaign.Activity
 
-    _full_dict = [
-        activity_test.ActivityTests._full_dict
-    ]
+    _full_dict = activity_test.ActivityTests._full_dict
 
 
 class CampaignTest(EntityTestCase, unittest.TestCase):
@@ -112,18 +119,18 @@ class CampaignTest(EntityTestCase, unittest.TestCase):
         'description': 'A pretty novice set of actors.',
         'short_description': 'novices',
         'names': NamesTests._full_dict,
-        'intended_effects': IntendedEffectsTests._full_dict,
+        'intended_effects': IntendedEffectsTests._partial_dict,
         'status': {
             'value': "Ongoing",
-            'xsi:type':'stixVocabs:CampaignStatusVocab-1.0'
+            'xsi:type': 'stixVocabs:CampaignStatusVocab-1.0'
         },
         'related_ttps': RelatedTTPsTest._full_dict,
         'related_incidents': RelatedIncidentsTests._full_dict,
         'related_indicators': RelatedIndicatorsTests._full_dict,
-        'attribution': AttributionListTests._full_dict,
+        'attribution': [AttributionTests._full_dict],
         'associated_campaigns': AssociatedCampaignsTests._full_dict,
         'confidence': confidence_test.ConfidenceTests._full_dict,
-        'activity': ActivitiesTests._full_dict,
+        'activity': [ActivityTests._full_dict],
         'information_source': information_source_test.InformationSourceTests._full_dict,
         'handling': data_marking_test.MarkingTests._full_dict,
         'related_packages': related_test.RelatedPackageRefsTests._full_dict

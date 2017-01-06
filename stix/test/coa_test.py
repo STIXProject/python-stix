@@ -3,10 +3,10 @@
 
 import unittest
 
-from stix.test import EntityTestCase, data_marking_test
-from stix.test.common import (
-    confidence_test, information_source_test, statement_test, related_test,
-)
+from stix.test import EntityTestCase
+from stix.test import data_marking_test
+from stix.test.common import (confidence_test, information_source_test,
+                              statement_test, related_test)
 from stix.test.extensions.structured_coa import generic_test
 import stix.coa as coa
 import stix.coa.objective as objective
@@ -20,6 +20,7 @@ class RelatedCOAsTests(EntityTestCase, unittest.TestCase):
             related_test.RelatedCOATests._full_dict
         ]
     }
+
 
 class ObjectiveTests(EntityTestCase, unittest.TestCase):
     klass = objective.Objective
@@ -70,16 +71,12 @@ class COATests(EntityTestCase, unittest.TestCase):
     }
 
 
-
     def test_structured_coa(self):
         coa_ = coa.CourseOfAction()
 
-        def should_fail():
-            coa_.structured_coa = "ERROR"
-
         self.assertRaises(
             TypeError,
-            should_fail
+            setattr(coa_, "structured_coa", "ERROR")
         )
 
         from stix.extensions.structured_coa.generic_structured_coa import GenericStructuredCOA

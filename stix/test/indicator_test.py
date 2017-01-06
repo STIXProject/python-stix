@@ -1,10 +1,18 @@
 # Copyright (c) 2015, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from datetime import datetime
 import unittest
 
-from stix.indicator import Indicator
-from stix.test import EntityTestCase, round_trip, round_trip_dict
+from cybox.core import Observable, ObservableComposition
+from cybox.objects.file_object import File
+from mixbox.vendor.six import text_type
+
+from stix.indicator import Indicator, RelatedCampaignRefs, ValidTime
+
+from stix.test import EntityTestCase
+from stix.test.common import related_test
+
 
 class IndicatorTest(EntityTestCase, unittest.TestCase):
     klass = Indicator
@@ -25,7 +33,6 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
     def test_base(self):
         self._test_partial_dict(self._base_dict)
 
-
     def test_negate(self):
         d = dict(self._base_dict.items())
         d['negate'] = False
@@ -33,6 +40,8 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
         d2 = self.klass.from_dict(d).to_dict()
         self.assertTrue('negate' not in d2)
 
+        o2 = self.klass.from_dict(d).to_obj()
+        self.assertTrue(o2.negate is None)
 
     def test_indicator_types(self):
         d = {
@@ -408,6 +417,76 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
         }
 
         self._test_partial_dict(d)
+
+    def test_datetime_format(self):
+        indicator = Indicator(title="title")
+        valid_time = ValidTime(start_time=datetime.strptime("2010-03-05",
+                                                            "%Y-%m-%d"))
+        indicator.add_valid_time_position(valid_time)
+
+        ixml = indicator.to_xml()
+        self.assertTrue("2010-03-05T" in text_type(ixml))
+
+    def test_observables_property_empty(self):
+        ind = Indicator()
+        ind2 = Indicator.from_dict(ind.to_dict())
+
+        self.assertEqual([], ind2.observables)
+
+    def test_observables_property_composition(self):
+        f1 = File()
+        f1.file_name = "README.txt"
+        f2 = File()
+        f2.file_name = "README2.txt"
+        obs1 = Observable(f1)
+        obs2 = Observable(f2)
+
+        comp = Observable(ObservableComposition('AND', [obs1, obs2]))
+
+        ind = Indicator()
+        ind.observable = comp
+        ind2 = Indicator.from_dict(ind.to_dict())
+        self.assertEqual([obs1.to_dict(), obs2.to_dict()],
+                         [x.to_dict() for x in ind2.observables])
+
+    def test_observables_property_standard(self):
+        f = File()
+        f.file_name = "README.txt"
+        obs = Observable(f)
+        ind = Indicator()
+        ind.observable = obs
+
+        ind2 = Indicator.from_dict(ind.to_dict())
+
+        self.assertEqual([obs.to_dict()],
+                         [x.to_dict() for x in ind2.observables])
+
+
+class RelatedCampaignReferencesTests(unittest.TestCase, EntityTestCase):
+    klass = RelatedCampaignRefs
+    _full_dict = {
+        'related_campaigns': [
+            related_test.RelatedCampaignRefTests._full_dict
+        ]
+    }
+
+    def test_add_campaign(self):
+        from stix.campaign import Campaign
+
+        l = RelatedCampaignRefs()
+        l.append(Campaign())
+
+        self.assertEqual(1, len(l))
+
+    def test_append_bad_type(self):
+        l = RelatedCampaignRefs()
+
+        self.assertRaises(
+            TypeError,
+            l.append,
+            Indicator()
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

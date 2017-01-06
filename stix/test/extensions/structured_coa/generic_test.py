@@ -5,6 +5,7 @@ import unittest
 from stix.extensions.structured_coa.generic_structured_coa import GenericStructuredCOA
 from stix.test import EntityTestCase
 
+
 class GenericStructuredCOATests(EntityTestCase, unittest.TestCase):
     klass = GenericStructuredCOA
     _full_dict = {

@@ -1,14 +1,17 @@
-# Copyright (c) 2015, The MITRE Corporation. All rights reserved.
+# Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
 import unittest
-import StringIO
+
+from mixbox.vendor.six import StringIO
 
 from cybox.common import StructuredText
 
-from stix.test import EntityTestCase, TypedListTestCase, data_marking_test
+from stix.test import EntityTestCase
+from stix.test import data_marking_test
 from stix.test.common import (
-    confidence_test, information_source_test, statement_test, related_test
+    confidence_test, information_source_test, related_test, identity_test,
+    statement_test
 )
 
 import stix.common.vocabs as vocabs
@@ -64,14 +67,6 @@ class COATakenTest(EntityTestCase, unittest.TestCase):
     }
 
 
-class COAsTakenTest(TypedListTestCase, unittest.TestCase):
-    klass = incident._COAsTaken
-
-    _full_dict = [
-        COATakenTest._full_dict,
-    ]
-
-
 class COARequestedTest(EntityTestCase, unittest.TestCase):
     klass = incident.COARequested
 
@@ -87,15 +82,6 @@ class COARequestedTest(EntityTestCase, unittest.TestCase):
             'timestamp': '2015-03-06T14:35:23.375304+00:00',
         }
     }
-
-
-class COAsRequestedTest(TypedListTestCase, unittest.TestCase):
-    klass = incident._COAsRequested
-
-    _full_dict = [
-        COARequestedTest._full_dict,
-    ]
-
 
 
 class JournalEntryTest(EntityTestCase, unittest.TestCase):
@@ -161,28 +147,13 @@ class LeveragedTTPsTest(EntityTestCase, unittest.TestCase):
     }
 
 
-class ExternalIDsTest(TypedListTestCase, unittest.TestCase):
-    klass = incident._ExternalIDs
+class ExternalIDTest(EntityTestCase, unittest.TestCase):
+    klass = incident.ExternalID
 
-    _full_dict = [
-        {
-            'source': 'foo',
-            'value': '478392-feb3ca-98a9ef-984392742'
-        },
-        {
-            'source': 'bar',
-            'value': '478392-feb3ca-98a9ef-984392742'
-        },
-    ]
-
-
-class VictimsTest(TypedListTestCase, unittest.TestCase):
-    klass = incident._Victims
-
-    _full_dict = [
-        {'name': 'Spooderman'},
-        {'name': 'Spooderman'}
-    ]
+    _full_dict = {
+        'source': 'foo',
+        'value': '478392-feb3ca-98a9ef-984392742'
+    }
 
 
 class TimeTest(EntityTestCase, unittest.TestCase):
@@ -208,19 +179,6 @@ class CategoriesTest(EntityTestCase, unittest.TestCase):
         {
             'value': vocabs.IncidentCategory.TERM_DENIAL_OF_SERVICE,
             'xsi:type': vocabs.IncidentCategory._XSI_TYPE
-        },
-    ]
-
-
-class InformationSourcesTest(TypedListTestCase, unittest.TestCase):
-    klass = incident._InformationSources
-
-    _full_dict = [
-        {
-            'description': 'Test',
-            'identity': {
-                'name': 'Spooderman'
-            }
         },
     ]
 
@@ -360,6 +318,8 @@ class AffectedAssetTest(EntityTestCase, unittest.TestCase):
 
     _full_dict = {
         'type': AssetTypeTest._full_dict,
+        'description': 'Foo',
+        'business_function_or_role': 'Bar',
         'nature_of_security_effect': NatureOfSecurityEffectTest._full_dict,
         'ownership_class': {
             'value': 'Unknown',
@@ -405,25 +365,6 @@ class RelatedIncidentsTests(EntityTestCase, unittest.TestCase):
     }
 
 
-class IntendedEffectsTests(TypedListTestCase, unittest.TestCase):
-    klass = incident._IntendedEffects
-
-    _full_dict = [
-        statement_test.StatementTests._full_dict
-    ]
-
-
-class DiscoveryMethodsTests(TypedListTestCase, unittest.TestCase):
-    klass = incident.DiscoveryMethods
-
-    _full_dict = [
-        {
-            'value': 'Unknown',
-            'xsi:type': 'stixVocabs:LocationClassVocab-1.0'
-        }
-    ]
-
-
 class IncidentTest(EntityTestCase, unittest.TestCase):
     klass = incident.Incident
     _full_dict = {
@@ -434,19 +375,19 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
         'description': 'The Datacenter was broken into.',
         'short_description': 'Short Description Title',
         'handling': data_marking_test.MarkingTests._full_dict,
-        'external_ids': ExternalIDsTest._full_dict,
+        'external_ids': [ExternalIDTest._full_dict],
         'attributed_threat_actors': AttributedThreatActorsTest._full_dict,
         'categories': CategoriesTest._full_dict,
-        'coa_taken': COAsTakenTest._full_dict,
-        'coa_requested': COAsRequestedTest._full_dict,
-        'coordinators': InformationSourcesTest._full_dict,
+        'coa_taken': [COATakenTest._full_dict],
+        'coa_requested': [COARequestedTest._full_dict],
+        'coordinators': [information_source_test.InformationSourceTests._full_dict],
         'impact_assessment': ImpactAssessmentTest._full_dict,
         'leveraged_ttps': LeveragedTTPsTest._full_dict,
         'related_indicators': RelatedIndicatorsTest._full_dict,
         'reporter': information_source_test.InformationSourceTests._full_dict,
-        'responders': InformationSourcesTest._full_dict,
+        'responders': [information_source_test.InformationSourceTests._full_dict],
         'time': TimeTest._full_dict,
-        'victims': VictimsTest._full_dict,
+        'victims': [identity_test.IdentityTests._full_dict],
         'information_source': information_source_test.InformationSourceTests._full_dict,
         'security_compromise': {
             "value": "Suspected",
@@ -460,9 +401,15 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
         'affected_assets': AffectedAssetsTest._full_dict,
         'related_observables': RelatedObservablesTest._full_dict,
         'related_incidents': RelatedIncidentsTests._full_dict,
-        'intended_effects': IntendedEffectsTests._full_dict,
-        'discovery_methods': DiscoveryMethodsTests._full_dict,
-        'confidence': confidence_test.ConfidenceTests._full_dict
+        'intended_effects': [statement_test.StatementTests._full_dict],
+        'discovery_methods': [{
+            "value": "Security Alarm",
+            "xsi:type": "stixVocabs:DiscoveryMethodVocab-2.0"
+        }],
+        'confidence': confidence_test.ConfidenceTests._full_dict,
+        'related_packages': related_test.RelatedPackageRefsTests._full_dict,
+        'contacts': [information_source_test.InformationSourceTests._full_dict],
+        'url': 'http://www.example.com/'
     }
 
     def test_parse_category(self):
@@ -486,7 +433,7 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
         assets.add_Affected_Asset(asset)
         incident.Affected_Assets = assets
 
-        s = StringIO.StringIO()
+        s = StringIO()
 
         incident.export(s.write, 0, {'http://stix.mitre.org/Incident-1': 'incident'})
         xml = s.getvalue()
@@ -509,7 +456,7 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
 
         # Test that this fails
         self.assertRaises(
-            ValueError,
+            TypeError,
             i.add_related_observable,
             "THIS SHOULD FAIL"
         )
@@ -530,7 +477,7 @@ class IncidentTest(EntityTestCase, unittest.TestCase):
 
         # Test that this fails
         self.assertRaises(
-            ValueError,
+            TypeError,
             i.add_related_indicator,
             "THIS SHOULD FAIL"
         )
