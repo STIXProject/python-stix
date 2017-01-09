@@ -108,9 +108,11 @@ NAMESPACES = [
 
 def _update_namespaces():
     # Update the python-stix namespace dictionary
+    import stix.utils.nsparser as nsparser
     import mixbox.namespaces
-    for ns in NAMESPACES:
-        mixbox.namespaces.register_namespace(ns)
+
+    nsparser.STIX_NAMESPACES.add_namespace(NAMESPACES)
+    mixbox.namespaces.register_namespace(NAMESPACES)
 
 
 _update_namespaces()
