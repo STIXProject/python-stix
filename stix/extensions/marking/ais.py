@@ -55,8 +55,8 @@ class NotProprietary(stix.Entity):
     _namespace = 'http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2'
 
     cisa_proprietary = fields.TypedField("CISA_Proprietary")
-    ais_consent = fields.TypedField("AISConsent", AISConsentType)
-    tlp_marking = fields.TypedField("TLPMarking", TLPMarkingType)
+    ais_consent = fields.TypedField("AISConsent", AISConsentType, key_name="ais_consent")
+    tlp_marking = fields.TypedField("TLPMarking", TLPMarkingType, key_name="tlp_marking")
 
     def __init__(self, cisa_proprietary='false', ais_consent=None,
                  tlp_marking=None):
@@ -73,8 +73,8 @@ class IsProprietary(stix.Entity):
     _namespace = 'http://www.us-cert.gov/STIXMarkingStructure#AISConsentMarking-2'
 
     cisa_proprietary = fields.TypedField("CISA_Proprietary")
-    ais_consent = fields.TypedField("AISConsent", AISConsentType)
-    tlp_marking = fields.TypedField("TLPMarking", TLPMarkingType)
+    ais_consent = fields.TypedField("AISConsent", AISConsentType, key_name="ais_consent")
+    tlp_marking = fields.TypedField("TLPMarking", TLPMarkingType, key_name="tlp_marking")
 
     def __init__(self, cisa_proprietary='true', ais_consent=None,
                  tlp_marking=None):
@@ -97,6 +97,7 @@ class AISMarkingStructure(MarkingStructure):
 
     def __init__(self, is_proprietary=None, not_proprietary=None):
         super(AISMarkingStructure, self).__init__()
+
         self.is_proprietary = is_proprietary
         self.not_proprietary = not_proprietary
 
@@ -108,11 +109,11 @@ NAMESPACES = [
 
 def _update_namespaces():
     # Update the python-stix namespace dictionary
-    import stix.utils.nsparser as nsparser
+    from stix.utils import nsparser
     import mixbox.namespaces
 
-    nsparser.STIX_NAMESPACES.add_namespace(NAMESPACES)
-    mixbox.namespaces.register_namespace(NAMESPACES)
+    nsparser.STIX_NAMESPACES.add_namespace(NAMESPACES[0])
+    mixbox.namespaces.register_namespace(NAMESPACES[0])
 
 
 _update_namespaces()
@@ -211,7 +212,7 @@ def add_ais_marking(stix_package, proprietary, consent, color, **kwargs):
 
     Note:
         The following line is required to register the AIS extension:
-        >>> import stix.bindings.extensions.marking.ais
+        >>> import stix.extensions.marking.ais
 
         Any Markings under STIX Header will be removed. Please follow the
         guidelines for `AIS`_.

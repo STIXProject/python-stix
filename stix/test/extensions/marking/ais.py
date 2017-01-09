@@ -84,5 +84,9 @@ class AISMarkingGeneralTests(unittest.TestCase):
                         admin_area_name_code_type='ISO 3166-2',
                         organisation_name='NCCIC')
 
+    def test_bad_values_raises_error(self):
+        self.assertRaises(ValueError, ais.TLPMarkingType, "ORANGE")
+        self.assertRaises(ValueError, ais.AISConsentType, "WHAT?")
+
 if __name__ == "__main__":
     unittest.main()
