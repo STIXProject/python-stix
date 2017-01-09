@@ -5,19 +5,19 @@ A python library for parsing, manipulating, and generating STIX v1.1.1 content.
 
 :Source: https://github.com/STIXProject/python-stix
 :Documentation: http://stix.readthedocs.org
-:Information: http://stix.mitre.org
+:Information: https://stixproject.github.io/
 
 |travis badge| |landscape.io badge| |version badge| |downloads badge|
 
-.. |travis badge| image:: https://api.travis-ci.org/STIXProject/python-stix.png?branch=master
+.. |travis badge| image:: https://api.travis-ci.org/STIXProject/python-stix.svg?branch=master
    :target: https://travis-ci.org/STIXProject/python-stix
    :alt: Build Status
-.. |landscape.io badge| image:: https://landscape.io/github/STIXProject/python-stix/master/landscape.png
+.. |landscape.io badge| image:: https://landscape.io/github/STIXProject/python-stix/master/landscape.svg
    :target: https://landscape.io/github/STIXProject/python-stix/master
    :alt: Code Health
-.. |version badge| image:: https://pypip.in/v/stix/badge.png
+.. |version badge| image:: https://img.shields.io/pypi/v/stix.svg?maxAge=3600
    :target: https://pypi.python.org/pypi/stix/
-.. |downloads badge| image:: https://pypip.in/d/stix/badge.png
+.. |downloads badge| image:: https://img.shields.io/pypi/dm/stix.svg?maxAge=3600
    :target: https://pypi.python.org/pypi/stix/
 
 
