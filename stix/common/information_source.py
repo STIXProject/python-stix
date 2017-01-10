@@ -30,7 +30,8 @@ class InformationSource(stix.Entity):
     tools = fields.TypedField("Tools", ToolInformationList)
     references = fields.TypedField("References", References)
 
-    def __init__(self, description=None, identity=None, time=None, tools=None, contributing_sources=None, references=None):
+    def __init__(self, description=None, identity=None, time=None, tools=None,
+                 contributing_sources=None, references=None):
         super(InformationSource, self).__init__()
 
         self.identity = identity

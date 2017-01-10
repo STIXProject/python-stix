@@ -21,7 +21,13 @@ class ToolInformation(stix.Entity, cybox.common.ToolInformation):
     title = fields.TypedField("Title")
     short_description = fields.TypedField("Short_Description", StructuredText)
 
-    def __init__(self, title=None, short_description=None, tool_name=None, tool_vendor=None):
-        super(ToolInformation, self).__init__(tool_name=tool_name, tool_vendor=tool_vendor)
+    def __init__(self, title=None, short_description=None, tool_name=None,
+                 tool_vendor=None):
+
+        super(ToolInformation, self).__init__(
+            tool_name=tool_name,
+            tool_vendor=tool_vendor
+        )
+
         self.title = title
         self.short_description = short_description
