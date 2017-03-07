@@ -18,4 +18,5 @@ script:
 
 notifications:
   email:
+    - gback@mitre.org
     - stix-commits-list@lists.mitre.org
