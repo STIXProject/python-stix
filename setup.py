@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2015 - The MITRE Corporation
-# For license information, see the LICENSE.txt file
+# Copyright (c) 2017, The MITRE Corporation. All rights reserved.
+# See LICENSE.txt for complete terms.
 
 from os.path import abspath, dirname, join
 
