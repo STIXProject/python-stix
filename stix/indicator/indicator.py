@@ -692,7 +692,38 @@ class Indicator(stix.BaseCoreComponent):
         for observable in observables:
             observable_composition.add(observable)
 
+            
+        # Below, a root observable is created that contains the observable
+        # composition. Unfortunately, there is no way to explicitly set
+        # the identifier of that root observable. So we derive the
+        # id from the id of the embedding Indicator
+            
+        try:
+            root_observable_ns, root_observable_id_candidate = self._id.split(':',1)
+        except:
+            root_observable_ns = None
+            root_observable_id_candidate = self._id
+
+        # It is likely (though not completely sure), that the identifier is something
+        # like "Identifier-<uuid4>" or "Identifier-<uuid4>". If that is the
+        # case, we create the identifier for the root-observable by 
+        # replacing the 'Identifier'-string with 'Observable')
+
+        root_observable_id_candidate = root_observable_id_candidate.replace('indicator','observable')
+        root_observable_id_candidate = root_observable_id_candidate.replace('Indicator','Observable')
+
+        if ('bservable' in root_observable_id_candidate):
+            # If now we have 'Observable' or 'observable' in the identifier, then
+            # we succeeded in deriving an identifier by the replacement carried out above
+            root_observable_id = root_observable_id_candidate
+        else:
+            # Otherwise, we create a new (hopefully unique) ID by preprending 'Observable'
+            root_observable_id = "Observable-%s" % root_observable_id_candidate
         root_observable = Observable()
+        if root_observable_ns:
+            root_observable._id = "%s:%s" % (root_observable_ns,root_observable_id)
+        else:
+            root_observable._id = root_observable_id
         root_observable.observable_composition = observable_composition
 
         return root_observable
