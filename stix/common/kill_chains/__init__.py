@@ -3,15 +3,16 @@
 
 from mixbox import fields
 from mixbox import typedlist
+from mixbox import entities
 
 # internal
 import stix
 import stix.bindings.stix_common as common_binding
 
-from mixbox.vendor.six import string_types
-
 
 class KillChain(stix.Entity):
+    __hash__ = entities.Entity.__hash__
+
     _binding = common_binding
     _namespace = 'http://stix.mitre.org/common-1'
     _binding_class = _binding.KillChainType
@@ -61,6 +62,8 @@ class KillChains(stix.EntityList):
 
 
 class KillChainPhase(stix.Entity):
+    __hash__ = entities.Entity.__hash__
+
     _binding = common_binding
     _namespace = 'http://stix.mitre.org/common-1'
     _binding_class = _binding.KillChainPhaseType
@@ -87,10 +90,6 @@ class KillChainPhase(stix.Entity):
 
     def __ne__(self, other):
         return not self.__eq__(other)
-
-    def __hash__(self):
-        # TODO (bworrell): Is all the tuple(sorted(...))) needed?
-        return hash(tuple(sorted(self.to_dict().items())))
 
 
 class KillChainPhaseReference(KillChainPhase):

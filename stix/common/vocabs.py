@@ -28,6 +28,7 @@ def validate_value(instance, value):
         error = error.format(**locals())
         raise ValueError(error)
 
+
 class VocabList(typedlist.TypedList):
     """VocabString fields can be any type of VocabString, though there is often
     a preferred/default VocabString type.
@@ -80,6 +81,8 @@ class VocabFactory(entities.EntityFactory):
 
 
 class VocabString(stix.Entity):
+    __hash__ = entities.Entity.__hash__
+
     _binding = stix_common_binding
     _binding_class = stix_common_binding.ControlledVocabularyStringType
     _namespace = 'http://stix.mitre.org/common-1'
