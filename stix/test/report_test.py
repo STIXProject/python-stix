@@ -7,7 +7,7 @@ from stix import report
 
 from stix.test import EntityTestCase, data_marking_test
 from stix.test.common import (kill_chains_test, information_source_test,
-    structured_text_tests, related_test)
+    structured_text_test, related_test)
 
 
 class HeaderTests(EntityTestCase, unittest.TestCase):
@@ -30,8 +30,8 @@ class HeaderTests(EntityTestCase, unittest.TestCase):
 class HeaderMultiDescTests(EntityTestCase, unittest.TestCase):
     klass = report.Header
     _full_dict = {
-        'description': structured_text_tests.StructuredTextListTests._full_dict,
-        'short_description': structured_text_tests.StructuredTextListTests._full_dict
+        'description': structured_text_test.StructuredTextListTests._full_dict,
+        'short_description': structured_text_test.StructuredTextListTests._full_dict
     }
 
 

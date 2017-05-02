@@ -4,7 +4,7 @@
 import unittest
 
 from stix.test import EntityTestCase
-from stix.test.common import structured_text_tests
+from stix.test.common import structured_text_test
 
 from stix import common
 
@@ -24,7 +24,7 @@ class ToolInformationMultiDescTests(EntityTestCase, unittest.TestCase):
     klass = common.ToolInformation
 
     _full_dict = {
-        'short_description': structured_text_tests.StructuredTextListTests._full_dict
+        'short_description': structured_text_test.StructuredTextListTests._full_dict
     }
 
 if __name__ == "__main__":

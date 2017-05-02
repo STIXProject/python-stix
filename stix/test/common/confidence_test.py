@@ -4,7 +4,7 @@
 import unittest
 
 from stix.test import EntityTestCase
-from stix.test.common import structured_text_tests
+from stix.test.common import structured_text_test
 
 from stix.common import Confidence
 
@@ -25,7 +25,7 @@ class ConfidenceTests(EntityTestCase, unittest.TestCase):
 class ConfidenceMultiDescTests(EntityTestCase, unittest.TestCase):
     klass = Confidence
     _full_dict = {
-        'description': structured_text_tests.StructuredTextListTests._full_dict
+        'description': structured_text_test.StructuredTextListTests._full_dict
     }
 
 

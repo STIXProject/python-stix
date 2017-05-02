@@ -24,4 +24,4 @@ dist/
 .tox
 
 docs/_build
-
+.cache

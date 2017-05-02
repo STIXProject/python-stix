@@ -4,7 +4,7 @@
 import unittest
 
 from stix.test import EntityTestCase
-from stix.test.common import structured_text_tests
+from stix.test.common import structured_text_test
 
 from stix.common import Activity
 
@@ -21,7 +21,7 @@ class ActivityMultiDescTests(EntityTestCase, unittest.TestCase):
     klass = Activity
     _full_dict = {
         'date_time': "2014-01-31T06:14:46",
-        'description': structured_text_tests.StructuredTextListTests._full_dict
+        'description': structured_text_test.StructuredTextListTests._full_dict
     }
 
 

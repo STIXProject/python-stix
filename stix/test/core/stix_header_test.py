@@ -5,7 +5,7 @@ import unittest
 
 from stix.test import assert_warnings
 from stix.test import EntityTestCase, data_marking_test
-from stix.test.common import information_source_test, structured_text_tests
+from stix.test.common import information_source_test, structured_text_test
 
 from stix import core
 from stix.utils import silence_warnings
@@ -60,8 +60,8 @@ class STIXHeaderTests(EntityTestCase, unittest.TestCase):
 class STIXHeaderMultiDescTests(EntityTestCase, unittest.TestCase):
     klass = core.STIXHeader
     _full_dict = {
-        'description': structured_text_tests.StructuredTextListTests._full_dict,
-        'short_description': structured_text_tests.StructuredTextListTests._full_dict
+        'description': structured_text_test.StructuredTextListTests._full_dict,
+        'short_description': structured_text_test.StructuredTextListTests._full_dict
     }
 
 
