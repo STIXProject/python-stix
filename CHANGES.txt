@@ -1,3 +1,10 @@
+Version 1.2.0.4
+2017-05-02
+- Add support for Python 3.6.
+- Update to latest mixbox.
+- #319 Emit proper xsi:type for AISMarkingStructure.
+- #317 Implement __hash__ for required objects
+
 Version 1.2.0.3
 2017-03-20
 - #310 Support AIS Markings
