@@ -83,7 +83,8 @@ class AISMarkingStructure(data_marking_binding.MarkingStructureType):
         super(AISMarkingStructure, self).exportAttributes(lwrite, level, already_processed, namespace_, name_='AISMarkingStructure')
         if 'xsi:type' not in already_processed:
             already_processed.add('xsi:type')
-            lwrite(" xsi:type=%s" % (self.gds_format_string(quote_attrib(self.xsi_type).encode(ExternalEncoding), input_name='xsi:type')))
+            xsi_type = " xsi:type='%s:%s'" % (self.xmlns_prefix, self.xml_type)
+            lwrite(xsi_type)
 
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='AISMarkingStructure', fromsubclass_=False, pretty_print=True):
         super(AISMarkingStructure, self).exportChildren(lwrite, level, nsmap, namespace_, name_, True, pretty_print=pretty_print)
