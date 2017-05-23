@@ -31,7 +31,7 @@ class CIQAddress3_0InstanceType(stix_common_binding.AddressAbstractType):
     superclass = stix_common_binding.AddressAbstractType
 
     xmlns          = XML_NS
-    xmlns_prefix   = "ciqAddress"
+    xmlns_prefix   = "stix-ciqaddress"
     xml_type       = "CIQAddress3.0InstanceType"
     xsi_type       = "%s:%s" % (xmlns_prefix, xml_type)
 
