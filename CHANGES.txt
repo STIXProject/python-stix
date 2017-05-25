@@ -1,5 +1,5 @@
 Version 1.1.1.9
-2017-01-18
+2017-05-25
 - Support Python 3.6
 - #321 Fix CIQ extensions.
 
@@ -119,7 +119,7 @@ Version 1.1.0.4
 2014-02-31
 - Added COAs, Exploit Targets, Campaigns, and Related Packages to STIXPackage class
 - Updated behavior of id, idref, and timestamp on core STIX constructs to align with best practices
-- Added MAEC malware extension 
+- Added MAEC malware extension
 - Improved Identity extension mechanism
 - Added Sightings to Indicator
 - Updates to OpenIOC test mechanism extension
@@ -129,7 +129,7 @@ Version 1.1.0.4
 - Added Handling support to Indicator
 - Added several fields to COA and Exploit Target
 - Bug fixes
- 
+
 Version 1.1.0.3
 2014-02-24
 - Added TTP structure (stix.ttp.TTP)
@@ -159,7 +159,7 @@ Version 1.1.0.1
 - Fixed several CIQ Identity extension bugs
 - Improved namespace parser performance
 - Updated Incident test
-- Added initial code for better support of non-standard id namespaces in input documents 
+- Added initial code for better support of non-standard id namespaces in input documents
 
 Version 1.1.0.0
 2014-02-20
@@ -219,7 +219,7 @@ Version 1.0.0a5
 2013-06-27
 - Improved README documentation
 - Fixed interface issues between python-stix and python-cybox classes
-- Added support for additional namespaces to be added to STIXPackage.to_xml() 
+- Added support for additional namespaces to be added to STIXPackage.to_xml()
 - Fixed installation issues with pip and setup.py
 
 Version 1.0.0a4
