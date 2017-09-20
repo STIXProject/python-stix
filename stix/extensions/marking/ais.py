@@ -1,6 +1,23 @@
 # Copyright (c) 2017, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+"""
+STIX Extension for AIS Data Markings
+
+Unlike the other marking extensions, the AIS marking extension is not loaded
+automatically, since AIS markings are not a part of the published STIX 1.x
+specifications. They are included in python-stix because they're common enough
+that it is not worth creating a separate package.
+
+If you are writing code that needs to parse AIS markings, make sure that your
+program imports this module before beginning to parse any STIX documents:
+
+.. code-block:: python
+
+    import stix.extensions.marking.ais
+
+"""
+
 from mixbox import fields
 from mixbox.namespaces import Namespace
 
@@ -120,22 +137,39 @@ _update_namespaces()
 
 
 # IndustryType allowed sectors
+#: Chemical Sector
 CHEMICAL_SECTOR = 'Chemical Sector'
+#: Chemical Sector
 COMMERCIAL_FACILITIES_SECTOR = 'Commercial Facilities Sector'
+#: Commercial Facilities Sector
 COMMUNICATIONS_SECTOR = 'Communications Sector'
+#: Critical Manufacturing Sector
 CRITICAL_MANUFACTURING_SECTOR = 'Critical Manufacturing Sector'
+#: Dams Sector
 DAMS_SECTOR = 'Dams Sector'
+#: Defense Industrial Base Sector
 DEFENSE_INDUSTRIAL_BASE_SECTOR = 'Defense Industrial Base Sector'
+#: Emergency Services Sector
 EMERGENCY_SERVICES_SECTOR = 'Emergency Services Sector'
+#: Energy Sector
 ENERGY_SECTOR = 'Energy Sector'
+#: Financial Services Sector
 FINANCIAL_SERVICES_SECTOR = 'Financial Services Sector'
+#: Food and Agriculture Sector
 FOOD_AND_AGRICULTURE_SECTOR = 'Food and Agriculture Sector'
+#: Government Facilities Sector
 GOVERNMENT_FACILITIES_SECTOR = 'Government Facilities Sector'
+#: Healthcare and Public Health Sector
 HEALTH_CARE_AND_PUBLIC_HEALTH_SECTOR = 'Healthcare and Public Health Sector'
+#: Information Technology Sector
 INFORMATION_TECHNOLOGY_SECTOR = 'Information Technology Sector'
+#: Nuclear Reactors, Materials, and Waste Sector
 NUCLEAR_REACTORS_MATERIALS_AND_WASTE_SECTOR = 'Nuclear Reactors, Materials, and Waste Sector'
+#: Other
 OTHER = 'Other'
+#: Transportation Systems Sector
 TRANSPORTATION_SYSTEMS_SECTOR = 'Transportation Systems Sector'
+#: Water and Wastewater Systems Sector
 WATER_AND_WASTEWATER_SYSTEMS_SECTOR = 'Water and Wastewater Systems Sector'
 
 
@@ -192,10 +226,11 @@ def add_ais_marking(stix_package, proprietary, consent, color, **kwargs):
     """
     This utility functions aids in the creation of an AIS marking and appends
     it to the provided STIX package.
+
     Args:
         stix_package: A stix.core.STIXPackage object.
         proprietary: True if marking uses IsProprietary, False for
-        NotProprietary.
+            NotProprietary.
         consent: A string with one of the following values: "EVERYONE", "NONE"
             or "USG".
         color: A string that corresponds to TLP values: "WHITE", "GREEN" or
@@ -204,19 +239,26 @@ def add_ais_marking(stix_package, proprietary, consent, color, **kwargs):
             identity object. These are: country_name_code,
             country_name_code_type, admin_area_name_code,
             admin_area_name_code_type, organisation_name, industry_type.
+
     Raises:
         ValueError: When keyword arguments are missing. User did not supply
             correct values for: proprietary, color and consent.
+
     Note:
-        The following line is required to register the AIS extension:
-        >>> import stix.extensions.marking.ais
+        The following line is required to register the AIS extension::
+
+            >>> import stix.extensions.marking.ais
+
         Any Markings under STIX Header will be removed. Please follow the
         guidelines for `AIS`_.
+
         The industry_type keyword argument accepts: a list of string based on
         defined sectors, a pipe-delimited string of sectors, or a single
         sector.
+
     .. _AIS:
         https://www.us-cert.gov/ais
+
     """
     from stix.common import InformationSource
     from stix.extensions.identity.ciq_identity_3_0 import (
