@@ -29,7 +29,7 @@ structure to select all nodes and attributes ``//node() | //@*``. All required
 fields to create a valid AIS Markings are provided through the ``add_ais_marking``
 function.
 
-.. code:: python
+.. code-block:: python
 
     # python-stix imports
     import stix
@@ -131,7 +131,7 @@ Parsing AIS Markings
 Using the same example used for Applying AIS Markings. This would be how a
 consumer of AIS would parse the data.
 
-.. code:: python
+.. code-block:: python
 
     # python-stix imports
     import stix
