@@ -1,5 +1,8 @@
 # Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
+"""
+This module automatically registers all STIX namespaces into mixbox.
+"""
 
 import mixbox.namespaces
 

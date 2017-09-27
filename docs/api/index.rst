@@ -16,6 +16,7 @@ Modules located in the base `stix`_ package
 .. toctree::
    :titlesonly:
 
+   stix
    base
    data_marking
 

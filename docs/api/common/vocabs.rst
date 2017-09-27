@@ -138,8 +138,4 @@ Functions
 ---------
 
 .. autofunction:: add_vocab
-
-Constants
----------
-
-.. autodata:: _VOCAB_MAP
+.. autofunction:: register_vocab

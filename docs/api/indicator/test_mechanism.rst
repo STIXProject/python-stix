@@ -14,8 +14,3 @@ Functions
 ---------
 
 .. autofunction:: add_extension
-
-Constants
----------
-
-.. autodata:: _EXTENSION_MAP
