@@ -53,9 +53,9 @@ function.
     add_ais_marking(stix_package, False, 'EVERYONE', 'GREEN',
         country_name_code='US',
         country_name_code_type='ISO 3166-1 alpha-2',
-        admin_area_name_code='US-DC',
+        admin_area_name_code='US-VA',
         admin_area_name_code_type='ISO 3166-2',
-        organisation_name='NCCIC',
+        organisation_name='Example Corporation',
         industry_type=[INFORMATION_TECHNOLOGY_SECTOR, COMMUNICATIONS_SECTOR]
     )
 
@@ -97,7 +97,7 @@ This corresponds to the XML result:
                             <stix-ciqidentity:Specification xmlns:stix-ciqidentity="http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1">\
                                 <xpil:PartyName xmlns:xpil="urn:oasis:names:tc:ciq:xpil:3">
                                     <xnl:OrganisationName xmlns:xnl="urn:oasis:names:tc:ciq:xnl:3">
-                                        <xnl:NameElement>NCCIC</xnl:NameElement>
+                                        <xnl:NameElement>Example Corporation</xnl:NameElement>
                                     </xnl:OrganisationName>
                                 </xpil:PartyName>
                                 <xpil:Addresses xmlns:xpil="urn:oasis:names:tc:ciq:xpil:3">
@@ -106,7 +106,7 @@ This corresponds to the XML result:
                                             <xal:NameElement xal:NameCode="US" xal:NameCodeType="ISO 3166-1 alpha-2"/>
                                         </xal:Country>
                                         <xal:AdministrativeArea xmlns:xal="urn:oasis:names:tc:ciq:xal:3">
-                                            <xal:NameElement xal:NameCode="US-DC" xal:NameCodeType="ISO 3166-2"/>
+                                            <xal:NameElement xal:NameCode="US-VA" xal:NameCodeType="ISO 3166-2"/>
                                         </xal:AdministrativeArea>
                                     </xpil:Address>
                                 </xpil:Addresses>
@@ -152,10 +152,42 @@ consumer of AIS would parse the data.
     for marking in markings:
         print(marking)
         print(marking.marking_structures)
+        print("----------MARKING CONTENT----------")
+        ais_struct = marking.marking_structures[0]
+        print("OBJ: %s" % ais_struct)
+        print("NotProprietary OBJ: %s" % ais_struct.not_proprietary)
+        print("CISA_Proprietary: %s" % ais_struct.not_proprietary.cisa_proprietary)
+        print("Consent: %s" % ais_struct.not_proprietary.ais_consent.consent)
+        print("TLP color: %s" % ais_struct.not_proprietary.tlp_marking.color)
+
+        print("----------INFORMATION SOURCE----------")
+        identity = marking.information_source.identity.specification
+        print("OBJ: %s" % identity)
+        print("Organization Name: %s" % identity.party_name.organisation_names[0].name_elements[0].value)
+        print("Country: %s" % identity.addresses[0].country.name_elements[0].name_code)
+        print("Country code type: %s" % identity.addresses[0].country.name_elements[0].name_code_type)
+        print("Administrative area: %s" % identity.addresses[0].administrative_area.name_elements[0].name_code)
+        print("Administrative area code type: %s" % identity.addresses[0].administrative_area.name_elements[0].name_code_type)
+        print("Industry Type: %s" % identity.organisation_info.industry_type)
+
 
     >>> <stix.indicator.indicator.Indicator object at 0x...>
     >>> <stix.data_marking.MarkingSpecification object at 0x...>
     >>> [<stix.extensions.marking.ais.AISMarkingStructure object at 0x...>, ...]
+    >>> ----------MARKING CONTENT----------
+    >>> OBJ: <stix.extensions.marking.ais.AISMarkingStructure object at 0x...>
+    >>> NotProprietary OBJ: <stix.extensions.marking.ais.NotProprietary object at 0x...>
+    >>> CISA_Proprietary: False
+    >>> Consent: EVERYONE
+    >>> TLP color: GREEN
+    >>> ----------INFORMATION SOURCE----------
+    >>> OBJ: <stix.extensions.identity.ciq_identity_3_0.STIXCIQIdentity3_0 object at 0x...>
+    >>> Organization Name: Example Corporation
+    >>> Country: US
+    >>> Country code type: ISO 3166-1 alpha-2
+    >>> Administrative area: US-VA
+    >>> Administrative area code type: ISO 3166-2
+    >>> Industry Type: Information Technology Sector|Communications Sector
 
 Constants
 ---------
