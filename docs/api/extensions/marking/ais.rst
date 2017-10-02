@@ -84,7 +84,7 @@ This corresponds to the XML result:
         xmlns:example="http://example.com"
         xmlns:stix-ciqidentity="http://stix.mitre.org/extensions/Identity#CIQIdentity3.0-1"
         xmlns:xlink="http://www.w3.org/1999/xlink"
-         id="example:Package-73ac199c-9dd8-4d8d-a37e-8ac40fc65ccf" version="1.2">
+         id="example:Package-73ac199c-9dd8-4d8d-a37e-8ac40fc65ccf" version="1.1.1">
         <stix:STIX_Header>
             <stix:Handling>
                 <marking:Marking>
@@ -195,7 +195,7 @@ The following corresponds to the JSON result:
                 }
             ]
         },
-        "version": "1.2",
+        "version": "1.1.1",
         "indicators": [
             {
                 "description": "Example using AIS",
