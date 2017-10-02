@@ -62,6 +62,9 @@ function.
     # Print the XML.
     print stix_package.to_xml()
 
+    # Print the JSON.
+    print stix_package.to_json()
+
 This corresponds to the XML result:
 
 .. code-block:: xml
@@ -125,6 +128,85 @@ This corresponds to the XML result:
         </stix:Indicators>
     </stix:STIX_Package>
 
+The following corresponds to the JSON result:
+
+.. code-block:: json
+
+    {
+        "stix_header": {
+            "handling": [
+                {
+                    "controlled_structure": "//node() | //@*",
+                    "information_source": {
+                        "identity": {
+                            "xsi:type": "stix-ciqidentity:CIQIdentity3.0InstanceType",
+                            "specification": {
+                                "organisation_info": {
+                                    "industry_type": "Information Technology Sector|Communications Sector"
+                                },
+                                "party_name": {
+                                    "organisation_names": [
+                                        {
+                                            "name_elements": [
+                                                {
+                                                    "value": "Example Corporation"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "addresses": [
+                                    {
+                                        "country": {
+                                            "name_elements": [
+                                                {
+                                                    "name_code_type": "ISO 3166-1 alpha-2",
+                                                    "name_code": "US"
+                                                }
+                                            ]
+                                        },
+                                        "administrative_area": {
+                                            "name_elements": [
+                                                {
+                                                    "name_code_type": "ISO 3166-2",
+                                                    "name_code": "US-VA"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "marking_structures": [
+                        {
+                            "xsi:type": "AIS:AISMarkingStructure",
+                            "not_proprietary": {
+                                "tlp_marking": {
+                                    "color": "GREEN"
+                                },
+                                "ais_consent": {
+                                    "consent": "EVERYONE"
+                                },
+                                "cisa_proprietary": "false"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "version": "1.2",
+        "indicators": [
+            {
+                "description": "Example using AIS",
+                "title": "My Indicator Example",
+                "timestamp": "2017-10-02T14:26:57.510000+00:00",
+                "id": "example:indicator-81466b8d-4efb-460f-ba13-b072420b9540"
+            }
+        ],
+        "id": "example:Package-a8c8135d-18d8-4384-903f-71285a02346e"
+    }
+
 Parsing AIS Markings
 --------------------
 
@@ -140,6 +222,7 @@ consumer of AIS would parse the data.
 
     # Parse STIX Package
     stix_package = STIXPackage.from_xml("stix_input.xml")
+    # stix_package = STIXPackage.from_json("stix_input.json")
 
     # Print all indicators
     for indicator in stix_package.indicators:
