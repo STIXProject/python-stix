@@ -6,8 +6,8 @@ import unittest
 from stix import report
 
 from stix.test import EntityTestCase, data_marking_test
-from stix.test.common import (kill_chains_test, information_source_test,
-    structured_text_test, related_test)
+from stix.test.common import (information_source_test, structured_text_test,
+                              related_test)
 
 
 class HeaderTests(EntityTestCase, unittest.TestCase):
@@ -50,6 +50,7 @@ class COAsTests(EntityTestCase, unittest.TestCase):
         {'idref': 'example:test-1'}
     ]
 
+
 class ExploitTargetsTests(EntityTestCase, unittest.TestCase):
     klass = report.ExploitTargets
 
@@ -57,12 +58,14 @@ class ExploitTargetsTests(EntityTestCase, unittest.TestCase):
         {'idref': 'example:test-1'}
     ]
 
+
 class IncidentsTests(EntityTestCase, unittest.TestCase):
     klass = report.Incidents
 
     _full_dict = [
         {'idref': 'example:test-1'}
     ]
+
 
 class IndicatorsTests(EntityTestCase, unittest.TestCase):
     klass = report.Indicators
@@ -83,12 +86,9 @@ class ThreatActorsTests(EntityTestCase, unittest.TestCase):
 class TTPsTests(EntityTestCase, unittest.TestCase):
     klass = report.TTPs
 
-    _full_dict = {
-        'kill_chains': kill_chains_test.KillChainsTests._full_dict,
-        'ttps': [
-            {'idref': 'example:test-1'}
-        ]
-    }
+    _full_dict = [
+        {'idref': 'example:test-1'}
+    ]
 
 
 class ReportTests(EntityTestCase, unittest.TestCase):

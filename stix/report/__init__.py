@@ -69,7 +69,7 @@ class Report(stix.Entity):
     indicators = fields.TypedField("Indicators", type_="stix.report.Indicators")
     incidents = fields.TypedField("Incidents", type_="stix.report.Incidents")
     threat_actors = fields.TypedField("Threat_Actors", type_="stix.report.ThreatActors")
-    ttps = fields.TypedField("TTPs", type_="stix.core.ttps.TTPs")
+    ttps = fields.TypedField("TTPs", type_="stix.report.TTPs")
     related_reports = fields.TypedField("Related_Reports", type_="stix.report.RelatedReports")
 
     def __init__(self, id_=None, idref=None, timestamp=None, header=None,
@@ -207,6 +207,7 @@ class Report(stix.Entity):
             error = error.format(type(entity))
             raise TypeError(error)
 
+
 class Campaigns(stix.EntityList):
     _binding = report_binding
     _namespace = 'http://stix.mitre.org/Report-1'
@@ -243,7 +244,6 @@ class Indicators(stix.EntityList):
     _binding = report_binding
     _namespace = 'http://stix.mitre.org/Report-1'
     _binding_class = _binding.IndicatorsType
-    _contained_type = Indicator
 
     indicator = fields.TypedField("Indicator", Indicator, multiple=True, key_name="indicators")
 
@@ -255,4 +255,10 @@ class ThreatActors(stix.EntityList):
 
     threat_actor = fields.TypedField("Threat_Actor", ThreatActor, multiple=True, key_name="threat_actors")
 
-from stix.core.ttps import TTPs
+
+class TTPs(stix.EntityList):
+    _binding = report_binding
+    _namespace = 'http://stix.mitre.org/Report-1'
+    _binding_class = _binding.TTPsType
+
+    ttp = fields.TypedField("TTP", TTP, multiple=True, key_name="ttps")
