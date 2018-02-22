@@ -7,18 +7,17 @@ A python library for parsing, manipulating, and generating STIX v1.2 content.
 :Documentation: http://stix.readthedocs.org
 :Information: https://stixproject.github.io/
 
-|travis badge| |landscape.io badge| |version badge| |downloads badge|
+|travis_badge| |landscape_io_badge| |version_badge|
 
-.. |travis badge| image:: https://api.travis-ci.org/STIXProject/python-stix.svg?branch=master
+.. |travis_badge| image:: https://api.travis-ci.org/STIXProject/python-stix.svg?branch=master
    :target: https://travis-ci.org/STIXProject/python-stix
    :alt: Build Status
-.. |landscape.io badge| image:: https://landscape.io/github/STIXProject/python-stix/master/landscape.svg
+.. |landscape_io_badge| image:: https://landscape.io/github/STIXProject/python-stix/master/landscape.svg
    :target: https://landscape.io/github/STIXProject/python-stix/master
    :alt: Code Health
-.. |version badge| image:: https://img.shields.io/pypi/v/stix.svg?maxAge=3600
+.. |version_badge| image:: https://img.shields.io/pypi/v/stix.svg?maxAge=3600
    :target: https://pypi.python.org/pypi/stix/
-.. |downloads badge| image:: https://img.shields.io/pypi/dm/stix.svg?maxAge=3600
-   :target: https://pypi.python.org/pypi/stix/
+   :alt: Version
 
 
 Installation
