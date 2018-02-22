@@ -282,7 +282,7 @@ class Indicator(stix.BaseCoreComponent):
 
         elif utils.is_sequence(value):
             if len(value) == 1:
-                self.observable = value
+                self.add_observable(value[0])
                 return
 
             observable_comp = ObservableComposition()
