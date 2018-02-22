@@ -81,9 +81,11 @@ class VocabFactory(entities.EntityFactory):
 
 
 class VocabString(stix.Entity):
+    __hash__ = entities.Entity.__hash__
+
     _binding = stix_common_binding
     _binding_class = stix_common_binding.ControlledVocabularyStringType
-    _namespace = "http://stix.mitre.org/common-1"
+    _namespace = 'http://stix.mitre.org/common-1'
 
     # All subclasses should override these
     _XSI_TYPE = None
