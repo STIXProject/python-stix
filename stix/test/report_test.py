@@ -118,12 +118,7 @@ class ReportTests(EntityTestCase, unittest.TestCase):
     }
 
     def test_report_with_stix_core_ttps_fails(self):
-        r = self.klass()
-
-        with self.assertRaises(TypeError) as exc_info:
-            r.ttps = TTPs()
-
-        assert str(exc_info.exception) == 'TTPs must be a <class \'stix.report.TTPs\'>, not a <class \'stix.core.ttps.TTPs\'>'
+        self.assertRaises(TypeError, self.klass().ttps, TTPs(), 'TTPs must be a <class \'stix.report.TTPs\'>, not a <class \'stix.core.ttps.TTPs\'>')
 
 
 if __name__ == "__main__":

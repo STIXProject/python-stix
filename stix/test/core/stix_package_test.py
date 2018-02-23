@@ -193,12 +193,7 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
         package.add_related_package(core.STIXPackage(idref='foo'))
 
     def test_setting_report_ttps_fails_on_stix_package(self):
-        package = core.STIXPackage()
-
-        with self.assertRaises(TypeError) as exc_info:
-            package.ttps = report.TTPs()
-
-        assert str(exc_info.exception) == 'TTPs must be a <class \'stix.core.ttps.TTPs\'>, not a <class \'stix.report.TTPs\'>'
+        self.assertRaises(TypeError, core.STIXPackage(), report.TTPs(), 'TTPs must be a <class \'stix.core.ttps.TTPs\'>, not a <class \'stix.report.TTPs\'>')
 
 
 if __name__ == "__main__":
