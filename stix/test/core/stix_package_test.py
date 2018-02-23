@@ -12,7 +12,7 @@ from stix.test.common import kill_chains_test, related_test
 
 from . import stix_header_test
 
-from stix import core
+from stix import core, report
 from stix.core import stix_package
 from stix.campaign import Campaign
 from stix.coa import CourseOfAction
@@ -39,6 +39,7 @@ class COAsTests(EntityTestCase, unittest.TestCase):
         {'idref': 'example:test-1'}
     ]
 
+
 class ExploitTargetsTests(EntityTestCase, unittest.TestCase):
     klass = stix_package.ExploitTargets
 
@@ -46,12 +47,14 @@ class ExploitTargetsTests(EntityTestCase, unittest.TestCase):
         {'idref': 'example:test-1'}
     ]
 
+
 class IncidentsTests(EntityTestCase, unittest.TestCase):
     klass = stix_package.Incidents
 
     _full_dict = [
         {'idref': 'example:test-1'}
     ]
+
 
 class IndicatorsTests(EntityTestCase, unittest.TestCase):
     klass = stix_package.Indicators
@@ -67,6 +70,7 @@ class ThreatActorsTests(EntityTestCase, unittest.TestCase):
     _full_dict = [
         {'idref': 'example:test-1'}
     ]
+
 
 class TTPsTests(EntityTestCase, unittest.TestCase):
     klass = stix_package.TTPs
@@ -187,6 +191,14 @@ class STIXPackageTests(EntityTestCase, unittest.TestCase):
     def test_related_package_idref_deprecation(self):
         package = core.STIXPackage()
         package.add_related_package(core.STIXPackage(idref='foo'))
+
+    def test_setting_report_ttps_fails_on_stix_package(self):
+        package = core.STIXPackage()
+
+        with self.assertRaises(TypeError) as exc_info:
+            package.ttps = report.TTPs()
+
+        assert str(exc_info.exception) == 'TTPs must be a <class \'stix.core.ttps.TTPs\'>, not a <class \'stix.report.TTPs\'>'
 
 
 if __name__ == "__main__":

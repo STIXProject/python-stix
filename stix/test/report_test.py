@@ -4,9 +4,9 @@
 import unittest
 
 from stix import report
+from stix.core.ttps import TTPs
 
 from stix.test import EntityTestCase, data_marking_test
-from stix.test.core import stix_package_test
 from stix.test.common import (information_source_test, structured_text_test,
                               related_test)
 
@@ -121,7 +121,7 @@ class ReportTests(EntityTestCase, unittest.TestCase):
         r = self.klass()
 
         with self.assertRaises(TypeError) as exc_info:
-            r.ttps = stix_package_test.TTPsTests.klass()
+            r.ttps = TTPs()
 
         assert str(exc_info.exception) == 'TTPs must be a <class \'stix.report.TTPs\'>, not a <class \'stix.core.ttps.TTPs\'>'
 
