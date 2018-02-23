@@ -6,6 +6,7 @@ import unittest
 from stix import report
 
 from stix.test import EntityTestCase, data_marking_test
+from stix.test.core import stix_package_test
 from stix.test.common import (information_source_test, structured_text_test,
                               related_test)
 
@@ -115,6 +116,14 @@ class ReportTests(EntityTestCase, unittest.TestCase):
         'related_reports': related_test.RelatedReportsTests._full_dict,
         'version': "1.0"
     }
+
+    def test_report_with_stix_core_ttps_fails(self):
+        r = self.klass()
+
+        with self.assertRaises(TypeError) as exc_info:
+            r.ttps = stix_package_test.TTPsTests.klass()
+
+        assert str(exc_info.exception) == 'TTPs must be a <class \'stix.report.TTPs\'>, not a <class \'stix.core.ttps.TTPs\'>'
 
 
 if __name__ == "__main__":
