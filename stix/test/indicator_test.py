@@ -423,7 +423,7 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
     def test_indicator_type_hashing(self):
         # https://github.com/STIXProject/python-stix/issues/338
         vocab_str = IndicatorType(value=IndicatorType.TERM_C2)
-        indicator_set = {vocab_str}
+        indicator_set = set([vocab_str])
 
     def test_datetime_format(self):
         indicator = Indicator(title="title")
