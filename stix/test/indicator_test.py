@@ -6,6 +6,7 @@ import unittest
 
 from cybox.core import Observable, ObservableComposition
 from cybox.objects.file_object import File
+import mixbox.typedlist
 from mixbox.vendor.six import text_type
 
 from stix.core import STIXPackage
@@ -492,6 +493,36 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
 
         self.assertEqual([obs.to_dict()],
                          [x.to_dict() for x in ind2.observables])
+
+    def test_set_indicator_observables_to_single_observable(self):
+        # https://github.com/STIXProject/python-stix/issues/325
+        i = Indicator()
+        o1 = Observable()
+        o2 = Observable()
+
+        i.observables = o1
+        self.assertEqual(type([]), type(i.observables))
+        self.assertEqual(1, len(i.observables))
+
+    def test_set_indicator_observables_to_list_of_two_observables(self):
+        # https://github.com/STIXProject/python-stix/issues/325
+        i = Indicator()
+        o1 = Observable()
+        o2 = Observable()
+
+        i.observables = [o1, o2]
+        self.assertEqual(mixbox.typedlist.TypedList, type(i.observables))
+        self.assertEqual(2, len(i.observables))
+
+    def test_set_indicator_observables_to_list_of_one_observable(self):
+        # https://github.com/STIXProject/python-stix/issues/325
+        i = Indicator()
+        o1 = Observable()
+        o2 = Observable()
+
+        i.observables = [o1]
+        self.assertEqual(type([]), type(i.observables))
+        self.assertEqual(1, len(i.observables))
 
 
 class RelatedCampaignReferencesTests(unittest.TestCase, EntityTestCase):
