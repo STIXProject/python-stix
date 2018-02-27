@@ -9,6 +9,7 @@ from cybox.objects.file_object import File
 import mixbox.typedlist
 from mixbox.vendor.six import text_type
 
+from stix.common.vocabs import IndicatorType, VocabString
 from stix.indicator import Indicator, RelatedCampaignRefs, ValidTime
 
 from stix.test import EntityTestCase
@@ -418,6 +419,11 @@ class IndicatorTest(EntityTestCase, unittest.TestCase):
         }
 
         self._test_partial_dict(d)
+
+    def test_indicator_type_hashing(self):
+        # https://github.com/STIXProject/python-stix/issues/338
+        vocab_str = IndicatorType(value=IndicatorType.TERM_C2)
+        indicator_set = {vocab_str}
 
     def test_datetime_format(self):
         indicator = Indicator(title="title")
