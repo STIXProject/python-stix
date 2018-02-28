@@ -2,19 +2,15 @@
 # See LICENSE.txt for complete terms.
 
 # mixbox
-from mixbox import fields
-from mixbox import typedlist
+from mixbox import fields, typedlist
 
 # internal
 import stix
+import stix.bindings.ttp as ttp_binding
 from stix.common import ToolInformation
 from stix.common.identity import Identity, IdentityFactory
-import stix.bindings.ttp as ttp_binding
+from stix.ttp.infrastructure import Infrastructure
 
-# relative
-from .infrastructure import Infrastructure
-
-from mixbox import entities, fields
 
 class _IdentityList(typedlist.TypedList):
     def __init__(self, *args):
