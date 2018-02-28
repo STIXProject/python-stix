@@ -5,7 +5,6 @@ from mixbox import fields
 
 # internal
 import stix
-import stix.utils as utils
 import stix.bindings.incident as incident_binding
 from stix.common.datetimewithprecision import DATETIME_PRECISION_VALUES
 
@@ -27,7 +26,7 @@ class JournalEntry(stix.Entity):
 
     value = fields.TypedField("valueOf_", key_name="value")
     author = fields.TypedField("author")
-    time = fields.TypedField("time")  # TODO: utils.dates.parse_value(value)
+    time = fields.DateTimeField("time")
     time_precision = fields.TypedField("time_precision", preset_hook=validate_precision)
 
     def __init__(self, value=None):
