@@ -60,7 +60,13 @@ class ResourcesTests(EntityTestCase, unittest.TestCase):
         'personas': PersonasTests._full_dict,
         'tools':  [
             {
-                'title': "Tool"
+                'title': "Tool",
+                'type': [
+                    {
+                        'value': 'Malware',
+                        'xsi:type': 'stixVocabs:AttackerToolTypeVocab-1.0'
+                    }
+                ]
             }
         ],
         'infrastructure': InfrastructureTests._full_dict
@@ -70,7 +76,7 @@ class ResourcesTests(EntityTestCase, unittest.TestCase):
 class MalwareInstanceTests(EntityTestCase, unittest.TestCase):
     klass = malware_instance.MalwareInstance
 
-    _full_dict =  _full_dict = {
+    _full_dict = {
         'id': 'example:test-1',
         'title': 'Title',
         'description': 'Description',
@@ -135,6 +141,7 @@ class BehaviorTests(EntityTestCase, unittest.TestCase):
         'attack_patterns': AttackPatternsTests._full_dict
     }
 
+
 class TTPTests(EntityTestCase, unittest.TestCase):
     klass = ttp.TTP
     _full_dict = {
@@ -148,6 +155,7 @@ class TTPTests(EntityTestCase, unittest.TestCase):
         'exploit_targets': ExploitTargetsTests._full_dict,
         'behavior': BehaviorTests._full_dict
     }
+
 
 if __name__ == "__main__":
     unittest.main()
