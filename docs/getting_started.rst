@@ -10,7 +10,7 @@ This page gives an introduction to **python-stix** and how to use it.
 Prerequisites
 -------------
 
-The python-stix library provides an API for creating or processing STIX content. As such, it is a developer tool that can be leveraged by those who know Python 2.6/2.7 and are familiar with object-oriented programming practices, Python package layouts, and are comfortable with the installation of Python libraries. To contribute code to the python-stix repository, users must be familiar with `git`_ and `GitHub pull request`_ methodologies. Understanding XML, XML Schema, and the STIX language is also incredibly helpful when using python-stix in an application.
+The python-stix library provides an API for creating or processing STIX content. As such, it is a developer tool that can be leveraged by those who know Python 2.7/3.3+ and are familiar with object-oriented programming practices, Python package layouts, and are comfortable with the installation of Python libraries. To contribute code to the python-stix repository, users must be familiar with `git`_ and `GitHub pull request`_ methodologies. Understanding XML, XML Schema, and the STIX language is also incredibly helpful when using python-stix in an application.
 
 .. _git: http://git-scm.com/documentation
 .. _GitHub pull request: https://help.github.com/articles/using-pull-requests
