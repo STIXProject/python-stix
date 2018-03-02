@@ -27,7 +27,7 @@ with open('README.rst') as f:
 install_requires = [
     'lxml>=2.3',
     'python-dateutil',
-    'cybox>=2.1.0.13.dev1,<2.1.1.0',
+    'cybox>=2.1.0.13,<2.1.1.0',
     'mixbox>=1.0.2',
 ]
 
@@ -48,7 +48,6 @@ setup(
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.3',
