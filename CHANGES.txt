@@ -1,3 +1,12 @@
+Version 1.1.1.10
+2018-03-06
+- #343 Create separate test environments for when maec is or is not installed
+- #339 [Python3 not supported - v1.1/1.2] to_json vaguely broken on some files
+- #338 VocabTypes are unhashable in 1.1.1.x on Python 3
+- #325 Bug in Indicator class setter for observables property
+- Change stix.ToolInformation to use AttackerToolType vocab
+- Removed Python 2.6 environment from CI tests
+
 Version 1.1.1.9
 2017-05-25
 - Support Python 3.6
