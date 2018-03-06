@@ -43,7 +43,7 @@ class Report(stix.Entity):
             ``datetime.datetime`` or ``str``.
         header: A Report :class:`.Header` object.
         campaigns: A collection of :class:`.Campaign` objects.
-        course_of_action: A collection of :class:`.CourseOfAction` objects.
+        courses_of_action: A collection of :class:`.CourseOfAction` objects.
         exploit_targets: A collection of :class:`.ExploitTarget` objects.
         incidents: A collection of :class:`.Incident` objects.
         indicators: A collection of :class:`.Indicator` objects.
@@ -59,7 +59,7 @@ class Report(stix.Entity):
 
     id_ = fields.IdField("id")
     idref = fields.IdrefField("idref")
-    timestamp = fields.TypedField("timestamp")
+    timestamp = fields.DateTimeField("timestamp")
     version = fields.TypedField("version")
     header = fields.TypedField("Header", Header)
     campaigns = fields.TypedField("Campaigns", type_="stix.report.Campaigns")
