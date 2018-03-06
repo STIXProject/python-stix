@@ -3,7 +3,9 @@
 
 # external
 from mixbox import fields
+
 import cybox.common
+from cybox.common.vocabs import VocabField
 
 # internal
 import stix
@@ -11,6 +13,7 @@ import stix.bindings.stix_common as common_binding
 
 # relative
 from .structured_text import StructuredText
+from .vocabs import AttackerToolType
 
 
 class ToolInformation(stix.Entity, cybox.common.ToolInformation):
@@ -20,6 +23,7 @@ class ToolInformation(stix.Entity, cybox.common.ToolInformation):
 
     title = fields.TypedField("Title")
     short_description = fields.TypedField("Short_Description", StructuredText)
+    type_ = VocabField("Type", AttackerToolType, multiple=True)
 
     def __init__(self, title=None, short_description=None, tool_name=None,
                  tool_vendor=None):

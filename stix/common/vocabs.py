@@ -5,9 +5,10 @@
 from functools import partial
 
 # mixbox
-from mixbox import fields
-from mixbox import entities
-from mixbox import typedlist
+from mixbox import entities, fields, typedlist
+
+# cybox
+from cybox.common import vocabs
 
 # stix
 import stix
@@ -24,7 +25,7 @@ def validate_value(instance, value):
     elif value in allowed:
         return
     else:
-        error = "Value must be one of {allowed}. Received '{value}'"
+        error = "Value for vocab {instance.__class__} must be one of {allowed}. Received '{value}'"
         error = error.format(**locals())
         raise ValueError(error)
 
@@ -123,7 +124,6 @@ class VocabString(stix.Entity):
         if self.is_plain():
             return self.value
         return super(VocabString, self).to_dict()
-
 
     @classmethod
     def from_dict(cls, cls_dict):
@@ -306,11 +306,12 @@ class DiscoveryMethod_2_0(VocabString):
     TERM_USER = "User"
 
 
+@vocabs.register_vocab
 @register_vocab
-class AttackerToolType_1_0(VocabString):
-    _namespace = "http://stix.mitre.org/default_vocabularies-1"
-    _XSI_TYPE = "stixVocabs:AttackerToolTypeVocab-1.0"
-    _VOCAB_VERSION = "1.0"
+class AttackerToolType_1_0(vocabs.VocabString):
+    _namespace = 'http://stix.mitre.org/default_vocabularies-1'
+    _XSI_TYPE = 'stixVocabs:AttackerToolTypeVocab-1.0'
+    _VOCAB_VERSION = '1.0'
 
     TERM_APPLICATION_SCANNER = "Application Scanner"
     TERM_MALWARE = "Malware"
