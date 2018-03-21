@@ -1,3 +1,7 @@
+Version 1.1.1.11
+2018-03-21
+- Fix issue with PyPI.
+
 Version 1.1.1.10
 2018-03-06
 - #343 Create separate test environments for when maec is or is not installed
