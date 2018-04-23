@@ -7,7 +7,7 @@ from cybox.core import Observables
 # internal
 import stix
 import stix.bindings.ttp as ttp_binding
-from stix.common import vocabs, VocabString
+from stix.common import vocabs
 from stix.common.identity import Identity, IdentityFactory
 from mixbox import fields
 
@@ -21,6 +21,7 @@ class VictimTargeting(stix.Entity):
 
     targeted_systems = vocabs.VocabField("Targeted_Systems", vocabs.SystemType, multiple=True)
     targeted_information = vocabs.VocabField("Targeted_Information", vocabs.InformationType, multiple=True)
+    targeted_technical_details = fields.TypedField("Targeted_Technical_Details", Observables)
 
     def __init__(self):
         super(VictimTargeting, self).__init__()
