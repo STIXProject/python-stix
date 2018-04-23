@@ -9,7 +9,7 @@ from stix.test.common import related_test, identity_test
 import stix.ttp as ttp
 from stix.ttp import (
     resource, infrastructure, exploit_targets, malware_instance, exploit,
-    attack_pattern, behavior
+    attack_pattern, behavior, victim_targeting
 )
 
 
@@ -142,6 +142,43 @@ class BehaviorTests(EntityTestCase, unittest.TestCase):
     }
 
 
+class VictimTargetingTests(EntityTestCase, unittest.TestCase):
+    klass = victim_targeting.VictimTargeting
+
+    _full_dict = {
+        'identity': {
+            'specification': {
+                'organisation_info': {
+                    'industry_type': 'Electricity, Industrial Control Systems'
+                }
+            },
+            'xsi:type': 'stix-ciqidentity:CIQIdentity3.0InstanceType'
+        },
+        'targeted_systems': [
+            {
+                'value': 'Industrial Control Systems',
+                'xsi:type': 'stixVocabs:SystemTypeVocab-1.0'
+            }
+        ],
+        'targeted_information': [
+            {
+                'value': 'Information Assets - Intellectual Property',
+                'xsi:type': 'stixVocabs:InformationTypeVocab-1.0'
+            }
+        ],
+        'targeted_technical_details': {
+            'major_version': 2,
+            'minor_version': 1,
+            'update_version': 0,
+            'observables': [
+                {
+                    'idref': "example:Observable-2"
+                }
+            ]
+        }
+    }
+
+
 class TTPTests(EntityTestCase, unittest.TestCase):
     klass = ttp.TTP
     _full_dict = {
@@ -153,7 +190,8 @@ class TTPTests(EntityTestCase, unittest.TestCase):
         'resources': ResourcesTests._full_dict,
         'handling': data_marking_test.MarkingTests._full_dict,
         'exploit_targets': ExploitTargetsTests._full_dict,
-        'behavior': BehaviorTests._full_dict
+        'behavior': BehaviorTests._full_dict,
+        'victim_targeting': VictimTargetingTests._full_dict
     }
 
 
