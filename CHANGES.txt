@@ -1,3 +1,7 @@
+Version 1.2.0.6
+2018-04-25
+- #347 Property targeted_technical_details missing in VictimTargeting class
+
 Version 1.2.0.5
 2018-03-06
 - #343 Create separate test environments for when maec is or is not installed
