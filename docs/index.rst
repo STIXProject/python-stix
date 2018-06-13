@@ -71,6 +71,18 @@ API Reference
    api/index
    api/coverage
 
+FAQ
+===
+
+- My RAM consumption rises when processing a large amount of files.
+    This problem is caused by a python-cybox_ caching mechanism that is enabled
+    by default. To prevent this issue from happening use the
+    ``cybox.utils.caches.cache_clear()`` method in your code/script to release
+    the cached resources as appropriate. Refer to the ``cybox`` documentation
+    for more details.
+
+.. _python-cybox: http://cybox.readthedocs.io/
+
 Contributing
 ============
 If a bug is found, a feature is missing, or something just isn't behaving the way you'd expect it to, please submit an issue to our `tracker`_. If you'd like to contribute code to our repository, you can do so by issuing a `pull request`_ and we will work with you to try and integrate that code into our repository.
