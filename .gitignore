@@ -15,6 +15,7 @@
 # pycharm
 .idea/ 
 .idea
+.pytest_cache/
 
 # python setuptools
 build/
