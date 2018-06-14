@@ -5,9 +5,9 @@ The **python-stix** library provides an API for developing and consuming *Struct
 
 .. note::
 
-	These docs provide standard reference for this Python library. For documentation on *idiomatic* usage and *common patterns*, as well as various STIX-related information and utilities, please visit the `STIXProject at GitHub`_.
+    These docs provide standard reference for this Python library. For documentation on *idiomatic* usage and *common patterns*, as well as various STIX-related information and utilities, please visit the `STIXProject at GitHub`_.
 
-	.. _STIXProject at GitHub: http://stixproject.github.io/
+    .. _STIXProject at GitHub: http://stixproject.github.io/
 
 .. _STIX website: http://stix.mitre.org
 
@@ -66,6 +66,18 @@ API Reference
 
    api/index
    api/coverage
+
+FAQ
+===
+
+- My RAM consumption rises when processing a large amount of files.
+    This problem is caused by a python-cybox_ caching mechanism that is enabled
+    by default. To prevent this issue from happening use the
+    ``cybox.utils.caches.cache_clear()`` method in your code/script to release
+    the cached resources as appropriate. Refer to the ``cybox`` documentation
+    for more details.
+
+.. _python-cybox: http://cybox.readthedocs.io/
 
 Contributing
 ============
