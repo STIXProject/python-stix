@@ -29,7 +29,7 @@ Classes
         add_short_description, add_test_mechanism, add_valid_time_position,
         alternative_id, confidence, description, descriptions, find,
         get_produced_time, get_received_time, handling, id_, idref,
-        indicated_ttps, indicator_types, information_source, kill_chain_phases,
+        indicated_ttps, indicator_types, kill_chain_phases,
         likely_impact, negate, observable, observable_composition_operator,
         observables, producer, related_campaigns, related_indicators,
         related_packages, set_produced_time, set_producer_identity,
