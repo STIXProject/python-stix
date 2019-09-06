@@ -1,10 +1,15 @@
 language: python
+sudo: false   # Since this is an older project, this is not the default.
+cache: pip
+dist: xenial
 python:
   - "2.7"
   - "3.4"
   - "3.5"
   - "3.6"
+  - "3.7"
 install:
+  - pip install -U pip setuptools
   - pip install tox-travis
 script:
   - tox
