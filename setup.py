@@ -45,6 +45,7 @@ setup(
     url="http://stix.mitre.org",
     packages=find_packages(),
     install_requires=install_requires,
+    license="BSD",
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
