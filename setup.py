@@ -43,7 +43,7 @@ setup(
     author_email="stix@mitre.org",
     description="An API for parsing and generating STIX content.",
     long_description=get_long_description(),
-    url="http://stix.mitre.org",
+    url="https://stixproject.github.io/",
     packages=find_packages(),
     install_requires=install_requires,
     license="BSD",
@@ -59,5 +59,10 @@ setup(
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
-    ]
+    ],
+    project_urls={
+        'Documentation': 'https://stix.readthedocs.io/',
+        'Source Code': 'https://github.com/STIXProject/python-stix/',
+        'Bug Tracker': 'https://github.com/STIXProject/python-stix/issues/',
+    },
 )
