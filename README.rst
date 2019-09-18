@@ -6,6 +6,7 @@ A python library for parsing, manipulating, and generating `Structured Threat In
 :Source: https://github.com/STIXProject/python-stix
 :Documentation: https://stix.readthedocs.io/
 :Information: https://stixproject.github.io/
+:Download: https://pypi.python.org/pypi/stix/
 
 |travis_badge| |landscape_io_badge| |version_badge|
 
