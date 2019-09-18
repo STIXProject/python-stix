@@ -3,6 +3,7 @@
 # Copyright (c) 2016, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from io import open  # Allow `encoding` kwarg on Python 2.7
 from os.path import abspath, dirname, join
 
 
@@ -22,16 +23,16 @@ def get_version():
 
 
 def get_long_description():
-    with open('README.rst') as f:
+    with open('README.rst', encoding='utf-8') as f:
         return f.read()
 
 
 install_requires = [
     'lxml>=2.2.3 ; python_version == "2.7" or python_version >= "3.5"',
     'lxml>=2.2.3,<4.4.0 ; python_version > "2.7" and python_version < "3.5"',
-    'python-dateutil',
-    'cybox>=2.1.0.13,<2.1.1.0',
     'mixbox>=1.0.2',
+    'cybox>=2.1.0.13,<2.1.1.0',
+    'python-dateutil',
 ]
 
 
