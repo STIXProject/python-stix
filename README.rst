@@ -1,10 +1,10 @@
 python-stix
 ===========
 
-A python library for parsing, manipulating, and generating STIX v1.2 content.
+A python library for parsing, manipulating, and generating `Structured Threat Information eXpression (STIX™) <https://stixproject.github.io/>`_ v1.2.0 content.
 
 :Source: https://github.com/STIXProject/python-stix
-:Documentation: http://stix.readthedocs.org
+:Documentation: https://stix.readthedocs.io/
 :Information: https://stixproject.github.io/
 
 |travis_badge| |landscape_io_badge| |version_badge|
@@ -24,7 +24,7 @@ Installation
 ------------
 
 The python-stix library is hosted on `PyPI
-<https://pypi.python.org/pypi/stix/>`_ and the most recent stable version can be 
+<https://pypi.python.org/pypi/stix/>`_ and the most recent stable version can be
 installed with `pip <https://pypi.python.org/pypi/pip>`_:
 
 ::
@@ -60,13 +60,13 @@ Installation on Windows
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Download the Lxml wheel for your version of Python from
-http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml, then install it via "pip install 
+http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml, then install it via "pip install
 <filename>.whl". For example, to install it on 64-bit Windows running Python 2.7:
 
 ::
 
-    > pip install lxml-3.6.1-cp27-cp27m-win_amd64.whl
-    > pip install stix
+    $ pip install lxml-3.6.1-cp27-cp27m-win_amd64.whl
+    $ pip install stix
 
 Versioning
 ----------

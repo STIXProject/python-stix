@@ -3,6 +3,7 @@
 # Copyright (c) 2017, The MITRE Corporation. All rights reserved.
 # See LICENSE.txt for complete terms.
 
+from io import open  # Allow `encoding` kwarg on Python 2.7
 from os.path import abspath, dirname, join
 
 
@@ -22,7 +23,7 @@ def get_version():
 
 
 def get_long_description():
-    with open('README.rst') as f:
+    with open('README.rst', encoding='utf-8') as f:
         return f.read()
 
 
@@ -45,7 +46,6 @@ setup(
     url="http://stix.mitre.org",
     packages=find_packages(),
     install_requires=install_requires,
-    license="BSD",
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
