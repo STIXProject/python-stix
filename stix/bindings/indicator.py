@@ -225,12 +225,12 @@ class TestMechanismType(GeneratedsSuper):
     reference to the ID of a Test Mechanism specified elsewhere."""
     subclass = None
     superclass = None
-    def __init__(self, idref=None, id=None, Efficacy=None, Producer=None, xsi_type=None):
+    def __init__(self, idref=None, id=None, Efficacy=None, Producer=None):
         self.idref = _cast(None, idref)
         self.id = _cast(None, id)
         self.Efficacy = Efficacy
         self.Producer = Producer
-        self.xsi_type = xsi_type
+        # self.xsi_type = xsi_type
     def factory(*args_, **kwargs_):
         if TestMechanismType.subclass:
             return TestMechanismType.subclass(*args_, **kwargs_)
@@ -278,9 +278,9 @@ class TestMechanismType(GeneratedsSuper):
         if self.id is not None and 'id' not in already_processed:
             already_processed.add('id')
             lwrite(' id=%s' % (quote_attrib(self.id), ))
-        if self.xsi_type is not None and 'xsi:type' not in already_processed:
-            already_processed.add('xsi:type')
-            lwrite('  xsi:type="%s"' % self.xsi_type)
+        # if self.xsi_type is not None and 'xsi:type' not in already_processed:
+        #     already_processed.add('xsi:type')
+        #     lwrite('  xsi:type="%s"' % self.xsi_type)
 
     def exportChildren(self, lwrite, level, nsmap, namespace_=XML_NS, name_='TestMechanismType', fromsubclass_=False, pretty_print=True):
         if pretty_print:
