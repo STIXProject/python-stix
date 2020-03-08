@@ -36,8 +36,16 @@ class CIQIdentity3_0InstanceTests(EntityTestCase, unittest.TestCase):
                 ],
                 'person_names': [
                     {
+                        'type': 'LegalName',
                         'name_elements': [
-                            {'value': 'John Smith'}
+                            {
+                                'element_type': 'FirstName',
+                                'value': 'John',
+                            },
+                            {
+                                'element_type': 'LastName',
+                                'value': 'Smith',
+                            }
                         ]
                     },
                     {
