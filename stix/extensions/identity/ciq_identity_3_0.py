@@ -1028,12 +1028,52 @@ class PersonName(stix.Entity):
     _namespace = XML_NS_XNL
     XML_TAG = "{%s}PersonName" % _namespace
 
-    def __init__(self, name_elements=None):
+    TYPE_ALIAS = 'Alias'
+    TYPE_LEGAL_NAME = 'LegalName'
+    TYPE_KNOWN_AS = 'KnownAs'
+    TYPE_MAIDEN_NAME = 'MaidenName'
+    TYPE_FORMER_NAME = 'FormerName'
+    TYPE_COMMON_USE = 'CommonUse'
+    TYPE_NAME_AT_BIRTH = 'NameAtBirth'
+    TYPE_PREFERRED_NAME = 'PreferredName'
+    TYPE_OFFICIAL_NAME = 'OfficialName'
+    TYPE_UNOFFICIAL_NAME = 'UnofficialName'
+    TYPE_NICK_NAME = 'NickName'
+    TYPE_PET_NAME = 'PetName'
+
+    TYPES = (
+        TYPE_ALIAS,
+        TYPE_LEGAL_NAME,
+        TYPE_KNOWN_AS,
+        TYPE_MAIDEN_NAME,
+        TYPE_FORMER_NAME,
+        TYPE_COMMON_USE,
+        TYPE_NAME_AT_BIRTH,
+        TYPE_PREFERRED_NAME,
+        TYPE_OFFICIAL_NAME,
+        TYPE_UNOFFICIAL_NAME,
+        TYPE_NICK_NAME,
+        TYPE_PET_NAME,
+    )
+
+    def __init__(self, name_elements=None, type_=None):
         self.name_elements = []
+        self.type_ = type_
 
         if name_elements:
             for name_element in name_elements:
                 self.add_name_element(name_element)
+
+    @property
+    def type_(self):
+        return self._type
+
+    @type_.setter
+    def type_(self, value):
+        if value and value not in self.TYPES:
+            raise ValueError('value must be one of %s: ' % (self.TYPES,))
+
+        self._type = value
 
     def add_name_element(self, value):
         if isinstance(value, string_types):
@@ -1050,6 +1090,9 @@ class PersonName(stix.Entity):
             root_tag = PersonName.XML_TAG
             return_obj = et.Element(root_tag)
 
+        if self.type_:
+            return_obj.attrib['{%s}Type' % XML_NS_XNL] = self.type_
+
         for name_element in self.name_elements:
             return_obj.append(name_element.to_obj(ns_info=ns_info))
 
@@ -1063,6 +1106,8 @@ class PersonName(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
+        return_obj.type_ = obj.attrib.get('{%s}Type' % XML_NS_XNL)
+
         name_elements = obj.findall(PersonNameElement.XML_TAG)
         if name_elements:
             for name_element_obj in name_elements:
@@ -1073,6 +1118,9 @@ class PersonName(stix.Entity):
 
     def to_dict(self):
         d = {}
+
+        if self.type_:
+            d['type'] = self.type_
 
         if self.name_elements:
             for ne in self.name_elements:
@@ -1088,6 +1136,8 @@ class PersonName(stix.Entity):
         if not return_obj:
             return_obj = cls()
 
+        return_obj.type_ = dict_repr.get('type')
+
         ne_dicts = dict_repr.get('name_elements', [])
 
         for ne_dict in ne_dicts:
@@ -1100,10 +1150,39 @@ class OrganisationName(stix.Entity):
     _namespace = XML_NS_XNL
     XML_TAG = "{%s}OrganisationName" % _namespace
 
+    TYPE_LEGAL_NAME = 'LegalName'
+    TYPE_FORMER_NAME = 'FormerName'
+    TYPE_COMMON_USE = 'CommonUse'
+    TYPE_PUBLISHING_NAME = 'PublishingName'
+    TYPE_OFFICIAL_NAME = 'OfficialName'
+    TYPE_UNOFFICIAL_NAME = 'UnofficialName'
+    TYPE_UNDEFINED = 'Undefined'
+
+    TYPES = (
+        TYPE_LEGAL_NAME,
+        TYPE_FORMER_NAME,
+        TYPE_COMMON_USE,
+        TYPE_PUBLISHING_NAME,
+        TYPE_OFFICIAL_NAME,
+        TYPE_UNOFFICIAL_NAME,
+        TYPE_UNDEFINED,
+    )
+
     def __init__(self, name_elements=None, subdivision_names=None, type_=None):
         self.type_ = type_
         self.name_elements = name_elements
         self.subdivision_names = subdivision_names
+
+    @property
+    def type_(self):
+        return self._type
+
+    @type_.setter
+    def type_(self, value):
+        if value and value not in self.TYPES:
+            raise ValueError('value must be one of %s: ' % (self.TYPES,))
+
+        self._type = value
 
     @property
     def name_elements(self):
@@ -1235,9 +1314,6 @@ class _BaseNameElement(stix.Entity):
 
     @value.setter
     def value(self, value):
-        # if not value:
-        #    raise ValueError('value cannot be None')
-
         self._value = value
 
     @classmethod
@@ -1270,8 +1346,8 @@ class PersonNameElement(_BaseNameElement):
     _namespace = XML_NS_XNL
     XML_TAG = "{%s}NameElement" % _namespace
 
-    TYPE_TITLE = 'Title'
     TYPE_PRECEDING_TITLE = 'PrecedingTitle'
+    TYPE_TITLE = 'Title'
     TYPE_FIRST_NAME = 'FirstName'
     TYPE_MIDDLE_NAME = 'MiddleName'
     TYPE_LAST_NAME = 'LastName'
