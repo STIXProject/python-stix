@@ -51,9 +51,9 @@ class COATests(EntityTestCase, unittest.TestCase):
         },
         'objective': ObjectiveTests._full_dict,
         'parameter_observables': {
-            'major_version': 2,
-            'minor_version': 1,
-            'update_version': 0,
+            'cybox_major_version': '2',
+            'cybox_minor_version': '1',
+            'cybox_update_version': '0',
             'observables': [
                 {
                     'idref': "example:Observable-1"
