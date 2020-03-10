@@ -1,3 +1,13 @@
+Version 1.1.1.15
+2020-03-09
+- #357 Add xnl:Type to the PersonName element (CIQ)
+- Update the allowable values for PersonName and OrganisationName
+- Update tests per recent CybOX release
+
+Version 1.1.1.14
+2019-11-26
+- #361 fix problem with lookup_extension for TestMechanism
+
 Version 1.1.1.13
 2019-09-06
 - Update package requirements
