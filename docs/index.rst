@@ -22,15 +22,15 @@ version of STIX.
 ============ ===================
 STIX Version python-stix Version
 ============ ===================
-1.2          1.2.0.7  (`PyPI`__) (`GitHub`__)
+1.2          1.2.0.8  (`PyPI`__) (`GitHub`__)
 1.1.1        1.1.1.15 (`PyPI`__) (`GitHub`__)
 1.1.0        1.1.0.6  (`PyPI`__) (`GitHub`__)
 1.0.1        1.0.1.1  (`PyPI`__) (`GitHub`__)
 1.0          1.0.0a7  (`PyPI`__) (`GitHub`__)
 ============ ===================
 
-__ https://pypi.python.org/pypi/stix/1.2.0.7
-__ https://github.com/STIXProject/python-stix/tree/v1.2.0.7
+__ https://pypi.python.org/pypi/stix/1.2.0.8
+__ https://github.com/STIXProject/python-stix/tree/v1.2.0.8
 __ https://pypi.python.org/pypi/stix/1.1.1.15
 __ https://github.com/STIXProject/python-stix/tree/v1.1.1.15
 __ https://pypi.python.org/pypi/stix/1.1.0.6
