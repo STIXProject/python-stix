@@ -1,3 +1,9 @@
+Version 1.2.0.8
+2020-03-09
+- #357 Add xnl:Type to the PersonName element (CIQ)
+- Update the allowable values for PersonName and OrganisationName
+- Update tests per recent CybOX release
+
 Version 1.2.0.7
 2019-09-06
 - Update package requirements
