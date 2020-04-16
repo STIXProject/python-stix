@@ -1,5 +1,5 @@
+os: linux
 language: python
-sudo: false   # Since this is an older project, this is not the default.
 cache: pip
 dist: xenial
 python:
@@ -8,6 +8,7 @@ python:
   - "3.5"
   - "3.6"
   - "3.7"
+  - "3.8"
 install:
   - pip install -U pip setuptools
   - pip install tox-travis
