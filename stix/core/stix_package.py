@@ -180,7 +180,7 @@ class STIXPackage(stix.Entity):
         """
         if self.ttps is None:
             self.ttps = TTPs()
-        self.ttps.append(ttp)
+        self.ttps.ttp.append(ttp)
 
     def add_report(self, report):
         """Adds a :class:`.Report` object to the :attr:`reports` collection.
