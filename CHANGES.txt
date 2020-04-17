@@ -1,3 +1,8 @@
+Version 1.1.1.16
+2020-04-16
+- #364 TTPs would fail to serialize XML Kill_Chains if no TTP was set
+- Added Python 3.8 to test harness
+
 Version 1.1.1.15
 2020-03-09
 - #357 Add xnl:Type to the PersonName element (CIQ)
