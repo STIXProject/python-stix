@@ -1,3 +1,7 @@
+Version 1.1.1.17
+2020-04-21
+- #365 AISMarkingStructure not serializing correctly. PY3 compatibility issue
+
 Version 1.1.1.16
 2020-04-16
 - #364 TTPs would fail to serialize XML Kill_Chains if no TTP was set
