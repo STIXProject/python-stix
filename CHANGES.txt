@@ -1,3 +1,8 @@
+Version 1.1.1.18
+2020-05-01
+- #366 Check add_reference methods to prevent NoneType has no attribute 'append'
+- Changes to STIXPackage to prevent the empty <stix:TTPs/> tag from appearing in serialization
+
 Version 1.1.1.17
 2020-04-21
 - #365 AISMarkingStructure not serializing correctly. PY3 compatibility issue
