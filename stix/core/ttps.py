@@ -26,3 +26,8 @@ class TTPs(stix.Entity):
 
     def add_ttp(self, ttp):
         self.ttp.append(ttp)
+
+    def add_kill_chain(self, kc):
+        if self.kill_chains is None:
+            self.kill_chains = KillChains()
+        self.kill_chains.kill_chain.append(kc)

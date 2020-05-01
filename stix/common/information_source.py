@@ -47,6 +47,8 @@ class InformationSource(stix.Entity):
     def add_reference(self, value):
         if not value:
             return
+        if self.references is None:
+            self.references = References()
         # TODO: Check if it's a valid URI?
         self.references.append(value)
 
