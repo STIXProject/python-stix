@@ -104,7 +104,7 @@ class STIXPackage(stix.Entity):
         self.indicators = indicators or Indicators()
         self.incidents = incidents or Incidents()
         self.threat_actors = threat_actors or ThreatActors()
-        self.ttps = ttps or TTPs()
+        self.ttps = ttps
         self.related_packages = related_packages
         self.reports = reports or Reports()
         self.timestamp = timestamp

@@ -22,7 +22,7 @@ class InformationSource(stix.Entity):
     _binding_class = stix_common_binding.InformationSourceType
     _namespace = 'http://stix.mitre.org/common-1'
 
-    identity = fields.TypedField("Identity", type_=Identity, factory=IdentityFactory)
+    identity = fields.TypedField("Identity", Identity, factory=IdentityFactory)
     descriptions = fields.TypedField("Description", StructuredTextList)
     contributing_sources = fields.TypedField("Contributing_Sources", type_="stix.common.information_source.ContributingSources")
     time = fields.TypedField("Time", cybox.common.Time)
@@ -39,15 +39,15 @@ class InformationSource(stix.Entity):
         self.time = time
         self.tools = tools
         self.references = references
-        #self.roles = None
     
     def add_contributing_source(self, value):
         self.contributing_sources.append(value)
 
-
     def add_reference(self, value):
         if not value:
             return
+        if self.references is None:
+            self.references = References()
         # TODO: Check if it's a valid URI?
         self.references.append(value)
 
@@ -80,7 +80,6 @@ class InformationSource(stix.Entity):
         """
         self.descriptions.add(description)
 
-
     def add_role(self, value):
         self.roles.append(value)
 
@@ -95,4 +94,3 @@ class ContributingSources(stix.EntityList):
     @classmethod
     def _dict_as_list(cls):
         return False
-    
