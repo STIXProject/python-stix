@@ -1,3 +1,7 @@
+Version 1.2.0.11
+2020-11-16
+- #367 Fix deprecation warning from collections module
+
 Version 1.2.0.10
 2020-05-01
 - #366 Check add_reference methods to prevent NoneType has no attribute 'append'
@@ -55,6 +59,19 @@ Version 1.2.0.2
 - #303 Property serialize MAEC content to XML.
 - #302 Correctly handle CIQ Identity objects.
 - Add additional fields to CIQ Identity object.
+
+Version 1.1.1.19
+2020-11-16
+- #367 Fix deprecation warning from collections module
+
+Version 1.1.1.18
+2020-05-01
+- #366 Check add_reference methods to prevent NoneType has no attribute 'append'
+- Changes to STIXPackage to prevent the empty <stix:TTPs/> tag from appearing in serialization
+
+Version 1.1.1.17
+2020-04-21
+- #365 AISMarkingStructure not serializing correctly. PY3 compatibility issue
 
 Version 1.1.1.16
 2020-04-16
