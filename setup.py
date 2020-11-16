@@ -30,7 +30,7 @@ def get_long_description():
 install_requires = [
     'lxml>=2.2.3 ; python_version == "2.7" or python_version >= "3.5"',
     'lxml>=2.2.3,<4.4.0 ; python_version > "2.7" and python_version < "3.5"',
-    'mixbox>=1.0.2',
+    'mixbox>=1.0.4',
     'cybox>=2.1.0.13,<2.1.1.0',
     'python-dateutil',
 ]

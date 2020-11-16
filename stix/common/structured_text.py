@@ -10,7 +10,13 @@ from mixbox import fields
 import stix
 import stix.utils as utils
 import stix.bindings.stix_common as stix_common_binding
-from mixbox.vendor.six import text_type
+from mixbox.vendor.six import PY2, PY3, text_type
+
+
+if PY2:
+    from collections import Sequence
+elif PY3:
+    from collections.abc import Sequence
 
 
 #: Default ordinality value for StructuredText.
@@ -105,7 +111,7 @@ def _unset_default(text):
         text.ordinality = ordinality
 
 
-class StructuredTextList(stix.TypedCollection, collections.Sequence):
+class StructuredTextList(stix.TypedCollection, Sequence):
     """A sequence type used to store StructureText objects.
 
     Args:

@@ -8,6 +8,7 @@ import itertools
 from sys import version_info
 
 # mixbox
+from mixbox import compat
 from mixbox import idgen
 from mixbox import entities
 from mixbox import fields
@@ -311,7 +312,7 @@ class TypedCollection(object):
         return isinstance(obj, cls)
 
 
-class TypedList(TypedCollection, collections.MutableSequence):
+class TypedList(TypedCollection, compat.MutableSequence):
     def __init__(self, *args):
         TypedCollection.__init__(self, *args)
 
