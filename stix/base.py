@@ -311,7 +311,7 @@ class TypedCollection(object):
         return isinstance(obj, cls)
 
 
-class TypedList(TypedCollection, collections.MutableSequence):
+class TypedList(TypedCollection, collections.abc.MutableSequence):
     def __init__(self, *args):
         TypedCollection.__init__(self, *args)
 

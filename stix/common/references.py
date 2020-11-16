@@ -8,7 +8,7 @@ import stix
 from stix.bindings import stix_common as stix_common_binding
 
 
-class References(collections.MutableSequence, stix.Entity):
+class References(collections.abc.MutableSequence, stix.Entity):
     _binding = stix_common_binding
     _binding_class = stix_common_binding.ReferencesType
     _namespace = 'http://stix.mitre.org/common-1'

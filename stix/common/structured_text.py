@@ -105,7 +105,7 @@ def _unset_default(text):
         text.ordinality = ordinality
 
 
-class StructuredTextList(stix.TypedCollection, collections.Sequence):
+class StructuredTextList(stix.TypedCollection, collections.abc.Sequence):
     """A sequence type used to store StructureText objects.
 
     Args:
