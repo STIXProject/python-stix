@@ -64,7 +64,7 @@ class StructuredText(stix.Entity):
         """Converts this object into a dictionary representation.
 
         Note:
-            If no properies or attributes are set other than ``value``,
+            If no properties or attributes are set other than ``value``,
             this will return a string.
 
         """
@@ -95,7 +95,7 @@ def _unset_default(text):
     """Unsets the ordinality of the StructuredText object `text` if the
     ordinality is equal to the DEFAULT_ORDINALITY.
 
-    The ordinaity will be returned to its original state after exiting the
+    The ordinality will be returned to its original state after exiting the
     context manager.
 
     """

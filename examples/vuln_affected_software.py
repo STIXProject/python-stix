@@ -28,7 +28,7 @@ software.edition = "GOTY"
 # Wrap the Product Object in an Observable instance
 observable = Observable(software)
 
-# Attach the Product observable to the affected_sofware list of
+# Attach the Product observable to the affected_software list of
 # RelatedObservable instances. This wraps our Observable in a
 # RelatedObservable layer.
 vuln = Vulnerability()

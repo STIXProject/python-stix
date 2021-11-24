@@ -3495,7 +3495,7 @@ class StructuredTextType(GeneratedsSuper):
     Note that if the markup tags used by this format would be interpreted 
     as XML information (such as the bracket-based tags of HTML) the text 
     area should be enclosed in a CDATA section to prevent the markup from 
-    interferring with XMLvalidation of the CybOX document. If this 
+    interfering with XMLvalidation of the CybOX document. If this 
     attribute is absent, the implication is that no markup is being used."""
     subclass = None
     superclass = None
