@@ -470,7 +470,7 @@ class Indicator(stix.BaseCoreComponent):
         ``related_indicators`` list property.
 
         Calling this method is the same as calling ``append()`` on the
-        ``related_indicators`` proeprty.
+        ``related_indicators`` property.
 
         See Also:
             The :class:`RelatedIndicators` documentation.
